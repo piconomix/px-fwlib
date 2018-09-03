@@ -15,7 +15,7 @@ to add target specific code and getting locked in.
 Click [HERE](https://piconomix.com/fwlib/index.html) to view the complete online 
 documentation.
 
-Click [HERE](https://sourceforge.net/projects/piconomix-fwlib/files) to download
+Click [HERE](https://sourceforge.net/projects/piconomic-fwlib/files) to download
 releases of the open source library (source code and offline documentation).
 
 Goals

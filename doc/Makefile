@@ -10,7 +10,7 @@ all: html
 html:
 	-mkdir html
 	cp -R images/* html
-	( cat Doxyfile ; echo "PROJECT_NUMBER = \"$(LIB_REVISION) SVN $(SVN_REVISION)\"" ) | doxygen -
+	( cat Doxyfile ; echo "PROJECT_NUMBER = \"$(LIB_REVISION)\"" ) | doxygen -
 #	doxygen Doxyfile
 
 log: 
