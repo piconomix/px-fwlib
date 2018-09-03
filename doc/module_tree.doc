@@ -1,0 +1,45 @@
+/**
+    @defgroup ARCH /arch [Architecture (CPU) specific code]
+    @{
+        @defgroup ARM /arm [ARM series]
+        @{
+            @defgroup STM32 /stm32 [ST STM32 series]
+            @{            
+                @defgroup STM32_TUTORIALS /tutorials [ST STM32 tutorials]
+                @defgroup STM32_EXAMPLES /examples [ST STM32 examples]
+
+            @}
+        @}
+        @defgroup AVR /avr [Microchip AVR series]
+        @{
+            @defgroup AVR_EXAMPLES /examples [Microchip AVR examples]
+            @defgroup AVR_TUTORIALS /tutorials [Microchip AVR tutorials]
+        @}
+    @}
+    @defgroup BOARDS /boards [Board support files and projects]
+    @{
+            @defgroup BOARDS_ARM /arm [ARM boards]
+            @{            
+                @defgroup BOARDS_STM32 /stm32 [ST STM32 boards]
+
+            @}
+            @defgroup BOARDS_AVR /avr [Microchip AVR boards]
+    @}
+    @defgroup COMMON /common [Common files & modules]
+    @defgroup COMMS /comms [Communication related modules]
+    @defgroup DATA /data [Data related modules]
+    @defgroup DEVICES /devices [Device drivers]
+    @{
+        @defgroup DEVICES_COMMS /comms [Communication devices]
+        @defgroup DEVICES_DISPLAY /display [Display devices]
+        @defgroup DEVICES_GENERAL /general [General devices]
+        @defgroup DEVICES_MEM /mem [Memory devices]
+        @defgroup DEVICES_RTC /rtc [Real Time Clock devices]
+        @defgroup DEVICES_SENSOR /sensor [Sensor devices]
+    @}
+    @defgroup DOC /doc [Library documentation]
+    @defgroup GFX /gfx [Graphics Library]
+    @defgroup LIBS /libs [3rd party libraries]
+    @defgroup TOOLS /tools [Tools & Scripts]
+    @defgroup UTILS /utils [General utilities]
+ */

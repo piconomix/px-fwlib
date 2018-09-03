@@ -1,0 +1,12 @@
+11. Aplications {#SCORPION_BOARD_APPS}
+================================================
+
+- @subpage SCORPION_BOARD_BOOTLOADER_XMODEM
+  ![](piconomix_scorpion_board/tera_term_xmodem_send01_preview.png)
+- @subpage SCORPION_BOARD_APP_CLI
+  ![](piconomix_scorpion_board/tera_term_cli_preview.png)
+- @subpage SCORPION_BOARD_APP_DATA_LOGGER_ADC
+  ![](piconomix_scorpion_board/log_adc_graph_preview.png)
+- @subpage SCORPION_BOARD_APP_DATA_LOGGER_TEMP_PRESSURE
+  ![](piconomix_scorpion_board/log_temp_pressure_graph_preview.png)
+

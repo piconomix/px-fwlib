@@ -1,0 +1,104 @@
+ADC Data Logger Application {#SCORPION_BOARD_APP_DATA_LOGGER_ADC}
+=================================================================
+  
+[TOC]
+
+1. Introduction {#SCORPION_BOARD_APP_DATA_LOGGER_ADC_INTRO}
+===========================================================
+
+This is an ADC data logger app for the Piconomix ATmega328P Scorpion Board.
+
+Here is an example where the logger was used to measure the voltage of 2 x AA 
+cells and the output of the +8V boost converter to determine maximum battery 
+life:
+
+![ADC graph](piconomix_scorpion_board/log_adc_graph.png)
+
+@tip_s
+Observe that the minimum value (not the average value) reveals when the +8V 
+boost converter starts to fail.
+@tip_e
+
+The board has 4 ADC channels. The input voltage range on ADC0 and ADC1 is 
++0 mV to +3300 mV (1:1 divider). The input voltage range on ADC2 and ADC3 is 
++0 mV to +36300 mV (11:1 divider). The scale can be changed by replacing or 
+removing the resistor dividers.
+
+2. Command examples {#SCORPION_BOARD_APP_DATA_LOGGER_ADC_CLI}
+=============================================================
+
+Basic use of the Command Line Interpreter is documented [here] (@ref SCORPION_BOARD_CLI_FEATURES)
+
+Type 'help' to list commands with parameters and descriptions:
+
+    >help
+
+    log s                                    : Start logging
+    log ls                                   : List logs
+    log dump    <number>                     : Dump log
+    log del                                  : Delete all logs
+    log info                                 : Report ADC settings
+    log fit     <ch> <scale> <offset>        : Configure linear fit of ADC channel (y = scale x ADC + offset)
+    log samples <nr of samples>              : Set number of samples accumulated for each ADC channel
+
+    rtc r                                    : Read RTC time
+    rtc w       <yy-mm-dd> <hh:mm:ss>        : Write RTC time
+
+    fs info                                  : Report file system info
+    fs ls                                    : List files
+
+    sf info                                  : Report Serial Flash info
+    sf e        [start page] [end page]      : Erase Serial Flash page(s)
+    sf r        <adr> <nr of bytes>          : Read Serial Flash data
+    sf rp       <page>                       : Read Serial Flash page
+    sf rx       [start page] [end page]      : Read Serial Flash data and send using XMODEM
+    sf wp       <page> <offset> <d0> .. [d7] : Write up to 8 bytes of data to Serial Flash
+    sf wx       [start page]                 : Receive data using XMODEM and write to Serial Flash
+
+    help        [cmd(s) starts with...]      : Display list of commands with help. Optionally the list can be reduced.
+
+Type 'rtc w <yy-mm-dd hh:mm:ss>' to set the date and time:
+
+    >rtc w 14-09-07 15:28:58
+
+The raw 10-bit ADC values (0 to 1023) is scaled and an offset added. The default
+scale and offset value for each channel converts the raw ADC value into 
+millivolt (mV).
+
+<em>Formula: ScaledValue = scale x ADC + offset</em>
+
+Type 'log info' to get the ADC settings:
+
+    >log info
+    Sampling rate = 1000 Hz
+    Number of samples = 1000
+    ADC0 : Scale = 3.225806, Offset = 0.000000
+    ADC1 : Scale = 3.225806, Offset = 0.000000
+    ADC2 : Scale = 35.483871, Offset = 0.000000
+    ADC3 : Scale = 35.483871, Offset = 0.000000
+
+To change the scale of channel 0 to +10.1 and the offset to -4.5:
+
+    >log fit 0 10.1 -4.5
+
+All the channels are sampled at 1000 Hz (1 ms). The values are accumulated and
+by default the average is logged every 1000 samples, i.e. once every 1000 ms 
+(1 s). The number of samples can be changed to make the logging rate quicker 
+or slower. For example, to make the logging rate 500 ms (0.5 s):
+
+    >log samples 500
+
+Type 'log s' to start logging (MIN, MAX and AVERAGE value for ADC0, ADC1, ADC2 and ADC3):
+
+    >log s
+    Number  ADC0_MIN        ADC0_MAX        ADC0_AVE        ADC1_MIN        ADC1_MAX        ADC1_AVE        ADC2_MIN        ADC2_MAX        ADC2_AVE        ADC3_MIN        ADC3_MAX        ADC3_AVE
+    00000   238.709690      922.580630      506.590330      745.161320      1838.709700     1227.416100     0.000000        35.483871       0.390323        0.000000        35.483871       0.106452
+    00001   70.967743       245.161290      138.832260      277.419340      745.161320      477.403200      0.000000        35.483871       0.035484        0.000000        0.000000        0.000000
+    00002   12.903226       74.193550       42.783871       100.000000      280.645170      174.341930      0.000000        35.483871       0.248387        0.000000        106.451610      0.248387
+    00003   0.000000        29.032259       5.735484        32.258064       112.903230      65.541939       0.000000        35.483871       0.070968        0.000000        70.967743       0.106452
+    00004   0.000000        0.000000        0.000000        3.225806        41.935486       18.025806       0.000000        35.483871       0.070968        0.000000        35.483871       0.319355
+
+@tip_s
+Press SPACE or press the button on the board to stop.
+@tip_e
+

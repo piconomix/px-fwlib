@@ -1,0 +1,62 @@
+4. Tools {#TOOLS}
+=================
+
+[ftdi_vcp_driver]:   http://www.ftdichip.com/Drivers/VCP.htm
+[ftdi_uninstaller]:  http://www.ftdichip.com/Support/Utilities/CDMUninstaller_v1.4.zip
+[ftdi_ignore_ser]:   http://www.ftdichip.com/Support/Utilities/IgnoreSerialNo.exe
+[ftdi_ft_prog]:      http://www.ftdichip.com/Support/Utilities/FT_Prog_v3.0.56.245.zip
+[tera_term]:         http://en.sourceforge.jp/projects/ttssh2
+[atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
+[unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
+[msys]:              http://www.mingw.org/wiki/MSYS
+[make]:              http://gnuwin32.sourceforge.net/packages/make.htm
+[core_utils]:        http://gnuwin32.sourceforge.net/packages/coreutils.htm
+[doxygen]:           http://www.doxygen.org/index.html
+[tortoise_svn]:      http://tortoisesvn.net
+[slickedit]:         http://www.slickedit.com
+[7z]:                http://www.7-zip.org/download.html
+[ikalogic]:          http://www.ikalogic.com/ikalogic-products/scanaplus-9-channels-100mhz-logic-analyzer/
+
+Here is my list of recommended tools:
+
+- [SlickEdit] [slickedit] :
+  A commercial editor that will make a massive improvement in your productivity!
+- [Ikalogic ScanaPLUS] [ikalogic] logic analyzer :
+  A great value-for-money multi-platform logic analyzer with a multitude of 
+  protocol decoders (UART, I2C, SPI, LIN, CAN, 1-Wire, ...) that is essential
+  for rapid driver development and debugging. Once you start using a logic 
+  analyzer, you will realise the insanity of driver development "in the dark" 
+  and kick yourself for wasting so much time before!
+- [UnixShellUtils] [unix_shell_utils] : 
+  a minimal collection of Unix Shell utilities (make, sh, echo, rm, etc.) and 
+  other utilities (SRecord) used to build projects using advanced Make scripts.
+- [Tera Term] [tera_term] : 
+  Free terminal emulation software to interact with CLI applications and upload 
+  new firmware via bootloader using XMODEM-CRC protocol.
+- [7-Zip] [7z] : a file archiver with a high compression ratio.
+- [Tortoise SVN] [tortoise_svn] : 
+  a Microsoft Windows Explorer GUI plugin for Subversion (a free version control 
+  system that manages file and directory changes over time).
+- [Doxygen] [doxygen] : 
+  a tool that generates documentation from source code.
+- [Atmel Studio] [atmel_studio] : 
+  an Integrated Development Environment (IDE) for developing and debugging Atmel
+  ARM Cortex and AVR microcontroller applications on the Microsoft 
+  Windows operating system. It includes the GNU GCC build toolchain for C and 
+  C++.
+- [MSYS] [msys] : a collection of GNU utilities such as bash, make, gawk and 
+  grep to allow building of applications and programs which depend on 
+  traditionally Unix tools to be present. Note that a minimal set is provided
+  with [UnixShellUtils] [unix_shell_utils].
+- FTDI USB to serial converter tools:
+    + [FTDI FT230XS USB-UART Bridge Virtual Com Port (VCP) driver] [ftdi_vcp_driver]
+    + [FTDI FT_PROG EEPROM Programming Utility] [ftdi_ft_prog] :
+      an EEPROM programming utility to modify EEPROM contents (including settings 
+      like device descriptors, pin configurations, ...) of FTDI devices.
+    + [FTDI CDM Uninstaller] [ftdi_uninstaller] :
+      Uninstaller to remove old drivers.
+    + [FTDI Ignore Hardware Serial Number Registry Editor Utility] [ftdi_ignore_ser] :
+      a utility that edits the Windows registry to ensure the serial number 
+      descriptor of each FTDI device is ignored during driver installation. This 
+      feature ensures any FTDI device connected to a USB port is given the same COM 
+      port number.

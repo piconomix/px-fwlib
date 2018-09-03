@@ -1,0 +1,25 @@
+Minimal GPIO Example {#ARDUINO_UNO_BOARD_EXAMPLE_GPIO}
+======================================================
+  
+[TOC]
+
+Introduction {#ARDUINO_UNO_BOARD_EXAMPLE_GPIO_INTRO}
+====================================================
+
+This is a minimal GPIO example for the Arduino Uno board. It is the embedded 
+equivalent of a "hello world" program on a PC to kick the tires and know that 
+your development setup works. An LED (with a series resistor) can be wired from 
+Digital Pin 2 to GND. A (normally open) button can be wired from Digital Pin 3 
+to GND. The LED pin is configured as an output. The button pin is configured as 
+an input with a weak pull-up enabled.
+
+The LED is on while the user button is being pressed and off while the button is
+released.
+    
+File(s):
+- boards/avr/arduino_uno_board/examples/01_gpio/src/main.c
+
+The following modules are used:
+- @ref PX_DEFINES
+- @ref AVR_GPIO
+

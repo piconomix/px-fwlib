@@ -1,0 +1,105 @@
+5.3 Using Subversion (SVN) version control system {#SUBVERSION}
+===============================================================
+  
+[TOC]
+
+1. Introduction {#INTRO_SUBVERSION}
+===================================
+
+[Subversion](http://subversion.apache.org/) is a free version control system 
+that manages file and directory changes over time. Files are stored in a central
+repository. The repository is much like an ordinary file server, except that it 
+remembers every change ever made to your files and directories. This allows you 
+to recover older versions of your files and examine the history of how and when 
+your data changed, and who changed it. For more info read the free
+[Version Control with Subversion](http://svnbook.red-bean.com/) book.
+
+**Everyone** that develops source code should use it (in a team environment or 
+even as a single developer). For Microsoft Windows users there is a great 
+Subversion client called [Tortoise SVN](http://tortoisesvn.net/). It integrates 
+into Windows Explorer and is accessed with the right-click context menu. It also
+displays the status of a versioned file or directory by overlaying an icon.
+
+![TortoiseSVN right-click context menu screenshot](tortoise_svn_context_menu.png)
+
+Make sure that the command line client tools are included with the installation:
+
+![TortoiseSVN installer](tortoise_svn_cmd_line_tools.png)
+
+By default, they will be located here:
+
+    C:\Program Files\TortoiseSVN\bin\svn.exe
+    C:\Program Files\TortoiseSVN\bin\svnadmin.exe
+
+2. Command Line example {#SVN_CMD_EXAMPLE}
+==========================================
+
+Here is a quick Windows command line example:
+
+2.1 Test that svn is available on the path
+------------------------------------------
+
+    C:\svn --help
+
+2.2 Create repository
+---------------------
+
+For this example, let's say that you want a separate repostitory for each 
+project and they are all located here:
+
+    C:\repos>
+
+Issue this command to create a new repository called "my_project":
+
+    C:\repos>svnadmin create my_project
+
+2.3 Import directories and files
+--------------------------------
+
+Let's also say that a (temporary) copy of the directories and files to be 
+imported into the repository is located here:
+
+    C:\temp\my_project>
+
+To import the directories and files, issue the following command:
+
+    C:\temp\my_project>svn import . file:///c:/repos/my_project -m "Initial import"
+
+@tip_s
+Observe the URL format of the path to the repository ("file:///c:/repos/my_project")
+@tip_e
+
+2.4 Checkout a working copy
+---------------------------
+
+The location where you work on all your projects is actually here:
+
+    C:\projects>
+
+To checkout the whole repository to your working folder, issue the following 
+command:
+
+    C:\projects>svn checkout file:///c:/repos/my_project my_project
+
+2.5 Commit a new version
+------------------------
+
+Navigate into your working folder and update a file. You can now commit the new
+version with the following command:
+
+    C:\projects\my_project>svn commit . -m "Updated file"
+
+2.6 Update working folder
+-------------------------
+
+    C:\projects\my_project>svn update
+
+2.7 Report log messages
+-----------------------
+
+    C:\projects\my_project>svn log
+
+@tip_s
+Of course, it is **much** easier to use the GUI client 
+[Tortoise SVN](http://tortoisesvn.net/)
+@tip_e

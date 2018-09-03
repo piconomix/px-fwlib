@@ -1,0 +1,57 @@
+#ifndef __PX_DEBOUNCE_CFG_H__
+#define __PX_DEBOUNCE_CFG_H__
+/* =============================================================================
+     ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
+    |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
+    | |_) |  | |  | |     | | | | |  \| | | | | | | |\/| |  | |   \  /
+    |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
+    |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
+
+    Copyright (c) 2015 Pieter Conradie <https://piconomix.com>
+ 
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to
+    deal in the Software without restriction, including without limitation the
+    rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+    sell copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+    IN THE SOFTWARE.
+    
+    Title:          px_debounce_cfg.h : Digital debounce module configuration
+    Author(s):      Pieter Conradie
+    Creation Date:  2015-08-21
+
+============================================================================= */
+
+/* _____STANDARD INCLUDES____________________________________________________ */
+
+/* _____PROJECT INCLUDES_____________________________________________________ */
+#include "px_defines.h"
+
+/* _____DEFINITIONS _________________________________________________________ */
+/**
+ *  Configuration is fixed (the same) for all inputs if set to 1 and
+ *  configurable (individually tweaked) if set to 0
+ */
+#define PX_DEBOUNCE_CFG_FIXED 1
+
+/// Fixed max HI counter value (if PX_DEBOUNCE_CFG_FIXED = 1)
+#define PX_DEBOUNCE_CFG_COUNT_MAX  10
+
+/// Fixed low watermark threshold for valid LO (if PX_DEBOUNCE_CFG_FIXED = 1) 
+#define PX_DEBOUNCE_CFG_THRESHOLD_LO 2
+
+/// Fixed High watermark threshold for valid HI (if PX_DEBOUNCE_CFG_FIXED = 1) 
+#define PX_DEBOUNCE_CFG_THRESHOLD_HI 8
+
+#endif // #ifndef __PX_DEBOUNCE_CFG_H__

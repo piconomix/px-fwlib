@@ -1,0 +1,31 @@
+$(start_block_header)
+/*******************************************************************************
+*    _____   _____   _____   ____    _   _    ____    __  __   _____  __   __  *
+*   |  __ \ |_   _| / ____| / __ \  | \ | |  / __ \  |  \/  | |_   _| \ \ / /  *
+*   | |__) |  | |  | |     | |  | | |  \| | | |  | | | \  / |   | |    \ V /   *
+*   |  ___/   | |  | |     | |  | | | . ` | | |  | | | |\/| |   | |     > <    *
+*   | |      _| |_ | |____ | |__| | | |\  | | |__| | | |  | |  _| |_   / . \   *
+*   |_|     |_____| \_____| \____/  |_| \_|  \____/  |_|  |_| |_____| /_/ \_\  *
+*                                                                              *
+*******************************************************************************/
+#include "px_gfx.h"
+$(end_block_header)
+
+const uint8_t $(doc_name_ws)_data[] = 
+{
+$(start_block_images_table)
+    // '$(out_char_text)' ; w = $(out_image_width), h = $(out_image_height),
+    0x$(out_char_code),
+    $(out_image_preview)
+    $(out_image_data),
+$(end_block_images_table)
+    // The End
+    0x00,
+};
+
+px_gfx_font_t $(doc_name_ws) =
+{
+    .width  = $(out_image_width),
+    .height = $(out_image_height),
+    .data   = $(doc_name_ws)_data,
+};

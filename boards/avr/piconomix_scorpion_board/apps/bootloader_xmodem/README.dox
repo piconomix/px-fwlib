@@ -1,0 +1,109 @@
+XMODEM-CRC Bootloader {#SCORPION_BOARD_BOOTLOADER_XMODEM}
+=========================================================
+  
+[TOC]
+
+1. Introduction {#SCORPION_BOARD_BOOTLOADER_XMODEM_INTRO}
+=========================================================
+
+[tera_term]: http://en.sourceforge.jp/projects/ttssh2
+
+This is an example of how to implement a bootloader on the Microchip AVR. It is a 
+simple bootloader that accepts a **binary** application file transferred 
+over the UART port using the XMODEM-CRC protocol. 
+
+A few optimizations were applied to decrease the size of the bootloader: 
+- "CFLAGS += -ffunction-sections -fdata-sections" and "LDFLAGS += --gc-sections"
+  so that unused functions will removed.
+- "LDFLAGS += -Wl,--relax" to enable linker relaxations, e.g. use RCALL assembly
+  instruction instead of CALL where possible.
+- "LDFLAGS += -nostartfiles -nodefaultlibs -nostdlib" to remove Standard C
+  Libraries.
+- Customized gcrt1.S (copied from avr-libc-1.8.0/crt1/gcrt1.S) added to 
+  remove interrupt vector table and .init9 section code.
+- The main function is declared with "__attribute__ ((section (".init9")))"
+  so that it follows directly after the C Run Time (CRT) initialization.
+- The main function is also declared with "__attribute__ ((naked))" so that
+  entry and exit code are ommitted.
+- The reset_vector function is declared with "__attribute__ ((noreturn))" so 
+  that the compiler will not add redundant code after the call to this
+  "function".
+
+In addition the following flags were passed to the linker: 
+- "LDFLAGS += -Ttext=$(FLASH_BOOT_START)" to place the code at the start of 
+ the bootloader address, not the reset vector (0x0000).
+- "LDFLAGS += -Wl,--defsym,reset=0x0000" to define the address where
+ the bootloader will jump to after it has finished execution.
+
+2. How to use the XMODEM-CRC bootloader {#SCORPION_BOARD_BOOTLOADER_XMODEM_HOW_TO}
+==================================================================================
+
+2.1 Build the application and create a BIN file from the ELF file {#BUILD}
+--------------------------------------------------------------------------
+
+Here is the part of the Makefile build that creates a BIN file from an ELF file:
+
+    avr-objcopy -O binary -R .eeprom -R .fuse -R .lock gpio.elf gpio.bin
+
+2.2 Run and configure Tera Term - Terminal Emulator {#TERA_TERM}
+----------------------------------------------------------------
+
+Select the correct COM port and configure port for 115200 BAUD, 8 data bits, 
+no parity, 1 stop bit and no flow control.
+
+Setup > Serial port...
+
+![Tera Term COM port setup](piconomix_scorpion_board/tera_term_setup.png)
+
+@tip_s
+At this stage you can verify that the communication between Tera Term and the 
+board is OK, by resetting the board and verifying that Tera Term displays at 
+least one received 'C' character sent by the bootloader.
+@tip_e
+
+2.3 Send the BIN file using the XMODEM-CRC protocol {#XMODEM_SEND}
+------------------------------------------------------------------
+
+File > Transfer > XMODEM > Send...
+
+![Tera Term - Start XMODEM file send](piconomix_scorpion_board/tera_term_xmodem_send01.png)
+
+@warn_s
+The **BIN** file (not HEX or ELF!) is selected and the CRC variant of XMODEM is 
+specified.
+@warn_e
+
+![Tera Term - Specify file and select CRC transfer method"](piconomix_scorpion_board/tera_term_xmodem_send02.png)
+
+@tip_s
+Tera Term will now wait for a 'C' character from the board to start the 
+transfer...
+@tip_e
+ 
+2.4 Reset the board to start the transfer {#START_TRANSFER}
+-----------------------------------------------------------
+
+Press the reset button (**RST**) to reset the microcontroller and jump to the
+bootloader.
+
+@tip_s
+The bootloader will initiate the transfer and download the new application. At 
+the end of the transfer, the bootloader will execute the new application.
+@tip_e
+
+@warn_s
+Note that no safeguards are built into the bootloader. If the transfer is
+interrupted, the bootloader will time out and execute the broken, incomplete
+application. Normally this is not a big issue as the process can be repeated.
+@warn_e
+
+3. ATmega328p Fuse Bits {#SCORPION_BOARD_BOOTLOADER_XMODEM_FUSE_BITS}
+=====================================================================
+
+The AVR fuse bits must be set so that execution starts from the boot vector
+address. This means that the bootloader will always be executed first. 
+The bootloader will send a 'C' character to start a transfer and waits for 1 
+second for a valid XMODEM-CRC data packet. If the transfer is not
+successful, it will jump to address 0x0000 and execute the application. 
+
+![AVR fuse bits in Atmel Studio"](piconomix_scorpion_board/avr_fuse_bits.png)

@@ -1,0 +1,348 @@
+#ifndef __PX_RTC_UTIL_H__
+#define __PX_RTC_UTIL_H__
+/* =============================================================================
+     ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
+    |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
+    | |_) |  | |  | |     | | | | |  \| | | | | | | |\/| |  | |   \  /
+    |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
+    |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
+
+    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
+ 
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to
+    deal in the Software without restriction, including without limitation the
+    rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+    sell copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+    IN THE SOFTWARE.
+
+    Title:          px_rtc_util.h : Software RTC and utility functions
+    Author(s):      Pieter Conradie
+    Creation Date:  2014-06-22
+
+============================================================================= */
+/** 
+ *  @ingroup UTILS
+ *  @defgroup PX_RTC_UTIL px_rtc_util.h : Software RTC and utility functions
+ *  
+ *  This module provides basic time, calender and alarm functionality.
+ *  
+ *  File(s):
+ *  - utils/px_rtc.h
+ *  - utils/px_rtc_util_cfg_template.h
+ *  - utils/px_rtc.c
+ *  
+ */
+/// @{
+
+/* _____PROJECT INCLUDES_____________________________________________________ */
+#include "px_defines.h"
+
+// Include project specific config. See "px_rtc_util_cfg_template.h"
+#include "px_rtc_util_cfg.h"
+
+// Check that all project specific options have been specified in "px_rtc_util_cfg.h"
+#if (   !defined(PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K ) \
+     || !defined(PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS)  )
+      )
+#error "One or more options not defined in 'px_rtc_util_cfg.h'"
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* _____DEFINITIONS _________________________________________________________ */
+// Utility definitions
+#define PX_RTC_SEC_PER_MIN  (60ul)
+#define PX_RTC_SEC_PER_HOUR (60*PX_RTC_SEC_PER_MIN)
+#define PX_RTC_SEC_PER_DAY  (24*PX_RTC_SEC_PER_HOUR)
+
+/* _____TYPE DEFINITIONS_____________________________________________________ */
+/// Size definition to track seconds since Y2K (2000-01-01 00:00:00)
+typedef uint32_t px_rtc_sec_since_y2k_t;
+
+/// Structure to store date and time
+typedef struct
+{
+   uint8_t  year;                       ///< Years:   0 to 99 (2000 - 2099)
+   uint8_t  month;                      ///< Months:  1 to 12
+   uint8_t  day;                        ///< Days:    1 to 31 (depending on month)
+   uint8_t  hour;                       ///< Hours:   0 to 23
+   uint8_t  min;                        ///< Minutes: 0 to 59
+   uint8_t  sec;                        ///< Seconds: 0 to 59
+} px_rtc_date_time_t;
+
+/// Result of RTC time comparision
+typedef enum
+{
+    PX_RTC_UTIL_TIME_OLDER,             ///< Time is older
+    PX_RTC_UTIL_TIME_EQUAL,             ///< Time is equal
+    PX_RTC_UTIL_TIME_NEWER              ///< Time is newer
+} px_rtc_time_compare_t;
+
+/// Alarm mask
+typedef enum
+{
+    PX_RTC_UTIL_ALARM_MASK_DIS = 0,     ///< Disable alarm
+    PX_RTC_UTIL_ALARM_MASK_SEC,         ///< Alarm match on second
+    PX_RTC_UTIL_ALARM_MASK_MIN,         ///< Alarm match on second and minute
+    PX_RTC_UTIL_ALARM_MASK_HOUR,        ///< Alarm match on second, minute and hour
+    PX_RTC_UTIL_ALARM_MASK_DAY,         ///< Alarm match on second, minute, hour and day
+    PX_RTC_UTIL_ALARM_MASK_MONTH,       ///< Alarm match on second, minute, hour, day and month
+    PX_RTC_UTIL_ALARM_MASK_YEAR,        ///< Alarm match on second, minute, hour, day, month and year
+} px_rtc_alarm_mask_t;
+
+/* _____GLOBAL VARIABLES_____________________________________________________ */
+
+/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
+/**
+ *  Initialise module.
+ */
+void px_rtc_util_init(void);
+
+/**
+ *  Call this function once a second to update date, time and alarm flag.
+ */
+void px_rtc_util_on_tick(void);
+
+/**
+ *  Set the time and date.
+ *  
+ *  @param[in] date_time    Pointer to a structure that contains the new date
+ *                          and time.
+ */
+void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time);
+
+/**
+ *  Get a copy of the time and date.
+ *  
+ *  @param[out] date_time   Pointer to a structure that will hold the new date
+ *                          and time.
+ */
+void px_rtc_util_date_time_rd(px_rtc_date_time_t * date_time);
+
+#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+/**
+ *  Return the number of seconds elapsed since Y2K (2000-01-01 00:00:00)
+ *  
+ *  @return px_rtc_util_sec_since_y2k_t     number of seconds elapsed since Y2K
+ */
+px_rtc_sec_since_y2k_t px_rtc_util_sec_since_y2k_rd(void);
+#endif
+
+/**
+ *  Set the alarm time and date. 
+ *  
+ *  The alarm flag will be cleared. 
+ *  
+ *  @param alarm         Pointer to a structure that contains the new alarm
+ *                       time.
+ *  @param alarm_mask    Alarm mask (disabled, sec, min, hour, day, month, year)
+ */
+void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm, 
+                          px_rtc_alarm_mask_t        alarm_mask);
+
+/**
+ *  Get a copy of the alarm time and date.
+ *  
+ *  @param alarm         Pointer to a structure that will hold the current alarm
+ *                       time.
+ *  @param alarm_mask    Pointer to hold the current alarm mask to match on
+ *                       (disabled, sec, min, hour, day, month, year)
+ */
+void px_rtc_util_alarm_rd(px_rtc_date_time_t *  alarm, 
+                          px_rtc_alarm_mask_t * alarm_mask);
+
+/**
+ *  See if alarm flag is set.
+ *  
+ *  @retval true         Alarm flag set (alarm has occurred) 
+ *  @retval false        Alarm flag not set (alarm has not occurred)       
+ */
+bool px_rtc_util_alarm_flag_is_set(void);
+
+/**
+ *  Clear alarm flag.
+ */
+void px_rtc_util_alarm_flag_clear(void);
+
+#if PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS
+
+/**
+ *  See if minute period flag is set.
+ *  
+ *  @retval true         Minute period flag set
+ *  @retval false        Minute period flag set
+ */
+bool px_rtc_util_period_min_flag_is_set(void);
+
+/**
+ *  Clear minute period flag.
+ */
+void px_rtc_util_period_min_flag_clear(void);
+
+/**
+ *  See if hour period flag is set.
+ *  
+ *  @retval true         Hour period flag set
+ *  @retval false        Hour period flag set
+ */
+bool px_rtc_util_period_hour_flag_is_set(void);
+
+/**
+ *  Clear hour period flag.
+ */
+void px_rtc_util_period_hour_flag_clear(void);
+
+/**
+ *  See if day period flag is set.
+ *  
+ *  @retval true        Day period flag set
+ *  @retval false       Day period flag set
+ */
+bool px_rtc_util_period_day_flag_is_set(void);
+
+/**
+ *  Clear day period flag.
+ */
+void px_rtc_util_period_day_flag_clear(void);
+
+#endif
+
+/**
+ *  Reset date-time structure to 2000-01-01 00:00
+ *  
+ *  @param px_rtc_util_date_time    Pointer to a structure that will hold the
+ *                                  new date and time.
+ */
+void px_rtc_util_date_time_reset(px_rtc_date_time_t * px_rtc_util_date_time);
+
+/**
+ *  Test if all of the fields in the date-time structure are correct.
+ *  
+ *  @param date_time        Pointer to a structure containing the date and time.
+ *  
+ *  @retval true            All of the fields are valid.
+ *  @retval false           One or more of the fields are invalid.
+ */
+bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time);
+
+/**
+ *  Compare two date-time structures to see if the first is older, equal or
+ *  newer than the second.
+ *  
+ *  @param date_time1               First date-time structure
+ *  @param date_time2               Second date-time structure
+ *  
+ *  @retval PX_RTC_UTIL_TIME_OLDER  First date-time is older than second.
+ *  @retval PX_RTC_UTIL_TIME_EQUAL  First date-time is equal to second.
+ *  @retval PX_RTC_UTIL_TIME_NEWER  First date-time is newer than second.
+ */
+px_rtc_time_compare_t px_rtc_util_cmp_date_time(const px_rtc_date_time_t * date_time1, 
+                                                const px_rtc_date_time_t * date_time2);
+
+/**
+ *  Compare two dates to see if the first is older, equal or newer than the
+ *  second.
+ *  
+ *  @param date_time1               First date-time structure
+ *  @param date_time2               Second date-time structure
+ *  
+ *  @retval PX_RTC_UTIL_TIME_OLDER  First date-time is older than second.
+ *  @retval PX_RTC_UTIL_TIME_EQUAL  First date-time is equal to second.
+ *  @retval PX_RTC_UTIL_TIME_NEWER  First date-time is newer than second.
+ */
+px_rtc_time_compare_t px_rtc_util_cmp_date(const px_rtc_date_time_t * date_time1, 
+                                           const px_rtc_date_time_t * date_time2);
+
+/**
+ *  Compare the dates to see if they fall on the same day.
+ *  
+ *  @param date_time1       First date-time structure
+ *  @param date_time2       Second data-time structure
+ *  
+ *  @retval true            Dates fall on the same day
+ *  @retval false           Dates do not fall on the same day
+ */
+bool px_rtc_util_date_is_equal(const px_rtc_date_time_t * date_time1, 
+                               const px_rtc_date_time_t * date_time2);
+
+/**
+ *  Convert a date and time to seconds elapsed since 2000-01-01 00:00 (y2k)
+ *  
+ *  @param date_time            date-time structure
+ *  
+ *  @return px_rtc_util_sec_since_y2k_t Seconds since Y2K (2000-01-01 00:00:00)
+ */
+px_rtc_sec_since_y2k_t px_rtc_util_date_time_to_sec_since_y2k(const px_rtc_date_time_t * date_time);
+
+/**
+ *  Convert seconds elapsed since 2000-01-01 00:00 (y2k) to a date and time
+ *  
+ *  @param sec_since_y2k        Seconds since Y2K (2000-01-01 00:00:00)
+ *  @param date_time            date-time structure to receive calculated date and time
+ *  
+*/
+void px_rtc_util_sec_since_y2k_to_date_time(px_rtc_sec_since_y2k_t sec_since_y2k, 
+                                            px_rtc_date_time_t *   date_time);
+
+/**
+ *  Increment a date-time structure with a specified number of years, months,
+ *  days, hours, minutes and seconds.
+ *  
+ *  @param date_time        date-time structure to increment
+ *  @param date_time_inc    date-time structure containing amount to increment by
+ */
+void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time, 
+                               const px_rtc_date_time_t * date_time_inc);
+
+/**
+ *  Decrement a date-time structure with a specified number of years, months,
+ *  days, hours, minutes and seconds.
+ *  
+ *  @param date_time        date-time structure to decrement
+ *  @param date_time_dec    date-time structure containing amount to decrement by
+ */
+void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
+                               const px_rtc_date_time_t * date_time_dec);
+
+/**
+ *  Report date and time using printf.
+ *  
+ *  @param date_time        date-time structure to report
+ */
+void px_rtc_util_report_date_time(const px_rtc_date_time_t * date_time);
+
+/**
+ *  Report date using printf.
+ *  
+ *  @param date_time        date-time structure to report
+ */
+void px_rtc_util_report_date(const px_rtc_date_time_t * date_time);
+
+/**
+ *  Report time using printf.
+ *  
+ *  @param date_time        date-time structure to report
+ */
+void px_rtc_util_report_time(const px_rtc_date_time_t * date_time);
+
+/* _____MACROS_______________________________________________________________ */
+
+/// @}
+#ifdef __cplusplus
+}
+#endif
+
+#endif // #ifndef __PX_RTC_UTIL_H__

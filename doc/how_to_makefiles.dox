@@ -1,0 +1,314 @@
+7.1 How to understand and modify Makefiles {#HOWTO_MAKEFILES}
+=============================================================
+
+[TOC]
+
+1. Introduction {#MAKEFILES_INTRO}
+==================================
+
+[atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
+[make]:              http://gnuwin32.sourceforge.net/packages/make.htm
+[unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
+[msys]:              http://www.mingw.org/wiki/MSYS
+
+[Make] [make] is a command-line utility packaged with IDEs such as 
+[Atmel Studio] [atmel_studio] and build systems such as [MSYS] [msys] or 
+[UnixShellUtils] [unix_shell_utils]. All of the projects in this library 
+are built using a Makefile. Normally it is used as as an intelligent 
+command-line script to compile a project's source file(s) and link the 
+intermediate object file(s) to create a final executable, but it can be used for 
+other purposes too.
+
+I recommend that you download [UnixShellUtils] [unix_shell_utils] so that you 
+are not tied down to the build tools packaged with one specific IDE. If you 
+extract UnixShellUtils to "C:\UnixShellUtils", you will find Make here:
+
+    C:\UnixShellUtils\bin\make.exe
+
+I prefer to create my own Makefile over an automated IDE build where I can, 
+because then I can use the same editor ([SlickEdit](http://www.slickedit.com))
+to edit and build my project and I have finer control over the build process. 
+Another advantage is that the project can be built on different operating 
+systems.
+
+@tip_s
+The Makefile build process is used extensively in the Un*x world and the time 
+invested to master this fundamental tool will pay big dividends later in life.
+@tip_e
+
+1.1 References {#MAKEFILES_REFERENCES}
+--------------------------------------
+
+- [1] [GNU Make manual - an introduction to Makefiles](https://www.gnu.org/software/make/manual/make.html#Introduction)
+- [2] [Wikipedia - Makefile](http://en.wikipedia.org/wiki/Makefile)
+
+2. Manual build {#MAKEFILE_MANUAL_BUILD}
+========================================
+
+To perform a (simplified) hand build of an Microchip ATmega328P project on the 
+command line, you would do something like this:
+
+@includelineno make_ex_1.txt
+
+- Line 1 compiles a C file "board.c" to create an intermediate object file "board.o"
+- Line 2 compiles a C file "main.c" to create an intermediate object file "main.o"
+- Line 3 links the object files "board.o" and "main.o" to create an executable "test.elf"
+- Line 4 extracts an [Intel HEX file](http://en.wikipedia.org/wiki/Intel_HEX) 
+  "test.hex" from "test.elf" that can be used to program the microcontroller
+- Line 5 creates an assembly listing text file ("test.lss") from the ELF file
+  so that you can see EXACTLY what code will be executed on the compiler.
+
+@tip_s 
+If you inspect the "test.lss" file you will notice that the compiler links in 
+extra assembly start up code, before your main() function is called. This code 
+ensures that the C run time environment is correctly initialised, interrupt 
+vectors jump to the correct locations, etc.
+@tip_e
+
+You can put all of these steps in a Windows Batch file or Bash Shell script, but
+just imagine if you have 20 source files... each time you want to build, the 
+WHOLE project is built from scratch, even though maybe only one source file was
+modified. There must be a better way, and the answer is... 
+[Make](http://www.gnu.org/software/make/)
+
+3. A "simple" Makefile {#MAKEFILE_SIMPLE}
+=========================================
+
+Here is a simple Makefile to build the project:
+
+@includelineno make_ex_2.mk
+
+To invoke Make on the command-line, you would do something like this:
+
+    >make -f Makefile all
+
+"Makefile" is the name of the script file to use and "all" is the target to 
+create. Make searches for a file called "Makefile" first, so "-f Makefile" is 
+redundant and can be omitted. By default, Make will execute the first target 
+found in the Makefile, so "all" can also be omitted and thus the command 
+simplifies to:
+
+    >make
+
+To create a specific target, e.g. "board.o", you will invoke Make as follows:
+
+    >make board.o
+
+@tip_s
+And now for a brief explanation...
+@tip_e
+
+4. Make Rules (pun intended){#MAKEFILE_RULES}
+=============================================
+
+A Makefile consists mostly of rules to create targets. The syntax / form is as 
+follows:
+
+    target: prerequisites
+    --->recipe
+    --->recipe
+
+@warn_s
+Take note that each line of the recipe starts with a TAB character (indicated 
+above with an arrow --->). Make needs the TAB character to know that the line is
+a recipe and still part of the target rule. A common mistake is to use SPACES 
+instead of a TAB character.
+@warn_e
+
+Now look at this rule to create "board.o" (the target):
+
+    board.o: board.c
+    	avr-gcc -mmcu=atmega328p -c board.c -o board.o
+
+It tells Make that "board.c" is required (the prerequisite) to create "board.o"
+(the target). Then the recipe starts: it takes the "board.c" file, compiles it 
+and creates a "board.o" file as the output.
+
+*And now for the intelligent bit.* If "board.o" already exists, then Make 
+compares the timestamp of the "board.o" file and the "board.c" file. If 
+"board.c" is newer (i.e. you have just modified and saved it), then Make 
+executes the recipe to create an updated version of "board.o". If "board.o" is 
+already up to date, then Make does not execute the recipe.
+
+"all" and "clean" are so-called
+[phony targets](https://www.gnu.org/software/make/manual/make.html#Phony-Targets).
+It basically means that no real target file is created / updated, but you can 
+still perform the recipe as follows:
+
+    >make clean
+
+or 
+
+    >make all
+
+By understanding make rules, you are now equiped to figure out the recursive
+build process that ensues when you execute Make from a clean slate. Let's see 
+what happens when "make" is executed with this "simple" Makefile example:
+
+@includelineno make_ex_2.mk
+
+1. The first target that Make finds is "all" on line 1. "all" requires 
+   "test.elf", "test.hex" and "test.lss" (the prequisites) which does not exist.
+2. Make needs to create "test.elf" and finds a rule to do so on line 3. It needs
+   "board.o" and "main.o" which also does not exist.
+3. Make now needs to create "board.o" and finds a rule to do so on line 12. It 
+   needs "board.c" which **does** exist. So it proceeds to execute the recipe 
+   (on line 13) on the command-line:
+
+       >avr-gcc -mmcu=atmega328p -c board.c -o board.o
+
+4. In a similiar fashion it finds and executes the rule on line 15 to create 
+   "main.o".
+5. Make now has the two required files "board.o" and "main.o" and executes
+   the recipe on line 4 to create "test.elf".
+6. In a similiar fashion it executes the recipes on line 7 and 10 to create
+   "test.hex" and "test.lss".
+
+This is the command-line output:
+
+    >make clean
+    rm -f *.o
+    rm -f *.elf
+    rm -f *.hex
+    rm -f *.lss
+    
+    >make
+    avr-gcc -mmcu=atmega328p -c board.c -o board.o
+    avr-gcc -mmcu=atmega328p -c main.c -o main.o
+    avr-gcc -mmcu=atmega328p board.o main.o -o test.elf
+    avr-objcopy -O ihex -R .eeprom -R .fuse -R .lock test.elf test.hex
+    avr-objdump -h -S -z test.elf > test.lss
+
+If you modify and save "main.c", this is the resulting output:
+
+    >make
+    avr-gcc -mmcu=atmega328p -c main.c -o main.o
+    avr-gcc -mmcu=atmega328p board.o main.o -o test.elf
+    avr-objcopy -O ihex -R .eeprom -R .fuse -R .lock test.elf test.hex
+    avr-objdump -h -S -z test.elf > test.lss
+
+@tip_s
+You can see that Make did not recompile "board.c", but only did what it needed
+to update "test.elf".
+@tip_e
+
+5. Make Variables{#MAKEFILE_VARIABLES}
+======================================
+
+@tip_s
+One of the golden coding rules is: never repeat yourself!
+@tip_e
+
+Make allows the declaration and use of variables. The syntax is as follows:
+
+    VARIABLE_NAME = value
+
+To use a variable, the variable name must be surrounded by brackets () and 
+prepended with a dollar sign $:
+
+    $(VARIABLE)
+
+So the simple Makefile can be updated to:
+
+@includelineno make_ex_3.mk
+
+@tip_s
+Now if you want to change the name of your project, you only have to edit one 
+location: line 1
+@tip_e
+
+To append more text to a variable, you can use the += operator, for example:
+
+    OBJECTS  = board.o
+    OBJECTS += main.o
+
+@tip_s
+As a naming convention, variables are written with ALL CAPITALS with 
+underscores _ separating words.
+@tip_e
+
+6. Make Automatic Variables{#MAKEFILE_AUTOMATIC_VARIABLES}
+==========================================================
+
+[Automatic variables](https://www.gnu.org/software/make/manual/make.html#Automatic-Variables)
+are calculated for each rule that is executed. They only have a value within the 
+recipe. An automatic variable starts with a dollar sign $, e.g. "$@" or "$<"
+
+Thus the following rule:
+
+    main.o: main.c
+    	avr-gcc -mmcu=atmega328p -c main.c -o main.o
+
+Can be updated to:
+
+    main.o: main.c
+    	avr-gcc -mmcu=atmega328p -c $< -o $@
+
+- "$<" refers to the first prerequisite, so "$<" will be replaced with "main.c"
+- "$@" refers to the target file name, so "$@" will be replaced with "main.o"
+
+For more info on automatic variables and a detailed list, click
+[here](https://www.gnu.org/software/make/manual/make.html#Automatic-Variables).
+
+7. Make Pattern Rules{#MAKEFILE_PATTERN_RULES}
+==============================================
+
+Instead of writing a separate rule for each object file, you can use a 
+[pattern rule](https://www.gnu.org/software/make/manual/make.html#Pattern-Rules).
+A pattern rule starts with the percentage sign % and it is used as the wildcard
+character for the match. Thus the separate rules for each object file can be 
+replaced with a single pattern rule:
+
+    %.o: %.c
+    	avr-gcc -mmcu=$(MCU) -c $< -o $@
+
+Thus if you want to create "board.o", the pattern match % is "board" and the 
+prerequisite is "board.c".
+
+@tip_s
+Note the use of automatic variables ($< and $@) in the recipe.
+@tip_e
+
+8. An "advanced" Makefile{#MAKEFILE_ADVANCED}
+=============================================
+
+After applying all of these features, the "simple" Makefile is updated to:
+
+@includelineno make_ex_4.mk
+
+@tip_s
+Note the use of the a 
+[string substitution function](https://www.gnu.org/software/make/manual/make.html#Text-Functions)
+on line 4.
+@tip_e
+
+9. Dependencies {#MAKEFILE_DEPENDENCIES}
+========================================
+
+If your C file includes other H files, then you can specify these files as 
+prerequisites too. That way, you can ensure that your C file will be rebuilt if 
+any of the H files are changed. For example:
+
+    main.o: main.c board.h
+
+This means that if you modify and save "main.c" or "board.h", then Make must 
+rebuild "main.o".
+
+Here is the final Makefile:
+
+@includelineno make_ex_5.mk
+
+@tip_s
+Comments starting with hash/pound character #
+@tip_e
+
+The GCC compiler can parse your C files and generate these dependencies 
+automatically. This has been implemented in the Make scripts (\*.mk) included 
+in the library.
+
+10. Conclusion {#MAKEFILE_CONCLUSION}
+=====================================
+
+Well, that's the end of the "gentle" introduction. I hope that you have enough
+insight now to copy, paste and modify the Makefiles used in this library and
+have confidence to delve into the world of Makefiles.

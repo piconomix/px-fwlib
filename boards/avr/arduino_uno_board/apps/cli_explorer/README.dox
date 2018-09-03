@@ -1,0 +1,399 @@
+CLI Explorer (Command Line Interpreter) {#ARDUINO_UNO_BOARD_APP_CLI}
+====================================================================
+  
+[TOC]
+
+1. Introduction {#ARDUINO_UNO_CLI_INTRO}
+========================================
+
+[tera_term]:         http://en.sourceforge.jp/projects/ttssh2
+[xloader]:           http://xloader.russemotto.com/
+[optiboot]:          https://code.google.com/p/optiboot/
+[avrdude]:           http://www.nongnu.org/avrdude/
+
+This is a full featured CLI (Command Line Interpreter) application running on 
+the Arduino Uno R3 board that creates a "Un*x Shell"-like environment so that 
+you can experiment with GPIO, ADC, I2C and SPI using only Terminal software 
+(for example [Tera Term] [tera_term])... it is really cool!
+
+![CLI Exlorer executing on an Arduino Uno R3](arduino_uno_board/arduino_uno_cli_preview.png)
+
+With this application you will be able to:
+- Enable or disable the LED
+- Manipulate GPIO pins
+- Measure ADC values
+- Discover and communicate with I2C slaves
+- Communicate with SPI devices
+- Set and read a software RTC (Real Time Clock) 
+
+2. Upload "cli_explorer.hex" file to Arduino Uno board {#ARDUINO_UNO_CLI_UPLOAD}
+================================================================================
+
+You will need [XLoader] [xloader] to upload the "cli_explorer.hex" file to the Arduino
+Uno board via the [Optiboot bootloader] [optiboot]. The file is located here:
+
+    piconomix-fwlib\boards\avr\arduino_uno_board\apps\cli_explorer\cli_explorer.hex
+
+Select the HEX file, specify the correct COM port and press upload:
+
+![Upload HEX file using XLoader](arduino_uno_board/arduino_uno_xloader_cli.png)
+
+You can also use the command line tool [avrdude]. The command will be something
+like this:
+
+    avrdude -C avrdude.conf -p m328p -c stk500 -b 115200 -P \\.\COM11 -F -U flash:w:cli_explorer.hex:i
+
+@warn_s
+    Make sure that your path to "avrdude" and "avrdude.conf" file is correct and
+    that you specify the correct communication port (in the correct format).
+@warn_e
+
+3. Open Terminal software to interact with application {#ARDUINO_UNO_CLI_TERM}
+==============================================================================
+
+You will also need [Tera Term] [tera_term] to interact with the application. 
+Configure Tera Term to connect to the correct COM port at 115200 BAUD, 8 Data 
+Bits, No Parity and 1 Stop Bit:
+
+Setup > Serial Port...
+
+![Configure Tera Term](arduino_uno_board/arduino_uno_conf_tera_term.png)
+
+When the COM port is opened by Tera Term, the Arduino board will reset and
+execute the CLI application. If it does not, press ENTER in the Tera Term window 
+or press the reset button of the microcontroller and a command prompt ('>') 
+should appear:
+
+![CLI Application on Tera Term (Terminal Emulator)](arduino_uno_board/arduino_uno_cli.png)
+
+4. CLI features {#ARDUINO_UNO_CLI_FEATURES}
+===========================================
+
+4.1 Autocomplete (TAB) {#ARDUINO_UNO_CLI_AUTOCOMPLETE}
+------------------------------------------------------
+
+Type the start of a command:
+
+    >h
+
+Press TAB to autocomplete:
+
+    >help
+
+To cycle through commands that start with 0 to n characters:
+
+Type character(s):
+
+    >l
+
+Press TAB to autocomplete to first command that matches:
+
+    >led
+
+Press SPACE and first character of child command ('o')
+
+    >led o
+
+Press TAB to autocomplete to first child command that matches:
+
+    >led on
+
+Press TAB again to cycle to next child command that also matches:
+
+    >led off
+
+Press ENTER to execute command:
+
+    >led off
+    >
+
+4.2 Command History (UP/DN arrow) {#ARDUINO_UNO_CLI_HISTORY}
+------------------------------------------------------------
+
+Type 'gpio info' command and ENTER:
+
+    >gpio info
+
+            HEX    7 6 5 4 3 2 1 O
+    DDRB  = 0x2c   I I O I O O I I
+    PORTB = 0x07   0 0 0 0 0 1 1 1
+    PINB  = 0x07   0 0 0 0 0 1 1 1
+
+    DDRC  = 0x00   I I I I I I I I
+    PORTC = 0x30   0 0 1 1 0 0 0 0
+    PINC  = 0x30   0 0 1 1 0 0 0 0
+
+    DDRD  = 0x02   I I I I I I O I
+    PORTD = 0xff   1 1 1 1 1 1 1 1
+    PIND  = 0xfd   1 1 1 1 1 1 0 1
+
+    D2 : DIR = I, IN = 1 (pull-up Enabled)
+    D3 : DIR = I, IN = 1 (pull-up Enabled)
+    D4 : DIR = I, IN = 1 (pull-up Enabled)
+    D5 : DIR = I, IN = 1 (pull-up Enabled)
+    D6 : DIR = I, IN = 1 (pull-up Enabled)
+    D7 : DIR = I, IN = 1 (pull-up Enabled)
+    D8 : DIR = I, IN = 1 (pull-up Enabled)
+    D9 : DIR = I, IN = 1 (pull-up Enabled)
+
+Type 'gpio o b5 1' command and ENTER ("b5" means Port B pin 5 (LED) pin on Arduino):
+
+    >gpio o b5 1
+
+Type 'gpio o b5 0' command and ENTER ("b5" means Port B pin 5 (LED) pin on Arduino):
+
+    >gpio o b5 0
+
+Press UP arrow to recall previous command:
+
+    >gpio o b5 1
+
+Press UP arrow again to recall command before that:
+
+    >gpio info
+
+Press ENTER to execute command or BACKSPACE to edit command. You can also press
+DOWN arrow to recall newer command in history list if you went too far back.
+
+4.3 Help {#ARDUINO_UNO_CLI_HELP}
+--------------------------------
+
+Type 'help' and press ENTER to list all the commands with parameters and 
+descriptions. Parameters indicated with angle brackets <> are required and 
+parameters with square brackets [] are optional.
+
+You can make the help list shorter by typing 'help' and a match string. For 
+example to list only commands starting with 'i2c' type 'help i2c'. Here is the 
+output:
+
+    >help i2c
+    i2c info                                   : Report status of SCL and SDA pins
+    i2c rst                                    : Perform I2C bus reset procedure
+    i2c scan                                   : Scan for all connected I2C slaves
+    i2c w           <adr> <d0> .. [d7]         : Write up to 8 bytes of data to an I2C slave
+    i2c r           <adr> <nr of bytes>        : Read up to 16 bytes of data from an I2C slave
+
+5. CLI commands {#ARDUINO_UNO_CLI_COMMANDS}
+===========================================
+
+5.1 LED {#ARDUINO_UNO_CLI_LED}
+------------------------------
+
+To switch the LED on:
+
+    >led on
+
+To switch the LED off:
+
+    >led off
+
+5.2 GPIO {#ARDUINO_UNO_CLI_GPIO}
+--------------------------------
+
+GPIO pins can be specified as @<port>@<pin>, for example 'b5' refers to Port B 
+pin 5, or a GPIO pin can also be specified by Arduino Digital pin number 
+(2 to 9), for example '2' refers to Digital pin 2 (which maps to Port D pin 2).
+
+To get GPIO status report of all pins:
+
+    >gpio info
+
+            HEX    7 6 5 4 3 2 1 O
+    DDRB  = 0x2c   I I O I O O I I
+    PORTB = 0x07   0 0 0 0 0 1 1 1
+    PINB  = 0x07   0 0 0 0 0 1 1 1
+
+    DDRC  = 0x00   I I I I I I I I
+    PORTC = 0x30   0 0 1 1 0 0 0 0
+    PINC  = 0x30   0 0 1 1 0 0 0 0
+
+    DDRD  = 0x02   I I I I I I O I
+    PORTD = 0xff   1 1 1 1 1 1 1 1
+    PIND  = 0xfd   1 1 1 1 1 1 0 1
+
+    D2 : DIR = I, IN = 1 (pull-up Enabled)
+    D3 : DIR = I, IN = 1 (pull-up Enabled)
+    D4 : DIR = I, IN = 1 (pull-up Enabled)
+    D5 : DIR = I, IN = 1 (pull-up Enabled)
+    D6 : DIR = I, IN = 1 (pull-up Enabled)
+    D7 : DIR = I, IN = 1 (pull-up Enabled)
+    D8 : DIR = I, IN = 1 (pull-up Enabled)
+    D9 : DIR = I, IN = 1 (pull-up Enabled)
+
+To configure Digital pin 2 as an output pin and output low:
+
+    >gpio co 2 0
+
+To configure Digital pin 3 as an output pin and output high:
+
+    >gpio co 3 1
+
+
+To configure Port D pin 2 as an input pin (with pullup disabled):
+
+    >gpio ci d2
+
+To configure Port D pin 2 as an input pin (with pullup enabled):
+
+    >gpio ci d2 pu
+
+To report input value of Port D pin 2:
+
+    >gpio i d2
+    1
+
+To enable LED on Port B, Pin 5:
+
+    >gpio o b5 1
+
+To disable LED on Port B, Pin 5:
+
+    >gpio o b5 0
+
+5.3 ADC {#ARDUINO_UNO_CLI_ADC}
+------------------------------
+
+This application uses 4 ADC channels (A0 to A3). *A4 and A5 are allocated for I2C 
+use (A4 = Port C pin 4 = SDA; A5 = Port C pin 5 = SCL).* The input voltage range 
+is +0 mV to +5000 mV.
+
+To report the 10-bit ADC value (0 to 1023) and scaled value (0 mV to 5000 mV) of
+channel 0:
+
+    >adc s 0
+    0400    1955.034300
+
+To report scaled values of all ADC channels (A0, A1, A2 and A3) 
+continuously:
+
+    >adc sc
+    00000   79.814270       79.755623       79.027374       77.443794
+    00001   5.444770        5.791789        5.659824        4.692082
+    00002   5.141740        5.532747        5.288368        4.237537
+    00003   5.259042        5.689150        5.420332        4.403715
+    00004   4.721408        5.293255        5.166178        4.056696
+
+@tip_s
+Press SPACE to stop.
+@tip_e
+
+The raw 10-bit ADC values (0 to 1023) is scaled and an offset added. The default
+scale and offset value for each channel converts the raw ADC value into 
+millivolt (mV).
+
+<em>Formula: ScaledValue = scale x ADC + offset</em>
+
+To get the ADC settings:
+
+    >adc info
+    Sampling rate = 1000 Hz
+    Number of samples = 1000
+    ADC0 : Scale = 4.887586, Offset = 0.000000
+    ADC1 : Scale = 4.887586, Offset = 0.000000
+    ADC2 : Scale = 4.887586, Offset = 0.000000
+    ADC3 : Scale = 4.887586, Offset = 0.000000
+
+To change the scale to +10.1 and offset to -4.5 of A0:
+
+    >adc cfg 0 10.1 -4.5
+
+All the channels are sampled at 1000 Hz (1 ms). The values are accumulated and
+by default the average is reported every 1000 samples, i.e. once every 1000 ms 
+(1 s). The number of samples can be changed to make the reporting rate quicker 
+or slower. For example, to make the report rate 500 ms (0.5 s):
+
+    >adc cfg_samples 500
+
+5.4 I2C {#ARDUINO_UNO_CLI_I2C}
+------------------------------
+
+An I2C slave can be connected to the breakout header and verified that it works
+before creating a device driver for it. *Pin A4 = Port C pin 4 = SDA; Pin 
+A5 = Port C pin 5 = SCL*
+
+As an example, an
+[Electrodragon BMP280 breakout board](http://www.electrodragon.com/product/bme280-pressure-huminity-temperature-sensor-breakout/)
+is connected to the I2C bus. *Click [HERE](https://www.bosch-sensortec.com/bst/products/all_products/bmp280)
+for the Bosch BMP280 pressure and temperature sensor datasheet.*
+
+![Electrodragon BMP280 breakout board connected to I2C](arduino_uno_board/arduino_uno_i2c_slave_bmp280.jpg)
+
+@warn_s
+You will need a +5V to +3V3 [I2C level converter](https://www.sparkfun.com/products/12009)
+between the Arduino Uno board and BMP280 breakout board, because the maximum 
+voltage of the Bosch BMP280 is +3.6V. Click [HERE](https://www.nxp.com/docs/en/application-note/AN10441.pdf)
+for an explanation of the level translation circuit.
+@warn_e
+
+Make sure that I2C bus is in idle state (SCL or SDA not pulled low):
+
+    >i2c info
+    SCL = 1
+    SDA = 1
+
+Scan for all read and write slave addresses on I2C bus:
+
+    >i2c scan
+    76 W
+    76 R
+
+@tip_s
+BMP280 is found at 7-bit slave address 0x76.
+@tip_e
+
+Write 0xD0 "id" register address:
+
+    >i2c w 0x76 0xd0
+
+Read register value:
+
+    >i2c r 0x76 1
+    58
+
+The chip identification register value for the BMP280 is 0x58. This confirms 
+that you are able to write and read from the I2C slave.
+
+5.5 SPI {#ARDUINO_UNO_CLI_SPI}
+------------------------------
+
+An SPI slave device can also be connected to the breakout header. For this 
+example, let's experiment with an external AT45D DataFlash.
+
+Configure SPI to communicate with a slave at 1 MHz, Mode 0, Data Order MSB 
+first and the Chip Select pin is on Port B, Pin 1:
+
+    >spi cfg b1 1000000 0 msb
+    Done. Actual baud rate = 1000000 Hz
+
+Read AT45D Status register. Take Chip Select low to start transaction:
+
+    >spi cs lo
+
+Write 0xd7 (Status Register Read) to SPI slave:
+
+    >spi w 0xd7
+
+Read 1 byte (Status Register value) from SPI slave:
+
+    >spi r 1
+    0x9c
+
+Take Chip Select high to end transaction:
+
+    >spi cs hi
+
+5.6 RTC {#ARDUINO_UNO_CLI_RTC}
+------------------------------
+
+A software RTC has been implemented using the system clock. This means that the
+board will not remember its time and date when the board is reset or power 
+cycled.
+
+Set the date and time:
+
+    >rtc w 18-06-18 22:48:00
+
+Get the date and time:
+
+    >rtc r
+    18-06-18 22:48:15

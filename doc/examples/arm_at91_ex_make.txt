@@ -1,0 +1,86 @@
+
+-------- begin [build : debug] --------
+
+arm-none-eabi-gcc (GCC) 4.5.0
+Copyright (C) 2010 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+Assembling (ARM): ../../../../../../../piconomix_fwlib/trunk/arch/arm/arm_crt0.S
+arm-none-eabi-gcc -c -marm -mcpu=arm7tdmi -mthumb-interwork -I. -x assembler-with-cpp -Dat91sam7s256 -D__ASSEMBLY__ -DDEBUG -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -Wa,-adhlns=DEBUG/arm_crt0.lst,--gdwarf-2,--listing-cont-lines=100,-mfpu=fpa ../../../../../../../piconomix_fwlib/trunk/arch/arm/arm_crt0.S -o DEBUG/arm_crt0.o
+
+Assembling (ARM): ../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91/arm_irq.S
+arm-none-eabi-gcc -c -marm -mcpu=arm7tdmi -mthumb-interwork -I. -x assembler-with-cpp -Dat91sam7s256 -D__ASSEMBLY__ -DDEBUG -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -Wa,-adhlns=DEBUG/arm_irq.lst,--gdwarf-2,--listing-cont-lines=100,-mfpu=fpa ../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91/arm_irq.S -o DEBUG/arm_irq.o
+
+Compiling (ARM): ../../../../../../../piconomix_fwlib/trunk/arch/arm/arm.c
+arm-none-eabi-gcc -c -marm -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/arm.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/arm.o.d ../../../../../../../piconomix_fwlib/trunk/arch/arm/arm.c -o DEBUG/arm.o 
+
+Compiling (THUMB): main.c
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/main.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/main.o.d main.c -o DEBUG/main.o 
+
+Compiling (THUMB): px_board.c
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/board.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/board.o.d px_board.c -o DEBUG/board.o 
+
+Compiling (THUMB): ../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91/px_systmr.c
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/systmr.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/systmr.o.d ../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91/px_systmr.c -o DEBUG/systmr.o 
+
+Compiling (THUMB): ../../../../../../../piconomix_fwlib/trunk/general/px_tmr.c
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/tmr.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/tmr.o.d ../../../../../../../piconomix_fwlib/trunk/general/px_tmr.c -o DEBUG/tmr.o 
+
+Compiling (THUMB): ../../../../../../../atmel_at91lib/peripherals/aic/aic.c
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/aic.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/aic.o.d ../../../../../../../atmel_at91lib/peripherals/aic/aic.c -o DEBUG/aic.o 
+
+Compiling (THUMB): ../../../../../../../atmel_at91lib/peripherals/pit/pit.c
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/pit.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/pit.o.d ../../../../../../../atmel_at91lib/peripherals/pit/pit.c -o DEBUG/pit.o 
+
+Compiling (THUMB): ../../../../../../../atmel_at91lib/boards/at91sam7s-ek/board_lowlevel.c
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/board_lowlevel.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/board_lowlevel.o.d ../../../../../../../atmel_at91lib/boards/at91sam7s-ek/board_lowlevel.c -o DEBUG/board_lowlevel.o 
+
+Compiling (THUMB): ../../../../../../../atmel_at91lib/boards/at91sam7s-ek/board_memories.c
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/board_memories.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/board_memories.o.d ../../../../../../../atmel_at91lib/boards/at91sam7s-ek/board_memories.c -o DEBUG/board_memories.o 
+
+Linking: DEBUG/PROJECT.elf
+arm-none-eabi-gcc -mthumb -mcpu=arm7tdmi -mthumb-interwork -I. -Dat91sam7s256 -Dtrace_LEVEL=3 -DNOTRACE -DDEBUG -mlong-calls -ffunction-sections -Wall  -fgnu89-inline -Wa,-adhlns=DEBUG/DEBUG/PROJECT.lst -I../../../../../../../atmel_at91lib -I../../../../../../../atmel_at91lib/peripherals -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek -I../../../../../../../atmel_at91lib/boards/at91sam7s-ek/at91sam7s256 -I../../../../../../../piconomix_fwlib/trunk -I../../../../../../../piconomix_fwlib/trunk/general -I../../../../../../../piconomix_fwlib/trunk/arch/arm -I../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91 -std=gnu99 -g -O0 -MMD -MP -MF DEBUG/PROJECT.elf.d DEBUG/arm_crt0.o DEBUG/arm_irq.o DEBUG/arm.o DEBUG/main.o DEBUG/board.o DEBUG/systmr.o DEBUG/tmr.o DEBUG/aic.o DEBUG/pit.o DEBUG/board_lowlevel.o DEBUG/board_memories.o --output DEBUG/PROJECT.elf -nostartfiles  -nodefaultlibs -Wl,-Map=DEBUG/PROJECT.map,--cref,--gc-sections  -lnosys -lm -lgcc -T ../../../../../../../piconomix_fwlib/trunk/arch/arm/AT91/boards/linker_scripts/at91sam7s256-rom.lds
+
+Creating load file for Flash: DEBUG/PROJECT.hex
+arm-none-eabi-objcopy -O ihex DEBUG/PROJECT.elf DEBUG/PROJECT.hex
+
+Creating load file for Flash: DEBUG/PROJECT.bin
+arm-none-eabi-objcopy -O binary DEBUG/PROJECT.elf DEBUG/PROJECT.bin
+
+Creating Extended Listing: DEBUG/PROJECT.lss
+arm-none-eabi-objdump -h -S DEBUG/PROJECT.elf > DEBUG/PROJECT.lss
+
+Creating Symbol Table: DEBUG/PROJECT.sym
+arm-none-eabi-nm -n DEBUG/PROJECT.elf > DEBUG/PROJECT.sym
+
+Size after:
+DEBUG/PROJECT.elf  :
+section             size       addr
+.vectors            0x3c        0x0
+.vectors.sram       0x3c   0x200000
+.text.sram          0x54   0x20003c
+.init              0x140   0x100090
+.text              0x600   0x1001d0
+.fini                0x4   0x1007d0
+.bss                 0x4   0x200090
+.stack             0x460   0x200094
+.comment            0x11        0x0
+.debug_aranges     0x2a8        0x0
+.debug_pubnames    0x3b0        0x0
+.debug_info       0x16f5        0x0
+.debug_abbrev      0x70f        0x0
+.debug_line        0xc93        0x0
+.debug_frame       0x62c        0x0
+.debug_str         0x977        0x0
+.debug_loc         0x90c        0x0
+.debug_pubtypes    0x2db        0x0
+.debug_ranges      0x1f0        0x0
+.ARM.attributes     0x2c        0x0
+Total             0x5b1a
+
+
+
+
+-------- end [build : debug] --------

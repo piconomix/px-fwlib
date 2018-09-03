@@ -1,0 +1,524 @@
+6.1 Microchip AVR quick start guide {#AVR_QUICK_START_GUIDE}
+============================================================
+
+[TOC]
+
+1. Introduction {#AVR_QS_INTRO}
+===============================
+
+[atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
+[make]:              http://gnuwin32.sourceforge.net/packages/make.htm
+[core_utils]:        http://gnuwin32.sourceforge.net/packages/coreutils.htm
+[unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
+[msys]:              http://www.mingw.org/wiki/MSYS
+[srecord]:           http://srecord.sourceforge.net
+
+This is a quick start guide for the person who wants to switch to the brilliant 
+8-bit AVR architecture and learns by example. C programming experience is
+a prerequisite.
+
+The following free software tools are needed:
+- [Atmel Studio 7] [atmel_studio] : 
+  an Integrated Development Environment (IDE) for developing and debugging Atmel
+  ARM Cortex and AVR microcontroller applications on the Microsoft
+  Windows operating system. It includes the GNU GCC build toolchain for C and 
+  C++.
+- [UnixShellUtils] [unix_shell_utils] :
+  a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
+  curated from [MSYS] [msys] and other utilities ([srecord]) used to build 
+  projects using advanced Makefiles.
+
+*Atmel Studio 7 does includes GNU utilities like [make], rm and cp 
+(from the [CoreUtils] [core_utils] package) but lacks* **sh** *that is required 
+for advanced Makefiles.*
+
+@tip_s
+For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
+@tip_e
+
+1.1 Reference documents {#AVR_QS_REF}
+-------------------------------------
+
+- [Microchip ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328P)
+- [AVR Instruction Set Manual](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
+- [AVR Libc Reference Manual](http://www.nongnu.org/avr-libc/user-manual/index.html)
+
+2. Tutorials {#AVR_QS_TUTORIALS}
+================================
+
+These tutorials demonstrate how to use a peripheral by offering a distilled 
+example. The tutorials build on each other, so it is recommended to work through
+them in the order presented.
+
+|Tutorial                  |Description                                                                  |
+|--------------------------|-----------------------------------------------------------------------------|
+|@ref AVR_TUT01_GPIO       |How to configure and use general purpose I/O pins                            |
+|@ref AVR_TUT02_TIMER      |How to configure and use a TMR peripheral as a blocking delay                |
+|@ref AVR_TUT03_INTERRUPT  |How to implement a simple interrupt handler                                  |
+|@ref AVR_TUT04_UART       |How to configure and use a UART in a polled fashion                          |
+|@ref AVR_TUT05_PRINTF     |How to direct the AVR Libc stdout stream to send characters using a UART     |
+|@ref AVR_TUT06_PWM        |How to configure and use a TMR peripheral to generate a PWM output           |
+|@ref AVR_TUT07_ADC        |How to configure and use one channel of the ADC converter in a polled fashion|
+|@ref AVR_TUT08_SLEEP_MODE |How to use one of the AVR's low power sleep modes                            |
+|@ref AVR_TUT09_EEPROM     |How to write to and read from EEPROM                                         |
+
+@warn_s
+The tutorials may need to be modified for your specific target board.
+@warn_e
+
+3. Examples {#AVR_QS_EXAMPLES}
+==============================
+
+These examples show how the Piconomix FW library can be used to achieve two
+embedded equivalents of the "hello world" program on a PC.
+
+|Example                  |Description                                                       |
+|-------------------------|------------------------------------------------------------------|
+|@ref AVR_EX_FLASHING_LED |This example toggles the LED once a second                        |
+|@ref AVR_EX_PRINTF       |Redirect stdout to UART and print strings stored in FLASH and SRAM|
+
+@warn_s
+The examples may need to be modified for your specific target board.
+@warn_e
+
+4. Brief introduction to AVR instruction set {#AVR_QS_INSTRUCTION_SET}
+======================================================================
+
+The AVR core has an advanced reduced instruction set (RISC) architecture with 
+most of the instructions being executed in a single clock cycle. The AVR uses a 
+[Harvard architecture](http://en.wikipedia.org/wiki/Harvard_architecture)
+with separated access to program and data. A load/store assembler instruction 
+set is implemented with 32 general purpose registers (R0 to R31). The 
+instructions are divided into the following categories:
+
+@par Arithmetic and Logic Instructions
+
+    add Rd,Rr // Add without Carry : Rd = Rd + Rr
+
+@par Branch Instructions
+
+    rjmp k // Relative Jump : PC = PC + k + 1
+
+@par Data Transfer Instructions
+
+    mov Rd,Rr // Copy register : Rd = Rr
+
+@par Bit and Bit-test Instructions
+
+    sbi P,b // Set bit in I/O register : I/O(P,b) = 1
+
+@tip_s
+The quickest way to learn the assembler instruction set is to refer to 
+the Help included with Atmel Studio:\n
+Help > View Help **Ctrl+F1** > Help Viewer Home > AVR Assembler > Instructions
+@tip_e
+
+![Atmel Studio Help](atmel_studio/as_help_menu.png)
+
+You will have to install the "AVR Assembler - User Guide" by clicking on the 
+"Manage Content" (Ctrl + Shift + M) icon button:
+
+![Atmel Studio - Install help content](atmel_studio/as_help_avr_assembler.png)
+
+The **Status Register (SREG)** contains flags that convey information about the 
+most recently executed arithmetic instruction. Bit 7 (I) is different, as it 
+is the flag that enables/disables interrupts globally:
+
+![AVR SREG Register](atmel_studio/avr_sreg.png)
+- Bit 7 @b I: **Global Interrupt Enable**
+- Bit 6 @b T: Bit Copy Storage
+- Bit 5 @b H: Half Carry Flag
+- Bit 4 @b S: Sign Bit
+- Bit 3 @b V: Two's Complement Overflow Flag
+- Bit 2 @b N: Negative Flag
+- Bit 1 @b Z: Zero Flag
+- Bit 0 @b C: Carry Flag
+
+5. Install software {#AVR_QS_INSTALL}
+=====================================
+
+5.1 Install Atmel Studio 7 {#AVR_QS_INSTALL_AS}
+-----------------------------------------------
+
+Download and install [Atmel Studio 7] [atmel_studio].
+
+5.2 Install UnixShellUtils {#AVR_QS_INSTALL_UNIX_SHELL_UTILS}
+-------------------------------------------------------------
+
+Download [UnixShellUtils] [unix_shell_utils] and extract downloaded package 
+to root of drive, e.g.
+
+    C:\UnixShellUtils
+
+5.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#AVR_QS_CUSTOM_BUILD_TOOLS}
+-----------------------------------------------------------------------------------------------
+
+Start Atmel Studio. Configure options:
+
+Tools > Options... > Builder > GNU Make
+
+![Atmel Studio - Options](atmel_studio/as_options_menu.png)
+
+Set the path to the custom shell utils and make:
+
+![Atmel Studio - Custom ShellUtils](atmel_studio/as_builder_custom.png)
+
+@warn_s
+If you want to correctly build other projects generated with the Atmel Studio 
+Framework, you have to return this setting back from Custom to **Default**. Atmel
+Studio will remember the custom settings, so it is quick to switch between 
+Custom and Default.
+@warn_e
+
+6. Open and build an existing project in Atmel Studio {#AVR_QS_BUILD_PROJECT}
+=============================================================================
+
+All of the tutorials and examples are provided with pre-configured Atmel 
+Studio projects. External Makefiles are referenced, instead of using Atmel
+Studio's build system, to make the projects cross-platform.
+
+Open and build [Tutorial 1 GPIO](@ref AVR_TUT01_GPIO). It is located here:
+
+    piconomix-fwlib/arch/avr/tutorials/01_gpio/gpio.atsln
+
+File > Open > Project/Solution... **Ctrl+Shift+O**
+
+![Atmel Studio Open Project menu](atmel_studio/as_open_project_menu.png)
+
+Navigate to the project, select and open:
+
+![Atmel Studio Open Project selection](atmel_studio/as_open_project.png)
+
+Build the project:
+
+Build > build Solution **F7**
+
+![Build solution in Atmel Studio](atmel_studio/as_build_project.png)
+
+@tip_s
+If this step was not succesfull, it probably means that the custom build tools
+was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
+@tip_e
+
+7. Simulate the project {#AVR_QS_SIM}
+=====================================
+
+7.1 Open the project properties
+-------------------------------
+
+![Project properties](atmel_studio/as_project_properties.png)
+
+Verify that Simulator for debugger / programmer is selected:
+
+![Select simulator for debugger / programmer](atmel_studio/as_sim_select.png)
+
+7.2 Start simulation
+--------------------
+
+Debug > Start Debugging and Break **Alt+F5**
+
+![Atmel Studio - Debug](atmel_studio/as_debug_menu.png)
+
+
+7.3 Enable I/O view window
+--------------------------
+
+Debug > Windows > I/O
+
+![Enable I/O view window](atmel_studio/as_enable_io_view.png)
+
+7.4 Step over one source line and observe result
+------------------------------------------------
+
+Debug > Step Over **F10**
+
+![I/O view while simulating project](atmel_studio/as_simulator.png)
+
+@tip_s
+You are now able to single step, set break points, run the code and inspect the
+peripheral status using the I/O view.
+@tip_e
+
+8. How to create a new project {#AVR_STUDIO_NEW_PROJECT}
+========================================================
+
+Atmel Studio insists on creating a whole directory structure for a new project
+and refuses to create **just** the project files (*.atsln and *.cproj). Here 
+are the convoluted steps to create a new Atmel Studio project that uses the 
+Piconomix FW Library.
+
+8.1 Create new project / solution
+---------------------------------
+
+File > New > Project... **Ctrl+Shift+N**
+
+![Atmel Studio New Project](atmel_studio/as_new_project.png)
+
+1. Select GCC Executable Project
+2. Type name for project <em>(in this example 'flashing_led')</em>. 
+3. Select root directory of project (where Makefile is located)
+4. Make sure "Create directory for solution" is not selected (unticked)
+5. Press OK
+
+@warn_s
+**NB!** The project name **must** match the output filename of the external
+Makefile <em>(in this example 'flashing_led.elf')</em>
+@warn_e
+
+8.2 Specify the device
+----------------------
+
+![Device Selection](atmel_studio/as_device_selection.png)
+
+1. Change Device Family so that it is easier to locate device <em>(in this example 'ATmega')</em>
+2. Specify device <em>(in this example 'ATmega328P')</em>
+3. Press OK
+
+@tip_s
+A whole new directory structure has now been created in the specified 
+directory (in this example 'flashing_led').
+@tip_e
+
+8.3 Save & Close the project
+----------------------------
+
+File > Save All **Ctrl+Shift+S**
+
+File > Close Solution
+
+8.4 Move project files to root directory
+----------------------------------------
+
+Open Windows Explorer or any other file manipulation tool and navigate to the 
+created directory structure:
+
+![Move new project files to root of project](atmel_studio/as_move_project_files.png)
+
+1. Move *.atsln file to root of project <em>(in this example 'flashing_led.atsln')</em>
+2. Move *.cproj file to root of project <em>(in this example 'flashing_led.cproj')</em>
+3. Delete directory structure and left over files created by Atmel Studio
+
+@tip_s
+Situation check. Your root directory should now look something like this:
+@tip_e
+
+![Project directory and files](atmel_studio/as_project_files.png)
+
+8.5 Open the moved project
+--------------------------
+
+File > Open > Project/Solution... **Ctrl+Shift+O**
+
+![Project with missing file](atmel_studio/as_missing_file.png)
+
+Remove missing file(s) that was automatically created and added by Atmel 
+Studio:
+
+![Remove missing file](atmel_studio/as_rm_missing_file.png)
+
+8.6 Add folder structure to project
+-----------------------------------
+
+@warn_s
+Atmel Studio refuses to add a folder to the project if the subdirectory already
+exists in the file system. It is thus easier to create the folders first and 
+copy the files into the subdirectories created by Atmel Studio afterwards.
+@warn_e
+
+Right-click on the project and add a new folder:
+
+![Add new folder](atmel_studio/as_new_folder.png)
+
+Name the folder 'cfg'. Atmel Studio will also create the corresponding
+subdirectory:
+
+!['cfg' folder added](atmel_studio/as_new_folder_added.png)
+
+
+8.7 Add existing files to project
+---------------------------------
+
+Copy existing source files into the project:
+
+![Copy project source files](atmel_studio/as_copy_project_files.png)
+
+Add existing files in project:
+
+![Add existing files context menu](atmel_studio/as_add_existing_files_menu.png)
+
+Select files and add:
+
+![Add existing files](atmel_studio/as_add_existing_files.png)
+
+Repeat this step for the file in the 'cfg' folder by right-clicking on the 'cfg'
+folder and adding.
+
+@tip_s
+Situation check. Your project should now look like this:
+@tip_e
+
+![Project with files added](atmel_studio/as_project_with_files.png)
+
+8.8 Use external Makefile
+-------------------------
+
+Project > Properties **Alt+F7** > Build
+
+![Select external Makefile in Atmel Studio](atmel_studio/as_ext_makefile.png)
+
+1. Select Build tab
+2. Select "Use External Makefile" (ticked)
+3. Browse and select Makefile
+4. Remove path prefixed to Makefile <em>(in this example 'P:\\projects\\flashing_led\\')</em>
+
+@warn_s
+**Don't forget Step 4!** It is important to keep the Makefile relative to 
+the project, so that you don't have to reselect the Makefile when the project is 
+moved.
+@warn_e
+
+8.9 Modify path(s) in Makefile
+------------------------------
+
+If the project uses the Piconomix FW Library (which it does), you have to modify
+the path so that the required files can be found.
+
+Example location of project Makefile:
+
+    P:\projects\flashing_led\Makefile
+
+Example location of library:
+
+    P:\libraries\piconomix-fwlib\trunk
+
+Open Makefile and modify the PICOLIB variable to set the relative path to 
+the library:
+
+![Modify path(s) in Makefile](atmel_studio/as_ext_makefile_modify.png)
+
+9. Clean Solution {#AVR_QS_CLEAN}
+=================================
+
+Delete any previously build files. *This is the same as executing a 'make clean'
+on the command line.*
+
+Build > Clean Solution
+
+![Clean solution in Atmel Studio](atmel_studio/as_clean_project.png)
+
+@tip_s
+If this step was not successful, it probably means that the custom build tools
+was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
+@tip_e
+
+10. Build Solution {#AVR_QS_BUILD}
+==================================
+
+Build the project. *This is the same as executing a 'make' on the command line.*
+
+Build > build Solution **F7**
+
+![](atmel_studio/as_build_project.png)
+
+11. How to build a project from the command line {#AVR_QS_BUILD_CMD_LINE}
+=========================================================================
+
+Open a command prompt in the root of the project where the Makefile is located:
+
+![](atmel_studio/as_cmd_line_open.png)
+
+Set the path to the AVR GCC toolchain and the build tools (UnixShellUtils):
+
+    path=c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\UnixShellUtils\bin
+
+You can verify that the path is correct by executing 'avr-gcc --version' and
+'make --version':
+
+![](atmel_studio/as_build_cmd_line.png)
+
+You can now delete any previously built files by executing 'make clean' on the 
+command line (see picture above). This is the output:
+
+    @verbatim
+    P:\libraries\piconomix-fwlib\trunk\arch\avr\examples\flashing_led>make clean
+
+    -------- begin --------
+
+    Cleaning project:
+    rm -f flashing_led.hex
+    rm -f flashing_led.bin
+    rm -f flashing_led.eep
+    rm -f flashing_led.elf
+    rm -rf OBJ
+    --------  end  --------
+    @endverbatim
+
+The project can be built again by executing 'make' on the command line. This is
+the output:
+
+    @verbatim
+    P:\libraries\piconomix-fwlib\trunk\arch\avr\examples\flashing_led>make
+
+    -------- begin --------
+    avr-gcc.exe (AVR_8_bit_GNU_Toolchain_3.5.0_1662) 4.9.2
+    Copyright (C) 2014 Free Software Foundation, Inc.
+    This is free software; see the source for copying conditions.  There is NO
+    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+    Compiling C: main.c
+    avr-gcc -c -mmcu=atmega328p -gdwarf-2 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffu
+
+    Compiling C: ../../../../arch/avr/px_sysclk.c
+    avr-gcc -c -mmcu=atmega328p -gdwarf-2 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffu
+
+    Compiling C: ../../../../utils/px_systmr.c
+    avr-gcc -c -mmcu=atmega328p -gdwarf-2 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffu
+
+    Compiling C: ../../../../boards/avr/piconomix_scorpion_board/px_board.c
+    avr-gcc -c -mmcu=atmega328p -gdwarf-2 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffu
+    ../../../../boards/avr/piconomix_scorpion_board/px_board.c:54:2: warning: #warning "This BSP is for Piconomix ATmega328P Scorpion Board" [-
+     #warning "This BSP is for Piconomix ATmega328P Scorpion Board"
+      ^
+
+    Linking: flashing_led.elf
+    avr-gcc -mmcu=atmega328p -Wl,-gc-sections    -lm -Wl,-Map=OBJ/flashing_led.map  OBJ/main.o OBJ/sysclk.o OBJ/systmr.o OBJ/board.o -o flashing_led.elf
+
+    Creating HEX load file for Flash: flashing_led.hex
+    avr-objcopy -O ihex -R .eeprom -R .fuse -R .lock flashing_led.elf flashing_led.hex
+
+    Creating BIN load file for Flash: flashing_led.bin
+    avr-objcopy -O binary -R .eeprom -R .fuse -R .lock flashing_led.elf flashing_led.bin
+
+    Creating load file for EEPROM: flashing_led.eep
+    avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" \
+        --change-section-lma .eeprom=0 --no-change-warnings -O ihex flashing_led.elf flashing_led.eep || exit 0
+
+    Creating Extended Listing: flashing_led.lss
+    avr-objdump -h -S -z flashing_led.elf > OBJ/flashing_led.lss
+
+    Creating Symbol Table: flashing_led.sym
+    avr-nm -n flashing_led.elf > OBJ/flashing_led.sym
+
+    Size:
+    avr-size --mcu=atmega328p --format=avr flashing_led.elf
+    AVR Memory Usage
+    ----------------
+    Device: atmega328p
+
+    Program:     508 bytes (1.6% Full)
+    (.text + .data + .bootloader)
+
+    Data:          4 bytes (0.2% Full)
+    (.data + .bss + .noinit)
+
+
+    --------  end  --------
+    @endverbatim
+
+@tip_s
+For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
+@tip_e
+
+Congratulations! You can now build a project in the IDE **and** on the command 
+line :)

@@ -1,0 +1,147 @@
+5.2 Using Doxygen source documentation system {#DOXYGEN}
+========================================================
+
+[TOC]
+
+1. Introduction {#DOX_INTRO}
+============================
+
+[Doxygen](http://www.doxygen.org) is a tool that generates 
+documentation from source code.
+Click [here](http://www.stack.nl/~dimitri/doxygen/manual/index.html) 
+for the online Doxygen manual. The 
+[offline PDF manual](http://www.stack.nl/~dimitri/doxygen/download.html) is even
+better.
+
+The comments embedded in the source code must be formatted in a special way, 
+which may decrease readability for users not familiar with the special syntax.
+[Markdown](http://www.stack.nl/~dimitri/doxygen/manual/markdown.html)
+formatting is human readable and easy to grasp and has been included since 
+Doxygen 1.8.0. Files with regular markdown syntax (as used by GitHub) are 
+indicated with a \*.md extension. Files using specialised Doxygen syntax are 
+indicated with a \*.dox extension.
+
+The **JavaDoc** comment style was selected for this library. Although harder to 
+type, an `@` (at) character was selected to mark special commands instead of the
+`\` (backslash) character to make these commands more prominent.
+
+The Doxygen configuration file ("Doxyfile") can be found in the doc 
+subdirectory. An excellent cross-platform Doxygen GUI frontend called 
+**doxywizard** is included with the Doxygen package to manage settings and 
+generate output. Each setting is meticulously documented in the wizard and 
+configuration file.
+
+![Doxywizard screenshot](doxywizard.png)
+
+@tip_s
+Settings that differ from the default are highlighted in red.
+@tip_e
+
+2. Cheat sheet {#DOX_CHEATSHEET}
+================================
+
+This section provides a quick cheat sheet of the Doxygen documentation 
+style selected for this library.
+
+2.1 Brief description comment block {#DOX_BRIEF}
+------------------------------------------------
+
+A brief comment block is marked with three slash characters (`///`).
+Example:
+
+    @code{.c}
+    /// This function does something
+    extern void some_function(void);
+    @endcode
+
+2.2 Brief description comment block after a member {#DOX_BRIEF_MEMBER}
+----------------------------------------------------------------------
+
+A brief comment after a member is indicated with three slash characters and a 
+smaller than sign (`///<`). Example:
+
+    @code{.c}
+    typedef struct
+    {
+        uint8_t count;  ///< This counts something
+    } some_struct_t;
+    @endcode
+
+2.3 Detailed description comment block (using JavaDoc style) {#DOX_DETAIL}
+--------------------------------------------------------------------------
+
+The start of a detailed description comment block is indicated with a slash and 
+double star sequence (`/**`). To make the block stand out as a unit, the star 
+is continued at the start of each line. 
+The [JAVADOC_AUTOBRIEF](https://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_javadoc_autobrief)
+setting is set to YES in the Doxygen configuration file ("doc/Doxyfile"). With 
+this setting a detailed description block always starts with a brief 
+description. Example:
+
+@include doc/examples/doxy_ex_1.c
+
+2.4 Special command prefix {#DOX_PREFIX}
+----------------------------------------
+
+All Doxygen [special commands](http://www.stack.nl/~dimitri/doxygen/manual/commands.html)
+are prefixed with an `@` (at) sign, for example @b @@ingroup and @b @@defgroup:
+
+    @code{.c}
+    /** 
+     *  @ingroup COMMON
+     *  @defgroup PX_TEMPLATE px_template.h : Template for a C module
+     *  
+     *  Brief description (which ends at the dot).
+     *  
+     *  Detailed description.
+     */
+    @endcode
+
+2.5 Frequently used special commands {#DOX_CMDS}
+------------------------------------------------
+
+Here is a list of [special commands](http://www.stack.nl/~dimitri/doxygen/manual/commands.html) 
+that are used frequently in the library:
+
+| Command     | Description                                                    |
+|-------------|----------------------------------------------------------------|
+|@@ref        | Add a hyperlinked reference to a named section, page or anchor |
+|@@param      | Document a function parameter                                  |
+|@@retval     | Document the function return value                             |
+|@@ingroup    | Make an entity a member of a specific group                    |
+|@@defgroup   | Define a group                                                 |
+|@@addtogroup | Add additional members to a group                              |
+
+2.6 Function documentation {#DOX_FUNC}
+--------------------------------------
+
+Here is an example that shows how a function, it's parameters and return value
+is documented:
+
+@include doc/examples/doxy_ex_2.c
+
+2.7 Module Grouping {#DOX_MODULE_GROUPING}
+------------------------------------------
+
+C modules are documented in the H file using explicit
+[grouping](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html) 
+commands. The tree hierarchy is maintained in "doc/module_tree.dox". Here is an 
+example of the grouping at the start of the H file:
+
+@include doc/examples/doxy_ex_3.c
+
+@tip_s
+Observe that a <code>/// \@{</code> start marker and a <code>/// \@}</code> 
+end marker is used to indicate that all of the definitions, typedefs, variables 
+and functions in between is part of that group.
+@tip_e
+
+2.8 Page Grouping {#DOX_PAGE_GROUPING}
+--------------------------------------
+
+Documentation pages are grouped into sections and sub sections by refering to a 
+child page anywhere on the parent page using the @b @@subpage command.
+
+For example "doc/best_practice.dox":
+
+@include best_practice.dox

@@ -1,0 +1,430 @@
+CLI Explorer (Command Line Interpreter) {#SCORPION_BOARD_APP_CLI}
+=================================================================
+  
+[TOC]
+
+Introduction {#SCORPION_BOARD_APP_CLI_INTRO}
+============================================
+
+[tera_term]:         http://en.sourceforge.jp/projects/ttssh2
+
+This is a full featured CLI (Command Line Interpreter) application running on 
+the Piconomix Scorpion Board that creates a "Un*x Shell"-like environment so that 
+you can experiment with GPIO, ADC, I2C and SPI using only Terminal software 
+(for example [Tera Term] [tera_term])... it is really cool!
+
+![CLI Exlorer executing on a Scorpion Board](piconomix_scorpion_board/tera_term_cli_preview.png)
+
+With this application you will be able to:
+- Reset the microcontroller (and jump back to the bootloader)
+- Make the buzzer beep
+- Switch the LED on and off
+- Manipulate GPIO pins
+- Measure ADC values
+- Discover and communicate with I2C slaves
+- Communicate with SPI devices
+- Communicate with UART devices
+- Read and write to the AT45D DataFlash
+- Set and read a software RTC (Real Time Clock)
+
+2. CLI features {#SCORPION_BOARD_CLI_FEATURES}
+==============================================
+
+2.1 Autocomplete (TAB) {#SCORPION_BOARD_CLI_AUTOCOMPLETE}
+---------------------------------------------------------
+
+Type the start of a command:
+
+    >h
+
+Press TAB to autocomplete:
+
+    >help
+
+To cycle through commands that start with 0 to n characters:
+
+Type character(s):
+
+    >l
+
+Press TAB to autocomplete to first command that matches:
+
+    >led
+
+Press SPACE and first character of child command ('o')
+
+    >led o
+
+Press TAB to autocomplete to first child command that matches:
+
+    >led on
+
+Press TAB again to cycle to next child command that also matches:
+
+    >led off
+
+Press ENTER to execute command:
+
+    >led off
+    >
+
+2.2 Command History (UP/DN arrow) {#SCORPION_BOARD_CLI_HISTORY}
+---------------------------------------------------------------
+
+Type 'gpio info' command and ENTER:
+
+    >gpio info
+
+            HEX    7 6 5 4 3 2 1 O
+    DDRB  = 0x2c   I I O I O O I I
+    PORTB = 0x07   0 0 0 0 0 1 1 1
+    PINB  = 0x07   0 0 0 0 0 1 1 1
+
+    DDRC  = 0x00   I I I I I I I I
+    PORTC = 0x30   0 0 1 1 0 0 0 0
+    PINC  = 0x30   0 0 1 1 0 0 0 0
+
+    DDRD  = 0x02   I I I I I I O I
+    PORTD = 0xff   1 1 1 1 1 1 1 1
+    PIND  = 0xfd   1 1 1 1 1 1 0 1
+
+    D2 : DIR = I, IN = 1 (pull-up Enabled)
+    D3 : DIR = I, IN = 1 (pull-up Enabled)
+    D4 : DIR = I, IN = 1 (pull-up Enabled)
+    D5 : DIR = I, IN = 1 (pull-up Enabled)
+    D6 : DIR = I, IN = 1 (pull-up Enabled)
+    D7 : DIR = I, IN = 1 (pull-up Enabled)
+    D8 : DIR = I, IN = 1 (pull-up Enabled)
+    D9 : DIR = I, IN = 1 (pull-up Enabled)
+
+Type 'gpio o b5 1' command and ENTER ("b5" means Port B pin 5 (LED) pin on Arduino):
+
+    >gpio o b5 1
+
+Type 'gpio o b5 0' command and ENTER ("b5" means Port B pin 5 (LED) pin on Arduino):
+
+    >gpio o b5 0
+
+Press UP arrow to recall previous command:
+
+    >gpio o b5 1
+
+Press UP arrow again to recall command before that:
+
+    >gpio info
+
+Press ENTER to execute command or BACKSPACE to edit command. You can also press
+DOWN arrow to recall newer command in history list if you went too far back.
+
+2.3 Help {#SCORPION_BOARD_CLI_HELP}
+-----------------------------------
+
+Type 'help' and press ENTER to list all the commands with parameters and 
+descriptions. Parameters indicated with angle brackets <> are required and 
+parameters with square brackets [] are optional.
+
+You can make the help list shorter by typing 'help' and a match string. For 
+example to list only commands starting with 'i2c' type 'help i2c'. Here is the 
+output:
+
+    >help i2c
+    i2c info                                   : Report status of SCL and SDA pins
+    i2c rst                                    : Perform I2C bus reset procedure
+    i2c scan                                   : Scan for all connected I2C slaves
+    i2c w           <adr> <d0> .. [d7]         : Write up to 8 bytes of data to an I2C slave
+    i2c r           <adr> <nr of bytes>        : Read up to 16 bytes of data from an I2C slave
+
+3. CLI commands {#SCORPION_BOARD_CLI_COMMANDS}
+==============================================
+
+3.1 Buzzer {#SCORPION_BOARD_CLI_BUZZER}
+---------------------------------------
+
+To make the buzzer beep for 1 second (1000 milliseconds):
+
+    >buzzer 1000
+
+To make the buzzer beep for 250 ms at 2 kHz:
+
+    >buzzer 250 2000
+
+3.2 LED {#SCORPION_BOARD_CLI_LED}
+---------------------------------
+
+To switch the LED on:
+
+    >led on
+
+To switch the LED off:
+
+    >led off
+
+3.3 GPIO {#SCORPION_BOARD_CLI_GPIO}
+-----------------------------------
+
+GPIO pins can be specified as @<port>@<pin>, for example 'b5' refers to Port B 
+pin 5, or by breakout header number (0 to 4), for example '4' refers to GPIO 4.
+
+To get GPIO status report of all pins:
+
+    >gpio info
+
+            HEX    7 6 5 4 3 2 1 O
+    DDRB  = 0x2f   I I O I O O O O
+    PORTB = 0x07   0 0 0 0 0 1 1 1
+    PINB  = 0x0f   0 0 0 0 1 1 1 1
+
+    DDRC  = 0x00   I I I I I I I I
+    PORTC = 0x3c   0 0 1 1 1 1 0 0
+    PINC  = 0x3c   0 0 1 1 1 1 0 0
+
+    DDRD  = 0x62   I O O I I I O I
+    PORTD = 0xbf   1 0 1 1 1 1 1 1
+    PIND  = 0xbd   1 0 1 1 1 1 0 1
+
+    GPIO 0 : DIR = I, IN = 1 (pull-up Enabled)
+    GPIO 1 : DIR = I, IN = 1 (pull-up Enabled)
+    GPIO 2 : DIR = I, IN = 1 (pull-up Enabled)
+    GPIO 3 : DIR = I, IN = 1 (pull-up Enabled)
+    GPIO 4 : DIR = I, IN = 1 (pull-up Enabled)
+
+To switch LED (Port B pin 0) off:
+
+    >gpio o b0 0
+
+To configure GPIO 0 as an output pin and output high:
+
+    >gpio o 0 1
+
+To configure Push Button (Port D pin 7) as an input pin (with pullup enabled):
+
+    >gpio ci d7 pu
+
+To report input value of Port D pin 7:
+
+    >gpio i d7
+    1
+
+3.4 ADC {#SCORPION_BOARD_CLI_ADC}
+---------------------------------
+
+The board has 4 ADC channels. The input voltage range on ADC0 and ADC1 is 
++0 mV to +3300 mV (1:1 divider). The input voltage range on ADC2 and ADC3 is 
++0 mV to +36300 mV (11:1 divider). The scale can be changed by replacing or 
+removing the resistor dividers.
+
+To report the 10-bit ADC value (0 to 1023) and scaled value (0 mV to 3300 mV) of
+channel 0:
+
+    >adc s 0
+    0028    93.548386
+
+To report scaled values of all ADC channels (ADC0, ADC1, ADC2 and ADC3) 
+continuously:
+
+    >adc sc
+    00000   55.351616       121.167750      35.483871       35.625809
+    00001   10.806452       47.522583       35.483871       35.483871
+    00002   3.241935        13.000000       35.483871       35.483871
+    00003   3.225806        3.348387        35.519356       35.483871
+    00004   3.225806        3.229032        35.483871       35.483871
+    00005   3.225806        3.235484        35.483871       35.483871
+    00006   3.225806        3.225806        35.483871       35.519356
+    00007   3.225806        3.229032        35.483871       35.625809
+
+@tip_s
+Press SPACE or press the button on the board to stop.
+@tip_e
+
+The raw 10-bit ADC values (0 to 1023) is scaled and an offset added. The default
+scale and offset value for each channel converts the raw ADC value into 
+millivolt (mV).
+
+<em>Formula: ScaledValue = scale x ADC + offset</em>
+
+To get the ADC settings:
+
+    >adc info
+    Sampling rate = 1000 Hz
+    Number of samples = 1000
+    ADC0 : Scale = 3.225806, Offset = 0.000000
+    ADC1 : Scale = 3.225806, Offset = 0.000000
+    ADC2 : Scale = 35.483871, Offset = 0.000000
+    ADC3 : Scale = 35.483871, Offset = 0.000000
+
+To change the scale to +10.1 and offset to -4.5 of channel ADC0:
+
+    >adc cfg 0 10.1 -4.5
+
+All the channels are sampled at 1000 Hz (1 ms). The values are accumulated and
+by default the average is reported every 1000 samples, i.e. once every 1000 ms 
+(1 s). The number of samples can be changed to make the reporting rate quicker 
+or slower. For example, to make the report rate 500 ms (0.5 s):
+
+    >adc cfg_samples 500
+
+3.5 I2C {#SCORPION_BOARD_CLI_I2C}
+---------------------------------
+
+An I2C slave can be connected to the breakout header and verified that it works
+before creating a device driver for it. As an example, an
+[Electrodragon BMP280 breakout board](http://www.electrodragon.com/product/bme280-pressure-huminity-temperature-sensor-breakout/)
+is connected to the I2C bus.
+
+![Electrodragon BMP280 breakout board connected to I2C](piconomix_scorpion_board/scorpion_board_i2c_slave_bmp280.jpg)
+
+@tip_s
+Click [HERE](https://www.bosch-sensortec.com/bst/products/all_products/bmp280)
+for the Bosch BMP280 pressure and temperature sensor datasheet.
+@tip_e
+
+Make sure that I2C bus is in idle state (SCL or SDA not pulled low):
+
+    >i2c info
+    SCL = 1
+    SDA = 1
+
+Scan for all read and write slave addresses on I2C bus:
+
+    >i2c scan
+    76 W
+    76 R
+
+@tip_s
+BMP280 is found at 7-bit slave address 0x76.
+@tip_e
+
+Write 0xD0 "id" register address:
+
+    >i2c w 0x76 0xd0
+
+Read register value:
+
+    >i2c r 0x76 1
+    58
+
+The chip identification register value for the BMP280 is 0x58. This confirms 
+that you are able to write and read from the I2C slave.
+
+3.6 SPI {#SCORPION_BOARD_CLI_SPI}
+---------------------------------
+
+An SPI slave device can also be connected to the breakout header. For this 
+example, let's experiment with the onboard AT45D DataFlash.
+
+Configure SPI to communicate with a slave at 1 MHz, Mode 0, Data Order MSB 
+first and the Chip Select pin is on Port B, Pin 1:
+
+    >spi cfg b1 1000000 0 msb
+    Done. Actual baud rate = 921600 Hz
+
+Read AT45D Status register. Take Chip Select low to start transaction:
+
+    >spi cs lo
+
+Write 0xd7 (Status Register Read) to SPI slave:
+
+    >spi w 0xd7
+
+Read 1 byte (Status Register value) from SPI slave:
+
+    >spi r 1
+    0x9c
+
+Take Chip Select high to end transaction:
+
+    >spi cs hi
+
+3.7 UART {#SCORPION_BOARD_CLI_UART}
+-----------------------------------
+
+The ATmega328p has a single UART peripheral. The UART can be digitally connected
+to the USB-Serial converter, or to the breakout header via GPIO pin PD5 
+(PX_UART_SEL). Thus the ATmega328p can communicate with a serial device 
+connected to the breakout header (for example a GPS), but the ATmega328p can 
+still switch back to CLI or bootloader when required.
+
+To write 4 bytes to the breakout header:
+
+    >uart w 0xde 0xad 0xbe 0xef
+
+To receive 4 bytes from breakout header (or time out after 10 seconds):
+
+    >uart r 4 10000
+    
+To write 1 byte to breakout header and receive 4 bytes (or time out after 10 seconds):
+
+    >uart x 4 10000 0x88
+
+To write a string ("AT") and receive a response (up to 32 chars or time out 
+after 2 seconds):
+
+    >uart s 2000 AT crlf
+    OK
+    >
+
+Use double quotes (") to write a string that includes spaces:
+
+    >uart s 2000 "hello world"
+
+3.8 RTC {#SCORPION_BOARD_CLI_RTC}
+---------------------------------
+
+A software RTC has been implemented using the system clock. This means that the
+board will not remember its time and date when the board is reset or power 
+cycled.
+
+Set the date and time:
+
+    >rtc w 18-06-18 22:48:00
+
+Get the date and time:
+
+    >rtc r
+    18-06-18 22:48:15
+
+3.9 Serial Flash {#SCORPION_BOARD_CLI_SF}
+-----------------------------------------
+
+Report Serial Flash Info:
+
+    >sf info
+    Device: AT45DB041
+    Pages: 2048
+    Page size: 264
+    Status: 0x9C
+    - RDY  = 1
+    - COMP = 1
+    - PROT = 0
+    - SIZE = 0
+
+Erase page 0 (all of the data will be reset to 0xff):
+
+    >sf e 0 0
+    Erasing 0 to 0. done
+
+Write 5 bytes to start of page 0:
+
+    >sf wp 0 0 0x68 0x65 0x6c 0x6c 0x6f
+
+Read page 0:
+    
+    >sf rp 0
+    68 65 6C 6C 6F FF FF FF FF FF FF FF FF FF FF FF hello...........
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF                         ........
+

@@ -1,0 +1,11 @@
+5. Recommended best practices {#BEST_PRACTICES}
+===============================================
+
+- C coding style:
+    + @subpage CODING_STYLE
+- Doxygen as source documention tool:
+    + @subpage DOXYGEN
+- Subversion (SVN) for revision control:
+    + @subpage SUBVERSION
+- Test function for each module
+

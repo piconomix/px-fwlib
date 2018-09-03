@@ -1,0 +1,20 @@
+Minimal GPIO Example {#SCORPION_BOARD_EXAMPLE_GPIO}
+=============================================================
+  
+[TOC]
+
+Introduction {#SCORPION_BOARD_EXAMPLE_GPIO_INTRO}
+===========================================================
+
+This is a minimal GPIO example for the Scorpion Board. It is the embedded 
+equivalent of a "hello world" program on a PC to kick the tires and know that 
+your development setup works. The LED is on while the user button is being 
+pressed and off while the button is released.
+  
+File(s):
+- boards/avr/piconomix_scorpion_board/examples/01_gpio/src/main.c
+
+The following modules are used:
+- @ref PX_DEFINES
+- @ref BOARDS_AVR_PICONOMIX_SCORPION
+- @ref AVR_GPIO

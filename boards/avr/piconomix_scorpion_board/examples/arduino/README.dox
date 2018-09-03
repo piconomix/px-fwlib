@@ -1,0 +1,216 @@
+Arduino development on Piconomix ATmega328P Scorpion Board {#SCORPION_BOARD_ARDUINO_DEV}
+========================================================================================
+  
+[TOC]
+
+[arduino_uno]:  http://arduino.cc/en/Main/ArduinoBoardUno
+[atmel_studio]: https://www.microchip.com/mplab/avr-support/atmel-studio-7
+[optiboot]:     https://github.com/Optiboot/optiboot
+[atmel_ice]:    http://www.microchip.com/DevelopmentTools/ProductDetails/ATATMEL-ICE
+
+1. Introduction {#SCORPION_BOARD_ARDUINO_DEV_INTRO}
+===================================================
+
+You can also use the Arduino environment and ecosystem of libraries to develop 
+code for the Scorpion Board. The Scorpion Board uses the same microcontroller as
+the [Arduino Uno] [arduino_uno], but the pin mapping will be different. You will
+have to replace the @ref SCORPION_BOARD_BOOTLOADER_XMODEM with a ported version 
+of [Optiboot 6.2] [optiboot] and will need access
+to one of the following:
+
+* AVRISP MkII clone
+* [Atmel-ICE] [atmel_ice]
+* Arduino Board. See [using an Arduino as an AVR-ISP](http://arduino.cc/en/Tutorial/ArduinoISP)
+* Any other tool to program the Microchip ATmega328P via the ISP interface.
+
+@tip_s
+If you are going to do serious development on AVR microcontrollers, then it is
+worthwhile to invest in an [Atmel-ICE] [atmel_ice]
+to program and debug.
+@tip_e
+
+2. Program ATmega328P with Optiboot bootloader {#SCORPION_BOARD_ARDUINO_DEV_BOOTLOADER}
+=======================================================================================
+
+Here is one method to do it using [Atmel Studio] [atmel_studio] and an 
+[Atmel-ICE] [atmel_ice]. Run Atmel Studio and open the device programming dialog
+window:
+
+Tools > Device Programming Ctrl+Shift+P
+
+Select your tool (Atmel-ICE), Device (ATmega328P), Interface (ISP) and Apply.
+Read the device signature (0x1E950F) to verify that everything is OK. Select 
+"Memories" and specify the location of the Optiboot HEX file:
+
+    piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\bootloader_optiboot\optiboot_scorpion_board.hex
+
+Press Program:
+![Program FLASH memory](piconomix_scorpion_board/scorpion_board_prog_optiboot_flash.png)
+
+Select "Fuses", reduce Boot section size (BOOTSZ) to 256 Words (512 bytes) and
+press Program:
+![Program fuse bits](piconomix_scorpion_board/scorpion_board_prog_optiboot_fuse_bits.png)
+
+@tip_s
+The Scorpion Board should now give 3 rapid LED flashes, pause and repeat. This
+indicates that Optiboot is executing, but no valid application is present.
+@tip_e
+
+3. Update "boards.txt" file of Arduino IDE  {#SCORPION_BOARD_ARDUINO_DEV_BOARDS_TXT}
+====================================================================================
+
+You need to inform the Arduino IDE about the Scorpion Board. The following applies
+to Arduino version 1.8.5 installed to it's default location on Windows 10 64-bit.
+The location of "boards.txt" is here:
+
+    C:\Program Files (x86)\Arduino\hardware\arduino\avr\boards.txt
+
+Replace it with:
+
+    piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\boards.txt
+
+Alternatively you can edit "boards.txt" and paste in the following snippet:
+
+    scorpion.name=Piconomix ATmega328P Scorpion Board
+
+    scorpion.vid.0=0x2341
+    scorpion.pid.0=0x0043
+    scorpion.vid.1=0x2341
+    scorpion.pid.1=0x0001
+    scorpion.vid.2=0x2A03
+    scorpion.pid.2=0x0043
+    scorpion.vid.3=0x2341
+    scorpion.pid.3=0x0243
+
+    scorpion.upload.tool=avrdude
+    scorpion.upload.protocol=arduino
+    scorpion.upload.maximum_size=32256
+    scorpion.upload.maximum_data_size=2048
+    scorpion.upload.speed=115200
+
+    scorpion.bootloader.tool=avrdude
+    scorpion.bootloader.low_fuses=0xFD
+    scorpion.bootloader.high_fuses=0xDE
+    scorpion.bootloader.extended_fuses=0x05
+    scorpion.bootloader.unlock_bits=0x3F
+    scorpion.bootloader.lock_bits=0x0F
+    scorpion.bootloader.file=optiboot/optiboot_scorpion_board.hex
+
+    scorpion.build.mcu=atmega328p
+    scorpion.build.f_cpu=7372800UL
+    scorpion.build.board=AVR_UNO
+    scorpion.build.core=arduino
+    scorpion.build.variant=standard
+
+This tells the Arduino IDE what bootloader protocol to use, the communication 
+speed, the CPU frequency, even what bootloader to program it with and what the 
+fuse bits should be.
+
+
+See [using an Arduino as an AVR-ISP](http://arduino.cc/en/Tutorial/ArduinoISP),
+to program the custom Optiboot bootloader using the Arduino IDE. You will then 
+need to copy this file:
+
+    piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\bootloader_optiboot\optiboot_scorpion_board.hex
+
+Here:
+
+    C:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\optiboot
+
+@warn_s
+I have not tried this procedure.
+@warn_e
+
+You can now launch the Arduino IDE and select the Scorpion Board:
+![Select board](piconomix_scorpion_board/arduino_select_board.png)
+
+@warn_s
+Remember to specify correct Serial Port too (Tools > Serial Port)
+@warn_e
+
+4. Scorpion Board to Arduino Uno pin mapping {#SCORPION_BOARD_ARDUINO_DEV_PIN_MAPPING}
+======================================================================================
+
+The following file dictates the GPIO pin mapping for an Arduino Uno:
+
+    C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard\pins_arduino.h
+
+Here is a table that maps the Scorpion Board pins to an Arduino Uno:
+
+|AVR Pin   | Scorpion Net | Arduino Uno Net | Arduino Uno Name | Arduino Digital Pin Map|
+|----------|--------------|-----------------|------------------|------------------------|
+|PD0       | UART_RXD     | IO0             | DIGITAL RX<-0    | 0                      |
+|PD1       | UART_TXD     | IO1             | DIGITAL TX->1    | 1                      |
+|PD2       | GPIO2        | IO2             | DIGITAL 2        | 2                      |
+|PD3       | GPIO1        | IO3             | DIGITAL ~3       | 3                      |
+|PD4       | GPIO0        | IO4             | DIGITAL 4        | 4                      |
+|PD5       | UART_SEL     | IO5             | DIGITAL ~5       | 5                      |
+|PD6       | PWM_BUZZER   | IO6             | DIGITAL ~6       | 6                      |
+|PD7       | PB           | IO7             | DIGITAL 7        | 7                      |
+|PB0       | LED          | IO8             | DIGITAL 8        | 8                      |
+|PB1       | SPI_CS_DF    | IO9             | DIGITAL ~9       | 9                      |
+|PB2       | SPI_CS       | SS              | DIGITAL ~10      | 10                     |
+|PB3       | SPI_MOSI     | MOSI            | DIGITAL ~11      | 11                     |
+|PB4       | SPI_MISO     | MISO            | DIGITAL 12       | 12                     |
+|PB5       | SPI_SCK      | SCK             | DIGITAL 13       | 13                     |
+|PC0       | ADC1         | AD0             | ANALOG A0        | 14                     |
+|PC1       | ADC0         | AD1             | ANALOG A1        | 15                     |
+|PC2       | GPIO4        | AD2             | ANALOG A2        | 16                     |
+|PC3       | GPIO3        | AD3             | ANALOG A3        | 17                     |
+|PC4       | I2C_SDA      | AD4/SDA         | ANALOG A4        | 18                     |
+|PC5       | I2C_SCL      | AD5/SCL         | ANALOG A5        | 19                     |
+
+For example, to enable the Scorpion Board's LED (PB0), one can use the following
+snippet of Arduino code:
+
+    // Initialize the LED pin as an output
+    pinMode(8, OUTPUT);
+    // Turn LED on:    
+    digitalWrite(8, HIGH);
+
+5. Open and upload "demo_gpio" sketch {#SCORPION_BOARD_ARDUINO_DEMO_GPIO}
+=========================================================================
+
+Open the "demo_gpio" sketch:
+
+File > Open
+
+Select:
+
+    piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\demo_gpio\demo_gpio.ino
+
+Press the Right Arrow icon to compile the sketch and start the upload process.
+Once the sketch has compiled succesfully, quickly **press the RST button on the 
+Scorpion Board** so that it will jump to the Optiboot bootloader and start the 
+upload. After the upload has finished succesfully, the sketch will execute.
+
+![GPIO Demo](piconomix_scorpion_board/scorpion_board_arduino_demo_gpio.png)
+
+@tip_s
+Press the user push button and the LED will shine.
+@tip_e
+
+6. Open and upload "demo_serial" sketch {#SCORPION_BOARD_ARDUINO_DEMO_SERIAL}
+=============================================================================
+
+Open the "demo_serial" sketch:
+
+File > Open
+
+Select:
+
+    piconomix-fwlib\boards\avr\piconomix_scorpion_board\arduino\demo_serial\demo_serial.ino
+
+Press the Right Arrow icon to compile the sketch and start the upload process.
+Once the sketch has compiled succesfully, quickly **press the RST button on the
+Scorpion Board** so that it will jump to the Optiboot bootloader and start the 
+upload. After the upload has finished succesfully, the sketch will execute.
+
+Open the Serial Monitor Window:
+
+Tools > Serial Monitor Ctrl+Shift+M
+
+Press the RST button again, so that the sketch restarts and sends the string
+"Hello World!":
+
+![Serial Demo](piconomix_scorpion_board/scorpion_board_arduino_demo_serial.png)
