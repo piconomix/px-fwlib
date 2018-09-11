@@ -1,6 +1,8 @@
 1. Introduction {#mainpage}
 ===========================
 
+![](piconomix_banner_300x70.png)
+
 [TOC]
 
 The foundation of **piconomix-fwlib** is knowledge and freedom:
@@ -15,8 +17,8 @@ resource rich 32-bit targets, but this cross-platform library aims to provide a
 good foundation before you are forced to add target specific code and getting 
 locked in.
 
-The open source library (source code and offline documentation) can be
-downloaded [here](https://sourceforge.net/projects/piconomic-fwlib/files).
+Click [HERE](https://sourceforge.net/projects/piconomic-fwlib/files) to download
+releases of the open source library (source code and offline documentation).
 
 1.1 Goals {#GOALS}
 ==================
@@ -266,4 +268,7 @@ advanced your career, you are welcome to support this project with a visit to
 the shop.
 
 ![](shop.png)
-[CLICK HERE TO VISIT THE SHOP](http://piconomix.com/shop/)
+Click [HERE](http://piconomix.com/shop/) to visit the shop
+
+![](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)
+Click [HERE](https://saythanks.io/to/pieterconradie) to say thanks!

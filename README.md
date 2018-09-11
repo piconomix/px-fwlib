@@ -1,7 +1,7 @@
-![https://piconomix.com](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/piconomix_banner_300x70.png)
-
 Introduction
 ============
+
+![https://piconomix.com](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/piconomix_banner_300x70.png)
 
 **piconomix-fwlib** is a collection of open source C firmware and documentation
 for microcontrollers to develop portable bare-metal code that is vendor and 
@@ -131,5 +131,10 @@ open source library. If you saved development time, acquired a new skill, or
 advanced your career, you are welcome to support this project with a visit to 
 the shop.
 
-![Shop](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/shop.png)
-[CLICK HERE TO VISIT THE SHOP](http://piconomix.com/shop/)
+[![Shop](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/shop.png)](http://piconomix.com/shop/)
+Click [HERE](http://piconomix.com/shop/) to visit the shop
+
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/pieterconradie)
+Click [HERE](https://saythanks.io/to/pieterconradie) to say thanks!
+
+

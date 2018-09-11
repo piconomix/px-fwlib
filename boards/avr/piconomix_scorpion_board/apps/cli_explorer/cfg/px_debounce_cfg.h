@@ -33,25 +33,28 @@
 
 ============================================================================= */
 
+/** 
+ *  @addtogroup PX_DEBOUNCE
+ */
+/// @{
+
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
 /* _____DEFINITIONS _________________________________________________________ */
-/**
- *  Configuration is fixed (the same) for all inputs if set to 1 and
- *  configurable (individually tweaked) if set to 0
- */
-#define PX_DEBOUNCE_CFG_FIXED 1
-
-/// Fixed max HI counter value (if PX_DEBOUNCE_CFG_FIXED = 1)
+/// Max HI counter value
 #define PX_DEBOUNCE_CFG_COUNT_MAX  10
 
-/// Fixed low watermark threshold for valid LO (if PX_DEBOUNCE_CFG_FIXED = 1) 
+/// Low watermark threshold for valid LO
 #define PX_DEBOUNCE_CFG_THRESHOLD_LO 2
 
-/// Fixed High watermark threshold for valid HI (if PX_DEBOUNCE_CFG_FIXED = 1) 
+/// High watermark threshold for valid HI
 #define PX_DEBOUNCE_CFG_THRESHOLD_HI 8
 
+/// Count threshold for long LO/ HI; Set to 0 to disable option
+#define PX_DEBOUNCE_CFG_LONG_COUNT 0
+
+/// @}
 #endif // #ifndef __PX_DEBOUNCE_CFG_H__

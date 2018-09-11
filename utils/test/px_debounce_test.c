@@ -24,17 +24,8 @@ int main(void)
     PX_GPIO_PIN_INIT(PX_GPIO_LED);
     PX_GPIO_PIN_INIT(PX_GPIO_PB);
 
-#if PX_DEBOUNCE_CFG_FIXED
     // Initialise debounce state
     px_debounce_init(&px_debounce_pb, PX_GPIO_PIN_IS_HI(PX_GPIO_PB));
-#else
-    // Initialise debounce state
-    px_debounce_init(&px_debounce_pb, 
-                  PX_GPIO_PIN_IS_HI(PX_GPIO_PB),
-                  PX_DEBOUNCE_CFG_COUNT_MAX,
-                  PX_DEBOUNCE_CFG_THRESHOLD_LO,
-                  PX_DEBOUNCE_CFG_THRESHOLD_HI);
-#endif
 
     for(;;)
     {

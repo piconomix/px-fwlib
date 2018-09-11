@@ -49,15 +49,16 @@
  *  modified to supply compile time options.
  *  
  *  It is ideal for a noisy digital input such as a button. When a key is
- *  pressed, the input will "bounce" between high and low until it finally
+ *  pressed, the input will bounce between high and low until it finally
  *  settles to a valid state.
  *  
  *  @see https://en.wikipedia.org/wiki/Switch#Contact_bounce
  *  
- *  This module is able to "debounce" a digital input by looking at successive
+ *  This module is able to debounce a digital input by looking at successive
  *  values and deciding if it is a valid low or high state. It is also able to
  *  register and remember a rising and falling edge event, e.g. "key pressed
- *  event" or "key released event".    
+ *  event" or "key released event". Finally, if PX_DEBOUNCE_CFG_LONG_COUNT is 
+ *  defined with a non-zero value, a long HI or long LO is also detected.
  *  
  *  A counter is incremented each time the current digital input state is HI.
  *  If the counter reaches the high threshold, the debounced state is considered
@@ -67,16 +68,8 @@
  *  is PX_DEBOUNCE_CFG_COUNT_MAX. This scheme provides sufficient hysteresis to
  *  debounce a noisy digital input.
  *  
- *  If PX_DEBOUNCE_CFG_FIXED is 1, then the parameters are fixed at compile time
- *  for all debounce state tracking structure and set with
- *  PX_DEBOUNCE_CFG_COUNT_MAX, PX_DEBOUNCE_CFG_THRESHOLD_LO and
- *  PX_DEBOUNCE_CFG_THRESHOLD_HI.
- *  
- *  If PX_DEBOUNCE_CFG_FIXED is 0, then the parameters can be customised during
- *  run time for each debounce tracking structure.
- *  
- *  If no hysteresis is required, then PX_DEBOUNCE_CFG_THRESHOLD_LO can be set to 0
- *  and PX_DEBOUNCE_CFG_THRESHOLD_HI can be set to PX_DEBOUNCE_CFG_COUNT_MAX.
+ *  If no hysteresis is required, then PX_DEBOUNCE_CFG_THRESHOLD_LO can be set 
+ *  to 0 and PX_DEBOUNCE_CFG_THRESHOLD_HI can be set to PX_DEBOUNCE_CFG_COUNT_MAX. 
  *  
  *  Example:
  *  
@@ -93,23 +86,12 @@
 #include "px_debounce_cfg.h"
 
 // Check that all project specific options have been specified in "px_debounce_cfg.h"
-#ifndef PX_DEBOUNCE_CFG_FIXED
-#error "PX_DEBOUNCE_CFG_FIXED not specified"
+#if (   !defined(PX_DEBOUNCE_CFG_COUNT_MAX   ) \
+     || !defined(PX_DEBOUNCE_CFG_THRESHOLD_LO) \
+     || !defined(PX_DEBOUNCE_CFG_THRESHOLD_HI) \
+     || !defined(PX_DEBOUNCE_CFG_LONG_COUNT  )  )
+#error "One or more options not defined in 'px_debounce_cfg.h'"
 #endif
-
-// Compile-time configured parameters?
-#if !PX_DEBOUNCE_CFG_FIXED
-#ifndef PX_DEBOUNCE_CFG_COUNT_MAX
-#error "PX_DEBOUNCE_CFG_COUNT_MAX not specified"
-#endif
-#ifndef PX_DEBOUNCE_CFG_THRESHOLD_LO
-#error "PX_DEBOUNCE_CFG_THRESHOLD_LO not specified"
-#endif
-#ifndef PX_DEBOUNCE_CFG_THRESHOLD_HI
-#error "PX_DEBOUNCE_CFG_THRESHOLD_HI not specified"
-#endif
-#endif
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -131,14 +113,17 @@ typedef enum
 typedef struct
 {
     px_debounce_state_t state;              ///< debounced state: LO or HI
-    px_debounce_count_t count;              ///< LO/HI counter
-#if !PX_DEBOUNCE_CFG_FIXED
-    px_debounce_count_t count_max;          ///< Max HI counter value
-    px_debounce_count_t count_threshold_lo; ///< Low watermark threshold for valid LO
-    px_debounce_count_t count_threshold_hi; ///< High watermark threshold for valid HI
+    px_debounce_count_t counter;            ///< LO/HI counter
+#if (PX_DEBOUNCE_CFG_LONG_COUNT != 0)
+    px_debounce_count_t counter_long;       ///< long LO/HI detection counter
 #endif
+
     bool                rising_edge_flag;   ///< Flag is set when a rising edge is detected (HI threshold is reached)
     bool                falling_edge_flag;  ///< Flag is set when a falling edge is detected (LO threshold is reached)
+#if (PX_DEBOUNCE_CFG_LONG_COUNT != 0)
+    bool                long_hi_flag;       ///< Flag is set when a long HI is detected (after rising edge)
+    bool                long_lo_flag;       ///< Flag is set when a long LO is detected (after falling edge)
+#endif
 } px_debounce_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -153,18 +138,9 @@ typedef struct
  *  
  *  @param debounce             Debounce state tracking structure to intialise
  *  @param initial_state_is_hi  Initial state is hi(true) or LO(false)
- *  @param count_max            Max HI counter value
- *  @param count_threshold_lo   Low watermark threshold for valid LO
- *  @param count_threshold_hi   High watermark threshold for valid HI
  */
-void px_debounce_init(px_debounce_t *     debounce,
-                      bool                initial_state_is_hi
-#if !PX_DEBOUNCE_CFG_FIXED
-                     ,px_debounce_count_t count_max,
-                      px_debounce_count_t count_threshold_lo,
-                      px_debounce_count_t count_threshold_hi
-#endif
-                   );
+void px_debounce_init(px_debounce_t * debounce,
+                      bool            initial_state_is_hi);
 
 /**
  *  Update the debounce state with the current state of the digital input
@@ -183,7 +159,7 @@ px_debounce_state_t px_debounce_state(const px_debounce_t * debounce);
 /**
  *  Indicates if a rising edge event was detected.
  *  
- *  The rising edge flag is cleared after this function returns true.
+ *  The flag is cleared after this function returns true.
  *  
  *  @param debounce Debounce state tracking structure
  *  
@@ -195,7 +171,7 @@ bool px_debounce_rising_edge_detected(px_debounce_t * debounce);
 /**
  *  Indicates if a falling edge event was detected.
  *  
- *  The falling edge flag is cleared after this function returns true.
+ *  The flag is cleared after this function returns true.
  *  
  *  @param debounce Debounce state tracking structure
  *  
@@ -203,6 +179,32 @@ bool px_debounce_rising_edge_detected(px_debounce_t * debounce);
  *  @retval false   Falling edge event not detected
  */
 bool px_debounce_falling_edge_detected(px_debounce_t * debounce);
+
+#if (PX_DEBOUNCE_CFG_LONG_COUNT != 0)
+/**
+ *  Indicates if a long HI event was detected.
+ *  
+ *  The flag is cleared after this function returns true.
+ *  
+ *  @param debounce Debounce state tracking structure
+ *  
+ *  @retval true    Long HI event detected
+ *  @retval false   Long HI event not detected
+ */
+bool px_debounce_long_hi_detected(px_debounce_t * debounce);
+
+/**
+ *  Indicates if a long LO event was detected.
+ *  
+ *  The flag is cleared after this function returns true.
+ *  
+ *  @param debounce Debounce state tracking structure
+ *  
+ *  @retval true    Long LO event detected
+ *  @retval false   Long LO event not detected
+ */
+bool px_debounce_long_lo_detected(px_debounce_t * debounce);
+#endif
 
 /* _____MACROS_______________________________________________________________ */
 

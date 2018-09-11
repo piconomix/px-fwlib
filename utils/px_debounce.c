@@ -54,60 +54,43 @@ PX_DBG_DECL_NAME("debounce")
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_debounce_init(px_debounce_t *     debounce,
-                      bool                initial_state_is_hi
-#if !PX_DEBOUNCE_CFG_FIXED
-                     ,px_debounce_count_t count_max,
-                      px_debounce_count_t count_threshold_lo,
-                      px_debounce_count_t count_threshold_hi
-#endif
-                          )
+void px_debounce_init(px_debounce_t * debounce,
+                      bool            initial_state_is_hi)
 {
-#if PX_DEBOUNCE_CFG_FIXED
     if(initial_state_is_hi)
     {
-        debounce->state = PX_DEBOUNCE_STATE_HI;
-        debounce->count = PX_DEBOUNCE_CFG_COUNT_MAX;
+        debounce->state   = PX_DEBOUNCE_STATE_HI;
+        debounce->counter = PX_DEBOUNCE_CFG_COUNT_MAX;
     }
     else
     {
-        debounce->state = PX_DEBOUNCE_STATE_LO;
-        debounce->count = 0;
+        debounce->state   = PX_DEBOUNCE_STATE_LO;
+        debounce->counter = 0;
     }
-#else
-    if(initial_state_is_hi)
-    {
-        debounce->state = PX_DEBOUNCE_STATE_HI;
-        debounce->count = count_max;
-    }
-    else
-    {
-        debounce->state = PX_DEBOUNCE_STATE_LO;
-        debounce->count = 0;
-    }
-    debounce->count_max          = count_max;
-    debounce->count_threshold_lo = count_threshold_lo;
-    debounce->count_threshold_hi = count_threshold_hi;    
-#endif
 
     debounce->rising_edge_flag  = false;
     debounce->falling_edge_flag = false;
+
+#if (PX_DEBOUNCE_CFG_LONG_COUNT != 0)
+    debounce->counter_long      = 0;
+    debounce->long_hi_flag      = false;
+    debounce->long_lo_flag      =  false;
+#endif
 }
 
 void px_debounce_update(px_debounce_t * debounce, 
                         bool            input_is_hi)
 {
-#if PX_DEBOUNCE_CFG_FIXED
     if(input_is_hi)
     {
         // Maximum reached?
-        if(debounce->count < PX_DEBOUNCE_CFG_COUNT_MAX)
+        if(debounce->counter < PX_DEBOUNCE_CFG_COUNT_MAX)
         {
             // Increment count
-            debounce->count++;
+            debounce->counter++;
         }
         // High watermark threshold reached?
-        if(debounce->count == PX_DEBOUNCE_CFG_THRESHOLD_HI)
+        if(debounce->counter == PX_DEBOUNCE_CFG_THRESHOLD_HI)
         {
             // Must state be changed?
             if(debounce->state == PX_DEBOUNCE_STATE_LO)
@@ -116,19 +99,23 @@ void px_debounce_update(px_debounce_t * debounce,
                 debounce->state = PX_DEBOUNCE_STATE_HI;
                 // Set rising edge flag
                 debounce->rising_edge_flag = true;
+#if (PX_DEBOUNCE_CFG_LONG_COUNT != 0)
+                // (Re)start long counter
+                debounce->counter_long = PX_DEBOUNCE_CFG_LONG_COUNT;
+#endif
             }
         }
     }
     else
     {
         // Minimum reached?
-        if(debounce->count > 0)
+        if(debounce->counter > 0)
         {
             // Decrement count
-            debounce->count--;
+            debounce->counter--;
         }
         // Low watermark threshold reached?
-        if(debounce->count == PX_DEBOUNCE_CFG_THRESHOLD_LO)
+        if(debounce->counter == PX_DEBOUNCE_CFG_THRESHOLD_LO)
         {
             // Must state be changed?
             if(debounce->state == PX_DEBOUNCE_STATE_HI)
@@ -137,49 +124,31 @@ void px_debounce_update(px_debounce_t * debounce,
                 debounce->state = PX_DEBOUNCE_STATE_LO;
                 // Set falling edge flag
                 debounce->falling_edge_flag = true;
+#if (PX_DEBOUNCE_CFG_LONG_COUNT != 0)
+                // (Re)start long counter
+                debounce->counter_long = PX_DEBOUNCE_CFG_LONG_COUNT;
+#endif
             }           
         }
     }
-#else
-    if(input_is_hi)
+
+#if (PX_DEBOUNCE_CFG_LONG_COUNT != 0)
+    // Long counter started?
+    if(debounce->counter_long != 0)
     {
-        // Maximum reached?
-        if(debounce->count < debounce->count_max)
+        // Long counter expired?
+        if(--debounce->counter_long == 0)
         {
-            // Increment count
-            debounce->count++;
-        }
-        // High watermark threshold reached?
-        if(debounce->count == debounce->count_threshold_hi)
-        {
-            // Must state be changed?
+            // Is the current debounced state LO?
             if(debounce->state == PX_DEBOUNCE_STATE_LO)
             {
-                // Change to HI state
-                debounce->state = PX_DEBOUNCE_STATE_HI;
-                // Set rising edge flag
-                debounce->rising_edge_flag = true;
+                // Set long LO flag
+                debounce->long_lo_flag = true;
             }
-        }
-    }
-    else
-    {
-        // Minimum reached?
-        if(debounce->count > 0)
-        {
-            // Decrement count
-            debounce->count--;
-        }
-        // Low watermark threshold reached?
-        if(debounce->count == debounce->count_threshold_lo)
-        {
-            // Must state be changed?
-            if(debounce->state == PX_DEBOUNCE_STATE_HI)
+            else
             {
-                // Change to LO state
-                debounce->state = PX_DEBOUNCE_STATE_LO;
-                // Set falling edge flag
-                debounce->falling_edge_flag = true;
+                // Set long HI flag
+                debounce->long_hi_flag = true;
             }
         }
     }
@@ -193,7 +162,7 @@ px_debounce_state_t px_debounce_state(const px_debounce_t * debounce)
 
 bool px_debounce_rising_edge_detected(px_debounce_t * debounce)
 {
-    // Rising edge flag set?
+    // Flag set?
     if(debounce->rising_edge_flag)
     {
         // Clear flag
@@ -210,7 +179,7 @@ bool px_debounce_rising_edge_detected(px_debounce_t * debounce)
 
 bool px_debounce_falling_edge_detected(px_debounce_t * debounce)
 {
-    // Falling edge flag set?
+    // Flag set?
     if(debounce->falling_edge_flag)
     {
         // Clear flag
@@ -224,3 +193,39 @@ bool px_debounce_falling_edge_detected(px_debounce_t * debounce)
         return false;
     }
 }
+
+#if (PX_DEBOUNCE_CFG_LONG_COUNT != 0)
+bool px_debounce_long_hi_detected(px_debounce_t * debounce)
+{
+    // Flag set?
+    if(debounce->long_hi_flag)
+    {
+        // Clear flag
+        debounce->long_hi_flag = false;
+        // Flag was set
+        return true;
+    }
+    else
+    {
+        // Flag is not set
+        return false;
+    }
+}
+
+bool px_debounce_long_lo_detected(px_debounce_t * debounce)
+{
+    // Flag set?
+    if(debounce->long_lo_flag)
+    {
+        // Clear flag
+        debounce->long_lo_flag = false;
+        // Flag was set
+        return true;
+    }
+    else
+    {
+        // Flag is not set
+        return false;
+    }
+}
+#endif
