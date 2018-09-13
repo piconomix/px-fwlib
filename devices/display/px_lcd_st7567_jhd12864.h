@@ -1,5 +1,5 @@
-#ifndef __PX_LCD_ST7565P_TSE2G0330E_H__
-#define __PX_LCD_ST7565P_TSE2G0330E_H__
+#ifndef __PX_LCD_ST7567_JHD12864_H__
+#define __PX_LCD_ST7567_JHD12864_H__
 /* =============================================================================
      _____   _____   _____   ____    _   _    ____    __  __   _____  __   __
     |  __ \ |_   _| / ____| / __ \  | \ | |  / __ \  |  \/  | |_   _| \ \ / /
@@ -8,7 +8,7 @@
     | |      _| |_ | |____ | |__| | | |\  | | |__| | | |  | |  _| |_   / . \
     |_|     |_____| \_____| \____/  |_| \_|  \____/  |_|  |_| |_____| /_/ \_\
 
-    Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -28,19 +28,19 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
  
-    Title:          px_lcd_st7565p_tse2g0330e.h : Truly TSE2G0330-E 128x64 monochrome LCD wtih Sitronix ST7565P driver
+    Title:          px_lcd_st7567_jhd12864.h : JHD JHD12864-G176BSW 128x64 monochrome LCD wtih Sitronix ST7567 driver
     Author(s):      Pieter Conradie
-    Creation Date:  2013-12-05
+    Creation Date:  2018-09-10
 
 ============================================================================= */
 
 /** 
  *  @ingroup DEVICES_DISPLAY
- *  @defgroup PX_LCD_ST7565P_TSE2G0330E px_lcd_st7565p_tse2g0330e.h : Truly TSE2G0330-E 128x64 monochrome LCD wtih Sitronix ST7565P driver
+ *  @defgroup PX_LCD_ST7567_JHD12864 px_lcd_st7567_jhd12864.h : JHD JHD12864-G176BSW 128x64 monochrome LCD wtih Sitronix ST7567 driver
  *
  *  File(s):
- *  - devices/display/px_lcd_st7565p_tse2g0330e.h
- *  - devices/display/px_lcd_st7565p_tse2g0330e.c
+ *  - devices/display/px_lcd_st7567_jhd12864.h
+ *  - devices/display/px_lcd_st7567_jhd12864.c
  *
  */
 /// @{
@@ -51,16 +51,16 @@
 #include "px_defines.h"
 #include "px_spi.h"
 
-// Include project specific config. See "px_lcd_st7565p_tse2g0330e_cfg_template.h"
-#include "px_lcd_st7565p_tse2g0330e_cfg.h"
+// Include project specific config. See "px_lcd_st7567_jhd12864_cfg_template.h"
+#include "px_lcd_st7567_jhd12864_cfg.h"
 
-// Check that all project specific options have been specified in "px_lcd_st7565p_tse2g0330e_cfg.h"
+// Check that all project specific options have been specified in "px_lcd_st7567_jhd12864_cfg.h"
 #if (   !defined(PX_LCD_CFG_RST_LO     ) \
      || !defined(PX_LCD_CFG_RST_HI     ) \
      || !defined(PX_LCD_CFG_RS_LO      ) \
      || !defined(PX_LCD_CFG_RS_HI      ) \
      || !defined(PX_LCD_CFG_ROT_180_DEG)  )
-#error "One or more options not defined in 'px_lcd_st7565p_tse2g0330e_cfg.h'"
+#error "One or more options not defined in 'px_lcd_st7567_jhd12864_cfg.h'"
 #endif
 
 /* _____DEFINITIONS _________________________________________________________ */
@@ -141,4 +141,4 @@ void px_lcd_wr_disp_data(uint8_t * data, size_t nr_of_bytes);
 /* _____MACROS_______________________________________________________________ */
 
 /// @}
-#endif
+#endif // #ifndef __PX_LCD_ST7567_JHD12864_H__

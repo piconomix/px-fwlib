@@ -6,7 +6,7 @@
     | |      _| |_ | |____ | |__| | | |\  | | |__| | | |  | |  _| |_   / . \
     |_|     |_____| \_____| \____/  |_| \_|  \____/  |_|  |_| |_____| /_/ \_\
 
-    Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -26,46 +26,42 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
  
-    Title:          px_lcd_st7565p_tse2g0330e.h : Truly TSE2G0330-E 128x64 monochrome LCD wtih Sitronix ST7565P driver
+    Title:          px_lcd_st7567_jhd12864.h : JHD JHD12864-G176BSW 128x64 monochrome LCD wtih Sitronix ST7567 driver
     Author(s):      Pieter Conradie
-    Creation Date:  2013-12-05
+    Creation Date:  2018-09-10
 
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_lcd_st7565p_tse2g0330e.h"
-#include "px_board.h"
+#include "px_lcd_st7567_jhd12864.h"
 
 #include "px_dbg.h"
 PX_DBG_DECL_NAME("lcd")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-/// @name ST7565P commands (Table 16, page 51)
+/// @name ST7567 commands (Table 8, page 21)
 //@{
 #define PX_LCD_CMD_DISP_ON_OFF          0xae    ///< (1)  Display ON/OFF
-#define PX_LCD_CMD_DISP_START_LINE_SET  0x40    ///< (2)  Display start line set 
-#define PX_LCD_CMD_PAGE_ADR_SET         0xb0    ///< (3)  Page address set
-#define PX_LCD_CMD_COL_ADR_SET_HI       0x10    ///< (4)  Column address set upper bit
-#define PX_LCD_CMD_COL_ADR_SET_LO       0x00    ///< (4)  Column address set lower bit
-#define PX_LCD_CMD_ADC_SEL              0xa0    ///< (8)  ADC select
-#define PX_LCD_CMD_DISP_NORMAL_REVERSE  0xa6    ///< (9)  Display normal/reverse
-#define PX_LCD_CMD_DISP_ALL_ON_OFF      0xa4    ///< (10) Display all points
-#define PX_LCD_CMD_BIAS_SET             0xa2    ///< (11) LCD bias set
-#define PX_LCD_CMD_RST                  0xe2    ///< (14) Reset
-#define PX_LCD_CMD_COM_OUT_MODE_SEL     0xc0    ///< (15) Common output mode select
-#define PX_LCD_CMD_PWR_CTL_SET          0x28    ///< (16) Power control set
-#define PX_LCD_CMD_V_REG_RES_RATIO_SET  0x20    ///< (17) Vo voltage regulator internal resistor ratio set
-#define PX_LCD_CMD_VOL_MODE_SET         0x81    ///< (18) Electronic volume mode set
-#define PX_LCD_CMD_VOL_REG_SET          0x00    ///< (18) Electronic volume register set
-#define PX_LCD_CMD_STATIC_IND_ON_OFF    0xac    ///< (19) Static indicator ON/OFF
-#define PX_LCD_CMD_STATIC_IND_REG_SET   0x00    ///< (19) Static indicator register set
-#define PX_LCD_CMD_BOOSTER_RATIO_SET    0xf8    ///< (20) Booster ratio set
+#define PX_LCD_CMD_SET_START_LINE       0x40    ///< (2)  Set display start line
+#define PX_LCD_CMD_SET_PAGE_ADR         0xb0    ///< (3)  Set page address
+#define PX_LCD_CMD_SET_COL_ADR_HI       0x10    ///< (4)  Set column address (MSB)
+#define PX_LCD_CMD_SET_COL_ADR_LO       0x00    ///< (4)  Set column address (LSB)
+#define PX_LCD_CMD_SEG_DIR              0xa0    ///< (8)  SEG Direction
+#define PX_LCD_CMD_INVERSE_DISPLAY      0xa6    ///< (9)  Display normal/reverse
+#define PX_LCD_CMD_ALL_PIXEL_ON         0xa4    ///< (10) Set all pixel ON or normal display
+#define PX_LCD_CMD_BIAS_SELECT          0xa2    ///< (11) Select bias setting
+#define PX_LCD_CMD_RESET                0xe2    ///< (14) Software reset
+#define PX_LCD_CMD_COM_DIRECTION        0xc0    ///< (15) Set output direction of COM
+#define PX_LCD_CMD_POWER_CONTROL        0x28    ///< (16) Control built-in power circuit
+#define PX_LCD_CMD_REG_RATIO            0x20    ///< (17) Select regulation resistor ratio
+#define PX_LCD_CMD_SET_EV               0x81    ///< (18) Set electronic volume (EV) command
+#define PX_LCD_CMD_SET_BOOSTER          0xf8    ///< (19) Set booster level command
 //@}
 
-#define PX_LCD_ST7565P_MAX_NR_OF_COLS   132
-#define PX_LCD_ST7565P_MAX_NR_OF_ROWS   65
+#define PX_LCD_ST7567_MAX_NR_OF_COLS    132
+#define PX_LCD_ST7567_MAX_NR_OF_ROWS    65
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -94,37 +90,53 @@ void px_lcd_init(px_spi_handle_t * handle)
     px_lcd_spi_handle = handle;
 
     // Perform hardware reset
+    px_board_delay_ms(1);
     PX_LCD_CFG_RST_LO();
     px_board_delay_ms(50);
     PX_LCD_CFG_RST_HI();
+    px_board_delay_ms(1);
 
-    // Select 1/9 bias
-    px_lcd_wr_control_data(PX_LCD_CMD_BIAS_SET | 0);
-    // Select normal COM output scan direction
-    px_lcd_wr_control_data(PX_LCD_CMD_COM_OUT_MODE_SEL | 0);
+    // Select 1/9 bias (1/65 duty)
+    px_lcd_wr_control_data(PX_LCD_CMD_BIAS_SELECT | 0);
 
 #if PX_LCD_CFG_ROT_180_DEG
     // Reverse SEG output direction, because LCD is rotated by 180 deg
-    px_lcd_wr_control_data(PX_LCD_CMD_ADC_SEL | 1);
+    px_lcd_wr_control_data(PX_LCD_CMD_SEG_DIR | 1);
 #else
     // Normal SEG output direction
-    px_lcd_wr_control_data(PX_LCD_CMD_ADC_SEL | 0);
+    px_lcd_wr_control_data(PX_LCD_CMD_SEG_DIR | 0);
 #endif
 
+    // Select reverse COM output scan direction
+    px_lcd_wr_control_data(PX_LCD_CMD_COM_DIRECTION | 0x8);
+
+    // Set regulation ratio to 5.0 (VO = 9.01)
+    px_lcd_wr_control_data(PX_LCD_CMD_REG_RATIO | 0x4);
+
+    // Set electronic volume (EV) to 40
+    px_lcd_wr_control_data(PX_LCD_CMD_SET_EV);
+    px_lcd_wr_control_data(40);
+
+    // Enable voltage booster
+    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x4);
+    px_board_delay_ms(84);
+    // Enable voltage booster + regulator
+    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x6);
+    px_board_delay_ms(42);
+    // Enable voltage booster + regulator + follower
+    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x7);
+    px_board_delay_ms(84);
+
+    // Set booster level
+    px_lcd_wr_control_data(PX_LCD_CMD_SET_BOOSTER);
+    px_lcd_wr_control_data(0xaf);
+
     // Set display line adr to 0
-    px_lcd_wr_control_data(PX_LCD_CMD_DISP_START_LINE_SET | 0);
-    // Enable voltage booster, regulator & follower
-    px_lcd_wr_control_data(PX_LCD_CMD_PWR_CTL_SET | 0x7);
-    // Regulator resistor select
-    px_lcd_wr_control_data(PX_LCD_CMD_V_REG_RES_RATIO_SET | 0x3);
-    //set reference voltage mode
-    px_lcd_wr_control_data(PX_LCD_CMD_VOL_MODE_SET);
-    // set reference voltage
-    px_lcd_wr_control_data(47);
+    px_lcd_wr_control_data(PX_LCD_CMD_SET_START_LINE | 0);
     // set normal display
-    px_lcd_wr_control_data(PX_LCD_CMD_DISP_ALL_ON_OFF | 0);
+    px_lcd_wr_control_data(PX_LCD_CMD_ALL_PIXEL_ON | 0);
     // set reverse display OFF
-    px_lcd_wr_control_data(PX_LCD_CMD_DISP_NORMAL_REVERSE | 0);
+    px_lcd_wr_control_data(PX_LCD_CMD_INVERSE_DISPLAY | 0);
     // Clear RAM buffer
     px_lcd_clr();
     // turns the display ON
@@ -154,13 +166,13 @@ void px_lcd_clr(void)
 void px_lcd_sel_col(uint8_t col)
 {
 #if PX_LCD_CFG_ROT_180_DEG
-    col = (PX_LCD_ST7565P_MAX_NR_OF_COLS - PX_LCD_NR_OF_COLS) + col;
+    col = (PX_LCD_ST7567_MAX_NR_OF_COLS - PX_LCD_NR_OF_COLS) + col;
 #endif
 
     // Column most significant nibble
-    px_lcd_wr_control_data(PX_LCD_CMD_COL_ADR_SET_HI | ((col&0xf0)>>4));
+    px_lcd_wr_control_data(PX_LCD_CMD_SET_COL_ADR_HI | ((col&0xf0)>>4));
     // Column least significant nibble
-    px_lcd_wr_control_data(PX_LCD_CMD_COL_ADR_SET_LO | (col&0x0f));
+    px_lcd_wr_control_data(PX_LCD_CMD_SET_COL_ADR_LO | (col&0x0f));
 }
 
 void px_lcd_sel_page(uint8_t page)
@@ -169,7 +181,7 @@ void px_lcd_sel_page(uint8_t page)
     page = (PX_LCD_NR_OF_PAGES - 1) - page;
 #endif
 
-    px_lcd_wr_control_data(PX_LCD_CMD_PAGE_ADR_SET | page);
+    px_lcd_wr_control_data(PX_LCD_CMD_SET_PAGE_ADR | page);
 }
 
 void px_lcd_wr_disp_u8(uint8_t data)
