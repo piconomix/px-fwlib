@@ -176,10 +176,10 @@ typedef signed long long   int64_t;
 #define PX_BIT_TOGGLE(var, bit)             do {(var) ^= (1<<(bit));} while(0)
 
 /// Test if a bit is set (1?)
-#define PX_BIT_IS_HI(var, bit)              (((var)&(1<<(bit))) != 0)
+#define PX_BIT_IS_HI(var, bit)              (((var) & (1<<(bit))) != 0)
 
 /// Test if a bit is cleared (0?)
-#define PX_BIT_IS_LO(var, bit)              (((var)&(1<<(bit))) == 0)
+#define PX_BIT_IS_LO(var, bit)              (((var) & (1<<(bit))) == 0)
 
 /// Wait until a bit is set
 #define PX_WAIT_UNTIL_BIT_IS_HI(var, bit)   do {;} while(PX_BIT_IS_LO((var),(bit)))
@@ -206,42 +206,42 @@ typedef signed long long   int64_t;
 /// @name Byte extraction macros
 //@{
 /// Extract the high 4 bits of a 8-bit value
-#define PX_U8_HI4(data)     ((uint8_t)(((data)>>4)&0x0f))
+#define PX_U8_HI4(data)     ((uint8_t)(((data)>>4) & 0x0f))
 
 /// Extract the low 4 bits of a 8-bit value
-#define PX_U8_LO4(data)     ((uint8_t)((data)&0x0f))
+#define PX_U8_LO4(data)     ((uint8_t)((data) & 0x0f))
 
 /// Extract the high 8 bits of a 16-bit value (Most Significant Byte)
-#define PX_U16_HI8(data)    ((uint8_t)(((data)>>8)&0xff))
+#define PX_U16_HI8(data)    ((uint8_t)(((data)>>8) & 0xff))
 
 /// Extract the low 8 bits of a 16-bit value (Least Significant Byte)
-#define PX_U16_LO8(data)    ((uint8_t)((data)&0xff))
+#define PX_U16_LO8(data)    ((uint8_t)((data) & 0xff))
 
 /// Extract the high 8 bits (bits 31..24) of a 32-bit value
-#define PX_U32_HI8(data)    ((uint8_t)(((data)>>24)&0xff))
+#define PX_U32_HI8(data)    ((uint8_t)(((data)>>24) & 0xff))
 
 /// Extract the middle high 8 bits (bits 23..16) of a 32-bit value
-#define PX_U32_MH8(data)    ((uint8_t)(((data)>>16)&0xff))
+#define PX_U32_MH8(data)    ((uint8_t)(((data)>>16) & 0xff))
 
 /// Extract the middle low 8 bits (bits 15..8) of a 32-bit value
-#define PX_U32_ML8(data)    ((uint8_t)(((data)>>8)&0xff))
+#define PX_U32_ML8(data)    ((uint8_t)(((data)>>8) & 0xff))
 
 /// Extract the low 8 bits (bits 7..0) of a 32-bit value
-#define PX_U32_LO8(data)    ((uint8_t)((data)&0xff))
+#define PX_U32_LO8(data)    ((uint8_t)((data) & 0xff))
 
 /// Extract the high 16 bits (bits 31..16) of a 32-bit value
-#define PX_U32_HI16(data)   ((uint16_t)(((data)>>16)&0xffff))
+#define PX_U32_HI16(data)   ((uint16_t)(((data)>>16) & 0xffff))
 
 /// Extract the low 16 bits (bits 15..0) of a 32-bit value
-#define PX_U32_LO16(data)   ((uint16_t)((data)&0xffff))
+#define PX_U32_LO16(data)   ((uint16_t)((data) & 0xffff))
 //@}
 
 /// @name Bit concatenation macros
 //@{
 /// Concatenate 8 bits to form 8-bit value
 #define PX_U8_CONCAT_U1(b7, b6, b5, b4, b3, b2, b1, b0) \
-                            ( ((b7)<<7)+((b6)<<6)+((b5)<<5)+((b4)<<4)+ \
-                              ((b3)<<3)+((b2)<<2)+((b1)<<1)+((b0)<<0) )
+                            ( ((b7)<<7) | ((b6)<<6) | ((b5)<<5) | ((b4)<<4)+ \
+                              ((b3)<<3) | ((b2)<<2) | ((b1)<<1) | ((b0)<<0) )
 
 //@}
 
@@ -269,19 +269,19 @@ typedef signed long long   int64_t;
 //@{
 
 /// Calculate unsigned division with rounding to nearest integer value
-#define PX_UDIV_ROUND(dividend,divisor)     (((dividend)+((divisor)/2))/(divisor))
+#define PX_UDIV_ROUND(dividend,divisor)     (((dividend) + ((divisor)/2)) / (divisor))
 
 /// Calculate unsigned division with rounding to nearest integer value
-#define PX_UDIV_ROUNDUP(dividend,divisor)   (((dividend)+((divisor)-1))/(divisor))
+#define PX_UDIV_ROUNDUP(dividend,divisor)   (((dividend) + ((divisor)-1)) / (divisor))
 
 /// Calculate signed division with rounding to nearest integer value
-#define PX_SDIV_ROUND(dividend,divisor)     (((dividend<0)^(divisor<0)) ? (((dividend)-((divisor)/2))/(divisor)) : (((dividend)+((divisor)/2))/(divisor)))
+#define PX_SDIV_ROUND(dividend,divisor)     (((dividend<0) ^ (divisor<0)) ? (((dividend) - ((divisor)/2)) / (divisor)) : (((dividend) + ((divisor)/2)) / (divisor)))
 
 /// Calculate the number of items in an array
 #define PX_SIZEOF_ARRAY(array)              (sizeof(array) / sizeof((array)[0]))
 
 /// Is value a power of two (1, 2, 4, 8, 16, ...)?
-#define PX_VAL_IS_PWR_OF_TWO(value)         (((value)&((value)-1)) == 0)
+#define PX_VAL_IS_PWR_OF_TWO(value)         (((value) & ((value) - 1)) == 0)
 
 /// Swap the value of two variables
 #define PX_SWAP(type_t, i , j)              do { type_t k = i; i = j; j = k; } while (0)
