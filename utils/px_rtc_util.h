@@ -39,9 +39,9 @@
  *  This module provides basic time, calender and alarm functionality.
  *  
  *  File(s):
- *  - utils/px_rtc.h
+ *  - utils/px_rtc_util.h
  *  - utils/px_rtc_util_cfg_template.h
- *  - utils/px_rtc.c
+ *  - utils/px_rtc_util.c
  *  
  */
 /// @{
