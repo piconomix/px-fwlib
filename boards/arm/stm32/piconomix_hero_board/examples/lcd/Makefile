@@ -56,13 +56,13 @@ STMCUBE = $(PICOLIB)/libs/STM32Cube/L0
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
 SRC += $(BSP)/px_board.c
+SRC += res/px_gfx_img_dino_25x30.c
 
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
 SRC += $(PICOLIB)/$(ARCH)/px_spi.c
 SRC += $(PICOLIB)/devices/display/px_lcd_st7565p_tse2g0330e.c
 SRC += $(PICOLIB)/gfx/px_gfx.c
 SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
-SRC += $(PICOLIB)/gfx/images/px_gfx_img_hero_logo_64x42.c
 
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c

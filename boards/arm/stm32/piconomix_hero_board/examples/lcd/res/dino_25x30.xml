@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data name="px_gfx_img_hero_logo_64x42" type="image">
+    <picture format="png">iVBORw0KGgoAAAANSUhEUgAAABkAAAAeCAIAAABWjiKMAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAUlEQVRIiZVVQRLEIAgTpv//MntgFhkSUHPY6VoMAaIVM1sAEVlrmVk8YAzio0S+GR9m1KBu2w2d8gwi8ZsXHR0XqbFD6Oo0bl05p4di+XOyD1PRtDGEgUtx89Dj0EtJNes/VpFJMfjLoi492eFhjoHuMHB/5T0UB0/c0M3u124omP84nz3HGwnUw3uL6+rUzdYvb5W+MLPZHx5QqHWB8YYORo58WUawltCunLwSovJlKSLVE9E+KqrIX/8R+fN0F+JiycF7H5rLFYZGobkd+zxSN80mKJIPZyjTIXWp+u2eoHSh9+7DB00s7vG/Z11DjTVy1oU+oO676v0THmocVhw/KwrnSk1wUc4AAAAASUVORK5CYII=</picture>
+    <converted>H:/Work/PICONOMIX/libraries/piconomix-fwlib/trunk/boards/arm/stm32/piconomix_hero_board/examples/lcd/res/px_gfx_img_dino_25x30.c</converted>
+</data>

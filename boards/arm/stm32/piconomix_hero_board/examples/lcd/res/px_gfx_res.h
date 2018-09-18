@@ -39,7 +39,7 @@
 #include "px_defines.h"
 #include "px_gfx.h"
 
-extern px_gfx_img_t     px_gfx_img_hero_logo_64x42;
+extern px_gfx_img_t     px_gfx_img_dino_25x30;
 extern px_gfx_font_t    px_gfx_font_5x7;
 
 #ifdef __cplusplus

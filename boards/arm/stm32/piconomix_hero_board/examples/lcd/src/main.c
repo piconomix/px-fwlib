@@ -74,19 +74,30 @@ int main(void)
     // Initialise graphics
     px_gfx_init();
 
+    // Draw pixels
+    px_gfx_draw_pixel(PX_GFX_DISP_SIZE_X / 2, PX_GFX_DISP_SIZE_Y / 2 - 5, PX_GFX_COLOR_ON);
+    px_gfx_draw_pixel(PX_GFX_DISP_SIZE_X / 2, PX_GFX_DISP_SIZE_Y / 2 + 5, PX_GFX_COLOR_ON);
+
+    // Draw lines
+    px_gfx_draw_line(0, 0, PX_GFX_DISP_SIZE_X - 1, PX_GFX_DISP_SIZE_Y - 1, PX_GFX_COLOR_ON);
+    px_gfx_draw_line(0, PX_GFX_DISP_SIZE_Y - 1, PX_GFX_DISP_SIZE_X - 1, 0, PX_GFX_COLOR_ON);
+
     // Draw rectangle
     px_gfx_draw_rect(0, 0, PX_GFX_DISP_SIZE_X, PX_GFX_DISP_SIZE_Y, PX_GFX_COLOR_ON);
 
-    // Draw text
-    px_gfx_draw_str(&px_gfx_font_5x7, 2, 2, PX_GFX_COLOR_ON, "Hello World!");
+    // Draw circle
+    px_gfx_draw_circ(PX_GFX_DISP_SIZE_X / 2, PX_GFX_DISP_SIZE_Y / 2, 20, PX_GFX_COLOR_ON);
 
-    // Draw bitmap
-    px_gfx_draw_img((PX_GFX_DISP_SIZE_X - px_gfx_img_hero_logo_64x42.width) / 2, 
-                    (PX_GFX_DISP_SIZE_Y - px_gfx_img_hero_logo_64x42.height) / 2,
-                    px_gfx_img_hero_logo_64x42.width,
-                    px_gfx_img_hero_logo_64x42.height,
+    // Draw text
+    px_gfx_draw_str(&px_gfx_font_5x7, 30, 2, PX_GFX_COLOR_ON, "Hello World!");
+
+    // Draw image
+    px_gfx_draw_img(PX_GFX_DISP_SIZE_X / 2 + 30, 
+                    PX_GFX_DISP_SIZE_Y / 2 - 15, 
+                    px_gfx_img_dino_25x30.width, 
+                    px_gfx_img_dino_25x30.height,
                     PX_GFX_COLOR_ON,
-                    px_gfx_img_hero_logo_64x42.data);
+                    px_gfx_img_dino_25x30.data);
 
     // Update display
     px_gfx_update();
