@@ -47,7 +47,7 @@ emulator (for example [Tera Term](http://en.sourceforge.jp/projects/ttssh2)).
 
 Connect your board, fire up the CLI and verify that it works:
 
-![CLI Exlorer executing on an Arduino Uno R3](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/arduino_uno_board/arduino_uno_cli_i2c_slave.png)
+![CLI Exlorer executing on an Arduino Uno R3](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/arduino_uno_board/arduino_uno_cli_animated.gif)
 
 The BMP280 is found at 7-bit slave address 0x76. The chip identification 
 register value for the BMP280 is 0x58. This confirms that you are able to write 

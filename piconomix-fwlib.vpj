@@ -3,7 +3,7 @@
     Version="10.0"
     VendorName="SlickEdit"
     WorkingDir=".."
-    VCSProject="Subversion:">
+    VCSProject="Git:">
     <Config
         Name="Debug"
         Type="cpp"
