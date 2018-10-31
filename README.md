@@ -117,11 +117,14 @@ Questions or Feedback?
 Questions or feedback (positive and negative) is great and will help to improve 
 the library:
 
-![Feedback](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/feedback.png)
+![Feedback](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/feedback_animated.gif)
 
 Methods of communication:
 - [Forum](https://piconomix.com/forum)
 - [Contact page](https://piconomix.com/contact)
+
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/pieterconradie)
+Click [HERE](https://saythanks.io/to/pieterconradie) to say thanks!
 
 Support
 =======
@@ -133,8 +136,5 @@ the shop.
 
 [![Shop](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/shop.png)](http://piconomix.com/shop/)
 Click [HERE](http://piconomix.com/shop/) to visit the shop
-
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/pieterconradie)
-Click [HERE](https://saythanks.io/to/pieterconradie) to say thanks!
 
 
