@@ -99,32 +99,34 @@ void px_lcd_init(px_spi_handle_t * handle)
     // Select 1/9 bias (1/65 duty)
     px_lcd_wr_control_data(PX_LCD_CMD_BIAS_SELECT | 0);
 
-#if PX_LCD_CFG_ROT_180_DEG
-    // Reverse SEG output direction, because LCD is rotated by 180 deg
-    px_lcd_wr_control_data(PX_LCD_CMD_SEG_DIR | 1);
-#else
+#if !PX_LCD_CFG_ROT_180_DEG
     // Normal SEG output direction
     px_lcd_wr_control_data(PX_LCD_CMD_SEG_DIR | 0);
+    // Select normal COM output scan direction
+    px_lcd_wr_control_data(PX_LCD_CMD_COM_DIRECTION | 0x00);
+#else
+    // Reverse SEG output direction, because LCD is rotated by 180 deg
+    px_lcd_wr_control_data(PX_LCD_CMD_SEG_DIR | 1);    
 #endif
 
-    // Select reverse COM output scan direction
-    px_lcd_wr_control_data(PX_LCD_CMD_COM_DIRECTION | 0x8);
+    // Select normal COM output scan direction
+    px_lcd_wr_control_data(PX_LCD_CMD_COM_DIRECTION | 0x00);
 
     // Set regulation ratio to 5.0 (VO = 9.01)
-    px_lcd_wr_control_data(PX_LCD_CMD_REG_RATIO | 0x4);
+    px_lcd_wr_control_data(PX_LCD_CMD_REG_RATIO | 0x04);
 
     // Set electronic volume (EV) to 40
     px_lcd_wr_control_data(PX_LCD_CMD_SET_EV);
     px_lcd_wr_control_data(40);
 
     // Enable voltage booster
-    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x4);
+    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x04);
     px_board_delay_ms(84);
     // Enable voltage booster + regulator
-    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x6);
+    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x06);
     px_board_delay_ms(42);
     // Enable voltage booster + regulator + follower
-    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x7);
+    px_lcd_wr_control_data(PX_LCD_CMD_POWER_CONTROL | 0x07);
     px_board_delay_ms(84);
 
     // Set booster level
