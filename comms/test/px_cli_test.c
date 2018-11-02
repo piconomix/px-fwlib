@@ -43,6 +43,7 @@ static const char* px_cli_cmd_buzzer_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
+/// [CLI cmd tree declaration]
 // Create CLI LED command structures
 PX_CLI_CMD_CREATE(px_cli_cmd_led_on,    "on",    0, 0, "",    "Switch LED on")
 PX_CLI_CMD_CREATE(px_cli_cmd_led_off,   "off",   0, 0, "",    "Switch LED off")
@@ -63,7 +64,7 @@ PX_CLI_CMD_LIST_CREATE()
     PX_CLI_GROUP_ADD(px_cli_group_led)
     PX_CLI_CMD_ADD  (px_cli_cmd_help,   px_cli_cmd_help_fn)
 PX_CLI_CMD_LIST_END()
-
+/// [CLI cmd tree declaration]
 
 // Declare UART handle structure
 static px_uart_handle_t px_uart_handle;
