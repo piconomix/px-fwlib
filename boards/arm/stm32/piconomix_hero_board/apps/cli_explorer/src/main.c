@@ -38,7 +38,7 @@
 #include "px_defines.h"
 #include "px_compiler.h"
 #include "px_cli.h"
-#include "px_at45d.h"
+#include "px_at25s.h"
 #include "px_systmr.h"
 #include "px_rtc.h"
 
@@ -50,7 +50,7 @@
 #include "px_i2c.h"
 #include "px_sysclk.h"
 #include "px_sd.h"
-#include "px_lcd_st7565p_tse2g0330e.h"
+#include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
 #include "px_gfx_res.h"
 
@@ -62,7 +62,7 @@
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 px_uart_handle_t px_uart1_handle;
-px_spi_handle_t  px_spi_df_handle;
+px_spi_handle_t  px_spi_sf_handle;
 px_spi_handle_t  px_spi_sd_handle;
 px_spi_handle_t  px_spi_lcd_handle;
 px_i2c_handle_t  px_i2c_handle;
@@ -136,27 +136,21 @@ static bool main_init(void)
                  PX_LCD_SPI_DATA_ORDER,
                  0x00);
     px_lcd_init(&px_spi_lcd_handle);
-
-    // Initialise AT45D DataFlash driver
-    px_spi_open2(&px_spi_df_handle,
+#if 1
+    // Initialise AT25S Serial Flash driver
+    px_spi_open2(&px_spi_sf_handle,
                  PX_SPI_PER_2,
-                 PX_BOARD_SPI2_CS_DF,
-                 px_spi_util_baud_hz_to_clk_div(PX_AT45D_MAX_SPI_CLOCK_HZ), 
-                 PX_AT45D_SPI_MODE, 
-                 PX_AT45D_SPI_DATA_ORDER,
+                 PX_BOARD_SPI2_CS_SF,
+                 px_spi_util_baud_hz_to_clk_div(PX_AT25S_MAX_SPI_CLOCK_HZ), 
+                 PX_AT25S_SPI_MODE, 
+                 PX_AT25S_SPI_DATA_ORDER,
                  0x00);
-    px_at45d_init(&px_spi_df_handle);
+    px_at25s_init(&px_spi_sf_handle);
 
-    // Resume DataFlash in case it was left in a power down state and the 
+    // Resume Serial Flash in case it was left in a power down state and the 
     // processor reset
-    px_at45d_resume_from_power_down();
-
-    // Check DataFlash communication
-    if((px_at45d_get_status()&0xfe) != ((1<<PX_AT45D_STATUS_READY) | (0x7 << 2)))
-    {
-        return false;
-    }    
-
+    px_at25s_resume_from_power_down();
+#endif
     // Success
     return true;
 }
@@ -178,6 +172,7 @@ int main(void)
     px_board_buzzer_off();
 
     // Draw LCD splash screen
+    PX_LCD_BACKLIGHT_ON();
     px_gfx_init();
     px_gfx_draw_img((PX_GFX_DISP_SIZE_X - px_gfx_img_hero_logo_64x42.width) / 2, 
                     (PX_GFX_DISP_SIZE_Y - px_gfx_img_hero_logo_64x42.height) / 2,

@@ -61,6 +61,24 @@ static const char* px_cli_cmd_fn_lcd_clr(uint8_t argc, char* argv[])
     return NULL;
 }
 
+static const char* px_cli_cmd_fn_lcd_backlight(uint8_t argc, char* argv[])
+{
+    // <on|off>
+    switch(px_cli_util_argv_to_option(0, "on\0off\0"))
+    {
+    case 0: 
+        PX_LCD_BACKLIGHT_ON();
+        break;
+    case 1: 
+        PX_LCD_BACKLIGHT_OFF();
+        break;
+    default:
+        return "Error: Invalid parameter";
+    }
+
+    return NULL;
+}
+
 static const char* px_cli_cmd_fn_lcd_pixel(uint8_t argc, char* argv[])
 {
     px_gfx_xy_t     x;
@@ -427,6 +445,7 @@ static const char* px_cli_cmd_fn_lcd_str(uint8_t argc, char* argv[])
 
 // Create CLI command structures
 PX_CLI_CMD_CREATE(px_cli_cmd_lcd_clr,       "clr",  0, 0,   "",                             "Clear LCD display")
+PX_CLI_CMD_CREATE(px_cli_cmd_lcd_backlight, "bl",   1, 1,   "<on|off>",                     "Enable/disable LCD backlight")
 PX_CLI_CMD_CREATE(px_cli_cmd_lcd_pixel,     "p",    2, 3,   "<x> <y> [color:0|1|i]",        "Draw pixel")
 PX_CLI_CMD_CREATE(px_cli_cmd_lcd_line,      "l",    4, 5,   "<x1> <y1> <x2> <y2> [color]",  "Draw line")
 PX_CLI_CMD_CREATE(px_cli_cmd_lcd_rect,      "r",    4, 5,   "<x> <y> <w> <h> [color]",      "Draw rectangle")
@@ -435,11 +454,12 @@ PX_CLI_CMD_CREATE(px_cli_cmd_lcd_circle,    "c",    3, 4,   "<x> <y> <r> [color]
 PX_CLI_CMD_CREATE(px_cli_cmd_lcd_str,       "s",    3, 4,   "<x> <y> <\"str\"> [color]",    "Draw string")
 
 PX_CLI_GROUP_CREATE(px_cli_group_lcd, "lcd")
-    PX_CLI_CMD_ADD(px_cli_cmd_lcd_clr,      px_cli_cmd_fn_lcd_clr)
-    PX_CLI_CMD_ADD(px_cli_cmd_lcd_pixel,    px_cli_cmd_fn_lcd_pixel)
-    PX_CLI_CMD_ADD(px_cli_cmd_lcd_line,     px_cli_cmd_fn_lcd_line)
-    PX_CLI_CMD_ADD(px_cli_cmd_lcd_rect,     px_cli_cmd_fn_lcd_rect)
-    PX_CLI_CMD_ADD(px_cli_cmd_lcd_fill,     px_cli_cmd_fn_lcd_fill)
-    PX_CLI_CMD_ADD(px_cli_cmd_lcd_circle,   px_cli_cmd_fn_lcd_circle)
-    PX_CLI_CMD_ADD(px_cli_cmd_lcd_str,      px_cli_cmd_fn_lcd_str)
+    PX_CLI_CMD_ADD(px_cli_cmd_lcd_clr,          px_cli_cmd_fn_lcd_clr)
+    PX_CLI_CMD_ADD(px_cli_cmd_lcd_backlight,    px_cli_cmd_fn_lcd_backlight)
+    PX_CLI_CMD_ADD(px_cli_cmd_lcd_pixel,        px_cli_cmd_fn_lcd_pixel)
+    PX_CLI_CMD_ADD(px_cli_cmd_lcd_line,         px_cli_cmd_fn_lcd_line)
+    PX_CLI_CMD_ADD(px_cli_cmd_lcd_rect,         px_cli_cmd_fn_lcd_rect)
+    PX_CLI_CMD_ADD(px_cli_cmd_lcd_fill,         px_cli_cmd_fn_lcd_fill)
+    PX_CLI_CMD_ADD(px_cli_cmd_lcd_circle,       px_cli_cmd_fn_lcd_circle)
+    PX_CLI_CMD_ADD(px_cli_cmd_lcd_str,          px_cli_cmd_fn_lcd_str)
 PX_CLI_GROUP_END()

@@ -27,7 +27,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
  
-    Title:          px_cli_cmds_sf.h : CLI commands for AT45D DataFlash
+    Title:          px_cli_cmds_sf.h : CLI commands for AT45D Serial Flash
     Author(s):      Pieter Conradie
     Creation Date:  2018-03-09
 

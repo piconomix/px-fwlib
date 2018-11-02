@@ -1,5 +1,5 @@
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __PX_SPI_CFG_H__
+#define __PX_SPI_CFG_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -26,10 +26,10 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
-
-    Title:          Piconomix STM32L072 Hero Board CLI application
+    
+    Title:          px_spi_cfg.h : SPI Peripheral Driver configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2018-03-01
+    Creation Date:  2018-03-02
 
 ============================================================================= */
 
@@ -37,36 +37,61 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_uart.h"
-#include "px_spi.h"
-#include "px_i2c.h"
+#include "px_board.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 /* _____DEFINITIONS _________________________________________________________ */
-#define MAIN_BUFFER_SIZE 512
+/// Enable/disable support for SPI1 peripheral
+#define PX_SPI_CFG_SPI1_EN 1
 
-/* _____TYPE DEFINITIONS_____________________________________________________ */
+/// Enable/disable support for SPI2 peripheral
+#define PX_SPI_CFG_SPI2_EN 1
 
-/* _____GLOBAL VARIABLES_____________________________________________________ */
-extern px_uart_handle_t px_uart1_handle;
-extern px_spi_handle_t  px_spi_sf_handle;
-extern px_spi_handle_t  px_spi_sd_handle;
-extern px_spi_handle_t  px_spi_lcd_handle;
-extern px_i2c_handle_t  px_i2c_handle;
+/// Specify default baud rate
+#define PX_SPI_CFG_DEFAULT_BAUD         PX_SPI_BAUD_CLK_DIV_32
 
-extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+/// Specify default SPI mode (clock phase and polarity)
+#define PX_SPI_CFG_DEFAULT_MODE         PX_SPI_MODE0
 
-/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void main_usb_event_connected   (void);
-void main_dbg_put_char          (char data);
-void main_dbg_timestamp         (char * str);
+/// Specify default SPI data order
+#define PX_SPI_CFG_DEFAULT_DATA_ORDER   PX_SPI_DATA_ORDER_MSB
 
-/* _____MACROS_______________________________________________________________ */
+/**
+ *  Map PX_SPI_CFG_CS_LO() macro to px_board_spi_cs_lo() function.
+ *  A manual Chip Select function must be implemented, e.g.
+ *  
+ *      void px_board_spi_cs_lo(uint8_t cs_id)
+ *      {
+ *          switch(cs_id)
+ *          {
+ *          case BOARD_SPI_CS:
+ *              PX_GPIO_PIN_SET_LO(PX_GPIO_SPI_CS);
+ *              break;
+ *  
+ *          default:
+ *              break;
+ *          }
+ *      }
+ */
+#define PX_SPI_CFG_CS_LO(cs_id)     px_board_spi_cs_lo(cs_id)
 
-#ifdef __cplusplus
-}
-#endif
+/** 
+ *  Map PX_SPI_CFG_CS_HI() macro to px_board_spi_cs_hi() function.
+ *  A manual Chip Select function must be implemented, e.g.
+ *  
+ *      void px_board_spi_cs_hi(uint8_t cs_id)
+ *      {
+ *          switch(cs_id)
+ *          {
+ *          case BOARD_SPI_CS:
+ *              PX_GPIO_PIN_SET_HI(PX_GPIO_SPI_CS);
+ *              break;
+ *  
+ *          default:
+ *              break;
+ *          }
+ *      }
+ *  
+ */
+#define PX_SPI_CFG_CS_HI(cs_id)     px_board_spi_cs_hi(cs_id)
 
-#endif // #ifndef __MAIN_H__
+#endif // #ifndef __PX_SPI_CFG_H__
