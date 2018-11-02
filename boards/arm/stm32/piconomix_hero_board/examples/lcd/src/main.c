@@ -37,7 +37,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_board.h"
 #include "px_spi.h"
-#include "px_lcd_st7565p_tse2g0330e.h"
+#include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
 #include "px_gfx_res.h"
 

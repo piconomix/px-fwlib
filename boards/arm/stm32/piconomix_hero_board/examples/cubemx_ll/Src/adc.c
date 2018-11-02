@@ -67,11 +67,11 @@ void MX_ADC_Init(void)
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_ADC1);
   
   /**ADC GPIO Configuration  
-  PA1   ------> ADC_IN1
-  PA5   ------> ADC_IN5
-  PA6   ------> ADC_IN6
   PA7   ------> ADC_IN7
-  PC4   ------> ADC_IN14 
+  PC4   ------> ADC_IN14
+  PC5   ------> ADC_IN15
+  PB0   ------> ADC_IN8
+  PB1   ------> ADC_IN9 
   */
   GPIO_InitStruct.Pin = ADC3_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
@@ -100,23 +100,23 @@ void MX_ADC_Init(void)
 
     /**Configure Regular Channel 
     */
-  LL_ADC_REG_SetSequencerChAdd(ADC1, LL_ADC_CHANNEL_1);
-
-    /**Configure Regular Channel 
-    */
-  LL_ADC_REG_SetSequencerChAdd(ADC1, LL_ADC_CHANNEL_5);
-
-    /**Configure Regular Channel 
-    */
-  LL_ADC_REG_SetSequencerChAdd(ADC1, LL_ADC_CHANNEL_6);
-
-    /**Configure Regular Channel 
-    */
   LL_ADC_REG_SetSequencerChAdd(ADC1, LL_ADC_CHANNEL_7);
 
     /**Configure Regular Channel 
     */
+  LL_ADC_REG_SetSequencerChAdd(ADC1, LL_ADC_CHANNEL_8);
+
+    /**Configure Regular Channel 
+    */
+  LL_ADC_REG_SetSequencerChAdd(ADC1, LL_ADC_CHANNEL_9);
+
+    /**Configure Regular Channel 
+    */
   LL_ADC_REG_SetSequencerChAdd(ADC1, LL_ADC_CHANNEL_14);
+
+    /**Configure Regular Channel 
+    */
+  LL_ADC_REG_SetSequencerChAdd(ADC1, LL_ADC_CHANNEL_15);
 
     /**Common config 
     */
@@ -133,15 +133,15 @@ void MX_ADC_Init(void)
 
   LL_ADC_SetCommonFrequencyMode(__LL_ADC_COMMON_INSTANCE(ADC1), LL_ADC_CLOCK_FREQ_MODE_HIGH);
 
+  LL_ADC_DisableIT_EOC(ADC1);
+
+  LL_ADC_DisableIT_EOS(ADC1);
+
   ADC_InitStruct.Clock = LL_ADC_CLOCK_SYNC_PCLK_DIV2;
   ADC_InitStruct.Resolution = LL_ADC_RESOLUTION_12B;
   ADC_InitStruct.DataAlignment = LL_ADC_DATA_ALIGN_RIGHT;
   ADC_InitStruct.LowPowerMode = LL_ADC_LP_MODE_NONE;
   LL_ADC_Init(ADC1, &ADC_InitStruct);
-
-  LL_ADC_EnableIT_EOC(ADC1);
-
-  LL_ADC_DisableIT_EOS(ADC1);
 
 }
 

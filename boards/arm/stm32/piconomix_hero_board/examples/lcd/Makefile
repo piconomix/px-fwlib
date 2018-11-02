@@ -60,7 +60,7 @@ SRC += res/px_gfx_img_dino_25x30.c
 
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
 SRC += $(PICOLIB)/$(ARCH)/px_spi.c
-SRC += $(PICOLIB)/devices/display/px_lcd_st7565p_tse2g0330e.c
+SRC += $(PICOLIB)/devices/display/px_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/gfx/px_gfx.c
 SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
 

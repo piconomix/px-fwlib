@@ -48,7 +48,6 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l0xx_hal.h"
-
 extern void _Error_Handler(char *, int);
 /* USER CODE BEGIN 0 */
 

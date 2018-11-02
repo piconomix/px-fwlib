@@ -86,19 +86,19 @@ void MX_GPIO_Init(void)
   LL_GPIO_ResetOutputPin(USR_LED_GPIO_Port, USR_LED_Pin);
 
   /**/
-  LL_GPIO_ResetOutputPin(LCD_RST_GPIO_Port, LCD_RST_Pin);
-
-  /**/
   LL_GPIO_ResetOutputPin(LCD_RS_GPIO_Port, LCD_RS_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(VBAT_MEAS_EN_GPIO_Port, VBAT_MEAS_EN_Pin);
 
   /**/
+  LL_GPIO_SetOutputPin(SPI2_CS_DF_GPIO_Port, SPI2_CS_DF_Pin);
+
+  /**/
   LL_GPIO_SetOutputPin(SPI2_CS_LCD_GPIO_Port, SPI2_CS_LCD_Pin);
 
   /**/
-  LL_GPIO_SetOutputPin(SPI2_CS_DF_GPIO_Port, SPI2_CS_DF_Pin);
+  LL_GPIO_SetOutputPin(LCD_BACKLIGHT_GPIO_Port, LCD_BACKLIGHT_Pin);
 
   /**/
   LL_GPIO_SetOutputPin(PWR_HOLD_GPIO_Port, PWR_HOLD_Pin);
@@ -108,18 +108,6 @@ void MX_GPIO_Init(void)
 
   /**/
   LL_GPIO_SetOutputPin(SPI1_CS_GPIO_Port, SPI1_CS_Pin);
-
-  /**/
-  GPIO_InitStruct.Pin = LCD_BTN_1_LT_Pin;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
-  LL_GPIO_Init(LCD_BTN_1_LT_GPIO_Port, &GPIO_InitStruct);
-
-  /**/
-  GPIO_InitStruct.Pin = LCD_BTN_2_RT_Pin;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
-  LL_GPIO_Init(LCD_BTN_2_RT_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = LCD_BTN_3_UP_Pin;
@@ -134,6 +122,18 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(USR_LED_GPIO_Port, &GPIO_InitStruct);
+
+  /**/
+  GPIO_InitStruct.Pin = LCD_BTN_2_RT_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+  LL_GPIO_Init(LCD_BTN_2_RT_GPIO_Port, &GPIO_InitStruct);
+
+  /**/
+  GPIO_InitStruct.Pin = LCD_BTN_1_LT_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+  LL_GPIO_Init(LCD_BTN_1_LT_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = GPIO6_Pin;
@@ -178,20 +178,20 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(GPIO0_GPIO_Port, &GPIO_InitStruct);
 
   /**/
+  GPIO_InitStruct.Pin = SPI2_CS_DF_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(SPI2_CS_DF_GPIO_Port, &GPIO_InitStruct);
+
+  /**/
   GPIO_InitStruct.Pin = SPI2_CS_LCD_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(SPI2_CS_LCD_GPIO_Port, &GPIO_InitStruct);
-
-  /**/
-  GPIO_InitStruct.Pin = LCD_RST_Pin;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(LCD_RST_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = LCD_RS_Pin;
@@ -202,12 +202,12 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(LCD_RS_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = SPI2_CS_DF_Pin;
+  GPIO_InitStruct.Pin = LCD_BACKLIGHT_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(SPI2_CS_DF_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(LCD_BACKLIGHT_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = PWM_BUZZER_Pin;
@@ -235,10 +235,10 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(PWR_HOLD_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = LCD_BTN_YES_Pin;
+  GPIO_InitStruct.Pin = LCD_BTN_6_YES_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
-  LL_GPIO_Init(LCD_BTN_YES_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(LCD_BTN_6_YES_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = USB_DET_Pin;
@@ -275,10 +275,10 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(SPI1_CS_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = SD_CD_Pin;
+  GPIO_InitStruct.Pin = GPIO7_SD_CD_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
-  LL_GPIO_Init(SD_CD_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(GPIO7_SD_CD_GPIO_Port, &GPIO_InitStruct);
 
 }
 

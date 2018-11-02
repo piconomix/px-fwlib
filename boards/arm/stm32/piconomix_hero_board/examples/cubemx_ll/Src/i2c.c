@@ -69,17 +69,17 @@ void MX_I2C1_Init(void)
   */
   GPIO_InitStruct.Pin = I2C1_SCL_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   GPIO_InitStruct.Alternate = LL_GPIO_AF_4;
   LL_GPIO_Init(I2C1_SCL_GPIO_Port, &GPIO_InitStruct);
 
   GPIO_InitStruct.Pin = I21C1_SDA_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   GPIO_InitStruct.Alternate = LL_GPIO_AF_4;
   LL_GPIO_Init(I21C1_SDA_GPIO_Port, &GPIO_InitStruct);
 
@@ -88,6 +88,14 @@ void MX_I2C1_Init(void)
 
     /**I2C Initialization 
     */
+  LL_I2C_EnableAutoEndMode(I2C1);
+
+  LL_I2C_DisableOwnAddress2(I2C1);
+
+  LL_I2C_DisableGeneralCall(I2C1);
+
+  LL_I2C_EnableClockStretching(I2C1);
+
   I2C_InitStruct.PeripheralMode = LL_I2C_MODE_I2C;
   I2C_InitStruct.Timing = 0x00707CBB;
   I2C_InitStruct.AnalogFilter = LL_I2C_ANALOGFILTER_ENABLE;
@@ -97,15 +105,7 @@ void MX_I2C1_Init(void)
   I2C_InitStruct.OwnAddrSize = LL_I2C_OWNADDRESS1_7BIT;
   LL_I2C_Init(I2C1, &I2C_InitStruct);
 
-  LL_I2C_EnableAutoEndMode(I2C1);
-
   LL_I2C_SetOwnAddress2(I2C1, 0, LL_I2C_OWNADDRESS2_NOMASK);
-
-  LL_I2C_DisableOwnAddress2(I2C1);
-
-  LL_I2C_DisableGeneralCall(I2C1);
-
-  LL_I2C_EnableClockStretching(I2C1);
 
 }
 

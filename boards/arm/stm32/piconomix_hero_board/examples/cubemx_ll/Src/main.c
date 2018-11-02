@@ -132,20 +132,23 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-      // User Button being pressed?
-      if(!LL_GPIO_IsInputPinSet(LCD_BTN_1_LT_GPIO_Port, LCD_BTN_1_LT_Pin))
+      // Button being pressed?
+      if(!LL_GPIO_IsInputPinSet(LCD_BTN_6_YES_GPIO_Port, LCD_BTN_6_YES_Pin))
       {
           // Enable LED
           LL_GPIO_SetOutputPin(USR_LED_GPIO_Port, USR_LED_Pin);
+          LL_GPIO_SetOutputPin(SPI1_CS_GPIO_Port, SPI1_CS_Pin);
       }
       else
       {
           // Disable LED
           LL_GPIO_ResetOutputPin(USR_LED_GPIO_Port, USR_LED_Pin);
       }
+
   }
   /* USER CODE END 3 */
 
@@ -255,7 +258,7 @@ void _Error_Handler(char *file, int line)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  while(1) 
+  while(1)
   {
   }
   /* USER CODE END Error_Handler_Debug */
@@ -273,7 +276,7 @@ void assert_failed(uint8_t* file, uint32_t line)
 { 
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
-    ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

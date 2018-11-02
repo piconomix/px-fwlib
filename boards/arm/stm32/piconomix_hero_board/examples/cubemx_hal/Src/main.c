@@ -133,9 +133,10 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
+
   /* USER CODE BEGIN 3 */
-      // User Button being pressed?
-      if(HAL_GPIO_ReadPin(LCD_BTN_1_LT_GPIO_Port, LCD_BTN_1_LT_Pin) == GPIO_PIN_RESET)
+      // Button being pressed?
+      if(HAL_GPIO_ReadPin(LCD_BTN_6_YES_GPIO_Port, LCD_BTN_6_YES_Pin) == GPIO_PIN_RESET)
       {
           // Enable LED
           HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_SET);

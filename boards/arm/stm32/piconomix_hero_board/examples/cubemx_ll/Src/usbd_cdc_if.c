@@ -51,6 +51,7 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
+
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -77,6 +78,7 @@
   */
 
 /* USER CODE BEGIN PRIVATE_TYPES */
+
 /* USER CODE END PRIVATE_TYPES */
 
 /**
@@ -91,8 +93,8 @@
 /* USER CODE BEGIN PRIVATE_DEFINES */
 /* Define size for the receive and transmit buffer over CDC */
 /* It's up to user to redefine and/or remove those define */
-#define APP_RX_DATA_SIZE  2048
-#define APP_TX_DATA_SIZE  2048
+#define APP_RX_DATA_SIZE  1000
+#define APP_TX_DATA_SIZE  1000
 /* USER CODE END PRIVATE_DEFINES */
 
 /**
@@ -105,6 +107,7 @@
   */
 
 /* USER CODE BEGIN PRIVATE_MACRO */
+
 /* USER CODE END PRIVATE_MACRO */
 
 /**
@@ -124,6 +127,7 @@ uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
+
 /* USER CODE END PRIVATE_VARIABLES */
 
 /**
@@ -138,6 +142,7 @@ uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
+
 /* USER CODE END EXPORTED_VARIABLES */
 
 /**
@@ -155,6 +160,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length);
 static int8_t CDC_Receive_FS(uint8_t* pbuf, uint32_t *Len);
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_DECLARATION */
+
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
 
 /**
@@ -205,25 +211,25 @@ static int8_t CDC_DeInit_FS(void)
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 {
   /* USER CODE BEGIN 5 */
-  switch (cmd)
+  switch(cmd)
   {
-  case CDC_SEND_ENCAPSULATED_COMMAND:
- 
-    break;
-
-  case CDC_GET_ENCAPSULATED_RESPONSE:
- 
-    break;
-
-  case CDC_SET_COMM_FEATURE:
- 
-    break;
-
-  case CDC_GET_COMM_FEATURE:
+    case CDC_SEND_ENCAPSULATED_COMMAND:
 
     break;
 
-  case CDC_CLEAR_COMM_FEATURE:
+    case CDC_GET_ENCAPSULATED_RESPONSE:
+
+    break;
+
+    case CDC_SET_COMM_FEATURE:
+
+    break;
+
+    case CDC_GET_COMM_FEATURE:
+
+    break;
+
+    case CDC_CLEAR_COMM_FEATURE:
 
     break;
 
@@ -238,28 +244,28 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
   /*                                        2 - 2 Stop bits                      */
   /* 5      | bParityType |  1   | Number | Parity                               */
   /*                                        0 - None                             */
-  /*                                        1 - Odd                              */ 
+  /*                                        1 - Odd                              */
   /*                                        2 - Even                             */
   /*                                        3 - Mark                             */
   /*                                        4 - Space                            */
   /* 6      | bDataBits  |   1   | Number Data bits (5, 6, 7, 8 or 16).          */
   /*******************************************************************************/
-  case CDC_SET_LINE_CODING:   
-	
-    break;
-
-  case CDC_GET_LINE_CODING:     
+    case CDC_SET_LINE_CODING:
 
     break;
 
-  case CDC_SET_CONTROL_LINE_STATE:
+    case CDC_GET_LINE_CODING:
 
     break;
 
-  case CDC_SEND_BREAK:
- 
-    break;    
-    
+    case CDC_SET_CONTROL_LINE_STATE:
+
+    break;
+
+    case CDC_SEND_BREAK:
+
+    break;
+
   default:
     break;
   }
@@ -317,6 +323,7 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
 }
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
+
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 
 /**
