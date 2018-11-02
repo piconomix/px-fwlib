@@ -86,7 +86,7 @@ static px_spi_handle_t * px_at25s_spi_handle;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void px_at25s_tx_adr(px_at25s_adr_t address)
+static void px_at25s_tx_adr(uint32_t address)
 {
     uint8_t data[3];
 
@@ -130,9 +130,9 @@ void px_at25s_resume_from_power_down(void)
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
 }
 
-void px_at25s_rd(void *         buffer,
-                 px_at25s_adr_t address,
-                 uint16_t       nr_of_bytes)
+void px_at25s_rd(void *   buffer,
+                 uint32_t address,
+                 uint16_t nr_of_bytes)
 {
     uint8_t data[1];
 
@@ -230,10 +230,11 @@ void px_at25s_wr_page_offset(const void * buffer,
     px_at25s_ready_flag = false;
 }
 
-void px_at25s_erase_block(px_at25s_block_size_t block_size,
-                          uint16_t              page)
+void px_at25s_erase_block(px_at25s_block_t block,
+                          uint16_t         block_nr)
 {
-    uint8_t data[1];
+    uint8_t  data[1];
+    uint32_t adr;
 
     // Wait until Serial Flash is not busy
     while(!px_at25s_ready())
@@ -245,11 +246,20 @@ void px_at25s_erase_block(px_at25s_block_size_t block_size,
     px_at25s_write_enable();
 
     // Select command according to specified block size
-    switch(block_size)
+    switch(block)
     {
-    case PX_AT25S_BLOCK_SIZE_4KB:   data[0] = PX_AT25S_CMD_BLOCK_ERASE_4KB;  break;
-    case PX_AT25S_BLOCK_SIZE_32KB:  data[0] = PX_AT25S_CMD_BLOCK_ERASE_32KB; break;
-    case PX_AT25S_BLOCK_SIZE_64KB : data[0] = PX_AT25S_CMD_BLOCK_ERASE_64KB; break;
+    case PX_AT25S_BLOCK_4KB:   
+        data[0] = PX_AT25S_CMD_BLOCK_ERASE_4KB;  
+        adr     = (uint32_t)block_nr * PX_AT25S_BLOCK_SIZE_4KB;
+        break;
+    case PX_AT25S_BLOCK_32KB:  
+        data[0] = PX_AT25S_CMD_BLOCK_ERASE_32KB; 
+        adr     = (uint32_t)block_nr * PX_AT25S_BLOCK_SIZE_32KB;
+        break;
+    case PX_AT25S_BLOCK_64KB : 
+        data[0] = PX_AT25S_CMD_BLOCK_ERASE_64KB; 
+        adr     = (uint32_t)block_nr * PX_AT25S_BLOCK_SIZE_64KB;
+        break;
     default:
         PX_DBG_ERR("Invalid block size specified");
         return;
@@ -259,7 +269,7 @@ void px_at25s_erase_block(px_at25s_block_size_t block_size,
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
 
     // Send address
-    px_at25s_tx_adr(page * PX_AT25S_PAGE_SIZE);
+    px_at25s_tx_adr(adr);
 
     // Deselect Serial Flash
     px_spi_wr(px_at25s_spi_handle, NULL, 0, PX_SPI_FLAG_STOP);
@@ -293,7 +303,7 @@ bool px_at25s_ready(void)
 {
     uint8_t data;
 
-    // If flag has already been set, then take short cut
+    // If flag has already been set, then take shortcut
     if(px_at25s_ready_flag)
     {
         return true;

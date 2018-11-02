@@ -70,6 +70,12 @@ static const char* px_cli_cmd_fn_sf_info(uint8_t argc, char* argv[])
     printf("Manufacturer and Device ID: %02X %02X %02X\n", 
            data[0], data[1], data[2]);
 
+    printf("Size: %lu KB\n", PX_AT25S_FLASH_SIZE_BYTES / 1024);
+    printf("Pages: %lu\n", PX_AT25S_PAGES);
+    printf("Page size: %u bytes\n", PX_AT25S_PAGE_SIZE);
+    printf("Blocks: %lu\n", PX_AT25S_FLASH_SIZE_BYTES / PX_AT25S_BLOCK_SIZE_4KB);
+    printf("Block size: 4KB\n");
+
     status = px_at25s_rd_status_reg1();
     printf("Status: 0x%02X\n", status);
     printf("- SRP0 = %d\n", ((status & PX_AT25S_STATUS_REG1_SRP0) != 0));
@@ -86,40 +92,42 @@ static const char* px_cli_cmd_fn_sf_info(uint8_t argc, char* argv[])
 
 static const char* px_cli_cmd_fn_sf_erase(uint8_t argc, char* argv[])
 {
-    uint16_t page_start = 0;
-    uint16_t page_end   = (PX_AT25S_PAGES-1);
+    uint16_t block_start = 0;
+    uint16_t block_end   = PX_AT25S_FLASH_SIZE_BYTES / PX_AT25S_BLOCK_SIZE_4KB - 1;
 
-    // [start page]
+    // [start block]
     if(argc >= 1)
     {
-        if(!px_cli_util_argv_to_u16(0, 0,(PX_AT25S_PAGES-1)))
+        if(!px_cli_util_argv_to_u16(0, 0, (PX_AT25S_FLASH_SIZE_BYTES / PX_AT25S_BLOCK_SIZE_4KB) - 1))
         {
-            printf("Error. [start page] must be 0 to %lu\n", PX_AT25S_PAGES-1);
+            printf("Error. [start block] must be 0 to %lu\n",
+                   (PX_AT25S_FLASH_SIZE_BYTES / PX_AT25S_BLOCK_SIZE_4KB) - 1);
             return NULL;
         }
-        page_start = px_cli_argv_val.u16;
-        page_end   = page_start;
+        block_start = px_cli_argv_val.u16;
+        block_end   = block_start;
     }
 
-    // [end sector]
+    // [end block]
     if(argc == 2)
     {
-        if(!px_cli_util_argv_to_u16(1, 0, (PX_AT25S_PAGES-1)))
+        if(!px_cli_util_argv_to_u16(1, 0, (PX_AT25S_FLASH_SIZE_BYTES / PX_AT25S_BLOCK_SIZE_4KB) - 1))
         {
-            printf("Error. [end page] must be 0 to %lu\n", PX_AT25S_PAGES-1);
+            printf("Error. [end block] must be 0 to %lu\n",
+                   (PX_AT25S_FLASH_SIZE_BYTES / PX_AT25S_BLOCK_SIZE_4KB) - 1);
             return NULL;
         }
-        page_end = px_cli_argv_val.u16;
+        block_end = px_cli_argv_val.u16;
     }
 
-    printf("Erasing %d to %d", page_start, page_end);
+    printf("Erasing %d to %d", block_start, block_end);
     do
     {
-        px_at25s_erase_block(PX_AT25S_BLOCK_SIZE_4KB, page_start);
+        px_at25s_erase_block(PX_AT25S_BLOCK_4KB, block_start);
         printf(".");
-        page_start += 4 * 1024 / PX_AT25S_PAGE_SIZE;
+        block_start++;
     }
-    while(page_start <= page_end);
+    while(block_start <= block_end);
     printf(" done\n");
     
     return NULL;
@@ -131,17 +139,17 @@ static const char* px_cli_cmd_fn_sf_rd(uint8_t argc, char* argv[])
     uint16_t nr_of_bytes;
 
     // <adr>
-    if(!px_cli_util_argv_to_u32(0, 0,(PX_AT25S_FLASH_SIZE_BYTES-1)))
+    if(!px_cli_util_argv_to_u32(0, 0,(PX_AT25S_FLASH_SIZE_BYTES - 1)))
     {
-        printf("Error. <adr> must be 0 to 0x%08lX\n", PX_AT25S_FLASH_SIZE_BYTES-1);
+        printf("Error. <adr> must be 0 to 0x%08lX\n", PX_AT25S_FLASH_SIZE_BYTES - 1);
         return NULL;
     }
     adr = px_cli_argv_val.u32;
 
     // <nr of bytes>
-    if(!px_cli_util_argv_to_u16(1, 1,(PX_AT25S_PAGE_SIZE-1)))
+    if(!px_cli_util_argv_to_u16(1, 1,(PX_AT25S_PAGE_SIZE - 1)))
     {
-        printf("Error. <nr of bytes> must be 1 to %d\n", PX_AT25S_PAGE_SIZE-1);
+        printf("Error. <nr of bytes> must be 1 to %d\n", PX_AT25S_PAGE_SIZE - 1);
         return NULL;
     }
     nr_of_bytes = px_cli_argv_val.u16;
@@ -324,11 +332,13 @@ static void px_xmodem_on_rx_data(const uint8_t * data, uint8_t bytes_received)
             nr_of_bytes = bytes_received;
         }
 
-        // Start of new page
-        if(px_cli_cmd_sf_offset == 0)
+        // Start of new block?
+        if(  (px_cli_cmd_sf_offset == 0)
+           &&((px_cli_cmd_sf_page % PX_AT25S_PAGES_PER_BLOCK_4KB) == 0))
         {
-            // Erase page first
-            px_at25s_erase_block(PX_AT25S_BLOCK_SIZE_4KB, px_cli_cmd_sf_page);
+            // Erase block first
+            px_at25s_erase_block(PX_AT25S_BLOCK_4KB, 
+                                 px_cli_cmd_sf_page / PX_AT25S_PAGES_PER_BLOCK_4KB);
         }
 
         // Write data to Serial Flash
@@ -396,7 +406,7 @@ static const char* px_cli_cmd_fn_sf_wr_xmodem(uint8_t argc, char* argv[])
 
 // Create CLI command structures
 PX_CLI_CMD_CREATE(px_cli_cmd_sf_info,      "info", 0, 0,   "",                              "Report Serial Flash info")
-PX_CLI_CMD_CREATE(px_cli_cmd_sf_erase,     "e",    0, 2,   "[start page] [end page]",       "Erase Serial Flash block(s)")
+PX_CLI_CMD_CREATE(px_cli_cmd_sf_erase,     "e",    0, 2,   "[start block] [end block]",     "Erase Serial Flash 4 KB block(s)")
 PX_CLI_CMD_CREATE(px_cli_cmd_sf_rd,        "r",    2, 2,   "<adr> <nr of bytes>",           "Read Serial Flash data")
 PX_CLI_CMD_CREATE(px_cli_cmd_sf_rd_page,   "rp",   1, 1,   "<page>",                        "Read Serial Flash page")
 PX_CLI_CMD_CREATE(px_cli_cmd_sf_rd_xmodem, "rx",   0, 2,   "[start page] [end page]",       "Read Serial Flash data and send using XMODEM")

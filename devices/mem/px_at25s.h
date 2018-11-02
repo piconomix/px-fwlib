@@ -82,13 +82,27 @@ typedef enum
 /// AT25S page size
 #define PX_AT25S_PAGE_SIZE  256
 
-/// AT25S block sizes
+/// AT25S block selection
 typedef enum
 {
-    PX_AT25S_BLOCK_SIZE_4KB  = 0,
-    PX_AT25S_BLOCK_SIZE_32KB = 1,
-    PX_AT25S_BLOCK_SIZE_64KB = 2,
-} px_at25s_block_size_t;
+    PX_AT25S_BLOCK_4KB  = 0,
+    PX_AT25S_BLOCK_32KB = 1,
+    PX_AT25S_BLOCK_64KB = 2,
+} px_at25s_block_t;
+
+/// @name AT25S block sizes
+//@{
+#define PX_AT25S_BLOCK_SIZE_4KB     (4 * 1024)
+#define PX_AT25S_BLOCK_SIZE_32KB    (32 * 1024)
+#define PX_AT25S_BLOCK_SIZE_64KB    (64 * 1024)
+//@}
+    
+/// @name Pages per block
+//@{
+#define PX_AT25S_PAGES_PER_BLOCK_4KB    (PX_AT25S_BLOCK_SIZE_4KB / PX_AT25S_PAGE_SIZE)
+#define PX_AT25S_PAGES_PER_BLOCK_32KB   (PX_AT25S_BLOCK_SIZE_32KB / PX_AT25S_PAGE_SIZE)
+#define PX_AT25S_PAGES_PER_BLOCK_64KB   (PX_AT25S_BLOCK_SIZE_64KB / PX_AT25S_PAGE_SIZE)
+//@}
 
 // Determine number of pages and page size according to device specified
 #if   (PX_AT25S_CFG_DEVICE == PX_CFG_DEV_AT25SF041)
@@ -131,12 +145,6 @@ typedef enum
 #define PX_AT25S_SPI_DATA_ORDER    PX_SPI_DATA_ORDER_MSB
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
-/// Address size can be optimized, depending on maximum size of FLASH
-#if (PX_AT25S_ADR_MAX <= 0xffff)
-typedef uint16_t px_at25s_adr_t;
-#else
-typedef uint32_t px_at25s_adr_t;
-#endif
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
@@ -169,9 +177,9 @@ void px_at25s_resume_from_power_down(void);
  *  @param nr_of_bytes      Number of bytes to read
  *  
  */
-void px_at25s_rd(void *         buffer,
-                 px_at25s_adr_t address,
-                 uint16_t       nr_of_bytes);
+void px_at25s_rd(void *   buffer,
+                 uint32_t address,
+                 uint16_t nr_of_bytes);
 
 /**
  *  Read a page from Serial Flash.
@@ -259,11 +267,11 @@ void px_at25s_wr_page_offset(const void * buffer,
  *  This function erases a page of Serial Flash. The Serial Flash has PX_AT25S_PAGES
  *  pages.
  *  
- *  @param  block_size  4KB, 32KB or 64KB
- *  @param  page        0 to (PX_AT25S_PAGES-1)
+ *  @param  block       4KB, 32KB or 64KB
+ *  @param  block_nr    0 to Serial Flash size / Block size
  */
-void px_at25s_erase_block(px_at25s_block_size_t block_size,
-                          uint16_t              page);
+void px_at25s_erase_block(px_at25s_block_t block,
+                          uint16_t         block_nr);
 
 /**
  *  Check if Serial Flash is ready for the next read or write access.
