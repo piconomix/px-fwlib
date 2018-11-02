@@ -56,9 +56,66 @@
  *  
  *  ![CLI using Tera Term terminal emulator](arduino_uno_board/arduino_uno_cli.png)
  *  
- *  Example:
+ *  Code example:
  *  
  *  @include comms/test/px_cli_test.c
+ *   
+ *  The CLI command tree is declared statically using three structures:
+ *   
+ *  ![](cli/cli_struct_cmd_list_item.png) 
+ *   
+ *  A static ARRAY of px_cli_cmd_list_item_t structures are declared. The 
+ *  "handler" field is the address of the function to call when that command is 
+ *  executed. The second field either points to a command structure 
+ *  (if "handler" != NULL) or to a group structure (if "handler" == NULL).
+ *   
+ *  The end of the array is terminated with an extra item with the "handler" 
+ *  field being NULL and the "cmd/group" field also NULL. This marks the end of 
+ *  the array.
+ *   
+ *  ![](cli/cli_struct_cmd.png) 
+ *   
+ *  Each command is declared with a px_cli_cmd_t structure. The "name" field 
+ *  contains the address of the command name string. The "argc_min" and 
+ *  "argc_max" indicates respectively the minimum and maximum number of command 
+ *  arguments. The "param" field contains the address of the command parameter 
+ *  string and the "help" field contains the address of the command help string 
+ *  that is displayed when the "help" command is executed.
+ *  
+ *  ![](cli/cli_struct_group.png) 
+ *   
+ *  Each group is declared with a px_cli_group_t structure. The "name" field 
+ *  contains the address of the group name string. The "list" field points to 
+ *  a static ARRAY of px_cli_cmd_list_item_t structures. This array will contain 
+ *  the sub commands for that group.
+ *   
+ *  Let's look again at the declaration of the command tree in the example:
+ *   
+ *  @snippet comms/test/px_cli_test.c CLI cmd tree declaration 
+ *   
+ *  The declaration is simplified by using the following boiler-plate macros:
+ *  - PX_CLI_CMD_CREATE() 
+ *  - PX_CLI_GROUP_CREATE() 
+ *  - PX_CLI_GROUP_END() 
+ *  - PX_CLI_CMD_LIST_CREATE() 
+ *  - PX_CLI_CMD_ADD() 
+ *  - PX_CLI_GROUP_ADD() 
+ *  - PX_CLI_CMD_LIST_END()
+ *   
+ *  The declared CLI command tree can be visualised as follows:
+ *   
+ *  ![](cli/cli_example.png) 
+ *   
+ *  The root list is an array of 4 px_cli_cmd_list_item_t structures:
+ *  - CMD_LIST_ITEM[0] points to the GROUP_LED group structure ("handler" == NULL)
+ *  - CMD_LIST_ITEM[1] points to the CMD_BUZZER cmd structure ("handler" == &buzzer_fn) 
+ *  - CMD_LIST_ITEM[2] points to the CMD_HELP cmd structure ("handler" == &help_fn) 
+ *  - CMD_LIST_ITEM[3] marks the end of the array 
+ *   
+ *  The GROUP_LED group structure points to an array of 3 px_cli_cmd_list_item_t structures: 
+ *  - CMD_LIST_ITEM_LED[0] points to the CMD_LED_ON cmd structure ("handler" == &led_on_fn)
+ *  - CMD_LIST_ITEM_LED[1] points to the CMD_LED_OFF cmd structure ("handler" == &led_off_fn)
+ *  - CMD_LIST_ITEM_LED[2] marks the end of the array
  */
 /// @{
 

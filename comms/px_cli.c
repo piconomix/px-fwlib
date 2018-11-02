@@ -107,11 +107,18 @@ static px_cli_hist_size_t   px_cli_hist_index_now;
 // Pointer to current command list item being processed
 static const px_cli_cmd_list_item_t * px_cli_cmd_list_item;
 
-// Parent tree of current command list item
-static const px_cli_cmd_list_item_t * px_cli_parent_tree[PX_CLI_CFG_TREE_DEPTH_MAX];
+/** 
+ *  Tree path of current command list item.
+ *  @see https://en.wikipedia.org/wiki/Tree_(data_structure)
+ *  
+ *  This array stores a pointer to the current command list item (node) being
+ *  referenced, as well as it's parent command (node), it's grand-parent
+ *  command (node), etc.
+ */
+static const px_cli_cmd_list_item_t * px_cli_tree_path[PX_CLI_CFG_TREE_DEPTH_MAX];
 
-// Parent tree depth of current command list item
-static uint8_t px_cli_parent_tree_depth;
+// Tree path depth of current command list item
+static uint8_t px_cli_tree_path_depth;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 static bool    px_cli_cmd_get_item       (const px_cli_cmd_list_item_t * item);
@@ -156,25 +163,28 @@ static bool px_cli_cmd_get_item(const px_cli_cmd_list_item_t * item)
 
 static bool px_cli_cmd_item_get_root(void)
 {
-    px_cli_parent_tree_depth = 0;
-    px_cli_parent_tree[0]    = px_cli_cmd_list;
+    // Reset to first item in root list
+    px_cli_tree_path_depth = 0;
+    px_cli_tree_path[0]    = &px_cli_cmd_list[0];
 
-    return px_cli_cmd_get_item(px_cli_parent_tree[px_cli_parent_tree_depth]);
+    // Read first item in root list
+    return px_cli_cmd_get_item(px_cli_tree_path[px_cli_tree_path_depth]);
 }
 
 static bool px_cli_cmd_item_get_parent(void)
 {
     // Already in root list?
-    if(px_cli_parent_tree_depth == 0)
+    if(px_cli_tree_path_depth == 0)
     {
         PX_DBG_ERR("Already in root");
         return false;
     }
         
-    // Go back to parent list
-    px_cli_parent_tree_depth--;
+    // Go back to parent
+    px_cli_tree_path_depth--;
 
-    return px_cli_cmd_get_item(px_cli_parent_tree[px_cli_parent_tree_depth]);
+    // Read parent
+    return px_cli_cmd_get_item(px_cli_tree_path[px_cli_tree_path_depth]);
 }
 
 static bool px_cli_cmd_item_get_child(void)
@@ -188,36 +198,38 @@ static bool px_cli_cmd_item_get_child(void)
     }
 
     // Maximum depth reached?
-    if(px_cli_parent_tree_depth >= (PX_CLI_CFG_TREE_DEPTH_MAX-1))
+    if(px_cli_tree_path_depth >= (PX_CLI_CFG_TREE_DEPTH_MAX-1))
     {
         PX_DBG_ERR("Maximum command depth exceeded");
         return false;
     }
 
-    // Go to child list
-    px_cli_parent_tree_depth++;
-    px_cli_parent_tree[px_cli_parent_tree_depth] = px_cli_cmd_list_item->group->list;
+    // Go to first item in child list
+    px_cli_tree_path_depth++;
+    px_cli_tree_path[px_cli_tree_path_depth] = px_cli_cmd_list_item->group->list;
 
-    return px_cli_cmd_get_item(px_cli_parent_tree[px_cli_parent_tree_depth]);
+    // Read first item in child list
+    return px_cli_cmd_get_item(px_cli_tree_path[px_cli_tree_path_depth]);
 }
 
 static bool px_cli_cmd_item_get_first(void)
 {
     // Root list?
-    if(px_cli_parent_tree_depth == 0)
+    if(px_cli_tree_path_depth == 0)
     {
         // Reset to start of root list
-        px_cli_parent_tree[0] = px_cli_cmd_list;
+        px_cli_tree_path[0] = px_cli_cmd_list;
     }
     else
     {
         // Get parent item
-        px_cli_cmd_get_item(px_cli_parent_tree[px_cli_parent_tree_depth-1]);
-        // Reset to start of list
-        px_cli_parent_tree[px_cli_parent_tree_depth] = px_cli_cmd_list_item->group->list;
+        px_cli_cmd_get_item(px_cli_tree_path[px_cli_tree_path_depth-1]);
+        // Go to first item in child list
+        px_cli_tree_path[px_cli_tree_path_depth] = px_cli_cmd_list_item->group->list;
     }
     
-    return px_cli_cmd_get_item(px_cli_parent_tree[px_cli_parent_tree_depth]);
+    // Read first item (sibling)
+    return px_cli_cmd_get_item(px_cli_tree_path[px_cli_tree_path_depth]);
 }
 
 static bool px_cli_cmd_item_get_next(void)
@@ -229,10 +241,11 @@ static bool px_cli_cmd_item_get_next(void)
         return false;
     }
 
-    // Next item in list
-    px_cli_parent_tree[px_cli_parent_tree_depth]++;
+    // Advance to next item in list
+    px_cli_tree_path[px_cli_tree_path_depth]++;
 
-    return px_cli_cmd_get_item(px_cli_parent_tree[px_cli_parent_tree_depth]);
+    // Read next item in list (sibling)
+    return px_cli_cmd_get_item(px_cli_tree_path[px_cli_tree_path_depth]);
 }
 
 static uint8_t px_cli_cmd_line_to_args(void)
@@ -500,7 +513,7 @@ static void px_cli_autocomplete_reset(void)
     px_cli_autocomplete_start_index = 0; 
     px_cli_autocomplete_end_index   = px_cli_line_buf_index;
 
-    // Start at beginning of list
+    // Start at first item in root list
     px_cli_cmd_item_get_root();
 }
 
@@ -508,7 +521,7 @@ static bool px_cli_autocomplete(void)
 {
     uint8_t                        i;
     const char *                   name;
-    const px_cli_cmd_list_item_t * cmd_start = px_cli_parent_tree[px_cli_parent_tree_depth];
+    const px_cli_cmd_list_item_t * cmd_start = px_cli_tree_path[px_cli_tree_path_depth];
 
     i = px_cli_autocomplete_start_index;
     while(true)
@@ -567,7 +580,7 @@ static bool px_cli_autocomplete(void)
         }
 
         // Cycled through list?
-        if(px_cli_parent_tree[px_cli_parent_tree_depth] == cmd_start)
+        if(px_cli_tree_path[px_cli_tree_path_depth] == cmd_start)
         {
             // No match
             return false;
@@ -575,7 +588,7 @@ static bool px_cli_autocomplete(void)
     }
 
     // Autocomplete rest of name
-    px_vt100_del_chars(px_cli_line_buf_index-px_cli_autocomplete_end_index);
+    px_vt100_del_chars(px_cli_line_buf_index - px_cli_autocomplete_end_index);
     while(true)
     {
         char name_char = *name++;
@@ -632,7 +645,7 @@ static void px_cli_cmd_exe(void)
     {
         // End of list or not enough arguments?
         if(  (px_cli_cmd_list_item->cmd == NULL)
-           ||(px_cli_parent_tree_depth         >= argc)  )
+           ||(px_cli_tree_path_depth    >= argc)  )
         {
             // Command not found in list
             puts("Error! Command not found");
@@ -640,7 +653,7 @@ static void px_cli_cmd_exe(void)
         }
 
         // Does the argument match the command string?
-        if(strcmp(px_cli_argv[px_cli_parent_tree_depth],
+        if(strcmp(px_cli_argv[px_cli_tree_path_depth],
                     px_cli_cmd_list_item->cmd->name) == 0)
         {
             // Is this a command item?
@@ -664,8 +677,8 @@ static void px_cli_cmd_exe(void)
     }
 
     // Remove command argument(s)
-    argc -= (px_cli_parent_tree_depth+1);
-    argv  = &px_cli_argv[px_cli_parent_tree_depth+1];
+    argc -= (px_cli_tree_path_depth+1);
+    argv  = &px_cli_argv[px_cli_tree_path_depth+1];
 
     // Does number of parameters exceed bounds?
     if(  (argc < px_cli_cmd_list_item->cmd->argc_min) 
@@ -857,7 +870,7 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
         if(px_cli_cmd_list_item->cmd == NULL)
         {
             // Root list?
-            if(px_cli_parent_tree_depth == 0)
+            if(px_cli_tree_path_depth == 0)
             {
                 // The end has been reached
                 break;
@@ -877,9 +890,9 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
         {
             // Longest command string?
             len = 0;
-            for(i=0; i<=px_cli_parent_tree_depth; i++)
+            for(i=0; i<=px_cli_tree_path_depth; i++)
             {
-                px_cli_cmd_get_item(px_cli_parent_tree[i]);
+                px_cli_cmd_get_item(px_cli_tree_path[i]);
                 len += strlen(px_cli_cmd_list_item->cmd->name) + 1;
             }
             if(name_char_cnt < len)
@@ -917,7 +930,7 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
         if(px_cli_cmd_list_item->cmd == NULL)
         {
             // Root list?
-            if(px_cli_parent_tree_depth == 0)
+            if(px_cli_tree_path_depth == 0)
             {
                 // The end has been reached
                 break;
@@ -937,7 +950,7 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
         // Is this a command item?
         if(px_cli_cmd_list_item->handler != NULL)
         {
-            px_cli_cmd_get_item(px_cli_parent_tree[0]);
+            px_cli_cmd_get_item(px_cli_tree_path[0]);
             if(  (argc == 0)
                ||(strncmp_P(argv[0], 
                             px_cli_cmd_list_item->cmd->name, 
@@ -952,10 +965,10 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
 
                 // Display all command strings
                 len = 0;
-                for(i=0; i<=px_cli_parent_tree_depth; i++)
+                for(i=0; i<=px_cli_tree_path_depth; i++)
                 {
                     // Display name
-                    px_cli_cmd_get_item(px_cli_parent_tree[i]);
+                    px_cli_cmd_get_item(px_cli_tree_path[i]);
                     printf(px_cli_cmd_list_item->cmd->name);
                     putchar(' ');
                     len += strlen(px_cli_cmd_list_item->cmd->name) + 1;
@@ -1004,7 +1017,7 @@ uint8_t px_cli_util_argv_to_option(uint8_t argv_index, const char* options)
     uint8_t index = 0;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     while(strlen(options) != 0)
@@ -1026,7 +1039,7 @@ bool px_cli_util_argv_to_u8(uint8_t argv_index, uint8_t min, uint8_t max)
     char *        end;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtoul(px_cli_argv[argv_index], &end, 0);
@@ -1049,7 +1062,7 @@ bool px_cli_util_argv_to_u16(uint8_t argv_index, uint16_t min, uint16_t max)
     char *        end;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtoul(px_cli_argv[argv_index], &end, 0);
@@ -1072,7 +1085,7 @@ bool px_cli_util_argv_to_u32(uint8_t argv_index, uint32_t min, uint32_t max)
     char *        end;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtoul(px_cli_argv[argv_index], &end, 0);
@@ -1095,7 +1108,7 @@ bool px_cli_util_argv_to_s8(uint8_t argv_index, int8_t min, int8_t max)
     char * end;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtol(px_cli_argv[argv_index], &end, 0);
@@ -1118,7 +1131,7 @@ bool px_cli_util_argv_to_s16(uint8_t argv_index, int16_t min, int16_t max)
     char * end;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtol(px_cli_argv[argv_index], &end, 0);
@@ -1141,7 +1154,7 @@ bool px_cli_util_argv_to_s32(uint8_t argv_index, int32_t min, int32_t max)
     char * end;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtol(px_cli_argv[argv_index], &end, 0);
@@ -1164,7 +1177,7 @@ bool px_cli_util_argv_to_float(uint8_t argv_index)
     char * end;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtod(px_cli_argv[argv_index], &end);
@@ -1183,7 +1196,7 @@ bool px_cli_util_argv_to_double(uint8_t argv_index)
     char * end;
 
     // Adjust index
-    argv_index += px_cli_parent_tree_depth+1;
+    argv_index += px_cli_tree_path_depth+1;
     PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtod(px_cli_argv[argv_index], &end);
