@@ -294,7 +294,7 @@ void px_board_spi_cs_lo(uint8_t cs_id)
     case PX_BOARD_SPI1_CS:     PX_GPIO_PIN_SET_LO(PX_GPIO_SPI1_CS);     break;
     case PX_BOARD_SPI1_CS_SD:  PX_GPIO_PIN_SET_LO(PX_GPIO_SPI1_CS_SD);  break;
     case PX_BOARD_SPI2_CS_LCD: PX_GPIO_PIN_SET_LO(PX_GPIO_SPI2_CS_LCD); break;
-    case PX_BOARD_SPI2_CS_DF:  PX_GPIO_PIN_SET_LO(PX_GPIO_SPI2_CS_DF);  break;
+    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_PIN_SET_LO(PX_GPIO_SPI2_CS_DF);  break;
     default:                   break;
     }
 }
@@ -306,7 +306,7 @@ void px_board_spi_cs_hi(uint8_t cs_id)
     case PX_BOARD_SPI1_CS:     PX_GPIO_PIN_SET_HI(PX_GPIO_SPI1_CS);     break;
     case PX_BOARD_SPI1_CS_SD:  PX_GPIO_PIN_SET_HI(PX_GPIO_SPI1_CS_SD);  break;
     case PX_BOARD_SPI2_CS_LCD: PX_GPIO_PIN_SET_HI(PX_GPIO_SPI2_CS_LCD); break;
-    case PX_BOARD_SPI2_CS_DF:  PX_GPIO_PIN_SET_HI(PX_GPIO_SPI2_CS_DF);  break;
+    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_PIN_SET_HI(PX_GPIO_SPI2_CS_DF);  break;
     default:                   break;
     }
 }

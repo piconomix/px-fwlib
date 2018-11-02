@@ -69,8 +69,8 @@ typedef enum
     PX_BOARD_SPI_CS_NONE,      ///< Do not perform a chip select
     PX_BOARD_SPI1_CS,          ///< Peripheral CS
     PX_BOARD_SPI1_CS_SD,       ///< SD Card
-    PX_BOARD_SPI2_CS_LCD,      ///< Truly TSE2G0330-E 128x64 LCD
-    PX_BOARD_SPI2_CS_DF,       ///< Adesto AT45D DataFLASH    
+    PX_BOARD_SPI2_CS_LCD,      ///< JHD JHD12864-G176BSW 128x64 monochrome LCD
+    PX_BOARD_SPI2_CS_SF,       ///< Adesto AT45D DataFLASH    
 } px_board_spi_cs_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -120,7 +120,7 @@ void px_board_buzzer_off(void);
 
 /* _____MACROS_______________________________________________________________ */
 /// User button
-#define PX_USR_PB_IS_PRESSED()      px_gpio_pin_is_lo(&px_gpio_lcd_btn_1_lt)
+#define PX_USR_PB_IS_PRESSED()      px_gpio_pin_is_lo(&px_gpio_lcd_btn_6_yes)
 
 /// User LED
 #define PX_USR_LED_ON()             px_gpio_pin_set_hi(&px_gpio_usr_led)
@@ -132,9 +132,12 @@ void px_board_buzzer_off(void);
 #define PX_LCD_RST_HI()             px_gpio_pin_set_hi(&px_gpio_lcd_rst)
 #define PX_LCD_RS_LO()              px_gpio_pin_set_lo(&px_gpio_lcd_rs)
 #define PX_LCD_RS_HI()              px_gpio_pin_set_hi(&px_gpio_lcd_rs)
+#define PX_LCD_BACKLIGHT_ON()       px_gpio_pin_set_lo(&px_gpio_lcd_backlight)
+#define PX_LCD_BACKLIGHT_OFF()      px_gpio_pin_set_hi(&px_gpio_lcd_backlight)
+
 
 // SD Card
-#define PX_SD_CARD_DETECTED()       px_gpio_pin_is_lo(&px_gpio_sd_cd)
+#define PX_SD_CARD_DETECTED()       px_gpio_pin_is_lo(&px_gpio_7_sd_cd)
 
 /// @}
 #ifdef __cplusplus
