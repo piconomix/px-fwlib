@@ -92,6 +92,9 @@ static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
         return;
     }
 
+    // Disable peripheral
+    LL_SPI_Disable(spi_base_adr);
+
     // Set SPI Control Register 1:
     // master, data order, clock divisor, mode (clock polarity & phase)
     spi_base_adr->CR1 = spi_cr1_val;
@@ -107,11 +110,8 @@ static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
 
 static void px_spi_update_cfg(SPI_TypeDef * spi_base_adr, uint32_t spi_cr1_val)
 {
-    // Ignore SPI Enable bit
-    spi_cr1_val &= ~SPI_CR1_SPE_Msk;
-
     // Must communication parameters change?
-    if(spi_base_adr->CR1 != spi_cr1_val)
+    if((spi_base_adr->CR1 & (~SPI_CR1_SPE_Msk)) != spi_cr1_val)
     {
         // Disable peripheral
         LL_SPI_Disable(spi_base_adr);
