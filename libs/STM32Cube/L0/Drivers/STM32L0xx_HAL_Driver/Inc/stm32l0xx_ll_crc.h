@@ -352,7 +352,10 @@ __STATIC_INLINE void LL_CRC_FeedData32(CRC_TypeDef *CRCx, uint32_t InData)
   */
 __STATIC_INLINE void LL_CRC_FeedData16(CRC_TypeDef *CRCx, uint16_t InData)
 {
-  *(uint16_t __IO *)(&CRCx->DR) = (uint16_t) InData;
+  __IO uint16_t *pReg;
+
+  pReg = (__IO uint16_t *)(__IO void *)(&CRCx->DR);
+  *pReg = InData;
 }
 
 /**
