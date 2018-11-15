@@ -63,15 +63,14 @@
 #include "px_spi_cfg.h"
 
 // Check that all project specific options have been specified in "px_spi_cfg.h"
-#if (   !defined(PX_SPI_CFG_SPI2_EN           ) \
+#if (   !defined(PX_SPI_CFG_SPI1_EN           ) \
      || !defined(PX_SPI_CFG_SPI2_EN           ) \
      || !defined(PX_SPI_CFG_DEFAULT_BAUD      ) \
      || !defined(PX_SPI_CFG_DEFAULT_MODE      ) \
      || !defined(PX_SPI_CFG_DEFAULT_DATA_ORDER) \
      || !defined(PX_SPI_CFG_CS_LO             ) \
      || !defined(PX_SPI_CFG_CS_HI             )  )
-      )
-#error "One or more options not defined in 'px_uart_cfg.h'"
+#error "One or more options not defined in 'px_spi_cfg.h'"
 #endif
 #if (  (PX_SPI_CFG_SPI1_EN > 1) \
      ||(PX_SPI_CFG_SPI2_EN > 1)  )

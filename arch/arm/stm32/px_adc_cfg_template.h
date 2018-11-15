@@ -1,5 +1,5 @@
-#ifndef __PX_ADC_H__
-#define __PX_ADC_H__
+#ifndef __PX_ADC_CFG_H__
+#define __PX_ADC_CFG_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -7,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -26,52 +26,41 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
- 
-    Title:          px_adc.h : ADC Driver
+    
+    Title:          px_adc_cfg.h : ADC Peripheral Driver configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2014-06-01
+    Creation Date:  2018-11-04
 
 ============================================================================= */
+
+/** 
+ *  @addtogroup STM32_ADC
+ */
+/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/* _____DEFINITIONS _________________________________________________________ */
-/// Number of ADC channels that are sampled
-#define PX_ADC_NR_OF_CHANNELS  4
+/* _____DEFINITIONS__________________________________________________________ */
+/// Enable/disable support for ADC1 peripheral
+#define PX_ADC_CFG_ADC1_EN              1
 
-/// ADC Channel statistic data that is accumulated
-typedef struct
-{
-    uint16_t min;  ///< Minimum value observed during sampling period
-    uint16_t max;  ///< Maximum value observed during sampling period
-    uint32_t sum;  ///< Accumulated sum over sampling perdiod
-} px_adc_data_t;
+/// Specify ADC clock source (see 'px_adc_cfg_clk_t')
+#define PX_ADC_CFG_CLK                  PX_ADC_CFG_CLK_PCLK
 
-/* _____TYPE DEFINITIONS_____________________________________________________ */
+/// Specify ADC sampling time (see 'px_adc_cfg_sample_time_t')
+#define PX_ADC_CFG_SAMPLE_TIME          PX_ADC_CFG_SAMPLE_TIME_7_5
 
-/* _____GLOBAL VARIABLES_____________________________________________________ */
+/// Specify ADC resolution (see 'px_adc_cfg_res_t')
+#define PX_ADC_CFG_RES                  PX_ADC_CFG_RES_12_BITS
 
-/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void                px_adc_init(void);
+/// Specify ADC oversampling (see 'px_adc_cfg_oversampling_t')
+#define PX_ADC_CFG_OVERSAMPLING         PX_ADC_CFG_OVERSAMPLING_NONE
 
-uint16_t               px_adc_sample(uint8_t channel);
+/// Specify ADC oversampling (see 'px_adc_cfg_oversampling_shift_t')
+#define PX_ADC_CFG_OVERSAMPLING_SHIFT   PX_ADC_CFG_OVERSAMPLING_SHIFT_NONE
 
-void                px_adc_start(uint16_t sampling_freq_hz, uint16_t nr_of_samples_per_sum);
-void                px_adc_stop(void);
-bool              px_adc_data_ready(void);
-void                px_adc_rst_data_ready_flag(void);
-const px_adc_data_t *  px_adc_get_data(uint8_t channel);
-
-/* _____MACROS_______________________________________________________________ */
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // #ifndef __PX_ADC_H__
+/// @}
+#endif // #ifndef __PX_ADC_CFG_H__

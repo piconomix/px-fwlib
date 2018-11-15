@@ -16,7 +16,7 @@ int main(void)
 
     // Open handle to SPI slave device
     px_spi_open2(&px_spi_handle,
-                 PX_SPI_PER_0,
+                 PX_SPI_PER_1,
                  PX_BOARD_SPI_CS_DF,
                  PX_SPI_BAUD_CLK_DIV_2, 
                  PX_SPI_MODE0, 

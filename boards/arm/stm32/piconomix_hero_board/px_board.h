@@ -48,6 +48,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_board_gpio.h"
+#include "px_adc.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,6 +73,15 @@ typedef enum
     PX_BOARD_SPI2_CS_LCD,      ///< JHD JHD12864-G176BSW 128x64 monochrome LCD
     PX_BOARD_SPI2_CS_SF,       ///< Adesto AT45D DataFLASH    
 } px_board_spi_cs_t;
+
+/// @name Mapping of board's ADC pins to ADC channels
+//@{
+#define PX_BOARD_ADC0       PX_ADC_CH8
+#define PX_BOARD_ADC1       PX_ADC_CH15
+#define PX_BOARD_ADC2       PX_ADC_CH14
+#define PX_BOARD_ADC3       PX_ADC_CH7
+#define PX_BOARD_ADC_VBAT   PX_ADC_CH9
+//@}
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
@@ -128,8 +138,6 @@ void px_board_buzzer_off(void);
 #define PX_USR_LED_TOGGLE()         px_gpio_pin_toggle(&px_gpio_usr_led)
 
 /// LCD
-#define PX_LCD_RST_LO()             px_gpio_pin_set_lo(&px_gpio_lcd_rst)
-#define PX_LCD_RST_HI()             px_gpio_pin_set_hi(&px_gpio_lcd_rst)
 #define PX_LCD_RS_LO()              px_gpio_pin_set_lo(&px_gpio_lcd_rs)
 #define PX_LCD_RS_HI()              px_gpio_pin_set_hi(&px_gpio_lcd_rs)
 #define PX_LCD_BACKLIGHT_ON()       px_gpio_pin_set_lo(&px_gpio_lcd_backlight)
@@ -138,6 +146,10 @@ void px_board_buzzer_off(void);
 
 // SD Card
 #define PX_SD_CARD_DETECTED()       px_gpio_pin_is_lo(&px_gpio_7_sd_cd)
+
+// Battery voltage measurement
+#define PX_VBAT_MEAS_ENABLE()       px_gpio_pin_set_hi(&px_gpio_vbat_meas_en)
+#define PX_VBAT_MEAS_DISABLE()      px_gpio_pin_set_lo(&px_gpio_vbat_meas_en)
 
 /// @}
 #ifdef __cplusplus

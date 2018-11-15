@@ -1,5 +1,5 @@
-#ifndef __PX_CLI_CMDS_ADC_H__
-#define __PX_CLI_CMDS_ADC_H__
+#ifndef __PX_ADC_CFG_H__
+#define __PX_ADC_CFG_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -26,34 +26,41 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
- 
-    Title:          px_cli_cmds_adc.h : CLI commands for ADC
+    
+    Title:          px_adc_cfg.h : ADC Peripheral Driver configuration
     Author(s):      Pieter Conradie
     Creation Date:  2018-11-04
- 
+
 ============================================================================= */
+
+/** 
+ *  @addtogroup STM32_ADC
+ */
+/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_cli.h"
+#include "px_defines.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
+/// Enable/disable support for ADC1 peripheral
+#define PX_ADC_CFG_ADC1_EN              1
 
-/* _____TYPE DEFINITIONS_____________________________________________________ */
+/// Specify ADC clock source (see 'px_adc_cfg_clk_t')
+#define PX_ADC_CFG_CLK                  PX_ADC_CFG_CLK_PCLK
 
-/* _____GLOBAL VARIABLES_____________________________________________________ */
-extern const px_cli_group_t px_cli_group_adc;
+/// Specify ADC sampling time (see 'px_adc_cfg_sample_time_t')
+#define PX_ADC_CFG_SAMPLE_TIME          PX_ADC_CFG_SAMPLE_TIME_7_5
 
-/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
+/// Specify ADC resolution (see 'px_adc_cfg_res_t')
+#define PX_ADC_CFG_RES                  PX_ADC_CFG_RES_12_BITS
 
-/* _____MACROS_______________________________________________________________ */
+/// Specify ADC oversampling (see 'px_adc_cfg_oversampling_t')
+#define PX_ADC_CFG_OVERSAMPLING         PX_ADC_CFG_OVERSAMPLING_NONE
 
-#ifdef __cplusplus
-}
-#endif
+/// Specify ADC oversampling (see 'px_adc_cfg_oversampling_shift_t')
+#define PX_ADC_CFG_OVERSAMPLING_SHIFT   PX_ADC_CFG_OVERSAMPLING_SHIFT_NONE
 
-#endif // #ifndef __PX_CLI_CMDS_ADC_H__
+/// @}
+#endif // #ifndef __PX_ADC_CFG_H__

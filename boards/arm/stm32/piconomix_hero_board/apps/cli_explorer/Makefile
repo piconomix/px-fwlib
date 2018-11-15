@@ -62,6 +62,7 @@ CHAN_FATFS = $(PICOLIB)/libs/ChaN_FatFs
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
 SRC += src/px_cli_cmds.c
+SRC += src/px_cli_cmds_adc.c
 SRC += src/px_cli_cmds_gpio.c
 SRC += src/px_cli_cmds_i2c.c
 SRC += src/px_cli_cmds_lcd.c
@@ -82,6 +83,7 @@ SRC += src/usbd_desc.c
 
 SRC += $(BSP)/px_board.c
 
+SRC += $(PICOLIB)/$(ARCH)/px_adc.c
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
 SRC += $(PICOLIB)/$(ARCH)/px_i2c.c
 SRC += $(PICOLIB)/$(ARCH)/px_rtc.c

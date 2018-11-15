@@ -40,6 +40,7 @@
 #include "px_uart.h"
 #include "px_spi.h"
 #include "px_i2c.h"
+#include "px_adc.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,6 +56,7 @@ extern px_spi_handle_t  px_spi_sf_handle;
 extern px_spi_handle_t  px_spi_sd_handle;
 extern px_spi_handle_t  px_spi_lcd_handle;
 extern px_i2c_handle_t  px_i2c_handle;
+extern px_adc_handle_t  px_adc_handle;
 
 extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];
 

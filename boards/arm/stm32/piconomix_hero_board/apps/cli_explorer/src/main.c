@@ -46,6 +46,7 @@
 #include "px_uart.h"
 //#include "px_uart_stdio.h"
 #include "px_usb_cdc_stdio.h"
+#include "px_adc.h"
 #include "px_spi.h"
 #include "px_i2c.h"
 #include "px_sysclk.h"
@@ -66,6 +67,7 @@ px_spi_handle_t  px_spi_sf_handle;
 px_spi_handle_t  px_spi_sd_handle;
 px_spi_handle_t  px_spi_lcd_handle;
 px_i2c_handle_t  px_i2c_handle;
+px_adc_handle_t  px_adc_handle;
 
 uint8_t          main_buffer[MAIN_BUFFER_SIZE];
 
@@ -95,6 +97,7 @@ static bool main_init(void)
     px_uart_init();
     px_spi_init();
     px_i2c_init();
+    px_adc_init();
 
     // Open UART1
     px_uart_open2(&px_uart1_handle,
@@ -117,6 +120,10 @@ static bool main_init(void)
     // Open I2C1
     px_i2c_open(&px_i2c_handle, PX_I2C_PER_1, 0x3c);
 
+    // Open ADC
+    px_adc_open(&px_adc_handle, PX_ADC_PER_1);
+
+
     // Initialise SD Card driver
     px_spi_open2(&px_spi_sd_handle,
                  PX_SPI_PER_1,
@@ -136,7 +143,7 @@ static bool main_init(void)
                  PX_LCD_SPI_DATA_ORDER,
                  0x00);
     px_lcd_init(&px_spi_lcd_handle);
-#if 1
+
     // Initialise AT25S Serial Flash driver
     px_spi_open2(&px_spi_sf_handle,
                  PX_SPI_PER_2,
@@ -150,7 +157,7 @@ static bool main_init(void)
     // Resume Serial Flash in case it was left in a power down state and the 
     // processor reset
     px_at25s_resume_from_power_down();
-#endif
+
     // Success
     return true;
 }
@@ -168,7 +175,7 @@ int main(void)
 
     // Beep
     px_board_buzzer_on(4000);
-    px_systmr_wait(PX_SYSTMR_MS_TO_TICKS(100));
+    px_board_delay_ms(100);
     px_board_buzzer_off();
 
     // Draw LCD splash screen

@@ -39,7 +39,7 @@
 #include "px_lib_stm32cube.h"
 
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("spi")
+PX_DBG_DECL_NAME("px_spi")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// Internal data for each SPI handle
