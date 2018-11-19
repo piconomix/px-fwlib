@@ -44,6 +44,7 @@
 #include "main.h"
 
 #include "px_cli_cmds_adc.h"
+#include "px_cli_cmds_dac.h"
 #include "px_cli_cmds_gpio.h"
 #include "px_cli_cmds_i2c.h"
 #include "px_cli_cmds_lcd.h"
@@ -197,6 +198,7 @@ PX_CLI_CMD_LIST_CREATE()
     PX_CLI_GROUP_ADD   (px_cli_group_lcd)
     PX_CLI_GROUP_ADD   (px_cli_group_gpio)
     PX_CLI_GROUP_ADD   (px_cli_group_adc)
+    PX_CLI_GROUP_ADD   (px_cli_group_dac)
     PX_CLI_GROUP_ADD   (px_cli_group_i2c)
     PX_CLI_GROUP_ADD   (px_cli_group_spi)
     PX_CLI_GROUP_ADD   (px_cli_group_uart)

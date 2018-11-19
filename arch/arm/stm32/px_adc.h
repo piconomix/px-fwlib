@@ -62,9 +62,12 @@
 #include "px_adc_cfg.h"
 
 // Check that all project specific options have been specified in "px_adc_cfg.h"
-#if (   !defined(PX_ADC_CFG_ADC1_EN    ) \
-     || !defined(PX_ADC_CFG_CLK        ) \
-     || !defined(PX_ADC_CFG_SAMPLE_TIME)  )
+#if (   !defined(PX_ADC_CFG_ADC1_EN           ) \
+     || !defined(PX_ADC_CFG_CLK               ) \
+     || !defined(PX_ADC_CFG_SAMPLE_TIME       ) \
+     || !defined(PX_ADC_CFG_RES               ) \
+     || !defined(PX_ADC_CFG_OVERSAMPLING      ) \
+     || !defined(PX_ADC_CFG_OVERSAMPLING_SHIFT) )
 #error "One or more options not defined in 'px_adc_cfg.h'"
 #endif
 #if (PX_ADC_CFG_ADC1_EN > 1)
@@ -222,6 +225,7 @@ uint16_t px_adc_sample(px_adc_handle_t * handle,
 /// Convert ADC channel number into bit mask
 #define PX_ADC_CH_TO_BITMASK(ch)    ((uint32_t)1<<(ch))
 
+/// @}
 #ifdef __cplusplus
 }
 #endif

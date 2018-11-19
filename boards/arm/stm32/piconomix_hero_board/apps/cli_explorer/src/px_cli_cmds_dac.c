@@ -1,5 +1,3 @@
-#ifndef __MAIN_H__
-#define __MAIN_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -26,51 +24,56 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
-
-    Title:          Piconomix STM32L072 Hero Board CLI application
+ 
+    Title:          px_cli_cmds_dac.h : CLI commands for DAC
     Author(s):      Pieter Conradie
-    Creation Date:  2018-03-01
+    Creation Date:  2018-11-15
 
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
+#include <stdlib.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
-#include "px_uart.h"
-#include "px_spi.h"
-#include "px_i2c.h"
-#include "px_adc.h"
+#include "px_cli.h"
 #include "px_dac.h"
+#include "px_board.h"
+#include "main.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/* _____DEFINITIONS _________________________________________________________ */
-#define MAIN_BUFFER_SIZE 512
+#include "px_dbg.h"
+PX_DBG_DECL_NAME("cli_cmds_dac")
 
-/* _____TYPE DEFINITIONS_____________________________________________________ */
-
-/* _____GLOBAL VARIABLES_____________________________________________________ */
-extern px_uart_handle_t px_uart1_handle;
-extern px_spi_handle_t  px_spi_sf_handle;
-extern px_spi_handle_t  px_spi_sd_handle;
-extern px_spi_handle_t  px_spi_lcd_handle;
-extern px_i2c_handle_t  px_i2c_handle;
-extern px_adc_handle_t  px_adc_handle;
-extern px_dac_handle_t  px_dac_handle;
-
-extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];
-
-/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void main_usb_event_connected   (void);
-void main_dbg_put_char          (char data);
-void main_dbg_timestamp         (char * str);
+/* _____LOCAL DEFINITIONS____________________________________________________ */
 
 /* _____MACROS_______________________________________________________________ */
 
-#ifdef __cplusplus
-}
-#endif
+/* _____GLOBAL VARIABLES_____________________________________________________ */
 
-#endif // #ifndef __MAIN_H__
+/* _____LOCAL VARIABLES______________________________________________________ */
+
+/* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
+
+/* _____LOCAL FUNCTIONS______________________________________________________ */
+static const char* px_cli_cmd_fn_dac_o(uint8_t argc, char* argv[])
+{
+    uint16_t val;
+    
+    // <val>
+    if(!px_cli_util_argv_to_u16(0, 0, 4095))
+    {
+        return "Error. <val> must be 0 to 4095";
+    }
+    val = px_cli_argv_val.u16;
+
+    // Output DAC value
+    px_dac_wr(&px_dac_handle, PX_DAC_CHANNEL_1, val);
+
+    return NULL;
+}
+
+// Create CLI command structures
+PX_CLI_CMD_CREATE(px_cli_cmd_dac_o,       "o",            1, 1,   "<val>", "Set DAC output value")
+
+PX_CLI_GROUP_CREATE(px_cli_group_dac, "dac")
+    PX_CLI_CMD_ADD(px_cli_cmd_dac_o,       px_cli_cmd_fn_dac_o)
+PX_CLI_GROUP_END()

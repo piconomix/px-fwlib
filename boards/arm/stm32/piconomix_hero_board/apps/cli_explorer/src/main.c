@@ -68,6 +68,7 @@ px_spi_handle_t  px_spi_sd_handle;
 px_spi_handle_t  px_spi_lcd_handle;
 px_i2c_handle_t  px_i2c_handle;
 px_adc_handle_t  px_adc_handle;
+px_dac_handle_t  px_dac_handle;
 
 uint8_t          main_buffer[MAIN_BUFFER_SIZE];
 
@@ -98,6 +99,7 @@ static bool main_init(void)
     px_spi_init();
     px_i2c_init();
     px_adc_init();
+    px_dac_init();
 
     // Open UART1
     px_uart_open2(&px_uart1_handle,
@@ -122,6 +124,9 @@ static bool main_init(void)
 
     // Open ADC
     px_adc_open(&px_adc_handle, PX_ADC_PER_1);
+
+    // Open DAC
+    px_dac_open(&px_dac_handle, PX_DAC_PER_1);
 
 
     // Initialise SD Card driver
