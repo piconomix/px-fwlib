@@ -138,7 +138,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to RED
-        px_dbg_put_str("\e[31mE");
+        px_dbg_put_str("\e[31m" "E");
 #else
         // Error
         px_dbg_put_char('E');
@@ -148,7 +148,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to YELLOW
-        px_dbg_put_str("\e[33mW");
+        px_dbg_put_str("\e[33m" "W");
 #else
         // Warning
         px_dbg_put_char('W');
@@ -158,7 +158,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to GREEN
-        px_dbg_put_str("\e[32mI");
+        px_dbg_put_str("\e[32m" "I");
 #else
         // Info
         px_dbg_put_char('I');
