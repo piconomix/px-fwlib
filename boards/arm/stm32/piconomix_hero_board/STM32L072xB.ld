@@ -105,9 +105,13 @@ ENTRY(Reset_Handler)
 /*
  *  Describe the location and size of blocks of memory in the target
  */
+FLASH_OFFSET = DEFINED(FLASH_OFFSET)? FLASH_OFFSET : 0;
+FLASH_ORIGIN = 0x08000000 + FLASH_OFFSET;
+FLASH_LENGTH = 128k - FLASH_OFFSET;
+
 MEMORY
 {
-    FLASH (rx)   : ORIGIN = 0x08000000, LENGTH = 128k
+    FLASH (rx)   : ORIGIN = FLASH_ORIGIN, LENGTH = FLASH_LENGTH
     SRAM  (w!rw) : ORIGIN = 0x20000000, LENGTH = 20k
 }
 
@@ -131,7 +135,7 @@ STACK_START = ORIGIN(SRAM) + LENGTH(SRAM) - STACK_SIZE;
  *  place the output sections in memory.
  */
 SECTIONS
-{
+{    
     /*
      *  ISR_VECTOR section contains the ARM vector table as defined in 
      *  startup_stm32l072xx.s
@@ -243,6 +247,10 @@ SECTIONS
           /* .data sections (initialized variables) */
           *(.data .data.*)
           . = ALIGN(4);
+
+          /* Functions that is stored in FLASH, but must be executed in SRAM */
+          *(.RamFunc)
+          . = ALIGN(4);
           
           /* Create symbol to mark end of initialized data in SRAM (VMA) */
           _edata = .;
@@ -271,6 +279,16 @@ SECTIONS
           /* Create symbols to mark end of unitialized data in SRAM */
           _ebss       = . ;
           __bss_end__ = _ebss;
+    } > SRAM
+
+    /*
+     * NOINIT section holds uninitialized variables that should not be set to 
+     * zero on startup.
+     */
+    .noinit (NOLOAD) :
+    {
+          KEEP (*(.noinit))
+          . = ALIGN(4);
     } > SRAM
     
     /*

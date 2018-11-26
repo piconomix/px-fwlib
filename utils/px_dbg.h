@@ -174,9 +174,10 @@
 #endif
 
 // Check that all project specific options have been specified in "px_dbg_cfg.h"
-#if (    !defined(PX_DBG) \
+#if (    !defined(PX_DBG              ) \
       || !defined(PX_DBG_CFG_MSG_LEVEL) \
-      || !defined(PX_DBG_CFG_BUF_SIZE)  )
+      || !defined(PX_DBG_CFG_BUF_SIZE ) \
+      || !defined(PX_DBG_CFG_COLOR    )  )
 #error "One or more options not defined in 'px_dbg_cfg.h'"
 #endif
 
@@ -195,7 +196,7 @@ extern "C" {
 /// Errors
 #define PX_DBG_CFG_MSG_LEVEL_ERR    (1<<2)
 /// All
-#define PX_DBG_CFG_MSG_LEVEL_ALL    (PX_DBG_CFG_MSG_LEVEL_INFO + PX_DBG_CFG_MSG_LEVEL_WARN + PX_DBG_CFG_MSG_LEVEL_ERR)
+#define PX_DBG_CFG_MSG_LEVEL_ALL    (PX_DBG_CFG_MSG_LEVEL_INFO | PX_DBG_CFG_MSG_LEVEL_WARN | PX_DBG_CFG_MSG_LEVEL_ERR)
 //@}
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */

@@ -1,2 +1,0 @@
-[ProjectFiles]
-HeaderPath = ../Cfg; ../Inc; ../Src; ../Lib/piconomix-fwlib/common; ../Lib/piconomix-fwlib/comms; ../Lib/piconomix-fwlib/devices/mem; ../Lib/piconomix-fwlib/utils;

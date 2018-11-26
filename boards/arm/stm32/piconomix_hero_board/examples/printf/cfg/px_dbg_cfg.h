@@ -63,6 +63,9 @@
 #define PX_DBG_CFG_MSG_LEVEL PX_DBG_CFG_MSG_LEVEL_ALL
 #endif
 
+/// Disable (0) or Enable (1) VT100 terminal color output
+#define PX_DBG_CFG_COLOR 1
+
 /// Debug output string buffer size
 #define PX_DBG_CFG_BUF_SIZE 64
 

@@ -9,17 +9,19 @@
 #
 # On command line:
 #
-# make             = Build project
-# make check       = Check that source files exist
-# make clean       = Delete intermediate output files and final binaries
-# make mostlyclean = Delete intermediate output files, but preserve final 
-#                    binaries
-# make openocd     = Create script and launch OpenOCD GDB and Telnet server
-# make gdb         = Create script and launch GDB
+# make               = Build project (release version)
+# make build=debug   = Build project (debug version)
+# make build=release = Build project (release version)
+# make check         = Check that source files exist
+# make clean         = Delete intermediate output files and final binaries
+# make mostlyclean   = Delete intermediate output files, but preserve final 
+#                      binaries
+# make openocd       = Create script and launch OpenOCD GDB and Telnet server
+# make gdb           = Create script and launch GDB
 #
 # To create a new project, copy this Makefile to your project directory and:
 #
-# 1. Specify a project name
+# 1. Specify a project name and offset to reserve space for bootloader
 # 2. Specify the MCU options that the project will be compiled for
 # 3. Specify paths
 # 4. List source files to be included in project WITH PATHS (relative to Makefile)
@@ -35,8 +37,12 @@
 # Creation Date:  2018-03-17
 # ------------------------------------------------------------------------------
 
-# (1) Project name
+# (1a) Project name
 PROJECT = cli_explorer
+
+# (1b) Offset from start of FLASH to reserve space for bootloader (release build)
+#      Comment this variable (prefix with '#') for normal release build (no bootloader)
+BOOTLOADER_SIZE = 0x2000
 
 # (2) MCU option(s)
 MCU = -mthumb -mcpu=cortex-m0plus
@@ -181,17 +187,12 @@ CPPDEFS +=
 # (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
 ADEFS += 
 
-# Object files directory
-#     Do NOT make this empty and do NOT use the current directory (.)
-OBJDIR = OBJ
-
 #---------------- Compiler Options C -------------------------------------------
 #  -g*:          generate debugging information
 #  -O*:          optimization level (0,1,2,3 or s)
 #  -f...:        tuning, see GCC manual and avr-libc documentation
 #  -Wall...:     warning level
 CFLAGS += -gdwarf-2
-CFLAGS += -Os
 CFLAGS += -funsigned-char
 CFLAGS += -funsigned-bitfields
 CFLAGS += -fshort-enums
@@ -206,13 +207,16 @@ CFLAGS += -std=gnu99
 CFLAGS += -ffunction-sections -fdata-sections
 CFLAGS += --specs=nano.specs
 
+CFLAGS_DEBUG += -O1
+
+CFLAGS_RELEASE += -Os
+
 #---------------- Compiler Options C++ -----------------------------------------
 #  -g*:          generate debugging information
 #  -O*:          optimization level (0,1,2,3 or s)
 #  -f...:        tuning, see GCC manual and avr-libc documentation
 #  -Wall...:     warning level
 CPPFLAGS += -gdwarf-2
-CPPFLAGS += -Os
 CPPFLAGS += -funsigned-char
 CPPFLAGS += -funsigned-bitfields
 CPPFLAGS += -fshort-enums
@@ -226,6 +230,10 @@ CPPFLAGS += -Wall
 #CPPFLAGS += -Wsign-compare
 CPPFLAGS += -std=gnu99
 CPPFLAGS += --specs=nano.specs
+
+CPPFLAGS_DEBUG += -O1
+
+CPPFLAGS_RELEASE += -Os
 
 #---------------- Assembler Options --------------------------------------------
 #  -Wa,...:   tell GCC to pass this to the assembler.

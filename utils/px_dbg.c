@@ -136,18 +136,33 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     // Output level
     if(level == PX_DBG_CFG_MSG_LEVEL_ERR)
     {
+#if PX_DBG_CFG_COLOR
+        // Send VT100 sequence to set font color to RED
+        px_dbg_put_str("\e[31mE");
+#else
         // Error
         px_dbg_put_char('E');
+#endif
     }
     else if(level == PX_DBG_CFG_MSG_LEVEL_WARN)
     {
+#if PX_DBG_CFG_COLOR
+        // Send VT100 sequence to set font color to YELLOW
+        px_dbg_put_str("\e[33mW");
+#else
         // Warning
         px_dbg_put_char('W');
+#endif
     }
     else
     {
+#if PX_DBG_CFG_COLOR
+        // Send VT100 sequence to set font color to GREEN
+        px_dbg_put_str("\e[32mI");
+#else
         // Info
         px_dbg_put_char('I');
+#endif
     }
     px_dbg_put_char(' ');
 
@@ -160,6 +175,11 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     // Output timestamp
     px_dbg_put_str(px_dbg_buf);
     px_dbg_put_char(' ');
+#endif
+
+#if PX_DBG_CFG_COLOR
+        // Send VT100 sequence to reset all attributes
+        px_dbg_put_str("\e[0m");
 #endif
 
     // Output file and line

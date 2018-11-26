@@ -1,5 +1,3 @@
-#ifndef __PX_DBG_CFG_H__
-#define __PX_DBG_CFG_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -27,49 +25,61 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
     
-    Title:          px_dbg_cfg.h : Debug module configuration
+    Title:          px_xmodem_glue.h : Glue functions for XMODEM module
     Author(s):      Pieter Conradie
-    Creation Date:  2014-01-17
+    Creation Date:  2014-06-01
 
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_xmodem_glue.h"
+#include "px_systmr.h"
+#include "main.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
-#ifndef PX_DBG
-/// Flag to disable (PX_DBG=0) or enable (PX_DBG=1) debug.
-#define PX_DBG 1
-#endif
+#include "px_dbg.h"
+PX_DBG_DECL_NAME("px_xmodem_glue")
 
-#ifndef PX_DBG_CFG_MSG_LEVEL
-/**
- * Global debug output level.
- *  
- * It is a bitmask that sets which debug info will be emmitted. E.g.
- * - PX_DBG_CFG_MSG_LEVEL = PX_DBG_CFG_MSG_LEVEL_NONE : No debug output
- * - PX_DBG_CFG_MSG_LEVEL = PX_DBG_CFG_MSG_LEVEL_ERR  : Report errors only
- * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN) : Report errors + warnings
- * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN|PX_DBG_CFG_MSG_LEVEL_INFO) : Report errors + warnings + info
- */
-#define PX_DBG_CFG_MSG_LEVEL PX_DBG_CFG_MSG_LEVEL_ALL
-#else
-#warning "PX_DBG_CFG_MSG_LEVEL already defined"
-#endif
+/* _____LOCAL DEFINITIONS____________________________________________________ */
 
-#ifndef PX_DBG_CFG_NAME_LINE_ONLY
-/// Option to decrease debug footprint by displaying name and line only
-#define PX_DBG_CFG_NAME_LINE_ONLY 0
-#else
-#warning "PX_DBG_CFG_NAME_LINE_ONLY already defined"
-#endif
+/* _____MACROS_______________________________________________________________ */
 
-/// Disable (0) or Enable (1) VT100 terminal color output
-#define PX_DBG_CFG_COLOR 1
+/* _____GLOBAL VARIABLES_____________________________________________________ */
 
-/// Debug output string buffer size
-#define PX_DBG_CFG_BUF_SIZE 32
+/* _____LOCAL VARIABLES______________________________________________________ */
+px_systmr_t px_xmodem_tmr;
 
-#endif // #ifndef __PX_DBG_CFG_H__
+/* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
+
+/* _____LOCAL FUNCTIONS______________________________________________________ */
+
+/* _____GLOBAL FUNCTIONS_____________________________________________________ */
+bool px_xmodem_rd_u8(uint8_t * data)
+{
+    return px_uart_rd_u8(&px_uart_handle, data);
+}
+
+void px_xmodem_wr_u8(uint8_t data)
+{
+    while(!px_uart_wr_u8(&px_uart_handle, data))
+    {
+        ;
+    }
+}
+
+void px_xmodem_tmr_start(uint16_t time_ms)
+{
+    px_systmr_ticks_t delay_in_ticks;
+
+    delay_in_ticks = PX_SYSTMR_MS_TO_TICKS(time_ms);
+    px_systmr_start(&px_xmodem_tmr, delay_in_ticks);
+
+    PX_DBG_INFO("Start timeout %u ms (%u ticks)", time_ms, delay_in_ticks);
+}
+
+bool px_xmodem_tmr_has_expired(void)
+{
+    return px_systmr_has_expired(&px_xmodem_tmr);
+}
+

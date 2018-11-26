@@ -1,5 +1,5 @@
-#ifndef __PX_DBG_CFG_H__
-#define __PX_DBG_CFG_H__
+#ifndef __PX_XMODEM_CFG_H__
+#define __PX_XMODEM_CFG_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -7,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -27,9 +27,9 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
     
-    Title:          px_dbg_cfg.h : Debug module configuration
+    Title:          px_xmodem_cfg.h : XMODEM Peripheral Driver configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2014-01-17
+    Creation Date:  2013-01-15
 
 ============================================================================= */
 
@@ -37,39 +37,49 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_xmodem_glue.h"
 
 /* _____DEFINITIONS _________________________________________________________ */
-#ifndef PX_DBG
-/// Flag to disable (PX_DBG=0) or enable (PX_DBG=1) debug.
-#define PX_DBG 1
-#endif
+#define PX_XMODEM_CFG_MAX_RETRIES       4
+#define PX_XMODEM_CFG_MAX_RETRIES_START 4
 
-#ifndef PX_DBG_CFG_MSG_LEVEL
 /**
- * Global debug output level.
+ *  See if a received byte is available and store it in the specified location.
  *  
- * It is a bitmask that sets which debug info will be emmitted. E.g.
- * - PX_DBG_CFG_MSG_LEVEL = PX_DBG_CFG_MSG_LEVEL_NONE : No debug output
- * - PX_DBG_CFG_MSG_LEVEL = PX_DBG_CFG_MSG_LEVEL_ERR  : Report errors only
- * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN) : Report errors + warnings
- * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN|PX_DBG_CFG_MSG_LEVEL_INFO) : Report errors + warnings + info
+ *  @param[out] data    Pointer to location where data byte must be stored
+ *  
+ *  @retval true        Received byte is stored in specified location
+ *  @retval false       No received data available (receive buffer empty)
  */
-#define PX_DBG_CFG_MSG_LEVEL PX_DBG_CFG_MSG_LEVEL_ALL
-#else
-#warning "PX_DBG_CFG_MSG_LEVEL already defined"
-#endif
+#define PX_XMODEM_CFG_RD_U8(data)          px_xmodem_rd_u8(data)
 
-#ifndef PX_DBG_CFG_NAME_LINE_ONLY
-/// Option to decrease debug footprint by displaying name and line only
-#define PX_DBG_CFG_NAME_LINE_ONLY 0
-#else
-#warning "PX_DBG_CFG_NAME_LINE_ONLY already defined"
-#endif
+/**
+ *  Write one byte.
+ *  
+ *  This function blocks until space is available in the transmit buffer.
+ *  
+ *  @param[in] data   Byte to be written
+ */
+#define PX_XMODEM_CFG_WR_U8(data)          px_xmodem_wr_u8(data)
 
-/// Disable (0) or Enable (1) VT100 terminal color output
-#define PX_DBG_CFG_COLOR 1
+/**
+ *  Start timeout timer.
+ *  
+ *  This function starts the XMODEM timeout timer.
+ *  
+ *  @param[in] time_ms   Time in milliseconds to wait before timer has expired
+ */
+#define PX_XMODEM_CFG_TMR_START(time_ms)   px_xmodem_tmr_start(time_ms)
 
-/// Debug output string buffer size
-#define PX_DBG_CFG_BUF_SIZE 32
 
-#endif // #ifndef __PX_DBG_CFG_H__
+/**
+ *  See if timer has expired.
+ *  
+ *  @retval true    Timer has expired
+ *  @retval true    Timer has not expired
+ */
+#define PX_XMODEM_CFG_TMR_HAS_EXPIRED()    px_xmodem_tmr_has_expired()
+
+
+/// @}
+#endif // #ifndef __PX_XMODEM_CFG_H__

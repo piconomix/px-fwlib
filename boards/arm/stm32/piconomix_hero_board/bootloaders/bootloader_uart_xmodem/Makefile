@@ -38,11 +38,11 @@
 # ------------------------------------------------------------------------------
 
 # (1a) Project name
-PROJECT = printf
+PROJECT = bootloader_uart_xmodem
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release build)
 #      Comment this variable (prefix with '#') for normal release build (no bootloader)
-BOOTLOADER_SIZE = 0x2000
+#BOOTLOADER_SIZE = 0x2000
 
 # (2) MCU option(s)
 MCU = -mthumb -mcpu=cortex-m0plus
@@ -61,13 +61,22 @@ STMCUBE = $(PICOLIB)/libs/STM32Cube/L0
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
+SRC += src/px_xmodem_glue.c
+
 SRC += $(BSP)/px_board.c
+
+SRC += $(PICOLIB)/$(ARCH)/px_flash.c
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
+SRC += $(PICOLIB)/$(ARCH)/px_sysclk.c
 SRC += $(PICOLIB)/$(ARCH)/px_uart.c
-SRC += $(PICOLIB)/$(ARCH)/px_uart_stdio.c
+SRC += $(PICOLIB)/comms/px_xmodem.c
 SRC += $(PICOLIB)/utils/px_circ_buffer.c
+SRC += $(PICOLIB)/utils/px_dbg.c
+SRC += $(PICOLIB)/utils/px_systmr.c
+
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
+
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
 CPPSRC += 
@@ -98,6 +107,7 @@ INCDIRS += $(BSP)
 INCDIRS += $(PICOLIB)
 INCDIRS += $(PICOLIB)/$(ARCH)
 INCDIRS += $(PICOLIB)/common
+INCDIRS += $(PICOLIB)/comms
 INCDIRS += $(PICOLIB)/utils
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Legacy
@@ -105,9 +115,11 @@ INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-#CDEFS += PX_DBG=1
+CDEFS += PX_DBG=0
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER
+#CDEFS += USE_HAL_DRIVER
+#CDEFS += BOOT_CLEAR_REST_OF_FLASH
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
 #CPPDEFS += __STDC_LIMIT_MACROS

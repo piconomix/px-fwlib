@@ -9,7 +9,7 @@
         Type="cpp"
         DebugCallbackName="gdb"
         OutputFile="%bdpiconomix-fwlib"
-        CompilerConfigName="AVR-GCC-ATMEL">
+        CompilerConfigName="ARM-GCC-GNUARM">
         <Menu>
             <Target
                 Name="Compile"

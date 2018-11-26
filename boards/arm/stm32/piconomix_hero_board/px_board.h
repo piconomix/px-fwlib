@@ -48,7 +48,6 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_board_gpio.h"
-#include "px_adc.h"
 
 #ifdef __cplusplus
 extern "C" {

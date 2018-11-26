@@ -7,6 +7,7 @@
 # - DMBS - Dean's Makefile Build System by Dean Camera [https://github.com/abcminiuser/dmbs]
 # - http://stackoverflow.com Q&A research
 # - Automatically generate makefile dependencies (http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
+# - GNU make manual (https://www.gnu.org/software/make/manual/make.html)
 #
 # Makefile script special requirements:
 # - make 3.81 or greater (requires working eval function)
@@ -28,9 +29,55 @@ REMOVE    = rm -f
 REMOVEDIR = rm -rf
 COPY      = cp
 
+# Determine build (debug or release)
+# Set build directory and add build specific flags
+ifdef build
+    BUILD = $(build)
+else
+    BUILD = release
+endif
+ifeq ($(BUILD), debug)
+    BUILD_DIR = BUILD_DEBUG
+    CDEFS    += $(CDEFS_DEBUG)
+    CFLAGS   += $(CFLAGS_DEBUG)
+    CPPFLAGS += $(CPPFLAGS_DEBUG)
+    AFLAGS   += $(AFLAGS_DEBUG)
+else ifeq ($(BUILD), release)
+    BUILD_DIR = BUILD_RELEASE
+    CDEFS    += $(CDEFS_RELEASE)
+    CFLAGS   += $(CFLAGS_RELEASE)
+    CPPFLAGS += $(CPPFLAGS_RELEASE)
+    AFLAGS   += $(AFLAGS_RELEASE)
+else
+    $(error "Unsupported build specified. Use 'make build=debug' or 'make build=release")
+endif
+
+# Allocate space for bootloader in release build (if specified)
+#
+# VTOR register (Vector Table Offset Register) must be set to correct value in:
+# libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
+#
+# FLASH_OFFSET must be specified in linker script.
+ifeq ($(BUILD), release)
+    ifdef BOOTLOADER_SIZE
+        CDEFS   += VECT_TAB_OFFSET=$(BOOTLOADER_SIZE)
+        LDFLAGS += -Wl,--defsym,FLASH_OFFSET=$(BOOTLOADER_SIZE)
+    endif
+endif
+
 # Define Messages
-MSG_BEGIN               = '-------- begin --------'
-MSG_END                 = '--------  end  --------'
+ifeq ($(BUILD), debug)
+MSG_BEGIN               = '------------ begin (DEBUG) ---------------'
+MSG_END                 = '-------------  end (DEBUG) ---------------'
+else ifeq ($(BUILD), release)
+ifndef BOOTLOADER_SIZE
+MSG_BEGIN               = '------------- begin (RELEASE) ------------'
+MSG_END                 = '-------------  end (RELEASE) -------------'
+else
+MSG_BEGIN               = '-------- begin (RELEASE FOR BOOT) --------'
+MSG_END                 = '--------  end (RELEASE FOR BOOT) ---------'
+endif
+endif
 MSG_SIZE                = 'Size:'
 MSG_FLASH_HEX           = 'Creating HEX load file for Flash:'
 MSG_FLASH_BIN           = 'Creating BIN load file for Flash:'
@@ -46,8 +93,8 @@ MSG_OPENOCD_GDB_SERVER  = 'Launching OpenOCD GDB server:'
 MSG_GDB                 = 'Launching GDB:'
 
 # Define all object files from source files (C, C++ and Assembly)
-#     Relative paths are stripped and OBJDIR prefix is added.
-OBJECTS = $(foreach file,$(SRC) $(CPPSRC) $(ASRC), $(OBJDIR)/$(basename $(notdir $(file))).o)
+#     Relative paths are stripped and BUILD_DIR prefix is added.
+OBJECTS = $(foreach file,$(SRC) $(CPPSRC) $(ASRC), $(BUILD_DIR)/$(basename $(notdir $(file))).o)
 
 # Compiler flags to generate dependency files
 GENDEPFLAGS = -MMD -MP -MF $$(patsubst %.o,%.d,$$@)
@@ -64,7 +111,7 @@ AFLAGS   += $(addprefix -D,$(ADEFS))
 ALL_CFLAGS   ?= $(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
 ALL_CPPFLAGS ?= $(MCU) -x c++ $(CPPFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
 ALL_ASFLAGS  ?= $(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
-ALL_LDFLAGS  ?= $(MCU) $(LDFLAGS) -Wl,-Map=$(OBJDIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS))
+ALL_LDFLAGS  ?= $(MCU) $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS))
 
 # Default target
 all: begin gccversion build size end
@@ -82,13 +129,6 @@ sym: $(PROJECT).sym
 # If this rule is executed then the input source file does not exist.
 $(SRC) $(CPPSRC) $(ASRC):
 	$(error "Source file does not exist: $@")
-
-# Check that specified Object files directory is not empty or the current directory
-ifeq ($(strip $(OBJDIR)),)
-    $(error "OBJDIR must not be empty or a space")
-else ifeq ($(strip $(OBJDIR)),.)
-    $(error "OBJDIR must not be a .")
-endif
 
 # Eye candy
 begin:
@@ -125,13 +165,13 @@ gccversion :
 %.lss: %.elf
 	@echo
 	@echo $(MSG_EXTENDED_LISTING) $@
-	$(OBJDUMP) -h -S -z $< > $(OBJDIR)/$@
+	$(OBJDUMP) -h -S -z $< > $(BUILD_DIR)/$@
 
 # Create a symbol table from ELF output file
 %.sym: %.elf
 	@echo
 	@echo $(MSG_SYMBOL_TABLE) $@
-	$(NM) -n $< > $(OBJDIR)/$@
+	$(NM) -n $< > $(BUILD_DIR)/$@
 
 # Link: create ELF output file from object files
 .SECONDARY : $(PROJECT).elf
@@ -143,9 +183,9 @@ gccversion :
 
 # Compile: create object files from C source files
 #   A separate rule is created for each SRC file to ensure that the correct
-#   file is used to create the object file (in the OBJDIR directory).
+#   file is used to create the object file (in the BUILD_DIR directory).
 define create_c_obj_rule
-$(OBJDIR)/$(basename $(notdir $(1))).o: $(1)
+$(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING) $$<
 	$(CC) -c $(ALL_CFLAGS) $$< -o $$@
@@ -154,9 +194,9 @@ $(foreach file,$(SRC),$(eval $(call create_c_obj_rule,$(file))))
 
 # Compile: create object files from C++ source files
 #   A separate rule is created for each CPPSRC file to ensure that the correct
-#   file is used to create the object file (in the OBJDIR directory).
+#   file is used to create the object file (in the BUILD_DIR directory).
 define create_cpp_obj_rule
-$(OBJDIR)/$(basename $(notdir $(1))).o: $(1)
+$(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING_CPP) $$<
 	$(CC) -c $(ALL_CPPFLAGS) $$< -o $$@ 
@@ -165,9 +205,9 @@ $(foreach file,$(CPPSRC),$(eval $(call create_cpp_obj_rule,$(file))))
 
 # Assemble: create object files from assembler source files
 #   A separate rule is created for each ASRC file to ensure that the correct
-#   file is used to create the object file (in the OBJDIR directory).
+#   file is used to create the object file (in the BUILD_DIR directory).
 define create_asm_obj_rule
-$(OBJDIR)/$(basename $(notdir $(1))).o: $(1)
+$(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_ASSEMBLING) $$<
 	$(CC) -c $(ALL_ASFLAGS) $$< -o $$@
@@ -182,11 +222,18 @@ clean_list :
 	@echo $(MSG_CLEANING)
 	$(REMOVE) $(PROJECT).hex
 	$(REMOVE) $(PROJECT).bin
-	$(REMOVE) $(PROJECT).eep
 	$(REMOVE) $(PROJECT).elf
 	$(REMOVE) $(OPENOCD_SCRIPT)
 	$(REMOVE) $(GDB_SCRIPT)
-	$(REMOVEDIR) $(OBJDIR)
+	$(REMOVEDIR) $(BUILD_DIR)
+
+# Target: clean project
+mostlyclean: begin mostlyclean_list end
+
+mostlyclean_list :
+	@echo
+	@echo $(MSG_CLEANING)
+	$(REMOVEDIR) $(BUILD_DIR)
 
 # Generate OpenOCD config file
 .PHONY : $(OPENOCD_SCRIPT)
@@ -230,12 +277,12 @@ gdb: $(GDB_SCRIPT) elf
 	$(DEBUGGER) --command=$(GDB_SCRIPT)
 
 # Create object file directory
-$(shell mkdir $(OBJDIR) 2>/dev/null)
+$(shell mkdir $(BUILD_DIR) 2>/dev/null)
 
 # Include the compiler generated dependency files
 -include $(OBJECTS:%.o=%.d)
 
 # Listing of phony targets
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
-build elf hex bin lss sym clean clean_list openocd gdb
+build elf hex bin lss sym clean clean_list mostlyclean mostlyclean_list openocd gdb
 

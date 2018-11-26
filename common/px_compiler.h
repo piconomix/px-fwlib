@@ -116,6 +116,10 @@
 #endif
 #endif
 
+#if defined(PX_COMPILER_GCC_ARM)
+#define PX_ATTR_RAMFUNC                __attribute__((section(".RamFunc")))
+#endif
+
 #if defined(PX_COMPILER_GCC_ARM) || defined (PX_COMPILER_ARM_CC)
 #define px_interrupts_enable()      __enable_irq()
 #define px_interrupts_disable()     __disable_irq()

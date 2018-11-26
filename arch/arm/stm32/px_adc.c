@@ -113,8 +113,8 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
     {
         LL_ADC_SetOverSamplingScope(adc_base_adr, LL_ADC_OVS_GRP_REGULAR_CONTINUED);
         LL_ADC_ConfigOverSamplingRatioShift(adc_base_adr, 
-                                            (PX_ADC_CFG_OVERSAMPLING - 1) << ADC_CFGR2_OVSR_Pos,
-                                            PX_ADC_CFG_OVERSAMPLING_SHIFT << ADC_CFGR2_OVSS_Pos);
+                                            ((uint32_t)PX_ADC_CFG_OVERSAMPLING - 1) << ADC_CFGR2_OVSR_Pos,
+                                            ((uint32_t)PX_ADC_CFG_OVERSAMPLING_SHIFT) << ADC_CFGR2_OVSS_Pos);
     }
     
 

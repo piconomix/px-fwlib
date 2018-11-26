@@ -55,7 +55,7 @@
  *  - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR | PX_DBG_CFG_MSG_LEVEL_WARN) : Report errors + warnings
  *  - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR | PX_DBG_CFG_MSG_LEVEL_WARN | PX_DBG_CFG_MSG_LEVEL_INFO) : Report errors + warnings + info
  */
-#define PX_DBG_CFG_MSG_LEVEL (PX_DBG_CFG_MSG_LEVEL_ERR | PX_DBG_CFG_MSG_LEVEL_WARN)
+#define PX_DBG_CFG_MSG_LEVEL PX_DBG_CFG_MSG_LEVEL_ERR
 #endif
 
 /// Disable (0) or Enable (1) VT100 terminal color output
@@ -65,7 +65,7 @@
 #define PX_DBG_CFG_BUF_SIZE 64
 
 /// Provide function to output debug timestamp
-#if 1
+#if 0
 // Example 1: Create timestamp using sysclk tick
 #include "px_sysclk.h"
 #define PX_DBG_CFG_TIMESTAMP(str)  sprintf(str, "%08lu", (uint32_t)px_sysclk_get_tick_count())
@@ -88,7 +88,7 @@
 #include "main.h"
 #define PX_DBG_CFG_PUT_CHAR(data) px_uart_put_char(&main_uart_handle, data)
 #endif
-#if 1
+#if 0
 // Example 3: Call function in main
 #include "main.h"
 #define PX_DBG_CFG_PUT_CHAR(data) main_dbg_put_char(data)

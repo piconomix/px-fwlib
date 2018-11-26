@@ -249,8 +249,11 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
     px_xmodem_packet_nr = 1;
 
     // Repeat until transfer is finished or error count is exceeded
-    while(retry--)
+    while(retry != 0)
     {
+        // Decrement retry count
+        retry--;
+
         if(!first_ack_sent)
         {
             // Send initial start character to start transfer (with CRC checking)

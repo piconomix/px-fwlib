@@ -10,13 +10,12 @@
       <TargetName>piconomix_hero_board</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32L072RBTx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32L0xx_DFP.2.0.0</PackID>
+          <PackID>Keil.STM32L0xx_DFP.1.6.1</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00005000) IROM(0x08000000,0x00020000) CPUTYPE("Cortex-M0+") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -324,7 +323,6 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>0</uC99>
-            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -387,11 +385,6 @@
               <FilePath>.\cfg\ffconf.h</FilePath>
             </File>
             <File>
-              <FileName>px_at45d_cfg.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\cfg\px_at45d_cfg.h</FilePath>
-            </File>
-            <File>
               <FileName>px_cli_cfg.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\cfg\px_cli_cfg.h</FilePath>
@@ -400,11 +393,6 @@
               <FileName>px_dbg_cfg.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\cfg\px_dbg_cfg.h</FilePath>
-            </File>
-            <File>
-              <FileName>px_debounce_cfg.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\cfg\px_debounce_cfg.h</FilePath>
             </File>
             <File>
               <FileName>px_gfx_cfg.h</FileName>
@@ -450,6 +438,26 @@
               <FileName>px_rtc_util_cfg.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\cfg\px_rtc_util_cfg.h</FilePath>
+            </File>
+            <File>
+              <FileName>px_adc_cfg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\cfg\px_adc_cfg.h</FilePath>
+            </File>
+            <File>
+              <FileName>px_at25s_cfg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\cfg\px_at25s_cfg.h</FilePath>
+            </File>
+            <File>
+              <FileName>px_dac_cfg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\cfg\px_dac_cfg.h</FilePath>
+            </File>
+            <File>
+              <FileName>px_lcd_st7567_jhd12864_cfg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\cfg\px_lcd_st7567_jhd12864_cfg.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -612,11 +620,6 @@
               <FilePath>.\src\usbd_desc.c</FilePath>
             </File>
             <File>
-              <FileName>px_adc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\px_adc.h</FilePath>
-            </File>
-            <File>
               <FileName>px_cli_cmds_adc.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\px_cli_cmds_adc.h</FilePath>
@@ -640,6 +643,21 @@
               <FileName>usbd_desc.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\usbd_desc.h</FilePath>
+            </File>
+            <File>
+              <FileName>px_cli_cmds_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\px_cli_cmds_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>px_cli_cmds_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\px_cli_cmds_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>px_cli_cmds_dac.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\px_cli_cmds_dac.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -692,16 +710,6 @@
               <FilePath>..\..\..\..\..\..\comms\px_xmodem.c</FilePath>
             </File>
             <File>
-              <FileName>px_lcd_st7565p_tse2g0330e.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\devices\display\px_lcd_st7565p_tse2g0330e.c</FilePath>
-            </File>
-            <File>
-              <FileName>px_at45d.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\devices\mem\px_at45d.c</FilePath>
-            </File>
-            <File>
               <FileName>px_sd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\devices\mem\px_sd.c</FilePath>
@@ -750,6 +758,26 @@
               <FileName>px_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\arch\arm\stm32\px_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>px_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\arch\arm\stm32\px_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>px_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\arch\arm\stm32\px_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>px_at25s.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\devices\mem\px_at25s.c</FilePath>
+            </File>
+            <File>
+              <FileName>px_lcd_st7567_jhd12864.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\devices\display\px_lcd_st7567_jhd12864.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -841,11 +869,5 @@
       </Groups>
     </Target>
   </Targets>
-
-  <RTE>
-    <apis/>
-    <components/>
-    <files/>
-  </RTE>
 
 </Project>

@@ -57,6 +57,9 @@
 
 #include "usb_device.h"
 
+#include "px_dbg.h"
+PX_DBG_DECL_NAME("main")
+
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 
 /* _____MACROS_______________________________________________________________ */
@@ -174,6 +177,7 @@ int main(void)
 
     // Initialise board and peripheral drivers
     main_init();
+    PX_DBG_INFO("App started");
 
     // Enable LED
     PX_USR_LED_ON();

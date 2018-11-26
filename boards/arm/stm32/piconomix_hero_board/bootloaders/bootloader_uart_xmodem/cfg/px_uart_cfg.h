@@ -1,5 +1,5 @@
-#ifndef __PX_DBG_CFG_H__
-#define __PX_DBG_CFG_H__
+#ifndef __PX_UART_CFG_H__
+#define __PX_UART_CFG_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -7,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -27,9 +27,9 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
     
-    Title:          px_dbg_cfg.h : Debug module configuration
+    Title:          px_uart_cfg.h : UART Peripheral Driver configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2014-01-17
+    Creation Date:  2018-02-26
 
 ============================================================================= */
 
@@ -39,37 +39,25 @@
 #include "px_defines.h"
 
 /* _____DEFINITIONS _________________________________________________________ */
-#ifndef PX_DBG
-/// Flag to disable (PX_DBG=0) or enable (PX_DBG=1) debug.
-#define PX_DBG 1
-#endif
+/// Enable/disable support for UART1 peripheral
+#define PX_UART_CFG_UART1_EN 1
 
-#ifndef PX_DBG_CFG_MSG_LEVEL
-/**
- * Global debug output level.
- *  
- * It is a bitmask that sets which debug info will be emmitted. E.g.
- * - PX_DBG_CFG_MSG_LEVEL = PX_DBG_CFG_MSG_LEVEL_NONE : No debug output
- * - PX_DBG_CFG_MSG_LEVEL = PX_DBG_CFG_MSG_LEVEL_ERR  : Report errors only
- * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN) : Report errors + warnings
- * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN|PX_DBG_CFG_MSG_LEVEL_INFO) : Report errors + warnings + info
- */
-#define PX_DBG_CFG_MSG_LEVEL PX_DBG_CFG_MSG_LEVEL_ALL
-#else
-#warning "PX_DBG_CFG_MSG_LEVEL already defined"
-#endif
+/// Enable/disable support for UART2 peripheral
+#define PX_UART_CFG_UART2_EN 0
 
-#ifndef PX_DBG_CFG_NAME_LINE_ONLY
-/// Option to decrease debug footprint by displaying name and line only
-#define PX_DBG_CFG_NAME_LINE_ONLY 0
-#else
-#warning "PX_DBG_CFG_NAME_LINE_ONLY already defined"
-#endif
+/// Enable/disable support for UART4 peripheral
+#define PX_UART_CFG_UART4_EN 0
 
-/// Disable (0) or Enable (1) VT100 terminal color output
-#define PX_DBG_CFG_COLOR 1
+/// Enable/disable support for UART5 peripheral
+#define PX_UART_CFG_UART5_EN 0
 
-/// Debug output string buffer size
-#define PX_DBG_CFG_BUF_SIZE 32
+/// Default BAUD rate
+#define PX_UART_CFG_DEFAULT_BAUD 115200ul
 
-#endif // #ifndef __PX_DBG_CFG_H__
+/// Size of transmit buffer
+#define PX_UART_CFG_TX_BUF_SIZE 64
+
+/// Size of receive buffer
+#define PX_UART_CFG_RX_BUF_SIZE 64
+
+#endif // #ifndef __PX_UART_CFG_H__

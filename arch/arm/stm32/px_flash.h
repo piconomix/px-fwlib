@@ -1,5 +1,5 @@
-#ifndef __PX_DBG_CFG_H__
-#define __PX_DBG_CFG_H__
+#ifndef __PX_FLASH_H__
+#define __PX_FLASH_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -7,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -27,49 +27,74 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
     
-    Title:          px_dbg_cfg.h : Debug module configuration
+    Title:          px_flash.h : Internal FLASH write routines
     Author(s):      Pieter Conradie
-    Creation Date:  2014-01-17
+    Creation Date:  2018-11-21
 
 ============================================================================= */
+
+/** 
+ *  @ingroup STM32
+ *  @defgroup AVR_FLASH px_flash.h : Internal FLASH write routines
+ *  
+ *  This module can erase a page and write a half page of internal FLASH.
+ *  
+ *  File(s):
+ *  - arch/arm/stm32/px_flash.h
+ *  - arch/arm/stm32/px_flash.c 
+ *   
+ *  @note 
+ *  The flash erase and program functions must be executed from SRAM, not FLASH.
+ *  
+ */
+/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 /* _____DEFINITIONS _________________________________________________________ */
-#ifndef PX_DBG
-/// Flag to disable (PX_DBG=0) or enable (PX_DBG=1) debug.
-#define PX_DBG 1
-#endif
+#define PX_FLASH_PAGE_SIZE                128
+#define PX_FLASH_HALF_PAGE_SIZE           (PX_FLASH_PAGE_SIZE / 2)
+#define PX_FLASH_HALF_PAGE_SIZE_WORDS     (PX_FLASH_HALF_PAGE_SIZE / 4)
 
-#ifndef PX_DBG_CFG_MSG_LEVEL
+/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
- * Global debug output level.
+ *  Unlock FLASH for programming and erase.
  *  
- * It is a bitmask that sets which debug info will be emmitted. E.g.
- * - PX_DBG_CFG_MSG_LEVEL = PX_DBG_CFG_MSG_LEVEL_NONE : No debug output
- * - PX_DBG_CFG_MSG_LEVEL = PX_DBG_CFG_MSG_LEVEL_ERR  : Report errors only
- * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN) : Report errors + warnings
- * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN|PX_DBG_CFG_MSG_LEVEL_INFO) : Report errors + warnings + info
  */
-#define PX_DBG_CFG_MSG_LEVEL PX_DBG_CFG_MSG_LEVEL_ALL
-#else
-#warning "PX_DBG_CFG_MSG_LEVEL already defined"
+void px_flash_unlock(void);
+
+/**
+ *  Lock FLASH to prevent programming or erase.
+ *  
+ */
+void px_flash_lock(void);
+
+/**
+ *  Function to erase a page.
+ *  
+ *  @param address  Page address
+ */
+void px_flash_erase_page(const uint32_t address);
+
+/**
+ *  Function to write a half page.
+ *  
+ *  @param address   Half page address
+ *  @param data      Pointer to buffer containing data to write
+ */
+void px_flash_wr_half_page(const uint32_t address, const  uint32_t * data);
+
+/* _____MACROS_______________________________________________________________ */
+
+/// @}
+#ifdef __cplusplus
+}
 #endif
 
-#ifndef PX_DBG_CFG_NAME_LINE_ONLY
-/// Option to decrease debug footprint by displaying name and line only
-#define PX_DBG_CFG_NAME_LINE_ONLY 0
-#else
-#warning "PX_DBG_CFG_NAME_LINE_ONLY already defined"
-#endif
-
-/// Disable (0) or Enable (1) VT100 terminal color output
-#define PX_DBG_CFG_COLOR 1
-
-/// Debug output string buffer size
-#define PX_DBG_CFG_BUF_SIZE 32
-
-#endif // #ifndef __PX_DBG_CFG_H__
+#endif // #ifndef __PX_FLASH_H__
