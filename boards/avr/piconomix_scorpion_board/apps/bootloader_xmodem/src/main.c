@@ -44,7 +44,7 @@
 #include "px_flash.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-#define PX_FLASH_BOOT_PAGE_START    (PX_FLASH_BOOT_START / PX_FLASH_PAGE_SIZE)
+#define PX_FLASH_BOOT_PAGE_START    (FLASH_BOOT_START / PX_FLASH_PAGE_SIZE)
 #define PX_FLASH_START_PAGE         0
 
 /* _____MACROS_______________________________________________________________ */

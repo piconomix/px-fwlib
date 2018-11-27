@@ -170,6 +170,7 @@
 #define PX_DBG_CFG_MSG_LEVEL       PX_DBG_CFG_MSG_LEVEL_NONE
 #define PX_DBG_CFG_NAME_LINE_ONLY  0
 #define PX_DBG_CFG_BUF_SIZE        32
+#define PX_DBG_CFG_COLOR           0
 
 #endif
 
