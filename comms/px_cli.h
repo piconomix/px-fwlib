@@ -135,7 +135,8 @@
      || !defined(PX_CLI_CFG_HISTORY_SIZE      ) \
      || !defined(PX_CLI_CFG_DISP_HELP_STR     ) \
      || !defined(PX_CLI_CFG_NAME_STR_MAX_SIZE ) \
-     || !defined(PX_CLI_CFG_PARAM_STR_MAX_SIZE)  )
+     || !defined(PX_CLI_CFG_PARAM_STR_MAX_SIZE) \
+     || !defined(PX_CLI_CFG_COLOR             )  )
       )
 #error "One or more options not defined in 'px_cli_cfg.h'"
 #endif

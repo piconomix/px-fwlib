@@ -688,6 +688,11 @@ static void px_cli_cmd_exe(void)
         return;
     }
 
+#if PX_CLI_CFG_COLOR
+    // Set font color to green
+    printf(PX_VT100_SET_FOREGROUND_GREEN);
+#endif
+
     // Execute command with parameters
     report_str = (*(px_cli_cmd_list_item->handler))(argc, argv);
 
@@ -699,6 +704,11 @@ static void px_cli_cmd_exe(void)
         // Append newline character
         putchar('\n');
     }
+
+#if PX_CLI_CFG_COLOR
+    // Restore font color
+    printf(PX_VT100_RESET_ALL_ATTRS);
+#endif
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -721,13 +731,18 @@ void px_cli_init(const char* startup_str)
     px_cli_autocomplete_reset();
 
     // Reset Terminal
-    px_vt100_init();    
+    px_vt100_init();
 
     // Display startup string
     if(startup_str != NULL)
     {
         printf(startup_str);
     }
+
+#if PX_CLI_CFG_COLOR
+    // Set font color to green
+    printf(PX_VT100_SET_FOREGROUND_GREEN);
+#endif
 
     // Display start up help advice
 #if PX_CLI_CFG_DISP_HELP_STR
@@ -742,6 +757,11 @@ void px_cli_init(const char* startup_str)
            "ENTER to execute cmd\n"
            "<...> are required parameters\n"
            "[...] are optional parameters\n\n");
+
+#if PX_CLI_CFG_COLOR
+    // Restore font color
+    printf(PX_VT100_RESET_ALL_ATTRS);
+#endif
 
     // Display prompt
     putchar('>');

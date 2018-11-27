@@ -52,12 +52,18 @@
  *  This module allows one to easily add debug print macros to the source code 
  *  and enable them by defining PX_DBG=1 or remove them from the build by 
  *  defining PX_DBG=0 in the Makefile. There is no need to manually edit the 
- *  source code afterwards for the release build.
+ *  source code afterwards for the release build. 
+ *   
+ *  ![Debug output on Tera Term](px_dbg_test.png) 
+ *   
+ *  Set #PX_DBG_CFG_COLOR to 1 to mark debug message level with color on 
+ *  an ANSI/VT100 terminal emulator for example 
+ *  [Tera Term](http://en.sourceforge.jp/projects/ttssh2).
  *  
  *  The following macros can be used:
- *  - PX_DBG_ERR() to report an error message
- *  - PX_DBG_WARN() to report a warning message
- *  - PX_DBG_INFO() to report an informative message
+ *  - PX_DBG_INFO() to report an informative message (GREEN)
+ *  - PX_DBG_WARN() to report a warning message (YELLOW)
+ *  - PX_DBG_ERR() to report an error message (RED)
  *  - PX_DBG_ASSERT() to test an expression and halt if it is false, for example 
  *    to make sure that a pointer is not NULL before using it.
  *  - PX_DBG_TRACE() to output debug information
@@ -90,19 +96,6 @@
  *  Example:
  *  
  *  @include utils/test/px_dbg_test.c
- *  
- *  Output:
- *  
- *      @code
- *      Calculation started
- *      I px_dbg_test 15 : calc(val = 0)
- *      E px_dbg_test 20 : val may not be equal to zero
- *      I px_dbg_test 15 : calc(val = 1)
- *      I px_dbg_test 28 : answer = 100
- *      I px_dbg_test 15 : calc(val = 2)
- *      I px_dbg_test 28 : answer = 50
- *      Calculation finished
- *      @endcode
  *  
  *  The project wide #PX_DBG_CFG_MSG_LEVEL setting in the Makefile or 
  *  "px_dbg_cfg.h" can be overriden for a specific C file as follows:

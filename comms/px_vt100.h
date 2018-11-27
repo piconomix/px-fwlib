@@ -62,8 +62,6 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS _________________________________________________________ */
-
-/* _____TYPE DEFINITIONS_____________________________________________________ */
 /// @name Special ASCII values
 //@{
 #define PX_VT100_CHAR_BEL      0x07
@@ -75,6 +73,61 @@ extern "C" {
 #define PX_VT100_CHAR_DEL      0x7F
 //@}
 
+/// @name VT100 escape sequences
+//@{
+#define PX_VT100_CURSOR_HOME                "\e[H"
+#define PX_VT100_CURSOR_UP                  "\e[1A"
+#define PX_VT100_CURSOR_DOWN                "\e[1B"
+#define PX_VT100_CURSOR_FORWARD             "\e[1C"
+#define PX_VT100_CURSOR_BACKWARD            "\e[1D"
+#define PX_VT100_SAVE_CURSOR                "\e[s"
+#define PX_VT100_UNSAVE_CURSOR              "\e[u"
+#define PX_VT100_SAVE_CURSOR_AND_ATTRS      "\e7"
+#define PX_VT100_RESTORE_CURSOR_AND_ATTRS   "\e8"
+
+#define PX_VT100_SCROLL_SCREEN              "\e[r"
+#define PX_VT100_SCROLL_DOWN                "\eD"
+#define PX_VT100_SCROLL_UP                  "\eM"
+
+#define PX_VT100_SET_TAB                    "\eH"
+#define PX_VT100_CLEAR_TAB                  "\e[g"
+#define PX_VT100_CLEAR_ALL_TABS             "\e[3g"
+
+#define PX_VT100_ERASE_END_OF_LINE          "\e[K"
+#define PX_VT100_ERASE_START_OF_LINE        "\e[1K"
+#define PX_VT100_ERASE_LINE                 "\e[2K"
+#define PX_VT100_ERASE_DOWN                 "\e[J"
+#define PX_VT100_ERASE_UP                   "\e[1J"
+#define PX_VT100_ERASE_SCREEN               "\e[2J"
+
+#define PX_VT100_RESET_ALL_ATTRS            "\e[0m"
+#define PX_VT100_SET_ATTR_BRIGHT            "\e[1m"
+#define PX_VT100_SET_ATTR_DIM               "\e[2m"
+#define PX_VT100_SET_ATTR_UNDERSCORE        "\e[4m"
+#define PX_VT100_SET_ATTR_BLINK             "\e[5m"
+#define PX_VT100_SET_ATTR_REVERSE           "\e[7m"
+#define PX_VT100_SET_ATTR_HIDDEN            "\e[8m"
+
+#define PX_VT100_SET_FOREGROUND_BLACK       "\e[30m"
+#define PX_VT100_SET_FOREGROUND_RED         "\e[31m"
+#define PX_VT100_SET_FOREGROUND_GREEN       "\e[32m"
+#define PX_VT100_SET_FOREGROUND_YELLOW      "\e[33m"
+#define PX_VT100_SET_FOREGROUND_BLUE        "\e[34m"
+#define PX_VT100_SET_FOREGROUND_MAGENTA     "\e[35m"
+#define PX_VT100_SET_FOREGROUND_CYAN        "\e[36m"
+#define PX_VT100_SET_FOREGROUND_WHITE       "\e[37m"
+
+#define PX_VT100_SET_BACKGROUND_BLACK       "\e[40m"
+#define PX_VT100_SET_BACKGROUND_RED         "\e[41m"
+#define PX_VT100_SET_BACKGROUND_GREEN       "\e[42m"
+#define PX_VT100_SET_BACKGROUND_YELLOW      "\e[43m"
+#define PX_VT100_SET_BACKGROUND_BLUE        "\e[44m"
+#define PX_VT100_SET_BACKGROUND_MAGENTA     "\e[45m"
+#define PX_VT100_SET_BACKGROUND_CYAN        "\e[46m"
+#define PX_VT100_SET_BACKGROUND_WHITE       "\e[47m"
+//@}
+
+/* _____TYPE DEFINITIONS_____________________________________________________ */
 /// VT100 Terminal receive state
 typedef enum
 {

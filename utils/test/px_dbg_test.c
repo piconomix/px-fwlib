@@ -1,4 +1,5 @@
 #include "px_defines.h"
+#include "px_board.h"
 #include "px_uart.h"
 #include "px_uart_stdio.h"
 
@@ -31,7 +32,7 @@ uint8_t calc(uint8_t val)
     return answer;
 }
 
-void px_dbg_test(void)
+int main(void)
 {
     uint8_t val;
     uint8_t answer;
@@ -40,9 +41,9 @@ void px_dbg_test(void)
     px_board_init();
     px_uart_init();
 
-    // Open UART0 @ 115200 BAUD, 8 data bits, no parity, 1 stop bit
+    // Open UART1 @ 115200 BAUD, 8 data bits, no parity, 1 stop bit
     px_uart_open2(&px_uart_handle,
-                  PX_UART_PER_0, 
+                  PX_UART_PER_1, 
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
@@ -54,11 +55,11 @@ void px_dbg_test(void)
     // Enable interrupts
     px_interrupts_enable();
    
-    PX_DBG_TRACE("Calculation started\n");
+    PX_DBG_WARN("Calculation started");
     for(val = 0; val < 3; val++)
     {
         // Calculate answer
         answer = calc(val);
     }
-    PX_DBG_TRACE("Calculation finished\n");
+    PX_DBG_TRACE("Calculation finished. answer = %u\n", answer);
 }
