@@ -177,7 +177,6 @@ int main(void)
 
     // Initialise board and peripheral drivers
     main_init();
-    PX_DBG_INFO("App started");
 
     // Enable LED
     PX_USR_LED_ON();

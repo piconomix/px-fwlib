@@ -119,6 +119,7 @@ SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pcd.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pcd_ex.c
+SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_usb.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 
 SRC += $(STMCUBE_USB)/Class/CDC/Src/usbd_cdc.c
@@ -174,7 +175,7 @@ INCDIRS += $(STMCUBE_USB)/Core/Inc
 INCDIRS += $(CHAN_FATFS)
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-CDEFS += PX_DBG=1 PX_DBG_CFG_MSG_LEVEL=PX_DBG_CFG_MSG_LEVEL_ALL
+CDEFS += PX_DBG=1
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER

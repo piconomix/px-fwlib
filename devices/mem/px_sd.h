@@ -94,7 +94,7 @@ typedef struct PX_ATTR_PACKED
     uint8_t  crc7_end_bit;
 } px_sd_cid_t;
 
-/// CSD - Card Specific Data register
+/// CSD - Card Specific Data register; Paragraph "5.3 CSD Register", page 114
 typedef struct PX_ATTR_PACKED
 {
     // Byte 0
@@ -103,8 +103,11 @@ typedef struct PX_ATTR_PACKED
 
     // Byte 1
     uint8_t taac;                      ///< data read access-time-1
+    // Byte 2
     uint8_t nsac;                      ///< data read access-time-2 in CLK cycles (NSAC*100)
+    // Byte 3
     uint8_t tran_speed;                ///< max. data transfer rate
+    // Byte 4
     uint8_t ccc_hi;                    ///< card command classes
 
 
@@ -140,7 +143,11 @@ typedef struct PX_ATTR_PACKED
             // Byte 10
             uint8_t sector_size_hi : 6;        ///< erase sector size
             uint8_t erase_blk_en : 1;          ///< erase single block enable
-            uint8_t c_size_mult_lo : 1;        ///< device size multiplier            
+            uint8_t c_size_mult_lo : 1;        ///< device size multiplier
+
+            // Byte 11
+            uint8_t wp_grp_size : 7;           ///< write protect group size
+            uint8_t sector_size_lo : 1;        ///< erase sector size
         } csd_1_0;
 
         struct
@@ -158,18 +165,19 @@ typedef struct PX_ATTR_PACKED
 
             // Byte 8
             uint8_t c_size_mid : 8;            ///< device size
+            // Byte 9
             uint8_t c_size_lo : 8;             ///< device size
 
             // Byte 10
             uint8_t sector_size_hi : 6;        ///< erase sector size
             uint8_t erase_blk_en : 1;          ///< erase single block enable
-            uint8_t reserved4 : 1;            
+            uint8_t reserved4 : 1;
+
+            // Byte 11
+            uint8_t wp_grp_size : 7;           ///< write protect group size
+            uint8_t sector_size_lo : 1;        ///< erase sector size
         } csd_2_0;
     } ver;
-
-    // Byte 11
-    uint8_t wp_grp_size : 7;           ///< write protect group size
-    uint8_t sector_size_lo : 1;        ///< erase sector size
 
     // Byte 12
     uint8_t write_bl_len_hi : 2;       ///< max. write data block length

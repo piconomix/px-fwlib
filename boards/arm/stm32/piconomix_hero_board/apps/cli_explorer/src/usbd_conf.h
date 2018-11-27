@@ -59,9 +59,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "main.h"
 #include "stm32l0xx.h"
 #include "stm32l0xx_hal.h"
-#include "usbd_def.h"
 
 /* USER CODE BEGIN INCLUDE */
 

@@ -590,11 +590,18 @@ bool px_sd_read_csd(px_sd_csd_t * csd)
     data_token = px_sd_rx_data_block((uint8_t *) csd, sizeof(*csd));
     if(data_token != PX_SD_TOKEN_DATA_BLOCK_START)
     {
+        PX_DBG_ERR("Incorrect data token (received 0x%02X)", data_token);
         px_sd_spi_cs_end();
         return false;
     }
 
     px_sd_spi_cs_end();
+
+#if PX_DBG_LEVEL_INFO
+    PX_DBG_INFO("CSD:");
+    PX_DBG_TRACE_DATA(csd, sizeof(px_sd_csd_t));
+    PX_DBG_TRACE("\n");
+#endif
     return true;
 }
 
@@ -649,13 +656,14 @@ uint32_t px_sd_get_capacity_in_blocks(const px_sd_csd_t * csd)
         PX_DBG_INFO("c_size_lo  = %02hX", csd->ver.csd_1_0.c_size_lo);
 
         // C_SIZE + 1
-        capacity =  ((uint16_t)csd->ver.csd_1_0.c_size_hi << 10)
-                   + ((uint16_t)csd->ver.csd_1_0.c_size_mid << 2)
-                   +  csd->ver.csd_1_0.c_size_lo + 1;
+        capacity = (   ((uint16_t)csd->ver.csd_1_0.c_size_hi << 10)
+                     | ((uint16_t)csd->ver.csd_1_0.c_size_mid << 2)
+                     | (csd->ver.csd_1_0.c_size_lo                )  )
+                   + 1;
 
         PX_DBG_INFO("capacity = %08lX", capacity);
 
-        // (C_SIZE + 1) * 2^(READ_BL_LEN + C_SIZE_MULT + 2) / (1024 / 2)
+        // (C_SIZE + 1) * 2^(READ_BL_LEN + C_SIZE_MULT + 2) / 512
         capacity = capacity << (n - 9);
 
         PX_DBG_INFO("capacity = %08lX", capacity);
@@ -668,13 +676,14 @@ uint32_t px_sd_get_capacity_in_blocks(const px_sd_csd_t * csd)
 
         // C_SIZE + 1
         capacity =   ((uint32_t)csd->ver.csd_2_0.c_size_hi << 16)
-                    + ((uint16_t)csd->ver.csd_2_0.c_size_mid << 8)
-                    + (csd->ver.csd_2_0.c_size_lo  << 0) + 1;
+                    | ((uint16_t)csd->ver.csd_2_0.c_size_mid << 8)
+                    | (csd->ver.csd_2_0.c_size_lo + 1);
 
         PX_DBG_INFO("capacity = %08lX", capacity);
 
-        // (C_SIZE + 1) * (512 / 2)
-        capacity <<= 8;
+        // Memory capacity = (C_SIZE + 1) * 512 KByte
+        // Size in blocks  = (C_SIZE + 1) * 512 KByte / 0.5 KByte
+        capacity <<= 10;
 
         PX_DBG_INFO("capacity = %08lX", capacity);
     }

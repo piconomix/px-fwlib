@@ -111,8 +111,7 @@ static const char* px_cli_cmd_fn_sd_init(uint8_t argc, char* argv[])
     printf("Data read access time 2: %u\n", csd->nsac);
     printf("Max data transfer rate: %u\n", csd->tran_speed);
     printf("Max read data block length: %u\n", csd->read_bl_len);
-    printf("Capacity: %lu Mbyte\n\n",
-           (px_sd_get_capacity_in_blocks(csd) * PX_SD_BLOCK_SIZE) / (1024 * 1024));
+    printf("Capacity: %lu Mbyte\n\n", px_sd_get_capacity_in_blocks(csd) / 2048);
 
     // Mount logical drive (immediately)
     if(f_mount(&chan_fs_fatfs, "", 1) != FR_OK)

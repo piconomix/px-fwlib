@@ -50,8 +50,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "dac.h"
 
-#include "gpio.h"
-
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -61,23 +59,22 @@ DAC_HandleTypeDef hdac;
 /* DAC init function */
 void MX_DAC_Init(void)
 {
-  DAC_ChannelConfTypeDef sConfig;
+  DAC_ChannelConfTypeDef sConfig = {0};
 
-    /**DAC Initialization 
-    */
+  /**DAC Initialization 
+  */
   hdac.Instance = DAC;
   if (HAL_DAC_Init(&hdac) != HAL_OK)
   {
-    _Error_Handler(__FILE__, __LINE__);
+    Error_Handler();
   }
-
-    /**DAC channel OUT1 config 
-    */
+  /**DAC channel OUT1 config 
+  */
   sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
   sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
   {
-    _Error_Handler(__FILE__, __LINE__);
+    Error_Handler();
   }
 
 }
@@ -85,7 +82,7 @@ void MX_DAC_Init(void)
 void HAL_DAC_MspInit(DAC_HandleTypeDef* dacHandle)
 {
 
-  GPIO_InitTypeDef GPIO_InitStruct;
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   if(dacHandle->Instance==DAC)
   {
   /* USER CODE BEGIN DAC_MspInit 0 */
@@ -94,6 +91,7 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef* dacHandle)
     /* DAC clock enable */
     __HAL_RCC_DAC_CLK_ENABLE();
   
+    __HAL_RCC_GPIOA_CLK_ENABLE();
     /**DAC GPIO Configuration    
     PA4     ------> DAC_OUT1 
     */
@@ -133,13 +131,5 @@ void HAL_DAC_MspDeInit(DAC_HandleTypeDef* dacHandle)
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

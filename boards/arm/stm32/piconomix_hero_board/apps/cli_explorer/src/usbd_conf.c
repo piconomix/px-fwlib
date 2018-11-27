@@ -55,7 +55,7 @@
 #include "usbd_cdc.h"
 
 /* USER CODE BEGIN Includes */
-#include "main.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,8 +67,8 @@
 
 /* USER CODE END PV */
 
-PCD_HandleTypeDef hpcd_USB_FS;
-void _Error_Handler(char * file, int line);
+                PCD_HandleTypeDef hpcd_USB_FS;
+void Error_Handler(void);
 
 /* USER CODE BEGIN 0 */
 
@@ -277,7 +277,7 @@ void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
 {
-  USBD_LL_DevDisconnected((USBD_HandleTypeDef*)hpcd->pData);  
+  USBD_LL_DevDisconnected((USBD_HandleTypeDef*)hpcd->pData);
 }
 
 /*******************************************************************************
@@ -306,7 +306,7 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
   hpcd_USB_FS.Init.battery_charging_enable = DISABLE;
   if (HAL_PCD_Init(&hpcd_USB_FS) != HAL_OK)
   {
-    /* _Error_Handler(__FILE__, __LINE__); */
+    /* Error_Handler( ); */
       while(1)
       {
           ;
