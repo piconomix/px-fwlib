@@ -277,6 +277,11 @@ img {
   font-size: 14px;
 }
 
+#side-nav {
+    width: 25%;
+    max-width: 50%;
+}
+
 .memtitle {
     background-image: none;
 }
