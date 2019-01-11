@@ -521,8 +521,8 @@ void px_spi_xc(px_spi_handle_t * handle,
     }
 }
 
-void px_spi_change_baud(px_spi_handle_t * handle,
-                        px_spi_baud_t     baud)
+void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
+                              px_spi_baud_t     baud)
 {
     px_spi_data_t * spi_data;
     SPI_TypeDef *   spi_base_adr;

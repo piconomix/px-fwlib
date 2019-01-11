@@ -300,7 +300,7 @@ bool px_uart_rd_buf_empty(px_uart_handle_t * handle);
  *  
  *  @param baud          Baud rate in bits/s
  */
-void px_uart_change_baud(px_uart_handle_t * handle, uint32_t baud);
+void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
 
 /* _____MACROS_______________________________________________________________ */
 

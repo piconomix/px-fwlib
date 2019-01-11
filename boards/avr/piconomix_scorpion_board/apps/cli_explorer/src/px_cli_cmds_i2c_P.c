@@ -157,7 +157,7 @@ static const char * px_cli_cmd_fn_i2c_scan(uint8_t argc, char* argv[])
     // Scan all 7-bit addresses
     for(adr=0; adr<128; adr++)
     {
-        px_i2c_change_slave_adr(&px_i2c_handle, adr);
+        px_i2c_ioctl_change_slave_adr(&px_i2c_handle, adr);
         // SLA+W
         if(px_i2c_wr(&px_i2c_handle, NULL, 0, PX_I2C_FLAG_START_AND_STOP))
         {
@@ -199,7 +199,7 @@ static const char * px_cli_cmd_fn_i2c_wr(uint8_t argc, char* argv[])
         data[i-1] = px_cli_argv_val.u8;
     }
 
-    px_i2c_change_slave_adr(&px_i2c_handle, adr);
+    px_i2c_ioctl_change_slave_adr(&px_i2c_handle, adr);
     if(!px_i2c_wr(&px_i2c_handle, data, nr_of_bytes, PX_I2C_FLAG_START_AND_STOP))
     {
         return PX_PGM_STR("Error!");
@@ -229,7 +229,7 @@ static const char * px_cli_cmd_fn_i2c_rd(uint8_t argc, char* argv[])
     }
     nr_of_bytes = px_cli_argv_val.u8;
 
-    px_i2c_change_slave_adr(&px_i2c_handle, adr);
+    px_i2c_ioctl_change_slave_adr(&px_i2c_handle, adr);
     if(!px_i2c_rd(&px_i2c_handle, data, nr_of_bytes, PX_I2C_FLAG_START_AND_STOP))
     {
         return PX_PGM_STR("Error!");

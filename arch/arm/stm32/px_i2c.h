@@ -240,8 +240,8 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
  *  @param handle       Pointer to handle data structure
  *  @param slave_adr     New 7-bit I2C slave address
  */
-void px_i2c_change_slave_adr(px_i2c_handle_t * handle,
-                             uint8_t           slave_adr);
+void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
+                                   uint8_t           slave_adr);
 
 /* _____MACROS_______________________________________________________________ */
 

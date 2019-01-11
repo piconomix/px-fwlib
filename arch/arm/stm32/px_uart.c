@@ -764,7 +764,7 @@ bool px_uart_rd_buf_empty(px_uart_handle_t * handle)
     return px_circ_buf_empty(&uart_data->rx_circ_buf);
 }
 
-void px_uart_change_baud(px_uart_handle_t * handle, uint32_t baud)
+void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
 {
     px_uart_data_t * uart_data;
 
