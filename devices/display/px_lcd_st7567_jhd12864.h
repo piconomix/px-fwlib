@@ -90,6 +90,16 @@
 void px_lcd_init(px_spi_handle_t * handle);
 
 /**
+ *  Turn power save on.
+ */
+void px_lcd_power_save_on(void);
+
+/**
+ *  Turn power save off.
+ */
+void px_lcd_power_save_off(void);
+
+/**
  *  Clear LCD display.
  *  
  */
