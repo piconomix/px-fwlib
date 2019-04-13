@@ -25,7 +25,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
     
-    Title:          Piconomix STM32L072RB Hero Board minimal LED demo
+    Title:          Piconomix STM32 Hero Board graphic animation example
     Author(s):      Pieter Conradie
     Creation Date:  2017-11-13
  

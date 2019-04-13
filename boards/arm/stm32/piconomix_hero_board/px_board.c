@@ -25,7 +25,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
    
-    Title:          board.h : Piconomix STM32L072RB Hero Board
+    Title:          board.h : Piconomix STM32 Hero Board
     Author(s):      Pieter Conradie
     Creation Date:  2017-11-13
 
@@ -44,7 +44,7 @@
 #endif
 
 // Report board support package
-#warning "This BSP is for Piconomix STM32L072RB Hero Board"
+#warning "This BSP is for Piconomix STM32 Hero Board"
 
 // Test for correct microcontroller
 #ifndef STM32L072xx
@@ -95,7 +95,7 @@ static void px_board_clocks_init(void)
     }
     // Trim HSI RC Oscillator to 16 MHz +- 1%
     LL_RCC_HSI_SetCalibTrimming(16);
-
+    
     // Enable High Speed Internal 48 MHz RC Oscillator (HSI48) for USB
     LL_RCC_HSI48_Enable();
     // Enable buffer used to generate VREFINT reference for HSI48 oscillator
@@ -215,6 +215,16 @@ static void px_board_gpio_init(void)
     // Initialise GPIOA[0..15]
     px_board_gpio_port_init(GPIOA,
                             GPIOA_MODER_VAL,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0);
+
+    // Initialise GPIOA[0..15]
+    px_board_gpio_port_init(GPIOA,
+                            GPIOA_MODER_VAL,
                             GPIOA_OTYPER_VAL,
                             GPIOA_OSPEEDR_VAL,
                             GPIOA_PUPDR_VAL,
@@ -259,18 +269,6 @@ static void px_board_gpio_init(void)
                             0);
 }
 
-void px_board_delay_init(void)
-{
-    // Enable TIM6 peripheral clock
-    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM6);
-    // Set prescaler so that eack clock tick is 1 us
-    TIM6->PSC = PX_UDIV_ROUND(PX_BOARD_PER_CLK_HZ, 1000000) - 1;
-    // Set auto-reload value to maximum
-    TIM6->ARR = 0xffff;
-    // Enable one-pulse mode
-    TIM6->CR1 |= TIM_CR1_OPM;
-}
-
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_board_init(void)
 {
@@ -281,7 +279,7 @@ void px_board_init(void)
     LL_FLASH_EnablePreRead();
 
     // Initialise GPIOs
-    px_board_gpio_init();
+    px_board_gpio_init();    
 
     // Initialise delay
     px_board_delay_init();
@@ -294,7 +292,7 @@ void px_board_spi_cs_lo(uint8_t cs_id)
     case PX_BOARD_SPI1_CS:     PX_GPIO_PIN_SET_LO(PX_GPIO_SPI1_CS);     break;
     case PX_BOARD_SPI1_CS_SD:  PX_GPIO_PIN_SET_LO(PX_GPIO_SPI1_CS_SD);  break;
     case PX_BOARD_SPI2_CS_LCD: PX_GPIO_PIN_SET_LO(PX_GPIO_SPI2_CS_LCD); break;
-    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_PIN_SET_LO(PX_GPIO_SPI2_CS_DF);  break;
+    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_PIN_SET_LO(PX_GPIO_SPI2_CS_SF);  break;
     default:                   break;
     }
 }
@@ -306,9 +304,27 @@ void px_board_spi_cs_hi(uint8_t cs_id)
     case PX_BOARD_SPI1_CS:     PX_GPIO_PIN_SET_HI(PX_GPIO_SPI1_CS);     break;
     case PX_BOARD_SPI1_CS_SD:  PX_GPIO_PIN_SET_HI(PX_GPIO_SPI1_CS_SD);  break;
     case PX_BOARD_SPI2_CS_LCD: PX_GPIO_PIN_SET_HI(PX_GPIO_SPI2_CS_LCD); break;
-    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_PIN_SET_HI(PX_GPIO_SPI2_CS_DF);  break;
+    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_PIN_SET_HI(PX_GPIO_SPI2_CS_SF);  break;
     default:                   break;
     }
+}
+
+void px_board_delay_init(void)
+{
+    // Enable TIM6 peripheral clock
+    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM6);
+    // Set prescaler so that eack clock tick is 1 us
+    TIM6->PSC = PX_UDIV_ROUND(PX_BOARD_PER_CLK_HZ, 1000000) - 1;
+    // Set auto-reload value to maximum
+    TIM6->ARR = 0xffff;
+    // Enable one-pulse mode
+    TIM6->CR1 |= TIM_CR1_OPM;
+}
+
+void px_board_delay_deinit(void)
+{
+    // Disable TIM6 peripheral clock
+    LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_TIM6);    
 }
 
 void px_board_delay_us(uint16_t delay_us)

@@ -1,3 +1,478 @@
 3.3 Piconomix STM32L072RB Hero Board {#PICONOMIX_STM32_HERO_BOARD}
 ==================================================================
 
+[TOC]
+
+1. Introduction {#PICONOMIX_STM32_HERO_BOARD_INTRO}
+===================================================
+
+[atollic_truestudio]: http://atollic.com
+[core_utils]:         http://gnuwin32.sourceforge.net/packages/coreutils.htm
+[ftdi_ignore_ser]:    http://www.ftdichip.com/Support/Utilities/IgnoreSerialNo.zip
+[ftdi_uninstaller]:   http://www.ftdichip.com/Support/Utilities/CDMUninstaller_v1.4.zip
+[ftdi_vcp_driver]:    http://www.ftdichip.com/Drivers/VCP.htm
+[gnu_arm_tools]:      http://gnu-arm.com
+[make]:               http://gnuwin32.sourceforge.net/packages/make.htm
+[msys]:               http://www.mingw.org/wiki/MSYS
+[srecord]:            http://srecord.sourceforge.net
+[tera_term]:          http://en.sourceforge.jp/projects/ttssh2
+[unix_shell_utils]:   https://sourceforge.net/projects/unixshellutils/files/latest/download
+
+*Discover and free your inner hero!*
+
+The ultimate embedded quest is: RELIABLE **AND** CHEAP **AND** LOW POWER...
+
+This board has been carefully crafted to engage human senses (sight, sound and 
+touch) and map the journey to becoming a true embedded hero. Above all, it 
+should be a fun-filled adventure!!
+
+@image html hero_board_isometric.jpg width=500px
+
+Extensive ecosystem included:
+* An [STM32 quick start guide](@ref STM32_QUICK_START_GUIDE) with 
+  distilled [tutorials](@ref STM32_TUTORIALS) and [examples](@ref STM32_EXAMPLES)
+* A [Board Support Package](@ref HERO_BOARD_BSP)
+* @subpage HERO_BOARD_BOOTLOADERS "Bootloaders"
+* @subpage HERO_BOARD_APPS "Applications"
+* @subpage HERO_BOARD_EXAMPLES "Examples"
+
+The flagship application is the @ref HERO_BOARD_APP_CLI that creates a 
+"Un*x Shell"-like environment running on the Hero Board so that you can easily 
+experiment with GPIO, ADC, I2C and SPI using only 
+[ANSI/VT100 Terminal][tera_term] software:
+
+![](hero_board_cli_preview.gif)
+
+@tip_s
+The Hero Board is shipped with @ref HERO_BOARD_BOOTLOADER_UART_XMODEM and 
+@ref HERO_BOARD_APP_CLI pre-programmed.
+@tip_e
+
+2. Features {#HERO_BOARD_FEATURES}
+==================================
+
+![](hero_board_top_annotated.png)
+\n
+![](hero_board_bot_annotated.png)
+\n
+
+- [STM32L072RB](https://www.st.com/en/microcontrollers/stm32l072rb.html)
+  ultra low-power ARM Cortex-M0+ microcontroller with 128 kB Flash, 20 kB SRAM 
+  and 6kB EEPROM
+- Rich user interface:
+    + Low-power 128 x 64 monochrome graphic LCD with LED backlight
+    + User LED and Battery Charger LED
+    + Piezo buzzer for audio feedback
+    + 6 **LARGE** tactile user buttons (1/LEFT, 2/RIGHT, 3/UP, 4/DOWN, 5/NO, 6/YES/PWR)
+    + Reset button
+- Intuitive 2.54 mm (0.1 inch) pitch peripheral connector (accessible from **TOP** and **BOTTOM**):
+    + PWR (+3.6V to +5V power bus)
+    + ADC x 4 (Analog to Digital inputs)
+    + DAC x 1 (Digital to Analog output)
+    + GPIO x 8 (General Purpose Input / Output pins)
+    + UART x 2 (serial communication)
+    + I2C x 1 with 4.7k pull-up resistors (NXP Inter-Integrated Circuit bus)
+    + SPI x 1 (Serial Peripheral Interface)
+- Li-Po battery charger and zero-burden voltage monitoring circuit
+- Efficient power-path management (power from USB or battery; ideal diode circuit)
+- True power on/off circuit
+- 95% efficient [TI LM3670MF](http://www.ti.com/lit/ds/symlink/lm3670.pdf)
+  step-down DC-DC regulator for outstanding battery life (350 mA max load; Iq = 15 uA)
+- Rock-solid [FTDI FT230XS](http://www.ftdichip.com/Products/ICs/FT230X.html) 
+  USB-Serial bridge for serial communication, bootloader and alternative +5V 
+  supply.
+- [Adesto AT25SF041](https://www.adestotech.com/wp-content/uploads/DS-AT25SF041_044.pdf)
+  4 Mbit (512 kB) SPI Serial Flash Memory for uncomplicated data storage 
+  capability
+- Spring-loaded push-push micro SD card connector for easy insertion and removal
+- [Sparkfun QWIIC](https://www.sparkfun.com/qwiic) and 
+  [seeed GROVE](http://wiki.seeedstudio.com/Grove_System/) connector for easy 
+  connection to a whole ecosystem of I2C boards.
+- Intuitive 2.54 mm (0.1 inch) pitch PRG/DBG SWD header
+- Standard 10-pin 1.27 mm (0.05 inch) [ARM Cortex Debug Connector](http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf)
+- 4 x 3.4 mm mounting holes; ideal for 
+  [M3 threaded hexagonal spacers](http://www.digikey.com/catalog/en/partgroup/hexagonal-metric-spacers/12921)
+
+|Feature comparison                                                      | Lite Edition | Deluxe Edition |
+|------------------------------------------------------------------------|--------------|----------------|
+| STM32L072RB Microcontroller (128k Flash, 20k SRAM, 6k EEPROM)          | YES          | YES            |
+| User Interface (LCD with backlight, LED, Buzzer, 7 x Buttons)          | YES          | YES            |
+| Li-Po battery charger with charging LED                                | NO           | YES            |
+| Zero-burden battery voltage monitoring circuit                         | NO           | YES            |
+| Efficient power-path management                                        | NO           | YES            |
+| True power on/off circuit                                              | NO           | YES            |
+| Peripheral connector (PWR, 4 x ADC, DAC, 8 x GPIO, 2 x UART, I2C, SPI) | YES          | YES            |
+| 95% efficient +3V3 step-down DC-DC converter                           | YES          | YES            |
+| USB-Serial bridge (USB2)                                               | NO           | YES            |
+| 512k SPI Serial Flash Memory                                           | NO           | YES            |
+| Spring-loaded push-push micro SD card connector                        | YES          | YES            |
+| 2.54 mm (0.1 inch) Debug / Program header                              | YES          | YES            |
+| 10-pin 1.27 mm (0.05 inch) Standard ARM Cortex Debug Connector         | NO           | NO             |
+| Sparkfun QWICC Connector                                               | YES          | YES            |
+| seeed GROVE I2C Connector                                              | NO           | YES            |
+
+3. Design Documents{#HERO_BOARD_DESIGN}
+=======================================
+
+Most OSHW designs hide some of the "magic sauce". The schematics are hard to 
+follow and complete manufacturer part numbers are not disclosed. The Hero Board
+lowers the barrier in terms of design openness... judge for yourself:
+
+- [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf)
+- [Bill Of Materials - Lite Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_bom_lite_edition.pdf)
+- [Bill Of Materials - Deluxe Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_bom_deluxe_edition.pdf)
+- [Assembly Drawings - part designators & silkscreen](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_assy.pdf)
+- [Mechanical Dimensions](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_mec.pdf)
+
+The design documents can also be found here for off-line viewing:
+
+    boards/arm/stm32/piconomix_hero_board/docs
+
+4. Reference documents {#HERO_BOARD_REFS}
+=========================================
+
+- [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf)
+- [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
+- [STM32L072RB Errata](https://www.st.com/resource/en/errata_sheet/dm00148855.pdf)
+- [STM32L0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
+
+The reference documents can also be found here for off-line viewing:
+
+    boards/arm/stm32/piconomix_hero_board/docs
+
+5. Disclaimer {#HERO_BOARD_DISCLAIMER}
+======================================
+
+    This development/evaluation tool is suitable for research and development in
+    a controlled laboratory environment and not designed or tested as a finished
+    appliance for end users. Precautions must be taken against improper use such
+    as Electrostatic Discharge (ESD) damage, over-voltage / over-current 
+    electrical stress, incorrect power sequencing, etc.
+
+    THE HARDWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+    TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS HARDWARE, EVEN
+    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+6. Board Support Package {#HERO_BOARD_BSP}
+==========================================
+
+A Board Support Package (@ref BOARDS_STM32_PICONOMIX_HERO) is provided that:
+- defines the function of each GPIO pin
+- defines convenience macros to manipulate GPIO functions
+- initializes the clock system and GPIO pins
+- provide SPI driver support to manipulate chip select pins
+- provide us and ms delay functions
+
+Files:
+- boards/arm/stm32/piconomix_hero_board/px_board.h
+- boards/arm/stm32/piconomix_hero_board/px_board_gpio.h
+- boards/arm/stm32/piconomix_hero_board/px_board.c
+
+7. Getting started {#HERO_BOARD_START}
+======================================
+
+The following free software tools are needed:
+- [Atollic TrueSTUDIO for STM32][atollic_truestudio] : 
+  an Integrated Development Environment (IDE) for developing and debugging STM32
+  microcontroller applications. It includes a GNU GCC build toolchain for C and 
+  C++.
+- [UnixShellUtils][unix_shell_utils] :
+  a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
+  curated from [MSYS] [msys] and other utilities ([srecord]) used to build 
+  projects using advanced Makefiles.
+- [GNU Tools for Arm Embedded Processors][gnu_arm_tools] :
+  A GNU GCC build toolchain for C and C++.
+- FTDI FT230XS USB-UART Bridge [Virtual Com Port (VCP) driver][ftdi_vcp_driver]
+- [Tera Term][tera_term] : 
+  Free terminal emulation software to interact with @ref HERO_BOARD_APP_CLI 
+  or upload new firmware using @ref HERO_BOARD_BOOTLOADER_UART_XMODEM
+
+*Atollic TrueSTUDIO does include a GNU C and C++ build toolchain as well as a 
+limited set of GNU utilities like `make` and `rm` but lacks `sh` that is 
+required for advanced Makefiles. [UnixShellUtils][unix_shell_utils] and 
+[GNU Tools for Arm Embedded Processors][gnu_arm_tools] compensates for this gap.*
+
+7.1 Connect USB1 of Hero Board to PC {#HERO_BOARD_CONNECT}
+----------------------------------------------------------
+
+The Hero Board is shipped with the @ref HERO_BOARD_APP_CLI app. Connect USB1 to 
+the PC. *The app will give a beep, enable the LCD backlight and display the Hero 
+logo.*
+
+The app implements a Virtual COM port (USB CDC class) driver for communication.
+When USB1 is connected to the PC, the Windows 10 operating system will detect 
+that a new USB device has been connected and automatically install a driver for 
+it.
+
+Take note which COM port has been assigned. The Device Manager utility can also 
+be used to find out. Right-click "Start (Windows icon bottom left of task bar) > Device Manager":
+
+![Device Manager - COM port assignment](hero_board_device_manager.png)
+
+7.2 Install Tera Term (an ANSI/VT100 Terminal Emulator) {#HERO_BOARD_INSTALL_TERATERM}
+--------------------------------------------------------------------------------------
+
+Follow the steps [HERE](@ref HOWTO_TERA_TERM) to install and configure Tera Term
+using the COM port noted in @ref HERO_BOARD_CONNECT.
+
+
+7.3 Play with the CLI Explorer app {#HERO_BOARD_PLAY_CLI_EXPLORER}
+------------------------------------------------------------------
+
+You are now ready to use Tera Term to interact with the CLI explorer app. Follow
+the full documentation [HERE](@ref HERO_BOARD_APP_CLI).
+
+![CLI Exlorer executing on a Hero Board](hero_board_cli_preview.gif)
+
+7.4 Install USB-UART Bridge Virtual Com Port (VCP) USB driver {#HERO_BOARD_INSTALL_USB}
+---------------------------------------------------------------------------------------
+
+@tip_s
+If you already have the latest driver installed and correctly configured, then 
+this part can be skipped.
+@tip_e
+
+The Deluxe Edition has an [FTDI 230XS](https://www.ftdichip.com/Products/ICs/FT230X.html)
+USB-UART Bridge (USB2 connector) connected to UART1 of the STM32 
+microcontroller. It avoids USB driver complexity and provides an easy method of 
+communication. This makes debug output (see @ref PX_DBG) as well as firmware 
+upgrades (see @ref HERO_BOARD_BOOTLOADER_UART_XMODEM) easy.
+
+The Lite Edition does not have a USB-UART Bridge (USB2 connector), but if you 
+are planning to use an FTDI based USB-Serial converter connected to the UART 
+header (H17), then it may also be worthwhile following these steps.
+
+Follow the steps [HERE](@ref HOWTO_FTDI) to install and configure the FTDI
+driver.
+
+@tip_s
+You can verify that you have noted the correct COM port by using Tera Term to 
+connect to it. When you type characters in the terminal window, the TX LED will
+flash on the board.
+@tip_e
+
+7.5 Install UnixShellUtils {#HERO_BOARD_INSTALL_UNIX_SHELL_UTILS}
+-----------------------------------------------------------------
+
+@tip_s
+Using command-line tools to build software may feel daunting and intimidating at 
+first, but don't worry! Give it a chance and you will get used to it quickly and
+it will lay the foundation for you to become a power user... a true embedded 
+hero!
+@tip_e
+
+Download [UnixShellUtils] [unix_shell_utils] and extract the downloaded package 
+to a convenient location without spaces in the path, e.g.
+
+    C:\UnixShellUtils
+
+
+7.6 Install GNU Tools for Arm Embedded Processors {#HERO_BOARD_INSTALL_GNU_TOOLS}
+---------------------------------------------------------------------------------
+
+Download and install [GNU Tools for Arm Embedded Processors][gnu_arm_tools].
+
+@tip_s
+It is not strictly required, as Atollic TrueSTUDIO does have a GNU C and C++ 
+build toolchain, but it's tools all have the non-standard "arm-atollic-eabi" 
+prefix. The [GNU Tools for Arm Embedded Processors][gnu_arm_tools] uses the 
+standard "arm-none-eabi" prefix which makes it cross-platform friendly.
+@tip_e
+
+It is recommended to specify a conveniently short installation path, e.g.
+
+    c:\Program Files (x86)\gnu_arm
+
+The GNU Tools will then be located here:
+
+    c:\Program Files (x86)\gnu_arm\bin
+
+The complete documentation will be located here:
+
+    c:\Program Files (x86)\gnu_arm\share\doc\gcc-arm-none-eabi\pdf
+
+*Let's try it out!*
+
+Start a windows shell Command Prompt by typing "cmd" in the search bar. Set the
+PATH to UnixShellUtils and GNU Tools by executing the following command:
+
+    > PATH=C:\UnixShellUtils\bin;c:\Program Files (x86)\gnu_arm\bin
+
+@tip_s
+You don't need to type the whole line. Copy the text above (without the ">" 
+prompt of course), select the Command Prompt window and press `Ctrl+V` to paste 
+the text into the window.
+@tip_e
+
+Change the directory to @ref HERO_BOARD_EXAMPLE_GPIO, e.g.
+
+    > cd piconomix-fwlib\boards\arm\stm32\piconomix_hero_board\examples\gpio
+
+Execute `make clean` to delete all of the build files:
+
+    > make clean
+
+Execute `make' to build the whole project:
+
+    > make
+
+![](hero_board_command_prompt_build.png)
+
+Build output text:
+
+    Microsoft Windows [Version 10.0.17763.379]
+    (c) 2018 Microsoft Corporation. All rights reserved.
+
+    C:\Users\Pieter>PATH=C:\UnixShellUtils\bin;c:\Program Files (x86)\gnu_arm\bin
+
+    C:\Users\Pieter>P:
+
+    P:\>cd libraries\piconomix-fwlib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio
+
+    P:\libraries\piconomix-fwlib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>make clean
+
+    ------------ begin (DEBUG) ---------------
+
+    Cleaning project:
+    rm -f openocd.cfg
+    rm -f init.gdb
+    rm -rf BUILD_DEBUG
+    -------------  end (DEBUG) ---------------
+
+
+    P:\libraries\piconomix-fwlib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>make
+
+    ------------ begin (DEBUG) ---------------
+    arm-none-eabi-gcc.exe (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM/embedded-7-branch revision 255204]
+    Copyright (C) 2017 Free Software Foundation, Inc.
+    This is free software; see the source for copying conditions.  There is NO
+    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+    Compiling C: src/main.c
+    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Og -DSTM32L072xx -DUSE_FULL_LL_DRIVER -Wa,-adhlns=BUILD_DEBUG/main.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_DEBUG/main.d src/main.c -o BUILD_DEBUG/main.o
+
+    Compiling C: ../../../../../../boards/arm/stm32/piconomix_hero_board/px_board.c
+    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Og -DSTM32L072xx -DUSE_FULL_LL_DRIVER -Wa,-adhlns=BUILD_DEBUG/px_board.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_DEBUG/px_board.d ../../../../../../boards/arm/stm32/piconomix_hero_board/px_board.c -o BUILD_DEBUG/px_board.o
+    ../../../../../../boards/arm/stm32/piconomix_hero_board/px_board.c:47:2: warning: #warning "This BSP is for Piconomix STM32 Hero Board" [-Wcpp]
+     #warning "This BSP is for Piconomix STM32 Hero Board"
+      ^~~~~~~
+
+    Compiling C: ../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
+    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Og -DSTM32L072xx -DUSE_FULL_LL_DRIVER -Wa,-adhlns=BUILD_DEBUG/system_stm32l0xx.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_DEBUG/system_stm32l0xx.d ../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c -o BUILD_DEBUG/system_stm32l0xx.o
+
+    Compiling C: ../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
+    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Og -DSTM32L072xx -DUSE_FULL_LL_DRIVER -Wa,-adhlns=BUILD_DEBUG/stm32l0xx_ll_utils.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_DEBUG/stm32l0xx_ll_utils.d ../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c -o BUILD_DEBUG/stm32l0xx_ll_utils.o
+
+    Assembling: ../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
+    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -x assembler-with-cpp    -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -Wa,-adhlns=BUILD_DEBUG/startup_stm32l072xx.lst,--listing-cont-lines=100,--gstabs ../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s -o BUILD_DEBUG/startup_stm32l072xx.o
+
+    Linking: BUILD_DEBUG/gpio.elf
+    arm-none-eabi-gcc -mthumb -mcpu=cortex-m0plus -Wl,-gc-sections,--relax --specs=nosys.specs --specs=nano.specs   -T ../../../../../../boards/arm/stm32/piconomix_hero_board/STM32L072xB.ld -Og -Wl,-Map=BUILD_DEBUG/gpio.map  BUILD_DEBUG/main.o BUILD_DEBUG/px_board.o BUILD_DEBUG/system_stm32l0xx.o BUILD_DEBUG/stm32l0xx_ll_utils.o BUILD_DEBUG/startup_stm32l072xx.o -o BUILD_DEBUG/gpio.elf
+
+    Creating HEX load file for Flash: BUILD_DEBUG/gpio.hex
+    arm-none-eabi-objcopy -O ihex BUILD_DEBUG/gpio.elf BUILD_DEBUG/gpio.hex
+
+    Creating BIN load file for Flash: BUILD_DEBUG/gpio.bin
+    arm-none-eabi-objcopy -O binary BUILD_DEBUG/gpio.elf BUILD_DEBUG/gpio.bin
+
+    Creating Extended Listing: BUILD_DEBUG/gpio.lss
+    arm-none-eabi-objdump -h -S -z BUILD_DEBUG/gpio.elf > BUILD_DEBUG/gpio.lss
+
+    Creating Symbol Table: BUILD_DEBUG/gpio.sym
+    arm-none-eabi-nm -n BUILD_DEBUG/gpio.elf > BUILD_DEBUG/gpio.sym
+
+    Size:
+    arm-none-eabi-size BUILD_DEBUG/gpio.elf
+       text    data     bss     dec     hex filename
+       1540      12    2076    3628     e2c BUILD_DEBUG/gpio.elf
+    -------------  end (DEBUG) ---------------
+
+
+    P:\libraries\piconomix-fwlib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>
+
+
+7.7 Install and Atollic TrueSTUDIO for STM32 {#HERO_BOARD_INSTALL_ATOLLIC_TRUESTUDIO}
+-------------------------------------------------------------------------------------
+
+Follow the steps [HERE] (@ref HOWTO_TRUESTUDIO) to install Atollic TrueSTUDIO.
+The section also describes how to create a new project that uses an external 
+Makefile and configure it to use UnixShellUtils and the Makefiles provided with
+this library.
+
+7.8 Build example in IDE {#HERO_BOARD_BUILD_IDE_EXAMPLE}
+--------------------------------------------------------
+
+The tutorials and examples are provided with pre-configured Atollic TrueSTUDIO 
+projects. External Makefiles are referenced, instead of using TrueSTUDIO's build 
+system, to make the projects cross-platform.
+
+@warn_s
+If you have extracted UnixShellUtils to a different location, then the project 
+must be modified appropriately.
+@warn_e
+
+Open and build @ref HERO_BOARD_EXAMPLE_GPIO. The project file is here:
+
+    piconomix-fwlib/boards/avr/piconomix_hero_board/examples/gpio/.project
+
+
+7.9 Upload example to Hero Board {#HERO_BOARD_UPLOAD_EXAMPLE}
+-------------------------------------------------------------
+
+After building @ref HERO_BOARD_EXAMPLE_GPIO succesfully, you will 
+have a binary file called "gpio.bin". The new application is sent to the 
+@ref HERO_BOARD_BOOTLOADER_UART_XMODEM via [Tera Term] [tera_term]:
+
+File > Transfer > XMODEM > Send...
+
+![Tera Term - Start XMODEM file send](tera_term_xmodem_send01.png)
+
+The **BIN** file (not HEX or ELF!) is selected and the CRC variant of XMODEM is 
+specified:
+
+![Tera Term - Select file and specify CRC transfer method](tera_term_xmodem_send02.png)
+
+@tip_s
+Tera Term will now wait for the @ref HERO_BOARD_BOOTLOADER_UART_XMODEM
+to initiate the transfer by sending a 'C' character...
+@tip_e
+
+Press the reset button (**RST**) to reset the microcontroller and jump to the
+bootloader.
+
+@tip_s
+The bootloader will now initiate the transfer and download the new application.
+At the end of the transfer, the bootloader will execute the new application.
+Note that no safeguards are built into the bootloader. If the transfer is 
+interrupted, the bootloader will time out and execute the broken, incomplete 
+application. Normally this is not a big issue as the process can just be 
+restarted.
+@tip_e
+
+Press the user button. The user LED will turn on while the button is being 
+pressed and turn off when the button is released. **Success!**
+
+8. STM32 quick start guide {#HERO_BOARD_STM32_QUICK_START_GUIDE}
+================================================================
+
+You now have a working development environment and I really hope it was quick 
+and straight forward to set up (if not, please use @ref FEEDBACK). You should be 
+able to compile an application in the IDE and upload it using the bootloader.
+
+@tip_s
+To make sure, build and upload @ref HERO_BOARD_APP_CLI
+@tip_e
+
+The next step is to learn how to write C programs for the STM32 architecture. A 
+quick start guide with tutorials and examples have been created as an 
+introduction. Click [HERE](@ref STM32_QUICK_START_GUIDE) to proceed to the STM32
+quick start guide.

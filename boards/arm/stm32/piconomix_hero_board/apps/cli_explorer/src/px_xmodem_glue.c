@@ -74,8 +74,6 @@ void px_xmodem_tmr_start(uint16_t time_ms)
 
     delay_in_ticks = PX_SYSTMR_MS_TO_TICKS(time_ms);
     px_systmr_start(&px_xmodem_tmr, delay_in_ticks);
-
-    PX_DBG_INFO("Start timeout %u ms (%u ticks)", time_ms, delay_in_ticks);
 }
 
 bool px_xmodem_tmr_has_expired(void)

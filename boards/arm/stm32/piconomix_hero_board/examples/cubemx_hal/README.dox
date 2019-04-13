@@ -1,0 +1,14 @@
+STM32CubeMX HAL example {#HERO_BOARD_EXAMPLE_CUBEMX_HAL}
+========================================================
+  
+[TOC]
+
+Introduction {#HERO_BOARD_EXAMPLE_CUBEMX_HAL_INTRO}
+===================================================
+
+This is a [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
+HAL project created for the Hero Board.
+
+![](hero_board_cubemx_pinout.png)
+
+![](hero_board_cubemx_clk_setup.png)

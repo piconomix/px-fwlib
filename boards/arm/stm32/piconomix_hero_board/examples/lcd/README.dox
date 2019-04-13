@@ -1,0 +1,16 @@
+Graphic LCD Example {#HERO_BOARD_EXAMPLE_LCD}
+=============================================
+  
+This example shows how to draw pixels, lines, rectangles, circles, text and 
+images (bitmaps) on the 128 x 64 graphic LCD:
+
+![](hero_board_example_lcd.png)
+  
+File(s):
+- boards/arm/stm32/piconomix_hero_board/examples/lcd/src/main.c
+
+The following modules are used:
+- @ref BOARDS_STM32_PICONOMIX_HERO
+- @ref STM32_SPI
+- @ref PX_LCD_ST7567_JHD12864
+- @ref PX_GFX

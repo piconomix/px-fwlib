@@ -25,7 +25,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 
-    Title:          Piconomix STM32L072 Hero Board CLI application
+    Title:          Piconomix STM32 Hero Board CLI application
     Author(s):      Pieter Conradie
     Creation Date:  2018-03-01
  
@@ -38,6 +38,7 @@
 #include "px_defines.h"
 #include "px_compiler.h"
 #include "px_cli.h"
+#include "px_vt100.h"
 #include "px_at25s.h"
 #include "px_systmr.h"
 #include "px_rtc.h"
@@ -50,6 +51,7 @@
 #include "px_spi.h"
 #include "px_i2c.h"
 #include "px_sysclk.h"
+#include "px_debounce.h"
 #include "px_sd.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
@@ -88,6 +90,14 @@ static const char main_cli_init_str[] =
     "  \\|  |/   |______| |_|  \\_\\  \\____/\n"
     "   \\  / PICONOMIX - Embedded Elegance\n"
     "    \\/          https://piconomix.com\n\n";
+
+// Debounced buttons
+static px_debounce_t px_debounce_pb1;
+static px_debounce_t px_debounce_pb2;
+static px_debounce_t px_debounce_pb3;
+static px_debounce_t px_debounce_pb4;
+static px_debounce_t px_debounce_pb5;
+static px_debounce_t px_debounce_pb6;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
@@ -170,16 +180,75 @@ static bool main_init(void)
     return true;
 }
 
+static void main_report_button(uint8_t button)
+{
+    putchar('\n');
+#if PX_CLI_CFG_COLOR
+    // Set font color to green
+    printf(PX_VT100_SET_FOREGROUND_GREEN);
+#endif
+    printf("PB%u\n", button);
+#if PX_CLI_CFG_COLOR
+    // Restore font color
+    printf(PX_VT100_RESET_ALL_ATTRS);
+#endif
+    putchar('>');
+}
+
+static void main_monitor_buttons(void)
+{
+    // Update debounce state machines with push button states
+    px_debounce_update(&px_debounce_pb1, px_gpio_pin_is_hi(&px_gpio_lcd_btn_1_lt));
+    px_debounce_update(&px_debounce_pb2, px_gpio_pin_is_hi(&px_gpio_lcd_btn_2_rt));
+    px_debounce_update(&px_debounce_pb3, px_gpio_pin_is_hi(&px_gpio_lcd_btn_3_up));
+    px_debounce_update(&px_debounce_pb4, px_gpio_pin_is_hi(&px_gpio_lcd_btn_4_dn));
+    px_debounce_update(&px_debounce_pb5, px_gpio_pin_is_hi(&px_gpio_lcd_btn_5_no));
+    px_debounce_update(&px_debounce_pb6, px_gpio_pin_is_hi(&px_gpio_lcd_btn_6_yes));
+    // Button pressed?
+    if(px_debounce_falling_edge_detected(&px_debounce_pb1))
+    {
+        main_report_button(1);
+    }
+    if(px_debounce_falling_edge_detected(&px_debounce_pb2))
+    {
+        main_report_button(2);
+    }
+    if(px_debounce_falling_edge_detected(&px_debounce_pb3))
+    {
+        main_report_button(3);
+    }
+    if(px_debounce_falling_edge_detected(&px_debounce_pb4))
+    {
+        main_report_button(4);
+    }
+    if(px_debounce_falling_edge_detected(&px_debounce_pb5))
+    {
+        main_report_button(5);
+    }
+    if(px_debounce_falling_edge_detected(&px_debounce_pb6))
+    {
+        main_report_button(6);
+    }
+}
+
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
 int main(void)
 {
     uint8_t data;
 
-    // Initialise board and peripheral drivers
+    // Initialize board and peripheral drivers
     main_init();
 
     // Enable LED
     PX_USR_LED_ON();
+
+    // Initialize debounced buttons
+    px_debounce_init(&px_debounce_pb1, px_gpio_pin_is_hi(&px_gpio_lcd_btn_1_lt));
+    px_debounce_init(&px_debounce_pb2, px_gpio_pin_is_hi(&px_gpio_lcd_btn_2_rt));
+    px_debounce_init(&px_debounce_pb3, px_gpio_pin_is_hi(&px_gpio_lcd_btn_3_up));
+    px_debounce_init(&px_debounce_pb4, px_gpio_pin_is_hi(&px_gpio_lcd_btn_4_dn));
+    px_debounce_init(&px_debounce_pb5, px_gpio_pin_is_hi(&px_gpio_lcd_btn_5_no));
+    px_debounce_init(&px_debounce_pb6, px_gpio_pin_is_hi(&px_gpio_lcd_btn_6_yes));
 
     // Beep
     px_board_buzzer_on(4000);
@@ -197,33 +266,40 @@ int main(void)
                     px_gfx_img_hero_logo_64x42.data);
     px_gfx_update();
 
-    // Initialise CLI
+    // Initialize CLI
     px_cli_init(main_cli_init_str);
 
     for(;;)
     {
-#if 0
-        // Byte has been received?
-        if(px_uart_rd_u8(&px_uart1_handle, &data))
-        {
-            // Pass received byte to Command Line Interpreter module
-            px_cli_on_rx_char((char)data);
-        }
-#else
+        // USB connected event?
         if(main_usb_connected_event_flag)
         {
+            PX_DBG_INFO("USB Connect event. (Re)initialising CLI");
             main_usb_connected_event_flag = false;
             // (Re)initialise CLI
             px_cli_init(main_cli_init_str);
         }
-
-        // Byte has been received over USB?
+        // Received byte over USB?
         if(px_usb_cdc_stdio_rd_u8(&data))
         {
             // Pass received byte to Command Line Interpreter module
             px_cli_on_rx_char((char)data);
         }
-#endif
+        // Received byte over UART?
+        if(px_uart_rd_u8(&px_uart1_handle, &data))
+        {
+            // Lower case?
+            if((data >='a') && (data <='z'))
+            {
+                // Capitalise
+                data = data - 'a' + 'A';
+            }
+            // Return for loopback testing
+            px_uart_wr_u8(&px_uart1_handle, data);
+        }
+        // Monitor and report button presses
+        main_monitor_buttons();
+
         // Put core into SLEEP mode until an interrupt occurs
         __WFI();
     }
