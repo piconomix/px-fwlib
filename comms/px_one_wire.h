@@ -47,7 +47,8 @@
  *  References:
  *  - [Maxim AN126 - 1-Wire Communication Through Software] (https://www.maximintegrated.com/en/app-notes/index.mvp/id/126)
  *  - [Maxim AN937 - Book of iButton Standards, Chapter 4] (https://www.maximintegrated.com/en/app-notes/index.mvp/id/937)
- *  - [1-Wire - Wikipedia] (https://en.wikipedia.org/wiki/1-Wire)
+ *  - [Maxim AN187 - 1-Wire Search Algorithm] (https://www.maximintegrated.com/en/app-notes/index.mvp/id/187)
+ *  - [Wikipedia - 1-Wire] (https://en.wikipedia.org/wiki/1-Wire)
  *
  */
 /// @{
@@ -85,6 +86,8 @@ typedef enum
     PX_ONE_WIRE_ERR_NONE = 0,
     PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT,
     PX_ONE_WIRE_ERR_CRC_CHECK_FAILED,
+    PX_ONE_WIRE_ERR_FAMILY_CODE_IS_ZERO,
+    PX_ONE_WIRE_ERR_LAST_DEVICE,
 } px_one_wire_error_t;
 
 typedef struct
@@ -92,21 +95,40 @@ typedef struct
     uint8_t family_code;
     uint8_t serial[PX_ONE_WIRE_SERIAL_SIZE_BYTES];
     uint8_t crc;
+} px_one_wire_rom_content_t;
+
+typedef struct
+{
+    union
+    {
+        uint8_t                   data[sizeof(px_one_wire_rom_content_t)];
+        px_one_wire_rom_content_t content;
+    };
 } px_one_wire_rom_t;
+
+typedef struct
+{
+    uint8_t           last_discrepancy;
+    bool              last_device_flag;
+    px_one_wire_rom_t rom;
+} px_one_wire_search_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void                px_one_wire_init        (void);
-bool                px_one_wire_reset       (void);
-
-void                px_one_wire_wr_u8       (uint8_t data);
-uint8_t             px_one_wire_rd_u8       (void);
-uint8_t             px_one_wire_calc_crc8   (void * data, size_t nr_of_bytes);
-uint8_t             px_one_wire_rd_time_slot(void);
-
-px_one_wire_error_t px_one_wire_rd_rom      (px_one_wire_rom_t * rom);
-px_one_wire_error_t px_one_wire_skip_rom    (void);
+void                px_one_wire_init            (void);
+bool                px_one_wire_reset           (void);
+                                                
+void                px_one_wire_wr_u8           (uint8_t data);
+uint8_t             px_one_wire_rd_u8           (void);
+uint8_t             px_one_wire_calc_crc8       (void * data, size_t nr_of_bytes);
+uint8_t             px_one_wire_rd_time_slot    (void);
+                                                
+px_one_wire_error_t px_one_wire_rd_rom          (px_one_wire_rom_t * rom);
+px_one_wire_error_t px_one_wire_skip_rom        (void);
+px_one_wire_error_t px_one_wire_match_rom       (px_one_wire_rom_t * rom);
+px_one_wire_error_t px_one_wire_search_rom_first(px_one_wire_search_t * one_wire_search);
+px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_search);
 
 /* _____MACROS_______________________________________________________________ */
 
