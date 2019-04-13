@@ -34,7 +34,7 @@
  *  How to configure and use general purpose (digital) I/O pins.
  *  
  *  File(s): 
- *  - arch/avr/tutorials/01_gpio/px_gpio.c
+ *  - arch/avr/tutorials/01_gpio/gpio.c
  *  
  *  The LED shines while the push button is being pressed.
  *  
