@@ -85,11 +85,11 @@ microcontroller so that you can experiment with GPIO, ADC, I2C and SPI using
 only an ANSI/VT100 terminal emulator 
 (for example [Tera Term](http://en.sourceforge.jp/projects/ttssh2)).
 
-![Electrodragon BMP280 breakout board connected to I2C](arduino_uno_board/arduino_uno_i2c_slave_bmp280.jpg)
+![Electrodragon BMP280 breakout board connected to I2C](arduino_uno_i2c_slave_bmp280.jpg)
 
 Connect your board, fire up the CLI and verify that it works:
 
-![CLI Exlorer executing on an Arduino Uno R3](arduino_uno_board/arduino_uno_cli_animated.gif)
+![CLI Exlorer executing on an Arduino Uno R3](arduino_uno_cli_animated.gif)
 
 @tip_s
 The BMP280 is found at 7-bit slave address 0x76. The chip identification 

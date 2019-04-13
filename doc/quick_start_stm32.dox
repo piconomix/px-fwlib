@@ -1,9 +1,9 @@
-6.1 AVR quick start guide {#AVR_QUICK_START_GUIDE}
-==================================================
+6.1 STM32 quick start guide {#STM32_QUICK_START_GUIDE}
+======================================================
 
 [TOC]
 
-1. Introduction {#AVR_QS_INTRO}
+1. Introduction {#STM32_QS_INTRO}
 ===============================
 
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
@@ -14,59 +14,65 @@
 [srecord]:           http://srecord.sourceforge.net
 
 This is a quick start guide for the person who wants to switch to the brilliant 
-8-bit AVR architecture and learns by example. C programming experience is
+8-bit STM32 architecture and learns by example. C programming experience is
 a prerequisite.
 
 The following free software tools are needed:
-- [Atmel Studio 7] [atmel_studio] : 
-  an Integrated Development Environment (IDE) for developing and debugging Atmel
-  ARM Cortex and AVR microcontroller applications on the Microsoft
-  Windows operating system. It includes the GNU GCC build toolchain for C and 
+- [Atollic TrueSTUDIO for STM32][atollic_truestudio] : 
+  an Integrated Development Environment (IDE) for developing and debugging STM32
+  microcontroller applications. It includes a GNU GCC build toolchain for C and 
   C++.
-- [UnixShellUtils] [unix_shell_utils] :
+- [UnixShellUtils][unix_shell_utils] :
   a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
   curated from [MSYS] [msys] and other utilities ([srecord]) used to build 
   projects using advanced Makefiles.
+- [GNU Tools for Arm Embedded Processors][gnu_arm_tools] :
+  A GNU GCC build toolchain for C and C++.
 
-*Atmel Studio 7 does includes GNU utilities like [make], rm and cp 
-(from the [CoreUtils] [core_utils] package) but lacks* **sh** *that is required 
-for advanced Makefiles.*
+*Atollic TrueSTUDIO does include a GNU C and C++ build toolchain as well as a 
+limited set of GNU utilities like [make] and rm (from the 
+[CoreUtils] [core_utils] package) but lacks* **sh** *that is required for 
+advanced Makefiles. [UnixShellUtils][unix_shell_utils] and 
+[GNU Tools for Arm Embedded Processors][gnu_arm_tools] compensates for this gap.*
 
 @tip_s
 For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
 @tip_e
 
-1.1 Reference documents {#AVR_QS_REF}
--------------------------------------
+1.1 Reference documents {#STM32_QS_REF}
+---------------------------------------
 
-- [Microchip ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328P)
-- [AVR Instruction Set Manual](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
-- [AVR Libc Reference Manual](http://www.nongnu.org/avr-libc/user-manual/index.html)
+- [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf)
+- [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
+- [STM32L072RB Errata](https://www.st.com/resource/en/errata_sheet/dm00148855.pdf)
+- [STM32L0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
 
-2. Tutorials {#AVR_QS_TUTORIALS}
-================================
+The reference documents can also be found here for off-line viewing:
+
+    boards/arm/stm32/piconomix_hero_board/docs
+
+2. Tutorials {#STM32_QS_TUTORIALS}
+==================================
 
 These tutorials demonstrate how to use a peripheral by offering a distilled 
 example. The tutorials build on each other, so it is recommended to work through
 them in the order presented.
 
-|Tutorial                  |Description                                                                  |
-|--------------------------|-----------------------------------------------------------------------------|
-|@ref AVR_TUT01_GPIO       |How to configure and use general purpose I/O pins                            |
-|@ref AVR_TUT02_TIMER      |How to configure and use a TMR peripheral as a blocking delay                |
-|@ref AVR_TUT03_INTERRUPT  |How to implement a simple interrupt handler                                  |
-|@ref AVR_TUT04_UART       |How to configure and use a UART in a polled fashion                          |
-|@ref AVR_TUT05_PRINTF     |How to direct the AVR Libc stdout stream to send characters using a UART     |
-|@ref AVR_TUT06_PWM        |How to configure and use a TMR peripheral to generate a PWM output           |
-|@ref AVR_TUT07_ADC        |How to configure and use one channel of the ADC converter in a polled fashion|
-|@ref AVR_TUT08_SLEEP_MODE |How to use one of the AVR's low power sleep modes                            |
-|@ref AVR_TUT09_EEPROM     |How to write to and read from EEPROM                                         |
+|Tutorial                      |Description                                                                   |
+|------------------------------|------------------------------------------------------------------------------|
+|@ref STM32_TUT01_GPIO_PART_A  |How to configure and use general purpose I/O pins - part A                    |
+|@ref STM32_TUT01_GPIO_PART_B  |How to configure and use general purpose I/O pins - part B                    |
+|@ref STM32_TUT01_GPIO_PART_C  |How to configure and use general purpose I/O pins - part C                    |
+|@ref STM32_TUT01_GPIO_PART_D  |How to configure and use general purpose I/O pins - part D                    |
+|@ref STM32_TUT02_SYSCLK_INT   |How to use the SysClk peripheral to generate a periodic interrupt             |
+|@ref STM32_TUT03_GPIO_EXT_INT |How to generate an external GPIO interrupt                                    |
+
 
 @warn_s
 The tutorials may need to be modified for your specific target board.
 @warn_e
 
-3. Examples {#AVR_QS_EXAMPLES}
+3. Examples {#STM32_QS_EXAMPLES}
 ==============================
 
 These examples show how the Piconomix FW library can be used to achieve two
@@ -74,18 +80,18 @@ embedded equivalents of the "hello world" program on a PC.
 
 |Example                  |Description                                                       |
 |-------------------------|------------------------------------------------------------------|
-|@ref AVR_EX_FLASHING_LED |This example toggles the LED once a second                        |
-|@ref AVR_EX_PRINTF       |Redirect stdout to UART and print strings stored in FLASH and SRAM|
+|@ref STM32_EX_FLASHING_LED |This example toggles the LED once a second                        |
+|@ref STM32_EX_PRINTF       |Redirect stdout to UART and print strings stored in FLASH and SRAM|
 
 @warn_s
 The examples may need to be modified for your specific target board.
 @warn_e
 
-4. Brief introduction to AVR instruction set {#AVR_QS_INSTRUCTION_SET}
+4. Brief introduction to STM32 instruction set {#STM32_QS_INSTRUCTION_SET}
 ======================================================================
 
-The AVR core has an advanced reduced instruction set (RISC) architecture with 
-most of the instructions being executed in a single clock cycle. The AVR uses a 
+The STM32 core has an advanced reduced instruction set (RISC) architecture with 
+most of the instructions being executed in a single clock cycle. The STM32 uses a 
 [Harvard architecture](http://en.wikipedia.org/wiki/Harvard_architecture)
 with separated access to program and data. A load/store assembler instruction 
 set is implemented with 32 general purpose registers (R0 to R31). The 
@@ -110,12 +116,12 @@ instructions are divided into the following categories:
 @tip_s
 The quickest way to learn the assembler instruction set is to refer to 
 the Help included with Atmel Studio:\n
-Help > View Help **Ctrl+F1** > Help Viewer Home > AVR Assembler > Instructions
+Help > View Help **Ctrl+F1** > Help Viewer Home > STM32 Assembler > Instructions
 @tip_e
 
 ![Atmel Studio Help](as_help_menu.png)
 
-You will have to install the "AVR Assembler - User Guide" by clicking on the 
+You will have to install the "STM32 Assembler - User Guide" by clicking on the 
 "Manage Content" (Ctrl + Shift + M) icon button:
 
 ![Atmel Studio - Install help content](as_help_avr_assembler.png)
@@ -124,7 +130,7 @@ The **Status Register (SREG)** contains flags that convey information about the
 most recently executed arithmetic instruction. Bit 7 (I) is different, as it 
 is the flag that enables/disables interrupts globally:
 
-![AVR SREG Register](avr_sreg.png)
+![STM32 SREG Register](avr_sreg.png)
 - Bit 7 @b I: **Global Interrupt Enable**
 - Bit 6 @b T: Bit Copy Storage
 - Bit 5 @b H: Half Carry Flag
@@ -134,15 +140,15 @@ is the flag that enables/disables interrupts globally:
 - Bit 1 @b Z: Zero Flag
 - Bit 0 @b C: Carry Flag
 
-5. Install software {#AVR_QS_INSTALL}
+5. Install software {#STM32_QS_INSTALL}
 =====================================
 
-5.1 Install Atmel Studio 7 {#AVR_QS_INSTALL_AS}
+5.1 Install Atmel Studio 7 {#STM32_QS_INSTALL_AS}
 -----------------------------------------------
 
 Download and install [Atmel Studio 7] [atmel_studio].
 
-5.2 Install UnixShellUtils {#AVR_QS_INSTALL_UNIX_SHELL_UTILS}
+5.2 Install UnixShellUtils {#STM32_QS_INSTALL_UNIX_SHELL_UTILS}
 -------------------------------------------------------------
 
 Download [UnixShellUtils] [unix_shell_utils] and extract downloaded package 
@@ -150,7 +156,7 @@ to root of drive, e.g.
 
     C:\UnixShellUtils
 
-5.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#AVR_QS_CUSTOM_BUILD_TOOLS}
+5.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#STM32_QS_CUSTOM_BUILD_TOOLS}
 -----------------------------------------------------------------------------------------------
 
 Start Atmel Studio. Configure options:
@@ -170,14 +176,15 @@ Studio will remember the custom settings, so it is quick to switch between
 Custom and Default.
 @warn_e
 
-6. Open and build an existing project in Atmel Studio {#AVR_QS_BUILD_PROJECT}
+6. Open and build an existing project in Atmel Studio {#STM32_QS_BUILD_PROJECT}
 =============================================================================
 
 All of the tutorials and examples are provided with pre-configured Atmel 
 Studio projects. External Makefiles are referenced, instead of using Atmel
 Studio's build system, to make the projects cross-platform.
 
-Open and build [Tutorial 1 GPIO](@ref AVR_TUT01_GPIO). It is located here:
+Open and build [Tutorial 1 GPIO](@ref STM32_TUT01_GPIO_PART_A). It is located 
+here:
 
     piconomix-fwlib/arch/avr/tutorials/01_gpio/gpio.atsln
 
@@ -197,10 +204,10 @@ Build > build Solution **F7**
 
 @tip_s
 If this step was not succesfull, it probably means that the custom build tools
-was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
+was not correctly set up. Go back to @ref STM32_QS_CUSTOM_BUILD_TOOLS
 @tip_e
 
-7. Simulate the project {#AVR_QS_SIM}
+7. Simulate the project {#STM32_QS_SIM}
 =====================================
 
 7.1 Open the project properties
@@ -239,7 +246,7 @@ You are now able to single step, set break points, run the code and inspect the
 peripheral status using the I/O view.
 @tip_e
 
-8. How to create a new project {#AVR_STUDIO_NEW_PROJECT}
+8. How to create a new project {#STM32_STUDIO_NEW_PROJECT}
 ========================================================
 
 Atmel Studio insists on creating a whole directory structure for a new project
@@ -396,7 +403,7 @@ the library:
 
 ![Modify path(s) in Makefile](as_ext_makefile_modify.png)
 
-9. Clean Solution {#AVR_QS_CLEAN}
+9. Clean Solution {#STM32_QS_CLEAN}
 =================================
 
 Delete any previously build files. *This is the same as executing a 'make clean'
@@ -408,10 +415,10 @@ Build > Clean Solution
 
 @tip_s
 If this step was not successful, it probably means that the custom build tools
-was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
+was not correctly set up. Go back to @ref STM32_QS_CUSTOM_BUILD_TOOLS
 @tip_e
 
-10. Build Solution {#AVR_QS_BUILD}
+10. Build Solution {#STM32_QS_BUILD}
 ==================================
 
 Build the project. *This is the same as executing a 'make' on the command line.*
@@ -420,14 +427,14 @@ Build > build Solution **F7**
 
 ![](as_build_project.png)
 
-11. How to build a project from the command line {#AVR_QS_BUILD_CMD_LINE}
+11. How to build a project from the command line {#STM32_QS_BUILD_CMD_LINE}
 =========================================================================
 
 Open a command prompt in the root of the project where the Makefile is located:
 
 ![](as_cmd_line_open.png)
 
-Set the path to the AVR GCC toolchain and the build tools (UnixShellUtils):
+Set the path to the STM32 GCC toolchain and the build tools (UnixShellUtils):
 
     path=c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\UnixShellUtils\bin
 
@@ -460,7 +467,7 @@ the output:
     P:\libraries\piconomix-fwlib\trunk\arch\avr\examples\flashing_led>make
 
     -------- begin --------
-    avr-gcc.exe (AVR_8_bit_GNU_Toolchain_3.5.0_1662) 4.9.2
+    avr-gcc.exe (STM32_8_bit_GNU_Toolchain_3.5.0_1662) 4.9.2
     Copyright (C) 2014 Free Software Foundation, Inc.
     This is free software; see the source for copying conditions.  There is NO
     warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -502,7 +509,7 @@ the output:
 
     Size:
     avr-size --mcu=atmega328p --format=avr flashing_led.elf
-    AVR Memory Usage
+    STM32 Memory Usage
     ----------------
     Device: atmega328p
 

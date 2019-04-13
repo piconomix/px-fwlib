@@ -1,4 +1,4 @@
-7.2 How to download and install MinGW / MSYS {#HOWTO_MSYS}
+7.1 How to download and install MinGW / MSYS {#HOWTO_MSYS}
 ==========================================================
 
 [TOC]
@@ -23,7 +23,7 @@ Reference:
 
 - [mingw-get-setup.exe](https://sourceforge.net/projects/mingw/files/latest/download) (version 0.6.2-beta-20131004-1)
 
-![](how_to_msys/mingw_install_tool_01.png)
+![](mingw_install_tool_01.png)
 
 @tip_s
 This GUI installer assistant is used for first time installation only. To manage 
@@ -38,19 +38,19 @@ GUI installer (assuming MinGW is installed in it's default location):
 
 The initial configuration is best described with a series of screenshots: 
 
-![](how_to_msys/mingw_install_tool_02.png)
+![](mingw_install_tool_02.png)
 
 @warn_s
 Stick to the default path (C:\\MinGW).
 @warn_e
 
-![](how_to_msys/mingw_install_tool_03.png)
+![](mingw_install_tool_03.png)
 
-![](how_to_msys/mingw_install_tool_04.png)
+![](mingw_install_tool_04.png)
 
-![](how_to_msys/mingw_install_tool_05.png)
+![](mingw_install_tool_05.png)
 
-![](how_to_msys/mingw_install_tool_06.png)
+![](mingw_install_tool_06.png)
 
 4. Set path to command line utilities {#MSYS_PATH}
 ==================================================
@@ -61,7 +61,7 @@ The command line utilities are located in:
 
 Start > Control Panel > System > Advanced System Settings > Environment Variables > Path
 
-![](how_to_msys/msys_path.png)
+![](msys_path.png)
 
 @tip_s
 For the sake of this guide, the simplest solution has been shown.
