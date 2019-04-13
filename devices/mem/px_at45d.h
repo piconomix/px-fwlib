@@ -266,7 +266,7 @@ void px_at45d_wr_page_offset(const void * buffer,
  *  
  *  @param[in]  page   0 to (PX_AT45D_PAGES-1)
  */
-void px_at45d_erase_page(uint16_t page);
+void px_at45d_erase(uint16_t page);
 
 /**
  *  Check if DataFlash is ready for the next read or write access.
