@@ -18,23 +18,23 @@
 # ------------------------------------------------------------------------------
 
 # Define programs and commands
-CPREFIX   = arm-none-eabi
-CC        = $(CPREFIX)-gcc
-OBJCOPY   = $(CPREFIX)-objcopy
-OBJDUMP   = $(CPREFIX)-objdump
-SIZE      = $(CPREFIX)-size
-NM        = $(CPREFIX)-nm
-DEBUGGER  = $(CPREFIX)-gdb
-REMOVE    = rm -f
-REMOVEDIR = rm -rf
-COPY      = cp
+CPREFIX   ?= arm-none-eabi
+CC         = $(CPREFIX)-gcc
+OBJCOPY    = $(CPREFIX)-objcopy
+OBJDUMP    = $(CPREFIX)-objdump
+SIZE       = $(CPREFIX)-size
+NM         = $(CPREFIX)-nm
+DEBUGGER   = $(CPREFIX)-gdb
+REMOVE     = rm -f
+REMOVEDIR  = rm -rf
+COPY       = cp
 
-# Determine build (debug or release)
+# Determine build (debug, release or release for boot)
 # Set build directory and add build specific flags
 ifdef build
     BUILD = $(build)
 else
-    BUILD = release
+    BUILD = debug
 endif
 ifeq ($(BUILD), debug)
     BUILD_DIR = BUILD_DEBUG
@@ -42,27 +42,37 @@ ifeq ($(BUILD), debug)
     CFLAGS   += $(CFLAGS_DEBUG)
     CPPFLAGS += $(CPPFLAGS_DEBUG)
     AFLAGS   += $(AFLAGS_DEBUG)
+    LDFLAGS  += $(LDFLAGS_DEBUG)
 else ifeq ($(BUILD), release)
     BUILD_DIR = BUILD_RELEASE
     CDEFS    += $(CDEFS_RELEASE)
     CFLAGS   += $(CFLAGS_RELEASE)
     CPPFLAGS += $(CPPFLAGS_RELEASE)
     AFLAGS   += $(AFLAGS_RELEASE)
+    LDFLAGS  += $(LDFLAGS_RELEASE)
+else ifeq ($(BUILD), release-boot)
+    BUILD_DIR = BUILD_RELEASE_BOOT
+    CDEFS    += $(CDEFS_RELEASE)
+    CFLAGS   += $(CFLAGS_RELEASE)
+    CPPFLAGS += $(CPPFLAGS_RELEASE)
+    AFLAGS   += $(AFLAGS_RELEASE)
+    LDFLAGS  += $(LDFLAGS_RELEASE)
 else
-    $(error "Unsupported build specified. Use 'make build=debug' or 'make build=release")
+    $(error "Unsupported build specified. Use 'make build=debug', 'make build=release' or 'make build=release-boot'")
 endif
 
-# Allocate space for bootloader in release build (if specified)
+# Allocate space for bootloader in release for boot build (if specified)
 #
 # VTOR register (Vector Table Offset Register) must be set to correct value in:
 # libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 #
 # FLASH_OFFSET must be specified in linker script.
-ifeq ($(BUILD), release)
-    ifdef BOOTLOADER_SIZE
-        CDEFS   += VECT_TAB_OFFSET=$(BOOTLOADER_SIZE)
-        LDFLAGS += -Wl,--defsym,FLASH_OFFSET=$(BOOTLOADER_SIZE)
-    endif
+ifeq ($(BUILD), release-boot)    
+    ifndef BOOTLOADER_SIZE
+        $(error "BOOTLOADER_SIZE not defined")
+    endif    
+    CDEFS   += VECT_TAB_OFFSET=$(BOOTLOADER_SIZE)
+    LDFLAGS += -Wl,--defsym,FLASH_OFFSET=$(BOOTLOADER_SIZE)
 endif
 
 # Define Messages
@@ -70,13 +80,11 @@ ifeq ($(BUILD), debug)
 MSG_BEGIN               = '------------ begin (DEBUG) ---------------'
 MSG_END                 = '-------------  end (DEBUG) ---------------'
 else ifeq ($(BUILD), release)
-ifndef BOOTLOADER_SIZE
 MSG_BEGIN               = '------------- begin (RELEASE) ------------'
 MSG_END                 = '-------------  end (RELEASE) -------------'
-else
+else ifeq ($(BUILD), release-boot)
 MSG_BEGIN               = '-------- begin (RELEASE FOR BOOT) --------'
 MSG_END                 = '--------  end (RELEASE FOR BOOT) ---------'
-endif
 endif
 MSG_SIZE                = 'Size:'
 MSG_FLASH_HEX           = 'Creating HEX load file for Flash:'
@@ -110,7 +118,7 @@ AFLAGS   += $(addprefix -D,$(ADEFS))
 #     Makefile that includes this boilerplate file
 ALL_CFLAGS   ?= $(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
 ALL_CPPFLAGS ?= $(MCU) -x c++ $(CPPFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
-ALL_ASFLAGS  ?= $(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
+ALL_AFLAGS   ?= $(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
 ALL_LDFLAGS  ?= $(MCU) $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS))
 
 # Default target
@@ -119,11 +127,11 @@ all: begin gccversion build size end
 # Build targets
 build: elf hex bin lss sym
 
-elf: $(PROJECT).elf
-hex: $(PROJECT).hex
-bin: $(PROJECT).bin
-lss: $(PROJECT).lss
-sym: $(PROJECT).sym
+elf: $(BUILD_DIR)/$(PROJECT).elf
+hex: $(BUILD_DIR)/$(PROJECT).hex
+bin: $(BUILD_DIR)/$(PROJECT).bin
+lss: $(BUILD_DIR)/$(PROJECT).lss
+sym: $(BUILD_DIR)/$(PROJECT).sym
 
 # Default target to create specified source files.
 # If this rule is executed then the input source file does not exist.
@@ -140,43 +148,43 @@ end:
 	@echo
 
 # Display size of file
-size: $(PROJECT).elf
+size: $(BUILD_DIR)/$(PROJECT).elf
 	@echo
 	@echo $(MSG_SIZE)
-	$(SIZE) $(PROJECT).elf
+	$(SIZE) $<
 
 # Display compiler version information
 gccversion : 
 	@$(CC) --version
 
 # Create final output file (.hex) from ELF output file
-%.hex: %.elf
+$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_FLASH_HEX) $@
 	$(OBJCOPY) -O ihex $< $@
 
 # Create final output file (.bin) from ELF output file
-%.bin: %.elf
+$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_FLASH_BIN) $@
 	$(OBJCOPY) -O binary $< $@
 
 # Create extended listing file from ELF output file
-%.lss: %.elf
+$(BUILD_DIR)/%.lss: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_EXTENDED_LISTING) $@
-	$(OBJDUMP) -h -S -z $< > $(BUILD_DIR)/$@
+	$(OBJDUMP) -h -S -z $< > $@
 
 # Create a symbol table from ELF output file
-%.sym: %.elf
+$(BUILD_DIR)/%.sym: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_SYMBOL_TABLE) $@
-	$(NM) -n $< > $(BUILD_DIR)/$@
+	$(NM) -n $< > $@
 
 # Link: create ELF output file from object files
-.SECONDARY : $(PROJECT).elf
+.SECONDARY : $(BUILD_DIR)/$(PROJECT).elf
 .PRECIOUS : $(OBJECTS)
-%.elf: $(OBJECTS)
+$(BUILD_DIR)/%.elf: $(OBJECTS)
 	@echo
 	@echo $(MSG_LINKING) $@
 	$(CC) $(ALL_LDFLAGS) $^ -o $@
@@ -210,7 +218,7 @@ define create_asm_obj_rule
 $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_ASSEMBLING) $$<
-	$(CC) -c $(ALL_ASFLAGS) $$< -o $$@
+	$(CC) -c $(ALL_AFLAGS) $$< -o $$@
 endef
 $(foreach file,$(ASRC),$(eval $(call create_asm_obj_rule,$(file)))) 
 
@@ -220,20 +228,22 @@ clean: begin clean_list end
 clean_list :
 	@echo
 	@echo $(MSG_CLEANING)
-	$(REMOVE) $(PROJECT).hex
-	$(REMOVE) $(PROJECT).bin
-	$(REMOVE) $(PROJECT).elf
 	$(REMOVE) $(OPENOCD_SCRIPT)
 	$(REMOVE) $(GDB_SCRIPT)
 	$(REMOVEDIR) $(BUILD_DIR)
 
-# Target: clean project
+# Target: mostly clean project (remove all temporary building files, but leave final executables)
 mostlyclean: begin mostlyclean_list end
 
 mostlyclean_list :
 	@echo
 	@echo $(MSG_CLEANING)
-	$(REMOVEDIR) $(BUILD_DIR)
+	$(REMOVE) $(BUILD_DIR)/*.o
+	$(REMOVE) $(BUILD_DIR)/*.d
+	$(REMOVE) $(BUILD_DIR)/*.lst
+	$(REMOVE) $(BUILD_DIR)/$(PROJECT).lss
+	$(REMOVE) $(BUILD_DIR)/$(PROJECT).map
+	$(REMOVE) $(BUILD_DIR)/$(PROJECT).sym
 
 # Generate OpenOCD config file
 .PHONY : $(OPENOCD_SCRIPT)
@@ -259,7 +269,7 @@ openocd: $(OPENOCD_SCRIPT)
 # Generate GDB config/init file
 $(GDB_SCRIPT) : 
 	@echo '# Load program to debug' >> $(GDB_SCRIPT)
-	@echo 'file $(PROJECT).elf' >> $(GDB_SCRIPT)
+	@echo 'file $(BUILD_DIR)/$(PROJECT).elf' >> $(GDB_SCRIPT)
 	@echo '# Connect to GDB server' >> $(GDB_SCRIPT)
 	@echo 'target extended-remote localhost:$(GDB_PORT)' >> $(GDB_SCRIPT)
 	@echo '# Execute a reset and halt of the target' >> $(GDB_SCRIPT)
