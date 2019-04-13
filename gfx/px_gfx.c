@@ -459,3 +459,25 @@ void px_gfx_printf(px_gfx_font_t * font,
 
     px_gfx_draw_str(font, x, y, color, str);
 }
+
+void px_gfx_dbg_frame_buf_report(void)
+{
+    px_gfx_xy_t x, y;
+
+    for(y=0; y<PX_GFX_DISP_SIZE_Y; y++)
+    {
+        for(x=0; x<PX_GFX_DISP_SIZE_X; x++)
+        {
+            if(((px_gfx_frame_buf[y / 8][x]) & (1 << (y % 8))) != 0)
+            {
+                PX_DBG_TRACE("1");
+            }
+            else
+            {
+                PX_DBG_TRACE("0");
+            }
+        }
+        PX_DBG_TRACE("\n");
+    }
+}
+

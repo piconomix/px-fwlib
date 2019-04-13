@@ -37,8 +37,8 @@
  *  @ingroup GFX
  *  @defgroup PX_GFX px_gfx.h : Basic monochrome graphics library
  *  
- *  A basic monochrome (1 bit per pixel) graphics library for the Truly 
- *  128 x 64 LCD.
+ *  A basic monochrome (1 bit per pixel) graphics library for the JHD 
+ *  JHD12864-G176BSW 128x64 monochrome LCD.
  *  
  *  File(s):
  *  - gfx/px_gfx.h 
@@ -165,6 +165,8 @@ void px_gfx_printf(px_gfx_font_t * font,
                    px_gfx_xy_t     y,
                    px_gfx_color_t  color,
                    const char *    format, ...);
+
+void px_gfx_dbg_frame_buf_report(void);
 
 /* _____MACROS_______________________________________________________________ */
 
