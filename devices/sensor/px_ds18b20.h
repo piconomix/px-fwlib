@@ -54,6 +54,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_one_wire.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -100,12 +101,29 @@ typedef struct
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-px_ds18b20_error_t px_ds18b20_start_temp_conversion     (void);
+px_ds18b20_error_t px_ds18b20_start_temp_conversion     (px_one_wire_rom_t * rom);
+
 bool               px_ds18b20_temp_conversion_finished  (void);
-px_ds18b20_error_t px_ds18b20_rd_scratchpad             (px_ds18b20_scratchpad_t * scratchpad);
-px_ds18b20_error_t px_ds18b20_rd_pwr_supply             (bool * bus_pwr_flag);
-px_ds18b20_error_t px_ds18b20_rd_temp                   (uint8_t * temp_msb, uint8_t * temp_lsb);
-int16_t            px_ds18b20_util_convert_t_to_deci_deg(uint8_t temp_msb, uint8_t temp_lsb, uint8_t cfg_reg);
+
+px_ds18b20_error_t px_ds18b20_rd_scratchpad             (px_one_wire_rom_t *       rom,
+                                                         px_ds18b20_scratchpad_t * scratchpad);
+
+px_ds18b20_error_t px_ds18b20_wr_scratchpad             (px_one_wire_rom_t *             rom,
+                                                         const px_ds18b20_scratchpad_t * scratchpad);
+
+px_ds18b20_error_t px_ds18b20_copy_scratchpad           (px_one_wire_rom_t * rom);
+
+
+px_ds18b20_error_t px_ds18b20_rd_pwr_supply             (px_one_wire_rom_t *       rom,
+                                                         bool *                    bus_pwr_flag);
+
+px_ds18b20_error_t px_ds18b20_rd_temp                   (px_one_wire_rom_t *       rom,
+                                                         uint8_t *                 temp_msb, 
+                                                         uint8_t *                 temp_lsb);
+
+int16_t            px_ds18b20_util_convert_t_to_deci_deg(uint8_t temp_msb, 
+                                                         uint8_t temp_lsb, 
+                                                         uint8_t cfg_reg);
 
 /* _____MACROS_______________________________________________________________ */
 
