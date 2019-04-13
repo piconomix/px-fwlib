@@ -64,7 +64,7 @@
 #endif
 
 /// Disable (0) or Enable (1) VT100 terminal color output
-#define PX_DBG_CFG_COLOR 1
+#define PX_DBG_CFG_COLOR 0
 
 /// Debug output string buffer size
 #define PX_DBG_CFG_BUF_SIZE 64

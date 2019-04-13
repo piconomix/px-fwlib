@@ -37,7 +37,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_dbg.h"
+#if PX_DBG_CFG_COLOR
 #include "px_vt100.h"
+#endif
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// Number of bytes per row for hex dump
@@ -131,8 +133,8 @@ static void px_dbg_printf(const char * format, ...)
 #endif
 
 static void px_dbg_report_log_prefix(uint8_t      level, 
-                                      const char * name, 
-                                      uint16_t     line)
+                                     const char * name, 
+                                     uint16_t     line)
 {
     // Output level
     if(level == PX_DBG_CFG_MSG_LEVEL_ERR)

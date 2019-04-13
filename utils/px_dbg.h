@@ -284,21 +284,21 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
 
 #if PX_DBG_LEVEL_INFO
 /// Macro to display a formatted INFO message
-#define PX_DBG_INFO(format, ...)   _px_dbg_log_info(_px_dbg_name, __LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#define PX_DBG_INFO(format, ...)   _px_dbg_log_info(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
 #define PX_DBG_INFO(format, ...)   ((void)0)
 #endif
 
 #if PX_DBG_LEVEL_WARN
 /// Macro to display a formatted WARNING message
-#define PX_DBG_WARN(format, ...)   _px_dbg_log_warn(_px_dbg_name, __LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#define PX_DBG_WARN(format, ...)   _px_dbg_log_warn(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
 #define PX_DBG_WARN(format, ...)   ((void)0)
 #endif
 
 #if PX_DBG_LEVEL_ERR
 /// Macro to display a formatted ERROR message
-#define PX_DBG_ERR(format, ...)    _px_dbg_log_err(_px_dbg_name, __LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#define PX_DBG_ERR(format, ...)    _px_dbg_log_err(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
 #define PX_DBG_ERR(format, ...)    ((void)0)
 #endif
@@ -362,7 +362,7 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
             { \
                 if(!(expression)) \
                 { \
-                    _px_dbg_log_err(_px_dbg_name, __LINE__, PX_PGM_STR(#expression)); \
+                    _px_dbg_log_err(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(#expression)); \
                     for(;;) {;} \
                 } \
             } while(0)
