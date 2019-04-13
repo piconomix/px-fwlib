@@ -42,7 +42,10 @@
  *  File(s):
  *  - data/px_log_fs.h
  *  - data/px_log_fs_cfg_template.h
- *  - data/px_log_fs.c
+ *  - data/px_log_fs.c 
+ *  - data/px_log_fs_glue.h 
+ *  - data/px_log_fs_glue_at25s.c
+ *  - data/px_log_fs_glue_at45d.c
  *  
  *  1. Introduction
  *  ===============
@@ -50,18 +53,57 @@
  *  <b>px_log_fs</b> is a basic but **resilient** record-based file system to
  *  store log data on Serial Flash, for example 
  *  [Adesto AT45D DataFlash](http://www.adestotech.com/products/data-flash/).
+ *  It is designed with the following fundamental characteristics in mind: 
+ *  - The Serial Flash is evenly divided up into pages
+ *  - A block of pages is erased at a time (less is better) 
+ *  - An erase will reset all bits in a block back to ones (1)
+ *  - A write selectively set bits in a page to zero (0)
+ *  - A bit that is zero can only be restored to one with a block erase
+ *  - Wear levelling by spreading block erases and page writes evenly over the 
+ *    whole Serial Flash
+ *  - Serial Flash bit fault tolerance without file corruption
+ *  - Power disruption or unplanned reset tolerance without file corruption
+ *   
  *  A file is defined as a collection of fixed-size records that contain the log
  *  data. The records can be navigated forwards or backwards to read data, while
  *  being able to append new data at the same time. Record writing will stop 
- *  when the file is full (PX_LOG_FS_CFG_TYPE_LINEAR option) or newest records will
- *  overwrite oldest records when the file is full (PX_LOG_FS_CFG_TYPE_CIRCULAR
- *  option). Multiple time-stamped files can be created sequentially, but only
- *  the oldest file can be deleted.
+ *  when the file is full (#PX_LOG_FS_CFG_TYPE_LINEAR option) or newest records 
+ *  will overwrite oldest records when the file is full 
+ *  (#PX_LOG_FS_CFG_TYPE_CIRCULAR option). Multiple time-stamped files can be 
+ *  created sequentially, but only the oldest file can be deleted.
  *  
- *  The maximum number of pages used for each file can be limited with the
- *  PX_LOG_FS_CFG_MAX_PAGES option (0 means no limit). The size of each record is 
- *  configured with PX_LOG_FS_CFG_REC_DATA_SIZE. See 'px_log_fs_cfg_template.h'
- *  
+ *  The maximum number of pages allocated for each file can be limited with the
+ *  #PX_LOG_FS_CFG_MAX_PAGES option (0 means no limit). The size of each record 
+ *  is configured with #PX_LOG_FS_CFG_REC_DATA_SIZE. 
+ *  See 'px_log_fs_cfg_template.h' 
+ *   
+ *  The erase block size (number of pages) is configurable with 
+ *  #PX_LOG_FS_CFG_ERASE_BLOCK_SIZE. For example a single page of the Adesto 
+ *  [AT45DB041E](https://www.adestotech.com/products/data-flash/) can be erased 
+ *  at a time (very convenient), but the 
+ *  [AT25SF041](https://www.adestotech.com/products/standard-serial-flash/) has 
+ *  a minimum erase block size of 4 KB or 8 pages (a much cheaper option). 
+ *   
+ *  A new file must start at the beginning of an erase block. 
+ *   
+ *  For the #PX_LOG_FS_CFG_TYPE_LINEAR option at least two <b>pages</b> must be 
+ *  free for a new file. The first page is used to mark the start of the file 
+ *  and the next page is used for records.
+ *   
+ *  For the #PX_LOG_FS_CFG_TYPE_CIRCULAR option at least two <b>erase blocks</b> 
+ *  must be free for a new file. A whole erase block is used to mark the start 
+ *  of a file. The next erase block is used for records and it 
+ *  makes sense to have at least two erase blocks free (more is better), 
+ *  otherwise all records will be erased when the record writing wraps to 
+ *  overwrite older records. Thus a recommended minimum of three erase blocks 
+ *  are required for a new file. 
+ *   
+ *  @warn_s 
+ *  Critical changes have been made to <b>px_log_fs</b> to cater for the new 
+ *  #PX_LOG_FS_CFG_ERASE_BLOCK_SIZE option. Extensive test coverage is 
+ *  recommended to verify that it will work correctly for your application.
+ *  @warn_e 
+ *   
  *  <i>First a code example to demonstrate the API, followed by implementation 
  *  details...</i>
  *  
@@ -73,11 +115,13 @@
  *  3. Implementation details
  *  =========================
  *  
- *  The Serial Flash pages are treated like one big circular buffer.
+ *  The Serial Flash pages are treated as one big 
+ *  [circular buffer](http://en.wikipedia.org/wiki/Circular_buffer).
  *  Files are stored sequentially and record writing will stop (or wrap to
  *  overwrite oldest records) when the start of the oldest file is reached. This
- *  simplified scheme implicitly allows for wear leveling, because each Serial
- *  Flash page is erased once per pass through the circular buffer.
+ *  simplified scheme implicitly allows for 
+ *  [wear leveling](https://en.wikipedia.org/wiki/Wear_leveling), because each 
+ *  Serial Flash page is erased once per pass through the circular buffer.
  *  
  *  The file system leverages a characteristic of Serial Flash. When a page is 
  *  erased, all the data bits are reset to 1. When writing a byte, bits can be 
@@ -89,7 +133,7 @@
  *  @tip_s
  *  By inspecting the bits, it can be observed that a marker can be changed from
  *  FREE to FILE (or RECORD) to BAD, but not the other way around without
- *  erasing the whole page.
+ *  erasing the whole block.
  *  @tip_e
  *  
  *  Each page starts with a page header (px_log_fs_page_header_t) which consists of
@@ -105,9 +149,9 @@
  *  After the FILE page, records are stored in RECORD pages. The 16-bit rolling
  *  RECORD number (in each page header) is used to figure out which is the 
  *  oldest record page and which is the newest record page if the 
- *  PX_LOG_FS_CFG_TYPE_CIRCULAR option is used. Each record (px_log_fs_rec_block_t)
- *  contains an 8-bit RECORD marker, the record data (fixed size set with 
- *  PX_LOG_FS_CFG_REC_DATA_SIZE) and an 8-bit CRC.
+ *  #PX_LOG_FS_CFG_TYPE_CIRCULAR option is used. Each record 
+ *  (px_log_fs_rec_block_t) contains an 8-bit RECORD marker, the record data 
+ *  (fixed size set with #PX_LOG_FS_CFG_REC_DATA_SIZE) and an 8-bit CRC.
  *  
  *  ![Record structure](log_fs/record.png)
  *  
@@ -123,8 +167,8 @@
  *  When a file is created (and during writing), the file system ensures that
  *  there is always at least one FREE record space available that can be
  *  written to. Here is an example to illustrate how the file system with the 
- *  PX_LOG_FS_CFG_TYPE_LINEAR option works, i.e. record writing will stop when the 
- *  file system is full.
+ *  #PX_LOG_FS_CFG_TYPE_LINEAR option works, i.e. record writing will stop when 
+ *  the file system is full.
  *  
  *  4. Linear file example (PX_LOG_FS_CFG_TYPE_LINEAR option)
  *  =========================================================
@@ -244,8 +288,8 @@
  *  contains the newest entry (END), a rolling (or wrapping) number is assigned
  *  to each entry. This means that each consecutive entry is labelled with an
  *  incrementing number. If the number exceeds the maximum, it starts again at
- *  zero (rolls over). For these examples, the rolling number starts at 00 up to
- *  99 and then rolls back to 00.
+ *  zero (rolls over). To simplify these examples, the rolling number starts at 
+ *  00, increments up to 99 and then rolls back to 00.
  *  
  *  Each entry's rolling number is compared with the next valid entry's rolling
  *  number. The largest difference in the rolling numbers indicates that the
@@ -255,7 +299,7 @@
  *  
  *      Diff = (rolling_number_next - rolling_number) mod 100
  *  
- *  Here are a few select test cases to show that it works under various
+ *  Here are a few select test cases to demonstrate that it works under various
  *  conditions:
  *  
  *  ![1. END is at page 5 and START is at page 0 (largest diff is 95)](log_fs/start_end_01.png)
@@ -286,22 +330,24 @@
 #include "px_log_fs_cfg.h"
 
 // Check that all project specific options have been specified in "px_log_fs_cfg.h"
-#if (   !defined(PX_LOG_FS_CFG_PAGE_SIZE    ) \
-     || !defined(PX_LOG_FS_CFG_PAGE_START   ) \
-     || !defined(PX_LOG_FS_CFG_PAGE_END     ) \
-     || !defined(PX_LOG_FS_CFG_REC_DATA_SIZE) \
-     || !defined(PX_LOG_FS_CFG_TYPE         ) \
-     || !defined(PX_LOG_FS_CFG_MAX_PAGES    )  )
-      )
+#if (   !defined(PX_LOG_FS_CFG_PAGE_SIZE       ) \
+     || !defined(PX_LOG_FS_CFG_PAGE_START      ) \
+     || !defined(PX_LOG_FS_CFG_PAGE_END        ) \
+     || !defined(PX_LOG_FS_CFG_ERASE_BLOCK_SIZE) \
+     || !defined(PX_LOG_FS_CFG_REC_DATA_SIZE   ) \
+     || !defined(PX_LOG_FS_CFG_TYPE            ) \
+     || !defined(PX_LOG_FS_CFG_MAX_PAGES       )  )
 #error "One or more options not defined in 'px_log_fs_cfg.h'"
 #endif
-
 
 #if (PX_LOG_FS_CFG_TYPE != PX_LOG_FS_CFG_TYPE_LINEAR) && (PX_LOG_FS_CFG_TYPE != PX_LOG_FS_CFG_TYPE_CIRCULAR)
 #error "Unknown PX_LOG_FS_CFG_TYPE"
 #endif
 #if (PX_LOG_FS_CFG_MAX_PAGES > (PX_LOG_FS_CFG_PAGE_END - PX_LOG_FS_CFG_PAGE_START + 1))
 #error "PX_LOG_FS_CFG_MAX_PAGES too big"
+#endif
+#if ((PX_LOG_FS_CFG_MAX_PAGES > 0) && ((PX_LOG_FS_CFG_MAX_PAGES % (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1)) != 0))
+#error "PX_LOG_FS_CFG_MAX_PAGES must be an integer multiple of PX_LOG_FS_CFG_ERASE_BLOCK_SIZE"
 #endif
 #if (PX_LOG_FS_CFG_PAGE_START >= PX_LOG_FS_CFG_PAGE_END)
 #error "PX_LOG_FS_CFG_PAGE_START must be smaller than PX_LOG_FS_CFG_PAGE_END"
@@ -311,6 +357,18 @@
 #endif
 #if (PX_LOG_FS_CFG_PAGE_END + PX_LOG_FS_CFG_MAX_PAGES >= 0xffff)
 #error "Arithmetic will overflow. Make value smaller"
+#endif
+#if (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE == 0)
+#error "PX_LOG_FS_CFG_ERASE_BLOCK_SIZE cannot be zero"
+#endif
+#if(!PX_VAL_IS_PWR_OF_TWO(PX_LOG_FS_CFG_ERASE_BLOCK_SIZE))
+#error "PX_LOG_FS_CFG_ERASE_BLOCK_SIZE must be a multiple of two, e.g. 1, 2, 4, 8, 16, ..."
+#endif
+#if ((PX_LOG_FS_CFG_PAGE_START % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE) != 0)
+#error "Pages must start on an erase block size boundary"
+#endif
+#if (((PX_LOG_FS_CFG_PAGE_END + 1) % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE) != 0)
+#error "Pages must end on an erase block size boundary"
 #endif
 
 #ifdef __cplusplus
@@ -349,12 +407,12 @@ typedef uint16_t px_log_fs_offset_t;
 /// File creation date and time
 typedef struct
 {    
-    uint8_t  year;     ///< Years:   0 to 99 (2000 - 2099)
-    uint8_t  month;    ///< Months:  1 to 12
-    uint8_t  day;      ///< Days:    1 to 31 (depending on month)
-    uint8_t  hour;     ///< Hours:   0 to 23
-    uint8_t  min;      ///< Minutes: 0 to 59
-    uint8_t  sec;      ///< Seconds: 0 to 59
+    uint8_t  year;     ///< Year:   0 to 99 (2000 - 2099)
+    uint8_t  month;    ///< Month:  1 to 12
+    uint8_t  day;      ///< Day:    1 to 31 (depending on month)
+    uint8_t  hour;     ///< Hour    0 to 23
+    uint8_t  min;      ///< Minute: 0 to 59
+    uint8_t  sec;      ///< Second: 0 to 59
 } PX_ATTR_PACKED px_log_fs_time_stamp_t;
 
 /// File info
@@ -377,11 +435,19 @@ px_log_fs_err_t px_log_fs_init(void);
 /**
  *  Create a new file.
  *  
- *  @param time_stamp       User supplied time stamp (date and time).
+ *  For the PX_LOG_FS_CFG_TYPE_LINEAR option at least two pages must be free for
+ *  a new file. The first page is used to mark the start of the file and the
+ *  next page is used for records.
+ *  
+ *  For the PX_LOG_FS_CFG_TYPE_CIRCULAR option at least two erase blocks must be
+ *  free for a new file. The first erase block is used to mark the start of the
+ *  file and the next erase block is used for records.
+ *  
+ *  @param time_stamp          User supplied time stamp (date and time).
  *  
  *  @retval PX_LOG_FS_ERR_NONE File succesfully created.
- *  @retval PX_LOG_FS_ERR_FULL File sytem is full (at least 2 free pages are 
- *                          required for a new file).
+ *  @retval PX_LOG_FS_ERR_FULL File sytem is full (at least 2 free pages / erase
+ *                             blocks are required for a new file).
  */
 px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp);
 
@@ -437,7 +503,7 @@ size_t px_log_fs_file_attr_data_size(void);
  *  @retval PX_LOG_FS_ERR_NONE         Valid file found
  *  @retval PX_LOG_FS_ERR_NO_FILE      No files in file system
  *  @retval PX_LOG_FS_ERR_FILE_INVALID File system corrupt. File page was valid 
- *                                  during px_log_fs_init().
+ *                                     during px_log_fs_init().
  */
 px_log_fs_err_t px_log_fs_file_find_first(px_log_fs_file_t * file);
 
@@ -449,7 +515,7 @@ px_log_fs_err_t px_log_fs_file_find_first(px_log_fs_file_t * file);
  *  @retval PX_LOG_FS_ERR_NONE         Valid file found
  *  @retval PX_LOG_FS_ERR_NO_FILE      No files in file system
  *  @retval PX_LOG_FS_ERR_FILE_INVALID File system corrupt. File page was valid 
- *                                  during px_log_fs_init().
+ *                                     during px_log_fs_init().
  */
 px_log_fs_err_t px_log_fs_file_find_last(px_log_fs_file_t * file);
 

@@ -37,7 +37,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_log_fs.h"
-#include "px_at45d.h"
+#include "px_log_fs_glue.h"
 
 #include "px_dbg.h"
 PX_DBG_DECL_NAME("px_log_fs")
@@ -63,7 +63,13 @@ PX_DBG_DECL_NAME("px_log_fs")
 #define PX_LOG_FS_REC_OFFSET_FIRST (sizeof(px_log_fs_page_header_t))
 
 /// Last record offset
-#define PX_LOG_FS_REC_OFFSET_LAST  (sizeof(px_log_fs_page_header_t) + (PX_LOG_FS_RECORDS_PER_PAGE-1) * sizeof(px_log_fs_rec_block_t))
+#define PX_LOG_FS_REC_OFFSET_LAST  (sizeof(px_log_fs_page_header_t) + (PX_LOG_FS_RECORDS_PER_PAGE - 1) * sizeof(px_log_fs_rec_block_t))
+
+/// Page of first erase block
+#define PX_LOG_FS_ERASE_BLOCK_FIRST PX_LOG_FS_CFG_PAGE_START
+
+/// Page of last erase block
+#define PX_LOG_FS_ERASE_BLOCK_LAST  (PX_LOG_FS_CFG_PAGE_END - PX_LOG_FS_CFG_ERASE_BLOCK_SIZE + 1)
 
 /// Marker size definition
 typedef uint8_t px_log_fs_marker_t;
@@ -100,8 +106,8 @@ typedef struct
 /// Specification of file info (including CRC) that is stored after a FILE page header
 typedef struct
 {
-    px_log_fs_file_t        file;          ///< File info (page number and time stamp)
-    px_log_fs_crc_t         crc;           ///< CRC checksum
+    px_log_fs_file_t    file;       ///< File info (page number and time stamp)
+    px_log_fs_crc_t     crc;        ///< CRC checksum
 } PX_ATTR_PACKED px_log_fs_file_info_t;
 
 /// Specification of a record block written to Serial Flash
@@ -132,6 +138,9 @@ typedef struct
 } px_log_fs_t;
 
 /* _____MACROS_______________________________________________________________ */
+/// Test if page is at the start of an erase block
+#define PX_LOG_FS_IS_ERASE_BLOCK_START_PAGE(page) \
+    ((page & (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1)) == 0)
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
@@ -145,8 +154,8 @@ static px_log_fs_t log_fs;
  *  The Serial Flash pages are treated like a circular buffer. If the end page 
  *  number is specified, the first page number is returned.
  *  
- *  @param  page            The current page number
- *  @return px_log_fs_page_t   The next page number
+ *  @param  page                The current page number
+ *  @return px_log_fs_page_t    The next page number
  */
 static px_log_fs_page_t px_log_fs_page_next(px_log_fs_page_t page) PX_ATTR_CONST;
 
@@ -156,18 +165,42 @@ static px_log_fs_page_t px_log_fs_page_next(px_log_fs_page_t page) PX_ATTR_CONST
  *  The Serial Flash pages are treated like a circular buffer. If the first page
  *  number is specified, the last page number is returned.
  *  
- *  @param  page            The current page number
- *  @return px_log_fs_page_t   The previous page number
+ *  @param  page                The current page number
+ *  @return px_log_fs_page_t    The previous page number
  */
 static px_log_fs_page_t px_log_fs_page_previous(px_log_fs_page_t page) PX_ATTR_CONST;
 
 /**
+ *  Get page of the next erase block.
+ *  
+ *  The Serial Flash erase blocks are treated like a circular buffer. If a page
+ *  in the last erase block is specified, the first erase block page is
+ *  returned.
+ *  
+ *  @param  page                The current page number
+ *  @return px_log_fs_page_t    The next page number
+ */
+static px_log_fs_page_t px_log_fs_erase_block_next(px_log_fs_page_t page) PX_ATTR_CONST;
+
+/**
+ *  Get page of the previous erase block.
+ *  
+ *  The Serial Flash erase blocks are treated like a circular buffer. If a page
+ *  in the first erase block is specified, the last erase block page is
+ *  returned.
+ *  
+ *  @param  page                The current page number
+ *  @return px_log_fs_page_t    The previous page number
+ */
+static px_log_fs_page_t px_log_fs_erase_block_previous(px_log_fs_page_t page) PX_ATTR_CONST;
+
+/**
  *  Calculate a CRC (checksum) over a specified block of bytes.
  *  
- *  @param data             Pointer to a buffer containing the data
- *  @param nr_of_bytes      Number of bytes to calculate 
+ *  @param data                 Pointer to a buffer containing the data
+ *  @param nr_of_bytes          Number of bytes to calculate 
  *  
- *  @return px_log_fs_crc_t    Calculated CRC
+ *  @return px_log_fs_crc_t     Calculated CRC
  */
 static px_log_fs_crc_t px_log_fs_crc_calc(const void * data, size_t nr_of_bytes);
 
@@ -175,21 +208,21 @@ static px_log_fs_crc_t px_log_fs_crc_calc(const void * data, size_t nr_of_bytes)
  *  Calculate CRC (checksum) of the page header that is stored at the start of 
  *  the page.
  *  
- *  @return px_log_fs_crc_t    Calculated CRC
+ *  @return px_log_fs_crc_t     Calculated CRC
  */
 static px_log_fs_crc_t px_log_fs_crc_page_header(void);
 
 /**
  *  Calculate CRC (checksum) of the file info (page number and time stamp).
  *  
- *  @return px_log_fs_crc_t    Calculated CRC
+ *  @return px_log_fs_crc_t     Calculated CRC
  */
 static px_log_fs_crc_t px_log_fs_crc_file_info(void);
 
 /**
  *  Calculate CRC (checksum) of the record block.
  *  
- *  @return px_log_fs_crc_t    Calculated CRC
+ *  @return px_log_fs_crc_t     Calculated CRC
  */
 static px_log_fs_crc_t px_log_fs_crc_record_block(void);
 
@@ -202,7 +235,7 @@ static px_log_fs_crc_t px_log_fs_crc_record_block(void);
  *  @param page                 Page to read
  *  @param offset               Offset to read
  *  
- *  @return px_log_fs_marker_t     Marker value
+ *  @return px_log_fs_marker_t  Marker value
  */
 static px_log_fs_marker_t px_log_fs_marker_rd(px_log_fs_page_t   page,
                                               px_log_fs_offset_t offset);
@@ -228,9 +261,9 @@ static bool px_log_fs_marker_wr(px_log_fs_marker_t marker,
  *  A page header is read from the specified page. If the CRC check failed, the
  *  marker will be overwritten to BAD (0x00) to invalidate it.
  *  
- *  @param page             Specified page to read from
+ *  @param page                 Specified page to read from
  *  
- *  @return px_log_fs_marker_t Marker of page header. BAD if CRC check failed
+ *  @return px_log_fs_marker_t  Marker of page header. BAD if CRC check failed
  */
 static px_log_fs_marker_t px_log_fs_page_header_rd(px_log_fs_page_t page);
 
@@ -249,20 +282,20 @@ static px_log_fs_marker_t px_log_fs_page_header_rd(px_log_fs_page_t page);
 static bool px_log_fs_page_header_wr(px_log_fs_page_t page);
 
 /**
- *  Read a file block (page header & file info) from the specified page.
+ *  Read a file entry (page header & file info) from the specified page.
  *  
  *  @param page             Specified page to read from
  *  
  *  @retval true            Page contains a valid file block
  *  @retval false           Page does not contain a valid file block
  */
-static bool px_log_fs_file_block_rd(px_log_fs_page_t page);
+static bool px_log_fs_file_entry_rd(px_log_fs_page_t page);
 
 /**
- *  Write a file block (page header & file info) to the specified page.
+ *  Write a file entry (page header & file info) to the specified page.
  *  
- *  A file block is written to the specified page and verified. If the 
- *  verification failes, the marker is overwritten to BAD (0x00) to invalidate
+ *  A file entry is written to the specified page and verified. If the 
+ *  verification fails, the marker is overwritten to BAD (0x00) to invalidate
  *  it.
  *  
  *  @param page             Page to write to
@@ -270,10 +303,10 @@ static bool px_log_fs_file_block_rd(px_log_fs_page_t page);
  *  @retval true            Page header written correctly
  *  @retval false           Page header write failed and marker set to BAD 
  */
-static bool px_log_fs_file_block_wr(px_log_fs_page_t page);
+static bool px_log_fs_file_entry_wr(px_log_fs_page_t page);
 
 /**
- *  Read a record block from the specified page and offset.
+ *  Read a record entry from the specified page and offset.
  *  
  *  If the CRC is invalid, the marker is overwritten to BAD (0x00) to invalidate
  *  it.
@@ -284,12 +317,12 @@ static bool px_log_fs_file_block_wr(px_log_fs_page_t page);
  *  @retval true            Valid record block read
  *  @retval false           Record block not valid
  */
-static bool px_log_fs_record_block_rd(px_log_fs_page_t   page,
+static bool px_log_fs_record_entry_rd(px_log_fs_page_t   page,
                                       px_log_fs_offset_t offset);
 /**
- *  Write a record block to the specified page and offset.
+ *  Write a record entry to the specified page and offset.
  *  
- *  The block is verified and the marker is overwritten to BAD if verification 
+ *  The entry is verified and the marker is overwritten to BAD if verification 
  *  failed.
  *  
  *  @param page             Specified page to write to
@@ -299,14 +332,20 @@ static bool px_log_fs_record_block_rd(px_log_fs_page_t   page,
  *  @retval false           Failed to write record block and marker has been 
  *                          overwritten to BAD
  */
-static bool px_log_fs_record_block_wr(px_log_fs_page_t   page,
+static bool px_log_fs_record_entry_wr(px_log_fs_page_t   page,
                                       px_log_fs_offset_t offset);
 
 /**
  *  Given the start page of a file, this function calculates the first record 
- *  page that may be written to (the start boundary). It is the next page.
+ *  page that may be written to (the start boundary).
  *  
- *  @return px_log_fs_page_t   The first record page that may be written to
+ *  For the #PX_LOG_FS_CFG_TYPE_LINEAR option this is the next page after the
+ *  file page.
+ *  
+ *  For the #PX_LOG_FS_CFG_TYPE_CIRCULAR option this is the next erase block
+ *  after the file page.
+ *  
+ *  @return px_log_fs_page_t    The first record page that may be written to
  */
 static px_log_fs_page_t px_log_fs_record_pages_bound_start(void);
 
@@ -318,20 +357,20 @@ static px_log_fs_page_t px_log_fs_record_pages_bound_start(void);
  *  then the last record page that may be written to is just before the file 
  *  page due to the circular nature of the file system.
  *  
- *  @return px_log_fs_page_t   The last record page that may be written to
+ *  @return px_log_fs_page_t    The last record page that may be written to
  */
 static px_log_fs_page_t px_log_fs_record_pages_bound_end(void);
 
 /**
  *  Find page number of the first page that contains the specified marker.
  *  
- *  @param marker           Specified marker to search for (e.g.
- *                          PX_LOG_FS_MARKER_FILE or PX_LOG_FS_MARKER_RECORD).
- *  @param page_start       Start page to search for specified marker
- *  @param page_end         End page to search for specified marker
+ *  @param marker               Specified marker to search for (e.g.
+ *                              PX_LOG_FS_MARKER_FILE or PX_LOG_FS_MARKER_RECORD).
+ *  @param page_start           Start page to search for specified marker
+ *  @param page_end             End page to search for specified marker
  *  
- *  @return px_log_fs_page_t   Page number containing specified marker or
- *                          PX_LOG_FS_PAGE_INVALID if page could not be found.
+ *  @return px_log_fs_page_t    Page number containing specified marker or
+ *                              PX_LOG_FS_PAGE_INVALID if page could not be found.
  */
 static px_log_fs_page_t px_log_fs_page_header_find_first(px_log_fs_marker_t marker,
                                                          px_log_fs_page_t   page_start, 
@@ -340,14 +379,14 @@ static px_log_fs_page_t px_log_fs_page_header_find_first(px_log_fs_marker_t mark
 /**
  *  Find page number of the next page that contains the specified marker.
  *  
- *  @param marker           Specified marker to search for (e.g.
- *                          PX_LOG_FS_MARKER_FILE or PX_LOG_FS_MARKER_RECORD).
- *  @param page_start       Start page to search for specified marker
- *  @param page_end         End page to search for specified marker
- *  @param page_current     Current page that contains a valid marker
+ *  @param marker               Specified marker to search for (e.g.
+ *                              PX_LOG_FS_MARKER_FILE or PX_LOG_FS_MARKER_RECORD).
+ *  @param page_start           Start page to search for specified marker
+ *  @param page_end             End page to search for specified marker
+ *  @param page_current         Current page that contains a valid marker
  *  
- *  @return px_log_fs_page_t   Page number containing specified marker or
- *                          PX_LOG_FS_PAGE_INVALID if page could not be found.
+ *  @return px_log_fs_page_t    Page number containing specified marker or
+ *                              PX_LOG_FS_PAGE_INVALID if page could not be found.
  */
 static px_log_fs_page_t px_log_fs_page_header_find_next(px_log_fs_marker_t marker,
                                                         px_log_fs_page_t   page_start, 
@@ -358,7 +397,8 @@ static px_log_fs_page_t px_log_fs_page_header_find_next(px_log_fs_marker_t marke
 static px_log_fs_page_t px_log_fs_page_next(px_log_fs_page_t page)
 {
     // Sanity check
-    PX_DBG_ASSERT( (page >= PX_LOG_FS_CFG_PAGE_START) && (page <= PX_LOG_FS_CFG_PAGE_END) );
+    PX_DBG_ASSERT(page >= PX_LOG_FS_CFG_PAGE_START);
+    PX_DBG_ASSERT(page <= PX_LOG_FS_CFG_PAGE_END);
 
     // End?
     if(page == PX_LOG_FS_CFG_PAGE_END)
@@ -376,7 +416,8 @@ static px_log_fs_page_t px_log_fs_page_next(px_log_fs_page_t page)
 static px_log_fs_page_t px_log_fs_page_previous(px_log_fs_page_t page)
 {
     // Sanity check
-    PX_DBG_ASSERT( (page >= PX_LOG_FS_CFG_PAGE_START) && (page <= PX_LOG_FS_CFG_PAGE_END) );
+    PX_DBG_ASSERT(page >= PX_LOG_FS_CFG_PAGE_START);
+    PX_DBG_ASSERT(page <= PX_LOG_FS_CFG_PAGE_END);
 
     // Start?
     if(page == PX_LOG_FS_CFG_PAGE_START)
@@ -389,6 +430,54 @@ static px_log_fs_page_t px_log_fs_page_previous(px_log_fs_page_t page)
         // Return previous page number
         return --page;
     }
+}
+
+static px_log_fs_page_t px_log_fs_erase_block_next(px_log_fs_page_t page)
+{
+    // Sanity check
+    PX_DBG_ASSERT(page >= PX_LOG_FS_CFG_PAGE_START);
+    PX_DBG_ASSERT(page <= PX_LOG_FS_CFG_PAGE_END);
+
+    // Clip to start of erase block
+    page &= ~(PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1);
+
+    // Last erase block?
+    if(page == PX_LOG_FS_ERASE_BLOCK_LAST)
+    {
+        // Wrap to start
+        page = PX_LOG_FS_ERASE_BLOCK_FIRST;
+    }
+    else
+    {
+        // Next erase block
+        page += PX_LOG_FS_CFG_ERASE_BLOCK_SIZE;
+    }
+
+    return page;
+}
+
+static px_log_fs_page_t px_log_fs_erase_block_previous(px_log_fs_page_t page)
+{
+    // Sanity check
+    PX_DBG_ASSERT(page >= PX_LOG_FS_CFG_PAGE_START);
+    PX_DBG_ASSERT(page <= PX_LOG_FS_CFG_PAGE_END);
+
+    // Clip to start of erase block
+    page &= ~(PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1);
+
+    // First erase block?
+    if(page == PX_LOG_FS_ERASE_BLOCK_FIRST)
+    {
+        // Wrap to last erase block
+        page = PX_LOG_FS_ERASE_BLOCK_LAST;
+    }
+    else
+    {
+        // Previous erase block
+        page -= PX_LOG_FS_CFG_ERASE_BLOCK_SIZE;
+    }
+
+    return page;
 }
 
 static px_log_fs_crc_t px_log_fs_crc_calc(const void * data, size_t nr_of_bytes)
@@ -448,10 +537,10 @@ static px_log_fs_marker_t px_log_fs_marker_rd(px_log_fs_page_t   page,
     px_log_fs_marker_t marker;
 
     // Read marker
-    px_at45d_rd_page_offset(&marker,
-                            page,
-                            offset,
-                            sizeof(px_log_fs_marker_t));
+    px_log_fs_glue_rd(&marker,
+                      page,
+                      offset,
+                      sizeof(px_log_fs_marker_t));
 
     // Invalid marker?
     if(  (marker != PX_LOG_FS_MARKER_FREE  )
@@ -463,10 +552,10 @@ static px_log_fs_marker_t px_log_fs_marker_rd(px_log_fs_page_t   page,
 
         // Set marker to BAD
         marker = PX_LOG_FS_MARKER_BAD;
-        px_at45d_wr_page_offset(&marker,
-                                page,
-                                offset,
-                                sizeof(px_log_fs_marker_t));
+        px_log_fs_glue_wr(&marker,
+                          page,
+                          offset,
+                          sizeof(px_log_fs_marker_t));
     }
 
     return marker;
@@ -479,10 +568,10 @@ static bool px_log_fs_marker_wr(px_log_fs_marker_t marker,
     px_log_fs_marker_t marker_rd;
 
     // Write marker
-    px_at45d_wr_page_offset(&marker,
-                            page,
-                            offset,
-                            sizeof(px_log_fs_marker_t));
+    px_log_fs_glue_wr(&marker,
+                      page,
+                      offset,
+                      sizeof(px_log_fs_marker_t));
 
     // Marker correctly written?
     marker_rd = px_log_fs_marker_rd(page, offset);
@@ -492,10 +581,10 @@ static bool px_log_fs_marker_wr(px_log_fs_marker_t marker,
                 page, offset, marker, marker_rd);
         // Set marker to BAD
         marker = PX_LOG_FS_MARKER_BAD;
-        px_at45d_wr_page_offset(&marker,
-                                page,
-                                offset,
-                                sizeof(px_log_fs_marker_t));
+        px_log_fs_glue_wr(&marker,
+                          page,
+                          offset,
+                          sizeof(px_log_fs_marker_t));
         // Failure
         return false;
     }
@@ -519,10 +608,10 @@ static px_log_fs_marker_t px_log_fs_page_header_rd(px_log_fs_page_t page)
     }
 
     // Read page header
-    px_at45d_rd_page_offset(&log_fs.page_header,
-                         page,
-                         0,
-                         sizeof(px_log_fs_page_header_t));
+    px_log_fs_glue_rd(&log_fs.page_header,
+                      page,
+                      0,
+                      sizeof(px_log_fs_page_header_t));
 
     // Check CRC
     crc = px_log_fs_crc_page_header();
@@ -530,7 +619,7 @@ static px_log_fs_marker_t px_log_fs_page_header_rd(px_log_fs_page_t page)
     {
         // Mark page header as BAD
         PX_DBG_ERR("Page header CRC check failed (page %u): wr 0x%02X, rd 0x%02X",
-                page, log_fs.page_header.crc, crc);
+                   page, log_fs.page_header.crc, crc);
         px_log_fs_marker_wr(PX_LOG_FS_MARKER_BAD, page, 0);
         return PX_LOG_FS_MARKER_BAD;
     }
@@ -547,19 +636,20 @@ static bool px_log_fs_page_header_wr(px_log_fs_page_t page)
     log_fs.page_header.crc = px_log_fs_crc_page_header();
 
     PX_DBG_INFO("Writing page header (page %u, marker 0x%02X, nr %u, crc 0x%02X)",
-             page, log_fs.page_header.marker, log_fs.page_header.nr, log_fs.page_header.crc);
+                page, log_fs.page_header.marker, log_fs.page_header.nr, 
+                log_fs.page_header.crc);
 
     // Write page header
-    px_at45d_wr_page_offset(&log_fs.page_header,
-                            page,
-                            0,
-                            sizeof(px_log_fs_page_header_t));
+    px_log_fs_glue_wr(&log_fs.page_header,
+                      page,
+                      0,
+                      sizeof(px_log_fs_page_header_t));
 
     // Read back page header
-    px_at45d_rd_page_offset(&page_header_rd,
-                            page,
-                            0,
-                            sizeof(px_log_fs_page_header_t));
+    px_log_fs_glue_rd(&page_header_rd,
+                      page,
+                      0,
+                      sizeof(px_log_fs_page_header_t));
 
     // Match?
     if(memcmp(&log_fs.page_header, &page_header_rd, sizeof(px_log_fs_page_header_t)) == 0)
@@ -576,7 +666,7 @@ static bool px_log_fs_page_header_wr(px_log_fs_page_t page)
     return false;
 }
 
-static bool px_log_fs_file_block_rd(px_log_fs_page_t page)
+static bool px_log_fs_file_entry_rd(px_log_fs_page_t page)
 {
     // Read page header (and set to BAD if invalid)
     if(px_log_fs_page_header_rd(page) != PX_LOG_FS_MARKER_FILE)
@@ -585,10 +675,10 @@ static bool px_log_fs_file_block_rd(px_log_fs_page_t page)
     }
 
     // Read file info (located after page header)
-    px_at45d_rd_page_offset(&log_fs.file_info,
-                            page,
-                            sizeof(px_log_fs_page_header_t),
-                            sizeof(px_log_fs_file_info_t));
+    px_log_fs_glue_rd(&log_fs.file_info,
+                      page,
+                      sizeof(px_log_fs_page_header_t),
+                      sizeof(px_log_fs_file_info_t));
 
     // CRC correct?
     if(log_fs.file_info.crc != px_log_fs_crc_file_info())
@@ -612,7 +702,7 @@ static bool px_log_fs_file_block_rd(px_log_fs_page_t page)
     return true;
 }
 
-static bool px_log_fs_file_block_wr(px_log_fs_page_t page)
+static bool px_log_fs_file_entry_wr(px_log_fs_page_t page)
 {
     px_log_fs_file_info_t file_block_rd;
 
@@ -629,15 +719,15 @@ static bool px_log_fs_file_block_wr(px_log_fs_page_t page)
     // Set file block CRC
     log_fs.file_info.crc = px_log_fs_crc_file_info();
     // Write file block
-    px_at45d_wr_page_offset(&log_fs.file_info,
-                            page,
-                            sizeof(px_log_fs_page_header_t),
-                            sizeof(px_log_fs_file_info_t));
+    px_log_fs_glue_wr(&log_fs.file_info,
+                      page,
+                      sizeof(px_log_fs_page_header_t),
+                      sizeof(px_log_fs_file_info_t));
     // Read back file block
-    px_at45d_rd_page_offset(&file_block_rd,
-                            page,
-                            sizeof(px_log_fs_page_header_t),
-                            sizeof(px_log_fs_file_info_t));
+    px_log_fs_glue_rd(&file_block_rd,
+                      page,
+                      sizeof(px_log_fs_page_header_t),
+                      sizeof(px_log_fs_file_info_t));
     // Match?
     if(memcmp(&log_fs.file_info, &file_block_rd, sizeof(px_log_fs_file_info_t)) == 0)
     {
@@ -653,8 +743,8 @@ static bool px_log_fs_file_block_wr(px_log_fs_page_t page)
     return false;
 }
 
-static bool px_log_fs_record_block_rd(px_log_fs_page_t   page,
-                                     px_log_fs_offset_t offset)
+static bool px_log_fs_record_entry_rd(px_log_fs_page_t   page,
+                                      px_log_fs_offset_t offset)
 {
     // Read marker (and set to BAD if invalid value)
     if(px_log_fs_marker_rd(page, offset) != PX_LOG_FS_MARKER_RECORD)
@@ -662,10 +752,10 @@ static bool px_log_fs_record_block_rd(px_log_fs_page_t   page,
         return false;
     }
     // Read record entry
-    px_at45d_rd_page_offset(&log_fs.record_block,
-                            page,
-                            offset,
-                            sizeof(px_log_fs_rec_block_t));
+    px_log_fs_glue_rd(&log_fs.record_block,
+                      page,
+                      offset,
+                      sizeof(px_log_fs_rec_block_t));
     // CRC correct?
     if(log_fs.record_block.crc != px_log_fs_crc_record_block())
     {
@@ -679,7 +769,7 @@ static bool px_log_fs_record_block_rd(px_log_fs_page_t   page,
     return true;
 }
 
-static bool px_log_fs_record_block_wr(px_log_fs_page_t   page,
+static bool px_log_fs_record_entry_wr(px_log_fs_page_t   page,
                                       px_log_fs_offset_t offset)
 {
     px_log_fs_rec_block_t record_block_rd;
@@ -696,15 +786,15 @@ static bool px_log_fs_record_block_wr(px_log_fs_page_t   page,
     // Set record block CRC
     log_fs.record_block.crc = px_log_fs_crc_record_block();
     // Write record entry
-    px_at45d_wr_page_offset(&log_fs.record_block,
-                            page,
-                            offset,
-                            sizeof(px_log_fs_rec_block_t));
+    px_log_fs_glue_wr(&log_fs.record_block,
+                      page,
+                      offset,
+                      sizeof(px_log_fs_rec_block_t));
     // Read back record entry
-    px_at45d_rd_page_offset(&record_block_rd,
-                            page,
-                            offset,
-                            sizeof(px_log_fs_rec_block_t));
+    px_log_fs_glue_rd(&record_block_rd,
+                      page,
+                      offset,
+                      sizeof(px_log_fs_rec_block_t));
     // Match?
     if(memcmp(&log_fs.record_block, &record_block_rd, sizeof(px_log_fs_rec_block_t)) != 0)
     {
@@ -723,8 +813,14 @@ static px_log_fs_page_t px_log_fs_record_pages_bound_start(void)
 {
     px_log_fs_page_t file_page = log_fs.file_info.file.start_page;
 
+#if (PX_LOG_FS_CFG_TYPE == PX_LOG_FS_CFG_TYPE_LINEAR)
     // First page after file page
     return px_log_fs_page_next(file_page);
+#endif
+#if (PX_LOG_FS_CFG_TYPE == PX_LOG_FS_CFG_TYPE_CIRCULAR)
+    // First erase block after file page
+    return px_log_fs_erase_block_next(file_page);
+#endif
 }
 
 static px_log_fs_page_t px_log_fs_record_pages_bound_end(void)
@@ -847,7 +943,12 @@ px_log_fs_err_t px_log_fs_init(void)
     // Reset status
     memset(&log_fs, 0, sizeof(px_log_fs_t));
     
-    // Find first page containing a file entry
+    /*
+     * Find first page containing a file entry.
+     * 
+     * Side effect: page headers with invalid markers or bad CRC are marked as
+     * PX_LOG_FS_MARKER_BAD.
+     */
     file_page_first = px_log_fs_page_header_find_first(PX_LOG_FS_MARKER_FILE,
                                                        PX_LOG_FS_CFG_PAGE_START,
                                                        PX_LOG_FS_CFG_PAGE_END);
@@ -860,7 +961,7 @@ px_log_fs_err_t px_log_fs_init(void)
         log_fs.file_page_first = PX_LOG_FS_PAGE_INVALID;
         log_fs.file_page_last  = PX_LOG_FS_PAGE_INVALID;
         return PX_LOG_FS_ERR_NONE;
-    }    
+    }
 
     // Reset variable to keep track of largest file number difference
     file_nr_diff_largest = 0;
@@ -869,10 +970,19 @@ px_log_fs_err_t px_log_fs_init(void)
     file_page = file_page_first;
     do
     {
-        // Note file number of current file entry 
+        // Is file page at the start of an erase block?
+        if( (file_page & (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1)) != 0)
+        {
+            PX_DBG_ERR("File page %u not at the start of an erase block", file_page);
+        }
+        // Note file number of current file entry
         file_nr = log_fs.page_header.nr;
-
-        // Find next page containing a file entry
+        /*
+         * Find next page containing a file entry.
+         *
+         * Side effect: page headers with invalid markers or bad CRC are marked
+         * as PX_LOG_FS_MARKER_BAD.
+         */
         file_page_next = px_log_fs_page_header_find_next(PX_LOG_FS_MARKER_FILE,
                                                          PX_LOG_FS_CFG_PAGE_START,
                                                          PX_LOG_FS_CFG_PAGE_END,
@@ -887,13 +997,10 @@ px_log_fs_err_t px_log_fs_init(void)
             log_fs.file_page_nr_next = ++file_nr;
             return PX_LOG_FS_ERR_NONE;
         }
-
         // Note file number of next file entry
         file_nr_next = log_fs.page_header.nr;
-
         // Calculate file number difference
         file_nr_diff = file_nr_next - file_nr;
-
         // Largest file number difference so far?
         if(file_nr_diff_largest < file_nr_diff)
         {
@@ -934,8 +1041,8 @@ px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp)
     if(log_fs.file_page_last != PX_LOG_FS_PAGE_INVALID)
     {
         // Find last record page after file page
-        page = log_fs.file_page_last;
-        page_last_record = page;
+        page_last_record = log_fs.file_page_last;
+        page             = log_fs.file_page_last;
         do
         {
             // Next page
@@ -951,8 +1058,8 @@ px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp)
         }
         while(marker != PX_LOG_FS_MARKER_FILE);
 
-        // Next page after last record page is potentially available
-        page_new_file = px_log_fs_page_next(page_last_record);
+        // Next erase block after last record page is potentially available
+        page_new_file = px_log_fs_erase_block_next(page_last_record);
 
         // Is this page a file marker?
         if(px_log_fs_marker_rd(page_new_file, 0) == PX_LOG_FS_MARKER_FILE)
@@ -962,6 +1069,7 @@ px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp)
             return PX_LOG_FS_ERR_FULL;
         }
 
+#if (PX_LOG_FS_CFG_TYPE == PX_LOG_FS_CFG_TYPE_LINEAR)
         // At least one more page available for records?
         if(px_log_fs_marker_rd(px_log_fs_page_next(page_new_file), 0) == PX_LOG_FS_MARKER_FILE)
         {
@@ -969,11 +1077,21 @@ px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp)
             PX_DBG_WARN("File system is full");
             return PX_LOG_FS_ERR_FULL;
         }
+#endif
+#if (PX_LOG_FS_CFG_TYPE == PX_LOG_FS_CFG_TYPE_CIRCULAR)
+        // At least one more erase block available for records?
+        if(px_log_fs_marker_rd(px_log_fs_erase_block_next(page_new_file), 0) == PX_LOG_FS_MARKER_FILE)
+        {
+            // No, file system is full
+            PX_DBG_WARN("File system is full");
+            return PX_LOG_FS_ERR_FULL;
+        }
+#endif
     }
     else
     {
-        // Find first free page
-        page = PX_LOG_FS_CFG_PAGE_START;
+        // Find first free erase block
+        page = PX_LOG_FS_ERASE_BLOCK_FIRST;
         do
         {
             // FREE marker?
@@ -983,24 +1101,24 @@ px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp)
                 page_new_file = page;
                 break;
             }
-            // Next page
-            page++;
+            // Next erase block
+            page = px_log_fs_erase_block_next(page);
         }
-        while(page <= PX_LOG_FS_CFG_PAGE_END);
+        while(page <= PX_LOG_FS_ERASE_BLOCK_LAST);
 
         // No FREE markers found?
-        if(page > PX_LOG_FS_CFG_PAGE_END)
+        if(page > PX_LOG_FS_ERASE_BLOCK_LAST)
         {
-            // Start at first page
-            page_new_file = PX_LOG_FS_CFG_PAGE_START;            
+            // Start at first erase block
+            page_new_file = PX_LOG_FS_ERASE_BLOCK_FIRST;            
         }
     }
 
-    // Erase file page (if not FREE)
+    // Erase block (if not FREE)
     if(px_log_fs_marker_rd(page_new_file, 0) != PX_LOG_FS_MARKER_FREE)
     {
-        PX_DBG_INFO("Erase file page %u", page_new_file);
-        px_at45d_erase_page(page_new_file);
+        PX_DBG_INFO("Erase block %u", page_new_file);
+        px_log_fs_glue_erase_block(page_new_file);
     }
 
     // Populate file info
@@ -1010,7 +1128,7 @@ px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp)
            sizeof(px_log_fs_time_stamp_t));
 
     // Write file page
-    if(!px_log_fs_file_block_wr(page_new_file))
+    if(!px_log_fs_file_entry_wr(page_new_file))
     {
         PX_DBG_WARN("Write failed");
         return PX_LOG_FS_ERR_WRITE_FAIL;
@@ -1028,12 +1146,25 @@ px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp)
     // Remember next file number
     log_fs.file_page_nr_next++;
 
-    // Erase first record page (if not FREE)
+    // Erase first record block (if not FREE)
+#if (PX_LOG_FS_CFG_TYPE == PX_LOG_FS_CFG_TYPE_LINEAR)
     page = px_log_fs_page_next(page_new_file);
+#endif
+#if (PX_LOG_FS_CFG_TYPE == PX_LOG_FS_CFG_TYPE_CIRCULAR)
+    page = px_log_fs_erase_block_next(page_new_file);
+#endif
     if(px_log_fs_marker_rd(page, 0) != PX_LOG_FS_MARKER_FREE)
     {
-        PX_DBG_INFO("Erase first record page %u", page);
-        px_at45d_erase_page(page);
+        PX_DBG_INFO("Erase first record block %u", page);
+        if(PX_LOG_FS_IS_ERASE_BLOCK_START_PAGE(page))
+        {
+            px_log_fs_glue_erase_block(page);
+        }
+        else
+        {
+            PX_DBG_ERR("Page %u is not at the start of an erase block!", page);
+            return PX_LOG_FS_ERR_FILE_INVALID;
+        }
     }
 
     // Reset read and write addresses
@@ -1048,8 +1179,8 @@ px_log_fs_err_t px_log_fs_create(const px_log_fs_time_stamp_t * time_stamp)
 }
 
 size_t px_log_fs_file_attr_data_wr(px_log_fs_offset_t offset, 
-                                   const void *    data, 
-                                   size_t          nr_of_bytes)
+                                   const void *       data, 
+                                   size_t             nr_of_bytes)
 {
     // Does offset exceed page size?
     if(offset >= PX_LOG_FS_FILE_ATTR_DATA_SIZE)
@@ -1064,10 +1195,10 @@ size_t px_log_fs_file_attr_data_wr(px_log_fs_offset_t offset,
         nr_of_bytes = PX_LOG_FS_FILE_ATTR_DATA_SIZE - offset;
     }
     // Write file attribute data
-    px_at45d_wr_page_offset(data, 
-                            log_fs.file_info.file.start_page, 
-                            sizeof(px_log_fs_page_header_t) + sizeof(px_log_fs_file_info_t) + offset,
-                            nr_of_bytes);
+    px_log_fs_glue_wr(data, 
+                      log_fs.file_info.file.start_page, 
+                      sizeof(px_log_fs_page_header_t) + sizeof(px_log_fs_file_info_t) + offset,
+                      nr_of_bytes);
 
     return nr_of_bytes;
 }
@@ -1089,10 +1220,10 @@ size_t px_log_fs_file_attr_data_rd(px_log_fs_offset_t offset,
         nr_of_bytes = PX_LOG_FS_FILE_ATTR_DATA_SIZE - offset;
     }
     // Write file attribute data
-    px_at45d_rd_page_offset(data, 
-                         log_fs.file_info.file.start_page, 
-                         sizeof(px_log_fs_page_header_t) + sizeof(px_log_fs_file_info_t) + offset,
-                         nr_of_bytes);
+    px_log_fs_glue_rd(data, 
+                      log_fs.file_info.file.start_page, 
+                      sizeof(px_log_fs_page_header_t) + sizeof(px_log_fs_file_info_t) + offset,
+                      nr_of_bytes);
 
     return nr_of_bytes;
 }
@@ -1112,7 +1243,7 @@ px_log_fs_err_t px_log_fs_file_find_first(px_log_fs_file_t * file)
     }
 
     // Read file info
-    if(!px_log_fs_file_block_rd(log_fs.file_page_first))
+    if(!px_log_fs_file_entry_rd(log_fs.file_page_first))
     {
         // Invalid file info
         PX_DBG_ERR("File info was valid during px_log_fs_init()");
@@ -1135,7 +1266,7 @@ px_log_fs_err_t px_log_fs_file_find_last(px_log_fs_file_t * file)
     }
 
     // Read file info
-    if(!px_log_fs_file_block_rd(log_fs.file_page_last))
+    if(!px_log_fs_file_entry_rd(log_fs.file_page_last))
     {
         PX_DBG_ERR("File info was valid during px_log_fs_init()");
         return PX_LOG_FS_ERR_FILE_INVALID;
@@ -1158,7 +1289,7 @@ px_log_fs_err_t px_log_fs_file_find_next(px_log_fs_file_t * file)
         return PX_LOG_FS_ERR_NO_FILE;
     }
 
-    // Save page of current file block
+    // Save page of current file
     page = log_fs.file_info.file.start_page;
 
     // Was current file the last?
@@ -1171,11 +1302,11 @@ px_log_fs_err_t px_log_fs_file_find_next(px_log_fs_file_t * file)
     // Start with current file page
     do
     {
-        // Next page
-        page = px_log_fs_page_next(page);        
+        // Next erase block
+        page = px_log_fs_erase_block_next(page);        
 
         // Read (possible) file entry at start of page
-        if(px_log_fs_file_block_rd(page))
+        if(px_log_fs_file_entry_rd(page))
         {
             // Return file info
             memcpy(file, &log_fs.file_info.file, sizeof(px_log_fs_file_t));
@@ -1213,11 +1344,11 @@ px_log_fs_err_t px_log_fs_file_find_previous(px_log_fs_file_t * file)
     // Start with current file page
     do
     {
-        // Previous page
-        page = px_log_fs_page_previous(page);
+        // Previous erase block
+        page = px_log_fs_erase_block_previous(page);
 
         // Read (possible) file entry at start of page
-        if(px_log_fs_file_block_rd(page))
+        if(px_log_fs_file_entry_rd(page))
         {
             // Return file info
             memcpy(file, &log_fs.file_info.file, sizeof(px_log_fs_file_t));
@@ -1236,8 +1367,8 @@ px_log_fs_err_t px_log_fs_open(const px_log_fs_file_t * file)
     px_log_fs_page_t   rec_search_page_start;
     px_log_fs_page_t   rec_search_page_end;
 
-    px_log_fs_page_t   rec_page_first;
     px_log_fs_page_t   rec_page;
+    px_log_fs_page_t   rec_page_first;
     px_log_fs_page_t   rec_page_next;
 
     px_log_fs_nr_t     rec_nr;
@@ -1255,9 +1386,9 @@ px_log_fs_err_t px_log_fs_open(const px_log_fs_file_t * file)
         return PX_LOG_FS_ERR_FILE_INVALID;
     }
 
-    // Read file block (again)
+    // Read file entry (again)
     PX_DBG_INFO("File start page=%u", file->start_page);
-    if(!px_log_fs_file_block_rd(file->start_page))
+    if(!px_log_fs_file_entry_rd(file->start_page))
     {
         PX_DBG_ERR("Invalid file");
         return PX_LOG_FS_ERR_FILE_INVALID;
@@ -1288,8 +1419,8 @@ px_log_fs_err_t px_log_fs_open(const px_log_fs_file_t * file)
     {
         // Find next file page
         rec_search_page_end = px_log_fs_page_header_find_first(PX_LOG_FS_MARKER_FILE,
-                                                            rec_search_page_start,
-                                                            log_fs.file_info.file.start_page);
+                                                               rec_search_page_start,
+                                                               log_fs.file_info.file.start_page);
         // Two consecutive file pages?
         if(rec_search_page_end == rec_search_page_start)
         {
@@ -1321,8 +1452,8 @@ px_log_fs_err_t px_log_fs_open(const px_log_fs_file_t * file)
 
     // Find first valid record page
     rec_page_first = px_log_fs_page_header_find_first(PX_LOG_FS_MARKER_RECORD,
-                                                   rec_search_page_start,
-                                                   rec_search_page_end);
+                                                      rec_search_page_start,
+                                                      rec_search_page_end);
 
 
     // No record pages found?
@@ -1337,11 +1468,18 @@ px_log_fs_err_t px_log_fs_open(const px_log_fs_file_t * file)
         log_fs.rec_adr_wr.offset = PX_LOG_FS_REC_OFFSET_FIRST;
 
         // First record page not FREE?
-        if(px_log_fs_marker_rd(rec_search_page_start, 0) != PX_LOG_FS_MARKER_FREE)
+        while(px_log_fs_marker_rd(log_fs.rec_adr_wr.page, 0) != PX_LOG_FS_MARKER_FREE)
         {
-            // Erase first record page
-            PX_DBG_INFO("Erase first record page %u", rec_search_page_start);
-            px_at45d_erase_page(rec_search_page_start);
+            // Start of an erase block?
+            if(PX_LOG_FS_IS_ERASE_BLOCK_START_PAGE(log_fs.rec_adr_wr.page))
+            {
+                // Erase record block
+                PX_DBG_INFO("Erase first record block %u", rec_search_page_start);
+                px_log_fs_glue_erase_block(rec_search_page_start);
+                break;
+            }
+            // Next page
+            log_fs.rec_adr_wr.page = px_log_fs_page_next(log_fs.rec_adr_wr.page);
         }
 
         return PX_LOG_FS_ERR_NONE;
@@ -1359,9 +1497,9 @@ px_log_fs_err_t px_log_fs_open(const px_log_fs_file_t * file)
 
         // Find next page containing a record page entry
         rec_page_next = px_log_fs_page_header_find_next(PX_LOG_FS_MARKER_RECORD,
-                                                     rec_search_page_start,
-                                                     rec_search_page_end,
-                                                     rec_page);
+                                                        rec_search_page_start,
+                                                        rec_search_page_end,
+                                                        rec_page);
         // No other pages with record page entries?
         if(rec_page_next == PX_LOG_FS_PAGE_INVALID)
         {
@@ -1444,7 +1582,7 @@ px_log_fs_err_t px_log_fs_open(const px_log_fs_file_t * file)
             {
                 // Erase next page
                 PX_DBG_INFO("Erase page %u", rec_page);
-                px_at45d_erase_page(rec_page);
+                px_log_fs_glue_erase_block(rec_page);
             }
         }
 #endif
@@ -1459,7 +1597,7 @@ px_log_fs_err_t px_log_fs_open(const px_log_fs_file_t * file)
         }
         // Erase next page
         PX_DBG_INFO("Erase page %u", rec_page);
-        px_at45d_erase_page(rec_page);
+        px_log_fs_glue_erase_block(rec_page);
         // First page erased?
         if(rec_page == log_fs.rec_page_first)
         {
@@ -1495,7 +1633,7 @@ px_log_fs_err_t px_log_fs_file_delete(const px_log_fs_file_t * file)
     }
 
     // (Sanity check) valid file page?
-    if(!px_log_fs_file_block_rd(page))
+    if(!px_log_fs_file_entry_rd(page))
     {
         PX_DBG_ERR("Invalid file");
         return PX_LOG_FS_ERR_FILE_INVALID;
@@ -1671,7 +1809,7 @@ px_log_fs_err_t px_log_fs_record_rd_next(void * data, size_t nr_of_bytes)
         }
 
         // Read record
-        if(px_log_fs_record_block_rd(page, offset))
+        if(px_log_fs_record_entry_rd(page, offset))
         {
             // Next valid record found
             log_fs.rec_adr_rd.page   = page;
@@ -1751,7 +1889,7 @@ px_log_fs_err_t px_log_fs_record_rd_previous(void * data, size_t nr_of_bytes)
         }
 
         // Read record
-        if(px_log_fs_record_block_rd(page, offset))
+        if(px_log_fs_record_entry_rd(page, offset))
         {
             // Next valid record found
             log_fs.rec_adr_rd.page   = page;
@@ -1801,7 +1939,7 @@ px_log_fs_err_t px_log_fs_record_wr(const void * data, size_t nr_of_bytes)
         if(marker == PX_LOG_FS_MARKER_BAD)
         {
             PX_DBG_INFO("Erase page %u", page);
-            px_at45d_erase_page(page);
+            px_log_fs_glue_erase_block(page);
         }
 
         // Write record page header
@@ -1833,7 +1971,7 @@ px_log_fs_err_t px_log_fs_record_wr(const void * data, size_t nr_of_bytes)
 
             // Erase next page
             PX_DBG_INFO("Erase page %u", page);
-            px_at45d_erase_page(page);
+            px_log_fs_glue_erase_block(page);
             // Next record write page (record number is not incremented)
             log_fs.rec_adr_wr.page = page;
 
@@ -1890,7 +2028,7 @@ px_log_fs_err_t px_log_fs_record_wr(const void * data, size_t nr_of_bytes)
     
     // Write record
     PX_DBG_INFO("Write record (page %u, offset %u)", page, offset);
-    success = px_log_fs_record_block_wr(page, offset);
+    success = px_log_fs_record_entry_wr(page, offset);
 
     // Last record in page?
     if(offset == PX_LOG_FS_REC_OFFSET_LAST)
@@ -1905,7 +2043,7 @@ px_log_fs_err_t px_log_fs_record_wr(const void * data, size_t nr_of_bytes)
         {
             // Erase next page
             PX_DBG_INFO("Erase page %u", page);
-            px_at45d_erase_page(page);
+            px_log_fs_glue_erase_block(page);
         }
 #endif
 
@@ -1919,7 +2057,7 @@ px_log_fs_err_t px_log_fs_record_wr(const void * data, size_t nr_of_bytes)
         }
         // Erase next page
         PX_DBG_INFO("Erase page %u", page);
-        px_at45d_erase_page(page);
+        px_log_fs_glue_erase_block(page);
 
         // First record page erased?
         if(page == log_fs.rec_page_first)
