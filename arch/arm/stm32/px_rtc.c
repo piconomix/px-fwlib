@@ -126,15 +126,15 @@ void px_rtc_date_time_wr(const px_rtc_date_time_t * date_time)
         ;
     }
 
-    // Set new date
-    RTC->DR =   (((uint32_t)px_rtc_bin_to_bcd(date_time->year )) << RTC_DR_YU_Pos)
-              | (((uint32_t)px_rtc_bin_to_bcd(date_time->month)) << RTC_DR_MU_Pos)
-              | (((uint32_t)px_rtc_bin_to_bcd(date_time->day  )) << RTC_DR_DU_Pos);
-
     // Set new time
     RTC->TR =   (((uint32_t)px_rtc_bin_to_bcd(date_time->hour)) << RTC_TR_HU_Pos)
               | (((uint32_t)px_rtc_bin_to_bcd(date_time->min )) << RTC_TR_MNU_Pos)
               | (((uint32_t)px_rtc_bin_to_bcd(date_time->sec )) << RTC_TR_SU_Pos);
+
+    // Set new date
+    RTC->DR =   (((uint32_t)px_rtc_bin_to_bcd(date_time->year )) << RTC_DR_YU_Pos)
+              | (((uint32_t)px_rtc_bin_to_bcd(date_time->month)) << RTC_DR_MU_Pos)
+              | (((uint32_t)px_rtc_bin_to_bcd(date_time->day  )) << RTC_DR_DU_Pos);    
 
     // Exit Initialization mode
     LL_RTC_DisableInitMode(RTC);
@@ -153,6 +153,7 @@ void px_rtc_date_time_rd(px_rtc_date_time_t * date_time)
         rtc_tr     = RTC->TR;
         rtc_dr     = RTC->DR;
         rtc_tr_cmp = RTC->TR;
+        rtc_dr     = RTC->DR;
     }
     while(rtc_tr != rtc_tr_cmp);
 
