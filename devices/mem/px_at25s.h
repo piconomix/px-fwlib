@@ -264,14 +264,15 @@ void px_at25s_wr_page_offset(const void * buffer,
 /**
  *  Erase a block of Serial Flash.
  *  
- *  This function erases a page of Serial Flash. The Serial Flash has PX_AT25S_PAGES
- *  pages.
+ *  This function erases a block of Serial Flash. The Serial Flash has
+ *  PX_AT25S_PAGES pages.
  *  
  *  @param  block       4KB, 32KB or 64KB
- *  @param  block_nr    0 to Serial Flash size / Block size
+ *  @param  page        0 to (PX_AT25S_PAGES-1); must be an integer multiple of
+ *                      block size
  */
-void px_at25s_erase_block(px_at25s_block_t block,
-                          uint16_t         block_nr);
+void px_at25s_erase(px_at25s_block_t block,
+                    uint16_t         page);
 
 /**
  *  Check if Serial Flash is ready for the next read or write access.
