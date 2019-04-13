@@ -118,30 +118,42 @@ static void uart_irq_handler(px_uart_data_t * uart_data)
             px_circ_buf_wr_u8(&uart_data->rx_circ_buf, data);
         }
     }
-    // Transmit data register empty?
-    if(LL_USART_IsActiveFlag_TXE(usart_base_adr))
+
+    // Transmit data register interrupt enabled?
+    if(LL_USART_IsEnabledIT_TXE(usart_base_adr))
     {
-        // Data to transmit?
-        if(px_circ_buf_rd_u8(&uart_data->tx_circ_buf, &data))
+        // Transmit data register empty?
+        if(LL_USART_IsActiveFlag_TXE(usart_base_adr))
         {
-            // Load transmit register with data
-            LL_USART_TransmitData8(usart_base_adr, data);
-            // Clear flag to indicate that transmission is busy
-            uart_data->tx_finished = false;
-        }
-        else
-        {
-            // Disable Transmit data register empty interrupt
-            LL_USART_DisableIT_TXE(usart_base_adr);
+            // Data to transmit?
+            if(px_circ_buf_rd_u8(&uart_data->tx_circ_buf, &data))
+            {
+                // Load transmit register with data
+                LL_USART_TransmitData8(usart_base_adr, data);
+                // Clear flag to indicate that transmission is busy
+                uart_data->tx_finished = false;
+            }
+            else
+            {
+                // Disable Transmit data register empty interrupt
+                LL_USART_DisableIT_TXE(usart_base_adr);
+                // Enable Transmit complete interrupt
+                LL_USART_EnableIT_TC(usart_base_adr);
+            }
         }
     }
-    // Transmit complete?
-    if(LL_USART_IsActiveFlag_TC(usart_base_adr))
+
+    // Transmit complete interrupt enabled?
+    if(LL_USART_IsEnabledIT_TC(usart_base_adr))
     {
-        // Set flag to indicate that transmission has finished
-        uart_data->tx_finished = true;
-        // Disable Transmit complete interrupt
-        LL_USART_DisableIT_TC(usart_base_adr);
+        // Transmit complete?
+        if(LL_USART_IsActiveFlag_TC(usart_base_adr))
+        {
+            // Set flag to indicate that transmission has finished
+            uart_data->tx_finished = true;
+            // Disable Transmit complete interrupt
+            LL_USART_DisableIT_TC(usart_base_adr);
+        }
     }
 }
 
@@ -177,6 +189,9 @@ void USART4_5_IRQHandler(void)
 
 static inline void px_uart_start_tx(USART_TypeDef * usart_base_adr)
 {
+    // Sanity check
+    PX_DBG_ASSERT(usart_base_adr != NULL);
+
     // Enable Transmit data register empty interrupt
     LL_USART_EnableIT_TXE(usart_base_adr);
 }
@@ -188,6 +203,9 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
                                     px_uart_parity_t    parity, 
                                     px_uart_stop_bits_t stop_bits)
 {
+    // Sanity check
+    PX_DBG_ASSERT(usart_base_adr != NULL);
+
     // USART_CR1 register calculated value
     uint32_t usart_cr1_val;
 
@@ -572,6 +590,7 @@ void px_uart_put_char(px_uart_handle_t * handle, char data)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Wait until transmit buffer has space for one byte and add it
     while(!px_circ_buf_wr_u8(&uart_data->tx_circ_buf, (uint8_t)data))
@@ -594,6 +613,7 @@ bool px_uart_wr_u8(px_uart_handle_t * handle, uint8_t data)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Add byte to transmit buffer
     if(!px_circ_buf_wr_u8(&uart_data->tx_circ_buf, (uint8_t)data))
@@ -624,6 +644,7 @@ size_t px_uart_wr(px_uart_handle_t * handle,
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Add bytes to transmit buffer
     bytes_buffered = px_circ_buf_wr(&uart_data->tx_circ_buf, 
@@ -652,6 +673,7 @@ char px_uart_get_char(px_uart_handle_t * handle)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Wait until a byte is in receive buffer and fetch it
     while(!px_circ_buf_rd_u8(&uart_data->rx_circ_buf, &data))
@@ -673,6 +695,7 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Return byte from receive buffer (if it is available)
     return px_circ_buf_rd_u8(&uart_data->rx_circ_buf, data);
@@ -691,6 +714,7 @@ size_t px_uart_rd(px_uart_handle_t * handle,
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Fetch data from receive buffer (up to the specified number of bytes)
     return px_circ_buf_rd(&uart_data->rx_circ_buf, 
@@ -709,6 +733,7 @@ bool px_uart_wr_buf_full(px_uart_handle_t * handle)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     return px_circ_buf_full(&uart_data->tx_circ_buf);
 }
@@ -724,6 +749,7 @@ bool px_uart_wr_buf_empty(px_uart_handle_t * handle)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     return px_circ_buf_empty(&uart_data->tx_circ_buf);
 }
@@ -739,6 +765,7 @@ bool px_uart_wr_finished(px_uart_handle_t * handle)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Any data to be transmitted in buffer?
     if(!px_circ_buf_empty(&uart_data->tx_circ_buf))
@@ -760,6 +787,7 @@ bool px_uart_rd_buf_empty(px_uart_handle_t * handle)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     return px_circ_buf_empty(&uart_data->rx_circ_buf);
 }
@@ -775,6 +803,7 @@ void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
     // Check that handle is open
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
+    PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Set baud rate
     LL_USART_SetBaudRate(uart_data->usart_base_adr,
