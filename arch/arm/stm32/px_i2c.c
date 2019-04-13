@@ -266,6 +266,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
 
     // Get I2C peripheral base register address
     i2c_base_adr = i2c_data->i2c_base_adr;
+    PX_DBG_ASSERT(i2c_base_adr != NULL);
 
     // Must RELOAD bit be cleared?
     if(  (nr_of_bytes <= 1)
@@ -473,6 +474,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
 
     // Get I2C peripheral base register address
     i2c_base_adr = i2c_data->i2c_base_adr;
+    PX_DBG_ASSERT(i2c_base_adr != NULL);
 
     // Must RELOAD bit be cleared?
     if(  (nr_of_bytes <= 1)
