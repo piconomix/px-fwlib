@@ -54,7 +54,7 @@
  *  using UP/DOWN (command history). Commands starting with a hash (#) is 
  *  regarded as comments and ignored.
  *  
- *  ![CLI using Tera Term terminal emulator](arduino_uno_board/arduino_uno_cli.png)
+ *  ![CLI using Tera Term terminal emulator](arduino_uno_cli.png)
  *  
  *  Code example:
  *  
@@ -137,7 +137,6 @@
      || !defined(PX_CLI_CFG_NAME_STR_MAX_SIZE ) \
      || !defined(PX_CLI_CFG_PARAM_STR_MAX_SIZE) \
      || !defined(PX_CLI_CFG_COLOR             )  )
-      )
 #error "One or more options not defined in 'px_cli_cfg.h'"
 #endif
 #if (PX_CLI_CFG_LINE_LENGTH_MAX > 255)

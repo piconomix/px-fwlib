@@ -721,11 +721,6 @@ static void px_cli_cmd_exe(void)
         // Append newline character
         putchar('\n');
     }
-
-#if PX_CLI_CFG_COLOR
-    // Restore font color
-    printf(PX_VT100_RESET_ALL_ATTRS);
-#endif
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -806,6 +801,10 @@ void px_cli_on_rx_char(char data)
             px_cli_line_buf_index = 0;
             // Reset autocomplete
             px_cli_autocomplete_reset();
+#if PX_CLI_CFG_COLOR
+            // Restore font color
+            printf(PX_VT100_RESET_ALL_ATTRS);
+#endif
             // Display prompt
             putchar('>');
             return;
