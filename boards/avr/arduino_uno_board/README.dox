@@ -26,7 +26,7 @@ C code that is vendor and architecture neutral (or just easier to port).
 This page is dedicated to people that want to develop portable C applications for 
 the Arduino UNO R3 board:
 
-![Arduino UNO R3 Board](arduino_uno_board/arduino_uno_r3.jpg)
+![Arduino UNO R3 Board](arduino_uno_r3.jpg)
 
 Image Copyright (c) [Arduino SA](http://www.arduino.cc).
 License: [Creative Commons Attribution ShareAlike 3.0](http://creativecommons.org/licenses/by-sa/3.0/legalcode)
@@ -43,7 +43,7 @@ There is:
   running on the Arduino UNO so that you can experiment with GPIO, ADC, I2C and
   SPI using an ANSI/VT100 Terminal (for example [Tera Term] [tera_term])
 
-![CLI Exlorer executing on an Arduino Uno R3](arduino_uno_board/arduino_uno_cli_preview.png)
+![CLI Exlorer executing on an Arduino Uno R3](arduino_uno_cli_preview.png)
 
 @tip_s
 You can try the @ref ARDUINO_UNO_BOARD_APP_CLI without installing 
@@ -118,11 +118,11 @@ Start Atmel Studio. Configure options:
 
 Tools > Options... > Builder > GNU Make
 
-![Atmel Studio - Options](atmel_studio/as_options_menu.png)
+![Atmel Studio - Options](as_options_menu.png)
 
 Set the path to the custom shell utils and make:
 
-![Atmel Studio - Custom ShellUtils](atmel_studio/as_builder_custom.png)
+![Atmel Studio - Custom ShellUtils](as_builder_custom.png)
 
 @warn_s
 If you want to correctly build other projects generated with the Atmel Studio 
@@ -144,17 +144,17 @@ Open and build @ref ARDUINO_UNO_BOARD_EXAMPLE_SERIAL. It is located here:
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 
-![Atmel Studio Open Project menu](atmel_studio/as_open_project_menu.png)
+![Atmel Studio Open Project menu](as_open_project_menu.png)
 
 Navigate to the project, select and open:
 
-![Atmel Studio Open Project selection](arduino_uno_board/arduino_uno_open_project.png)
+![Atmel Studio Open Project selection](arduino_uno_open_project.png)
 
 Build the project:
 
 Build > build Solution **F7**
 
-![Build solution in Atmel Studio](arduino_uno_board/arduino_uno_build_project.png)
+![Build solution in Atmel Studio](arduino_uno_build_project.png)
 
 @tip_s
 If this step was not succesfull, it probably means that the custom build tools
@@ -170,7 +170,7 @@ a HEX file called "serial.hex".
 Download and run [XLoader] [xloader]. Select the HEX file, specify the correct 
 COM port and press upload:
 
-![Upload HEX file using XLoader](arduino_uno_board/arduino_uno_xloader_serial.png)
+![Upload HEX file using XLoader](arduino_uno_xloader_serial.png)
 
 You can also use the command line tool [avrdude]. The command will be something
 like this:
@@ -190,13 +190,13 @@ serial port settings:
 
 Setup > Serial Port...
 
-![Configure Tera Term](arduino_uno_board/arduino_uno_conf_tera_term.png)
+![Configure Tera Term](arduino_uno_conf_tera_term.png)
 
 When the COM port is opened by Tera Term, the Arduino board will be reset and
 execute the application. It will send the string "Hello World!". Any characters
 typed in the terminal window will be echoed back.
 
-![Serial example interacting with Tera Term](arduino_uno_board/arduino_uno_serial_example.png)
+![Serial example interacting with Tera Term](arduino_uno_serial_example.png)
 
 @tip_s
 If the Arduino board does not reset, press the reset button on the board itself.

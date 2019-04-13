@@ -11,14 +11,14 @@ Scorpion Board. An [Electrodragon BMP280 breakout board](http://www.electrodrago
 must be connected via the breakout header. See [CLI Explorer, I2C section] (@ref SCORPION_BOARD_CLI_I2C) 
 for an easy test to verify that it has been wired correctly.
 
-![Electrodragon BMP280 breakout board connected to I2C](piconomix_scorpion_board/scorpion_board_i2c_slave_bmp280.jpg)
+![Electrodragon BMP280 breakout board connected to I2C](scorpion_board_i2c_slave_bmp280.jpg)
 
 Reference:
 * [Bosch BMP280] (https://www.bosch-sensortec.com/bst/products/all_products/bmp280) pressure and temperature sensor datasheet
 
 Here is an example of collected data:
 
-![Temperature & Pressure graph](piconomix_scorpion_board/log_temp_pressure_graph.png)
+![Temperature & Pressure graph](scorpion_board_log_temp_pressure_graph.png)
 
 2. Command examples {#SCORPION_BOARD_APP_DATA_LOGGER_TEMP_PRESSURE_CLI}
 =======================================================================

@@ -72,6 +72,7 @@ SRC += $(PICOLIB)/comms/px_vt100.c
 SRC += $(PICOLIB)/comms/px_cli_P.c
 SRC += $(PICOLIB)/comms/px_xmodem.c
 SRC += $(PICOLIB)/data/px_log_fs.c
+SRC += $(PICOLIB)/data/px_log_fs_glue_at45d.c
 SRC += $(PICOLIB)/utils/px_dbg.c
 SRC += $(PICOLIB)/utils/px_rtc_util.c
 SRC += $(PICOLIB)/utils/px_systmr.c
@@ -171,7 +172,7 @@ CPPFLAGS += -std=gnu99
 
 #---------------- Assembler Options --------------------------------------------
 #  -Wa,...:   tell GCC to pass this to the assembler.
-ASFLAGS += 
+AFLAGS += 
 
 #---------------- Library Options ----------------------------------------------
 # Minimalistic printf version

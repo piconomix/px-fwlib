@@ -38,22 +38,22 @@ In addition the following flags were passed to the linker:
 2. How to use the XMODEM-CRC bootloader {#SCORPION_BOARD_BOOTLOADER_XMODEM_HOW_TO}
 ==================================================================================
 
-2.1 Build the application and create a BIN file from the ELF file {#BUILD}
---------------------------------------------------------------------------
+2.1 Build the application and create a BIN file from the ELF file {#SCORPION_BOARD_BOOTLOADER_XMODEM_BUILD}
+-----------------------------------------------------------------------------------------------------------
 
 Here is the part of the Makefile build that creates a BIN file from an ELF file:
 
     avr-objcopy -O binary -R .eeprom -R .fuse -R .lock gpio.elf gpio.bin
 
-2.2 Run and configure Tera Term - Terminal Emulator {#TERA_TERM}
-----------------------------------------------------------------
+2.2 Run and configure Tera Term - Terminal Emulator {#SCORPION_BOARD_BOOTLOADER_XMODEM_TERA_TERM}
+-------------------------------------------------------------------------------------------------
 
 Select the correct COM port and configure port for 115200 BAUD, 8 data bits, 
 no parity, 1 stop bit and no flow control.
 
 Setup > Serial port...
 
-![Tera Term COM port setup](piconomix_scorpion_board/tera_term_setup.png)
+![Tera Term COM port setup](tera_term_setup02.png)
 
 @tip_s
 At this stage you can verify that the communication between Tera Term and the 
@@ -61,27 +61,27 @@ board is OK, by resetting the board and verifying that Tera Term displays at
 least one received 'C' character sent by the bootloader.
 @tip_e
 
-2.3 Send the BIN file using the XMODEM-CRC protocol {#XMODEM_SEND}
-------------------------------------------------------------------
+2.3 Send the BIN file using the XMODEM-CRC protocol {#SCORPION_BOARD_BOOTLOADER_XMODEM_XMODEM_SEND}
+---------------------------------------------------------------------------------------------------
 
 File > Transfer > XMODEM > Send...
 
-![Tera Term - Start XMODEM file send](piconomix_scorpion_board/tera_term_xmodem_send01.png)
+![Tera Term - Start XMODEM file send](tera_term_xmodem_send01.png)
 
 @warn_s
 The **BIN** file (not HEX or ELF!) is selected and the CRC variant of XMODEM is 
 specified.
 @warn_e
 
-![Tera Term - Specify file and select CRC transfer method"](piconomix_scorpion_board/tera_term_xmodem_send02.png)
+![Tera Term - Specify file and select CRC transfer method"](tera_term_xmodem_send02.png)
 
 @tip_s
 Tera Term will now wait for a 'C' character from the board to start the 
 transfer...
 @tip_e
  
-2.4 Reset the board to start the transfer {#START_TRANSFER}
------------------------------------------------------------
+2.4 Reset the board to start the transfer {#SCORPION_BOARD_BOOTLOADER_XMODEM_START_TRANSFER}
+--------------------------------------------------------------------------------------------
 
 Press the reset button (**RST**) to reset the microcontroller and jump to the
 bootloader.
@@ -106,4 +106,4 @@ The bootloader will send a 'C' character to start a transfer and waits for 1
 second for a valid XMODEM-CRC data packet. If the transfer is not
 successful, it will jump to address 0x0000 and execute the application. 
 
-![AVR fuse bits in Atmel Studio"](piconomix_scorpion_board/avr_fuse_bits.png)
+![AVR fuse bits in Atmel Studio"](scorpion_board_avr_fuse_bits.png)

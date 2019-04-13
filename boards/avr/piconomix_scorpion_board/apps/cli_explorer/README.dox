@@ -8,12 +8,12 @@ Introduction {#SCORPION_BOARD_APP_CLI_INTRO}
 
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 
-This is a full featured CLI (Command Line Interpreter) application running on 
+This is a full-featured CLI (Command Line Interpreter) application running on 
 the Piconomix Scorpion Board that creates a "Un*x Shell"-like environment so that 
 you can experiment with GPIO, ADC, I2C and SPI using only Terminal software 
 (for example [Tera Term] [tera_term])... it is really cool!
 
-![CLI Exlorer executing on a Scorpion Board](piconomix_scorpion_board/tera_term_cli_preview.png)
+![CLI Exlorer executing on a Scorpion Board](scorpion_board_cli_preview.png)
 
 With this application you will be able to:
 - Reset the microcontroller (and jump back to the bootloader)
@@ -271,7 +271,7 @@ before creating a device driver for it. As an example, an
 [Electrodragon BMP280 breakout board](http://www.electrodragon.com/product/bme280-pressure-huminity-temperature-sensor-breakout/)
 is connected to the I2C bus.
 
-![Electrodragon BMP280 breakout board connected to I2C](piconomix_scorpion_board/scorpion_board_i2c_slave_bmp280.jpg)
+![Electrodragon BMP280 breakout board connected to I2C](scorpion_board_i2c_slave_bmp280.jpg)
 
 @tip_s
 Click [HERE](https://www.bosch-sensortec.com/bst/products/all_products/bmp280)

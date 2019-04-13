@@ -36,7 +36,7 @@
  *  @ingroup BOARDS_AVR
  *  @defgroup BOARDS_AVR_PICONOMIX_SCORPION px_board.h : Piconomix ATmega328P Scorpion Board
  *  
- *  ![Piconomix ATmega328P Scorpion Board](piconomix_scorpion_board/piconomix_scorpion_board.jpg)
+ *  ![Piconomix ATmega328P Scorpion Board](piconomix_scorpion_board.jpg)
  *  
  *  File(s):
  *  - boards/avr/piconomix_scorpion_board/px_board.h 

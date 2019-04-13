@@ -53,7 +53,6 @@
 #include "px_buzzer.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-static px_debounce_t px_debounce_pb;
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -72,6 +71,8 @@ PX_ATTR_PGM static const char main_cli_init_str[] =
     "| |_) |  \\  /\n"
     "|  __/   /  \\ PICONOMIX - Embedded Elegance\n"
     "|_|     /_/\\_\\    https://piconomix.com\n\n";
+
+static px_debounce_t px_debounce_pb;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 

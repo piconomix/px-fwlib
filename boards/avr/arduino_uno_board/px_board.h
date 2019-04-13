@@ -36,7 +36,7 @@
  *  @ingroup BOARDS_AVR
  *  @defgroup BOARDS_AVR_ARDUINO_UNO px_board.h : Arduino UNO R3 Board
  *  
- *  ![Arduino UNO R3 Board](arduino_uno_board/arduino_uno_r3.jpg)
+ *  ![Arduino UNO R3 Board](arduino_uno_r3.jpg)
  *   
  *  Image Copyright (c) [Arduino SA](http://www.arduino.cc).
  *  License: [Creative Commons Attribution ShareAlike 3.0](http://creativecommons.org/licenses/by-sa/3.0/legalcode)
