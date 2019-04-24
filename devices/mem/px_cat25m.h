@@ -64,7 +64,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// @name List CAT25M devices
 //@{
 #define PX_CAT25M01 0 /// 1 Mbit SPI Serial CMOS EEPROM

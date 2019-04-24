@@ -45,7 +45,7 @@
 #include "px_gpio.h"
 #include "px_board.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Enable/disable support for I2C0 peripheral
 #define PX_I2C_CFG_I2C0_EN 1
 

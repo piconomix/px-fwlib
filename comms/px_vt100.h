@@ -61,7 +61,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// @name Special ASCII values
 //@{
 #define PX_VT100_CHAR_BEL      0x07

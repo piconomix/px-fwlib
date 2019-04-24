@@ -44,7 +44,7 @@
 #include "px_defines.h"
 #include "px_board.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Enable/disable support for SPI1 peripheral
 #define PX_SPI_CFG_SPI1_EN 1
 

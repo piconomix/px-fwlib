@@ -316,7 +316,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// @name Log type option selected in "px_log_fs_cfg.h"
 //@{
 /// Linear : Record writing will stop when file is full

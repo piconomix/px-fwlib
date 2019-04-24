@@ -52,7 +52,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Board name
 #define PX_BOARD_PICONOMIX_HERO_BOARD
 

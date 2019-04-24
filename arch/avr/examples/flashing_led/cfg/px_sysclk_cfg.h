@@ -38,7 +38,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// The number of system clock ticks per second
 #define PX_SYSCLK_CFG_TICKS_PER_SEC 100ul
 

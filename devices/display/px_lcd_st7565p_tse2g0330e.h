@@ -63,7 +63,7 @@
 #error "One or more options not defined in 'px_lcd_st7565p_tse2g0330e_cfg.h'"
 #endif
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Maximum PX_SPI Clock rate
 #define PX_LCD_MAX_SPI_CLOCK_HZ  20000000ul
 /// PX_SPI Clock / Data phase

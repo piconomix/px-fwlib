@@ -45,7 +45,7 @@
 #include "px_defines.h"
 #include "px_board.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Macro to set LCD reset pin low
 #define PX_LCD_CFG_RST_LO()     /* px_gpio_pin_set_lo(&px_gpio_lcd_rst) */
 

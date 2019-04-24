@@ -83,7 +83,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Specify ADC peripheral
 typedef enum
 {

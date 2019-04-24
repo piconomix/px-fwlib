@@ -71,7 +71,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// @name List AT45D devices
 //@{
 #define PX_AT45DB011 0 ///< 1M bit, 2.7-Volt Minimum Serial-Interface Flash with One 264-Byte SRAM Buffer

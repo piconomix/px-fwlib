@@ -42,7 +42,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #define PX_GPIO_3               PX_GPIO(A, 0,  PX_GPIO_MODE_IN,     PX_GPIO_OTYPE_PP,   PX_GPIO_OSPEED_LO,  PX_GPIO_PULL_DN,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
 #define PX_GPIO_2               PX_GPIO(A, 1,  PX_GPIO_MODE_IN,     PX_GPIO_OTYPE_PP,   PX_GPIO_OSPEED_LO,  PX_GPIO_PULL_DN,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
 #define PX_GPIO_UART2_TX        PX_GPIO(A, 2,  PX_GPIO_MODE_AF,     PX_GPIO_OTYPE_PP,   PX_GPIO_OSPEED_LO,  PX_GPIO_PULL_NO,    PX_GPIO_OUT_INIT_HI,    PX_GPIO_AF_4)

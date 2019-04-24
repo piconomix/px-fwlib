@@ -42,7 +42,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #define PX_GPIO_LED        PX_GPIO(B, 0, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO)
 #define PX_GPIO_SPI_CS_DF  PX_GPIO(B, 1, PX_GPIO_DIR_OUT, PX_GPIO_INIT_HI)
 #define PX_GPIO_SPI_CS     PX_GPIO(B, 2, PX_GPIO_DIR_OUT, PX_GPIO_INIT_HI)

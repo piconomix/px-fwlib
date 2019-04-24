@@ -111,7 +111,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Circular buffer index size definition
 typedef uint16_t px_circ_buf_idx_t;
 

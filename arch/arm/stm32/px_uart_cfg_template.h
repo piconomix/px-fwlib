@@ -43,7 +43,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Enable/disable support for UART1 peripheral
 #define PX_UART_CFG_UART1_EN 1
 

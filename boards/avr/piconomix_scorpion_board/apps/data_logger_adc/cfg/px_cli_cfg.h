@@ -38,7 +38,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Maximum number of arguments (including command)
 #define PX_CLI_CFG_ARGV_MAX            36
 

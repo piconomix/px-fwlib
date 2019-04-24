@@ -56,7 +56,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #ifndef NULL
 /// NULL pointer
 #define NULL 0

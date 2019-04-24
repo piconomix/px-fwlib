@@ -58,7 +58,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// I2C Slave Address
 #define PX_M41T00_SLA_ADR 0x68
 

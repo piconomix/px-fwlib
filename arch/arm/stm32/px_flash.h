@@ -57,7 +57,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #define PX_FLASH_PAGE_SIZE                128
 #define PX_FLASH_HALF_PAGE_SIZE           (PX_FLASH_PAGE_SIZE / 2)
 #define PX_FLASH_HALF_PAGE_SIZE_WORDS     (PX_FLASH_HALF_PAGE_SIZE / 4)

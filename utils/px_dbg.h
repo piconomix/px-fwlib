@@ -178,7 +178,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// @name Debug message level bitmask definitions
 //@{
 /// None

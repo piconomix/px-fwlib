@@ -57,7 +57,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Size of CRC
 typedef uint16_t px_crc_t;
 /// The generator polynomial CRC16-CCITT: x^16 + x^12 + x^5 + x^0

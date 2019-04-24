@@ -38,7 +38,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #ifndef PX_DBG
 /// Flag to disable (PX_DBG=0) or enable (PX_DBG=1) debug.
 #define PX_DBG 1

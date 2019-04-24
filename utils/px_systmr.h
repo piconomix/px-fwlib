@@ -68,7 +68,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// The number of timer ticks per second
 #define PX_SYSTMR_TICKS_PER_SEC   PX_SYSCLK_CFG_TICKS_PER_SEC
 

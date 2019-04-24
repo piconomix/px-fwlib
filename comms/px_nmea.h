@@ -55,7 +55,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 // NMEA output strings
 #define PX_NMEA_GGA_STR "GGA" ///< Time, position and fix type data
 #define PX_NMEA_GLL_STR "GLL" ///< Latitude, longitude, UTC time of position fix and status

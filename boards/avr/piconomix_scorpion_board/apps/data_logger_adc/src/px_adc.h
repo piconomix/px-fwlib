@@ -41,7 +41,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Number of ADC channels that are sampled
 #define PX_ADC_NR_OF_CHANNELS  4
 

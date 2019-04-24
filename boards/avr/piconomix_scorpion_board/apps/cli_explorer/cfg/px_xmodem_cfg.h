@@ -39,7 +39,7 @@
 #include "px_defines.h"
 #include "px_xmodem_glue.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #define PX_XMODEM_CFG_MAX_RETRIES       4
 #define PX_XMODEM_CFG_MAX_RETRIES_START 4
 

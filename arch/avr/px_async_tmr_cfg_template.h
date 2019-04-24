@@ -44,7 +44,7 @@
 #include "px_defines.h"
 #include "px_rtc.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 
 /// Define timeout period
 #define ASYNC_TMR_CFG_PERIOD_MS     1000

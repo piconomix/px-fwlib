@@ -48,7 +48,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #define PX_BUZZER_TUNE_END    0x00
 #define PX_BUZZER_TUNE_REPEAT 0xFF
 

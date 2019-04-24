@@ -43,7 +43,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Max HI counter value
 #define PX_DEBOUNCE_CFG_COUNT_MAX  10
 

@@ -40,7 +40,7 @@
 #include "px_uart.h"
 #include "px_tmr.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #define PX_XMODEM_CFG_MAX_RETRIES       4
 #define PX_XMODEM_CFG_MAX_RETRIES_START 1
 

@@ -45,7 +45,7 @@
 #include "px_gpio.h"
 #include "px_compiler.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /**
  *  Initialise 1-Wire GPIO pin as an input with internal pull-up disabled. 
  *  There must be an external 4k7 pull-up resistor between +3V3 and 1-Wire GPIO 

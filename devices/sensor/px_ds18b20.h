@@ -59,7 +59,7 @@
 extern "C" {
 #endif
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// PX_DS18B20 configuration register values
 #define PX_DS18B20_CFG_REG_RES_9BIT    (0<<5)
 #define PX_DS18B20_CFG_REG_RES_10BIT   (1<<5)

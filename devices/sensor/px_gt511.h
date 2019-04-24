@@ -70,7 +70,7 @@
 extern "C"
 {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #define PX_GT511_UART_DEFAULT_BAUD     9600
 #define PX_GT511_UART_MAX_BAUD         115200
 #define PX_GT511_TEMPLATE_SIZE         506

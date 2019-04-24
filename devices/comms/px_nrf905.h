@@ -56,7 +56,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Maximum SPI Clock rate
 #define PX_NRF905_MAX_SPI_CLOCK_HZ     10000000ul
 /// SPI Clock / Data phase

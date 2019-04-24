@@ -40,7 +40,7 @@
 #include "px_at45d.h"
 #include "px_adc.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Page size for file system
 #define PX_LOG_FS_CFG_PAGE_SIZE        PX_AT45D_PAGE_SIZE
 

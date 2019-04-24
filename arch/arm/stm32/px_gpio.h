@@ -42,7 +42,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /// GPIO mode selection; See GPIOx_MODER register

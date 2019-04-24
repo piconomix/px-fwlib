@@ -55,7 +55,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// BMP280 I2C Slave address
 #define PX_BMP280_I2C_SLA_ADR   0x76
 

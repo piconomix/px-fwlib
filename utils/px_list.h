@@ -76,7 +76,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /// Link structure that must be at the head of each item in the list

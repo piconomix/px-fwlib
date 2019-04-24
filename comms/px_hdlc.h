@@ -100,7 +100,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #ifndef PX_HDLC_MRU
 /// Receive Packet size (Maximum Receive Unit)
 #define PX_HDLC_MRU    64

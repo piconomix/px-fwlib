@@ -57,7 +57,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// Board name
 #define BOARD_AVR_ARDUINO_UNO
 

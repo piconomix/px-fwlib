@@ -43,7 +43,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 // PX_DBG symbol not defined in Makefile?
 #ifndef PX_DBG
 /// Set flag to disable (PX_DBG=0) or enable (PX_DBG=1) debug.

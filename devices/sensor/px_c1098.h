@@ -55,7 +55,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #define PX_C1098_UART_DEFAULT_BAUD     14400
 
 #define PX_C1098_IF_SPEED_14400_BPS    0x07

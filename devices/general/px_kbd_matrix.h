@@ -103,7 +103,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 #ifndef PX_KBD_MATRIX_MAX_NR_KEYS
 /// Maximum number of keys that can be handled by the module.
 #define PX_KBD_MATRIX_MAX_NR_KEYS  56

@@ -58,7 +58,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// I2C Slave Address (excluding Chip Enable address A10, A9 and A8)
 #define PX_EEPROM_24CXX_I2C_SLA_ADR 0x50
 

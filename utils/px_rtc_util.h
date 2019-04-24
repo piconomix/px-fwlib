@@ -62,7 +62,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 // Utility definitions
 #define PX_RTC_SEC_PER_MIN  (60ul)
 #define PX_RTC_SEC_PER_HOUR (60*PX_RTC_SEC_PER_MIN)

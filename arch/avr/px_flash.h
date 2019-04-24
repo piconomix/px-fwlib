@@ -65,7 +65,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS _________________________________________________________ */
+/* _____DEFINITIONS__________________________________________________________ */
 /// FLASH Page size in bytes
 #define PX_FLASH_PAGE_SIZE  SPM_PAGESIZE
 
