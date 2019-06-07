@@ -135,8 +135,23 @@ void px_board_delay_ms(uint16_t delay_ms);
  */
 void px_board_buzzer_on(uint16_t freq_hz);
 
-/// Disable PWM output to piezo buzzer
+/** 
+ *  Disable PWM output to piezo buzzer.
+ */
 void px_board_buzzer_off(void);
+
+/**
+ *  Disable DBG module.
+ */
+void px_board_dbg_disable(void);
+
+/**
+ *  Enter low power STOP mode and wait for interrupt to wake up core
+ *  
+ *  NB! Debug module must be disabled during STOP mode, otherwise SysTick
+ *  interrupt will wake up core.
+ */
+void px_board_stop_mode(void);
 
 
 /* _____MACROS_______________________________________________________________ */
