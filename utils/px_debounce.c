@@ -37,11 +37,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_debounce.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("debounce")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("debounce");
 
 /* _____MACROS_______________________________________________________________ */
 

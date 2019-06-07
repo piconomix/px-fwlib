@@ -2,8 +2,8 @@
 #include "px_board.h"
 #include "px_uart.h"
 #include "px_uart_stdio.h"
-
 #include "px_dbg.h"
+
 PX_DBG_DECL_NAME("px_dbg_test")
 
 // Declare UART handle structure

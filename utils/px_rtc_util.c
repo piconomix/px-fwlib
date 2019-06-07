@@ -38,11 +38,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_rtc_util.h"
 #include "px_pgm_P.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("rtc_util")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("rtc_util");
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// Structure to keep track of time & date
