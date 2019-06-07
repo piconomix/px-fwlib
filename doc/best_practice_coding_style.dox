@@ -275,8 +275,7 @@ To conserve space, the module name string is declared once at the top of the C
 file. Example:
 
     @code{.c}
-    #include "px_dbg.h"
-    
+    #include "px_dbg.h"    
     PX_DBG_DECL_NAME("px_uart");
     @endcode
 
