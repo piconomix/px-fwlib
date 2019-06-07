@@ -42,7 +42,7 @@
 PROJECT = low_power
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
-BOOTLOADER_SIZE = 0x2000
+BOOTLOADER_SIZE = 0x4000
 
 # (2) MCU option(s)
 MCU = -mthumb -mcpu=cortex-m0plus
@@ -72,7 +72,9 @@ SRC += $(PICOLIB)/$(ARCH)/px_spi.c
 SRC += $(PICOLIB)/$(ARCH)/px_uart.c
 SRC += $(PICOLIB)/devices/display/px_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/devices/mem/px_at25s.c
+SRC += $(PICOLIB)/devices/mem/px_sd.c
 SRC += $(PICOLIB)/gfx/px_gfx.c
+SRC += $(PICOLIB)/gfx/px_gfx_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
 SRC += $(PICOLIB)/utils/px_dbg.c
 SRC += $(PICOLIB)/utils/px_circ_buffer.c
@@ -103,7 +105,7 @@ ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startu
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
 INCDIRS += cfg
-INCDIRS += res
+INCDIRS += resources
 INCDIRS += src
 INCDIRS += $(BSP)
 INCDIRS += $(PICOLIB)

@@ -32,16 +32,18 @@
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
-#include "px_defines.h"
+#include <stdio.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
+#include "px_defines.h"
 #include "px_board.h"
 #include "px_spi.h"
 #include "px_uart.h"
 #include "px_at25s.h"
+#include "px_sd.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
-#include "px_gfx_res.h"
+#include "px_gfx_resources.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 
@@ -51,9 +53,9 @@
 px_uart_handle_t px_uart1_handle;
 px_spi_handle_t  px_spi_lcd_handle;
 px_spi_handle_t  px_spi_sf_handle;
+px_spi_handle_t  px_spi_sd_handle;
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-static volatile bool main_button_press_flag;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
@@ -65,8 +67,6 @@ void EXTI4_15_IRQHandler(void)
     {
         // Clear pending flag
         LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_9);
-        // Set software flag to indicate that button has been pressed
-        main_button_press_flag = true;
     }    
 }
 
@@ -104,66 +104,57 @@ static void main_init(void)
                  PX_AT25S_SPI_DATA_ORDER,
                  0x00);
     px_at25s_init(&px_spi_sf_handle);
+    // Resume Serial Flash in case it was left in a power down state and the 
+    // processor reset
+    px_at25s_resume_from_power_down();
 
-    // Power down Serial Flash to minimise power consumption
-    px_at25s_power_down();
-}
-
-static void main_dbg_disable(void)
-{
-    // Set SWD pins to analog with no pull resistors
-    px_gpio_mode_set(&px_gpio_swdck, PX_GPIO_MODE_ANA);
-    px_gpio_pulldn_disable(&px_gpio_swdck);
-    px_gpio_mode_set(&px_gpio_swdio, PX_GPIO_MODE_ANA);
-    px_gpio_pullup_disable(&px_gpio_swdio);
-
-    // Disable Debug Module during STOP mode
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_DBGMCU);
-    LL_DBGMCU_DisableDBGStopMode();
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_DBGMCU);
-}
-
-static void main_hsi48_disable(void)
-{
-    #warning "Does not work properly yet"
-
-    // Disable Clock Recovery System
-    LL_CRS_DisableFreqErrorCounter();
-    LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_CRS);
-
-    // Disable HSI48 oscillator
-    LL_SYSCFG_VREFINT_DisableHSI48();
-    LL_RCC_HSI48_Disable();
+    // Initialise SD Card driver
+    px_spi_open2(&px_spi_sd_handle,
+                 PX_SPI_PER_1,
+                 PX_BOARD_SPI1_CS_SD,
+                 px_spi_util_baud_hz_to_clk_div(PX_SD_MAX_SPI_CLOCK_HZ),
+                 PX_SD_SPI_MODE, 
+                 PX_SD_SPI_DATA_ORDER,
+                 PX_SD_SPI_MO_DUMMY_BYTE);
+    px_sd_init(&px_spi_sd_handle);   
 }
 
 static void main_gpio_disable(void)
 {
-    LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_5,  LL_GPIO_MODE_ANALOG); // PX_GPIO_SPI1_MOSI
-    LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_8,  LL_GPIO_MODE_ANALOG); // PX_GPIO_3V3_HOLD
-    LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_11, LL_GPIO_MODE_ANALOG); // PX_GPIO_UART4_RX
+    // Disable uninitialised UART2 peripheral pins
+    px_gpio_mode_set(&px_gpio_uart2_tx, PX_GPIO_MODE_ANA); //PA2
+    px_gpio_mode_set(&px_gpio_uart2_rx, PX_GPIO_MODE_ANA); //PA3
+    // Disable SD Card detect pin
+    px_gpio_mode_set(&px_gpio_7_sd_cd,  PX_GPIO_MODE_ANA); //PB7
+    // Disable uninitialised I2C peripheral pins
+    px_gpio_mode_set(&px_gpio_i2c1_scl, PX_GPIO_MODE_ANA); //PB8
+    px_gpio_mode_set(&px_gpio_i2c1_sda, PX_GPIO_MODE_ANA); //PB9
+    // Disable uninitialised UART4 peripheral pins
+    px_gpio_mode_set(&px_gpio_uart4_tx, PX_GPIO_MODE_ANA); //PC10
+    px_gpio_mode_set(&px_gpio_uart4_rx, PX_GPIO_MODE_ANA); //PC11
 }
 
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
 int main(void)
 {
+    uint16_t counter = 0;
+    char     str[16];
+
     // Initialize board
     main_init();
 
     // Initialise graphics
-    px_gfx_init();
-    // Draw text
-    px_gfx_draw_str(&px_gfx_font_5x7, 0, 0, PX_GFX_COLOR_ON, "LOW POWER");
-    // Update display
-    px_gfx_update();
+    px_gfx_init();    
     
-    #warning "low power debugging steps added here:"    
-    //main_gpio_disable();    
+    // SD Card inserted?
+    if(PX_SD_CARD_DETECTED())
+    {
+        // Initialise SD card
+        px_sd_init(&px_spi_sd_handle);
+    }
 
-    // Disable SWD debug module
-    main_dbg_disable();
-
-    // Disable 48 MHZ oscillator
-    //main_hsi48_disable();
+    // Power down Serial Flash to minimise power consumption
+    px_at25s_power_down();
 
     // Select Port C pin 9 (6/YES button) for extended interrupt on EXTI9
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE9);
@@ -172,6 +163,14 @@ int main(void)
     LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_9);
     // Enable EXTI4_15 interrupt
     NVIC_EnableIRQ(EXTI4_15_IRQn);
+
+    // Disable debug interface
+    px_board_dbg_disable();
+
+    // Set mode of uninitialized peripheral GPIO pins to Analog as well as
+    // SD Card Detect pin that will draw ~73uA while SD card is inserted 
+    // (Pull-up resistor = ~45 kOhm).
+    main_gpio_disable();
     
     for(;;)
     {
@@ -179,15 +178,20 @@ int main(void)
         px_lcd_power_save_off();
         // Enable LCD backlight
         PX_LCD_BACKLIGHT_ON();
-        // Clear flag
-        main_button_press_flag = false;
         // LED on
         PX_USR_LED_ON();
-        // Wait until button is released?
-        while(PX_USR_PB_IS_PRESSED())
+        // Draw new counter value on LCD
+        sprintf(str, "%04u", ++counter);
+        px_gfx_clear();
+        px_gfx_draw_str(&px_gfx_font_5x7, 0, 0, PX_GFX_ALIGN_TOP_LEFT, PX_GFX_COLOR_ON, str);
+        px_gfx_update();
+        // Wait until button is released
+        do
         {
-            ;
+            px_board_delay_ms(1000);
         }
+        while(PX_USR_PB_IS_PRESSED());
+
         // LED off
         PX_USR_LED_OFF();
         // Disable LCD backlight
@@ -195,20 +199,7 @@ int main(void)
         // Turn LCD power save on
         px_lcd_power_save_on();
 
-        // Clear the WUF flag (after 2 clock cycles)
-        LL_PWR_ClearFlag_WU();
-        // Set LPSDSR to switch regulator to low-power mode when the CPU enters Deepsleep
-        LL_PWR_SetRegulModeLP(LL_PWR_REGU_LPMODES_LOW_POWER);
-        // Clear PDDS to enter STOP mode when the CPU enters Deepsleep
-        LL_PWR_SetPowerMode(LL_PWR_MODE_STOP);
-        // Use HSI16 oscillator after wake-up from STOP mode
-        LL_RCC_SetClkAfterWakeFromStop(LL_RCC_STOP_WAKEUPCLOCK_HSI);
-        // Enable ultra low-power mode by switching off VREFINT during STOP mode
-        LL_PWR_EnableUltraLowPower();
-        // Set SLEEPDEEP bit of Cortex System Control Register
-        LL_LPM_EnableDeepSleep();
-
         // Put core into STOP mode until an interrupt occurs
-        __WFI();
+        px_board_stop_mode();
     }	
 }
