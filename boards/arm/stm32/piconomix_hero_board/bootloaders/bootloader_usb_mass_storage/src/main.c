@@ -5,7 +5,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -27,7 +27,7 @@
 
     Title:          Piconomix STM32 Hero Board Bootloader application
     Author(s):      Pieter Conradie
-    Creation Date:  2018-11-20
+    Creation Date:  2019-03-24
  
 ============================================================================= */
 
@@ -37,15 +37,18 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "main.h"
 #include "px_defines.h"
-#include "px_compiler.h"
-#include "px_systmr.h"
 #include "px_board.h"
-#include "px_uart.h"
 #include "px_sysclk.h"
-#include "px_xmodem.h"
+#include "px_systmr.h"
+#include "px_uart.h"
 #include "px_flash.h"
+#include "usb_device.h"
+#include "px_uf2.h"
+#include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("main");
+
 //! [Address mapping of App]
 /// Start address of app in FLASH
 #define MAIN_APP_ADR_START      (FLASH_BASE + 0x00004000)
@@ -64,17 +67,18 @@
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
+#if PX_DBG
 /// UART handle
 px_uart_handle_t px_uart_handle;
+#endif
 
 /// Location in SRAM that is used as message box between resets
 PX_ATTR_SECTION(".noinit") volatile uint32_t main_magic;
 
-/// Next FLASH address that will be written to
+#ifdef BOOT_CLEAR_REST_OF_FLASH
+/// Highest FLASH address written to + 1
 uint32_t main_flash_adr;
-
-/// Next byte that will be written to in receive buffer
-uint8_t  main_flash_buf_index;
+#endif
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// Buffer of data to be written to FLASH
@@ -90,6 +94,9 @@ static union
     uint8_t  buf_u8[PX_FLASH_HALF_PAGE_SIZE];
     uint32_t buf_u32[PX_FLASH_HALF_PAGE_SIZE_WORDS];
 } main_app_vector_table;
+
+/// Flag that is set when last block of flash has been written
+volatile bool main_wr_flash_done_flag;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
@@ -126,57 +133,60 @@ static void main_exe_app(void)
 //! [Execute App]
 
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
-/// Handler function that is called when an XMODEM packet is received
-void main_on_rx_data(const uint8_t * data, uint8_t bytes_received)
+/// Handler function that is called when a valid UF2 block is received
+void main_wr_flash_block(const uint8_t * data, 
+                         uint32_t        adr, 
+                         size_t          nr_of_bytes)
 {
-    // End of flash reached?
-    if(main_flash_adr >= MAIN_APP_ADR_END)
-    {
-        // Discard rest of data
-        return;
-    }
+    // Adjust to start of FLASH
+    adr += FLASH_BASE;
 
     // Repeat until all received bytes have been buffered
-    while(bytes_received != 0)
+    while(nr_of_bytes != 0)
     {
-        // Fill received byte into flash buffer
-        main_flash_buf.buf_u8[main_flash_buf_index++] = *data++;
-
-        // Flash buffer full?
-        if(main_flash_buf_index >= PX_FLASH_HALF_PAGE_SIZE)
+        // Copy bytes into into flash buffer
+        memcpy(main_flash_buf.buf_u8, data, PX_FLASH_HALF_PAGE_SIZE);
+        // LED off
+        PX_USR_LED_OFF();
+        // On a new flash page boundary?
+        if((adr % PX_FLASH_PAGE_SIZE) == 0)
         {
-            // LED off
-            PX_USR_LED_OFF();
-
-            // On a new flash page boundary?
-            if((main_flash_adr % PX_FLASH_PAGE_SIZE) == 0)
-            {
-                // Erase whole flash page first
-                px_flash_erase_page(main_flash_adr);
-            }
-            // Is this the first half page?
-            if(main_flash_adr == MAIN_APP_ADR_START)
-            {
-                // Save a copy of the vector table, but do not write it
-                memcpy(main_app_vector_table.buf_u8,
-                       main_flash_buf.buf_u8, 
-                       PX_FLASH_HALF_PAGE_SIZE);
-            }
-            else
-            {
-                // Write half flash page
-                px_flash_wr_half_page(main_flash_adr, main_flash_buf.buf_u32);
-            }
-            // LED on
-            PX_USR_LED_ON();
-            // Next half page
-            main_flash_adr += PX_FLASH_HALF_PAGE_SIZE;
-            // Reset buffer
-            main_flash_buf_index = 0;
+            // Erase whole flash page first
+            px_flash_erase_page(adr);
         }
-        // Next received byte
-        bytes_received--;
+        // Is this the first half page?
+        if(adr == MAIN_APP_ADR_START)
+        {
+            // Save a copy of the vector table, but do not write it
+            memcpy(main_app_vector_table.buf_u8,
+                   main_flash_buf.buf_u8, 
+                   PX_FLASH_HALF_PAGE_SIZE);
+        }
+        else
+        {
+            // Write half flash page
+            px_flash_wr_half_page(adr, main_flash_buf.buf_u32);
+        }
+        // LED on
+        PX_USR_LED_ON();
+        // Next half page
+        adr         += PX_FLASH_HALF_PAGE_SIZE;
+        data        += PX_FLASH_HALF_PAGE_SIZE;
+        nr_of_bytes -= PX_FLASH_HALF_PAGE_SIZE;
     }
+
+#ifdef BOOT_CLEAR_REST_OF_FLASH
+    // Save highest address
+    if(main_flash_adr < adr)
+    {
+        main_flash_adr = adr;
+    }
+#endif
+}
+
+void main_wr_flash_done(void)
+{
+    main_wr_flash_done_flag = true;
 }
 
 int main(void)
@@ -220,15 +230,19 @@ int main(void)
     // Initialize modules
     px_board_init();
     px_sysclk_init();
-    px_uart_init();
-
+    px_uf2_init(&main_wr_flash_block, &main_wr_flash_done);
+    
+#if PX_DBG
     // Open UART1
+    px_uart_init();
     px_uart_open2(&px_uart_handle,
                   PX_UART_PER_1,
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
+    PX_DBG_INFO("Starting USB mass storage bootloader");
+#endif
 
     // Enable LED
     PX_USR_LED_ON();
@@ -236,61 +250,63 @@ int main(void)
     // Unlock FLASH for erasing and programming
     px_flash_unlock();
 
-    // Receive new FLASH content via XMODEM-CRC protocol
-    main_flash_adr       = MAIN_APP_ADR_START;
-    main_flash_buf_index = 0;
+    // Start USB driver
+    MX_USB_DEVICE_Init();
 
-    if(px_xmodem_receive_file(&main_on_rx_data))
+    // Allow USB Driver to execute until last block of flash has been written
+    while(!main_wr_flash_done_flag)
     {
-        // Last received page incomplete?
-        if(main_flash_buf_index != 0)
-        {
-#ifdef BOOT_CLEAR_REST_OF_FLASH
-            // Clear rest of flash page
-            uint8_t i = main_flash_buf_index;
-            while(i < PX_FLASH_HALF_PAGE_SIZE)
-            {
-                main_flash_buf.buf_u8[i++] = 0;
-            }
-#endif
-            // Must flash page be erased?
-            if((main_flash_adr % PX_FLASH_PAGE_SIZE) == 0)
-            {
-                // Erase whole flash page
-                px_flash_erase_page(main_flash_adr);
-            }
-            // Write last (incomplete) flash page
-            px_flash_wr_half_page(main_flash_adr, main_flash_buf.buf_u32);
-
-#ifdef BOOT_CLEAR_REST_OF_FLASH
-            // Next half page
-            main_flash_adr += PX_FLASH_HALF_PAGE_SIZE;
-#endif
-        }
-
-#ifdef BOOT_CLEAR_REST_OF_FLASH
-        // On a whole page boundary?
-        if((main_flash_adr % PX_FLASH_PAGE_SIZE) != 0)
-        {
-            // No. Advance to start of next page
-            main_flash_adr += PX_FLASH_HALF_PAGE_SIZE;
-        }
-        // Erase rest of flash pages
-        while(main_flash_adr < MAIN_APP_ADR_END)
-        {
-            px_flash_erase_page(main_flash_adr);
-            // Next page
-            main_flash_adr += PX_FLASH_PAGE_SIZE;
-        }
-#endif
-
-        // Write vector table last (after whole image has been written)
-        px_flash_wr_half_page(MAIN_APP_ADR_START, main_app_vector_table.buf_u32);
+        // Put core into SLEEP mode until an interrupt occurs
+        __WFI();
     }
 
+#ifdef BOOT_CLEAR_REST_OF_FLASH
+    // On a whole page boundary?
+    if((main_flash_adr % PX_FLASH_PAGE_SIZE) != 0)
+    {
+        // No. Advance to start of next page
+        main_flash_adr += PX_FLASH_HALF_PAGE_SIZE;
+    }
+    // Erase rest of flash pages
+    while(main_flash_adr < MAIN_APP_ADR_END)
+    {
+        px_flash_erase_page(main_flash_adr);
+        // Next page
+        main_flash_adr += PX_FLASH_PAGE_SIZE;
+    }
+#endif
+
+    // Write vector table last (after whole image has been written)
+    px_flash_wr_half_page(MAIN_APP_ADR_START, main_app_vector_table.buf_u32);
+
     // Lock FLASH to prevent accidental erasing and programming
-    px_flash_lock(); 
-    
+    px_flash_lock();
+
+    // Wait a little bit before resetting, to avoid Windows transmit error
+    // https://github.com/Microsoft/px_uf2-samd21/issues/11
+    px_board_delay_init();
+    px_board_delay_ms(30);
+
     // Perform software reset
     NVIC_SystemReset();
 }
+
+#if PX_DBG
+void main_dbg_put_char(char data)
+{
+    // New line character?
+    if(data == '\n')
+    {
+        // Prepend a carriage return
+        main_dbg_put_char('\r');
+    }
+
+    px_uart_put_char(&px_uart_handle, data);
+}
+
+void main_dbg_timestamp(char * str)
+{
+    sprintf(str, "%08lu", (uint32_t)px_sysclk_get_tick_count());
+}
+#endif
+

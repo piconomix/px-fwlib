@@ -1,0 +1,14 @@
+USB Mass Storage Bootloader {#HERO_BOARD_BOOTLOADER_USB_MSD}
+============================================================
+  
+[TOC]
+
+1. Introduction {#HERO_BOARD_BOOTLOADER_USB_MSD_INTRO}
+======================================================
+
+This is an example of how to implement a USB Mass storage bootloader on the 
+STM32.
+
+A single press of the RESET button will perform a normal reset and the 
+bootloader will jump to the application. A "double-tap" of the RESET button 
+(press twice within ~ 500 ms) will start firmware upgrade process.

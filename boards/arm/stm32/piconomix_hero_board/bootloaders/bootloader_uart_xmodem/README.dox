@@ -109,7 +109,7 @@ executed:
 
 
     Compiling C: src/main.c
-    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Os -DSTM32L072xx -DUSE_FULL_LL_DRIVER -DVECT_TAB_OFFSET=0x2000 -Wa,-adhlns=BUILD_RELEASE_BOOT/main.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_RELEASE_BOOT/main.d src/main.c -o BUILD_RELEASE_BOOT/main.o
+    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Os -DSTM32L072xx -DUSE_FULL_LL_DRIVER -DVECT_TAB_OFFSET=0x4000 -Wa,-adhlns=BUILD_RELEASE_BOOT/main.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_RELEASE_BOOT/main.d src/main.c -o BUILD_RELEASE_BOOT/main.o
 
     ...    
 
@@ -135,7 +135,7 @@ the text "RELEASE FOR BOOT"
 The bootloader is only ~2.5k in size, but 8k is reserved to leave enough space 
 for more complex bootloaders.
 
-The start address of the application is set in the bootloader's main.c (0x2000 = 8192 = 8k):
+The start address of the application is set in the bootloader's main.c (0x4000 = 16384 = 16k):
 
 @snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_uart_xmodem/src/main.c Address mapping of App
 
@@ -145,7 +145,7 @@ first. The start address is set in the application's Makefile with the
 BOOTLOADER_SIZE variable:
 
     # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
-    BOOTLOADER_SIZE = 0x2000
+    BOOTLOADER_SIZE = 0x4000
 
 The template arch/arm/stm32/MakeRules.mk uses this variable to set the 
 Vector Table Offset Register to the correct value in system_stm32l0xx.c and also
@@ -193,20 +193,20 @@ The generated LSS file, for example
 boards/arm/stm32/piconomix_hero_board/examples/gpio/BUILD_RELEASE/gpio.lss, can 
 be inspected to verify that the application has been moved to the right address:
 
-    gpio.elf:     file format elf32-littlearm
+    BUILD_RELEASE_BOOT/gpio.elf:     file format elf32-littlearm
 
     Sections:
     Idx Name          Size      VMA       LMA       File off  Algn
-      0 .isr_vector   000000c0  08002000  08002000  00002000  2**0
+      0 .isr_vector   000000c0  08004000  08004000  00004000  2**0
                       CONTENTS, ALLOC, LOAD, READONLY, DATA
-      1 .init         0000000c  080020c0  080020c0  000020c0  2**2
+      1 .init         0000000c  080040c0  080040c0  000040c0  2**2
                       CONTENTS, ALLOC, LOAD, READONLY, CODE
-      2 .text         0000048c  080020cc  080020cc  000020cc  2**2
+      2 .text         0000049c  080040cc  080040cc  000040cc  2**2
                       CONTENTS, ALLOC, LOAD, READONLY, CODE
 
 @tip_s
 ".isr_vector" is the first section and contains the vector table. The VMA / LMA
-(Virtual / Load Memory Address) are both set to 0x08002000.
+(Virtual / Load Memory Address) are both set to 0x08004000.
 @tip_e
 
 The bootloader will perform a number of sanity checks on the BIN file programmed

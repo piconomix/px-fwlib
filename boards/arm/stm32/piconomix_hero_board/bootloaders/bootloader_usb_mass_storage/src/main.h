@@ -1,3 +1,5 @@
+#ifndef __MAIN_H__
+#define __MAIN_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -5,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -24,59 +26,37 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
-    
-    Title:          px_xmodem_glue.h : Glue functions for XMODEM module
-    Author(s):      Pieter Conradie
-    Creation Date:  2014-06-01
 
+    Title:          Piconomix STM32 Hero Board Bootloader application
+    Author(s):      Pieter Conradie
+    Creation Date:  2019-03-24
+ 
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_xmodem_glue.h"
-#include "px_systmr.h"
-#include "main.h"
-#include "px_dbg.h"
+#include "px_defines.h"
+#include "px_uart.h"
 
-/* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_xmodem_glue");
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* _____DEFINITIONS__________________________________________________________ */
+
+/* _____TYPE DEFINITIONS_____________________________________________________ */
+
+/* _____GLOBAL VARIABLES_____________________________________________________ */
+extern px_uart_handle_t px_uart_handle;
+
+/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
+void main_dbg_put_char(char data);
+void main_dbg_timestamp(char * str);
 
 /* _____MACROS_______________________________________________________________ */
 
-/* _____GLOBAL VARIABLES_____________________________________________________ */
-
-/* _____LOCAL VARIABLES______________________________________________________ */
-px_systmr_t px_xmodem_tmr;
-
-/* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
-
-/* _____LOCAL FUNCTIONS______________________________________________________ */
-
-/* _____GLOBAL FUNCTIONS_____________________________________________________ */
-bool px_xmodem_rd_u8(uint8_t * data)
-{
-    return px_uart_rd_u8(&px_uart_handle, data);
+#ifdef __cplusplus
 }
+#endif
 
-void px_xmodem_wr_u8(uint8_t data)
-{
-    while(!px_uart_wr_u8(&px_uart_handle, data))
-    {
-        ;
-    }
-}
-
-void px_xmodem_tmr_start(uint16_t time_ms)
-{
-    px_systmr_ticks_t delay_in_ticks;
-
-    delay_in_ticks = PX_SYSTMR_MS_TO_TICKS(time_ms);
-    px_systmr_start(&px_xmodem_tmr, delay_in_ticks);
-}
-
-bool px_xmodem_tmr_has_expired(void)
-{
-    return px_systmr_has_expired(&px_xmodem_tmr);
-}
-
+#endif // #ifndef __MAIN_H__

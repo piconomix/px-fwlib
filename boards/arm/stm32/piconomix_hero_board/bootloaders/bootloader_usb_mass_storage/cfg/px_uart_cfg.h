@@ -1,3 +1,5 @@
+#ifndef __PX_UART_CFG_H__
+#define __PX_UART_CFG_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -5,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -25,58 +27,37 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
     
-    Title:          px_xmodem_glue.h : Glue functions for XMODEM module
+    Title:          px_uart_cfg.h : UART Peripheral Driver configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2014-06-01
+    Creation Date:  2018-02-26
 
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_xmodem_glue.h"
-#include "px_systmr.h"
-#include "main.h"
-#include "px_dbg.h"
+#include "px_defines.h"
 
-/* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_xmodem_glue");
+/* _____DEFINITIONS__________________________________________________________ */
+/// Enable/disable support for UART1 peripheral
+#define PX_UART_CFG_UART1_EN 1
 
-/* _____MACROS_______________________________________________________________ */
+/// Enable/disable support for UART2 peripheral
+#define PX_UART_CFG_UART2_EN 0
 
-/* _____GLOBAL VARIABLES_____________________________________________________ */
+/// Enable/disable support for UART4 peripheral
+#define PX_UART_CFG_UART4_EN 0
 
-/* _____LOCAL VARIABLES______________________________________________________ */
-px_systmr_t px_xmodem_tmr;
+/// Enable/disable support for UART5 peripheral
+#define PX_UART_CFG_UART5_EN 0
 
-/* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
+/// Default BAUD rate
+#define PX_UART_CFG_DEFAULT_BAUD 115200ul
 
-/* _____LOCAL FUNCTIONS______________________________________________________ */
+/// Size of transmit buffer
+#define PX_UART_CFG_TX_BUF_SIZE 64
 
-/* _____GLOBAL FUNCTIONS_____________________________________________________ */
-bool px_xmodem_rd_u8(uint8_t * data)
-{
-    return px_uart_rd_u8(&px_uart_handle, data);
-}
+/// Size of receive buffer
+#define PX_UART_CFG_RX_BUF_SIZE 64
 
-void px_xmodem_wr_u8(uint8_t data)
-{
-    while(!px_uart_wr_u8(&px_uart_handle, data))
-    {
-        ;
-    }
-}
-
-void px_xmodem_tmr_start(uint16_t time_ms)
-{
-    px_systmr_ticks_t delay_in_ticks;
-
-    delay_in_ticks = PX_SYSTMR_MS_TO_TICKS(time_ms);
-    px_systmr_start(&px_xmodem_tmr, delay_in_ticks);
-}
-
-bool px_xmodem_tmr_has_expired(void)
-{
-    return px_systmr_has_expired(&px_xmodem_tmr);
-}
-
+#endif // #ifndef __PX_UART_CFG_H__

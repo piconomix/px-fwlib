@@ -39,7 +39,7 @@
 # ------------------------------------------------------------------------------
 
 # (1a) Project name
-PROJECT = bootloader_uart_xmodem
+PROJECT = bootloader_usb_mass_storage
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
 #BOOTLOADER_SIZE = 0x4000
@@ -67,18 +67,34 @@ CHAN_FATFS = $(PICOLIB)/libs/ChaN_FatFs
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
-SRC += src/px_xmodem_glue.c
+SRC += src/stm32l0xx_it.c
+SRC += src/usb_device.c
+SRC += src/usbd_conf.c
+SRC += src/usbd_desc.c
+SRC += src/usbd_storage_if.c
 SRC += $(BSP)/px_board.c
 SRC += $(PICOLIB)/$(ARCH)/px_flash.c
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
 SRC += $(PICOLIB)/$(ARCH)/px_sysclk.c
 SRC += $(PICOLIB)/$(ARCH)/px_uart.c
-SRC += $(PICOLIB)/comms/px_xmodem.c
+SRC += $(PICOLIB)/comms/px_uf2.c
 SRC += $(PICOLIB)/utils/px_circ_buffer.c
 SRC += $(PICOLIB)/utils/px_dbg.c
 SRC += $(PICOLIB)/utils/px_systmr.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
+SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c
+SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.c
+SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pcd.c
+SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pcd_ex.c
+SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_usb.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
+SRC += $(STMCUBE_USB)/Class/MSC/Src/usbd_msc.c
+SRC += $(STMCUBE_USB)/Class/MSC/Src/usbd_msc_bot.c
+SRC += $(STMCUBE_USB)/Class/MSC/Src/usbd_msc_data.c
+SRC += $(STMCUBE_USB)/Class/MSC/Src/usbd_msc_scsi.c
+SRC += $(STMCUBE_USB)/Core/Src/usbd_core.c
+SRC += $(STMCUBE_USB)/Core/Src/usbd_ctlreq.c
+SRC += $(STMCUBE_USB)/Core/Src/usbd_ioreq.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
 CPPSRC += 
@@ -104,7 +120,6 @@ ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startu
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
 INCDIRS += cfg
-INCDIRS += res
 INCDIRS += src
 INCDIRS += $(BSP)
 INCDIRS += $(PICOLIB)
@@ -127,7 +142,7 @@ INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Legacy
-INCDIRS += $(STMCUBE_USB)/Class/CDC/Inc
+INCDIRS += $(STMCUBE_USB)/Class/MSC/Inc
 INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
