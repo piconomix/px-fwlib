@@ -42,7 +42,7 @@
 PROJECT = gpio
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
-BOOTLOADER_SIZE = 0x2000
+BOOTLOADER_SIZE = 0x4000
 
 # (2) MCU option(s)
 MCU = -mthumb -mcpu=cortex-m0plus
