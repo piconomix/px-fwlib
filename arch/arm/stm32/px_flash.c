@@ -36,11 +36,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_flash.h"
 #include "px_lib_stm32cube.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_flash")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_flash");
 
 /* _____MACROS_______________________________________________________________ */
 

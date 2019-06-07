@@ -1,5 +1,5 @@
-#ifndef __PX_FLASH_H__
-#define __PX_FLASH_H__
+#ifndef __PX_EEPROM_H__
+#define __PX_EEPROM_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -27,7 +27,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
     
-    Title:          px_flash.h : Internal FLASH write routines
+    Title:          px_eeprom.h : Internal EEPROM write routines
     Author(s):      Pieter Conradie
     Creation Date:  2018-11-21
 
@@ -35,16 +35,16 @@
 
 /** 
  *  @ingroup STM32
- *  @defgroup AVR_FLASH px_flash.h : Internal FLASH write routines
+ *  @defgroup AVR_EEPROM px_eeprom.h : Internal EEPROM write routines
  *  
- *  This module can erase a page and write a half page of internal FLASH.
+ *  This module can erase a page and write a half page of internal EEPROM.
  *  
  *  File(s):
- *  - arch/arm/stm32/px_flash.h
- *  - arch/arm/stm32/px_flash.c 
+ *  - arch/arm/stm32/px_eeprom.h
+ *  - arch/arm/stm32/px_eeprom.c 
  *   
  *  @note 
- *  The flash erase and program functions must be executed from SRAM, not FLASH.
+ *  The flash erase and program functions must be executed from SRAM, not EEPROM.
  *  
  */
 /// @{
@@ -53,43 +53,34 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_lib_stm32cube.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
-#define PX_FLASH_BASE_ADR                 FLASH_BASE
-#define PX_FLASH_PAGE_SIZE                128
-#define PX_FLASH_HALF_PAGE_SIZE           (PX_FLASH_PAGE_SIZE / 2)
-#define PX_FLASH_HALF_PAGE_SIZE_WORDS     (PX_FLASH_HALF_PAGE_SIZE / 4)
+/// Start address of EEPROM
+#define PX_EEPROM_BASE_ADR      DATA_EEPROM_BASE
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
- *  Unlock FLASH for programming and erase.
+ *  Unlock EEPROM for programming and erase.
  *  
  */
-void px_flash_unlock(void);
+void px_eeprom_unlock(void);
 
 /**
- *  Lock FLASH to prevent programming or erase.
+ *  Lock EEPROM to prevent programming or erase.
  *  
  */
-void px_flash_lock(void);
+void px_eeprom_lock(void);
 
 /**
- *  Function to erase a page.
+ *  Function to erase a word (not really required).
  *  
  *  @param address  Page address
  */
-void px_flash_erase_page(const uint32_t address);
-
-/**
- *  Function to write a half page.
- *  
- *  @param address   Half page address
- *  @param data      Pointer to buffer containing data to write
- */
-void px_flash_wr_half_page(const uint32_t address, const  uint32_t * data);
+void px_eeprom_erase_word(const uint32_t address);
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -98,4 +89,4 @@ void px_flash_wr_half_page(const uint32_t address, const  uint32_t * data);
 }
 #endif
 
-#endif // #ifndef __PX_FLASH_H__
+#endif // #ifndef __PX_EEPROM_H__

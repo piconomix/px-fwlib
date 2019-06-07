@@ -37,11 +37,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_rtc.h"
 #include "px_lib_stm32cube.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("rtc")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("rtc");
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 

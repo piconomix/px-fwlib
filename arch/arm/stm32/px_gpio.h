@@ -279,9 +279,14 @@ typedef struct
 #define _GPIO_PULLUP_ENABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinPull(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_PULL_UP);
 
-/// Disable pull-up on GPIO pin
-#define PX_GPIO_PULLUP_DISABLE(gpio) _GPIO_PULLUP_DISABLE(gpio)
-#define _GPIO_PULLUP_DISABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+/// Enable pull-down on GPIO pin
+#define PX_GPIO_PULLDN_ENABLE(gpio) _GPIO_PULLDN_ENABLE(gpio)
+#define _GPIO_PULLDN_ENABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+        LL_GPIO_SetPinPull(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_PULL_DN);
+
+/// Disable pull-up / pull-down on GPIO pin
+#define PX_GPIO_PULL_DISABLE(gpio) _GPIO_PULL_DISABLE(gpio)
+#define _GPIO_PULL_DISABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinPull(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_PULL_NO);
 
 /// Macro to calculate bit mask used to initialise GPIOx_MODER register
@@ -479,14 +484,6 @@ static inline void px_gpio_pullup_enable(const px_gpio_handle_t * gpio)
     LL_GPIO_SetPinPull(gpio->gpio_base_reg, pin_bit_mask, LL_GPIO_PULL_UP);
 }
 
-/// Disable pull-up on GPIO pin
-static inline void px_gpio_pullup_disable(const px_gpio_handle_t * gpio)
-{
-    uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
-
-    LL_GPIO_SetPinPull(gpio->gpio_base_reg, pin_bit_mask, LL_GPIO_PULL_NO);
-}
-
 /// Enable pull-down on GPIO pin
 static inline void px_gpio_pulldn_enable(const px_gpio_handle_t * gpio)
 {
@@ -495,8 +492,8 @@ static inline void px_gpio_pulldn_enable(const px_gpio_handle_t * gpio)
     LL_GPIO_SetPinPull(gpio->gpio_base_reg, pin_bit_mask, LL_GPIO_PULL_DOWN);
 }
 
-/// Disable pull-down on GPIO pin
-static inline void px_gpio_pulldn_disable(const px_gpio_handle_t * gpio)
+/// Disable pull-up / pull-down on GPIO pin
+static inline void px_gpio_pull_disable(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 

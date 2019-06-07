@@ -37,11 +37,11 @@
 #include "px_spi.h"
 #include "px_board.h"
 #include "px_lib_stm32cube.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_spi")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_spi");
+
 /// Internal data for each SPI handle
 typedef struct px_spi_data_s
 {

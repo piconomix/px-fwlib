@@ -5,7 +5,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -25,20 +25,21 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
     
-    Title:          px_gpio.h : ST STM32 GPIO driver
+    Title:          px_eeprom.h : Internal EEPROM write routines
     Author(s):      Pieter Conradie
-    Creation Date:  2017-11-16
+    Creation Date:  2018-11-21
 
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_gpio.h"
+#include "px_eeprom.h"
+#include "px_lib_stm32cube.h"
 #include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gpio");
+PX_DBG_DECL_NAME("px_eeprom");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -51,66 +52,60 @@ PX_DBG_DECL_NAME("px_gpio");
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_gpio_open2(px_gpio_handle_t * gpio, 
-                   GPIO_TypeDef *     gpio_base_reg,
-                   uint8_t            pin)
+PX_ATTR_RAMFUNC void px_eeprom_unlock(void)
 {
-    uint32_t pin_bit_mask  = ((uint32_t)1) << pin;
+    uint32_t primask;
 
-    gpio->gpio_base_reg = gpio_base_reg;
-    gpio->pin           = pin;
-    gpio->mode          = (px_gpio_mode_t)LL_GPIO_GetPinMode(gpio_base_reg, pin_bit_mask);
-    gpio->otype         = (px_gpio_otype_t)LL_GPIO_GetPinOutputType(gpio_base_reg, pin_bit_mask);
-    gpio->ospeed        = (px_gpio_ospeed_t)LL_GPIO_GetPinSpeed(gpio_base_reg, pin_bit_mask);
-    gpio->pull          = (px_gpio_pull_t)LL_GPIO_GetPinPull(gpio_base_reg, pin_bit_mask);
-    if(LL_GPIO_IsOutputPinSet(gpio_base_reg, pin_bit_mask))
-    {
-        gpio->out_init = PX_GPIO_OUT_INIT_HI;
-    }
-    else
-    {
-        gpio->out_init = PX_GPIO_OUT_INIT_LO;
-    }
-    if(gpio->pin < 8)
-    {
-        gpio->af = (px_gpio_af_t)LL_GPIO_GetAFPin_0_7(gpio_base_reg, pin_bit_mask);
-    }
-    else
-    {
-        gpio->af = (px_gpio_af_t)LL_GPIO_GetAFPin_8_15(gpio_base_reg, pin_bit_mask);
-    }
+    // Save interrupt status
+    primask = __get_PRIMASK();
+    // Disable interrupts
+    px_interrupts_disable();
+    // Unlock PELOCK
+    FLASH->PEKEYR = 0x89abcdef;
+    FLASH->PEKEYR = 0x02030405;
+    // Restore interrupt status
+    __set_PRIMASK(primask);
 }
 
-void px_gpio_pin_init(const px_gpio_handle_t * gpio)
+PX_ATTR_RAMFUNC void px_eeprom_lock(void)
 {
-    uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
+    uint32_t primask;
 
-    // Set pull-up / pull-down (GPIOx_PUPDR: PUPDyy[1:0])
-    LL_GPIO_SetPinPull(gpio->gpio_base_reg, pin_bit_mask, gpio->pull);
-    // Set pin speed
-    LL_GPIO_SetPinSpeed(gpio->gpio_base_reg, pin_bit_mask, gpio->ospeed);
-    // Set pin output type (push-pull or open drain)
-    LL_GPIO_SetPinOutputType(gpio->gpio_base_reg, pin_bit_mask, gpio->otype);
-    // Output?
-    if(gpio->out_init)
+    // Save interrupt status
+    primask = __get_PRIMASK();
+    // Disable interrupts
+    px_interrupts_disable();
+    // Lock PELOCK
+    FLASH->PECR |= FLASH_PECR_PELOCK;
+    // Restore interrupt status
+    __set_PRIMASK(primask);
+}
+
+PX_ATTR_RAMFUNC void px_eeprom_erase_word(const uint32_t address)
+{
+    uint32_t primask;
+
+    // Save interrupt status
+    primask = __get_PRIMASK();
+    // Disable interrupts
+    px_interrupts_disable();
+    // Enable page erase
+    FLASH->PECR |= (FLASH_PECR_ERASE | FLASH_PECR_DATA);
+    // Write 32-bit zero value to specified address
+    *(uint32_t *)address = (uint32_t)0;
+    // Wait until erase has finished (not busy)
+    while ((FLASH->SR & FLASH_SR_BSY) != 0)
     {
-        // Set output high (1)
-        LL_GPIO_SetOutputPin(gpio->gpio_base_reg, pin_bit_mask);
+        continue;
     }
-    else
+    // EOP (End Of Programming) Flag set?
+    if((FLASH->SR & FLASH_SR_EOP) != 0)
     {
-        // Set output low (0)
-        LL_GPIO_ResetOutputPin(gpio->gpio_base_reg, pin_bit_mask);
+        // Reset EOP flag
+        FLASH->SR = FLASH_SR_EOP;
     }
-    // Set Alternative Function
-    if(gpio->pin < 8)
-    {
-        LL_GPIO_SetAFPin_0_7(gpio->gpio_base_reg, pin_bit_mask, gpio->af);
-    }
-    else
-    {
-        LL_GPIO_SetAFPin_8_15(gpio->gpio_base_reg, pin_bit_mask, gpio->af);
-    }
-    // Set mode: in, out, alternative function or analog
-    LL_GPIO_SetPinMode(gpio->gpio_base_reg, pin_bit_mask, gpio->mode);
+    // Disable page erase
+    FLASH->PECR &= ~(FLASH_PECR_ERASE | FLASH_PECR_DATA);
+    // Restore interrupt status
+    __set_PRIMASK(primask);
 }

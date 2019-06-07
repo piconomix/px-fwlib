@@ -37,11 +37,11 @@
 #include "px_adc.h"
 #include "px_board.h"
 #include "px_lib_stm32cube.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_adc")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_adc");
+
 /// Internal data for each ADC handle
 typedef struct px_adc_data_s
 {

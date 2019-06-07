@@ -39,7 +39,7 @@
 # ------------------------------------------------------------------------------
 
 # (1a) Project name
-PROJECT = main
+PROJECT = sysclk_int
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
 BOOTLOADER_SIZE = 0x4000
@@ -48,7 +48,7 @@ BOOTLOADER_SIZE = 0x4000
 MCU = -mthumb -mcpu=cortex-m0plus
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PICOLIB = ../../../../../..
+PICOLIB = ../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/arm/stm32
@@ -66,60 +66,8 @@ STMCUBE_USB = $(PICOLIB)/libs/STM32Cube_USB
 CHAN_FATFS = $(PICOLIB)/libs/ChaN_FatFs
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
-SRC += src/main.c
-SRC += src/px_cli_cmds.c
-SRC += src/px_cli_cmds_gpio.c
-SRC += src/px_cli_cmds_i2c.c
-SRC += src/px_cli_cmds_lcd.c
-SRC += src/px_cli_cmds_mem.c
-SRC += src/px_cli_cmds_rtc.c
-SRC += src/px_cli_cmds_sd.c
-SRC += src/px_cli_cmds_sf.c
-SRC += src/px_cli_cmds_spi.c
-SRC += src/px_cli_cmds_uart.c
-SRC += src/px_sd_fatfs_diskio.c
-SRC += src/px_xmodem_glue.c
-SRC += src/stm32l0xx_it.c
-SRC += src/usb_device.c
-SRC += src/usbd_cdc_if.c
-SRC += src/usbd_conf.c
-SRC += src/usbd_desc.c
-SRC += $(BSP)/px_board.c
-SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
-SRC += $(PICOLIB)/$(ARCH)/px_i2c.c
-SRC += $(PICOLIB)/$(ARCH)/px_rtc.c
-SRC += $(PICOLIB)/$(ARCH)/px_spi.c
-SRC += $(PICOLIB)/$(ARCH)/px_sysclk.c
-SRC += $(PICOLIB)/$(ARCH)/px_uart.c
-#SRC += $(PICOLIB)/$(ARCH)/px_uart_stdio.c
-SRC += $(PICOLIB)/$(ARCH)/px_usb_cdc_stdio.c
-SRC += $(PICOLIB)/comms/px_cli.c
-SRC += $(PICOLIB)/comms/px_vt100.c
-SRC += $(PICOLIB)/comms/px_xmodem.c
-SRC += $(PICOLIB)/devices/display/px_lcd_st7567_jhd12864.c
-SRC += $(PICOLIB)/devices/mem/px_at25s.c
-SRC += $(PICOLIB)/devices/mem/px_sd.c
-SRC += $(PICOLIB)/gfx/px_gfx.c
-SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
-SRC += $(PICOLIB)/gfx/images/px_gfx_img_hero_logo_64x42.c
-SRC += $(PICOLIB)/utils/px_circ_buffer.c
-SRC += $(PICOLIB)/utils/px_dbg.c
-SRC += $(PICOLIB)/utils/px_rtc_util.c
-SRC += $(PICOLIB)/utils/px_systmr.c
+SRC += sysclk_int.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
-SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c
-SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.c
-SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim.c
-SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c
-SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pcd.c
-SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pcd_ex.c
-SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_usb.c
-SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
-SRC += $(STMCUBE_USB)/Class/CDC/Src/usbd_cdc.c
-SRC += $(STMCUBE_USB)/Core/Src/usbd_core.c
-SRC += $(STMCUBE_USB)/Core/Src/usbd_ctlreq.c
-SRC += $(STMCUBE_USB)/Core/Src/usbd_ioreq.c
-SRC += $(CHAN_FATFS)/ff.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
 CPPSRC += 
@@ -172,9 +120,9 @@ INCDIRS += $(STMCUBE_USB)/Class/CDC/Inc
 INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-CDEFS += PX_DBG=0
+#CDEFS += PX_DBG=0
 CDEFS += STM32L072xx
-CDEFS += USE_FULL_LL_DRIVER
+#CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)

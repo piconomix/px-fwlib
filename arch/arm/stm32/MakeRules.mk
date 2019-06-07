@@ -89,6 +89,7 @@ endif
 MSG_SIZE                = 'Size:'
 MSG_FLASH_HEX           = 'Creating HEX load file for Flash:'
 MSG_FLASH_BIN           = 'Creating BIN load file for Flash:'
+MSG_FLASH_UF2           = 'Creating UF2 load file for Flash:'
 MSG_EEPROM              = 'Creating load file for EEPROM:'
 MSG_EXTENDED_LISTING    = 'Creating Extended Listing:'
 MSG_SYMBOL_TABLE        = 'Creating Symbol Table:'
@@ -125,11 +126,16 @@ ALL_LDFLAGS  ?= $(MCU) $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addpref
 all: begin gccversion build size end
 
 # Build targets
+ifeq ($(BUILD), release-boot)
+build: elf hex bin uf2 lss sym
+else
 build: elf hex bin lss sym
+endif
 
 elf: $(BUILD_DIR)/$(PROJECT).elf
 hex: $(BUILD_DIR)/$(PROJECT).hex
 bin: $(BUILD_DIR)/$(PROJECT).bin
+uf2: $(BUILD_DIR)/$(PROJECT).uf2
 lss: $(BUILD_DIR)/$(PROJECT).lss
 sym: $(BUILD_DIR)/$(PROJECT).sym
 
@@ -168,6 +174,12 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_FLASH_BIN) $@
 	$(OBJCOPY) -O binary $< $@
+
+# Create UF2 bootloader format file (.uf2) from BIN output file
+$(BUILD_DIR)/%.uf2: $(BUILD_DIR)/%.bin
+	@echo
+	@echo $(MSG_FLASH_UF2) $@
+	python $(PICOLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -o $@
 
 # Create extended listing file from ELF output file
 $(BUILD_DIR)/%.lss: $(BUILD_DIR)/%.elf
