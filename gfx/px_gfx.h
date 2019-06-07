@@ -37,13 +37,14 @@
  *  @ingroup GFX
  *  @defgroup PX_GFX px_gfx.h : Basic monochrome graphics library
  *  
- *  A basic monochrome (1 bit per pixel) graphics library for the JHD 
- *  JHD12864-G176BSW 128x64 monochrome LCD.
+ *  A basic monochrome (1 bit per pixel) graphics library.
  *  
  *  File(s):
  *  - gfx/px_gfx.h 
- *  - gfx/px_gfx_cfg_template.h 
- *  - gfx/px_gfx.c
+ *  - gfx/px_gfx_cfg_template.h
+ *  - gfx/px_gfx.c 
+ *  - gfx/px_gfx_lcd.h 
+ *  - gfx/px_gfx_lcd_st7567_jhd12864.c 
  *  
  *  Excellent tool to convert images and fonts: 
  *  [Ruison.com LCD Image Converter](https://github.com/riuson/lcd-image-converter)
@@ -74,7 +75,14 @@ extern "C"
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /// Size definition of an X or Y coordinate
-typedef uint8_t px_gfx_xy_t;
+typedef int16_t px_gfx_xy_t;
+
+#define PX_GFX_X_MIN    0
+#define PX_GFX_X_MID    (PX_GFX_DISP_SIZE_X / 2)
+#define PX_GFX_X_MAX    (PX_GFX_DISP_SIZE_X - 1)
+#define PX_GFX_Y_MIN    0
+#define PX_GFX_Y_MID    (PX_GFX_DISP_SIZE_Y / 2)
+#define PX_GFX_Y_MAX    (PX_GFX_DISP_SIZE_Y - 1)
 
 typedef enum
 {
@@ -97,12 +105,40 @@ typedef struct
     const uint8_t * data;
 } px_gfx_font_t;
 
+typedef struct
+{
+    px_gfx_xy_t x1;
+    px_gfx_xy_t y1;
+    px_gfx_xy_t x2;
+    px_gfx_xy_t y2;
+} px_gfx_area_t;
+
+typedef enum
+{
+    PX_GFX_ALIGN_V_TOP   = 0x00,
+    PX_GFX_ALIGN_V_MID   = 0x01,
+    PX_GFX_ALIGN_V_BOT   = 0x02,
+    PX_GFX_ALIGN_H_LEFT  = 0x00,
+    PX_GFX_ALIGN_H_MID   = 0x10,
+    PX_GFX_ALIGN_H_RIGHT = 0x20,
+} px_gfx_align_t;
+
+#define PX_GFX_ALIGN_TOP_LEFT   (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_LEFT )
+#define PX_GFX_ALIGN_TOP_MID    (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_MID  )
+#define PX_GFX_ALIGN_TOP_RIGHT  (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_RIGHT)
+#define PX_GFX_ALIGN_MID        (px_gfx_align_t)(PX_GFX_ALIGN_V_MID | PX_GFX_ALIGN_H_MID  )
+#define PX_GFX_ALIGN_BOT_LEFT   (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_LEFT )
+#define PX_GFX_ALIGN_BOT_MID    (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_MID  )
+#define PX_GFX_ALIGN_BOT_RIGHT  (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_RIGHT)
+
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void px_gfx_init        (void);
-void px_gfx_update      (void);
-void px_gfx_clr_scr     (void);
+void px_gfx_init           (void);
+void px_gfx_clear          (void);
+void px_gfx_draw_screen    (void);
+void px_gfx_update         (void);
+bool px_gfx_update_area_get(px_gfx_area_t * area);
 
 void px_gfx_draw_pixel(px_gfx_xy_t    x,
                        px_gfx_xy_t    y,
@@ -141,32 +177,32 @@ void px_gfx_draw_circ(px_gfx_xy_t    x,
                       px_gfx_xy_t    radius,
                       px_gfx_color_t color);
 
-void px_gfx_draw_img(px_gfx_xy_t     x,
-                     px_gfx_xy_t     y,
-                     px_gfx_xy_t     width,
-                     px_gfx_xy_t     height,
-                     px_gfx_color_t  color,
-                     const uint8_t * data);
+void px_gfx_draw_img(const px_gfx_img_t *  img,
+                     px_gfx_xy_t           x,
+                     px_gfx_xy_t           y,
+                     px_gfx_align_t        align,
+                     px_gfx_color_t        color);
 
-void px_gfx_draw_char(px_gfx_font_t * font,
-                      px_gfx_xy_t     x,
-                      px_gfx_xy_t     y,
-                      px_gfx_color_t  color,
-                      char            glyph);
+void px_gfx_draw_char(const px_gfx_font_t * font,
+                      px_gfx_xy_t           x,
+                      px_gfx_xy_t           y,
+                      px_gfx_align_t        align,
+                      px_gfx_color_t        color,
+                      char                  glyph);
 
-void px_gfx_draw_str(px_gfx_font_t * font,
-                     px_gfx_xy_t     x,
-                     px_gfx_xy_t     y,
-                     px_gfx_color_t  color,
-                     const char *    str);
+void px_gfx_draw_str(const px_gfx_font_t * font,
+                     px_gfx_xy_t           x,
+                     px_gfx_xy_t           y,
+                     px_gfx_align_t        align,
+                     px_gfx_color_t        color,
+                     const char *          str);
 
-void px_gfx_printf(px_gfx_font_t * font,
-                   px_gfx_xy_t     x,
-                   px_gfx_xy_t     y,
-                   px_gfx_color_t  color,
-                   const char *    format, ...);
-
-void px_gfx_dbg_frame_buf_report(void);
+void px_gfx_printf(const px_gfx_font_t * font,
+                   px_gfx_xy_t           x,
+                   px_gfx_xy_t           y,
+                   px_gfx_align_t        align,
+                   px_gfx_color_t        color,
+                   const char *          format, ...);
 
 /* _____MACROS_______________________________________________________________ */
 

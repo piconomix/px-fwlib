@@ -37,78 +37,126 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx.h"
-#include "px_lcd_st7567_jhd12864.h"
-
+#include "px_gfx_lcd.h"
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_gfx")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-/// Size definition internal coordinate calculations
-typedef int16_t px_gfx_calc_t;
+PX_DBG_DECL_NAME("px_gfx");
 
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-/// Allocate space for frame buffer [row(y)][col(x)]
-static uint8_t px_gfx_frame_buf[PX_GFX_DISP_SIZE_Y / 8][PX_GFX_DISP_SIZE_X];
+static px_gfx_area_t px_gfx_update_area;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
+static void px_gfx_update_area_reset(void)
+{
+    px_gfx_update_area.x1 = PX_GFX_X_MAX + 1;
+    px_gfx_update_area.x2 = PX_GFX_X_MIN - 1;
+    px_gfx_update_area.y1 = PX_GFX_Y_MAX + 1;
+    px_gfx_update_area.y2 = PX_GFX_Y_MIN - 1;
+}
+
+static bool px_gfx_update_area_is_set(void)
+{
+    if(px_gfx_update_area.x1 <= PX_GFX_X_MAX)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+static void px_gfx_invalidate_area(px_gfx_xy_t x1,
+                                   px_gfx_xy_t y1,
+                                   px_gfx_xy_t x2,
+                                   px_gfx_xy_t y2)
+{
+    // Swap coordinates if required
+    if(x1 > x2) PX_SWAP(px_gfx_xy_t, x1, x2);
+    if(y1 > y2) PX_SWAP(px_gfx_xy_t, y1, y2);
+
+    // Outside display area?
+    if((x1 < PX_GFX_X_MIN) && (x2 < PX_GFX_X_MIN)) return;
+    if((x1 > PX_GFX_X_MAX) && (x2 > PX_GFX_X_MAX)) return;
+    if((y1 < PX_GFX_Y_MIN) && (y2 < PX_GFX_Y_MIN)) return;
+    if((y1 > PX_GFX_Y_MAX) && (y2 > PX_GFX_Y_MAX)) return;
+
+    // Clip to display if required
+    if(x1 < PX_GFX_X_MIN) x1 = PX_GFX_X_MIN;
+    if(x2 > PX_GFX_X_MAX) x2 = PX_GFX_X_MAX;
+    if(y1 < PX_GFX_Y_MIN) y1 = PX_GFX_Y_MIN;
+    if(y2 > PX_GFX_Y_MAX) y2 = PX_GFX_Y_MAX;
+
+    // Update area
+    if(px_gfx_update_area.x1 > x1)  px_gfx_update_area.x1 = x1;
+    if(px_gfx_update_area.x2 < x2)  px_gfx_update_area.x2 = x2;
+    if(px_gfx_update_area.y1 > y1)  px_gfx_update_area.y1 = y1;
+    if(px_gfx_update_area.y2 < y2)  px_gfx_update_area.y2 = y2;
+}
+
+static void px_gfx_draw_pixel_clipped(px_gfx_xy_t    x,
+                                      px_gfx_xy_t    y,
+                                      px_gfx_color_t color)
+{
+    // X and Y coordinate inside display area?
+    if(  (x >= PX_GFX_X_MIN) 
+       &&(x <= PX_GFX_X_MAX)
+       &&(y >= PX_GFX_Y_MIN)
+       &&(y <= PX_GFX_Y_MAX)  )
+    {
+        px_gfx_lcd_draw_pixel(x, y, color);
+    }
+}
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_gfx_init(void)
 {
-    px_gfx_clr_scr();
+    px_gfx_clear();
+}
+
+void px_gfx_clear(void)
+{
+    px_gfx_update_area_reset();
+    px_gfx_invalidate_area(0, 0, PX_GFX_X_MAX, PX_GFX_DISP_SIZE_Y);
+    px_gfx_lcd_clear();
+}
+
+void px_gfx_draw_screen(void)
+{
+    px_gfx_invalidate_area(0, 0, PX_GFX_X_MAX, PX_GFX_DISP_SIZE_Y);
+    px_gfx_lcd_update(&px_gfx_update_area);
+    px_gfx_update_area_reset();
 }
 
 void px_gfx_update(void)
 {
-    px_gfx_xy_t y;
-
-    // Send content of frame buffer to LCD
-    for(y = 0; y < (PX_GFX_DISP_SIZE_Y / 8); y++)
+    if(px_gfx_update_area_is_set())
     {
-        px_lcd_sel_page(y);
-        px_lcd_sel_col(0);
-        px_lcd_wr_disp_data(px_gfx_frame_buf[y], PX_GFX_DISP_SIZE_X);
+        px_gfx_lcd_update(&px_gfx_update_area);
+        px_gfx_update_area_reset();
     }
 }
 
-void px_gfx_clr_scr(void)
+bool px_gfx_update_area_get(px_gfx_area_t * area)
 {
-    memset(px_gfx_frame_buf, 0, sizeof(px_gfx_frame_buf));
+    memcpy(area, &px_gfx_update_area, sizeof(px_gfx_area_t));
+
+    return px_gfx_update_area_is_set();
 }
 
 void px_gfx_draw_pixel(px_gfx_xy_t    x,
                        px_gfx_xy_t    y,
                        px_gfx_color_t color)
 {
-    uint8_t * frame = &px_gfx_frame_buf[y / 8][x];
-
-    // X or Y coordinate outside display area?
-    if((x >= PX_GFX_DISP_SIZE_X) || (y >= PX_GFX_DISP_SIZE_Y))
-    {
-        // Clip
-        return;
-    }
-
-    switch(color)
-    {
-    case PX_GFX_COLOR_ON:
-        *frame |= (0x01 << (y % 8));
-        break;
-    case PX_GFX_COLOR_OFF:
-        *frame &= ~(0x01 << (y % 8));
-        break;
-    case PX_GFX_COLOR_INVERT:
-        *frame ^= (0x01 << (y % 8));
-        break;
-    default:
-        break;
-    }
+    px_gfx_invalidate_area   (x, y, x, y);
+    px_gfx_draw_pixel_clipped(x, y, color);
 }
 
 void px_gfx_draw_line(px_gfx_xy_t    x1,
@@ -142,9 +190,10 @@ void px_gfx_draw_line(px_gfx_xy_t    x1,
     else
     {
         // http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
-        px_gfx_xy_t     x, y, dx, dy;
-        px_gfx_calc_t   err;
-        bool            ystep, swap_xy;
+        px_gfx_xy_t  x, y, dx, dy, err;
+        bool         ystep, swap_xy;
+
+        px_gfx_invalidate_area(x1, y1, x2, y2);
         
         // Calculate absolute dx
         if(x2 > x1)
@@ -210,12 +259,12 @@ void px_gfx_draw_line(px_gfx_xy_t    x1,
             if(swap_xy)
             {
                 // Yes
-                px_gfx_draw_pixel(y, x, color);
+                px_gfx_draw_pixel_clipped(x, y, color);
             }
             else
             {
                 // No
-                px_gfx_draw_pixel(x, y, color);
+                px_gfx_draw_pixel_clipped(x, y, color);
             }
             // Acumulate error for next point
             err -= dy;
@@ -247,9 +296,12 @@ void px_gfx_draw_line_hor(px_gfx_xy_t    x,
 {
     px_gfx_xy_t i;
 
+    px_gfx_invalidate_area(x, y, x + width - 1, y);
+
     for(i=0; i < width; i++)
     {
-        px_gfx_draw_pixel(x + i, y, color);
+        px_gfx_draw_pixel_clipped(x, y, color);
+        x++;
     }
 }
 
@@ -260,9 +312,12 @@ void px_gfx_draw_line_ver(px_gfx_xy_t    x,
 {
     px_gfx_xy_t j;
 
+    px_gfx_invalidate_area(x, y, x, y + height - 1);
+
     for(j=0; j < height; j++)
     {
-        px_gfx_draw_pixel(x, y + j, color);
+        px_gfx_draw_pixel_clipped(x, y, color);
+        y++;
     }
 }
 
@@ -272,14 +327,16 @@ void px_gfx_draw_rect(px_gfx_xy_t    x,
                       px_gfx_xy_t    height,
                       px_gfx_color_t color)
 {
+    px_gfx_invalidate_area(x, y, x + width - 1, y + height - 1);
+
     // Top
-    px_gfx_draw_line_hor(x,             y,              width, color);
+    px_gfx_draw_line_hor(x, y, width, color);
     // Bottom
-    px_gfx_draw_line_hor(x,             y + height - 1, width, color);
+    px_gfx_draw_line_hor(x, y + height - 1, width, color);
     // Left
-    px_gfx_draw_line_ver(x,             y,              height, color);
+    px_gfx_draw_line_ver(x, y, height, color);
     // Right
-    px_gfx_draw_line_ver(x + width - 1, y,              height, color);
+    px_gfx_draw_line_ver(x + width - 1, y, height, color);
 }
 
 void px_gfx_draw_fill(px_gfx_xy_t    x,
@@ -290,25 +347,31 @@ void px_gfx_draw_fill(px_gfx_xy_t    x,
 {
     px_gfx_xy_t j;
 
+    px_gfx_invalidate_area(x, y, x + width - 1, y + height - 1);
+
     for(j=0; j < height; j++)
     {
-        px_gfx_draw_line_hor(x, y + j, width, color);
+        px_gfx_draw_line_hor(x, y, width, color);
+        y++;
     }    
 }
 
 void px_gfx_draw_circ(px_gfx_xy_t    x,
-                        px_gfx_xy_t    y,
-                        px_gfx_xy_t    radius,
-                        px_gfx_color_t color)
+                      px_gfx_xy_t    y,
+                      px_gfx_xy_t    radius,
+                      px_gfx_color_t color)
 {
     // https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
     // https://rosettacode.org/wiki/Bitmap/Midpoint_circle_algorithm#C
 
-    px_gfx_calc_t f     = 1 - radius;
-    px_gfx_calc_t ddf_x = 1;
-    px_gfx_calc_t ddf_y = -2 * radius;
-    px_gfx_calc_t dx    = 0;
-    px_gfx_calc_t dy    = radius;
+    px_gfx_xy_t f     = 1 - radius;
+    px_gfx_xy_t ddf_x = 1;
+    px_gfx_xy_t ddf_y = -2 * radius;
+    px_gfx_xy_t dx    = 0;
+    px_gfx_xy_t dy    = radius;
+
+    px_gfx_invalidate_area(x - radius + 1, y - radius + 1,
+                           x + radius - 1, y + radius - 1);
 
     // 0 deg (12 o'clock)
     px_gfx_draw_pixel(x,            y + radius, color);
@@ -338,41 +401,61 @@ void px_gfx_draw_circ(px_gfx_xy_t    x,
         f     += ddf_x;
 
         // Draw pixel in each octant (45 deg pie)
-        px_gfx_draw_pixel(x + dx, y + dy, color);
-        px_gfx_draw_pixel(x - dx, y + dy, color);
-        px_gfx_draw_pixel(x + dx, y - dy, color);
-        px_gfx_draw_pixel(x - dx, y - dy, color);
-        px_gfx_draw_pixel(x + dy, y + dx, color);
-        px_gfx_draw_pixel(x - dy, y + dx, color);
-        px_gfx_draw_pixel(x + dy, y - dx, color);
-        px_gfx_draw_pixel(x - dy, y - dx, color);
+        px_gfx_draw_pixel_clipped(x + dx, y + dy, color);
+        px_gfx_draw_pixel_clipped(x - dx, y + dy, color);
+        px_gfx_draw_pixel_clipped(x + dx, y - dy, color);
+        px_gfx_draw_pixel_clipped(x - dx, y - dy, color);
+        px_gfx_draw_pixel_clipped(x + dy, y + dx, color);
+        px_gfx_draw_pixel_clipped(x - dy, y + dx, color);
+        px_gfx_draw_pixel_clipped(x + dy, y - dx, color);
+        px_gfx_draw_pixel_clipped(x - dy, y - dx, color);
     }
 }
 
-void px_gfx_draw_img(px_gfx_xy_t     x,
-                     px_gfx_xy_t     y,
-                     px_gfx_xy_t     width,
-                     px_gfx_xy_t     height,
-                     px_gfx_color_t  color,
-                     const uint8_t * data)
+void px_gfx_draw_img(const px_gfx_img_t * img,
+                     px_gfx_xy_t          x,
+                     px_gfx_xy_t          y,
+                     px_gfx_align_t       align,
+                     px_gfx_color_t       color)
 {
-    px_gfx_xy_t i;
-    px_gfx_xy_t j;
-    uint8_t     mask;
+    px_gfx_xy_t     i;
+    px_gfx_xy_t     j;
+    uint8_t         mask;
+	const uint8_t * data = img->data;
+
+    // Set alignment
+    if(align & PX_GFX_ALIGN_H_MID)
+    {
+        x -= (img->width + 1) / 2 - 1;
+    }
+    if(align & PX_GFX_ALIGN_H_RIGHT)
+    {
+        x -= img->width;
+    }
+    if(align & PX_GFX_ALIGN_V_MID)
+    {
+        y -= img->height / 2 - 1;
+    }
+    if(align & PX_GFX_ALIGN_V_BOT)
+    {
+        y -= img->height - 1;
+    }
+
+    px_gfx_invalidate_area(x, y, x + img->width - 1, y + img->height - 1);
    
     // Repeat for each row
-    for(j = 0; j < height; j++)
+    for(j = 0; j < img->height; j++)
     {
         // Start at most significant bit
         mask = 0x80;
         // Repeat for each pixel in row
-        for(i = 0; i < width; i++)
+        for(i = 0; i < img->width; i++)
         {
             // Must pixel be drawn?
             if(*data & mask)
             {
                 // Yes
-                px_gfx_draw_pixel(x + i, y + j, color);
+                px_gfx_draw_pixel_clipped(x + i, y + j, color);
             }
             // Next bit
             mask >>= 1;
@@ -394,13 +477,16 @@ void px_gfx_draw_img(px_gfx_xy_t     x,
     }   
 }
 
-void px_gfx_draw_char(px_gfx_font_t * font,
-                      px_gfx_xy_t     x,
-                      px_gfx_xy_t     y,
-                      px_gfx_color_t  color,
-                      char            glyph)
+void px_gfx_draw_char(const px_gfx_font_t * font,
+                      px_gfx_xy_t           x,
+                      px_gfx_xy_t           y,
+                      px_gfx_align_t        align,
+                      px_gfx_color_t        color,
+                      char                  glyph)
 {
+    px_gfx_img_t    img;
     const uint8_t * data = font->data;
+	int             width_bytes = (font->width + 7) / 8;
 
     // Find glyph
     while(*data != 0x00)
@@ -411,7 +497,7 @@ void px_gfx_draw_char(px_gfx_font_t * font,
             break;
         }
         // Next glyph
-        data += font->height + 1;
+        data += (width_bytes * font->height) + 1;
     }
 
     // Not found?
@@ -423,28 +509,54 @@ void px_gfx_draw_char(px_gfx_font_t * font,
     // Advance to start of glyph data
     data++;
 
+    // Set image parameters
+    img.width  = font->width;
+    img.height = font->height;
+    img.data   = data;
+
     // Draw glyph
-    px_gfx_draw_img(x, y, font->width, font->height, color, data);
+    px_gfx_draw_img(&img, x, y, align, color);
 }
 
-void px_gfx_draw_str(px_gfx_font_t * font,
-                     px_gfx_xy_t     x,
-                     px_gfx_xy_t     y,
-                     px_gfx_color_t  color,
-                     const char *    str)
+void px_gfx_draw_str(const px_gfx_font_t * font,
+                     px_gfx_xy_t           x,
+                     px_gfx_xy_t           y,
+                     px_gfx_align_t        align,
+                     px_gfx_color_t        color,
+                     const char *          str)
 {
+    // Set alignment
+    if(align & PX_GFX_ALIGN_V_MID)
+    {
+        y -= font->height / 2 - 1;
+    }
+    if(align & PX_GFX_ALIGN_V_BOT)
+    {
+        y -= font->height - 1;
+    }
+    if(align & PX_GFX_ALIGN_H_MID)
+    {
+        x -= (font->width + 1) * (px_gfx_xy_t)strlen(str) / 2 - 1;
+    }
+    if(align & PX_GFX_ALIGN_H_RIGHT)
+    {
+        x -= (font->width + 1) * (px_gfx_xy_t)strlen(str) - 1;
+    }
+
+    // Draw each glyph
     while(*str != '\0')
     {
-        px_gfx_draw_char(font, x, y, color, *str++);
+        px_gfx_draw_char(font, x, y, PX_GFX_ALIGN_TOP_LEFT, color, *str++);
         x += font->width + 1;
     }
 }
 
-void px_gfx_printf(px_gfx_font_t * font,
-                   px_gfx_xy_t     x,
-                   px_gfx_xy_t     y,
-                   px_gfx_color_t  color,
-                   const char *    format, ...)
+void px_gfx_printf(const px_gfx_font_t * font,
+                   px_gfx_xy_t           x,
+                   px_gfx_xy_t           y,
+                   px_gfx_align_t        align,
+                   px_gfx_color_t        color,
+                   const char *          format, ...)
 {
     va_list args;
     char str[PX_GFX_CFG_STR_BUFFER_SIZE];
@@ -457,27 +569,6 @@ void px_gfx_printf(px_gfx_font_t * font,
     // Append terminating zero in case of buffer overrun
     str[PX_GFX_CFG_STR_BUFFER_SIZE-1] = '\0';
 
-    px_gfx_draw_str(font, x, y, color, str);
-}
-
-void px_gfx_dbg_frame_buf_report(void)
-{
-    px_gfx_xy_t x, y;
-
-    for(y=0; y<PX_GFX_DISP_SIZE_Y; y++)
-    {
-        for(x=0; x<PX_GFX_DISP_SIZE_X; x++)
-        {
-            if(((px_gfx_frame_buf[y / 8][x]) & (1 << (y % 8))) != 0)
-            {
-                PX_DBG_TRACE("1");
-            }
-            else
-            {
-                PX_DBG_TRACE("0");
-            }
-        }
-        PX_DBG_TRACE("\n");
-    }
+    px_gfx_draw_str(font, x, y, align, color, str);
 }
 

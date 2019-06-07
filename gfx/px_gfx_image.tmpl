@@ -1,21 +1,20 @@
 $(start_block_header)
 /*******************************************************************************
-*    _____   _____   _____   ____    _   _    ____    __  __   _____  __   __  *
-*   |  __ \ |_   _| / ____| / __ \  | \ | |  / __ \  |  \/  | |_   _| \ \ / /  *
-*   | |__) |  | |  | |     | |  | | |  \| | | |  | | | \  / |   | |    \ V /   *
-*   |  ___/   | |  | |     | |  | | | . ` | | |  | | | |\/| |   | |     > <    *
-*   | |      _| |_ | |____ | |__| | | |\  | | |__| | | |  | |  _| |_   / . \   *
-*   |_|     |_____| \_____| \____/  |_| \_|  \____/  |_|  |_| |_____| /_/ \_\  *
+*      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM   *
+*     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /      *
+*     | |_) |  | |  | |     | | | | |  \| | | | | | | |\/| |  | |   \  /       *
+*     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \       *
+*     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\      *
 *                                                                              *
 *******************************************************************************/
 #include "px_gfx.h"
 $(end_block_header)
 $(start_block_images_table)
-const uint$(img_data_block_size)_t $(doc_name_ws)_data[$(out_blocks_count)] =
+static const uint$(img_data_block_size)_t $(doc_name_ws)_data[$(out_blocks_count)] =
 {
     $(out_image_preview)
     $(out_image_data)
 };
 
-px_gfx_img_t $(doc_name_ws) = {$(out_image_width), $(out_image_height), $(doc_name_ws)_data};
+const px_gfx_img_t $(doc_name_ws) = {$(out_image_width), $(out_image_height), $(doc_name_ws)_data};
 $(end_block_images_table)
