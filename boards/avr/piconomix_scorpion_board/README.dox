@@ -19,7 +19,7 @@
 
 A Microchip ATmega328P development board.
 
-@image html piconomix_scorpion_board/piconomix_scorpion_board.jpg "Piconomix ATmega328P Scorpion Board" width=650px
+@image html scorpion_board.jpg "Piconomix ATmega328P Scorpion Board" width=650px
 
 There is:
 
@@ -149,7 +149,7 @@ skipped.
 
 Download and run the [CDM Uninstaller] [ftdi_uninstaller]:
 
-![](images/piconomix_scorpion_board/cdm_uninstaller.png)
+![](scorpion_board_cdm_uninstaller.png)
 
 ### 7.1.2 Add registry setting to ignore FTDI device serial number ###
 
@@ -165,7 +165,7 @@ assigned the same COM port number. The registry setting must be applied
 Specify the device type and VID/PID and press WRITE to apply. You can also 
 remove the registry setting with the ERASE button.
 
-![](images/piconomix_scorpion_board/ftdi_ignore_ser.png)
+![](scorpion_board_ftdi_ignore_ser.png)
 
 @warn_s
 The utility should be run **before** the first device installation.
@@ -188,7 +188,7 @@ The Device Manager utility can also be used to find out:
 
 Start > Device Manager
 
-![Windows Device Manager - COM port assignment](piconomix_scorpion_board/device_manager.png)
+![Windows Device Manager - COM port assignment](scorpion_board_device_manager.png)
 
 7.3 Install Tera Term - Terminal Emulator {#SCORPION_BOARD_INSTALL_TERATERM}
 ----------------------------------------------------------------------------
@@ -202,7 +202,7 @@ no parity, 1 stop bit and no flow control:
 
 Setup > Serial port...
 
-![Tera Term COM port setup](piconomix_scorpion_board/tera_term_setup.png)
+![Tera Term COM port setup](tera_term_setup.png)
 
 ### 7.3.2 Press RST (reset) button ###
 
@@ -217,7 +217,7 @@ show that it is ready to accept a new command.
 
 This command will list all of the available commands with parameters:
 
-![CLI Demo on Tera Term (Terminal Emulator)](piconomix_scorpion_board/tera_term_cli.png)
+![CLI Demo on Tera Term (Terminal Emulator)](scorpion_board_cli.png)
 
 ### 7.3.4 Type 'beep 100' and ENTER ###
 
@@ -247,11 +247,11 @@ Start Atmel Studio. Configure options:
 
 Tools > Options... > Builder > GNU Make
 
-![Atmel Studio - Options](atmel_studio/as_options_menu.png)
+![Atmel Studio - Options](as_options_menu.png)
 
 Set the path to the custom shell utils and make:
 
-![Atmel Studio - Custom ShellUtils](atmel_studio/as_builder_custom.png)
+![Atmel Studio - Custom ShellUtils](as_builder_custom.png)
 
 @warn_s
 If you want to correctly build other projects generated with the Atmel Studio 
@@ -273,17 +273,17 @@ Open and build @ref SCORPION_BOARD_EXAMPLE_GPIO. It is located here:
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 
-![Atmel Studio Open Project menu](atmel_studio/as_open_project_menu.png)
+![Atmel Studio Open Project menu](as_open_project_menu.png)
 
 Navigate to the project, select and open:
 
-![Atmel Studio Open Project selection](piconomix_scorpion_board/scorpion_board_open_project.png)
+![Atmel Studio Open Project selection](scorpion_board_open_project.png)
 
 Build the project:
 
 Build > build Solution **F7**
 
-![Build solution in Atmel Studio](piconomix_scorpion_board/scorpion_board_build_project.png)
+![Build solution in Atmel Studio](scorpion_board_build_project.png)
 
 @tip_s
 If this step was not succesfull, it probably means that the custom build tools
@@ -299,12 +299,12 @@ have a binary file called "gpio.bin". The new application is sent to the
 
 File > Transfer > XMODEM > Send...
 
-![Tera Term - Start XMODEM file send](piconomix_scorpion_board/tera_term_xmodem_send01.png)
+![Tera Term - Start XMODEM file send](tera_term_xmodem_send01.png)
 
 The **BIN** file (not HEX or ELF!) is selected and the CRC variant of XMODEM is 
 specified:
 
-![Tera Term - Select file and specify CRC transfer method](piconomix_scorpion_board/tera_term_xmodem_send02.png)
+![Tera Term - Select file and specify CRC transfer method](tera_term_xmodem_send02.png)
 
 @tip_s
 Tera Term will now wait for the @ref SCORPION_BOARD_BOOTLOADER_XMODEM

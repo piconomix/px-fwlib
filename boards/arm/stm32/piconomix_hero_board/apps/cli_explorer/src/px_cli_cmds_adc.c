@@ -148,6 +148,11 @@ static const char* px_cli_cmd_fn_adc_s(uint8_t argc, char* argv[])
             // Button pressed?
             if(PX_USR_PB_IS_PRESSED())
             {
+                // Wait until button is released
+                while(PX_USR_PB_IS_PRESSED())
+                {
+                    ;
+                }
                 // Stop
                 return NULL;
             }
@@ -219,6 +224,11 @@ static const char* px_cli_cmd_fn_adc_bat(uint8_t argc, char* argv[])
             // Button pressed?
             if(PX_USR_PB_IS_PRESSED())
             {
+                // Wait until button is released
+                while(PX_USR_PB_IS_PRESSED())
+                {
+                    ;
+                }
                 // Stop
                 return NULL;
             }

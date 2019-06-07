@@ -1,5 +1,8 @@
 7. How to guides {#HOW_TO_GUIDES}
 =================================
 
-- @subpage HOWTO_MAKEFILES
 - @subpage HOWTO_MSYS
+- @subpage HOWTO_MAKEFILES
+- @subpage HOWTO_FTDI
+- @subpage HOWTO_TERA_TERM
+- @subpage HOWTO_TRUESTUDIO

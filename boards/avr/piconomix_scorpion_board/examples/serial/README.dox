@@ -13,7 +13,7 @@ your development setup works.
 The UART is configured to 115200 BAUD, 8 Data Bits, No Parity and 1 Stop Bit. 
 The string "Hello World!" is sent and then any bytes received is echoed back.
 
-![Serial example interacting with Tera Term](piconomix_scorpion_board/scorpion_board_serial_example.png)
+![Serial example interacting with Tera Term](scorpion_board_serial_example.png)
   
 File(s):
 - boards/avr/piconomix_scorpion_board/examples/02_serial/src/main.c

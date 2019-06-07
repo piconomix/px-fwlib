@@ -29,7 +29,7 @@
  
     Title:          px_lib_stm32cube.h : Include file for STM32Cube library
     Author(s):      Pieter Conradie
-    Creation Date:  2008-04-11
+    Creation Date:  2018-04-11
 
 ============================================================================= */
 

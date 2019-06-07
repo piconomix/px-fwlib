@@ -340,7 +340,7 @@ void px_at45d_wr_page_offset(const void * buffer,
     px_at45d_ready_flag = false;
 }
 
-void px_at45d_erase_page(uint16_t page)
+void px_at45d_erase(uint16_t page)
 {
     uint8_t data[1];
 

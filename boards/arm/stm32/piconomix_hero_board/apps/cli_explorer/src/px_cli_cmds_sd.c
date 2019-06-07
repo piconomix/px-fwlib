@@ -65,7 +65,7 @@ static FILINFO chan_fs_file_info;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_sd_init(uint8_t argc, char* argv[])
+static const char* px_cli_cmd_fn_sd_mount(uint8_t argc, char* argv[])
 {
     int           i;
     px_sd_cid_t * cid   = (px_sd_cid_t *)main_buffer;
@@ -183,12 +183,12 @@ static const char* px_cli_cmd_fn_sd_ls(uint8_t argc, char* argv[])
 }
 
 // Create CLI command structures
-PX_CLI_CMD_CREATE(px_cli_cmd_sd_init,      "init", 0, 0,   "",          "Initialize SD Card and report info")
-PX_CLI_CMD_CREATE(px_cli_cmd_sd_rd_block,  "r",    1, 1,   "<block>",   "Read SD Block")
-PX_CLI_CMD_CREATE(px_cli_cmd_sd_ls,        "ls",   0, 1,   "[path]",    "List files in specified directory")
+PX_CLI_CMD_CREATE(px_cli_cmd_sd_mount,     "mount", 0, 0,   "",          "Initialize SD Card and report info")
+PX_CLI_CMD_CREATE(px_cli_cmd_sd_rd_block,  "r",     1, 1,   "<block>",   "Read SD Block")
+PX_CLI_CMD_CREATE(px_cli_cmd_sd_ls,        "ls",    0, 1,   "[path]",    "List files in specified directory")
 
 PX_CLI_GROUP_CREATE(px_cli_group_sd, "sd")
-    PX_CLI_CMD_ADD(px_cli_cmd_sd_init,      px_cli_cmd_fn_sd_init)
+    PX_CLI_CMD_ADD(px_cli_cmd_sd_mount,     px_cli_cmd_fn_sd_mount)
     PX_CLI_CMD_ADD(px_cli_cmd_sd_rd_block,  px_cli_cmd_fn_sd_rd_block)
     PX_CLI_CMD_ADD(px_cli_cmd_sd_ls,        px_cli_cmd_fn_sd_ls)
 PX_CLI_GROUP_END()

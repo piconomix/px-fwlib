@@ -1,0 +1,7 @@
+9. Bootloaders {#HERO_BOARD_BOOTLOADERS}
+=========================================
+
+- @subpage HERO_BOARD_BOOTLOADER_USB_MSD
+- @subpage HERO_BOARD_BOOTLOADER_UART_XMODEM
+  ![](tera_term_xmodem_send01_preview.png)
+

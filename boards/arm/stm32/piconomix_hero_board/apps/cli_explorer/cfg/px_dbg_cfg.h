@@ -65,12 +65,12 @@
 #define PX_DBG_CFG_BUF_SIZE 64
 
 /// Provide function to output debug timestamp
-#if 1
+#if 0
 // Example 1: Create timestamp using sysclk tick
 #include "px_sysclk.h"
 #define PX_DBG_CFG_TIMESTAMP(str)  sprintf(str, "%08lu", (uint32_t)px_sysclk_get_tick_count())
 #endif
-#if 0
+#if 1
 // Example 2: Call a function in 'main.h'
 #include "main.h"
 #define PX_DBG_CFG_TIMESTAMP(str)  main_dbg_timestamp(str)

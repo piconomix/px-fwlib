@@ -1,0 +1,17 @@
+LCD graphic animation example {#HERO_BOARD_EXAMPLE_ANIMATION}
+=============================================================
+
+This example displays 8 graphic images in succesion on the Graphic LCD to form 
+an animation:
+
+![](animation.gif)
+Image source: [NUTS & VOLTS: Building your own Bitmaps and Animation for the 128x64 Graphics Kit](http://www.nutsvolts.com/blog/post/building_your_own_bitmaps_and_animation_for_the_128x64_graphics_kit)
+  
+File(s):
+- boards/arm/stm32/piconomix_hero_board/examples/animation/src/main.c
+
+The following modules are used:
+- @ref BOARDS_STM32_PICONOMIX_HERO
+- @ref STM32_SPI
+- @ref PX_LCD_ST7567_JHD12864
+- @ref PX_GFX

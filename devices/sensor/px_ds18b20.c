@@ -58,14 +58,38 @@ PX_DBG_DECL_NAME("px_ds18b20");
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
+static px_ds18b20_error_t px_ds18b20_start(px_one_wire_rom_t * rom)
+{
+    if(rom != NULL)
+    {
+        if(px_one_wire_match_rom(rom) != PX_ONE_WIRE_ERR_NONE)
+        {
+            PX_DBG_ERR("PX_DS18B20 device not present");
+            return PX_DS18B20_ERR_NO_DEVICES_PRESENT;
+        }
+    }
+    else
+    {
+        if(px_one_wire_skip_rom() != PX_ONE_WIRE_ERR_NONE)
+        {
+            PX_DBG_ERR("PX_DS18B20 device not present");
+            return PX_DS18B20_ERR_NO_DEVICES_PRESENT;
+        }
+    }
+
+    return PX_DS18B20_ERR_NONE;
+}
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-px_ds18b20_error_t px_ds18b20_start_temp_conversion(void)
+px_ds18b20_error_t px_ds18b20_start_temp_conversion(px_one_wire_rom_t * rom)
 {
-    if(px_one_wire_skip_rom() != PX_ONE_WIRE_ERR_NONE)
+    px_ds18b20_error_t error;
+
+    // Address DS18B20
+    error = px_ds18b20_start(rom);
+    if(error != PX_DS18B20_ERR_NONE)
     {
-        PX_DBG_ERR("PX_DS18B20 device not present");
-        return PX_DS18B20_ERR_NO_DEVICES_PRESENT;
+        return error;
     }
 
     // Start temperature conversion
@@ -88,20 +112,22 @@ bool px_ds18b20_temp_conversion_finished(void)
     }
 }
 
-px_ds18b20_error_t px_ds18b20_rd_scratchpad(px_ds18b20_scratchpad_t * scratchpad)
+px_ds18b20_error_t px_ds18b20_rd_scratchpad(px_one_wire_rom_t *       rom,
+                                            px_ds18b20_scratchpad_t * scratchpad)
 {
-    uint8_t   i;
-    uint8_t * data_u8 = (uint8_t *)scratchpad;
-    uint8_t   crc;
+    uint8_t            i;
+    uint8_t *          data_u8 = (uint8_t *)scratchpad;
+    uint8_t            crc;
+    px_ds18b20_error_t error;
 
-    // Reset device(s) and send SKIP ROM command
-    if(px_one_wire_skip_rom() != PX_ONE_WIRE_ERR_NONE)
+    // Address DS18B20
+    error = px_ds18b20_start(rom);
+    if(error != PX_DS18B20_ERR_NONE)
     {
-        PX_DBG_ERR("PX_DS18B20 device not present");
-        return PX_DS18B20_ERR_NO_DEVICES_PRESENT;
+        return error;
     }
 
-    // Send Read Scratchpad command
+    // Send READ SCRATCHPAD command
     px_one_wire_wr_u8(PX_DS18B20_CMD_RD_SCRATCHPAD);
 
     // Read content
@@ -133,13 +159,58 @@ px_ds18b20_error_t px_ds18b20_rd_scratchpad(px_ds18b20_scratchpad_t * scratchpad
     return PX_DS18B20_ERR_NONE;
 }
 
-px_ds18b20_error_t px_ds18b20_rd_pwr_supply(bool * bus_pwr_flag)
+px_ds18b20_error_t px_ds18b20_wr_scratchpad(px_one_wire_rom_t *             rom,
+                                            const px_ds18b20_scratchpad_t * scratchpad)
 {
-    // Reset device(s) and send SKIP ROM command
-    if(px_one_wire_skip_rom() != PX_ONE_WIRE_ERR_NONE)
+    px_ds18b20_error_t error;
+
+    // Address DS18B20
+    error = px_ds18b20_start(rom);
+    if(error != PX_DS18B20_ERR_NONE)
     {
-        PX_DBG_ERR("PX_DS18B20 device not present");
-        return PX_DS18B20_ERR_NO_DEVICES_PRESENT;
+        return error;
+    }
+
+    // Send WRITE SCRATCHPAD command
+    px_one_wire_wr_u8(PX_DS18B20_CMD_WR_SCRATCHPAD);
+
+    // Write content
+    px_one_wire_wr_u8(scratchpad->th);
+    px_one_wire_wr_u8(scratchpad->tl);
+    px_one_wire_wr_u8(scratchpad->cfg_reg);
+
+    // Success
+    return PX_DS18B20_ERR_NONE;
+}
+
+px_ds18b20_error_t px_ds18b20_copy_scratchpad(px_one_wire_rom_t * rom)
+{
+    px_ds18b20_error_t error;
+
+    // Address DS18B20
+    error = px_ds18b20_start(rom);
+    if(error != PX_DS18B20_ERR_NONE)
+    {
+        return error;
+    }
+
+    // Send COPY SCRATCHPAD command
+    px_one_wire_wr_u8(PX_DS18B20_CMD_COPY_SCRATCHPAD);
+
+    // Success
+    return PX_DS18B20_ERR_NONE;
+}
+
+px_ds18b20_error_t px_ds18b20_rd_pwr_supply(px_one_wire_rom_t * rom,
+                                            bool *              bus_pwr_flag)
+{
+    px_ds18b20_error_t error;
+
+    // Address DS18B20
+    error = px_ds18b20_start(rom);
+    if(error != PX_DS18B20_ERR_NONE)
+    {
+        return error;
     }
 
     // Send Read Power Supply command
@@ -162,13 +233,17 @@ px_ds18b20_error_t px_ds18b20_rd_pwr_supply(bool * bus_pwr_flag)
     return PX_DS18B20_ERR_NONE;
 }
 
-px_ds18b20_error_t px_ds18b20_rd_temp(uint8_t * temp_msb, uint8_t * temp_lsb)
+px_ds18b20_error_t px_ds18b20_rd_temp(px_one_wire_rom_t * rom,
+                                      uint8_t *           temp_msb, 
+                                      uint8_t *           temp_lsb)
 {
-    // Reset device(s) and send SKIP ROM command
-    if(px_one_wire_skip_rom() != PX_ONE_WIRE_ERR_NONE)
+    px_ds18b20_error_t error;
+
+    // Address DS18B20
+    error = px_ds18b20_start(rom);
+    if(error != PX_DS18B20_ERR_NONE)
     {
-        PX_DBG_ERR("PX_DS18B20 device not present");
-        return PX_DS18B20_ERR_NO_DEVICES_PRESENT;
+        return error;
     }
 
     // Send Read Scratchpad command

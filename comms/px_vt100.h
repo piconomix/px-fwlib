@@ -50,7 +50,7 @@
  *  Example:
  *  
  *  @include comms/test/px_cli_test.c
-  */
+ */
 /// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
@@ -64,13 +64,13 @@ extern "C" {
 /* _____DEFINITIONS__________________________________________________________ */
 /// @name Special ASCII values
 //@{
-#define PX_VT100_CHAR_BEL      0x07
-#define PX_VT100_CHAR_BS       0x08
-#define PX_VT100_CHAR_TAB      0x09
-#define PX_VT100_CHAR_CR       0x0D
-#define PX_VT100_CHAR_LF       0x0A
-#define PX_VT100_CHAR_ESC      0x1B
-#define PX_VT100_CHAR_DEL      0x7F
+#define PX_VT100_CHAR_BEL                   0x07
+#define PX_VT100_CHAR_BS                    0x08
+#define PX_VT100_CHAR_TAB                   0x09
+#define PX_VT100_CHAR_CR                    0x0D
+#define PX_VT100_CHAR_LF                    0x0A
+#define PX_VT100_CHAR_ESC                   0x1B
+#define PX_VT100_CHAR_DEL                   0x7F
 //@}
 
 /// @name VT100 escape sequences

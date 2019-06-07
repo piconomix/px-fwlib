@@ -94,7 +94,7 @@
  *  from standard C library, then __PX_STD_TYPES_ABSENT__ can be #defined to
  *  provide them.
  */
-#if defined PX_COMPILER_MSVC
+#if 0
 #define __PX_STD_TYPES_ABSENT__
 #endif
 

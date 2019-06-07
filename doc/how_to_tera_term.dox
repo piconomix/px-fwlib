@@ -1,0 +1,77 @@
+7.4 How to install and configure Tera Term (an ANSI/VT100 terminal emulator) {#HOWTO_TERA_TERM}
+===============================================================================================
+
+[TOC]
+
+1. Introduction {#TERA_TERM_INTRO}
+==================================
+
+[tera_term]: http://en.sourceforge.jp/projects/ttssh2
+
+Tera Term is an easy-to-use ANSI/VT100 terminal emulator for the Windows 
+operating system that supports serial port and telnet or SSH connections over 
+TCP/IP. It has a multitude of features, one of which is an easy-to-implement
+[XMODEM-CRC](http://en.wikipedia.org/wiki/XMODEM) protocol to transfer files 
+(see @ref PX_XMODEM).
+
+2. Steps {#TERA_TERM_STEPS}
+===========================
+
+Here are the steps to download and configure Tera Term:
+
+2.1 Download and install {#TERA_TERM_DOWNLOAD}
+----------------------------------------------
+
+Click [here][tera_term] to download Tera Term.
+
+2.2 Edit TERATERM.INI {#TERA_TERM_CONFIG}
+-----------------------------------------
+
+Tera Term can auto detect which variant of XMODEM protocol to use (checksum, 
+CRC or 1k), but it can also be preset in the TERATERM.INI file. To open the file
+for editing, select "Setup > Setup directory..." and click the "Open File" 
+button:
+
+![](tera_term_setup01.png)
+
+Search for "xmodem" and change the "XmodemOpt" setting to "crc":
+
+    ; XMODEM option (checksum/crc/1k)
+    XmodemOpt=crc
+    ; Binary flag for XMODEM Receive and ZMODEM Send (on/off)
+    XmodemBin=on
+
+While you are modifying TERATERM.INI, you can also change the default BAUD from
+9600 to 115200:
+
+    ;	  Baud rate
+    BaudRate=115200
+
+After modifying and saving TERATERM.INI, close and reopen Tera Term for the new 
+configuration to take effect.
+
+2.3 Select serial port and communication settings {#TERA_TERM_SERIAL_PORT}
+--------------------------------------------------------------------------
+
+Tera Term can now be set up to use the correct communication settings. Make sure
+that a device is connected that has been assigned a COM port.  The Device 
+Manager utility can be used to figure out which COM port. Right-click 
+"Start (Windows icon bottom left of task bar) > Device Manager":
+
+![Device Manager - COM port assignment](ftdi_device_manager.png)
+
+Back to Tera Term... select "Setup > Serial port...". Select the correct COM 
+port, 115200 BAUD, 8 data bits, no parity, 1 stop bit and no flow control:
+
+![](tera_term_setup02.png)
+
+@tip_s
+My personal preference is to set the font to "10 point Consolas" and the 
+Terminal size to 132 x 40.
+@tip_e
+
+After you are happy with the settings, it can be saved with 
+"Setup > Save Setup...". Tera Term will now automatically start with the correct
+settings.
+
+

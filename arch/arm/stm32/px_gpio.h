@@ -33,6 +33,25 @@
 
 ============================================================================= */
 
+/** 
+ *  @ingroup STM32
+ *  @defgroup STM32_GPIO px_gpio.h : GPIO peripheral driver
+ *  
+ *  Driver to communicate with GPIO slaves.
+ *  
+ *  File(s):
+ *  - arch/arm/stm32/px_gpio.h
+ *  - arch/arm/stm32/px_gpio_cfg_template.h
+ *  - arch/arm/stm32/px_gpio.c
+ *  
+ *  The driver must be configured by supplying a project specific "px_gpio_cfg.h".
+ *  "px_gpio_cfg_template.h" can be copied, renamed and modified to supply 
+ *  compile time options.
+ *  
+ *  @par Example:
+ *  @include arch/arm/stm32/test/px_gpio_test.c
+ */
+/// @{
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
@@ -151,7 +170,8 @@ typedef struct
  *  @param output_type  push-pull or open-drain; @see px_gpio_output_type_t
  *  @param speed        low, medium, high or very high; @see px_gpio_output_speed_t
  *  @param pull         None, pull-up or pull-down; @see px_gpio_pull_t
- *  @param output_init  Low (0) or high (1); @see px_gpio_output_init_t
+ *  @param output_init  Low (0) or high (1); @see px_gpio_output_init_t 
+ *  @param alt_fn       Alternative Function 0 to 7 or Not Applicable
  */
 #define PX_GPIO(port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
     GPIO ## port, pin, mode, output_type, speed, pull, output_init, alt_fn
@@ -351,7 +371,7 @@ static inline void px_gpio_open(px_gpio_handle_t * gpio,
 /**
  *  Open a GPIO handle and initialize with current pin configuration.
  *  
- *  @param [in, out]    gpio_handle     Pointer to px_gpio_handle_t structure
+ *  @param [in, out]    gpio            Pointer to px_gpio_handle_t structure
  *  @param [in]         gpio_base_reg   GPIO register base address
  *  @param [in]         pin             Pin: 0, 1, 2, ..., or 15
  *  
@@ -467,7 +487,23 @@ static inline void px_gpio_pullup_disable(const px_gpio_handle_t * gpio)
     LL_GPIO_SetPinPull(gpio->gpio_base_reg, pin_bit_mask, LL_GPIO_PULL_NO);
 }
 
-/// Disable pull-up on GPIO pin
+/// Enable pull-down on GPIO pin
+static inline void px_gpio_pulldn_enable(const px_gpio_handle_t * gpio)
+{
+    uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
+
+    LL_GPIO_SetPinPull(gpio->gpio_base_reg, pin_bit_mask, LL_GPIO_PULL_DOWN);
+}
+
+/// Disable pull-down on GPIO pin
+static inline void px_gpio_pulldn_disable(const px_gpio_handle_t * gpio)
+{
+    uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
+
+    LL_GPIO_SetPinPull(gpio->gpio_base_reg, pin_bit_mask, LL_GPIO_PULL_NO);
+}
+
+/// Change GPIO pin mode
 static inline void px_gpio_mode_set(const px_gpio_handle_t * gpio, 
                                     px_gpio_mode_t           mode)
 {

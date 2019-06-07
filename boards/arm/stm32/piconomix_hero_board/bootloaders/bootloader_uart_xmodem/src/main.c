@@ -25,7 +25,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 
-    Title:          Piconomix STM32L072 Hero Board Bootloader application
+    Title:          Piconomix STM32 Hero Board Bootloader application
     Author(s):      Pieter Conradie
     Creation Date:  2018-11-20
  
@@ -46,10 +46,13 @@
 #include "px_flash.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+//! [Address mapping of App]
 /// Start address of app in FLASH
 #define MAIN_APP_ADR_START      (FLASH_BASE + 0x00002000)
 /// End address of app in FLASH (out of bounds)
 #define MAIN_APP_ADR_END        (FLASH_BASE + 0x00020000)
+//! [Address mapping of App]
+
 /// Start address of SRAM
 #define MAIN_SRAM_ADR_START     (SRAM_BASE)
 /// End address of SRAM (out of bounds)
@@ -91,6 +94,7 @@ static union
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
+//! [Execute App]
 static void main_exe_app(void)
 {
     uint32_t sp_adr; // app's stack pointer value
@@ -100,14 +104,14 @@ static void main_exe_app(void)
     sp_adr = *(uint32_t *)MAIN_APP_ADR_START;
     if( (sp_adr < MAIN_SRAM_ADR_START) || (sp_adr > MAIN_SRAM_ADR_END) )
     {
-        // No. Execute bootloader
+        // No. Return to bootloader
         return;
     }
     // Does vector table at start of app have valid reset address value?
     pc_adr = *(uint32_t *)(MAIN_APP_ADR_START + 4);
     if( (pc_adr < MAIN_APP_ADR_START) || (pc_adr >= MAIN_APP_ADR_END) )
     {
-        // No. Execute bootloader
+        // No. Return to bootloader
         return;
     }
     // Reset SRAM command so that bootloader will be executed again after reset
@@ -119,6 +123,7 @@ static void main_exe_app(void)
     // Jump to application reset address
     __asm__ __volatile__("bx %0\n\t"::"r"(pc_adr));
 }
+//! [Execute App]
 
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
 /// Handler function that is called when an XMODEM packet is received

@@ -1,4 +1,4 @@
-7.1 How to understand and modify Makefiles {#HOWTO_MAKEFILES}
+7.2 How to understand and modify Makefiles {#HOWTO_MAKEFILES}
 =============================================================
 
 [TOC]
@@ -20,14 +20,14 @@ intermediate object file(s) to create a final executable, but it can be used for
 other purposes too.
 
 I recommend that you download [UnixShellUtils] [unix_shell_utils] so that you 
-are not tied down to the build tools packaged with one specific IDE. If you 
+are not restricted to the build tools packaged with one specific IDE. If you 
 extract UnixShellUtils to "C:\UnixShellUtils", you will find Make here:
 
     C:\UnixShellUtils\bin\make.exe
 
 I prefer to create my own Makefile over an automated IDE build where I can, 
-because then I can use the same editor ([SlickEdit](http://www.slickedit.com))
-to edit and build my project and I have finer control over the build process. 
+because then I can use the same editor (for example [SlickEdit](http://www.slickedit.com))
+to edit and build my projects and I have finer control over the build process.
 Another advantage is that the project can be built on different operating 
 systems.
 
@@ -227,6 +227,16 @@ As a naming convention, variables are written with ALL CAPITALS with
 underscores _ separating words.
 @tip_e
 
+There is also the conditional asignment operator for variables: '?='. It is used
+to assign a (default) value to variable if it has not been defined yet. For 
+example:
+
+    MCU ?= atmega328p
+
+The variable value can then be provided when Make is executed, for example:
+
+    make MCU=atmega128
+
 6. Make Automatic Variables{#MAKEFILE_AUTOMATIC_VARIABLES}
 ==========================================================
 
@@ -311,4 +321,4 @@ in the library.
 
 Well, that's the end of the "gentle" introduction. I hope that you have enough
 insight now to copy, paste and modify the Makefiles used in this library and
-have confidence to delve into the world of Makefiles.
+have enough confidence to delve into the magical world of Makefiles.

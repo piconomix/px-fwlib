@@ -1,0 +1,33 @@
+Low Power Example {#HERO_BOARD_EXAMPLE_LOW_POWER}
+=================================================
+
+This demonstrates how to put the STM32 into STOP low power mode.
+
+File(s):
+- boards/arm/stm32/piconomix_hero_board/examples/low_power/src/main.c
+
+The following modules are used:
+- @ref BOARDS_STM32_PICONOMIX_HERO
+- @ref STM32_GPIO
+
+For more information, see:
+- Digi-Key [Low-Power Modes on the STM32L0 Series](https://www.digikey.com/eewiki/display/microcontroller/Low-Power+Modes+on+the+STM32L0+Series)
+- [1] "6.3 Low-power modes", page 151
+- [1] "13 Extended interrupt and event controller (EXTI)", page 282
+- [2] "2.5 Power management", page 33
+- [3] "2.15 Flash memory wakeup issue when waking up from Stop or Sleep with Flash in power-down mode", page 11
+- [3] "2.1.6 Unexpected system reset when waking up from Stop mode with regulator in low-power mode", page 11
+- [3] "2.1.8 I2C and USART cannot wake up the device from Stop mode", page 12
+
+References:
+1. [RM0376: Ultra-low-power STM32L0x2 advanced Arm-based 32-bit MCUs](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
+2. [PM0223: STM32L0 Series and STM32G0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
+3. [ES0293: STM32L072x8/B/Z device limitations](https://www.st.com/resource/en/errata_sheet/dm00148855.pdf)
+
+@tip_s
+The reference documents can also be found here for off-line viewing:
+@tip_e
+
+    boards/arm/stm32/piconomix_hero_board/docs/stm32l072_manual.pdf
+    boards/arm/stm32/piconomix_hero_board/docs/stm32l0_cortex-m0p_programming_manual.pdf
+    boards/arm/stm32/piconomix_hero_board/docs/stm32l0_errata.pdf

@@ -366,6 +366,7 @@ void px_spi_wr(px_spi_handle_t * handle,
 
     // Get SPI peripheral base register address
     spi_base_adr = spi_data->spi_base_adr;
+    PX_DBG_ASSERT(spi_base_adr != NULL);
 
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
@@ -424,6 +425,7 @@ void px_spi_rd(px_spi_handle_t * handle,
 
     // Get SPI peripheral base register address
     spi_base_adr = spi_data->spi_base_adr;
+    PX_DBG_ASSERT(spi_base_adr != NULL);
 
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
@@ -483,6 +485,7 @@ void px_spi_xc(px_spi_handle_t * handle,
 
     // Get SPI peripheral base register address
     spi_base_adr = spi_data->spi_base_adr;
+    PX_DBG_ASSERT(spi_base_adr != NULL);
 
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
@@ -538,6 +541,7 @@ void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
 
     // Get SPI peripheral base register address
     spi_base_adr = spi_data->spi_base_adr;
+    PX_DBG_ASSERT(spi_base_adr != NULL);
 
     // Disable peripheral
     LL_SPI_Disable(spi_base_adr);

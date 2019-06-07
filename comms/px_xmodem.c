@@ -258,6 +258,7 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
         {
             // Send initial start character to start transfer (with CRC checking)
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_C);
+            PX_DBG_INFO("Sending 'C'");
         }
 
         // Try to receive a packet
@@ -266,6 +267,7 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
             if(first_ack_sent)
             {
                 PX_XMODEM_CFG_WR_U8(PX_XMODEM_NAK);
+                PX_DBG_INFO("Sending NAK");
             }
             continue;
         }
@@ -273,23 +275,27 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
         if(px_xmodem_packet.packet.start == PX_XMODEM_EOT)
         {
             // Acknowledge EOT
+            PX_DBG_INFO("Received EOT");
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_ACK);
+            PX_DBG_INFO("Sending ACK");
             break;
         }
         // Duplicate packet received?
         if(px_xmodem_packet.packet.packet_nr == (px_xmodem_packet_nr - 1))
         {
-            PX_DBG_WARN("Duplicate packet received");
             // Acknowledge packet
+            PX_DBG_WARN("Duplicate packet received");
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_ACK);
+            PX_DBG_INFO("Sending ACK");
             continue;
         }
         // Expected packet received?
         if(px_xmodem_packet.packet.packet_nr != px_xmodem_packet_nr)
         {
-            PX_DBG_ERR("Packet number not expected");
             // NAK packet
+            PX_DBG_ERR("Packet number not expected");
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_NAK);
+            PX_DBG_INFO("Sending NAK");
             continue;
         }
         PX_DBG_INFO("Received packet %u", px_xmodem_packet_nr);
@@ -325,7 +331,9 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
         if(px_xmodem_packet.packet.start == PX_XMODEM_EOT)
         {
             // Acknowledge EOT
+            PX_DBG_INFO("Received EOT");
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_ACK);
+            PX_DBG_INFO("Sending ACK");
         }
     }
 
@@ -349,7 +357,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
     }
     if(data != PX_XMODEM_C)
     {
-        PX_DBG_ERR("Did not receive correct start character");
+        PX_DBG_ERR("Did not receive 'C''");
         return false;
     }
 
@@ -411,7 +419,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
             if(data == PX_XMODEM_ACK)
             {
                 // File successfully transferred
-                PX_DBG_INFO("Success");
+                PX_DBG_INFO("Received ACK. Success");
                 return true;
             }
         }

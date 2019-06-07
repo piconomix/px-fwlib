@@ -1,5 +1,5 @@
-6.1 Microchip AVR quick start guide {#AVR_QUICK_START_GUIDE}
-============================================================
+6.1 AVR quick start guide {#AVR_QUICK_START_GUIDE}
+==================================================
 
 [TOC]
 
@@ -113,18 +113,18 @@ the Help included with Atmel Studio:\n
 Help > View Help **Ctrl+F1** > Help Viewer Home > AVR Assembler > Instructions
 @tip_e
 
-![Atmel Studio Help](atmel_studio/as_help_menu.png)
+![Atmel Studio Help](as_help_menu.png)
 
 You will have to install the "AVR Assembler - User Guide" by clicking on the 
 "Manage Content" (Ctrl + Shift + M) icon button:
 
-![Atmel Studio - Install help content](atmel_studio/as_help_avr_assembler.png)
+![Atmel Studio - Install help content](as_help_avr_assembler.png)
 
 The **Status Register (SREG)** contains flags that convey information about the 
 most recently executed arithmetic instruction. Bit 7 (I) is different, as it 
 is the flag that enables/disables interrupts globally:
 
-![AVR SREG Register](atmel_studio/avr_sreg.png)
+![AVR SREG Register](avr_sreg.png)
 - Bit 7 @b I: **Global Interrupt Enable**
 - Bit 6 @b T: Bit Copy Storage
 - Bit 5 @b H: Half Carry Flag
@@ -157,11 +157,11 @@ Start Atmel Studio. Configure options:
 
 Tools > Options... > Builder > GNU Make
 
-![Atmel Studio - Options](atmel_studio/as_options_menu.png)
+![Atmel Studio - Options](as_options_menu.png)
 
 Set the path to the custom shell utils and make:
 
-![Atmel Studio - Custom ShellUtils](atmel_studio/as_builder_custom.png)
+![Atmel Studio - Custom ShellUtils](as_builder_custom.png)
 
 @warn_s
 If you want to correctly build other projects generated with the Atmel Studio 
@@ -183,17 +183,17 @@ Open and build [Tutorial 1 GPIO](@ref AVR_TUT01_GPIO). It is located here:
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 
-![Atmel Studio Open Project menu](atmel_studio/as_open_project_menu.png)
+![Atmel Studio Open Project menu](as_open_project_menu.png)
 
 Navigate to the project, select and open:
 
-![Atmel Studio Open Project selection](atmel_studio/as_open_project.png)
+![Atmel Studio Open Project selection](as_open_project.png)
 
 Build the project:
 
 Build > build Solution **F7**
 
-![Build solution in Atmel Studio](atmel_studio/as_build_project.png)
+![Build solution in Atmel Studio](as_build_project.png)
 
 @tip_s
 If this step was not succesfull, it probably means that the custom build tools
@@ -206,18 +206,18 @@ was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
 7.1 Open the project properties
 -------------------------------
 
-![Project properties](atmel_studio/as_project_properties.png)
+![Project properties](as_project_properties.png)
 
 Verify that Simulator for debugger / programmer is selected:
 
-![Select simulator for debugger / programmer](atmel_studio/as_sim_select.png)
+![Select simulator for debugger / programmer](as_sim_select.png)
 
 7.2 Start simulation
 --------------------
 
 Debug > Start Debugging and Break **Alt+F5**
 
-![Atmel Studio - Debug](atmel_studio/as_debug_menu.png)
+![Atmel Studio - Debug](as_debug_menu.png)
 
 
 7.3 Enable I/O view window
@@ -225,14 +225,14 @@ Debug > Start Debugging and Break **Alt+F5**
 
 Debug > Windows > I/O
 
-![Enable I/O view window](atmel_studio/as_enable_io_view.png)
+![Enable I/O view window](as_enable_io_view.png)
 
 7.4 Step over one source line and observe result
 ------------------------------------------------
 
 Debug > Step Over **F10**
 
-![I/O view while simulating project](atmel_studio/as_simulator.png)
+![I/O view while simulating project](as_simulator.png)
 
 @tip_s
 You are now able to single step, set break points, run the code and inspect the
@@ -252,7 +252,7 @@ Piconomix FW Library.
 
 File > New > Project... **Ctrl+Shift+N**
 
-![Atmel Studio New Project](atmel_studio/as_new_project.png)
+![Atmel Studio New Project](as_new_project.png)
 
 1. Select GCC Executable Project
 2. Type name for project <em>(in this example 'flashing_led')</em>. 
@@ -268,7 +268,7 @@ Makefile <em>(in this example 'flashing_led.elf')</em>
 8.2 Specify the device
 ----------------------
 
-![Device Selection](atmel_studio/as_device_selection.png)
+![Device Selection](as_device_selection.png)
 
 1. Change Device Family so that it is easier to locate device <em>(in this example 'ATmega')</em>
 2. Specify device <em>(in this example 'ATmega328P')</em>
@@ -292,7 +292,7 @@ File > Close Solution
 Open Windows Explorer or any other file manipulation tool and navigate to the 
 created directory structure:
 
-![Move new project files to root of project](atmel_studio/as_move_project_files.png)
+![Move new project files to root of project](as_move_project_files.png)
 
 1. Move *.atsln file to root of project <em>(in this example 'flashing_led.atsln')</em>
 2. Move *.cproj file to root of project <em>(in this example 'flashing_led.cproj')</em>
@@ -302,19 +302,19 @@ created directory structure:
 Situation check. Your root directory should now look something like this:
 @tip_e
 
-![Project directory and files](atmel_studio/as_project_files.png)
+![Project directory and files](as_project_files.png)
 
 8.5 Open the moved project
 --------------------------
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 
-![Project with missing file](atmel_studio/as_missing_file.png)
+![Project with missing file](as_missing_file.png)
 
 Remove missing file(s) that was automatically created and added by Atmel 
 Studio:
 
-![Remove missing file](atmel_studio/as_rm_missing_file.png)
+![Remove missing file](as_rm_missing_file.png)
 
 8.6 Add folder structure to project
 -----------------------------------
@@ -327,12 +327,12 @@ copy the files into the subdirectories created by Atmel Studio afterwards.
 
 Right-click on the project and add a new folder:
 
-![Add new folder](atmel_studio/as_new_folder.png)
+![Add new folder](as_new_folder.png)
 
 Name the folder 'cfg'. Atmel Studio will also create the corresponding
 subdirectory:
 
-!['cfg' folder added](atmel_studio/as_new_folder_added.png)
+!['cfg' folder added](as_new_folder_added.png)
 
 
 8.7 Add existing files to project
@@ -340,15 +340,15 @@ subdirectory:
 
 Copy existing source files into the project:
 
-![Copy project source files](atmel_studio/as_copy_project_files.png)
+![Copy project source files](as_copy_project_files.png)
 
 Add existing files in project:
 
-![Add existing files context menu](atmel_studio/as_add_existing_files_menu.png)
+![Add existing files context menu](as_add_existing_files_menu.png)
 
 Select files and add:
 
-![Add existing files](atmel_studio/as_add_existing_files.png)
+![Add existing files](as_add_existing_files.png)
 
 Repeat this step for the file in the 'cfg' folder by right-clicking on the 'cfg'
 folder and adding.
@@ -357,14 +357,14 @@ folder and adding.
 Situation check. Your project should now look like this:
 @tip_e
 
-![Project with files added](atmel_studio/as_project_with_files.png)
+![Project with files added](as_project_with_files.png)
 
 8.8 Use external Makefile
 -------------------------
 
 Project > Properties **Alt+F7** > Build
 
-![Select external Makefile in Atmel Studio](atmel_studio/as_ext_makefile.png)
+![Select external Makefile in Atmel Studio](as_ext_makefile.png)
 
 1. Select Build tab
 2. Select "Use External Makefile" (ticked)
@@ -394,7 +394,7 @@ Example location of library:
 Open Makefile and modify the PICOLIB variable to set the relative path to 
 the library:
 
-![Modify path(s) in Makefile](atmel_studio/as_ext_makefile_modify.png)
+![Modify path(s) in Makefile](as_ext_makefile_modify.png)
 
 9. Clean Solution {#AVR_QS_CLEAN}
 =================================
@@ -404,7 +404,7 @@ on the command line.*
 
 Build > Clean Solution
 
-![Clean solution in Atmel Studio](atmel_studio/as_clean_project.png)
+![Clean solution in Atmel Studio](as_clean_project.png)
 
 @tip_s
 If this step was not successful, it probably means that the custom build tools
@@ -418,14 +418,14 @@ Build the project. *This is the same as executing a 'make' on the command line.*
 
 Build > build Solution **F7**
 
-![](atmel_studio/as_build_project.png)
+![](as_build_project.png)
 
 11. How to build a project from the command line {#AVR_QS_BUILD_CMD_LINE}
 =========================================================================
 
 Open a command prompt in the root of the project where the Makefile is located:
 
-![](atmel_studio/as_cmd_line_open.png)
+![](as_cmd_line_open.png)
 
 Set the path to the AVR GCC toolchain and the build tools (UnixShellUtils):
 
@@ -434,7 +434,7 @@ Set the path to the AVR GCC toolchain and the build tools (UnixShellUtils):
 You can verify that the path is correct by executing 'avr-gcc --version' and
 'make --version':
 
-![](atmel_studio/as_build_cmd_line.png)
+![](as_build_cmd_line.png)
 
 You can now delete any previously built files by executing 'make clean' on the 
 command line (see picture above). This is the output:

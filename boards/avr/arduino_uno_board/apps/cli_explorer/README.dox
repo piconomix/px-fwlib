@@ -11,12 +11,12 @@ CLI Explorer (Command Line Interpreter) {#ARDUINO_UNO_BOARD_APP_CLI}
 [optiboot]:          https://code.google.com/p/optiboot/
 [avrdude]:           http://www.nongnu.org/avrdude/
 
-This is a full featured CLI (Command Line Interpreter) application running on 
+This is a full-featured CLI (Command Line Interpreter) application running on 
 the Arduino Uno R3 board that creates a "Un*x Shell"-like environment so that 
 you can experiment with GPIO, ADC, I2C and SPI using only Terminal software 
 (for example [Tera Term] [tera_term])... it is really cool!
 
-![CLI Exlorer executing on an Arduino Uno R3](arduino_uno_board/arduino_uno_cli_preview.png)
+![CLI Exlorer executing on an Arduino Uno R3](arduino_uno_cli_preview.png)
 
 With this application you will be able to:
 - Enable or disable the LED
@@ -36,7 +36,7 @@ Uno board via the [Optiboot bootloader] [optiboot]. The file is located here:
 
 Select the HEX file, specify the correct COM port and press upload:
 
-![Upload HEX file using XLoader](arduino_uno_board/arduino_uno_xloader_cli.png)
+![Upload HEX file using XLoader](arduino_uno_xloader_cli.png)
 
 You can also use the command line tool [avrdude]. The command will be something
 like this:
@@ -57,14 +57,14 @@ Bits, No Parity and 1 Stop Bit:
 
 Setup > Serial Port...
 
-![Configure Tera Term](arduino_uno_board/arduino_uno_conf_tera_term.png)
+![Configure Tera Term](arduino_uno_conf_tera_term.png)
 
 When the COM port is opened by Tera Term, the Arduino board will reset and
 execute the CLI application. If it does not, press ENTER in the Tera Term window 
 or press the reset button of the microcontroller and a command prompt ('>') 
 should appear:
 
-![CLI Application on Tera Term (Terminal Emulator)](arduino_uno_board/arduino_uno_cli.png)
+![CLI Application on Tera Term (Terminal Emulator)](arduino_uno_cli.png)
 
 4. CLI features {#ARDUINO_UNO_CLI_FEATURES}
 ===========================================
@@ -316,7 +316,7 @@ As an example, an
 is connected to the I2C bus. *Click [HERE](https://www.bosch-sensortec.com/bst/products/all_products/bmp280)
 for the Bosch BMP280 pressure and temperature sensor datasheet.*
 
-![Electrodragon BMP280 breakout board connected to I2C](arduino_uno_board/arduino_uno_i2c_slave_bmp280.jpg)
+![Electrodragon BMP280 breakout board connected to I2C](arduino_uno_i2c_slave_bmp280.jpg)
 
 @warn_s
 You will need a +5V to +3V3 [I2C level converter](https://www.sparkfun.com/products/12009)

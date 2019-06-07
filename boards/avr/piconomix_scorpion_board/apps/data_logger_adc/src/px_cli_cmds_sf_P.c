@@ -113,7 +113,7 @@ static const char* px_cli_cmd_fn_sf_erase(uint8_t argc, char* argv[])
     PX_PRINTF_P("Erasing %d to %d", page_start, page_end);
     do
     {
-        px_at45d_erase_page(page_start);
+        px_at45d_erase(page_start);
         PX_PRINTF_P(".");
         page_start++;
     }
@@ -326,7 +326,7 @@ static void px_xmodem_on_rx_data(const uint8_t * data, uint8_t bytes_received)
         if(px_cli_cmd_sf_offset == 0)
         {
             // Erase page first
-            px_at45d_erase_page(px_cli_cmd_sf_page);
+            px_at45d_erase(px_cli_cmd_sf_page);
         }
 
         // Write data to DataFlash

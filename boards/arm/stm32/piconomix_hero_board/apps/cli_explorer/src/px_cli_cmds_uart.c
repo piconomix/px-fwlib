@@ -148,7 +148,7 @@ static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
         px_uart_close(&px_uart_handle);
     }
 
-    // Open SPI device handle
+    // Open UART device handle
     if(!px_uart_open2(&px_uart_handle, 
                       per,
                       baud_rate_hz,
@@ -186,6 +186,12 @@ static const char* px_cli_cmd_fn_uart_bridge(uint8_t argc, char* argv[])
                 ;
             }
         }
+    }
+
+    // Wait until button is released
+    while(PX_USR_PB_IS_PRESSED())
+    {
+        ;
     }
 
     putchar('\n');

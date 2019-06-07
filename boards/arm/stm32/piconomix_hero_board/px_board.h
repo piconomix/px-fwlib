@@ -27,14 +27,14 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
    
-    Title:          board.h : Piconomix STM32L072RB Hero Board
+    Title:          board.h : Piconomix STM32 Hero Board
     Author(s):      Pieter Conradie
     Creation Date:  2017-11-13
 
 ============================================================================= */
 /** 
  *  @ingroup BOARDS_STM32
- *  @defgroup BOARDS_STM32_PICONOMIX_HERO px_board.h : Piconomix STM32L072RB Hero Board
+ *  @defgroup BOARDS_STM32_PICONOMIX_HERO px_board.h : Piconomix STM32 Hero Board
  *  
  *  File(s):
  *  - boards/arm/stm32/piconomix_hero_board/px_board.h 
@@ -103,6 +103,18 @@ void px_board_spi_cs_lo(uint8_t cs_id);
 void px_board_spi_cs_hi(uint8_t cs_id);
 
 /**
+ *  Initialise Timer 6 with 1 us clock ticks for delay use
+ *  
+ */
+void px_board_delay_init(void);
+
+/**
+ *  Disable Timer 6
+ *  
+ */
+void px_board_delay_deinit(void);
+
+/**
  *  Blocking delay for specified number of microseconds.
  *  
  *  @param delay_us  Number of microseconds to block
@@ -142,13 +154,15 @@ void px_board_buzzer_off(void);
 #define PX_LCD_BACKLIGHT_ON()       px_gpio_pin_set_lo(&px_gpio_lcd_backlight)
 #define PX_LCD_BACKLIGHT_OFF()      px_gpio_pin_set_hi(&px_gpio_lcd_backlight)
 
-
 // SD Card
 #define PX_SD_CARD_DETECTED()       px_gpio_pin_is_lo(&px_gpio_7_sd_cd)
 
 // Battery voltage measurement
 #define PX_VBAT_MEAS_ENABLE()       px_gpio_pin_set_hi(&px_gpio_vbat_meas_en)
 #define PX_VBAT_MEAS_DISABLE()      px_gpio_pin_set_lo(&px_gpio_vbat_meas_en)
+
+// Power hold
+#define PX_POWER_OFF()              px_gpio_pin_set_lo(&px_gpio_3v3_hold)
 
 /// @}
 #ifdef __cplusplus

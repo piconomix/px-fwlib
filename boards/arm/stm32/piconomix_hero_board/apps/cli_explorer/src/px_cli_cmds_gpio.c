@@ -385,6 +385,44 @@ static const char* px_cli_cmd_fn_gpio_info(uint8_t argc, char* argv[])
     return NULL;
 }
 
+static const char* px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
+{
+    const char * result;
+
+    // <pin>
+    result = px_cli_cmd_gpio_str_to_handle(&gpio_handle, argv[0]);
+    if(result != NULL)
+    {
+        return result;
+    }
+
+    // [pu|pd]
+    if(argc >= 2)
+    {
+        switch(px_cli_util_argv_to_option(2, "pu\0pd\0"))
+        {
+        case 0: gpio_handle.pull = PX_GPIO_PULL_UP; break;
+        case 1: gpio_handle.pull = PX_GPIO_PULL_DN; break;
+        default: return "Error. <pu|pd> must be pu or pd";
+        }
+    }
+    else
+    {
+        gpio_handle.pull = PX_GPIO_PULL_NO;
+    }
+
+    // Configure specified GPIO pin as an input
+    gpio_handle.mode        = PX_GPIO_MODE_IN;
+    gpio_handle.otype       = PX_GPIO_OTYPE_NA;
+    gpio_handle.ospeed      = PX_GPIO_OSPEED_NA;
+    gpio_handle.out_init    = PX_GPIO_OUT_INIT_NA;
+    gpio_handle.af          = PX_GPIO_AF_NA;
+
+    px_gpio_pin_init(&gpio_handle);
+
+    return NULL;
+}
+
 static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
 {
     const char * result;
@@ -447,7 +485,7 @@ static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
+static const char* px_cli_cmd_fn_gpio_in(uint8_t argc, char* argv[])
 {
     const char * result;
 
@@ -458,29 +496,14 @@ static const char* px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
         return result;
     }
 
-    // [pu|pd]
-    if(argc >= 2)
+    if(px_gpio_pin_is_lo(&gpio_handle))
     {
-        switch(px_cli_util_argv_to_option(2, "pu\0pd\0"))
-        {
-        case 0: gpio_handle.pull = PX_GPIO_PULL_UP; break;
-        case 1: gpio_handle.pull = PX_GPIO_PULL_DN; break;
-        default: return "Error. <pu|pd> must be pu or pd";
-        }
+        printf("0\n");
     }
     else
     {
-        gpio_handle.pull = PX_GPIO_PULL_NO;
+        printf("1\n");
     }
-
-    // Configure specified GPIO pin as an input
-    gpio_handle.mode        = PX_GPIO_MODE_IN;
-    gpio_handle.otype       = PX_GPIO_OTYPE_NA;
-    gpio_handle.ospeed      = PX_GPIO_OSPEED_NA;
-    gpio_handle.out_init    = PX_GPIO_OUT_INIT_NA;
-    gpio_handle.af          = PX_GPIO_AF_NA;
-
-    px_gpio_pin_init(&gpio_handle);
 
     return NULL;
 }
@@ -507,40 +530,17 @@ static const char* px_cli_cmd_fn_gpio_out(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_gpio_in(uint8_t argc, char* argv[])
-{
-    const char * result;
-
-    // <pin>
-    result = px_cli_cmd_gpio_str_to_handle(&gpio_handle, argv[0]);
-    if(result != NULL)
-    {
-        return result;
-    }
-
-    if(px_gpio_pin_is_lo(&gpio_handle))
-    {
-        printf("0\n");
-    }
-    else
-    {
-        printf("1\n");
-    }
-
-    return NULL;
-}
-
 // Create CLI command structures
 PX_CLI_CMD_CREATE(px_cli_cmd_gpio_info,       "info", 1, 1,   "<pin|all|regs>",         "Report GPIO info. <pin> is <0..6> or <a..h|0..15>")
-PX_CLI_CMD_CREATE(px_cli_cmd_gpio_cfg_out,    "co",   2, 4,   "<pin> <0|1> [od] [pu]",  "Configure GPIO pin as output. Optionally OpenDrain and PullUp can be enabled")
 PX_CLI_CMD_CREATE(px_cli_cmd_gpio_cfg_in,     "ci",   1, 2,   "<pin> [pu|pd]",          "Configure GPIO pin as input. Optionally PullUp or PullDown can be enabled")
-PX_CLI_CMD_CREATE(px_cli_cmd_gpio_out,        "o",    2, 2,   "<pin> <0|1>",            "Write GPIO pin output 0 or 1")
+PX_CLI_CMD_CREATE(px_cli_cmd_gpio_cfg_out,    "co",   2, 4,   "<pin> <0|1> [od] [pu]",  "Configure GPIO pin as output. Optionally OpenDrain and PullUp can be enabled")
 PX_CLI_CMD_CREATE(px_cli_cmd_gpio_in,         "i",    1, 1,   "<pin>",                  "Read GPIO pin input")
+PX_CLI_CMD_CREATE(px_cli_cmd_gpio_out,        "o",    2, 2,   "<pin> <0|1>",            "Write GPIO pin output 0 or 1")
 
 PX_CLI_GROUP_CREATE(px_cli_group_gpio, "gpio")
     PX_CLI_CMD_ADD(px_cli_cmd_gpio_info,       px_cli_cmd_fn_gpio_info)
-    PX_CLI_CMD_ADD(px_cli_cmd_gpio_cfg_out,    px_cli_cmd_fn_gpio_cfg_out)
     PX_CLI_CMD_ADD(px_cli_cmd_gpio_cfg_in,     px_cli_cmd_fn_gpio_cfg_in)
-    PX_CLI_CMD_ADD(px_cli_cmd_gpio_out,        px_cli_cmd_fn_gpio_out)
+    PX_CLI_CMD_ADD(px_cli_cmd_gpio_cfg_out,    px_cli_cmd_fn_gpio_cfg_out)
     PX_CLI_CMD_ADD(px_cli_cmd_gpio_in,         px_cli_cmd_fn_gpio_in)
+    PX_CLI_CMD_ADD(px_cli_cmd_gpio_out,        px_cli_cmd_fn_gpio_out)    
 PX_CLI_GROUP_END()

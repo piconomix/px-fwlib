@@ -1,0 +1,802 @@
+CLI Explorer (Command Line Interpreter) {#HERO_BOARD_APP_CLI}
+=============================================================
+  
+[TOC]
+
+Introduction {#HERO_BOARD_APP_CLI_INTRO}
+============================================
+
+[tera_term]:         http://en.sourceforge.jp/projects/ttssh2
+
+This is a fun, full-featured CLI (Command Line Interpreter) application running
+on the Piconomix Hero Board that creates a "Un*x Shell"-like environment so that 
+you can easily experiment with GPIO, ADC, DAC, UART, I2C and SPI using only 
+ANSI/VT100 Terminal software (for example [Tera Term] [tera_term])... it is 
+really cool!
+
+![CLI Exlorer executing on a Hero Board](hero_board_cli_preview.gif)
+
+With this application you will be able to:
+- Switch the LED on and off
+- Make the buzzer beep
+- Draw pixels, lines, rectangles, fills, circles and text on the LCD
+- Measure ADC values (including the battery voltage)
+- Set the DAC value
+- Manipulate GPIO pins
+- Communicate with UART devices
+- Discover and communicate with I2C slaves
+- Communicate with SPI devices
+- Read and write to the AT25S Serial Flash
+- Mount an SD card and list files or view raw data blocks
+- Set and read the RTC
+- Perform raw memory read and write operations
+- Reset the microcontroller
+
+2. CLI features {#HERO_BOARD_CLI_FEATURES}
+==========================================
+
+2.1 Autocomplete (TAB) {#HERO_BOARD_CLI_AUTOCOMPLETE}
+-----------------------------------------------------
+
+Type the start of a command:
+
+    >h
+
+Press TAB to autocomplete:
+
+    >help
+
+To cycle through commands that start with 0 to n characters:
+
+Type character(s):
+
+    >g
+
+Press TAB to autocomplete to first command that matches:
+
+    >gpio
+
+Press SPACE and first character of child command ('c')
+
+    >gpio c
+
+Press TAB to autocomplete to first child command that matches:
+
+    >gpio ci
+
+Press TAB again to cycle to next child command that also matches:
+
+    >gpio co
+
+Continue typing the rest of the command and press ENTER to execute:
+
+    >gpio co 0 1
+    >
+
+@tip_s
+You have just configured GPIO0 on the breakout header (Port A, pin 6 on STM32) 
+to output a high (+3V3)
+@tip_e
+
+2.2 Command History (UP/DN arrow) {#HERO_BOARD_CLI_HISTORY}
+-----------------------------------------------------------
+
+Type 'gpio info h0' and press ENTER:
+
+    >gpio info h0
+    Output Push-Pull Speed=Low 1
+
+Type 'gpio o h0 0' and press ENTER ("h0" means Port H, pin 0; the LED on Hero Board):
+
+    >gpio o h0 0
+
+@tip_s
+You have just switched the LED off by directly manipulating the GPIO pin
+@tip_e
+
+Type 'gpio o h0 1' and press ENTER
+
+    >gpio o h0 1
+
+@tip_s
+You have just switched the LED on again
+@tip_e
+
+Press UP arrow to recall previous command:
+
+    >gpio o h0 1
+
+Press UP arrow again to recall command before that:
+
+    >gpio o h0 0
+
+Press UP arrow again:
+
+    >gpio info h0
+
+Press ENTER to execute command or BACKSPACE to edit command. You can also press
+DOWN arrow to recall newer command in history list if you went too far back.
+
+2.3 Help {#HERO_BOARD_CLI_HELP}
+-------------------------------
+
+Type 'help' and press ENTER to list all the commands with parameters and 
+descriptions. Parameters indicated with angle brackets <> are required and 
+parameters with square brackets [] are optional.
+
+@warn_s
+You don't type <> or []
+@warn_e
+
+You can narrow down the help list by typing 'help' and a match string. For 
+example to list only commands starting with 'i2c' type 'help i2c':
+
+    >help i2c
+    i2c info                        : Report status of SCL and SDA pins
+    i2c rst                         : Perform I2C bus reset procedure
+    i2c scan                        : Scan for all connected I2C slaves
+    i2c w     <adr> <d0> .. [d7]    : Write up to 8 bytes of data to an I2C slave
+    i2c r     <adr> <nr of bytes>   : Read up to 16 bytes of data from an I2C slave
+
+3. CLI commands {#HERO_BOARD_CLI_COMMANDS}
+==========================================
+
+3.1 LED {#HERO_BOARD_CLI_LED}
+-----------------------------
+
+    >help led
+    led       <on|off>      : Switch LED on or off
+
+To switch the LED on:
+
+    >led on
+
+To switch the LED off:
+
+    >led off
+
+3.2 Buzzer {#HERO_BOARD_CLI_BUZZER}
+-----------------------------------
+
+    >help beep
+    beep      <ms> [freq Hz]    : Beep for specified number of milliseconds. Frequency can also be specified
+
+To make the buzzer beep for 1 second (1000 milliseconds):
+
+    >beep 1000
+
+To make the buzzer beep for 250 ms at 2 kHz:
+
+    >beep 250 2000
+
+@tip_s
+The piezo buzzer has a prominent loudness vs. frequency response. It will sound
+the loudest at it's resonant frequency and softer at other frequencies. See if 
+you can figure out experimentally what frequency is the loudest.
+@tip_e
+
+3.3 LCD {#HERO_BOARD_CLI_LCD}
+-----------------------------
+
+    >help lcd
+    lcd clr                                 : Clear LCD display
+    lcd bl    <on|off>                      : Enable/disable LCD backlight
+    lcd p     <x> <y> [color:0|1|i]         : Draw pixel
+    lcd l     <x1> <y1> <x2> <y2> [color]   : Draw line
+    lcd r     <x> <y> <w> <h> [color]       : Draw rectangle
+    lcd f     <x> <y> <w> <h> [color]       : Draw fill
+    lcd c     <x> <y> <r> [color]           : Draw circle
+    lcd s     <x> <y> <"str"> [color]       : Draw string
+
+The LCD is 128 pixels wide (x) and 64 pixels high (y). The top left pixel is at 
+(0, 0) and the bottom right pixel is at (127, 63).
+
+To clear the LCD:
+
+    >lcd clr
+
+To disable the backlight of the LCD:
+ 
+    >lcd bl off
+    
+To draw a pixel at the bottom right:
+ 
+    >lcd p 127 63
+
+To draw a line from the top left to the bottom right:
+
+    >lcd l 0 0 127 63
+
+To draw a rectangle around the border:
+
+    >lcd r 0 0 128 64
+
+@tip_s
+The format of the argument is "lcd r <x> <y> <w> <h> [color]". The 1st and 2nd 
+argument specifies the top left pixel of the rectangle. The 3rd and 4th
+argument specifies the width and height of the rectangle.
+@tip_e
+
+To draw a filled rectangle:
+
+    >lcd f 5 5 10 10
+    
+To draw a circle with a radius of 10 pixels in the center:
+
+    >lcd c 64 32 10
+
+To draw text:
+
+    >lcd s 30 5 "Hello World!"
+
+3.4 ADC {#HERO_BOARD_CLI_ADC}
+-----------------------------
+
+    >help adc
+    adc s     <ch> [interval ms]    : Sample ADC channel. <ch> is <0..3> or <c0..c18>
+    adc b     [interval ms]         : Measure battery voltage. Optionally, continuous until button is pressed
+
+The STM32 has 16 possible ADC inputs (c0 to c15). 4 of the ADC inputs are 
+routed to the breakout header:
+- ADC0 @<0> = STM32 ADC channel 8 @<c8>
+- ADC1 @<1> = STM32 ADC channel 15 @<c15>
+- ADC2 @<2> = STM32 ADC channel 14 @<c14>
+- ADC3 @<3> = STM32 ADC channel 7 @<c7>
+
+The input voltage range on ADC0 to ADC3 is +0 mV to +3300 mV.
+
+@tip_s
+Provision has been made on the Hero Board to scale the input voltage by adding 
+resistors and to low-pass filter the signal by adding a capacitor. This block
+is marked on the board with the "FILTER" text.
+@tip_e
+
+To report the 12-bit ADC value (0 to 4095) and scaled value (0 mV to 3300 mV) of
+channel 0:
+
+    >adc s 0
+    0506 408 mV
+
+To continuously report values once a second:
+
+    >adc s c8 1000
+    0 0516 416 mV
+    1 0516 416 mV
+    2 0517 417 mV
+    3 0517 417 mV
+
+@tip_s
+Press the 6/YES button on the board to stop.
+@tip_e
+
+To measure the battery voltage:
+
+    >adc b
+    4155 mV
+
+A resistive divider is used to scale the battery voltage to an ADC input range 
+from 0 mV to 3300 mV. Equal resistor values divide the battery voltage by two,
+so a battery voltage of 4100 mV will result in an ADC level of 2050 mV. The 
+circuit is engaged using GPIO pin PC7 and released after the measurement to 
+prevent a permanent drain on the battery.
+
+To continuously measure the battery voltage once a second:
+
+    >adc b 1000
+    0 4145 mV
+    1 4145 mV
+    2 4158 mV
+    3 4145 mV
+
+@tip_s
+Capture the values as the battery is charged and create a spreadsheet graph to
+observe the charging profile of the battery.
+@tip_e
+
+3.5 DAC {#HERO_BOARD_CLI_DAC}
+-----------------------------
+
+    >help dac
+    dac o     <val>     : Set DAC output value
+
+To output a 12-bit DAC value:
+
+    >dac o 2048
+
+@tip_s
+Complete the circle by connecting a wire from the DAC pin to ADC0 and measure 
+the output value. You should read 1650 mV.
+@tip_e
+
+
+3.6 GPIO {#HERO_BOARD_CLI_GPIO}
+-------------------------------
+
+    >help gpio
+    gpio info <pin|all|regs>        : Report GPIO info. <pin> is <0..6> or <a..h|0..15>
+    gpio ci   <pin> [pu|pd]         : Configure GPIO pin as input. Optionally PullUp or PullDown can be enabled
+    gpio co   <pin> <0|1> [od] [pu] : Configure GPIO pin as output. Optionally OpenDrain and PullUp can be enabled
+    gpio i    <pin>                 : Read GPIO pin input
+    gpio o    <pin> <0|1>           : Write GPIO pin output 0 or 1
+
+GPIO pins can be specified as @<port>@<pin>, for example 'b5' refers to Port B 
+pin 5, or by breakout header number (0 to 6), for example '4' refers to GPIO4.
+
+@warn_s
+GPIO7 on the breakout header is shared with the SD Card detect pin. If you want
+to use this pin, then an SD card must not be inserted, or the track on net tie
+W3 must be cut and an alternative means of SD card detection must be used.
+@warn_e
+
+To get the status GPIO0:
+
+    >gpio info c9
+    Input Pull-Up 1
+
+@tip_s
+The 6/YES button is connected to Port C, pin 9 (PC9). The GPIO pin is configured
+as an input with pull-up resistor enabled. When the button is pressed, it will
+pull the resistor to GND (+0V). Execute the command again while the button is
+being pressed. When you press the button, the CLI will report "PB6". This is 
+normal. See @ref HERO_BOARD_CLI_BUTTONS
+@tip_e
+
+To get the status of all the pins:
+
+    >gpio info all
+    a0 : Input Pull-Dn 0
+    a1 : Input Pull-Dn 0
+    a2 : AF4 Push-Pull Speed=Low
+    a3 : AF4 Pull-Up Push-Pull Speed=Low
+    a4 : Analog
+    ...
+
+To get the status of the GPIO peripheral registers:
+
+    >gpio info regs
+                              | F E D C  B A 9 8  7 6 5 4  3 2 1 0
+
+    GPIOA_MODER   : 2BE8 C3A0 | I F F A  A F F I  A I I A  F F I I
+    GPIOA_OTYPER  : 0000 0000 |
+    GPIOA_OSPEEDR : 0800 0000 | L L H L  L L L L  L L L L  L L L L
+    GPIOA_PUPDR   : 6410 284A | U D U      U        D D    U   D D
+    GPIOA_IDR     : 0000 B708 | 1 0 1 1  0 1 1 1  0 0 0 0  1 0 0 0
+    GPIOA_ODR     : 0000 0204 | 0 0 0 0  0 0 1 0  0 0 0 0  0 1 0 0
+    GPIOA_AFRL    : 0000 4400 |                   0 0 0 0  4 4 0 0
+    GPIOA_AFRH    : 0000 0440 | 0 0 0 0  0 4 4 0
+    ...
+
+@tip_s
+This is handy to observe how the (rather complex) GPIO peripheral registers 
+works.
+@tip_e
+
+To configure GPIO0 as an output pin and output high:
+
+    >gpio co 0 1
+
+To switch the LED (Port H, pin 0) on:
+
+    >gpio o h0 1
+
+To configure GPIO0 as an input pin (with pullup enabled):
+
+    >gpio ci 0 pu
+
+To report input value of GPIO0:
+
+    >gpio i 0
+    1
+
+@tip_s
+Connect a wire from GPIO0 to GND and repeat the command. What do you expect?
+@tip_e
+
+3.7 UART {#HERO_BOARD_CLI_UART}
+-------------------------------
+
+    >help uart
+    uart cfg  <per> <baud> [data] [parity] [stop]      : Configure UART
+    uart b                                             : Bridge Console<->UART until button is pressed
+    uart w    <d0> .. [d15]                            : Write 1 to 16 bytes of data
+    uart r    <nr of bytes> <timeout ms>               : Receive up to 16 bytes of data or until timeout
+    uart x    <nr of bytes> <timeout ms> <d0> .. [d15] : Write 1 to 16 bytes of data and receive up to 16 bytes of data
+    uart s    <timeout ms> <"w str"> [cr|lf|crlf]      : Write str and receive str. Use quotes if str has spaces
+
+The Hero Board has UART2 and UART3 routed to the breakout header and UART1 
+routed to a USB-Serial bridge (USB2) for the *deluxe edition* or header H17 for 
+the *lite edition*. Normally UART1 is used for debug output and firmware 
+upgrades.
+
+@tip_s
+Having two free UARTs is convenient to communicate with asynchronous modules 
+such as a GSM and GPS, for example a mobile tracking or RF coverage mapping 
+application.
+@tip_e
+
+To configure UART2 for communication at 9600 BAUD, 8 data bits, no parity and 
+1 stop bit:
+
+    >uart cfg 2 9600 8 n 1
+
+To bridge communication between the STM32's USB Virtual COM port (USB1) and the 
+UART:
+
+    >uart b
+
+@tip_s
+This is a very powerful feature! You can now communicate directly with the 
+connected device, for example send AT commands to a GSM module, or see NMEA 
+strings sent from a GPS module. You can also close the ANSI/VT100 software and
+use other software to communicate with the device after the link has been 
+established. To quit and return to the CLI, press the 6/YES button.
+@tip_e
+
+To send 4 bytes:
+
+    >uart w 0xde 0xad 0xbe 0xef
+
+To receive 4 bytes (or time out after 10 seconds):
+
+    >uart r 4 10000
+    
+To write 1 byte and receive 4 bytes (or time out after 10 seconds):
+
+    >uart x 4 10000 0x88
+
+To write a string ("AT") and receive a response (or time out after 2 seconds):
+
+    >uart s 2000 AT crlf
+    OK
+
+Use double quotes (") to write a string that includes spaces:
+
+    >uart s 2000 "hello world"
+
+3.8 I2C {#HERO_BOARD_CLI_I2C}
+-----------------------------
+
+    >help i2c
+    i2c info                        : Report status of SCL and SDA pins
+    i2c rst                         : Perform I2C bus reset procedure
+    i2c scan                        : Scan for all connected I2C slaves
+    i2c w     <adr> <d0> .. [d7]    : Write up to 8 bytes of data to an I2C slave
+    i2c r     <adr> <nr of bytes>   : Read up to 16 bytes of data from an I2C slave
+
+An I2C slave can be connected to the breakout header and verified that it works
+before creating a device driver for it. As an example, an
+[Electrodragon BMP280 breakout board](http://www.electrodragon.com/product/bme280-pressure-huminity-temperature-sensor-breakout/)
+is connected to the I2C bus.
+
+![Electrodragon BMP280 breakout board connected to I2C](hero_board_i2c_slave_bmp280.jpg)
+
+@tip_s
+Click [HERE](https://www.bosch-sensortec.com/bst/products/all_products/bmp280)
+for the Bosch BMP280 pressure and temperature sensor datasheet.
+@tip_e
+
+Make sure that I2C bus is in idle state (SCL or SDA not pulled low):
+
+    >i2c info
+    SCL = 1
+    SDA = 1
+
+Scan for all read and write slave addresses on I2C bus:
+
+    >i2c scan
+    76 W
+    76 R
+
+@tip_s
+BMP280 is found at 7-bit slave address 0x76.
+@tip_e
+
+Write 0xD0 "id" register address:
+
+    >i2c w 0x76 0xd0
+
+Read register value:
+
+    >i2c r 0x76 1
+    58
+
+@tip_s
+The chip identification register value for the BMP280 is 0x58. This confirms 
+that you are able to write and read from the I2C slave.
+@tip_e
+
+3.9 SPI {#HERO_BOARD_CLI_SPI}
+-----------------------------
+
+    >help spi
+    spi cfg   [per] [cs] [baud] [mode] [order]  : Configure SPI
+    spi cs    <lo|hi>                           : Take configured CS pin low or high
+    spi w     <d0> .. [d7]                      : Write up to 8 bytes of data to an SPI slave
+    spi r     <nr of bytes>                     : Read up to 16 bytes of data from an SPI slave
+    spi x     <d0> .. [d7]                      : Exchange up to 8 bytes of data to an SPI slave
+
+An SPI slave device can also be connected to the breakout header. For this 
+example, let's rather experiment with the onboard AT25S Serial Flash available 
+on the *deluxe edition*.
+
+@tip_s
+Click [HERE](https://www.adestotech.com/wp-content/uploads/DS-AT25SF041_044.pdf)
+for the Adesto AT25SF041 Serial Flash datasheet.
+@tip_e
+
+Let's read the Manufacturer and Device ID. See 
+"11.1 Read Manufacturer and Device ID" on page 27 of the datasheet.
+
+Configure SPI2 to communicate with a slave at 1 MHz, Mode 0, Data Order MSB 
+(Most Significant Bit) first and using Port B, pin 2 as the Chip Select pin:
+
+    >spi cfg 2 b2 1000000 0 msb
+    Done. Actual baud rate = 1000000 Hz
+
+Take Chip Select low to start transaction:
+
+    >spi cs lo
+
+Write 0x9f ("Read Manufacturer and Device ID" command) to SPI slave:
+
+    >spi w 0x9f
+
+Read 3 bytes from SPI slave:
+
+    >spi r 3
+    0x1f 0x84 0x01
+
+Take Chip Select high to end transaction:
+
+    >spi cs hi
+
+@tip_s
+The Manufacturer and Device ID value for the AT25S is 1Fh 84h 01h. This 
+confirms that you are able to communicate with the SPI device.
+@tip_e
+
+3.10 Serial Flash {#HERO_BOARD_CLI_SF}
+--------------------------------------
+
+    >help sf
+    sf info                                 : Report Serial Flash info
+    sf e      [start page] [end page]       : Erase Serial Flash 4 KB block(s)
+    sf r      <adr> <nr of bytes>           : Read Serial Flash data
+    sf rp     <page>                        : Read Serial Flash page
+    sf rx     [start page] [end page]       : Read Serial Flash data and send using XMODEM
+    sf wp     <page> <offset> <d0> .. [d7]  : Write up to 8 bytes of data to Serial Flash
+    sf wx     [start page]                  : Receive data using XMODEM and write to Serial Flash
+
+Report Serial Flash Info:
+
+    >sf info
+    Manufacturer and Device ID: 1F 84 01
+    Size: 512 KB
+    Pages: 2048
+    Page size: 256 bytes
+    Blocks: 128
+    Block size: 4KB
+    Status: 0x00
+    - SRP0 = 0
+    - SEC  = 0
+    - TB   = 0
+    - BP2  = 0
+    - BP1  = 0
+    - BP0  = 0
+    - WEL  = 0
+    - BSY  = 0
+
+Erase block 0 (all of the data will be reset to 0xff):
+
+    >sf e 0
+    Erasing 0 to 15. done
+
+@warn_s
+The AT25S Serial Flash pages are grouped in 4 KB blocks. There are 16 pages per 
+block. A whole block of pages must be erased at a time. Hence "Erasing (page) 0
+ to (page) 15."
+@warn_e
+
+To erase block 1 (pages 16 to 31):
+
+    >sf e 16
+    Erasing 16 to 31. done
+
+Write 5 bytes to start of page 0:
+
+    >sf wp 0 0 0x68 0x65 0x6c 0x6c 0x6f
+
+Read page 0:
+    
+    >sf rp 0
+    68 65 6C 6C 6F FF FF FF FF FF FF FF FF FF FF FF hello...........
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ................
+
+@tip_s
+The whole Serial Flash or a part of it can be transferred to a PC using the 
+"sf rx" command for easy inspection. It can be modified and rewritten back using
+the "sf wx" command"
+@tip_e
+
+3.11 SD Card {#HERO_BOARD_CLI_SD}
+---------------------------------
+
+    >help sd
+    sd mount            : Initialize SD Card and report info
+    sd r      <block>   : Read SD Block
+    sd ls     [path]    : List files in specified directory
+
+To mount the SD card:
+
+    >sd mount
+    Manufacturer ID: 60
+    OEM ID: HS
+    Product name: 2GU1B
+    Product rev: 1.0
+    Serial nr: 00000000
+    Manufacture date: 2003/10
+    CSD Ver: 0
+    Data read access time 1: 94
+    Data read access time 2: 0
+    Max data transfer rate: 50
+    Max read data block length: 10
+    Capacity: 1910 Mbyte
+
+    Volume 'HERO_SD' mounted
+
+To list the files on the SD card:
+
+    >sd ls
+    NOKIA_~1
+    EXTRA~1
+    CITIES~1
+    SDCONT~1
+    RM638_~1.CNF
+    AUTORU~1.INF
+    INSTAL~1.EXE
+    CARD_C~1.XML
+    PREDEF~1
+    NOKIA_~2
+    IMGCAC~1
+    358302~1.DAT
+    IMAGES~1
+    VIDEOC~1
+
+To view raw data on SD card:
+
+    >sd r 0
+    EB FE 90 63 33 33 30 66 35 36 33 00 02 40 01 00 ...c330f563..@..
+    02 00 02 00 00 F8 EB 00 20 00 02 00 00 00 00 00 ........ .......
+    00 C0 3A 00 80 00 29 45 D0 00 00 20 20 20 20 20 ..:...)E...
+    20 20 20 20 20 20 46 41 54 31 36 20 20 20 00 00       FAT16   ..
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 55 AA ..............U.
+
+@tip_s
+Spot anything familiar?
+@tip_e
+
+3.12 RTC {#HERO_BOARD_CLI_RTC}
+-----------------------------
+
+    >help rtc
+    rtc r                               : Read RTC time
+    rtc w     <yy-mm-dd> <hh:mm:ss>     : Write RTC time
+
+To set the date and time:
+
+    >rtc w 20-02-21 12:35:00
+
+To get the date and time:
+
+    >rtc r
+    20-02-21 12:35:02
+
+
+3.13 Raw memory read & write {#HERO_BOARD_CLI_MEM}
+--------------------------------------------------
+
+    >help mem
+    mem r     <b|w|l> <adr> [count]         : Read a byte/word/long from memory. Optionally a count can be specified
+    mem w     <b|w|l> <adr> <d0> .. [d7]    : Write up to 8 bytes/words/longs to memory
+    mem d     <adr> <nr of bytes>           : Dump a specified number of bytes from memory
+
+@tip_s
+Don't underestimate the usefullness of this set of commands! All of the STM32's 
+peripherals are memory mapped and can be accessed using these commands. Consult 
+"2.2 Memory Organization" and "Figure 2 - Memory Map" on page 57 of the 
+STM32L072 Reference Manual.
+@tip_e
+
+To read the 32-bit MCU Device ID code ("32.4.1 MCU device ID code" page 917):
+
+    >mem r l 0x40015800
+    0x20086447 537420871
+
+To read 16-bit register GPIOC_IDR ("9.4.5 GPIO port input data register" page 245):
+
+    >mem r w 0x50000810
+    0x3301 13057
+
+@tip_s
+Keep the 6/YES button pressed and repeat the last command. What changed? Why?
+@tip_e
+
+To dump the first 64 bytes of Flash:
+
+    >mem d 0 64
+    00 50 00 20 29 0B 00 08 79 0B 00 08 79 0B 00 08 .P. )...y...y...
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+    00 00 00 00 00 00 00 00 00 00 00 00 79 0B 00 08 ............y...
+    00 00 00 00 00 00 00 00 79 0B 00 08 A1 06 00 08 ........y.......
+
+@tip_s
+What does the first 4 bytes (00 50 00 20) assembled in little-endian order as a 
+32-bit value (0x20005000) signify? What does the next 32-bit value (0x08000B29) 
+signify? Consult "2.3.4 Vector table" on page 29 of the STM32L0 Series 
+Cortex-M0+ programming manual. Why is the least significant bit of the 
+32-bit value set when the ARM CPU is supposed to jump to 0x08000B28 (a 32-bit 
+aligned address), not 0x08000B29?
+@tip_e
+
+3.14 Reset {#HERO_BOARD_CLI_RESET}
+----------------------------------
+
+    >help rst
+    rst                 : Reset microcontroller
+
+This command will perform a system reset. The bootloader will be executed and it
+will jump to the application (no "double-tap" reset sequence; See 
+@ref HERO_BOARD_BOOTLOADER_UART_XMODEM).
+
+4 Button press reporting {#HERO_BOARD_CLI_BUTTONS}
+==================================================
+
+The CLI will report if a button is pressed. Press 1/LEFT:
+
+    >
+    PB1
+    >
+
+
+

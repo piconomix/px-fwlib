@@ -67,4 +67,7 @@
 /// Specify maximum param string length (not zero) or calculate run time (zero)
 #define PX_CLI_CFG_PARAM_STR_MAX_SIZE  0
 
+/// Disable (0) or Enable (1) VT100 terminal color output
+#define PX_CLI_CFG_COLOR               1
+
 #endif // #ifndef __PX_CLI_CFG_H__

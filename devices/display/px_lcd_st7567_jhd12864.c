@@ -135,14 +135,31 @@ void px_lcd_init(px_spi_handle_t * handle)
 
     // Set display line adr to 0
     px_lcd_wr_control_data(PX_LCD_CMD_SET_START_LINE | 0);
-    // set normal display
+    // Set normal display
     px_lcd_wr_control_data(PX_LCD_CMD_ALL_PIXEL_ON | 0);
-    // set reverse display OFF
+    // Set reverse display OFF
     px_lcd_wr_control_data(PX_LCD_CMD_INVERSE_DISPLAY | 0);
     // Clear RAM buffer
     px_lcd_clr();
-    // turns the display ON
+    // Turn the display ON
     px_lcd_wr_control_data(PX_LCD_CMD_DISP_ON_OFF | 1);
+}
+
+void px_lcd_power_save_on(void)
+{
+    // Turn the display OFF
+    px_lcd_wr_control_data(PX_LCD_CMD_DISP_ON_OFF | 0);
+    // Turn all pixels ON
+    px_lcd_wr_control_data(PX_LCD_CMD_ALL_PIXEL_ON | 1);
+}
+
+void px_lcd_power_save_off(void)
+{
+    // Cancel all pixels ON
+    px_lcd_wr_control_data(PX_LCD_CMD_ALL_PIXEL_ON | 0);
+    // Turn the display ON
+    px_lcd_wr_control_data(PX_LCD_CMD_DISP_ON_OFF | 1);
+    
 }
 
 void px_lcd_clr(void)

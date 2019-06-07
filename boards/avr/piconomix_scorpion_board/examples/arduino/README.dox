@@ -45,11 +45,11 @@ Read the device signature (0x1E950F) to verify that everything is OK. Select
     piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\bootloader_optiboot\optiboot_scorpion_board.hex
 
 Press Program:
-![Program FLASH memory](piconomix_scorpion_board/scorpion_board_prog_optiboot_flash.png)
+![Program FLASH memory](scorpion_board_prog_optiboot_flash.png)
 
 Select "Fuses", reduce Boot section size (BOOTSZ) to 256 Words (512 bytes) and
 press Program:
-![Program fuse bits](piconomix_scorpion_board/scorpion_board_prog_optiboot_fuse_bits.png)
+![Program fuse bits](scorpion_board_prog_optiboot_fuse_bits.png)
 
 @tip_s
 The Scorpion Board should now give 3 rapid LED flashes, pause and repeat. This
@@ -122,7 +122,7 @@ I have not tried this procedure.
 @warn_e
 
 You can now launch the Arduino IDE and select the Scorpion Board:
-![Select board](piconomix_scorpion_board/arduino_select_board.png)
+![Select board](scorpion_board_arduino_select_board.png)
 
 @warn_s
 Remember to specify correct Serial Port too (Tools > Serial Port)
@@ -184,7 +184,7 @@ Once the sketch has compiled succesfully, quickly **press the RST button on the
 Scorpion Board** so that it will jump to the Optiboot bootloader and start the 
 upload. After the upload has finished succesfully, the sketch will execute.
 
-![GPIO Demo](piconomix_scorpion_board/scorpion_board_arduino_demo_gpio.png)
+![GPIO Demo](scorpion_board_arduino_demo_gpio.png)
 
 @tip_s
 Press the user push button and the LED will shine.
@@ -213,4 +213,4 @@ Tools > Serial Monitor Ctrl+Shift+M
 Press the RST button again, so that the sketch restarts and sends the string
 "Hello World!":
 
-![Serial Demo](piconomix_scorpion_board/scorpion_board_arduino_demo_serial.png)
+![Serial Demo](scorpion_board_arduino_demo_serial.png)

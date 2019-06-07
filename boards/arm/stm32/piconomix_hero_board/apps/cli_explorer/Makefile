@@ -9,15 +9,16 @@
 #
 # On command line:
 #
-# make               = Build project (release version)
-# make build=debug   = Build project (debug version)
-# make build=release = Build project (release version)
-# make check         = Check that source files exist
-# make clean         = Delete intermediate output files and final binaries
-# make mostlyclean   = Delete intermediate output files, but preserve final 
-#                      binaries
-# make openocd       = Create script and launch OpenOCD GDB and Telnet server
-# make gdb           = Create script and launch GDB
+# make                    = Build project (release version)
+# make build=debug        = Build project (debug version)
+# make build=release      = Build project (release version)
+# make build=release-boot = Build project (release for bootloader version)
+# make check              = Check that source files exist
+# make clean              = Delete intermediate output files and final binaries
+# make mostlyclean        = Delete intermediate output files, but preserve final 
+#                           binaries
+# make openocd            = Create script and launch OpenOCD GDB and Telnet server
+# make gdb                = Create script and launch GDB
 #
 # To create a new project, copy this Makefile to your project directory and:
 #
@@ -40,8 +41,7 @@
 # (1a) Project name
 PROJECT = cli_explorer
 
-# (1b) Offset from start of FLASH to reserve space for bootloader (release build)
-#      Comment this variable (prefix with '#') for normal release build (no bootloader)
+# (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
 BOOTLOADER_SIZE = 0x2000
 
 # (2) MCU option(s)
@@ -111,6 +111,7 @@ SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
 SRC += $(PICOLIB)/gfx/images/px_gfx_img_hero_logo_64x42.c
 SRC += $(PICOLIB)/utils/px_circ_buffer.c
 SRC += $(PICOLIB)/utils/px_dbg.c
+SRC += $(PICOLIB)/utils/px_debounce.c
 SRC += $(PICOLIB)/utils/px_rtc_util.c
 SRC += $(PICOLIB)/utils/px_systmr.c
 
@@ -160,19 +161,24 @@ INCDIRS += $(PICOLIB)
 INCDIRS += $(PICOLIB)/$(ARCH)
 INCDIRS += $(PICOLIB)/common
 INCDIRS += $(PICOLIB)/comms
+INCDIRS += $(PICOLIB)/data
+INCDIRS += $(PICOLIB)/devices/comms
 INCDIRS += $(PICOLIB)/devices/display
+INCDIRS += $(PICOLIB)/devices/general
 INCDIRS += $(PICOLIB)/devices/mem
+INCDIRS += $(PICOLIB)/devices/rtc
+INCDIRS += $(PICOLIB)/devices/sensor
 INCDIRS += $(PICOLIB)/gfx
 INCDIRS += $(PICOLIB)/gfx/fonts
 INCDIRS += $(PICOLIB)/gfx/images
 INCDIRS += $(PICOLIB)/utils
-INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
-INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Legacy
+INCDIRS += $(CHAN_FATFS)
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
+INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
+INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Legacy
 INCDIRS += $(STMCUBE_USB)/Class/CDC/Inc
 INCDIRS += $(STMCUBE_USB)/Core/Inc
-INCDIRS += $(CHAN_FATFS)
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
 CDEFS += PX_DBG=1
@@ -208,7 +214,7 @@ CFLAGS += -std=gnu99
 CFLAGS += -ffunction-sections -fdata-sections
 CFLAGS += --specs=nano.specs
 
-CFLAGS_DEBUG += -O1
+CFLAGS_DEBUG += -Og
 
 CFLAGS_RELEASE += -Os
 
@@ -230,15 +236,16 @@ CPPFLAGS += -Wall
 #CPPFLAGS += -Wunreachable-code
 #CPPFLAGS += -Wsign-compare
 CPPFLAGS += -std=gnu99
+CPPFLAGS += -ffunction-sections -fdata-sections
 CPPFLAGS += --specs=nano.specs
 
-CPPFLAGS_DEBUG += -O1
+CPPFLAGS_DEBUG += -Og
 
 CPPFLAGS_RELEASE += -Os
 
 #---------------- Assembler Options --------------------------------------------
 #  -Wa,...:   tell GCC to pass this to the assembler.
-ASFLAGS += 
+AFLAGS += 
 
 #---------------- Library Options ----------------------------------------------
 # Floating point printf version
@@ -269,14 +276,16 @@ LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
 LDFLAGS += -T $(BSP)/STM32L072xB.ld
 
+LDFLAGS_DEBUG += -Og
+
+LDFLAGS_RELEASE += -Os
+
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
 OPENOCD_SCRIPT ?= openocd.cfg
 
 # Specify the OpenOCD interface script
-#OPENOCD_INTERFACE = interface/cmsis-dap.cfg
-#OPENOCD_INTERFACE = interface/stlink-v2.cfg
-OPENOCD_INTERFACE ?= interface/stlink-v2-1.cfg
+OPENOCD_INTERFACE = interface/cmsis-dap.cfg
 
 # Specify the board or target
 OPENOCD_TARGET ?= target/stm32l0.cfg

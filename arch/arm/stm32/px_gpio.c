@@ -103,7 +103,7 @@ void px_gpio_pin_init(const px_gpio_handle_t * gpio)
         // Set output low (0)
         LL_GPIO_ResetOutputPin(gpio->gpio_base_reg, pin_bit_mask);
     }
-    // Alternative function?
+    // Set Alternative Function
     if(gpio->pin < 8)
     {
         LL_GPIO_SetAFPin_0_7(gpio->gpio_base_reg, pin_bit_mask, gpio->af);

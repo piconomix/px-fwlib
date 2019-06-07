@@ -61,7 +61,7 @@ AFLAGS   += $(addprefix -D,$(ADEFS))
 #     Makefile that includes this boilerplate file
 ALL_CFLAGS   ?= -mmcu=$(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
 ALL_CPPFLAGS ?= -mmcu=$(MCU) -x c++ $(CPPFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
-ALL_ASFLAGS  ?= -mmcu=$(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
+ALL_AFLAGS   ?= -mmcu=$(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
 ALL_LDFLAGS  ?= -mmcu=$(MCU) $(LDFLAGS) -Wl,-Map=$(OBJDIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS))
 
 # Default target
@@ -176,7 +176,7 @@ define create_asm_obj_rule
 $(OBJDIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_ASSEMBLING) $$<
-	$(CC) -c $(ALL_ASFLAGS) $$< -o $$@
+	$(CC) -c $(ALL_AFLAGS) $$< -o $$@
 endef
 $(foreach file,$(ASRC),$(eval $(call create_asm_obj_rule,$(file)))) 
 

@@ -1,0 +1,12 @@
+11. Examples {#HERO_BOARD_EXAMPLES}
+===================================
+
+- @subpage HERO_BOARD_EXAMPLE_GPIO
+- @subpage HERO_BOARD_EXAMPLE_UART_PRINTF
+- @subpage HERO_BOARD_EXAMPLE_LCD
+- @subpage HERO_BOARD_EXAMPLE_ANIMATION
+- @subpage HERO_BOARD_EXAMPLE_LOW_POWER
+- @subpage HERO_BOARD_EXAMPLE_CUBEMX_HAL
+
+
+

@@ -230,8 +230,8 @@ void px_at25s_wr_page_offset(const void * buffer,
     px_at25s_ready_flag = false;
 }
 
-void px_at25s_erase_block(px_at25s_block_t block,
-                          uint16_t         block_nr)
+void px_at25s_erase(px_at25s_block_t block,
+                    uint16_t         page)
 {
     uint8_t  data[1];
     uint32_t adr;
@@ -249,21 +249,33 @@ void px_at25s_erase_block(px_at25s_block_t block,
     switch(block)
     {
     case PX_AT25S_BLOCK_4KB:   
-        data[0] = PX_AT25S_CMD_BLOCK_ERASE_4KB;  
-        adr     = (uint32_t)block_nr * PX_AT25S_BLOCK_SIZE_4KB;
+        data[0] = PX_AT25S_CMD_BLOCK_ERASE_4KB;
+        if(page % PX_AT25S_PAGES_PER_BLOCK_4KB != 0)
+        {
+            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+        }
         break;
     case PX_AT25S_BLOCK_32KB:  
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_32KB; 
-        adr     = (uint32_t)block_nr * PX_AT25S_BLOCK_SIZE_32KB;
+        if(page % PX_AT25S_PAGES_PER_BLOCK_32KB != 0)
+        {
+            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+        }
         break;
     case PX_AT25S_BLOCK_64KB : 
-        data[0] = PX_AT25S_CMD_BLOCK_ERASE_64KB; 
-        adr     = (uint32_t)block_nr * PX_AT25S_BLOCK_SIZE_64KB;
+        data[0] = PX_AT25S_CMD_BLOCK_ERASE_64KB;
+        if(page % PX_AT25S_PAGES_PER_BLOCK_64KB != 0)
+        {
+            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+        }
         break;
     default:
         PX_DBG_ERR("Invalid block size specified");
         return;
     }
+
+    // Calculate address
+    adr = page * PX_AT25S_PAGE_SIZE;
 
     // Send command
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);

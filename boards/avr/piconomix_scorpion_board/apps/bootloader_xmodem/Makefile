@@ -156,7 +156,7 @@ CPPFLAGS += -std=gnu99
 
 #---------------- Assembler Options --------------------------------------------
 #  -Wa,...:   tell GCC to pass this to the assembler.
-ASFLAGS += 
+AFLAGS += 
 
 #---------------- Library Options ----------------------------------------------
 # Minimalistic printf version

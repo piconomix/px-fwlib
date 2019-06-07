@@ -12,7 +12,7 @@ Here is an example where the logger was used to measure the voltage of 2 x AA
 cells and the output of the +8V boost converter to determine maximum battery 
 life:
 
-![ADC graph](piconomix_scorpion_board/log_adc_graph.png)
+![ADC graph](scorpion_board_log_adc_graph.png)
 
 @tip_s
 Observe that the minimum value (not the average value) reveals when the +8V 
