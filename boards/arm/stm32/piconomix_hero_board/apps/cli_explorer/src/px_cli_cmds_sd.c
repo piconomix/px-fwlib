@@ -38,13 +38,13 @@
 #include "px_sd.h"
 #include "px_board.h"
 #include "main.h"
-
+#include "px_at25s.h"
 #include "ff.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli_cmds_sd")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli_cmds_sd");
+
 // Make sure buffer is big enough to hold a block of data
 #if (MAIN_BUFFER_SIZE < (PX_SD_BLOCK_SIZE-1))
 #error "Make MAIN_BUFFER_SIZE larger"
@@ -182,13 +182,57 @@ static const char* px_cli_cmd_fn_sd_ls(uint8_t argc, char* argv[])
     return NULL;
 }
 
+static const char* px_cli_cmd_fn_sd_dsf(uint8_t argc, char* argv[])
+{
+    FIL fp;
+    uint16_t page;
+    UINT     bytes_written;
+
+    // Open file for writing
+    if(f_open(&fp, argv[0], FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
+    {
+        return "Error! Unable to open file for writing";
+    }
+
+    for(page = 0; page < PX_AT25S_PAGES; page++)
+    {
+        // Read serial flash page
+        px_at25s_rd_page(main_buffer, page);
+
+        // Write page to file
+        if(f_write(&fp, main_buffer, PX_AT25S_PAGE_SIZE, &bytes_written) != FR_OK)
+        {
+            f_close(&fp);
+            return "Error! Unable to write to file";
+        }
+        if(bytes_written != PX_AT25S_PAGE_SIZE)
+        {
+            f_close(&fp);
+            return "Error! Could not write whole buffer to file";
+        }
+        putchar('.');
+    }
+    
+    // Close file
+    if(f_close(&fp) != FR_OK)
+    {
+        return "Error! Unable to close file";
+    }
+
+    // Done
+    putchar('\n');
+    return NULL;
+}
+
 // Create CLI command structures
-PX_CLI_CMD_CREATE(px_cli_cmd_sd_mount,     "mount", 0, 0,   "",          "Initialize SD Card and report info")
-PX_CLI_CMD_CREATE(px_cli_cmd_sd_rd_block,  "r",     1, 1,   "<block>",   "Read SD Block")
-PX_CLI_CMD_CREATE(px_cli_cmd_sd_ls,        "ls",    0, 1,   "[path]",    "List files in specified directory")
+PX_CLI_CMD_CREATE(px_cli_cmd_sd_mount,     "mount",     0, 0,   "",             "Initialize SD Card and report info")
+PX_CLI_CMD_CREATE(px_cli_cmd_sd_rd_block,  "r",         1, 1,   "<block>",      "Read SD Block")
+PX_CLI_CMD_CREATE(px_cli_cmd_sd_ls,        "ls",        0, 1,   "[path]",       "List files in specified directory")
+PX_CLI_CMD_CREATE(px_cli_cmd_sd_dsf,       "dsf",       0, 1,   "<filename>",   "Dump the content of Serial Flash to a file")
 
 PX_CLI_GROUP_CREATE(px_cli_group_sd, "sd")
     PX_CLI_CMD_ADD(px_cli_cmd_sd_mount,     px_cli_cmd_fn_sd_mount)
     PX_CLI_CMD_ADD(px_cli_cmd_sd_rd_block,  px_cli_cmd_fn_sd_rd_block)
     PX_CLI_CMD_ADD(px_cli_cmd_sd_ls,        px_cli_cmd_fn_sd_ls)
+    PX_CLI_CMD_ADD(px_cli_cmd_sd_dsf,       px_cli_cmd_fn_sd_dsf)
 PX_CLI_GROUP_END()

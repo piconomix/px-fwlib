@@ -42,7 +42,6 @@
 #include "px_at25s.h"
 #include "px_systmr.h"
 #include "px_rtc.h"
-
 #include "px_board.h"
 #include "px_uart.h"
 //#include "px_uart_stdio.h"
@@ -55,14 +54,12 @@
 #include "px_sd.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
-#include "px_gfx_res.h"
-
+#include "px_gfx_resources.h"
 #include "usb_device.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("main")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("main");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -258,12 +255,11 @@ int main(void)
     // Draw LCD splash screen
     PX_LCD_BACKLIGHT_ON();
     px_gfx_init();
-    px_gfx_draw_img((PX_GFX_DISP_SIZE_X - px_gfx_img_hero_logo_64x42.width) / 2, 
-                    (PX_GFX_DISP_SIZE_Y - px_gfx_img_hero_logo_64x42.height) / 2,
-                    px_gfx_img_hero_logo_64x42.width,
-                    px_gfx_img_hero_logo_64x42.height,
-                    PX_GFX_COLOR_ON,
-                    px_gfx_img_hero_logo_64x42.data);
+    px_gfx_draw_img(&px_gfx_img_hero_logo,
+                    PX_GFX_DISP_SIZE_X / 2, 
+                    PX_GFX_DISP_SIZE_Y / 2,
+                    PX_GFX_ALIGN_MID,
+                    PX_GFX_COLOR_ON);
     px_gfx_update();
 
     // Initialize CLI

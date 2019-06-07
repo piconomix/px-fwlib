@@ -37,12 +37,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_cli.h"
 #include "px_gfx.h"
-#include "px_gfx_res.h"
-
+#include "px_gfx_resources.h"
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli_cmds_lcd")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli_cmds_lcd");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -55,7 +54,7 @@ PX_DBG_DECL_NAME("cli_cmds_lcd")
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static const char* px_cli_cmd_fn_lcd_clr(uint8_t argc, char* argv[])
 {
-    px_gfx_clr_scr();
+    px_gfx_clear();
     px_gfx_update();
 
     return NULL;
@@ -437,7 +436,7 @@ static const char* px_cli_cmd_fn_lcd_str(uint8_t argc, char* argv[])
         color = PX_GFX_COLOR_ON;
     }
 
-    px_gfx_draw_str(&px_gfx_font_5x7, x, y, color, argv[2]);
+    px_gfx_draw_str(&px_gfx_font_5x7, x, y, PX_GFX_ALIGN_TOP_LEFT, color, argv[2]);
     px_gfx_update();
 
     return NULL;

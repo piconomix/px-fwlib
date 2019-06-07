@@ -1,5 +1,5 @@
-#ifndef __PX_DEBOUNCE_CFG_H__
-#define __PX_DEBOUNCE_CFG_H__
+#ifndef __PX_GFX_RESOURCES_H__
+#define __PX_GFX_RESOURCES_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -7,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2015 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -26,35 +26,19 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
-    
-    Title:          px_debounce_cfg.h : Digital debounce module configuration
+ 
+    Title:          px_gfx_res.h : Collection of resources for Graphics library
     Author(s):      Pieter Conradie
-    Creation Date:  2015-08-21
+    Creation Date:  2018-05-09
 
 ============================================================================= */
-
-/** 
- *  @addtogroup PX_DEBOUNCE
- */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_gfx.h"
+#include "px_gfx_fonts.h"
+#include "px_gfx_img_hero_logo.h"
 
-/* _____DEFINITIONS__________________________________________________________ */
-/// Max HI counter value
-#define PX_DEBOUNCE_CFG_COUNT_MAX  10
-
-/// Low watermark threshold for valid LO
-#define PX_DEBOUNCE_CFG_THRESHOLD_LO 2
-
-/// High watermark threshold for valid HI
-#define PX_DEBOUNCE_CFG_THRESHOLD_HI 8
-
-/// Count threshold for long LO/ HI; Set to 0 to disable option
-#define PX_DEBOUNCE_CFG_LONG_COUNT 0
-
-/// @}
-#endif // #ifndef __PX_DEBOUNCE_CFG_H__
+#endif // #ifndef __PX_GFX_RESOURCES_H__

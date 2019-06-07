@@ -41,11 +41,10 @@
 #include "px_pgm_P.h"
 #include "px_systmr.h"
 #include "px_usb_cdc_stdio.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli_cmds_uart")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli_cmds_uart");
 
 /* _____MACROS_______________________________________________________________ */
 

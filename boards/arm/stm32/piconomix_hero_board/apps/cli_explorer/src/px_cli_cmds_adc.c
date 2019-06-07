@@ -40,11 +40,10 @@
 #include "px_board.h"
 #include "main.h"
 #include "px_systmr.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli_cmds_adc")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli_cmds_adc");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -203,7 +202,7 @@ static const char* px_cli_cmd_fn_adc_bat(uint8_t argc, char* argv[])
         PX_VBAT_MEAS_DISABLE();
         // Scale value
         val = (uint16_t)PX_UDIV_ROUND((uint32_t)val * (3300 * 2), (uint32_t)4095);
-
+       
         // Continuous reporting?
         if(interval_ms > 0)
         {

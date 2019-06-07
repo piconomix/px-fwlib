@@ -42,7 +42,7 @@
 PROJECT = cli_explorer
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
-BOOTLOADER_SIZE = 0x2000
+BOOTLOADER_SIZE = 0x4000
 
 # (2) MCU option(s)
 MCU = -mthumb -mcpu=cortex-m0plus
@@ -81,15 +81,12 @@ SRC += src/px_cli_cmds_spi.c
 SRC += src/px_cli_cmds_uart.c
 SRC += src/px_sd_fatfs_diskio.c
 SRC += src/px_xmodem_glue.c
-
 SRC += src/stm32l0xx_it.c
 SRC += src/usb_device.c
 SRC += src/usbd_cdc_if.c
 SRC += src/usbd_conf.c
 SRC += src/usbd_desc.c
-
 SRC += $(BSP)/px_board.c
-
 SRC += $(PICOLIB)/$(ARCH)/px_adc.c
 SRC += $(PICOLIB)/$(ARCH)/px_dac.c
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
@@ -107,14 +104,14 @@ SRC += $(PICOLIB)/devices/display/px_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/devices/mem/px_at25s.c
 SRC += $(PICOLIB)/devices/mem/px_sd.c
 SRC += $(PICOLIB)/gfx/px_gfx.c
+SRC += $(PICOLIB)/gfx/px_gfx_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
-SRC += $(PICOLIB)/gfx/images/px_gfx_img_hero_logo_64x42.c
+SRC += $(PICOLIB)/gfx/images/px_gfx_img_hero_logo.c
 SRC += $(PICOLIB)/utils/px_circ_buffer.c
 SRC += $(PICOLIB)/utils/px_dbg.c
 SRC += $(PICOLIB)/utils/px_debounce.c
 SRC += $(PICOLIB)/utils/px_rtc_util.c
 SRC += $(PICOLIB)/utils/px_systmr.c
-
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.c
@@ -122,12 +119,10 @@ SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pcd.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pcd_ex.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_usb.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
-
 SRC += $(STMCUBE_USB)/Class/CDC/Src/usbd_cdc.c
 SRC += $(STMCUBE_USB)/Core/Src/usbd_core.c
 SRC += $(STMCUBE_USB)/Core/Src/usbd_ctlreq.c
 SRC += $(STMCUBE_USB)/Core/Src/usbd_ioreq.c
-
 SRC += $(CHAN_FATFS)/ff.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
@@ -154,7 +149,7 @@ ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startu
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
 INCDIRS += cfg
-INCDIRS += res
+INCDIRS += resources
 INCDIRS += src
 INCDIRS += $(BSP)
 INCDIRS += $(PICOLIB)

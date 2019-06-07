@@ -38,11 +38,9 @@
 #include "px_cli.h"
 #include "px_pgm_P.h"
 #include "px_systmr.h"
-
 #include "px_board.h"
 #include "px_gpio.h"
 #include "main.h"
-
 #include "px_cli_cmds_adc.h"
 #include "px_cli_cmds_dac.h"
 #include "px_cli_cmds_gpio.h"
@@ -54,11 +52,10 @@
 #include "px_cli_cmds_uart.h"
 #include "px_cli_cmds_sd.h"
 #include "px_cli_cmds_sf.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli");
 
 /* _____MACROS_______________________________________________________________ */
 
