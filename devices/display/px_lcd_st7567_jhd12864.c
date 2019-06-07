@@ -36,11 +36,11 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_lcd_st7567_jhd12864.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("lcd")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("lcd");
+
 /// @name ST7567 commands (Table 8, page 21)
 //@{
 #define PX_LCD_CMD_DISP_ON_OFF          0xae    ///< (1)  Display ON/OFF

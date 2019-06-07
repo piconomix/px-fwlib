@@ -37,11 +37,11 @@
 #include "px_sd.h"
 #include "px_spi.h"
 #include "px_board.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_sd")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_sd");
+
 // SD SPI commands
 #define PX_SD_CMD0_GO_IDLE_STATE           0   // Reset all cards to idle state
 #define PX_SD_CMD1_SEND_OP_COND            1   // Send host capacitity support info and activate init
@@ -64,6 +64,8 @@ PX_DBG_DECL_NAME("px_sd")
 #define PX_SD_CMD33_ERASE_WR_BLK_END_ADR   33  // Sets the address of the last write block to be erased
 #define PX_SD_CMD38_ERASE                  38  // Erases all previously selected write blocks
 #define PX_SD_CMD42_LOCK_UNLOCK            42  // Used to Set/Reset the password or lock/unlock the card
+#define PX_SD_CMD48_READ_EXTR_SINGLE       48  // Used to read xtension register
+#define PX_SD_CMD49_WRITE_EXTR_SINGLE      49  // Used to write extension register
 #define PX_SD_CMD55_APP_CMD                55  // Next command is an application specific command
 #define PX_SD_CMD56_GEN_CMD                56  // Used either to transfer a Data Block to the card or to get a Data Block from the card for general purpose/application specific commands
 #define PX_SD_CMD58_READ_OCR               58  // Read the OCR register

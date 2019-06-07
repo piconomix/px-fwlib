@@ -36,11 +36,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_nrf905.h"
 #include "px_board.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_nrf905")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_nrf905");
+
 #define PX_NRF905_INSTR_W_CONFIG       0x00    ///< Write Configuration register
 #define PX_NRF905_INSTR_R_CONFIG       0x10    ///< Read Configuration register
 #define PX_NRF905_INSTR_W_TX_PAYLOAD   0x20    ///< Write TX-payload

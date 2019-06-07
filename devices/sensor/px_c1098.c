@@ -38,11 +38,11 @@
 #include "px_uart.h"
 #include "px_systmr.h"
 #include "px_sysclk.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_c1098")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_c1098");
+
 typedef enum
 {
     PX_C1098_STATE_DONE = 0,

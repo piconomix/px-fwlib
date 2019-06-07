@@ -37,11 +37,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_lcd_st7565p_tse2g0330e.h"
 #include "px_board.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("lcd")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("lcd");
+
 /// @name ST7565P commands (Table 16, page 51)
 //@{
 #define PX_LCD_CMD_DISP_ON_OFF          0xae    ///< (1)  Display ON/OFF

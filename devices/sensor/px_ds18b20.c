@@ -37,11 +37,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_ds18b20.h"
 #include "px_one_wire.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_ds18b20");
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_ds18b20");;
+
 #define PX_DS18B20_CMD_CONVERT_T       0x44
 #define PX_DS18B20_CMD_WR_SCRATCHPAD   0x4e
 #define PX_DS18B20_CMD_RD_SCRATCHPAD   0xbe

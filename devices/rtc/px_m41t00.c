@@ -35,11 +35,11 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_rtc_m41t00.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("m41t00")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("m41t00");
+
 /// BCD Date/Time
 typedef struct
 {

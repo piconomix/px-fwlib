@@ -36,9 +36,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_at25s.h"
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_at25s")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_at25s");
+
 /// @name Read commands
 //@{
 #define PX_AT25S_CMD_READ_ARRAY                     0x03

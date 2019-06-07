@@ -38,11 +38,11 @@
 #include "px_uart.h"
 #include "px_systmr.h"
 #include "px_sysclk.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_gt511")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_gt511");
+
 /// @name GT511 Commands
 //@{
 #define PX_GT511_CMD_OPEN                   0x01    ///< Initialization

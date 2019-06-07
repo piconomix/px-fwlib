@@ -37,15 +37,15 @@
 #include "px_bmp280.h"
 #include "px_i2c.h"
 #include "px_board.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("bmp280")
 
 #ifdef PX_BMP280_DBG
 #warning "Debugging of BMP280 enabled. Using constants to verify formula"
 #endif
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("bmp280");
+
 /// @name Memory Map (table 18, p. 24)
 //@{
 #define PX_BMP280_REG_CALIB00                   0x88
