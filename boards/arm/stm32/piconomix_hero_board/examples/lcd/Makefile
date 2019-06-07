@@ -42,7 +42,7 @@
 PROJECT = lcd
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
-BOOTLOADER_SIZE = 0x2000
+BOOTLOADER_SIZE = 0x4000
 
 # (2) MCU option(s)
 MCU = -mthumb -mcpu=cortex-m0plus
@@ -68,14 +68,13 @@ CHAN_FATFS = $(PICOLIB)/libs/ChaN_FatFs
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
 SRC += $(BSP)/px_board.c
-SRC += res/px_gfx_img_dino_25x30.c
-
+SRC += resources/px_gfx_img_dino.c
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
 SRC += $(PICOLIB)/$(ARCH)/px_spi.c
 SRC += $(PICOLIB)/devices/display/px_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/gfx/px_gfx.c
+SRC += $(PICOLIB)/gfx/px_gfx_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
-
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 
@@ -103,7 +102,7 @@ ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startu
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
 INCDIRS += cfg
-INCDIRS += res
+INCDIRS += resources
 INCDIRS += src
 INCDIRS += $(BSP)
 INCDIRS += $(PICOLIB)

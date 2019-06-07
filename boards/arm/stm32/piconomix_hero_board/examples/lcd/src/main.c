@@ -39,7 +39,7 @@
 #include "px_spi.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
-#include "px_gfx_res.h"
+#include "px_gfx_resources.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 
@@ -70,6 +70,7 @@ int main(void)
                  PX_LCD_SPI_DATA_ORDER,
                  0x00);
     px_lcd_init(&px_spi_lcd_handle);
+    PX_LCD_BACKLIGHT_ON();
 
     // Initialise graphics
     px_gfx_init();
@@ -89,15 +90,13 @@ int main(void)
     px_gfx_draw_circ(PX_GFX_DISP_SIZE_X / 2, PX_GFX_DISP_SIZE_Y / 2, 20, PX_GFX_COLOR_ON);
 
     // Draw text
-    px_gfx_draw_str(&px_gfx_font_5x7, 30, 2, PX_GFX_COLOR_ON, "Hello World!");
+    px_gfx_draw_str(&px_gfx_font_5x7, 30, 2, PX_GFX_ALIGN_TOP_LEFT, PX_GFX_COLOR_ON, "Hello World!");
 
     // Draw image
-    px_gfx_draw_img(PX_GFX_DISP_SIZE_X / 2 + 30, 
+    px_gfx_draw_img(&px_gfx_img_dino,
+                    PX_GFX_DISP_SIZE_X / 2 + 30, 
                     PX_GFX_DISP_SIZE_Y / 2 - 15, 
-                    px_gfx_img_dino_25x30.width, 
-                    px_gfx_img_dino_25x30.height,
-                    PX_GFX_COLOR_ON,
-                    px_gfx_img_dino_25x30.data);
+                    PX_GFX_ALIGN_TOP_LEFT, PX_GFX_COLOR_ON);
 
     // Update display
     px_gfx_update();

@@ -1,5 +1,5 @@
-#ifndef __PX_GFX_RES_H__
-#define __PX_GFX_RES_H__
+#ifndef __PX_GFX_RESOURCES_H__
+#define __PX_GFX_RESOURCES_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -38,12 +38,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_gfx.h"
+#include "px_gfx_fonts.h"
+#include "px_gfx_img_dino.h"
 
-extern px_gfx_img_t     px_gfx_img_dino_25x30;
-extern px_gfx_font_t    px_gfx_font_5x7;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // #ifndef __PX_GFX_RES_H__
+#endif // #ifndef __PX_GFX_RESOURCES_H__
