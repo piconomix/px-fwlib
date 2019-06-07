@@ -36,11 +36,11 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_xmodem.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_xmodem")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_xmodem");
+
 /// @name XMODEM protocol definitions
 //@{
 #define PX_XMODEM_DATA_SIZE         128

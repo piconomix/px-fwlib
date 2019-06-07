@@ -34,11 +34,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_hdlc.h"
 #include "px_crc.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_hdlc")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_hdlc");
+
 // Significant octet values
 #define PX_HDLC_FLAG_SEQUENCE  0x7e   // Flag Sequence
 #define PX_HDLC_CONTROL_ESCAPE 0x7d   // Asynchronous Control Escape

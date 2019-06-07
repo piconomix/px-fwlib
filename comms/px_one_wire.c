@@ -37,11 +37,11 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_one_wire.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_one_wire");
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_one_wire");;
+
 #define PX_ONE_WIRE_CMD_SEARCH_ROM     0xf0
 #define PX_ONE_WIRE_CMD_READ_ROM       0x33
 #define PX_ONE_WIRE_CMD_MATCH_ROM      0x55
