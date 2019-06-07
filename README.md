@@ -1,3 +1,5 @@
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+
 Introduction
 ============
 
@@ -98,6 +100,8 @@ int main(void)
 
 License
 =======
+
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 The [MIT license](https://en.wikipedia.org/wiki/MIT_License)
 has been selected to grant freedom for both open source and commercial 
