@@ -38,11 +38,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_log_fs.h"
 #include "px_log_fs_glue.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_log_fs")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_log_fs");
+
 /// Invalid page value
 #define PX_LOG_FS_PAGE_INVALID         0xffff
 

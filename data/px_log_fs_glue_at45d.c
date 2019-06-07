@@ -37,11 +37,10 @@
 #include "px_log_fs_glue.h"
 #include "px_log_fs_cfg.h"
 #include "px_at45d.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_log_fs_glue")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_log_fs_glue");
 
 /* _____MACROS_______________________________________________________________ */
 
