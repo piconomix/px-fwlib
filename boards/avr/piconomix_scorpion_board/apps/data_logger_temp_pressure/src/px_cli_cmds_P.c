@@ -42,20 +42,18 @@
 #include "px_at45d.h"
 #include "px_bmp280.h"
 #include "px_log_fs.h"
-
 #include "px_board.h"
 #include "px_buzzer.h"
 #include "px_gpio.h"
 #include "main.h"
-
 #include "px_cli_cmds_sf.h"
 #include "px_cli_cmds_rtc.h"
 #include "px_cli_cmds_log_fs.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli");
+
 #define LOG_PERIOD_MIN  30
 
 /* _____MACROS_______________________________________________________________ */

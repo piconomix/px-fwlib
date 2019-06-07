@@ -37,11 +37,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_uart.h"
 #include "px_board.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_uart_polled")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_uart_polled");
+
 #ifndef PX_UART_DEFAULT_BAUD
 #define PX_UART_DEFAULT_BAUD   115200ul
 #endif

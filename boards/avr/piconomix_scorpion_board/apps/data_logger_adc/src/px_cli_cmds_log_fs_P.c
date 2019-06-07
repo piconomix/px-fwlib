@@ -40,11 +40,10 @@
 #include "px_pgm_P.h"
 #include "px_log_fs.h"
 #include "px_vt100.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli");
 
 /* _____MACROS_______________________________________________________________ */
 

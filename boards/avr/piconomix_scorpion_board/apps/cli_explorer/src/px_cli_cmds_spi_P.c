@@ -41,11 +41,10 @@
 #include "px_cli_cmds_gpio.h"
 #include "px_board.h"
 #include "px_pgm_P.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli_cmds_spi")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli_cmds_spi");
 
 /* _____MACROS_______________________________________________________________ */
 

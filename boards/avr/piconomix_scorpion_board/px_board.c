@@ -36,11 +36,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_board.h"
 #include <util/delay.h>
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("board")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("board");
+
 // Check that correct 'px_board.h' has been included
 #ifndef BOARD_AVR_PICONOMIX_SCORPION
 #warning "Wrong 'px_board.h' has been included. Check that include path is correct."

@@ -54,10 +54,8 @@ BSP     = $(PICOLIB)/boards/avr/piconomix_scorpion_board
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
-
 SRC += $(PICOLIB)/$(ARCH)/px_uart.c
 SRC += $(PICOLIB)/$(ARCH)/px_uart_stdio.c
-
 SRC += $(BSP)/px_board.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here

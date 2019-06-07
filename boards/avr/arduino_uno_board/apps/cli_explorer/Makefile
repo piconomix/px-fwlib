@@ -63,7 +63,6 @@ SRC += src/px_cli_cmds_rtc_P.c
 SRC += src/px_cli_cmds_spi_P.c
 SRC += src/px_cli_cmds_P.c
 SRC += src/main.c
-
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
 SRC += $(PICOLIB)/$(ARCH)/px_spi.c
 SRC += $(PICOLIB)/$(ARCH)/px_sysclk.c
@@ -76,7 +75,6 @@ SRC += $(PICOLIB)/comms/px_cli_P.c
 SRC += $(PICOLIB)/utils/px_dbg.c
 SRC += $(PICOLIB)/utils/px_rtc_util.c
 SRC += $(PICOLIB)/utils/px_systmr.c
-
 SRC += $(BSP)/px_board.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here

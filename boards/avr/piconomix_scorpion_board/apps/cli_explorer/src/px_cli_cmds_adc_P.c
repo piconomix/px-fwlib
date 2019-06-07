@@ -42,11 +42,11 @@
 #include "px_board.h"
 #include "main.h"
 #include "px_uart.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("cli_cmds_adc")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("cli_cmds_adc");
+
 /// Linear fit variables
 typedef struct
 {
