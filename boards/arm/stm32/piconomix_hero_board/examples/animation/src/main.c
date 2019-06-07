@@ -39,7 +39,7 @@
 #include "px_spi.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
-#include "px_gfx_res.h"
+#include "px_gfx_resources.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 
@@ -50,7 +50,7 @@
 /* _____LOCAL VARIABLES______________________________________________________ */
 static px_spi_handle_t px_spi_lcd_handle;
 
-const px_gfx_img_t * img_array[] =
+static const px_gfx_img_t * img_array[] =
 {
     &px_gfx_img_clown1,
     &px_gfx_img_clown2,
@@ -98,15 +98,14 @@ int main(void)
     for(;;)
     {
         // Clear display area
-        px_gfx_clr_scr();
+        px_gfx_clear();
         // Draw image
         img = img_array[i];
-        px_gfx_draw_img((PX_LCD_NR_OF_COLS / 2) - (img->width / 2),
-                        0, 
-                        img->width, 
-                        img->height, 
-                        PX_GFX_COLOR_ON,
-                        img->data);
+        px_gfx_draw_img(img,
+                        PX_GFX_DISP_SIZE_X / 2,
+                        PX_GFX_DISP_SIZE_Y / 2 - 1,
+                        PX_GFX_ALIGN_MID,
+                        PX_GFX_COLOR_ON);
         // Update display
         px_gfx_update();
         // Delay

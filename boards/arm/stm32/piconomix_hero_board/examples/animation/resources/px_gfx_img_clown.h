@@ -1,5 +1,5 @@
-#ifndef __PX_GFX_RES_H__
-#define __PX_GFX_RES_H__
+#ifndef __PX_GFX_IMG_CLOWN_H__
+#define __PX_GFX_IMG_CLOWN_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -7,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to
@@ -27,9 +27,9 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
  
-    Title:          px_gfx_res.h : Collection of resources for Graphics library
+    Title:          px_gfx_img_clown.h : Clown animation images
     Author(s):      Pieter Conradie
-    Creation Date:  2018-05-09
+    Creation Date:  2019-06-04
 
 ============================================================================= */
 
@@ -39,17 +39,29 @@
 #include "px_defines.h"
 #include "px_gfx.h"
 
-extern px_gfx_img_t     px_gfx_img_clown1;
-extern px_gfx_img_t     px_gfx_img_clown2;
-extern px_gfx_img_t     px_gfx_img_clown3;
-extern px_gfx_img_t     px_gfx_img_clown4;
-extern px_gfx_img_t     px_gfx_img_clown5;
-extern px_gfx_img_t     px_gfx_img_clown6;
-extern px_gfx_img_t     px_gfx_img_clown7;
-extern px_gfx_img_t     px_gfx_img_clown8;
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* _____DEFINITIONS__________________________________________________________ */
+
+/* _____TYPE DEFINITIONS_____________________________________________________ */
+
+/* _____GLOBAL VARIABLES_____________________________________________________ */
+extern px_gfx_img_t px_gfx_img_clown1;
+extern px_gfx_img_t px_gfx_img_clown2;
+extern px_gfx_img_t px_gfx_img_clown3;
+extern px_gfx_img_t px_gfx_img_clown4;
+extern px_gfx_img_t px_gfx_img_clown5;
+extern px_gfx_img_t px_gfx_img_clown6;
+extern px_gfx_img_t px_gfx_img_clown7;
+extern px_gfx_img_t px_gfx_img_clown8;
+
+/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
+
+/* _____MACROS_______________________________________________________________ */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // #ifndef __PX_GFX_RES_H__
+#endif // #ifndef __PX_GFX_IMG_CLOWN_H__
