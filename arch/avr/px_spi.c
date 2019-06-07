@@ -37,14 +37,14 @@
 #include "px_spi.h"
 #include "px_spi_defs.h"
 #include "px_board.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("spi")
 
 // Issue warning that SS pin must be an output or input with a pull-up
 #warning "There is a caveat with the SS pin when using the SPI in master mode! See documentation in 'px_spi.h'"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("spi");
+
 /// Internal data for each SPI handle
 typedef struct px_spi_data_s
 {

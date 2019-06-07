@@ -40,11 +40,11 @@
 #include "px_uart_defs.h"
 #include "px_circ_buffer_macros.h"
 #include "px_board.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("uart")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("uart");
+
 /// Definition of data for each UART peripheral
 typedef struct px_uart_data_s
 { 

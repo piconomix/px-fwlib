@@ -38,11 +38,11 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_i2c.h"
 #include "px_board.h"
-
 #include "px_dbg.h"
-PX_DBG_DECL_NAME("px_i2c_twi")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("px_i2c_twi");
+
 /// Definition of data for each I2C peripheral
 typedef struct px_i2c_data_s
 {
