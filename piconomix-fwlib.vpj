@@ -150,7 +150,7 @@
             Filters=""></Folder>
     </CustomFolders>
     <Macro>
-        <ExecMacro CmdLine="CONCUR_COMMAND path=c:\UnixShellUtils\bin;c:\Program Files\doxygen\bin;c:\Program Files\TortoiseSVN\bin;c:\Program Files (x86)\gnu_arm\bin;c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Program Files\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin"/>
+        <ExecMacro CmdLine="CONCUR_COMMAND path=c:\UnixShellUtils\bin;c:\Program Files\doxygen\bin;c:\Program Files\TortoiseSVN\bin;c:\Program Files (x86)\gnu_arm\bin;c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Program Files\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Python\3.6"/>
     </Macro>
     <Files AutoFolders="DirectoryView">
         <F
@@ -200,6 +200,10 @@
             Type="Makefile"
             Recurse="1"
             Refilter="0"
+            Excludes=""/>
+        <F
+            N="*.py"
+            Recurse="1"
             Excludes=""/>
         <F
             N="*.S"
