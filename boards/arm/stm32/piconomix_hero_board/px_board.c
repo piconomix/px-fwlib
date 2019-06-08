@@ -36,6 +36,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_board.h"
 #include "px_lib_stm32cube.h"
+#include "px_gpio_init_stm32l072rb.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 // Check that correct 'board.h' has been included
@@ -175,31 +176,6 @@ static void px_board_clocks_init(void)
     LL_RCC_SetUSBClockSource  (LL_RCC_USB_CLKSOURCE_HSI48);
 }
 
-static void px_board_gpio_port_init(GPIO_TypeDef * gpio_base_reg,
-                                    uint32_t       moder,
-                                    uint32_t       otyper,
-                                    uint32_t       ospeedr,
-                                    uint32_t       pupdr,
-                                    uint32_t       odr,
-                                    uint32_t       afrl,
-                                    uint32_t       afrh)
-{
-    // Select Pull-Up / Pull-Down or None
-    gpio_base_reg->PUPDR   = pupdr;
-    // Select output type: Push-Pull or Open-Drain
-    gpio_base_reg->OTYPER  = otyper;
-    // Select output speed: Slow, Medium, Fast or Very Fast
-    gpio_base_reg->OSPEEDR = ospeedr;
-    // Set output data: Low or High
-    gpio_base_reg->ODR     = odr;
-    // Select Alternative Function AF0..AF7 for pins 0..7
-    gpio_base_reg->AFR[0]  = afrl;
-    // Select Alternative Function AF0..AF7 for pins 8..15
-    gpio_base_reg->AFR[1]  = afrh;
-    // Select mode: Input, Output, Alternative Function or Analog
-    gpio_base_reg->MODER   = moder;
-}
-
 static void px_board_gpio_init(void)
 {
     // Enable GPIO peripheral clocks
@@ -209,61 +185,12 @@ static void px_board_gpio_init(void)
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOD);
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOH);
 
-    // Initialise GPIOA[0..15]
-    px_board_gpio_port_init(GPIOA,
-                            GPIOA_MODER_VAL,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0);
-
-    // Initialise GPIOA[0..15]
-    px_board_gpio_port_init(GPIOA,
-                            GPIOA_MODER_VAL,
-                            GPIOA_OTYPER_VAL,
-                            GPIOA_OSPEEDR_VAL,
-                            GPIOA_PUPDR_VAL,
-                            GPIOA_ODR_VAL,
-                            GPIOA_AFRL_VAL,
-                            GPIOA_AFRH_VAL);
-    // Initialise GPIOB[0..15]
-    px_board_gpio_port_init(GPIOB,
-                            GPIOB_MODER_VAL,
-                            GPIOB_OTYPER_VAL,
-                            GPIOB_OSPEEDR_VAL,
-                            GPIOB_PUPDR_VAL,
-                            GPIOB_ODR_VAL,
-                            GPIOB_AFRL_VAL,
-                            GPIOB_AFRH_VAL);
-    // Initialise GPIOC[0..15]
-    px_board_gpio_port_init(GPIOC,
-                            GPIOC_MODER_VAL,
-                            GPIOC_OTYPER_VAL,
-                            GPIOC_OSPEEDR_VAL,
-                            GPIOC_PUPDR_VAL,
-                            GPIOC_ODR_VAL,
-                            GPIOC_AFRL_VAL,
-                            GPIOC_AFRH_VAL);
-    // Initialise GPIOD[2]
-    px_board_gpio_port_init(GPIOD,
-                            GPIOD_MODER_VAL,
-                            GPIOD_OTYPER_VAL,
-                            GPIOD_OSPEEDR_VAL,
-                            GPIOD_PUPDR_VAL,
-                            GPIOD_ODR_VAL,
-                            GPIOD_AFRL_VAL,
-                            0);
-    // Initialise GPIOH[0..1]
-    px_board_gpio_port_init(GPIOH,
-                            GPIOH_MODER_VAL,
-                            GPIOH_OTYPER_VAL,
-                            GPIOH_OSPEEDR_VAL,
-                            GPIOH_PUPDR_VAL,
-                            GPIOH_ODR_VAL,
-                            GPIOH_AFRL_VAL,
-                            0);
+    // Initialise GPIO ports
+    px_gpio_port_init(&px_gpio_port_a_init);
+    px_gpio_port_init(&px_gpio_port_b_init);
+    px_gpio_port_init(&px_gpio_port_c_init);
+    px_gpio_port_init(&px_gpio_port_d_init);
+    px_gpio_port_init(&px_gpio_port_h_init);
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */

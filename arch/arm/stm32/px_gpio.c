@@ -114,3 +114,23 @@ void px_gpio_pin_init(const px_gpio_handle_t * gpio)
     // Set mode: in, out, alternative function or analog
     LL_GPIO_SetPinMode(gpio->gpio_base_reg, pin_bit_mask, gpio->mode);
 }
+
+void px_gpio_port_init(const px_gpio_port_init_t * init)
+{
+    GPIO_TypeDef * gpio_base_reg = init->gpio_base_reg;
+
+    // Select Pull-Up / Pull-Down or None
+    gpio_base_reg->PUPDR   = init->pupdr;
+    // Select output type: Push-Pull or Open-Drain
+    gpio_base_reg->OTYPER  = init->otyper;
+    // Select output speed: Slow, Medium, Fast or Very Fast
+    gpio_base_reg->OSPEEDR = init->ospeedr;
+    // Set output data: Low or High
+    gpio_base_reg->ODR     = init->odr;
+    // Select Alternative Function AF0..AF7 for pins 0..7
+    gpio_base_reg->AFR[0]  = init->afrl;
+    // Select Alternative Function AF0..AF7 for pins 8..15
+    gpio_base_reg->AFR[1]  = init->afrh;
+    // Select mode: Input, Output, Alternative Function or Analog
+    gpio_base_reg->MODER   = init->moder;
+}

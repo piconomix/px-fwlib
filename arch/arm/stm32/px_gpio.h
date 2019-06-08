@@ -89,7 +89,7 @@ typedef enum
 {
     PX_GPIO_OSPEED_NA       = 0,    ///< Output speed is not applicable (pin mode is input or analog)
     PX_GPIO_OSPEED_LO       = 0,    ///< Set output speed to low
-    PX_GPIO_OSPEED_MD      = 1,     ///< Set output speed to medium
+    PX_GPIO_OSPEED_MD       = 1,    ///< Set output speed to medium
     PX_GPIO_OSPEED_HI       = 2,    ///< Set output speed to high
     PX_GPIO_OSPEED_VH       = 3,    ///< Set output speed to very high
     PX_GPIO_OSPEED_BIT_MASK = 0x3,  ///< Output speed bit mask
@@ -139,6 +139,18 @@ typedef struct
     px_gpio_out_init_t  out_init;       ///< Initial output value: Low (0) or high (1)
     px_gpio_af_t        af;             ///< Alternative function: AF0, AF1, ... or AF7
 } px_gpio_handle_t;
+
+typedef struct
+{
+    GPIO_TypeDef * gpio_base_reg;       ///< GPIO peripheral base register address
+    uint32_t       moder;               ///< Mode register value
+    uint32_t       otyper;              ///< Output type register value
+    uint32_t       ospeedr;             ///< Output speed register value
+    uint32_t       pupdr;               ///< Pull up / pull-down register value
+    uint32_t       odr;                 ///< Output data register value
+    uint32_t       afrl;                ///< Alternative function low register value
+    uint32_t       afrh;                ///< Alternative function high register value
+} px_gpio_port_init_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
@@ -325,6 +337,13 @@ typedef struct
         ((pin < 8) ? 0 : (((uint32_t)alt_fn) << ((pin - 8) * 4)))
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
+/**
+ *  Initialise a GPIO port
+ *  
+ *  @param init Pointer to structure containing register initialization values
+ */
+void px_gpio_port_init(const px_gpio_port_init_t * init);
+
 /**
  *  Open a GPIO handle using specified options.
  *  
