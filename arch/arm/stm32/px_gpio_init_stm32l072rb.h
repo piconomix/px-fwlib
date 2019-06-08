@@ -1,5 +1,5 @@
-#ifndef __PX_GPIO_INIT_STM32L072RB__
-#define __PX_GPIO_INIT_STM32L072RB__
+#ifndef __PX_GPIO_INIT_STM32L072RB_H__
+#define __PX_GPIO_INIT_STM32L072RB_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -644,4 +644,4 @@ static const px_gpio_port_init_t px_gpio_port_h_init =
 }
 #endif
 
-#endif // #ifndef __PX_GPIO_INIT_STM32L072RB__
+#endif // #ifndef __PX_GPIO_INIT_STM32L072RB_H__

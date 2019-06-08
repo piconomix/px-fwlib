@@ -97,57 +97,29 @@ static const px_gpio_handle_t px_gpio_d7 =       {PX_GPIO_D7};
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 
 /* _____MACROS_______________________________________________________________ */
-#define GPIO_PORTB_INIT_VAL \
-              PX_GPIO_INIT_PORT(PX_GPIO_D8) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_D9) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_SPI_SS) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_SPI_MOSI) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_SPI_MISO) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_SPI_SCK)
+#define PX_GPIO_B0 PX_GPIO_D8
+#define PX_GPIO_B1 PX_GPIO_D9
+#define PX_GPIO_B2 PX_GPIO_SPI_SS
+#define PX_GPIO_B3 PX_GPIO_SPIO_MOSI
+#define PX_GPIO_B4 PX_GPIO_SPI_MISO
+#define PX_GPIO_B5 PX_GPIO_SPI_SCK
+#define PX_GPIO_B5 PX_GPIO_LED
 
-#define GPIO_DDRB_INIT_VAL \
-              PX_GPIO_INIT_DDR(PX_GPIO_D8) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_D9) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_SPI_SS) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_SPI_MOSI) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_SPI_MISO) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_SPI_SCK)
+#define PX_GPIO_C0 PX_GPIO_A0
+#define PX_GPIO_C1 PX_GPIO_A1
+#define PX_GPIO_C2 PX_GPIO_A2
+#define PX_GPIO_C3 PX_GPIO_A3
+#define PX_GPIO_C4 PX_GPIO_I2C_SDA
+#define PX_GPIO_C5 PX_GPIO_I2C_SCL
 
-#define GPIO_PORTC_INIT_VAL \
-              PX_GPIO_INIT_PORT(PX_GPIO_A0) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_A1) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_A2) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_A3) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_I2C_SDA) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_I2C_SCL)
-
-#define GPIO_DDRC_INIT_VAL \
-              PX_GPIO_INIT_DDR(PX_GPIO_A0) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_A1) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_A2) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_A3) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_I2C_SDA) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_I2C_SCL)
-
-#define GPIO_PORTD_INIT_VAL \
-              PX_GPIO_INIT_PORT(PX_GPIO_UART_RXD) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_UART_TXD) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_D2) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_D3) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_D4) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_D5) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_D6) \
-            + PX_GPIO_INIT_PORT(PX_GPIO_D7)
-
-#define GPIO_DDRD_INIT_VAL \
-              PX_GPIO_INIT_DDR(PX_GPIO_UART_RXD) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_UART_TXD) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_D2) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_D3) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_D4) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_D5) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_D6) \
-            + PX_GPIO_INIT_DDR(PX_GPIO_D7)
+#define PX_GPIO_D0 PX_GPIO_UART_RXD
+#define PX_GPIO_D1 PX_GPIO_UART_TXD
+#define PX_GPIO_D2 PX_GPIO_D2
+#define PX_GPIO_D3 PX_GPIO_D3
+#define PX_GPIO_D4 PX_GPIO_D4
+#define PX_GPIO_D5 PX_GPIO_D5
+#define PX_GPIO_D6 PX_GPIO_D6
+#define PX_GPIO_D7 PX_GPIO_D7
 
 #ifdef __cplusplus
 }
