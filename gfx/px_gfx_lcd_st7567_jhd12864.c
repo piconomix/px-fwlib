@@ -54,7 +54,7 @@ static uint8_t px_gfx_lcd_frame_buf[PX_GFX_DISP_SIZE_Y / 8][PX_GFX_DISP_SIZE_X];
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_gfx_lcd_clear(void)
+void px_gfx_lcd_clear_frame(void)
 {
     // Clear frame buffer
     memset(px_gfx_lcd_frame_buf, 0, sizeof(px_gfx_lcd_frame_buf));

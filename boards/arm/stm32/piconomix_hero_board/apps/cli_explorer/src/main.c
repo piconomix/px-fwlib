@@ -255,12 +255,12 @@ int main(void)
     // Draw LCD splash screen
     PX_LCD_BACKLIGHT_ON();
     px_gfx_init();
+    px_gfx_align_set(PX_GFX_ALIGN_MID);
     px_gfx_draw_img(&px_gfx_img_hero_logo,
                     PX_GFX_DISP_SIZE_X / 2, 
-                    PX_GFX_DISP_SIZE_Y / 2,
-                    PX_GFX_ALIGN_MID,
-                    PX_GFX_COLOR_ON);
-    px_gfx_update();
+                    PX_GFX_DISP_SIZE_Y / 2);    
+    px_gfx_update_frame();
+    px_gfx_draw_attr_reset();
 
     // Initialize CLI
     px_cli_init(main_cli_init_str);

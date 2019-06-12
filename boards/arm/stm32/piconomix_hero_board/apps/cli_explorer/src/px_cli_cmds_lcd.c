@@ -54,8 +54,8 @@ PX_DBG_DECL_NAME("cli_cmds_lcd");
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static const char* px_cli_cmd_fn_lcd_clr(uint8_t argc, char* argv[])
 {
-    px_gfx_clear();
-    px_gfx_update();
+    px_gfx_clear_frame();
+    px_gfx_update_frame();
 
     return NULL;
 }
@@ -122,8 +122,10 @@ static const char* px_cli_cmd_fn_lcd_pixel(uint8_t argc, char* argv[])
     {
         color = PX_GFX_COLOR_ON;
     }
-    px_gfx_draw_pixel(x, y, color);
-    px_gfx_update();
+
+    px_gfx_color_fg_set(color);
+    px_gfx_draw_pixel(x, y);
+    px_gfx_update_frame();
 
     return NULL;
 }
@@ -190,8 +192,10 @@ static const char* px_cli_cmd_fn_lcd_line(uint8_t argc, char* argv[])
     {
         color = PX_GFX_COLOR_ON;
     }
-    px_gfx_draw_line(x1, y1, x2, y2, color);
-    px_gfx_update();
+
+    px_gfx_color_fg_set(color);
+    px_gfx_draw_line(x1, y1, x2, y2);
+    px_gfx_update_frame();
 
     return NULL;
 }
@@ -258,8 +262,10 @@ static const char* px_cli_cmd_fn_lcd_rect(uint8_t argc, char* argv[])
     {
         color = PX_GFX_COLOR_ON;
     }
-    px_gfx_draw_rect(x, y, w, h, color);
-    px_gfx_update();
+
+    px_gfx_color_fg_set(color);
+    px_gfx_draw_rect(x, y, w, h);
+    px_gfx_update_frame();
 
     return NULL;
 }
@@ -326,8 +332,10 @@ static const char* px_cli_cmd_fn_lcd_fill(uint8_t argc, char* argv[])
     {
         color = PX_GFX_COLOR_ON;
     }
-    px_gfx_draw_fill(x, y, w, h, color);
-    px_gfx_update();
+
+    px_gfx_color_fg_set(color);
+    px_gfx_draw_fill_fg(x, y, w, h);
+    px_gfx_update_frame();
 
     return NULL;
 }
@@ -385,8 +393,10 @@ static const char* px_cli_cmd_fn_lcd_circle(uint8_t argc, char* argv[])
     {
         color = PX_GFX_COLOR_ON;
     }
-    px_gfx_draw_circ(x, y, r, color);
-    px_gfx_update();
+
+    px_gfx_color_fg_set(color);
+    px_gfx_draw_circ(x, y, r);
+    px_gfx_update_frame();
 
     return NULL;
 }
@@ -436,8 +446,9 @@ static const char* px_cli_cmd_fn_lcd_str(uint8_t argc, char* argv[])
         color = PX_GFX_COLOR_ON;
     }
 
-    px_gfx_draw_str(&px_gfx_font_5x7, x, y, PX_GFX_ALIGN_TOP_LEFT, color, argv[2]);
-    px_gfx_update();
+    px_gfx_color_fg_set(color);
+    px_gfx_draw_str(&px_gfx_font_5x7, x, y, argv[2]);
+    px_gfx_update_frame();
 
     return NULL;
 }

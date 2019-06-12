@@ -60,8 +60,8 @@
 #include "px_gfx_cfg.h"
 
 // Check that all project specific options have been specified in "px_gfx_cfg.h"
-#if (   !defined(PX_GFX_DISP_SIZE_X) \
-     || !defined(PX_GFX_DISP_SIZE_Y) \
+#if (   !defined(PX_GFX_DISP_SIZE_X        ) \
+     || !defined(PX_GFX_DISP_SIZE_Y        ) \
      || !defined(PX_GFX_CFG_STR_BUFFER_SIZE)  )
       )
 #error "One or more options not defined in 'px_gfx_cfg.h'"
@@ -77,52 +77,38 @@ extern "C"
 /// Size definition of an X or Y coordinate
 typedef int16_t px_gfx_xy_t;
 
+/// @name Convenience coordinate definitions
+//@{
 #define PX_GFX_X_MIN    0
 #define PX_GFX_X_MID    (PX_GFX_DISP_SIZE_X / 2)
 #define PX_GFX_X_MAX    (PX_GFX_DISP_SIZE_X - 1)
 #define PX_GFX_Y_MIN    0
 #define PX_GFX_Y_MID    (PX_GFX_DISP_SIZE_Y / 2)
 #define PX_GFX_Y_MAX    (PX_GFX_DISP_SIZE_Y - 1)
+//@}
 
+/// Foreground and background color definitions
 typedef enum
 {
     PX_GFX_COLOR_ON,
     PX_GFX_COLOR_OFF,
     PX_GFX_COLOR_INVERT,
+    PX_GFX_COLOR_TRANSPARENT,
 } px_gfx_color_t;
 
-typedef struct
-{
-    px_gfx_xy_t     width;
-    px_gfx_xy_t     height;
-    const uint8_t * data;
-} px_gfx_img_t;
-
-typedef struct
-{
-    px_gfx_xy_t     width;
-    px_gfx_xy_t     height;
-    const uint8_t * data;
-} px_gfx_font_t;
-
-typedef struct
-{
-    px_gfx_xy_t x1;
-    px_gfx_xy_t y1;
-    px_gfx_xy_t x2;
-    px_gfx_xy_t y2;
-} px_gfx_area_t;
-
+/// Alignment definition
 typedef enum
 {
-    PX_GFX_ALIGN_V_TOP   = 0x00,
-    PX_GFX_ALIGN_V_MID   = 0x01,
-    PX_GFX_ALIGN_V_BOT   = 0x02,
-    PX_GFX_ALIGN_H_LEFT  = 0x00,
-    PX_GFX_ALIGN_H_MID   = 0x10,
-    PX_GFX_ALIGN_H_RIGHT = 0x20,
+    PX_GFX_ALIGN_V_TOP   = 0x00,    ///< Vertical   (y) top
+    PX_GFX_ALIGN_V_MID   = 0x01,    ///< Vertical   (y) middle
+    PX_GFX_ALIGN_V_BOT   = 0x02,    ///< Vertical   (y) bottom
+    PX_GFX_ALIGN_H_LEFT  = 0x00,    ///< Horizontal (x) left
+    PX_GFX_ALIGN_H_MID   = 0x10,    ///< Horizontal (x) middle
+    PX_GFX_ALIGN_H_RIGHT = 0x20,    ///< Horizontal (x) right
 } px_gfx_align_t;
 
+/// @name Convenience alignment combination definitions
+//@{
 #define PX_GFX_ALIGN_TOP_LEFT   (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_LEFT )
 #define PX_GFX_ALIGN_TOP_MID    (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_MID  )
 #define PX_GFX_ALIGN_TOP_RIGHT  (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_RIGHT)
@@ -130,78 +116,123 @@ typedef enum
 #define PX_GFX_ALIGN_BOT_LEFT   (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_LEFT )
 #define PX_GFX_ALIGN_BOT_MID    (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_MID  )
 #define PX_GFX_ALIGN_BOT_RIGHT  (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_RIGHT)
+//@}
+
+/// Image definition
+typedef struct
+{
+    px_gfx_xy_t     width;
+    px_gfx_xy_t     height;
+    const uint8_t * data;
+} px_gfx_img_t;
+
+/// Font definition
+typedef struct
+{
+    px_gfx_xy_t     width;
+    px_gfx_xy_t     height;
+    const uint8_t * data;
+} px_gfx_font_t;
+
+/// Area definition
+typedef struct
+{
+    px_gfx_xy_t x1;             ///< Left
+    px_gfx_xy_t y1;             ///< Top
+    px_gfx_xy_t x2;             ///< Right
+    px_gfx_xy_t y2;             ///< Bottom
+} px_gfx_area_t;
+
+/// X Y coordinate reference
+typedef enum
+{
+    PX_GFX_XY_REF_REL = 0,      ///< Coordinate references are relative to view port
+    PX_GFX_XY_REF_ABS,          ///< Coordinate references are absolute (relative to display)    
+} px_gfx_xy_ref_t;
+
+/// View port definition
+typedef struct
+{
+    px_gfx_xy_t     x;          ///< Left
+    px_gfx_xy_t     y;          ///< Top
+    px_gfx_xy_t     width;      ///< Right
+    px_gfx_xy_t     height;     ///< Bottom
+    px_gfx_xy_ref_t xy_ref;     ///< Coordinate reference
+} px_gfx_view_port_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void px_gfx_init           (void);
-void px_gfx_clear          (void);
-void px_gfx_draw_screen    (void);
-void px_gfx_update         (void);
-bool px_gfx_update_area_get(px_gfx_area_t * area);
+void px_gfx_init                (void);
+
+void px_gfx_clear_frame         (void);
+void px_gfx_draw_frame          (void);
+void px_gfx_update_frame        (void);
+bool px_gfx_update_area_get     (px_gfx_area_t * area);
+
+void           px_gfx_draw_attr_reset   (void);
+px_gfx_color_t px_gfx_color_fg_set      (px_gfx_color_t  color);
+px_gfx_color_t px_gfx_color_bg_set      (px_gfx_color_t  color);
+px_gfx_align_t px_gfx_align_set         (px_gfx_align_t  align);
+void           px_gfx_view_port_set     (px_gfx_xy_t     x,
+                                         px_gfx_xy_t     y,
+                                         px_gfx_xy_t     width,
+                                         px_gfx_xy_t     height,
+                                         px_gfx_xy_ref_t xy_ref);
+void           px_gfx_view_port_reset   (void);
 
 void px_gfx_draw_pixel(px_gfx_xy_t    x,
-                       px_gfx_xy_t    y,
-                       px_gfx_color_t color);
+                       px_gfx_xy_t    y);
 
 void px_gfx_draw_line(px_gfx_xy_t    x1,
                       px_gfx_xy_t    y1,
                       px_gfx_xy_t    x2,
-                      px_gfx_xy_t    y2,
-                      px_gfx_color_t color);
+                      px_gfx_xy_t    y2);
 
 void px_gfx_draw_line_hor(px_gfx_xy_t    x,
                           px_gfx_xy_t    y,
-                          px_gfx_xy_t    width,
-                          px_gfx_color_t color);
+                          px_gfx_xy_t    width);
 
 void px_gfx_draw_line_ver(px_gfx_xy_t    x,
                           px_gfx_xy_t    y,
-                          px_gfx_xy_t    height,
-                          px_gfx_color_t color);
+                          px_gfx_xy_t    height);
 
 void px_gfx_draw_rect(px_gfx_xy_t    x,
                       px_gfx_xy_t    y,
                       px_gfx_xy_t    width,
-                      px_gfx_xy_t    height,
-                      px_gfx_color_t color);
+                      px_gfx_xy_t    height);
 
-void px_gfx_draw_fill(px_gfx_xy_t    x,
-                      px_gfx_xy_t    y,
-                      px_gfx_xy_t    width,
-                      px_gfx_xy_t    height,
-                      px_gfx_color_t color);
+void px_gfx_draw_fill_fg(px_gfx_xy_t    x,
+                         px_gfx_xy_t    y,
+                         px_gfx_xy_t    width,
+                         px_gfx_xy_t    height);
+
+void px_gfx_draw_fill_bg(px_gfx_xy_t    x,
+                         px_gfx_xy_t    y,
+                         px_gfx_xy_t    width,
+                         px_gfx_xy_t    height);
 
 void px_gfx_draw_circ(px_gfx_xy_t    x,
                       px_gfx_xy_t    y,
-                      px_gfx_xy_t    radius,
-                      px_gfx_color_t color);
+                      px_gfx_xy_t    radius);
 
 void px_gfx_draw_img(const px_gfx_img_t *  img,
                      px_gfx_xy_t           x,
-                     px_gfx_xy_t           y,
-                     px_gfx_align_t        align,
-                     px_gfx_color_t        color);
+                     px_gfx_xy_t           y);
 
 void px_gfx_draw_char(const px_gfx_font_t * font,
                       px_gfx_xy_t           x,
                       px_gfx_xy_t           y,
-                      px_gfx_align_t        align,
-                      px_gfx_color_t        color,
                       char                  glyph);
 
 void px_gfx_draw_str(const px_gfx_font_t * font,
                      px_gfx_xy_t           x,
                      px_gfx_xy_t           y,
-                     px_gfx_align_t        align,
-                     px_gfx_color_t        color,
                      const char *          str);
 
 void px_gfx_printf(const px_gfx_font_t * font,
                    px_gfx_xy_t           x,
                    px_gfx_xy_t           y,
-                   px_gfx_align_t        align,
-                   px_gfx_color_t        color,
                    const char *          format, ...);
 
 /* _____MACROS_______________________________________________________________ */

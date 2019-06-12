@@ -98,16 +98,15 @@ int main(void)
     for(;;)
     {
         // Clear display area
-        px_gfx_clear();
+        px_gfx_clear_frame();
         // Draw image
         img = img_array[i];
+        px_gfx_align_set(PX_GFX_ALIGN_MID);
         px_gfx_draw_img(img,
                         PX_GFX_DISP_SIZE_X / 2,
-                        PX_GFX_DISP_SIZE_Y / 2 - 1,
-                        PX_GFX_ALIGN_MID,
-                        PX_GFX_COLOR_ON);
+                        PX_GFX_DISP_SIZE_Y / 2 - 1);
         // Update display
-        px_gfx_update();
+        px_gfx_update_frame();
         // Delay
         px_board_delay_ms(100);
         // Next image

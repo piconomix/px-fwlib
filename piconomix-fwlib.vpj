@@ -159,6 +159,10 @@
             Refilter="0"
             Excludes="boards/arm/stm32/piconomix_hero_board/examples/03_cubemx_hal/Drivers/;boards/arm/stm32/piconomix_hero_board/examples/03_cubemx_hal/Middlewares/;boards/arm/stm32/piconomix_hero_board/examples/04_cubemx_ll/Drivers/;boards/arm/stm32/piconomix_hero_board/examples/04_cubemx_ll/Middlewares/"/>
         <F
+            N="*.cpp"
+            Recurse="1"
+            Excludes=""/>
+        <F
             N="*.css"
             Recurse="1"
             Refilter="0"
