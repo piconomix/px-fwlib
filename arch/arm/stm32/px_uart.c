@@ -84,6 +84,12 @@ static void uart_irq_handler(px_uart_data_t * uart_data)
     {
         // Read receive data register
         data = LL_USART_ReceiveData8(usart_base_adr);
+        // Overrrun Error?
+        if(LL_USART_IsActiveFlag_ORE(usart_base_adr))
+        {
+            // Clear error flag
+            LL_USART_ClearFlag_ORE(usart_base_adr);
+        }
         // Parity Error?
         if(LL_USART_IsActiveFlag_PE(usart_base_adr))
         {
