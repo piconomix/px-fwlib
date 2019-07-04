@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
     
-    Title:          px_list.h : Link List
+    Title:          px_link_list.h : Link List
     Author(s):      Pieter Conradie
     Creation Date:  2008-11-27
 
@@ -19,7 +19,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_list.h"
+#include "px_link_list.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 
@@ -34,8 +34,8 @@
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_list_init(px_list_t * list,
-                  size_t      max_nr_of_items)
+void px_link_list_init(px_link_list_t * list,
+                       size_t           max_nr_of_items)
 {
     list->first_item      = NULL;
     list->last_item       = NULL;
@@ -43,14 +43,14 @@ void px_list_init(px_list_t * list,
     list->max_nr_of_items = max_nr_of_items;
 }
 
-void px_list_item_init(px_list_t *      list,
-                       px_list_item_t * item)
+void px_link_list_item_init(px_link_list_t *      list,
+                            px_link_list_item_t * item)
 {
     item->previous_item = NULL;
     item->next_item     = NULL;
 }
 
-bool px_list_is_empty(px_list_t * list)
+bool px_link_list_is_empty(px_link_list_t * list)
 {
     if(list->first_item == NULL)
     {
@@ -62,7 +62,7 @@ bool px_list_is_empty(px_list_t * list)
     }
 }
 
-bool px_list_is_full(px_list_t * list)
+bool px_link_list_is_full(px_link_list_t * list)
 {
     if(list->max_nr_of_items == 0)
     {
@@ -79,43 +79,43 @@ bool px_list_is_full(px_list_t * list)
     }
 }
 
-size_t px_list_nr_of_items(px_list_t * list)
+size_t px_link_list_nr_of_items(px_link_list_t * list)
 {
     // Return item count
     return (list->nr_of_items);
 }
 
-px_list_item_t * px_list_first_item(px_list_t * list)
+px_link_list_item_t * px_link_list_first_item(px_link_list_t * list)
 {
     return list->first_item;
 }
 
-px_list_item_t * px_list_last_item(px_list_t * list)
+px_link_list_item_t * px_link_list_last_item(px_link_list_t * list)
 {
     return list->last_item;
 }
 
-px_list_item_t * px_list_next_item(px_list_t *      list,
-                                   px_list_item_t * item)
+px_link_list_item_t * px_link_list_next_item(px_link_list_t *      list,
+                                             px_link_list_item_t * item)
 {
     return item->next_item;
 }
 
-px_list_item_t * px_list_previous_item(px_list_t *      list,
-                                       px_list_item_t * item)
+px_link_list_item_t * px_link_list_previous_item(px_link_list_t *      list,
+                                                 px_link_list_item_t * item)
 {
     return item->previous_item;
 }
 
-bool px_list_add_to_start(px_list_t *      list,
-                          px_list_item_t * item)
+bool px_link_list_add_to_start(px_link_list_t *      list,
+                               px_link_list_item_t * item)
 {
-    if(px_list_is_full(list))
+    if(px_link_list_is_full(list))
     {
         return false;
     }
 
-    if(px_list_is_empty(list))
+    if(px_link_list_is_empty(list))
     {
         // Add first item
         list->first_item    = item;
@@ -138,15 +138,15 @@ bool px_list_add_to_start(px_list_t *      list,
     return true;
 }
 
-bool px_list_add_to_end(px_list_t *      list,
-                        px_list_item_t * item)
+bool px_link_list_add_to_end(px_link_list_t *      list,
+                             px_link_list_item_t * item)
 {
-    if(px_list_is_full(list))
+    if(px_link_list_is_full(list))
     {
         return false;
     }
 
-    if(px_list_is_empty(list))
+    if(px_link_list_is_empty(list))
     {
         // Add first item
         list->first_item    = item;
@@ -169,12 +169,12 @@ bool px_list_add_to_end(px_list_t *      list,
     return true;
 }
 
-px_list_item_t * px_list_remove_first_item(px_list_t * list)
+px_link_list_item_t * px_link_list_remove_first_item(px_link_list_t * list)
 {
-    px_list_item_t * item = list->first_item;
+    px_link_list_item_t * item = list->first_item;
 
     // See if list is empty
-    if(px_list_is_empty(list))
+    if(px_link_list_is_empty(list))
     {
         return NULL;
     }
@@ -202,12 +202,12 @@ px_list_item_t * px_list_remove_first_item(px_list_t * list)
     return item;
 }
 
-px_list_item_t * px_list_remove_last_item(px_list_t * list)
+px_link_list_item_t * px_link_list_remove_last_item(px_link_list_t * list)
 {
-    px_list_item_t * item = list->last_item;
+    px_link_list_item_t * item = list->last_item;
 
     // See if list is empty
-    if(px_list_is_empty(list))
+    if(px_link_list_is_empty(list))
     {
         return NULL;
     }
@@ -235,11 +235,11 @@ px_list_item_t * px_list_remove_last_item(px_list_t * list)
     return item;
 }
 
-void px_list_remove_item(px_list_t *      list,
-                         px_list_item_t * item)
+void px_link_list_remove_item(px_link_list_t *      list,
+                              px_link_list_item_t * item)
 {
     // Extra sanity check
-    if(px_list_is_empty(list))
+    if(px_link_list_is_empty(list))
     {
         return;
     }
@@ -247,14 +247,14 @@ void px_list_remove_item(px_list_t *      list,
     // See if this is the first item in the list
     if(item == list->first_item)
     {
-        px_list_remove_first_item(list);
+        px_link_list_remove_first_item(list);
         return;
     }
 
     // See if this is the last item in the list
     if(item == list->last_item)
     {
-        px_list_remove_last_item(list);
+        px_link_list_remove_last_item(list);
         return;
     }
 
@@ -270,11 +270,11 @@ void px_list_remove_item(px_list_t *      list,
     (list->nr_of_items)--;
 }
 
-bool px_list_item_in_list(px_list_t *      list,
-                          px_list_item_t * item)
+bool px_link_list_item_in_list(px_link_list_t *      list,
+                               px_link_list_item_t * item)
 {
     // Start at first item in the list
-    px_list_item_t * item_in_list = list->first_item;
+    px_link_list_item_t * item_in_list = list->first_item;
 
     // Search all items in the list
     while(item_in_list != NULL)
