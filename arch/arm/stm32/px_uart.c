@@ -237,6 +237,24 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
     // Set transmitter and receiver and receive interrupt
     usart_cr1_val = USART_CR1_RXNEIE | USART_CR1_TE | USART_CR1_RE;
 
+    // Parity specified?
+    if(parity != PX_UART_PARITY_NONE)
+    {
+        // Increment data bits to include parity bit
+        if(data_bits == PX_UART_DATA_BITS_7)
+        {
+            data_bits = PX_UART_DATA_BITS_8;
+        }
+        else if(data_bits == PX_UART_DATA_BITS_8)
+        {
+            data_bits = PX_UART_DATA_BITS_9;
+        }
+        else
+        {
+            PX_DBG_ERR("Parity option invalid");
+        }
+    }
+
     // Set number of data bits
     switch(data_bits)
     {
