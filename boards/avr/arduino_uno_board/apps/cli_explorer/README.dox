@@ -32,7 +32,7 @@ With this application you will be able to:
 You will need [XLoader] [xloader] to upload the "cli_explorer.hex" file to the Arduino
 Uno board via the [Optiboot bootloader] [optiboot]. The file is located here:
 
-    piconomix-fwlib\boards\avr\arduino_uno_board\apps\cli_explorer\cli_explorer.hex
+    px-lib\boards\avr\arduino_uno_board\apps\cli_explorer\cli_explorer.hex
 
 Select the HEX file, specify the correct COM port and press upload:
 

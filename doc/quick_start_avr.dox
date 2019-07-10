@@ -179,7 +179,7 @@ Studio's build system, to make the projects cross-platform.
 
 Open and build [Tutorial 1 GPIO](@ref AVR_TUT01_GPIO). It is located here:
 
-    piconomix-fwlib/arch/avr/tutorials/01_gpio/gpio.atsln
+    px-lib/arch/avr/tutorials/01_gpio/gpio.atsln
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 
@@ -389,7 +389,7 @@ Example location of project Makefile:
 
 Example location of library:
 
-    P:\libraries\piconomix-fwlib\trunk
+    P:\libs\px-lib\trunk
 
 Open Makefile and modify the PICOLIB variable to set the relative path to 
 the library:
@@ -440,7 +440,7 @@ You can now delete any previously built files by executing 'make clean' on the
 command line (see picture above). This is the output:
 
     @verbatim
-    P:\libraries\piconomix-fwlib\trunk\arch\avr\examples\flashing_led>make clean
+    P:\libs\px-lib\trunk\arch\avr\examples\flashing_led>make clean
 
     -------- begin --------
 
@@ -457,7 +457,7 @@ The project can be built again by executing 'make' on the command line. This is
 the output:
 
     @verbatim
-    P:\libraries\piconomix-fwlib\trunk\arch\avr\examples\flashing_led>make
+    P:\libs\px-lib\trunk\arch\avr\examples\flashing_led>make
 
     -------- begin --------
     avr-gcc.exe (AVR_8_bit_GNU_Toolchain_3.5.0_1662) 4.9.2

@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSD (Mass Storage Device) configuration
+    Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSC (Mass Storage Class) configuration
     Author(s):      Pieter Conradie
     Creation Date:  2019-05-25
 
@@ -45,6 +45,9 @@
 
 /// index.htm file URL
 #define PX_UF2_CFG_INDEX_URL        "https://piconomix.com/fwlib/index.html"
+
+/// FAT16 volume label
+#define PX_UF2_CFG_VOLUME_LABEL     "HERO-BOOT "
 
 /// Family ID
 #define PX_UF2_CFG_FAMILY_ID        0xe892273c

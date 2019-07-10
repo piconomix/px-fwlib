@@ -18,15 +18,14 @@
 [tera_term]:          http://en.sourceforge.jp/projects/ttssh2
 [unix_shell_utils]:   https://sourceforge.net/projects/unixshellutils/files/latest/download
 
-<center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
-
-The ultimate embedded quest is: RELIABLE **AND** CHEAP **AND** LOW POWER...
+*The ultimate embedded quest is: RELIABLE* **AND** *CHEAP* **AND** *LOW POWER...*
 
 Discover and free your inner hero! This board has been carefully crafted to 
 engage human senses (sight, sound and touch) and map the journey to becoming a 
 true embedded hero. Above all, it should be a fun-filled adventure!!
 
 @image html hero_board_isometric.jpg width=500px
+<center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
 
 Extensive ecosystem included:
 * An [STM32 quick start guide](@ref STM32_QUICK_START_GUIDE) with 
@@ -44,17 +43,22 @@ experiment with GPIO, ADC, I2C and SPI using only
 ![](hero_board_cli_preview.gif)
 
 @tip_s
-The Hero Board is shipped with @ref HERO_BOARD_BOOTLOADER_UART_XMODEM and 
+The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and 
 @ref HERO_BOARD_APP_CLI pre-programmed.
 @tip_e
 
-2. Features {#HERO_BOARD_FEATURES}
+2. Top View {#HERO_BOARD_TOP_VIEW}
 ==================================
 
 ![](hero_board_top_annotated.png)
-\n
+
+3. Bottom View {#HERO_BOARD_BOT_VIEW}
+=====================================
+
 ![](hero_board_bot_annotated.png)
-\n
+
+4. Features {#HERO_BOARD_FEATURES}
+==================================
 
 - [STM32L072RB](https://www.st.com/en/microcontrollers/stm32l072rb.html)
   ultra low-power ARM Cortex-M0+ microcontroller with 128 kB Flash, 20 kB SRAM 
@@ -63,7 +67,7 @@ The Hero Board is shipped with @ref HERO_BOARD_BOOTLOADER_UART_XMODEM and
     + Low-power 128 x 64 monochrome graphic LCD with LED backlight
     + User LED and Battery Charger LED
     + Piezo buzzer for audio feedback
-    + 6 **LARGE** tactile user buttons (1/LEFT, 2/RIGHT, 3/UP, 4/DOWN, 5/NO, 6/YES/PWR)
+    + 6 **LARGE** tactile user buttons (1/LEFT, 2/RIGHT, 3/UP, 4/DOWN, 5/YES, 6/NO/PWR)
     + Reset button
 - Intuitive 2.54 mm (0.1 inch) pitch peripheral connector (accessible from **TOP** and **BOTTOM**):
     + PWR (+3.6V to +5V power bus)
@@ -93,7 +97,10 @@ The Hero Board is shipped with @ref HERO_BOARD_BOOTLOADER_UART_XMODEM and
 - 4 x 3.4 mm mounting holes; ideal for 
   [M3 threaded hexagonal spacers](http://www.digikey.com/catalog/en/partgroup/hexagonal-metric-spacers/12921)
 
-|Feature comparison                                                      | Lite Edition | Deluxe Edition |
+5. Comparision between Lite and Deluxe Edition {#HERO_BOARD_EDITIONS}
+=====================================================================
+
+|Feature                                                                 | Lite Edition | Deluxe Edition |
 |------------------------------------------------------------------------|--------------|----------------|
 | STM32L072RB Microcontroller (128k Flash, 20k SRAM, 6k EEPROM)          | YES          | YES            |
 | User Interface (LCD with backlight, LED, Buzzer, 7 x Buttons)          | YES          | YES            |
@@ -111,7 +118,7 @@ The Hero Board is shipped with @ref HERO_BOARD_BOOTLOADER_UART_XMODEM and
 | Sparkfun QWICC Connector                                               | YES          | YES            |
 | seeed GROVE I2C Connector                                              | NO           | YES            |
 
-3. Design Documents{#HERO_BOARD_DESIGN}
+6. Design Documents{#HERO_BOARD_DESIGN}
 =======================================
 
 Most OSHW designs hide some of the "magic sauce". The schematics are hard to 
@@ -128,7 +135,7 @@ The design documents can also be found here for off-line viewing:
 
     boards/arm/stm32/piconomix_hero_board/docs
 
-4. Reference documents {#HERO_BOARD_REFS}
+7. Reference documents {#HERO_BOARD_REFS}
 =========================================
 
 - [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf)
@@ -140,7 +147,7 @@ The reference documents can also be found here for off-line viewing:
 
     boards/arm/stm32/piconomix_hero_board/docs
 
-5. Disclaimer {#HERO_BOARD_DISCLAIMER}
+8. Disclaimer {#HERO_BOARD_DISCLAIMER}
 ======================================
 
     This development/evaluation tool is suitable for research and development in
@@ -161,7 +168,7 @@ The reference documents can also be found here for off-line viewing:
     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS HARDWARE, EVEN
     IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-6. Board Support Package {#HERO_BOARD_BSP}
+9. Board Support Package {#HERO_BOARD_BSP}
 ==========================================
 
 A Board Support Package (@ref BOARDS_STM32_PICONOMIX_HERO) is provided that:
@@ -176,8 +183,8 @@ Files:
 - boards/arm/stm32/piconomix_hero_board/px_board_gpio.h
 - boards/arm/stm32/piconomix_hero_board/px_board.c
 
-7. Getting started {#HERO_BOARD_START}
-======================================
+10. Getting started {#HERO_BOARD_START}
+=======================================
 
 The following free software tools are needed:
 - [Atollic TrueSTUDIO for STM32][atollic_truestudio] : 
@@ -200,8 +207,8 @@ limited set of GNU utilities like `make` and `rm` but lacks `sh` that is
 required for advanced Makefiles. [UnixShellUtils][unix_shell_utils] and 
 [GNU Tools for Arm Embedded Processors][gnu_arm_tools] compensates for this gap.*
 
-7.1 Connect USB1 of Hero Board to PC {#HERO_BOARD_CONNECT}
-----------------------------------------------------------
+10.1 Connect USB1 of Hero Board to PC
+-------------------------------------
 
 The Hero Board is shipped with the @ref HERO_BOARD_APP_CLI app. Connect USB1 to 
 the PC. *The app will give a beep, enable the LCD backlight and display the Hero 
@@ -217,23 +224,22 @@ be used to find out. Right-click "Start (Windows icon bottom left of task bar) >
 
 ![Device Manager - COM port assignment](hero_board_device_manager.png)
 
-7.2 Install Tera Term (an ANSI/VT100 Terminal Emulator) {#HERO_BOARD_INSTALL_TERATERM}
---------------------------------------------------------------------------------------
+10.2 Install Tera Term (an ANSI/VT100 Terminal Emulator)
+--------------------------------------------------------
 
 Follow the steps [HERE](@ref HOWTO_TERA_TERM) to install and configure Tera Term
 using the COM port noted in @ref HERO_BOARD_CONNECT.
 
-
-7.3 Play with the CLI Explorer app {#HERO_BOARD_PLAY_CLI_EXPLORER}
-------------------------------------------------------------------
+10.3 Play with the CLI Explorer app
+-----------------------------------
 
 You are now ready to use Tera Term to interact with the CLI explorer app. Follow
 the full documentation [HERE](@ref HERO_BOARD_APP_CLI).
 
 ![CLI Exlorer executing on a Hero Board](hero_board_cli_preview.gif)
 
-7.4 Install USB-UART Bridge Virtual Com Port (VCP) USB driver {#HERO_BOARD_INSTALL_USB}
----------------------------------------------------------------------------------------
+10.4 Install USB-UART Bridge Virtual Com Port (VCP) USB driver
+--------------------------------------------------------------
 
 @tip_s
 If you already have the latest driver installed and correctly configured, then 
@@ -259,8 +265,8 @@ connect to it. When you type characters in the terminal window, the TX LED will
 flash on the board.
 @tip_e
 
-7.5 Install UnixShellUtils {#HERO_BOARD_INSTALL_UNIX_SHELL_UTILS}
------------------------------------------------------------------
+10.5 Install UnixShellUtils
+---------------------------
 
 @tip_s
 Using command-line tools to build software may feel daunting and intimidating at 
@@ -275,8 +281,8 @@ to a convenient location without spaces in the path, e.g.
     C:\UnixShellUtils
 
 
-7.6 Install GNU Tools for Arm Embedded Processors {#HERO_BOARD_INSTALL_GNU_TOOLS}
----------------------------------------------------------------------------------
+10.6 Install GNU Tools for Arm Embedded Processors
+--------------------------------------------------
 
 Download and install [GNU Tools for Arm Embedded Processors][gnu_arm_tools].
 
@@ -314,7 +320,7 @@ the text into the window.
 
 Change the directory to @ref HERO_BOARD_EXAMPLE_GPIO, e.g.
 
-    > cd piconomix-fwlib\boards\arm\stm32\piconomix_hero_board\examples\gpio
+    > cd px-lib\boards\arm\stm32\piconomix_hero_board\examples\gpio
 
 Execute `make clean` to delete all of the build files:
 
@@ -335,9 +341,9 @@ Build output text:
 
     C:\Users\Pieter>P:
 
-    P:\>cd libraries\piconomix-fwlib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio
+    P:\>cd libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio
 
-    P:\libraries\piconomix-fwlib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>make clean
+    P:\libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>make clean
 
     ------------ begin (DEBUG) ---------------
 
@@ -348,7 +354,7 @@ Build output text:
     -------------  end (DEBUG) ---------------
 
 
-    P:\libraries\piconomix-fwlib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>make
+    P:\libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>make
 
     ------------ begin (DEBUG) ---------------
     arm-none-eabi-gcc.exe (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM/embedded-7-branch revision 255204]
@@ -397,19 +403,19 @@ Build output text:
     -------------  end (DEBUG) ---------------
 
 
-    P:\libraries\piconomix-fwlib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>
+    P:\libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>
 
 
-7.7 Install and Atollic TrueSTUDIO for STM32 {#HERO_BOARD_INSTALL_ATOLLIC_TRUESTUDIO}
--------------------------------------------------------------------------------------
+10.7 Install and Atollic TrueSTUDIO for STM32
+---------------------------------------------
 
 Follow the steps [HERE] (@ref HOWTO_TRUESTUDIO) to install Atollic TrueSTUDIO.
 The section also describes how to create a new project that uses an external 
 Makefile and configure it to use UnixShellUtils and the Makefiles provided with
 this library.
 
-7.8 Build example in IDE {#HERO_BOARD_BUILD_IDE_EXAMPLE}
---------------------------------------------------------
+10.8 Build example in IDE
+-------------------------
 
 The tutorials and examples are provided with pre-configured Atollic TrueSTUDIO 
 projects. External Makefiles are referenced, instead of using TrueSTUDIO's build 
@@ -422,11 +428,11 @@ must be modified appropriately.
 
 Open and build @ref HERO_BOARD_EXAMPLE_GPIO. The project file is here:
 
-    piconomix-fwlib/boards/avr/piconomix_hero_board/examples/gpio/.project
+    px-lib/boards/avr/piconomix_hero_board/examples/gpio/.project
 
 
-7.9 Upload example to Hero Board {#HERO_BOARD_UPLOAD_EXAMPLE}
--------------------------------------------------------------
+10.9 Upload example to Hero Board
+---------------------------------
 
 After building @ref HERO_BOARD_EXAMPLE_GPIO succesfully, you will 
 have a binary file called "gpio.bin". The new application is sent to the 
@@ -461,8 +467,8 @@ restarted.
 Press the user button. The user LED will turn on while the button is being 
 pressed and turn off when the button is released. **Success!**
 
-8. STM32 quick start guide {#HERO_BOARD_STM32_QUICK_START_GUIDE}
-================================================================
+11. STM32 quick start guide {#HERO_BOARD_STM32_QUICK_START_GUIDE}
+=================================================================
 
 You now have a working development environment and I really hope it was quick 
 and straight forward to set up (if not, please use @ref FEEDBACK). You should be 

@@ -42,7 +42,7 @@ Select your tool (Atmel-ICE), Device (ATmega328P), Interface (ISP) and Apply.
 Read the device signature (0x1E950F) to verify that everything is OK. Select 
 "Memories" and specify the location of the Optiboot HEX file:
 
-    piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\bootloader_optiboot\optiboot_scorpion_board.hex
+    px-lib\boards\avr\piconomix_scorpion_board\examples\03_arduino\bootloader_optiboot\optiboot_scorpion_board.hex
 
 Press Program:
 ![Program FLASH memory](scorpion_board_prog_optiboot_flash.png)
@@ -67,7 +67,7 @@ The location of "boards.txt" is here:
 
 Replace it with:
 
-    piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\boards.txt
+    px-lib\boards\avr\piconomix_scorpion_board\examples\03_arduino\boards.txt
 
 Alternatively you can edit "boards.txt" and paste in the following snippet:
 
@@ -111,7 +111,7 @@ See [using an Arduino as an AVR-ISP](http://arduino.cc/en/Tutorial/ArduinoISP),
 to program the custom Optiboot bootloader using the Arduino IDE. You will then 
 need to copy this file:
 
-    piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\bootloader_optiboot\optiboot_scorpion_board.hex
+    px-lib\boards\avr\piconomix_scorpion_board\examples\03_arduino\bootloader_optiboot\optiboot_scorpion_board.hex
 
 Here:
 
@@ -177,7 +177,7 @@ File > Open
 
 Select:
 
-    piconomix-fwlib\boards\avr\piconomix_scorpion_board\examples\03_arduino\demo_gpio\demo_gpio.ino
+    px-lib\boards\avr\piconomix_scorpion_board\examples\03_arduino\demo_gpio\demo_gpio.ino
 
 Press the Right Arrow icon to compile the sketch and start the upload process.
 Once the sketch has compiled succesfully, quickly **press the RST button on the 
@@ -199,7 +199,7 @@ File > Open
 
 Select:
 
-    piconomix-fwlib\boards\avr\piconomix_scorpion_board\arduino\demo_serial\demo_serial.ino
+    px-lib\boards\avr\piconomix_scorpion_board\arduino\demo_serial\demo_serial.ino
 
 Press the Right Arrow icon to compile the sketch and start the upload process.
 Once the sketch has compiled succesfully, quickly **press the RST button on the

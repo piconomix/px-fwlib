@@ -17,7 +17,7 @@
 [core_utils]:        http://gnuwin32.sourceforge.net/packages/coreutils.htm
 [srecord]:           http://srecord.sourceforge.net
 
-The foundation of **piconomix-fwlib** is knowledge and freedom:
+The foundation of **px-lib** is knowledge and freedom:
 <em>the knowledge and freedom to use the right microntroller for the job and not
 trying to force a square peg in a round hole.</em> It is a collection of C 
 firmware and documentation to develop the highest standard of lean bare-metal 
@@ -140,7 +140,7 @@ Studio's build system, to make the projects cross-platform.
 
 Open and build @ref ARDUINO_UNO_BOARD_EXAMPLE_SERIAL. It is located here:
 
-    piconomix-fwlib/boards/avr/arduino_uno_board/examples/02_serial/serial.atsln
+    px-lib/boards/avr/arduino_uno_board/examples/02_serial/serial.atsln
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 

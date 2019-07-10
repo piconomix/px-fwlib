@@ -269,7 +269,7 @@ Studio's build system, to make the projects cross-platform.
 
 Open and build @ref SCORPION_BOARD_EXAMPLE_GPIO. It is located here:
 
-    piconomix-fwlib/boards/avr/piconomix_scorpion_board/examples/01_gpio/gpio.atsln
+    px-lib/boards/avr/piconomix_scorpion_board/examples/01_gpio/gpio.atsln
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 

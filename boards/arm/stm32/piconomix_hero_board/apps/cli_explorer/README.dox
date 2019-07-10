@@ -4,7 +4,7 @@ CLI Explorer (Command Line Interpreter) {#HERO_BOARD_APP_CLI}
 [TOC]
 
 Introduction {#HERO_BOARD_APP_CLI_INTRO}
-============================================
+========================================
 
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 
@@ -787,7 +787,7 @@ aligned address), not 0x08000B29?
 
 This command will perform a system reset. The bootloader will be executed and it
 will jump to the application (no "double-tap" reset sequence; See 
-@ref HERO_BOARD_BOOTLOADER_UART_XMODEM).
+@ref HERO_BOARD_BOOTLOADER_USB_UF2).
 
 4 Button press reporting {#HERO_BOARD_CLI_BUTTONS}
 ==================================================

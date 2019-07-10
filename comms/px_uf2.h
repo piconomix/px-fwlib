@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSD (Mass Storage Device)
+    Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSC (Mass Storage Class)
     Author(s):      Pieter Conradie
     Creation Date:  2019-05-25
 
@@ -20,7 +20,7 @@
 
 /** 
  *  @ingroup COMMS
- *  @defgroup PX_UF2 px_uf2.h : Microsoft UF2 bootloader over USB MSD (Mass Storage Device)
+ *  @defgroup PX_UF2 px_uf2.h : Microsoft UF2 bootloader over USB MSC (Mass Storage Class)
  *  
  *  Microsoft UF2 bootloader over USB MSD (Mass Storage Device).
  *  
@@ -56,7 +56,9 @@
      || !defined(PX_UF2_CFG_INFO_VERSION   ) \
      || !defined(PX_UF2_CFG_INFO_MODEL     ) \
      || !defined(PX_UF2_CFG_INFO_BOARD_ID  ) \
-     || !defined(PX_UF2_CFG_INDEX_URL      )  )
+     || !defined(PX_UF2_CFG_INDEX_URL      ) \
+     || !defined(PX_UF2_CFG_VOLUME_LABEL   ) \
+     || !defined(PX_UF2_CFG_FAMILY_ID      )  )
 #error "One or more options not defined in 'px_uf2_cfg.h'"
 #endif
 
@@ -68,12 +70,7 @@ extern "C"
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /**
- *  Definition for a pointer to a function that will be called once a frame has
- *  been received.
- */
-
-/**
- *  Definition for a pointer to a function that will be called to write a block 
+ *  Definition of a pointer to a function that will be called to write a block 
  *  of data to flash.
  *  
  *  @param data         Pointer to buffer containing data to write
@@ -82,11 +79,11 @@ extern "C"
  *  @param last_block   Set to true if this is the last block
  */
 typedef void (*px_uf2_on_wr_flash_block_t)(const uint8_t * data, 
-                                        uint32_t        adr, 
-                                        size_t          nr_of_bytes);
+                                           uint32_t        adr, 
+                                           size_t          nr_of_bytes);
 
 /**
- *  Definition for a pointer to a function that will be called when last block
+ *  Definition of a pointer to a function that will be called when last block
  *  has been written. 
  */
 typedef void (*px_uf2_on_wr_flash_done_t)(void);
@@ -94,13 +91,38 @@ typedef void (*px_uf2_on_wr_flash_done_t)(void);
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void px_uf2_init     (px_uf2_on_wr_flash_block_t on_wr_flash_block,
-                      px_uf2_on_wr_flash_done_t  on_wr_flash_done);
-void px_uf2_rd_sector(uint8_t * buf,       uint32_t sector_adr);
-void px_uf2_wr_sector(const uint8_t * buf, uint32_t sector_adr);
+/**
+ *  Initialise UF2 module.
+ *  
+ *  @param on_wr_flash_block    Pointer to function that will be called to write
+ *                              a block to FLASH.
+ *  @param on_wr_flash_done     Pointer to a function that will be called when 
+ *                              the whole UF2 file has been written.
+ */
+void px_uf2_init(px_uf2_on_wr_flash_block_t on_wr_flash_block,
+                 px_uf2_on_wr_flash_done_t  on_wr_flash_done);
+
+/**
+ *  Function that must be called when a 512 byte sector is read over USB Mass
+ *  Storage.
+ *  
+ *  @param sector_adr   Sector address to read
+ *  @param buf          Pointer to buffer to copy sector data into
+ */
+void px_uf2_on_rd_sector(uint32_t sector_adr, uint8_t * buf);
+
+/**
+ *  Function that must be called when a 512 byte sector is written over USB Mass
+ *  Storage.
+ *  
+ *  @param sector_adr   Sector address to write to
+ *  @param buf          Pointer to buffer containing data to write
+ */
+void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf);
 
 /* _____MACROS_______________________________________________________________ */
 
+/// @}
 #ifdef __cplusplus
 }
 #endif

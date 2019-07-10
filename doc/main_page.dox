@@ -5,11 +5,11 @@
 
 [TOC]
 
-The foundation of **piconomix-fwlib** is knowledge and freedom:
+The foundation of **px-lib** is knowledge and freedom:
 <em>the knowledge and freedom to use the right microcontroller for the job and 
 not trying to force a square peg in a round hole.</em>
 
-**piconomix-fwlib** is a collection of open source C firmware and documentation
+**px-lib** is a collection of open source C firmware and documentation
 for microcontrollers to develop portable bare-metal code that is vendor and 
 architecture neutral (or easier to reuse). It is tough to find the best 
 compromise between lean 8-bit targets, middle-of-the-road 16-bit targets, and 

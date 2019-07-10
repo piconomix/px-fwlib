@@ -132,22 +132,22 @@ the text "RELEASE FOR BOOT"
 6. Technical details {#HERO_BOARD_BOOTLOADER_UART_XMODEM_BOOT_TECH}
 ===================================================================
 
-The bootloader is only ~2.5k in size, but 8k is reserved to leave enough space 
-for more complex bootloaders.
-
-The start address of the application is set in the bootloader's main.c (0x4000 = 16384 = 16k):
+The bootloader is only ~2.5k in size, but 16k is reserved to leave enough space 
+for more complex bootloaders, for example @ref HERO_BOARD_BOOTLOADER_USB_UF2. 
+The start address of the application is set in the bootloader's main.c 
+(0x4000 = 16384 = 16k):
 
 @snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_uart_xmodem/src/main.c Address mapping of App
 
 The application would normally start at the first address in Flash, but it must
 be moved to a higher address to accomodate the bootloader which is executed 
 first. The start address is set in the application's Makefile with the 
-BOOTLOADER_SIZE variable:
+BOOTLOADER_SIZE symbol:
 
     # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
     BOOTLOADER_SIZE = 0x4000
 
-The template arch/arm/stm32/MakeRules.mk uses this variable to set the 
+The template arch/arm/stm32/MakeRules.mk uses this symbol to set the 
 Vector Table Offset Register to the correct value in system_stm32l0xx.c and also
 to specify the offset for the linker script:
 
@@ -180,7 +180,7 @@ Location:
     libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 
 The linker script boards/arm/stm32/piconomix_hero_board/STM32L072xB.ld allows 
-the start address to be changed with the FLASH_OFFSET variable:
+the start address to be changed with the FLASH_OFFSET symbol:
 
     /*
      *  Describe the location and size of blocks of memory in the target
@@ -190,8 +190,9 @@ the start address to be changed with the FLASH_OFFSET variable:
     FLASH_LENGTH = 128k - FLASH_OFFSET;
 
 The generated LSS file, for example
-boards/arm/stm32/piconomix_hero_board/examples/gpio/BUILD_RELEASE/gpio.lss, can 
-be inspected to verify that the application has been moved to the right address:
+boards/arm/stm32/piconomix_hero_board/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss,
+can be inspected to verify that the application has been moved to the right 
+address:
 
     BUILD_RELEASE_BOOT/gpio.elf:     file format elf32-littlearm
 
@@ -212,6 +213,6 @@ be inspected to verify that the application has been moved to the right address:
 The bootloader will perform a number of sanity checks on the BIN file programmed
 in Flash, before it will jump to the start address of the application:
 
-@snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_uart_xmodem/src/main.c Execute App
+@snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_usb_uf2/src/main.c Execute App
 
 

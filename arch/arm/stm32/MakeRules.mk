@@ -163,37 +163,37 @@ size: $(BUILD_DIR)/$(PROJECT).elf
 gccversion : 
 	@$(CC) --version
 
-# Create final output file (.hex) from ELF output file
+# Create final output file (*.hex) from ELF output file
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_FLASH_HEX) $@
 	$(OBJCOPY) -O ihex $< $@
 
-# Create final output file (.bin) from ELF output file
+# Create final output file (*.bin) from ELF output file
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_FLASH_BIN) $@
 	$(OBJCOPY) -O binary $< $@
 
-# Create UF2 bootloader format file (.uf2) from BIN output file
+# Create UF2 bootloader format file (*.uf2) from BIN output file
 $(BUILD_DIR)/%.uf2: $(BUILD_DIR)/%.bin
 	@echo
 	@echo $(MSG_FLASH_UF2) $@
-	python $(PICOLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -o $@
+	python $(PICOLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c -o $@
 
-# Create extended listing file from ELF output file
+# Create extended listing file (*.lss) from ELF output file
 $(BUILD_DIR)/%.lss: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_EXTENDED_LISTING) $@
 	$(OBJDUMP) -h -S -z $< > $@
 
-# Create a symbol table from ELF output file
+# Create a symbol table (*.sym) from ELF output file
 $(BUILD_DIR)/%.sym: $(BUILD_DIR)/%.elf
 	@echo
 	@echo $(MSG_SYMBOL_TABLE) $@
 	$(NM) -n $< > $@
 
-# Link: create ELF output file from object files
+# Link: create ELF output file (*.elf) from object files
 .SECONDARY : $(BUILD_DIR)/$(PROJECT).elf
 .PRECIOUS : $(OBJECTS)
 $(BUILD_DIR)/%.elf: $(OBJECTS)
@@ -257,6 +257,10 @@ mostlyclean_list :
 	$(REMOVE) $(BUILD_DIR)/$(PROJECT).map
 	$(REMOVE) $(BUILD_DIR)/$(PROJECT).sym
 
+# Program target using STM32CubeProgrammer CLI utility
+program:  $(BUILD_DIR)/$(PROJECT).hex
+	STM32_Programmer_CLI -c port=SWD freq=4000 reset=HWrst -w $< -v -g 0x00000000
+
 # Generate OpenOCD config file
 .PHONY : $(OPENOCD_SCRIPT)
 $(OPENOCD_SCRIPT):
@@ -306,5 +310,6 @@ $(shell mkdir $(BUILD_DIR) 2>/dev/null)
 
 # Listing of phony targets
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
-build elf hex bin lss sym clean clean_list mostlyclean mostlyclean_list openocd gdb
+build elf hex bin uf2 lss sym clean clean_list mostlyclean mostlyclean_list \
+program openocd gdb
 

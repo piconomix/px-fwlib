@@ -5,7 +5,7 @@ Introduction
 
 ![https://piconomix.com](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/piconomix_banner_300x70.png)
 
-**piconomix-fwlib** is a collection of open source C firmware and documentation
+**px-lib** is a collection of open source C firmware and documentation
 for microcontrollers to develop portable bare-metal code that is vendor and 
 architecture neutral (or easier to reuse).
 

@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSD (Mass Storage Device)
+    Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSC (Mass Storage Class)
     Author(s):      Pieter Conradie
     Creation Date:  2019-05-25
 
@@ -28,9 +28,9 @@ PX_DBG_DECL_NAME("px_uf2");
 
 /// Content of "info_uf2.txt"
 static const char px_uf2_file_content_info[] =
-    "UF2 Bootloader " PX_UF2_CFG_INFO_VERSION "\r\n"
-    "Model: " PX_UF2_CFG_INFO_MODEL "\r\n"
-    "Board-ID: " PX_UF2_CFG_INFO_BOARD_ID "\r\n";
+    "UF2 Bootloader " PX_UF2_CFG_INFO_VERSION  "\r\n"
+    "Model: "         PX_UF2_CFG_INFO_MODEL    "\r\n"
+    "Board-ID: "      PX_UF2_CFG_INFO_BOARD_ID "\r\n";
 
 // Content of "index.htm"
 const char px_uf2_file_content_index_htm[] =
@@ -111,7 +111,7 @@ static const px_uf2_fat_boot_block_t px_uf2_fat_boot_block =
     .reserved               = 0,
     .boot_sig               = 0x29,
     .volume_id              = 0x00420042,
-    .volume_label           = "HERO-BOOT ",
+    .volume_label           = PX_UF2_CFG_VOLUME_LABEL,
     .file_system_type       = "FAT16   ",
 };
 
@@ -164,7 +164,7 @@ void px_uf2_init(px_uf2_on_wr_flash_block_t on_wr_flash_block,
     px_uf2_on_wr_flash_done  = on_wr_flash_done;
 }
 
-void px_uf2_rd_sector(uint8_t * buf, uint32_t sector_adr)
+void px_uf2_on_rd_sector(uint32_t sector_adr, uint8_t * buf)
 {
     uint32_t section_index = sector_adr;
 
@@ -281,7 +281,7 @@ void px_uf2_rd_sector(uint8_t * buf, uint32_t sector_adr)
         {
             // Return UF2 file content
             section_index -= PX_UF2_FILES - 1;
-            uint32_t addr = section_index * 256;
+            uint32_t addr  = section_index * 256;
             if (addr < PX_UF2_CFG_FLASH_SIZE)
             {
                 // Fill UF2 fields with section of FLASH
@@ -294,7 +294,8 @@ void px_uf2_rd_sector(uint8_t * buf, uint32_t sector_adr)
                 bl->payload_size  = 256;
                 bl->block_nr      = section_index;
                 bl->nr_of_blocks  = PX_UF2_CFG_FLASH_SIZE / 256;
-                bl->family_id     = 0;
+                bl->flags        |= PX_UF2_FLAG_FAMILYID_PRESENT;
+                bl->family_id     = PX_UF2_CFG_FAMILY_ID;
                 memcpy(bl->data, (void *)addr, bl->payload_size);
                 bl->magic_end     = PX_UF2_MAGIC_END;
             }
@@ -302,7 +303,7 @@ void px_uf2_rd_sector(uint8_t * buf, uint32_t sector_adr)
     }
 }
 
-void px_uf2_wr_sector(const uint8_t * buf, uint32_t sector_adr)
+void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf)
 {
     px_uf2_block_t *bl = (void *)buf;
 
@@ -310,6 +311,14 @@ void px_uf2_wr_sector(const uint8_t * buf, uint32_t sector_adr)
     if(  (bl->magic_start0 != PX_UF2_MAGIC_START0)
        ||(bl->magic_start1 != PX_UF2_MAGIC_START1)
        ||(bl->magic_end    != PX_UF2_MAGIC_END   )  )                
+    {
+        // No. Ignore
+        return;
+    }
+
+    // Correct Family ID present?
+    if(  ((bl->flags & PX_UF2_FLAG_FAMILYID_PRESENT) == 0)
+       ||(bl->family_id != PX_UF2_CFG_FAMILY_ID          )  )
     {
         // No. Ignore
         return;

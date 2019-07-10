@@ -10,14 +10,11 @@ The following modules are used:
 - @ref BOARDS_STM32_PICONOMIX_HERO
 - @ref STM32_GPIO
 
-For more information, see:
-- Digi-Key [Low-Power Modes on the STM32L0 Series](https://www.digikey.com/eewiki/display/microcontroller/Low-Power+Modes+on+the+STM32L0+Series)
-- [1] "6.3 Low-power modes", page 151
-- [1] "13 Extended interrupt and event controller (EXTI)", page 282
-- [2] "2.5 Power management", page 33
-- [3] "2.15 Flash memory wakeup issue when waking up from Stop or Sleep with Flash in power-down mode", page 11
-- [3] "2.1.6 Unexpected system reset when waking up from Stop mode with regulator in low-power mode", page 11
-- [3] "2.1.8 I2C and USART cannot wake up the device from Stop mode", page 12
+The STM32 is woken up from low power STOP mode while the 6/NO button is pressed.
+The LCD displays an incrementing counter value that tracks the number of times
+that the button has been pressed. The external peripherals (Serial FLASH, LCD 
+and LCD backlight) and specific GPIO pins (SD Card detect, UART2,  I2C and 
+UART4) are put into the lowest power state to minimise power consumption.
 
 References:
 1. [RM0376: Ultra-low-power STM32L0x2 advanced Arm-based 32-bit MCUs](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
@@ -31,3 +28,14 @@ The reference documents can also be found here for off-line viewing:
     boards/arm/stm32/piconomix_hero_board/docs/stm32l072_manual.pdf
     boards/arm/stm32/piconomix_hero_board/docs/stm32l0_cortex-m0p_programming_manual.pdf
     boards/arm/stm32/piconomix_hero_board/docs/stm32l0_errata.pdf
+
+For more information, see:
+- Digi-Key [Low-Power Modes on the STM32L0 Series](https://www.digikey.com/eewiki/display/microcontroller/Low-Power+Modes+on+the+STM32L0+Series)
+- [1] "6.3 Low-power modes", page 151
+- [1] "13 Extended interrupt and event controller (EXTI)", page 282
+- [2] "2.5 Power management", page 33
+- [3] "2.15 Flash memory wakeup issue when waking up from Stop or Sleep with Flash in power-down mode", page 11
+- [3] "2.1.6 Unexpected system reset when waking up from Stop mode with regulator in low-power mode", page 11
+- [3] "2.1.8 I2C and USART cannot wake up the device from Stop mode", page 12
+
+
