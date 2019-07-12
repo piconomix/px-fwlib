@@ -3,20 +3,21 @@
 
 [TOC]
 
+<center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
+
 1. Introduction {#PICONOMIX_STM32_HERO_BOARD_INTRO}
 ===================================================
 
-[atollic_truestudio]: http://atollic.com
-[core_utils]:         http://gnuwin32.sourceforge.net/packages/coreutils.htm
+[stm32cubeide]:       https://www.st.com/en/development-tools/stm32cubeide.html
+[python]:             https://www.python.org/downloads
+[tera_term]:          http://en.sourceforge.jp/projects/ttssh2
 [ftdi_ignore_ser]:    http://www.ftdichip.com/Support/Utilities/IgnoreSerialNo.zip
 [ftdi_uninstaller]:   http://www.ftdichip.com/Support/Utilities/CDMUninstaller_v1.4.zip
 [ftdi_vcp_driver]:    http://www.ftdichip.com/Drivers/VCP.htm
 [gnu_arm_tools]:      http://gnu-arm.com
-[make]:               http://gnuwin32.sourceforge.net/packages/make.htm
+[unix_shell_utils]:   https://sourceforge.net/projects/unixshellutils/files/latest/download
 [msys]:               http://www.mingw.org/wiki/MSYS
 [srecord]:            http://srecord.sourceforge.net
-[tera_term]:          http://en.sourceforge.jp/projects/ttssh2
-[unix_shell_utils]:   https://sourceforge.net/projects/unixshellutils/files/latest/download
 
 *The ultimate embedded quest is: RELIABLE* **AND** *CHEAP* **AND** *LOW POWER...*
 
@@ -25,7 +26,6 @@ engage human senses (sight, sound and touch) and map the journey to becoming a
 true embedded hero. Above all, it should be a fun-filled adventure!!
 
 @image html hero_board_isometric.jpg width=500px
-<center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
 
 Extensive ecosystem included:
 * An [STM32 quick start guide](@ref STM32_QUICK_START_GUIDE) with 
@@ -187,32 +187,37 @@ Files:
 =======================================
 
 The following free software tools are needed:
-- [Atollic TrueSTUDIO for STM32][atollic_truestudio] : 
-  an Integrated Development Environment (IDE) for developing and debugging STM32
-  microcontroller applications. It includes a GNU GCC build toolchain for C and 
-  C++.
-- [UnixShellUtils][unix_shell_utils] :
-  a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
-  curated from [MSYS] [msys] and other utilities ([srecord]) used to build 
-  projects using advanced Makefiles.
-- [GNU Tools for Arm Embedded Processors][gnu_arm_tools] :
-  A GNU GCC build toolchain for C and C++.
-- FTDI FT230XS USB-UART Bridge [Virtual Com Port (VCP) driver][ftdi_vcp_driver]
+- [STM32CubeIDE][stm32cubeide] : 
+  a free cross-platform Integrated Development Environment (IDE) 
+  based on [Eclipse CDT](https://www.eclipse.org/cdt/) to build and debug 
+  STM32 microcontroller applications. It includes a GNU GCC build toolchain for 
+  C and C++.
+- [Python 3][python] : an extremely popular scripting language. In this case it
+  is used to create a UF2 file suitable for uploading via the
+  @ref HERO_BOARD_BOOTLOADER_USB_UF2.
 - [Tera Term][tera_term] : 
   Free terminal emulation software to interact with @ref HERO_BOARD_APP_CLI 
   or upload new firmware using @ref HERO_BOARD_BOOTLOADER_UART_XMODEM
+- FTDI FT230XS USB-UART Bridge [Virtual Com Port (VCP) driver][ftdi_vcp_driver]
 
-*Atollic TrueSTUDIO does include a GNU C and C++ build toolchain as well as a 
-limited set of GNU utilities like `make` and `rm` but lacks `sh` that is 
-required for advanced Makefiles. [UnixShellUtils][unix_shell_utils] and 
-[GNU Tools for Arm Embedded Processors][gnu_arm_tools] compensates for this gap.*
+The following command line tools are optional, but recommended:
+- [UnixShellUtils][unix_shell_utils] :
+  a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
+  curated from [MSYS][msys] and other utilities ([srecord]) to build projects 
+  using Makefile scripts.
+- [GNU Tools for Arm Embedded Processors][gnu_arm_tools] :
+  A GNU GCC build toolchain for C and C++.
 
 10.1 Connect USB1 of Hero Board to PC
 -------------------------------------
 
 The Hero Board is shipped with the @ref HERO_BOARD_APP_CLI app. Connect USB1 to 
-the PC. *The app will give a beep, enable the LCD backlight and display the Hero 
-logo.*
+the PC.
+
+@tip_s
+The app will enable the LED and display the Hero logo on the LCD with the 
+backlight enabled.
+@tip_e
 
 The app implements a Virtual COM port (USB CDC class) driver for communication.
 When USB1 is connected to the PC, the Windows 10 operating system will detect 
@@ -265,8 +270,108 @@ connect to it. When you type characters in the terminal window, the TX LED will
 flash on the board.
 @tip_e
 
-10.5 Install UnixShellUtils
----------------------------
+10.5 Install Python
+-------------------
+
+Click [HERE][python] to download and install Python 3. It is needed to create a 
+UF2 file suitable for uploading via @ref HERO_BOARD_BOOTLOADER_USB_UF2. The 
+script can be found here:
+
+    px-lib/tools/uf2conv.py
+
+Make sure sure that the path has been set up to find Python and it's scripts:
+
+    Start > Control Panel > System > Advanced System Settings > Environment Variables > Path
+
+![](python_win_path.png)
+
+10.6 Install STM32CubeIDE
+-------------------------
+
+Follow the steps [HERE] (@ref HOWTO_STM32CUBEIDE) to install STM32CubeIDE.
+The section also describes how to create a new project that uses an external 
+Makefile as used in with this library.
+
+10.7 Build an example in the IDE
+--------------------------------
+
+The tutorials and examples are provided with pre-configured STM32CubeIDE 
+projects. External Makefiles are referenced, instead of using STM32CubeIDE's 
+build system, to make the projects easier to maintain.
+
+Open and build the @ref HERO_BOARD_EXAMPLE_GPIO. The project file is here:
+
+    px-lib/boards/avr/piconomix_hero_board/examples/gpio/.project
+
+If the ".project" file is associated with STM32CubeIDE, then it's as simple as
+double-clicking on it, otherwise you need to add it to the workspace within
+STM32CubeIDE:
+
+    File > Open Projects from File System...
+
+![](sci_open_project.png)
+
+Specify the directory containing the STM32CubeIDE project files (".project", 
+".cproject" & ".settings" folder):
+
+![](sci_import_project.png)
+
+Click once on the project to make sure that it is selected:
+
+![](sci_project_files.png)
+
+@warn_s
+A common mistake (for me at least) is trying to execute a project related 
+commmand without the project being selected, for example pressing the F5 
+keyboard button to refresh the project, but the project does not have a light 
+blue background (indicating that it is selected). IDE menu options related to a 
+project may also not be available until the project is selected.
+@warn_e
+
+Set the active build to "BUILD_RELEASE_BOOT" to creates a size optimized release 
+build suitable for upload to a bootloader in the "BUILD_RELEASE_BOOT" output 
+directory:
+
+![](sci_set_active_build.png)
+
+Start the build by clicking on the hammer icon or selecting 
+"Project > Build All  Ctrl+B" or pressing the "Ctrl+B" keyboard combo:
+
+![](sci_start_build.png)
+
+The build output will appear in the console window:
+
+![](sci_console_build_release_boot.png)
+
+@tip_s
+Observe that the IDE is executing a `make build=release-boot all` command by 
+spotting the "RELEASE FOR BOOT" text in the start and end banner. After building
+the app, the Makefile executes a Python script to create a UF2 file suitable for 
+uploading via the bootloader.
+@tip_e
+
+10.8 Upload example to Hero Board
+---------------------------------
+
+After building the @ref HERO_BOARD_EXAMPLE_GPIO succesfully, you will 
+have a UF2 file called "gpio.uf2" in the "RELEASE_FOR_BOOT" subdirectory. 
+Follow the instructions [HERE](@ref HERO_BOARD_BOOTLOADER_USB_UF2) to upload the
+file.
+
+@tip_s
+After the upload is succesful, the bootloader will imediately execute the 
+app.
+@tip_e
+
+The LED will start flashing at a slow 2 Hz while the 6/NO button is released and 
+will flash at a fast 8 Hz while the button is being pressed. **Success!**
+
+10.9 Build example on command line
+----------------------------------
+
+The following steps are optional but recommended, because it shines a light on
+the building mechanics used by the IDE and demonstrates how firmware can be 
+developed independent from an IDE using only your favourite editor.
 
 @tip_s
 Using command-line tools to build software may feel daunting and intimidating at 
@@ -275,23 +380,30 @@ it will lay the foundation for you to become a power user... a true embedded
 hero!
 @tip_e
 
+### 10.9.1 Install UnixShellUtils ###
+
 Download [UnixShellUtils] [unix_shell_utils] and extract the downloaded package 
 to a convenient location without spaces in the path, e.g.
 
     C:\UnixShellUtils
 
+@tip_s
+It is not strictly required, because STM32CubeIDE does have a similiar set of 
+tools, but the path is rather inconvenient:
+@tip_e
 
-10.6 Install GNU Tools for Arm Embedded Processors
---------------------------------------------------
+    plugins\com.st.stm32cube.ide.mcu.externaltools.make.win32_1.0.1.201906111312\tools\bin
+
+### 10.9.2 Install GNU Tools for Arm Embedded Processors ###
 
 Download and install [GNU Tools for Arm Embedded Processors][gnu_arm_tools].
 
 @tip_s
-It is not strictly required, as Atollic TrueSTUDIO does have a GNU C and C++ 
-build toolchain, but it's tools all have the non-standard "arm-atollic-eabi" 
-prefix. The [GNU Tools for Arm Embedded Processors][gnu_arm_tools] uses the 
-standard "arm-none-eabi" prefix which makes it cross-platform friendly.
+It is not strictly required, because STM32CubeIDE does have a GNU C and C++ 
+build toolchain, but the path is also inconvenient:
 @tip_e
+
+    plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-arm-embedded.7-2018-q2-update.win32_1.0.0.201904081647\tools\bin
 
 It is recommended to specify a conveniently short installation path, e.g.
 
@@ -304,6 +416,8 @@ The GNU Tools will then be located here:
 The complete documentation will be located here:
 
     c:\Program Files (x86)\gnu_arm\share\doc\gcc-arm-none-eabi\pdf
+
+### 10.9.3 CLI Build ###
 
 *Let's try it out!*
 
@@ -332,134 +446,7 @@ Execute `make' to build the whole project:
 
 ![](hero_board_command_prompt_build.png)
 
-Build output text:
-
-    Microsoft Windows [Version 10.0.17763.379]
-    (c) 2018 Microsoft Corporation. All rights reserved.
-
-    C:\Users\Pieter>PATH=C:\UnixShellUtils\bin;c:\Program Files (x86)\gnu_arm\bin
-
-    C:\Users\Pieter>P:
-
-    P:\>cd libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio
-
-    P:\libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>make clean
-
-    ------------ begin (DEBUG) ---------------
-
-    Cleaning project:
-    rm -f openocd.cfg
-    rm -f init.gdb
-    rm -rf BUILD_DEBUG
-    -------------  end (DEBUG) ---------------
-
-
-    P:\libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>make
-
-    ------------ begin (DEBUG) ---------------
-    arm-none-eabi-gcc.exe (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM/embedded-7-branch revision 255204]
-    Copyright (C) 2017 Free Software Foundation, Inc.
-    This is free software; see the source for copying conditions.  There is NO
-    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-
-    Compiling C: src/main.c
-    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Og -DSTM32L072xx -DUSE_FULL_LL_DRIVER -Wa,-adhlns=BUILD_DEBUG/main.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_DEBUG/main.d src/main.c -o BUILD_DEBUG/main.o
-
-    Compiling C: ../../../../../../boards/arm/stm32/piconomix_hero_board/px_board.c
-    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Og -DSTM32L072xx -DUSE_FULL_LL_DRIVER -Wa,-adhlns=BUILD_DEBUG/px_board.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_DEBUG/px_board.d ../../../../../../boards/arm/stm32/piconomix_hero_board/px_board.c -o BUILD_DEBUG/px_board.o
-    ../../../../../../boards/arm/stm32/piconomix_hero_board/px_board.c:47:2: warning: #warning "This BSP is for Piconomix STM32 Hero Board" [-Wcpp]
-     #warning "This BSP is for Piconomix STM32 Hero Board"
-      ^~~~~~~
-
-    Compiling C: ../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
-    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Og -DSTM32L072xx -DUSE_FULL_LL_DRIVER -Wa,-adhlns=BUILD_DEBUG/system_stm32l0xx.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_DEBUG/system_stm32l0xx.d ../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c -o BUILD_DEBUG/system_stm32l0xx.o
-
-    Compiling C: ../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
-    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Og -DSTM32L072xx -DUSE_FULL_LL_DRIVER -Wa,-adhlns=BUILD_DEBUG/stm32l0xx_ll_utils.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_DEBUG/stm32l0xx_ll_utils.d ../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c -o BUILD_DEBUG/stm32l0xx_ll_utils.o
-
-    Assembling: ../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
-    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -x assembler-with-cpp    -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -Wa,-adhlns=BUILD_DEBUG/startup_stm32l072xx.lst,--listing-cont-lines=100,--gstabs ../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s -o BUILD_DEBUG/startup_stm32l072xx.o
-
-    Linking: BUILD_DEBUG/gpio.elf
-    arm-none-eabi-gcc -mthumb -mcpu=cortex-m0plus -Wl,-gc-sections,--relax --specs=nosys.specs --specs=nano.specs   -T ../../../../../../boards/arm/stm32/piconomix_hero_board/STM32L072xB.ld -Og -Wl,-Map=BUILD_DEBUG/gpio.map  BUILD_DEBUG/main.o BUILD_DEBUG/px_board.o BUILD_DEBUG/system_stm32l0xx.o BUILD_DEBUG/stm32l0xx_ll_utils.o BUILD_DEBUG/startup_stm32l072xx.o -o BUILD_DEBUG/gpio.elf
-
-    Creating HEX load file for Flash: BUILD_DEBUG/gpio.hex
-    arm-none-eabi-objcopy -O ihex BUILD_DEBUG/gpio.elf BUILD_DEBUG/gpio.hex
-
-    Creating BIN load file for Flash: BUILD_DEBUG/gpio.bin
-    arm-none-eabi-objcopy -O binary BUILD_DEBUG/gpio.elf BUILD_DEBUG/gpio.bin
-
-    Creating Extended Listing: BUILD_DEBUG/gpio.lss
-    arm-none-eabi-objdump -h -S -z BUILD_DEBUG/gpio.elf > BUILD_DEBUG/gpio.lss
-
-    Creating Symbol Table: BUILD_DEBUG/gpio.sym
-    arm-none-eabi-nm -n BUILD_DEBUG/gpio.elf > BUILD_DEBUG/gpio.sym
-
-    Size:
-    arm-none-eabi-size BUILD_DEBUG/gpio.elf
-       text    data     bss     dec     hex filename
-       1540      12    2076    3628     e2c BUILD_DEBUG/gpio.elf
-    -------------  end (DEBUG) ---------------
-
-
-    P:\libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>
-
-
-10.7 Install and get started with STM32CubeIDE
-----------------------------------------------
-
-Follow the steps [HERE] (@ref HOWTO_STM32CUBEIDE) to install STM32CubeIDE.
-The section also describes how to create a new project that uses an external 
-Makefile as used in with this library.
-
-10.8 Build example in IDE
--------------------------
-
-The tutorials and examples are provided with pre-configured STM32CubeIDE 
-projects. External Makefiles are referenced, instead of using STM32CubeIDE's 
-build system, to make the projects cross-platform.
-
-Open and build @ref HERO_BOARD_EXAMPLE_GPIO. The project file is here:
-
-    px-lib/boards/avr/piconomix_hero_board/examples/gpio/.project
-
-
-10.9 Upload example to Hero Board
----------------------------------
-
-After building @ref HERO_BOARD_EXAMPLE_GPIO succesfully, you will 
-have a binary file called "gpio.bin". The new application is sent to the 
-@ref HERO_BOARD_BOOTLOADER_UART_XMODEM via [Tera Term] [tera_term]:
-
-File > Transfer > XMODEM > Send...
-
-![Tera Term - Start XMODEM file send](tera_term_xmodem_send01.png)
-
-The **BIN** file (not HEX or ELF!) is selected and the CRC variant of XMODEM is 
-specified:
-
-![Tera Term - Select file and specify CRC transfer method](tera_term_xmodem_send02.png)
-
-@tip_s
-Tera Term will now wait for the @ref HERO_BOARD_BOOTLOADER_UART_XMODEM
-to initiate the transfer by sending a 'C' character...
-@tip_e
-
-Press the reset button (**RST**) to reset the microcontroller and jump to the
-bootloader.
-
-@tip_s
-The bootloader will now initiate the transfer and download the new application.
-At the end of the transfer, the bootloader will execute the new application.
-Note that no safeguards are built into the bootloader. If the transfer is 
-interrupted, the bootloader will time out and execute the broken, incomplete 
-application. Normally this is not a big issue as the process can just be 
-restarted.
-@tip_e
-
-Press the user button. The user LED will turn on while the button is being 
-pressed and turn off when the button is released. **Success!**
+**Congratulations Hero!!**
 
 11. STM32 quick start guide {#HERO_BOARD_STM32_QUICK_START_GUIDE}
 =================================================================
