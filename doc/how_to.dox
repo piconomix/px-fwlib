@@ -5,4 +5,4 @@
 - @subpage HOWTO_MAKEFILES
 - @subpage HOWTO_FTDI
 - @subpage HOWTO_TERA_TERM
-- @subpage HOWTO_TRUESTUDIO
+- @subpage HOWTO_STM32CUBEIDE

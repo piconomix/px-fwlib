@@ -1,0 +1,251 @@
+7.5 How to get started with STM32CubeIDE {#HOWTO_STM32CUBEIDE}
+==============================================================
+
+[stm32cubeide]: https://www.st.com/en/development-tools/stm32cubeide.html
+
+[TOC]
+
+1. Introduction {#STM32CUBEIDE_INTRO}
+=====================================
+
+STM32CubeIDE is a free cross-platform Integrated Development Environment (IDE) 
+based on [Eclipse CDT](https://www.eclipse.org/cdt/) to develop and debug 
+STM32 microcontroller applications. It includes a GNU GCC build toolchain for C 
+and C++.
+
+2. Download and Install {#STM32CUBEIDE_INSTALL}
+===============================================
+
+[HERE][stm32cubeide] is the download page. On the Windows platform, the 
+default installation directory is here:
+
+    c:\ST\STM32CubeIDE_1.0.1\STM32CubeIDE
+
+3. Noteworthy subdirectories {#STM32CUBEIDE_DIRS}
+=================================================
+
+Go ahead and familiarize yourself with the files & folders in the installation
+directory. Various tools are installed in the "plugins" subdirectory. It follows
+the standard Java reverse order naming convention (general to specific) which 
+may seem strange and long-winded at first.
+
+The GNU C and C++ command-line toolchain (e.g. `arm-none-eabi-gcc.exe`) is 
+located here:
+
+    plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-arm-embedded.7-2018-q2-update.win32_1.0.0.201904081647\tools\bin
+
+The Unix tools `make.exe` and `rm.exe` are located here:
+
+    plugins\com.st.stm32cube.ide.mcu.externaltools.make.win32_1.0.1.201906111312\tools\bin
+
+Documentation is located here:
+
+    plugins\com.st.stm32cube.ide.documentation_1.0.1.201906121233\docs
+
+[STMCubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html)
+(only the CLI version) is located here:
+
+    plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_1.0.0.201904021149\tools\bin
+
+4. How to create a Makefile managed C project {#STM32CUBEIDE_MAKE_PROJECT}
+==========================================================================
+
+The projects in this library can be built on the command-line by using a 
+Makefile script to manage the build process. There are a large number of files 
+and include paths, preprocessor symbol definitions, compiler options, etc. and 
+using a Makefile makes it easier to replicate and maintain the projects. It 
+would be time consuming to add this build info by hand each time a new 
+STM32CubeIDE project is created.
+
+@tip_s
+For a gentle introduction to `make` see @ref HOWTO_MAKEFILES.
+@tip_e
+
+STM32CubeIDE usually manages the build process for you, but it also allows 
+the creation of a Makefile managed C project.
+
+The following steps show how to create a new Makefile managed C project
+for an existing project in the library. The following example project will be 
+used:
+
+    boards\arm\stm32\piconomix_hero_board\examples\gpio
+
+@tip_s
+If the project already contains STM32CubeIDE project files, they can be deleted 
+to follow along with the steps outlined below. Delete ".project", ".cproject" 
+and ".settings".
+@tip_e
+
+4.1 Use wizard to create a new STM32 project {#STM32CUBEIDE_WIZARD}
+-------------------------------------------------------------------
+
+@warn_s
+Rename the existing project directory and create a new empty directory where the
+STM32CubeIDE project will be created. The project wizard will create new files 
+from a template that may overwrite existing ones.
+@warn_e
+
+Start the wizard by creating a new STM32 project:
+
+    File > New Alt + Shift + N > STM32 Project
+
+![](sci_new_stm32_project.png)
+
+Specify the target microcontroller (in this example STM32L072RBTx):
+
+![](sci_select_target.png)
+
+
+Specify the project name and project location (new empty directory). Specify the
+Targeted Project Type as Empty and press "Finish":
+
+![](sci_project_setup.png)
+
+@warn_s
+Use the same project name as used in the Makefile. Edit the Makefile and you 
+will find:
+@warn_e
+
+    # (1a) Project name
+    PROJECT = gpio
+
+
+4.2 Delete wizard generated files & folders and restore original files {#STM32CUBEIDE_DELETE_WIZARD_FILES}
+----------------------------------------------------------------------------------------------------------
+
+This is the wizard generated file & folder structure:
+
+    .cproject
+    .project
+    STM32L072RBTX_FLASH.ld
+    +---.settings
+    |       language.settings.xml
+    +---Inc
+    +---Src
+    |       main.c
+    |       syscalls.c
+    |       sysmem.c
+    \---Startup
+            startup_stm32l072rbtx.s
+
+You only need the ".cproject" and ".project" file and ".settings" folder. 
+Delete the other wizard generated files & folders by selecting the 
+files & folders, right-clicking on the selection and selecting "Delete":
+
+![](sci_delete_wizard_files.png)
+
+Copy or move the original files and folders into the new directory. Refresh the
+project:
+    
+    File > Refresh F5
+
+The original files & folders should now be listed under the project:
+
+![](sci_project_files.png)
+
+4.3 Update project to use Makefile {#STM32CUBEIDE_USE_MAKEFILE}
+---------------------------------------------------------------
+
+Open the project property page by right-clicking on the project and selecting
+"Properties Alt+Enter":
+
+![](sci_project_properties.png)
+
+Select "C/C++ Build", untick "Generate Makefiles Automatically" and change the 
+Build directory to use the root folder (remove the "/Debug" part):
+
+![](sci_project_builder_settings.png)
+
+Select the "Behaviour" tab, untick "Enable Parallel Build", change the Build 
+command to "build=debug all" and the Clean command to "build=debug clean":
+
+![](sci_project_build_behaviour.png)
+
+4.4 Create different build configurations {#STM32CUBEIDE_BUILD_CFG}
+-------------------------------------------------------------------
+
+The Makefile supports different builds:
+- `make build=debug` creates a build suitable for debugging in the 
+  "BUILD_DEBUG" output directory.
+- `make build=release` creates a size optimized build suitable for release in the
+   "BUILD_RELEASE" output directory.
+- `make build=release-boot` creates a size optimized release build suitable 
+   for upload to a bootloader in the "BUILD_RELEASE_BOOT" output directory.
+
+Open the Manage build window:
+
+    Project > Build Configurations > Manage ...
+
+![](build_configurations.png)
+
+Delete the "Release" configuration:
+
+![](sci_build_release_delete.png)
+
+Rename the "Debug" configuration to "BUILD_DEBUG":
+
+![](sci_build_debug_rename.png)
+
+Create a new "BUILD_RELEASE" configuration copied from the existing 
+"BUILD_DEBUG" configuration:
+
+![](sci_build_release.png)
+
+Also create a new "BUILD_RELEASE_BOOT" configuration copied from the existing 
+"BUILD_DEBUG" configuration:
+
+![](sci_build_release_boot.png)
+
+Open the project build behavior window again and observe that the configuration
+name has changed from "Debug" to "BUILD_DEBUG":
+
+![](sci_project_build_behaviour_build_debug.png)
+
+Change the configuration to"BUILD_RELEASE" and change the Build command to 
+"build=release all" and the Clean command to "build=release clean":
+
+![](sci_project_build_behaviour_build_release.png)
+
+Change the configuration to"BUILD_RELEASE_BOOT" and change the Build command to 
+"build=release-boot all" and the Clean command to "build=release-boot clean":
+
+![](sci_project_build_behaviour_build_release_boot.png)
+
+4.5 Build the project {#STM32CUBEIDE_BUILD_PROJECT}
+---------------------------------------------------
+
+You can start the build by clicking on the hammer icon or selecting 
+"Project > Build All Ctrl+B":
+
+![](sci_start_build.png)
+
+The build output will appear in the console window:
+
+![](sci_build_output.png)
+
+@tip_s
+Observe that the IDE is executing a `make build=debug all` command and that the 
+Makefile script is reporting "DEBUG" in the start banner.
+@tip_e
+
+4.6 Create a debug configuration {#STM32CUBEIDE_DEBUG_CONFIG}
+-------------------------------------------------------------
+
+A debug configuration must be created first:
+
+    Run > Debug As > 2 STM32 MCU C/C++ Application
+
+![](sci_debug_as.png)
+
+If more than one ELF file exists, select the BUILD_DEBUG/*.elf file for 
+debugging:
+
+![](sci_debug_select_elf.png)
+
+Rename the debug configuration to "gpio.elf BUILD_DEBUG" to make provision for 
+different debug configurations in the future. Observe that the 
+"BUILD_DEBUG/gpio.elf" file will be used. Change the Build Configuration to
+"BUILD_DEBUG" and press OK to start debugging:
+
+![](sci_launch_config.png)
+

@@ -65,19 +65,19 @@ This documentation is divided into the following sections:
 Here is the collection of boards that are supported with Board Support Packages
 (BSP), documentation and complete examples:
 
-|Microcontroller          | Board                                                                 |
-|-------------------------|-----------------------------------------------------------------------|
-|Microchip ATmega328P-AU  | [Arduino Uno R3 board](@ref ARDUINO_UNO_BOARD)                        |
-|Microchip ATmega328P-AU  | [Piconomix ATmega328p Scorpion Board](@ref PICONOMIX_SCORPION_BOARD)  |
-|ST STM32L072RB           | [Piconomix STM32L072RB Hero Board](@ref PICONOMIX_STM32_HERO_BOARD)   |
+|Microcontroller          | Board                                                                  |
+|-------------------------|------------------------------------------------------------------------|
+|Microchip ATmega328P-AU  | [Arduino Uno R3 board](@ref ARDUINO_UNO_BOARD)                         |
+|Microchip ATmega328P-AU  | [Piconomix ATmega328p Scorpion Board](@ref PICONOMIX_SCORPION_BOARD)   |
+|ST STM32L072RB           | [Piconomix STM32L072RB PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD) |
 
 1.5 Library Examples {#EXAMPLES}
 ================================
 
-Here are four select examples to pique your interest:
+Here are four examples selected to pique your interest:
 
-1.5.1 CLI Exlorer (Command Line Interpreter) {#EXAMPLE_CLI}
------------------------------------------------------------
+1.5.1 CLI Exlorer (Command Line Interpreter)
+--------------------------------------------
 
 Included with the library is a CLI (Command Line Interpreter) executing on an 
 Arduino Uno R3 that creates a "Un*x Shell"-like environment running on the 
@@ -99,16 +99,16 @@ to and read from the I2C slave.
 
 For more info see @ref ARDUINO_UNO_BOARD_APP_CLI.
 
-1.5.2 I2C {#EXAMPLE_I2C}
-------------------------
+1.5.2 I2C
+---------
 
 This example demonstrates how easy it is to set up and communicate with an I2C
 slave device after you have verified with the CLI that it works:
 
 @include avr/test/px_i2c_test.c
 
-1.5.3 GPIO {#EXAMPLE_GPIO}
---------------------------
+1.5.3 GPIO
+----------
 
 This example demonstrates how easy and efficient it is to define and use a 
 GPIO pin:
@@ -167,8 +167,8 @@ the job as fast as possible and go back to sleep again. C efficiency trumps
 C++ flexibility. Less code translates to a cheaper solution.
 @tip_e
 
-1.5.4 Data Logging {#EXAMPLE_DATA_LOGGING}
-------------------------------------------
+1.5.4 Data Logging
+------------------
 
 [px_log_fs](@ref PX_LOG_FS) is a basic (but **resilient**) record-based file 
 system to log data to AT45D DataFlash (or similiar serial flash storage). It is 
