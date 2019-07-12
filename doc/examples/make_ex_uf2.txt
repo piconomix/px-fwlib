@@ -1,0 +1,29 @@
+boards\arm\stm32\piconomix_hero_board\examples\gpio>make build=release-boot
+
+-------- begin (RELEASE FOR BOOT) --------
+arm-none-eabi-gcc.exe (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM/embedded-7-branch revision 255204]
+Copyright (C) 2017 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+Compiling C: src/main.c
+arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Os -DSTM32L072xx -DUSE_FULL_LL_DRIVER -DVECT_TAB_OFFSET=0x4000 -Wa,-adhlns=BUILD_RELEASE_BOOT/main.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_RELEASE_BOOT/main.d src/main.c -o BUILD_RELEASE_BOOT/main.o
+
+...
+
+Creating BIN load file for Flash: BUILD_RELEASE_BOOT/gpio.bin
+arm-none-eabi-objcopy -O binary BUILD_RELEASE_BOOT/gpio.elf BUILD_RELEASE_BOOT/gpio.bin
+
+Creating UF2 load file for Flash: BUILD_RELEASE_BOOT/gpio.uf2
+python ../../../../../../tools/uf2conv.py BUILD_RELEASE_BOOT/gpio.bin -c -b 0x4000 -f 0xe892273c -o BUILD_RELEASE_BOOT/gpio.uf2
+Converting to uf2, output size: 3072, start address: 0x4000
+Wrote 3072 bytes to BUILD_RELEASE_BOOT/gpio.uf2.
+
+...
+
+Size:
+arm-none-eabi-size BUILD_RELEASE_BOOT/gpio.elf
+   text	   data	    bss	    dec	    hex	filename
+   1432	     12	   2076	   3520	    dc0	BUILD_RELEASE_BOOT/gpio.elf
+--------  end (RELEASE FOR BOOT) ---------
