@@ -13,6 +13,13 @@ based on [Eclipse CDT](https://www.eclipse.org/cdt/) to develop and debug
 STM32 microcontroller applications. It includes a GNU GCC build toolchain for C 
 and C++.
 
+@tip_s
+[Atollic TrueSTUDIO for STM32](https://atollic.com/truestudio/) is the parent 
+of STM32CubeIDE. It is a mature product with good documentation, video tutorials 
+and discussion forums so if you encounter problems it may also be a good 
+source of info and solutions.
+@tip_e
+
 2. Download and Install {#STM32CUBEIDE_INSTALL}
 ===============================================
 
@@ -27,7 +34,8 @@ default installation directory is here:
 Go ahead and familiarize yourself with the files & folders in the installation
 directory. Various tools are installed in the "plugins" subdirectory. It follows
 the standard Java reverse order naming convention (general to specific) which 
-may seem strange and long-winded at first.
+may seem strange and long-winded at first, but there is a method behind the 
+madness.
 
 The GNU C and C++ command-line toolchain (e.g. `arm-none-eabi-gcc.exe`) is 
 located here:
@@ -43,7 +51,7 @@ Documentation is located here:
     plugins\com.st.stm32cube.ide.documentation_1.0.1.201906121233\docs
 
 [STMCubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html)
-(only the CLI version) is located here:
+(only the command line version) is located here:
 
     plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_1.0.0.201904021149\tools\bin
 
@@ -72,22 +80,25 @@ used:
 
 @tip_s
 If the project already contains STM32CubeIDE project files, they can be deleted 
-to follow along with the steps outlined below. Delete ".project", ".cproject" 
-and ".settings".
+to follow along with the steps outlined below (e.g. delete ".project", 
+".cproject" and ".settings").
 @tip_e
 
 4.1 Use wizard to create a new STM32 project {#STM32CUBEIDE_WIZARD}
 -------------------------------------------------------------------
 
 @warn_s
-Rename the existing project directory and create a new empty directory where the
-STM32CubeIDE project will be created. The project wizard will create new files 
-from a template that may overwrite existing ones.
+The project wizard will create new files from a template that may overwrite 
+existing ones.
 @warn_e
+
+Rename the existing project directory (e.g. from "gpio" to "gpio_old") and 
+create a new empty directory (e.g. "gpio") where the STM32CubeIDE project will 
+be created.
 
 Start the wizard by creating a new STM32 project:
 
-    File > New Alt + Shift + N > STM32 Project
+    File > New  Alt+Shift+N > STM32 Project
 
 ![](sci_new_stm32_project.png)
 
@@ -97,7 +108,7 @@ Specify the target microcontroller (in this example STM32L072RBTx):
 
 
 Specify the project name and project location (new empty directory). Specify the
-Targeted Project Type as Empty and press "Finish":
+"Targeted Project Type" as Empty and press "Finish":
 
 ![](sci_project_setup.png)
 
@@ -130,24 +141,33 @@ This is the wizard generated file & folder structure:
 
 You only need the ".cproject" and ".project" file and ".settings" folder. 
 Delete the other wizard generated files & folders by selecting the 
-files & folders, right-clicking on the selection and selecting "Delete":
+files & folders, right-clicking on the selection and selecting "Delete" (or 
+by pressing the Delete keyboard button):
 
 ![](sci_delete_wizard_files.png)
 
-Copy or move the original files and folders into the new directory. Refresh the
-project:
+Copy or move the original files and folders into the new directory (e.g. copy 
+files and folders in "gpio_old" into "gpio"). Refresh the project:
     
-    File > Refresh F5
+![](sci_refresh_project.png)
 
 The original files & folders should now be listed under the project:
 
 ![](sci_project_files.png)
 
-4.3 Update project to use Makefile {#STM32CUBEIDE_USE_MAKEFILE}
----------------------------------------------------------------
+@warn_s
+A common mistake (for me at least) is trying to execute a project related 
+commmand without the project being selected, for example pressing the F5 
+keyboard button to refresh the project, but the project does not have a light 
+blue background (indicating that it is selected). IDE menu options related to a 
+project may also not be available until the project is selected.
+@warn_e
+
+4.3 Update project to use the Makefile {#STM32CUBEIDE_USE_MAKEFILE}
+-------------------------------------------------------------------
 
 Open the project property page by right-clicking on the project and selecting
-"Properties Alt+Enter":
+"Properties  Alt+Enter":
 
 ![](sci_project_properties.png)
 
@@ -215,7 +235,7 @@ Change the configuration to"BUILD_RELEASE_BOOT" and change the Build command to
 ---------------------------------------------------
 
 You can start the build by clicking on the hammer icon or selecting 
-"Project > Build All Ctrl+B":
+"Project > Build All  Ctrl+B" or pressing the "Ctrl+B" keyboard combo:
 
 ![](sci_start_build.png)
 
@@ -231,21 +251,51 @@ Makefile script is reporting "DEBUG" in the start banner.
 4.6 Create a debug configuration {#STM32CUBEIDE_DEBUG_CONFIG}
 -------------------------------------------------------------
 
-A debug configuration must be created first:
+Before debugging can start a debug configuration must exist:
 
-    Run > Debug As > 2 STM32 MCU C/C++ Application
+    Run > Debug Configurations...
 
-![](sci_debug_as.png)
+![](sci_debug_configurations.png)
 
-If more than one ELF file exists, select the BUILD_DEBUG/*.elf file for 
-debugging:
+In this case there is already an STM32 MCU Debugging configuration called 
+"gpio build_debug":
 
-![](sci_debug_select_elf.png)
+![](sci_existing_debug_config.png)
+
+If one does not exist, right-click on "STM32 MCU Debugging" and select 
+"New Configuration": 
+
+![](sci_new_debug_config.png)
 
 Rename the debug configuration to "gpio.elf BUILD_DEBUG" to make provision for 
-different debug configurations in the future. Observe that the 
-"BUILD_DEBUG/gpio.elf" file will be used. Change the Build Configuration to
-"BUILD_DEBUG" and press OK to start debugging:
+different debug configurations in the future. Observe that the ELF file in the
+BUILD_DEBUG directory will be used. Change the Build Configuration to
+"BUILD_DEBUG":
 
-![](sci_launch_config.png)
+![](sci_debug_config_settings.png)
 
+5. Debugging {#STM32CUBEIDE_DEBUG}
+==================================
+
+You can start debugging by clicking on the green bug icon or selecting 
+"Run > Debug  F11" or pressing the "F11" keyboard button:
+
+![](sci_debug_start.png)
+
+All of the debug commands and keyboard shortcuts can be found in the Run menu:
+
+![](sci_debug_run.png)
+
+@tip_s
+The SFR window is great for inspecting the content of the microcontroller's
+peripheral registers:
+@tip_e
+
+![](sci_debug_sfr.png)
+
+@tip_s
+By selecting "Run > Instruction Stepping Mode", the code can be stepped on an 
+assembly level:
+@tip_e
+
+![](sci_debug_asm.png)
