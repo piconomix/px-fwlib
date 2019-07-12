@@ -9,7 +9,7 @@
 =====================================
 
 STM32CubeIDE is a free cross-platform Integrated Development Environment (IDE) 
-based on [Eclipse CDT](https://www.eclipse.org/cdt/) to develop and debug 
+based on [Eclipse CDT](https://www.eclipse.org/cdt/) to build and debug 
 STM32 microcontroller applications. It includes a GNU GCC build toolchain for C 
 and C++.
 

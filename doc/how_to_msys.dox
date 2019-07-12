@@ -61,7 +61,7 @@ The command line utilities are located in:
 
 Start > Control Panel > System > Advanced System Settings > Environment Variables > Path
 
-![](msys_path.png)
+![](mingw_path.png)
 
 @tip_s
 For the sake of this guide, the simplest solution has been shown.
