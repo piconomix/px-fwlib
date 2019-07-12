@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="px-lib">
+      <UniqueIdentifier>{953cde91-a1fe-4efe-a980-45c9e3d1a476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\gfx">
+      <UniqueIdentifier>{6f30b39d-5e7f-4df7-a705-4439b7f50acd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\common">
+      <UniqueIdentifier>{1057c861-677d-46d2-9016-cba938b119c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\utils">
+      <UniqueIdentifier>{0d538a6d-69dd-4089-a731-b3800d17cf4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\gfx\fonts">
+      <UniqueIdentifier>{5d4a796b-b28c-407b-8fd0-4e201519a0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\gfx\images">
+      <UniqueIdentifier>{9cf2819a-20e0-4c35-98f6-15cac33ab2b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{2250709e-d3b6-4a37-91c8-f9f11c275ce0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pxGfxSim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pxGfxSimDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\px_gfx.h">
+      <Filter>px-lib\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\px_gfx_lcd.h">
+      <Filter>px-lib\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_3x5.h">
+      <Filter>px-lib\gfx\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_5x7.h">
+      <Filter>px-lib\gfx\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_11x14.h">
+      <Filter>px-lib\gfx\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\fonts\px_gfx_fonts.h">
+      <Filter>px-lib\gfx\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\images\px_gfx_img_hero_logo.h">
+      <Filter>px-lib\gfx\images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\px_compiler.h">
+      <Filter>px-lib\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\px_defines.h">
+      <Filter>px-lib\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\px_pgm_P.h">
+      <Filter>px-lib\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\px_dbg.h">
+      <Filter>px-lib\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="px_gfx_cfg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="px_gfx_lcd_sim.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="px_gfx_test.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\px_gfx_img_dino.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\px_gfx_resources.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\px_gfx_obj.h">
+      <Filter>px-lib\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\px_gfx_obj_container.h">
+      <Filter>px-lib\gfx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pxGfxSim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pxGfxSimDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\px_gfx.c">
+      <Filter>px-lib\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_3x5.c">
+      <Filter>px-lib\gfx\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_5x7.c">
+      <Filter>px-lib\gfx\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_11x14.c">
+      <Filter>px-lib\gfx\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\images\px_gfx_img_hero_logo.c">
+      <Filter>px-lib\gfx\images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\px_dbg.c">
+      <Filter>px-lib\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="px_gfx_lcd_sim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="px_gfx_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resources\px_gfx_img_dino.c">
+      <Filter>resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\px_gfx_obj.c">
+      <Filter>px-lib\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\px_gfx_obj_container.c">
+      <Filter>px-lib\gfx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="pxGfxSim.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\pxGfxSim.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\pxGfxSim.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
