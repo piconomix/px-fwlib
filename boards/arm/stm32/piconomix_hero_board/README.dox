@@ -1,5 +1,5 @@
-3.3 Piconomix STM32L072RB Hero Board {#PICONOMIX_STM32_HERO_BOARD}
-==================================================================
+3.3 Piconomix STM32L072RB PX-HER0 Board {#PICONOMIX_STM32_HERO_BOARD}
+=====================================================================
 
 [TOC]
 
@@ -228,7 +228,7 @@ be used to find out. Right-click "Start (Windows icon bottom left of task bar) >
 --------------------------------------------------------
 
 Follow the steps [HERE](@ref HOWTO_TERA_TERM) to install and configure Tera Term
-using the COM port noted in @ref HERO_BOARD_CONNECT.
+using the COM port noted previously.
 
 10.3 Play with the CLI Explorer app
 -----------------------------------
@@ -406,25 +406,19 @@ Build output text:
     P:\libs\px-lib\trunk\boards\arm\stm32\piconomix_hero_board\examples\gpio>
 
 
-10.7 Install and Atollic TrueSTUDIO for STM32
----------------------------------------------
+10.7 Install and get started with STM32CubeIDE
+----------------------------------------------
 
-Follow the steps [HERE] (@ref HOWTO_TRUESTUDIO) to install Atollic TrueSTUDIO.
+Follow the steps [HERE] (@ref HOWTO_STM32CUBEIDE) to install STM32CubeIDE.
 The section also describes how to create a new project that uses an external 
-Makefile and configure it to use UnixShellUtils and the Makefiles provided with
-this library.
+Makefile as used in with this library.
 
 10.8 Build example in IDE
 -------------------------
 
-The tutorials and examples are provided with pre-configured Atollic TrueSTUDIO 
-projects. External Makefiles are referenced, instead of using TrueSTUDIO's build 
-system, to make the projects cross-platform.
-
-@warn_s
-If you have extracted UnixShellUtils to a different location, then the project 
-must be modified appropriately.
-@warn_e
+The tutorials and examples are provided with pre-configured STM32CubeIDE 
+projects. External Makefiles are referenced, instead of using STM32CubeIDE's 
+build system, to make the projects cross-platform.
 
 Open and build @ref HERO_BOARD_EXAMPLE_GPIO. The project file is here:
 
