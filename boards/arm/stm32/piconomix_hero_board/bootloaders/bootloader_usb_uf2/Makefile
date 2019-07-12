@@ -39,7 +39,7 @@
 # ------------------------------------------------------------------------------
 
 # (1a) Project name
-PROJECT = bootloader_usb_mass_storage
+PROJECT = bootloader_usb_uf2
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
 #BOOTLOADER_SIZE = 0x4000

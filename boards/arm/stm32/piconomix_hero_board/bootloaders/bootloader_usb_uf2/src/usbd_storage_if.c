@@ -230,7 +230,7 @@ int8_t STORAGE_IsWriteProtected_FS(uint8_t lun)
 int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
   /* USER CODE BEGIN 6 */
-  px_uf2_rd_sector(buf, blk_addr);
+  px_uf2_on_rd_sector(blk_addr, buf);
   return USBD_OK;  
   /* USER CODE END 6 */
 }
@@ -243,7 +243,7 @@ int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t bl
 int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
   /* USER CODE BEGIN 7 */
-  px_uf2_wr_sector(buf, blk_addr);
+  px_uf2_on_wr_sector(blk_addr, buf);
   return USBD_OK;  
   /* USER CODE END 7 */
 }

@@ -83,6 +83,9 @@ static union
 /// Flag that is set when last block of flash has been written
 volatile bool main_wr_flash_done_flag;
 
+/// Timer for LED flashing
+static px_systmr_t main_tmr;
+
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
@@ -229,8 +232,8 @@ int main(void)
     PX_DBG_INFO("Starting USB mass storage bootloader");
 #endif
 
-    // Enable LED
-    PX_USR_LED_ON();
+    // Start timer for LED flashing
+    px_systmr_start(&main_tmr, PX_SYSTMR_MS_TO_TICKS(250));    
 
     // Unlock FLASH for erasing and programming
     px_flash_unlock();
@@ -241,9 +244,18 @@ int main(void)
     // Allow USB Driver to execute until last block of flash has been written
     while(!main_wr_flash_done_flag)
     {
+        // Flash LED
+        if(px_systmr_has_expired(&main_tmr))
+        {
+            px_systmr_restart(&main_tmr);
+            PX_USR_LED_TOGGLE();
+        }
         // Put core into SLEEP mode until an interrupt occurs
         __WFI();
     }
+
+    // Disable LED
+    PX_USR_LED_OFF();
 
 #ifdef BOOT_CLEAR_REST_OF_FLASH
     // On a whole page boundary?

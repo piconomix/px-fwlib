@@ -1,0 +1,195 @@
+USB UF2 Bootloader {#HERO_BOARD_BOOTLOADER_USB_UF2}
+===================================================
+  
+[TOC]
+
+1. Introduction {#HERO_BOARD_BOOTLOADER_USB_UF2_INTRO}
+======================================================
+
+This bootloader implements the UF2 bootloader communication layer over 
+USB MSC (Mass Storage Class). It emulates (fakes) a USB removable flash drive
+with a FAT16 file system to provide info when reading files and to write a new 
+application to FLASH if the file is properly formatted using the UF2 tool.
+
+Read these pages for an excellent introduction:
+- [One chip to flash them all] (https://makecode.com/blog/one-chip-to-flash-them-all) 
+- [USB Flashing Format (UF2)] (https://github.com/Microsoft/uf2) 
+- [UF2 Bootloader] (https://github.com/Microsoft/uf2-samdx1)
+
+A single press of the RESET button will perform a normal reset and the 
+bootloader will jump to the application after a 1/2 second timeout. A 
+"double-tap" of the RESET button (press twice within 0.5 s) will start the UF2 
+bootloader: the micro will enumerate over USB and appear as a removable drive 
+with the volume label "HERO-BOOT". The LED will blink continously to indicate 
+that it is in UF2 boot mode.
+
+@warn_s
+The bootloader will ignore a UF2 file with the wrong Family ID. See #PX_UF2_CFG_FAMILY_ID
+@warn_e
+
+2. How to upload a new application {#HERO_BOARD_BOOTLOADER_USB_UF2_APP_UPLOAD}
+==============================================================================
+
+2.1 Connect USB1 to PC {#HERO_BOARD_BOOTLOADER_USB_UF2_UPLOAD_CONNECT}
+----------------------------------------------------------------------
+
+Apologies for stating the obvious, but the board must be connected via the USB1
+connector to your PC ;)
+
+2.2 Activate UF2 bootloader {#HERO_BOARD_BOOTLOADER_USB_UF2_UPLOAD_ACTIVATE}
+----------------------------------------------------------------------------
+
+![](uf2_boot_activate.png)
+
+1. Give the RESET button a "double-tap" (press twice within 0.5 s). The board 
+   should appear as a removable drive with "HERO-BOOT" as the volume label.
+
+2. "CURRENT.UF2" can be copied to get the current FLASH content of the 
+   microcontroller (in UF2 format).
+
+3. "INDEX.HTM" can be opened in a browser. It will redirect the browser to the
+   board's online documentation.
+
+4. "INFO_UF2.TXT" is a text file that can be opened. It contains info for 
+   development environments to detect which board is connected.
+
+@tip_s
+The LED will blink continuously to indicate that it is in UF2 boot mode.
+@tip_e
+
+2.3 Copy UF2 file to drive {#HERO_BOARD_BOOTLOADER_USB_UF2_COPY}
+----------------------------------------------------------------
+
+![](uf2_copy_file.png)
+
+1. Locate the UF2 application file, for example:
+
+    boards\arm\stm32\piconomix_hero_board\examples\gpio\BUILD_RELEASE_BOOT\gpio.uf2
+
+2. With the left mouse button, click on the file and (keeping the button pressed)
+   drag the file to the drive.
+
+3. Drop the file on the drive by releasing the left mouse button.
+
+That's it! If the file is very big, the LED will dim while the file is being 
+copied. It's actually flashing very fast as each block of FLASH is written.
+
+After the file is written to the micro's FLASH, the application will start 
+automatically.
+
+3. Building an application for upload {#HERO_BOARD_BOOTLOADER_USB_UF2_APP_BUILD}
+================================================================================
+
+The UF2 bootloader occupies the first 16k of FLASH. The application that would 
+normally start at the first address in FLASH must be moved to a higher address 
+to accomodate the bootloader which is executed first.
+
+The application Makefile and linker script have been set up to make the creation
+of a UF2 file for upload super simple.
+
+@tip_s
+For a gentle introduction to Make, see @ref HOWTO_MAKEFILES
+@tip_e
+
+Execute 'make build=release-boot':
+
+@includelineno make_ex_uf2.txt
+
+- Line 3 displays the start banner text "RELEASE FOR BOOT" to indicate that it
+  is building a RELEASE version (no debug info) suitable for upload via the 
+  bootloader.
+- Line 16 extracts a raw binary application file from the built ELF file
+- Line 19 uses the Python UF2 utility to create a UF2 file from the BIN file
+- The *.uf2 file will be located in the BUILD_RELEASE_BOOT sub directory.
+
+@tip_s
+Observe on line 19 that the FLASH offset is specified with `-b 0x4000` and the
+UF2 Family ID is specified with `-f 0xe892273c`.
+@tip_e
+
+4. Technical details {#HERO_BOARD_BOOTLOADER_USB_UF2_BOOT_DETAILS}
+==================================================================
+
+The UF2 bootloader is ~13.5k in size and occupies the first 16k (0x00000000 to 
+0x00003FFF). The start address of the application is set in the bootloader's 
+main.c (0x4000 = 16384 = 16k):
+
+@snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_usb_uf2/src/main.c Address mapping of App
+
+The application would normally start at the first address in Flash, but it must
+be moved to a higher address to accomodate the bootloader which is executed 
+first. The start address is set in the application's Makefile with the 
+BOOTLOADER_SIZE symbol:
+
+    # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
+    BOOTLOADER_SIZE = 0x4000
+
+The template arch/arm/stm32/MakeRules.mk uses this symbol to set the 
+Vector Table Offset Register to the correct value in system_stm32l0xx.c and also
+to specify the offset for the linker script:
+
+    # Allocate space for bootloader in release for boot build (if specified)
+    #
+    # VTOR register (Vector Table Offset Register) must be set to correct value in:
+    # libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
+    #
+    # FLASH_OFFSET must be specified in linker script.
+    ifeq ($(BUILD), release_boot)    
+        ifndef BOOTLOADER_SIZE
+            $(error "BOOTLOADER_SIZE not defined")
+        endif    
+        CDEFS   += VECT_TAB_OFFSET=$(BOOTLOADER_SIZE)
+        LDFLAGS += -Wl,--defsym,FLASH_OFFSET=$(BOOTLOADER_SIZE)
+    endif
+
+The startup file system_stm32l0xx.c has also been modified to allow 
+VECT_TAB_OFFSET to be overriden externally:
+
+    // piconomix [mod start] - Allow VECT_TAB_OFFSET to be overridable with compiler switches
+    #ifndef VECT_TAB_OFFSET
+    #define VECT_TAB_OFFSET  0x00U /*!< Vector Table base offset field.
+                                       This value must be a multiple of 0x100. */
+    #endif
+    // piconomix [mod end]
+
+Location:
+
+    libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
+
+The linker script boards/arm/stm32/piconomix_hero_board/STM32L072xB.ld allows 
+the start address to be changed with the FLASH_OFFSET symbol:
+
+    /*
+     *  Describe the location and size of blocks of memory in the target
+     */
+    FLASH_OFFSET = DEFINED(FLASH_OFFSET)? FLASH_OFFSET : 0;
+    FLASH_ORIGIN = 0x08000000 + FLASH_OFFSET;
+    FLASH_LENGTH = 128k - FLASH_OFFSET;
+
+The generated LSS file, for example
+boards/arm/stm32/piconomix_hero_board/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss,
+can be inspected to verify that the application has been moved to the right 
+address:
+
+    BUILD_RELEASE_BOOT/gpio.elf:     file format elf32-littlearm
+
+    Sections:
+    Idx Name          Size      VMA       LMA       File off  Algn
+      0 .isr_vector   000000c0  08004000  08004000  00004000  2**0
+                      CONTENTS, ALLOC, LOAD, READONLY, DATA
+      1 .init         0000000c  080040c0  080040c0  000040c0  2**2
+                      CONTENTS, ALLOC, LOAD, READONLY, CODE
+      2 .text         0000049c  080040cc  080040cc  000040cc  2**2
+                      CONTENTS, ALLOC, LOAD, READONLY, CODE
+
+@tip_s
+".isr_vector" is the first section and contains the vector table. The VMA / LMA
+(Virtual / Load Memory Address) are both set to 0x08004000.
+@tip_e
+
+The bootloader will perform a number of sanity checks on the UF2 file programmed
+in FLASH, before it will jump to the start address of the application:
+
+@snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_uart_xmodem/src/main.c Execute App
+
+
