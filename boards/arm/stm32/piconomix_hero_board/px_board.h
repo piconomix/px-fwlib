@@ -12,14 +12,14 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
    
-    Title:          board.h : Piconomix STM32 Hero Board
+    Title:          board.h : STM32L072RB PX-HER0 Board
     Author(s):      Pieter Conradie
     Creation Date:  2017-11-13
 
 ============================================================================= */
 /** 
  *  @ingroup BOARDS_STM32
- *  @defgroup BOARDS_STM32_PICONOMIX_HERO px_board.h : Piconomix STM32 Hero Board
+ *  @defgroup BOARDS_STM32_PICONOMIX_HERO px_board.h : STM32L072RB PX-HER0 Board
  *  
  *  File(s):
  *  - boards/arm/stm32/piconomix_hero_board/px_board.h 
@@ -55,7 +55,7 @@ typedef enum
     PX_BOARD_SPI1_CS,          ///< Peripheral CS
     PX_BOARD_SPI1_CS_SD,       ///< SD Card
     PX_BOARD_SPI2_CS_LCD,      ///< JHD JHD12864-G176BSW 128x64 monochrome LCD
-    PX_BOARD_SPI2_CS_SF,       ///< Adesto AT45D DataFLASH    
+    PX_BOARD_SPI2_CS_SF,       ///< Adesto AT25S Serial FLASH
 } px_board_spi_cs_t;
 
 /// @name Mapping of board's ADC pins to ADC channels

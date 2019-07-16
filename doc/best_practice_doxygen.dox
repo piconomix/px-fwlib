@@ -74,8 +74,8 @@ The start of a detailed description comment block is indicated with a slash and
 double star sequence (`/**`). To make the block stand out as a unit, the star 
 is continued at the start of each line. 
 The [JAVADOC_AUTOBRIEF](https://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_javadoc_autobrief)
-setting is set to YES in the Doxygen configuration file ("doc/Doxyfile"). With 
-this setting a detailed description block always starts with a brief 
+setting is set to YES in the Doxygen configuration file ("px-lib/doc/Doxyfile").
+With this setting a detailed description block always starts with a brief 
 description. Example:
 
 @include doc/examples/doxy_ex_1.c
@@ -125,8 +125,8 @@ is documented:
 
 C modules are documented in the H file using explicit
 [grouping](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html) 
-commands. The tree hierarchy is maintained in "doc/module_tree.dox". Here is an 
-example of the grouping at the start of the H file:
+commands. The tree hierarchy is maintained in "px-lib/doc/module_tree.dox". Here 
+is an example of the grouping at the start of the H file:
 
 @include doc/examples/doxy_ex_3.c
 
@@ -142,6 +142,6 @@ and functions in between is part of that group.
 Documentation pages are grouped into sections and sub sections by refering to a 
 child page anywhere on the parent page using the @b @@subpage command.
 
-For example "doc/best_practice.dox":
+For example "px-lib/doc/best_practice.dox":
 
 @include best_practice.dox

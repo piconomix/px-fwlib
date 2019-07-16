@@ -6,34 +6,35 @@
 1. Introduction {#STM32_QS_INTRO}
 =================================
 
-[atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
-[make]:              http://gnuwin32.sourceforge.net/packages/make.htm
-[core_utils]:        http://gnuwin32.sourceforge.net/packages/coreutils.htm
-[unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
-[msys]:              http://www.mingw.org/wiki/MSYS
-[srecord]:           http://srecord.sourceforge.net
+[stm32cubeide]:       https://www.st.com/en/development-tools/stm32cubeide.html
+[python]:             https://www.python.org/downloads
+[tera_term]:          http://en.sourceforge.jp/projects/ttssh2
+[ftdi_ignore_ser]:    http://www.ftdichip.com/Support/Utilities/IgnoreSerialNo.zip
+[ftdi_uninstaller]:   http://www.ftdichip.com/Support/Utilities/CDMUninstaller_v1.4.zip
+[ftdi_vcp_driver]:    http://www.ftdichip.com/Drivers/VCP.htm
+[gnu_arm_tools]:      http://gnu-arm.com
+[unix_shell_utils]:   https://sourceforge.net/projects/unixshellutils/files/latest/download
+[msys]:               http://www.mingw.org/wiki/MSYS
+[srecord]:            http://srecord.sourceforge.net
 
-This is a quick start guide for the person who wants to switch to the brilliant 
-8-bit STM32 architecture and learns by example. C programming experience is
-a prerequisite.
+This is a quick start guide for the person who wants to switch extensive STM32 
+ARM-Cortex based microcontroller portfolio and learns by example. C programming 
+experience is a prerequisite.
 
 The following free software tools are needed:
-- [Atollic TrueSTUDIO for STM32][atollic_truestudio] : 
-  an Integrated Development Environment (IDE) for developing and debugging STM32
-  microcontroller applications. It includes a GNU GCC build toolchain for C and 
-  C++.
+- [STM32CubeIDE][stm32cubeide] : 
+  a free cross-platform Integrated Development Environment (IDE) 
+  based on [Eclipse CDT](https://www.eclipse.org/cdt/) to build and debug 
+  STM32 microcontroller applications. It includes a GNU GCC build toolchain for 
+  C and C++.
+
+The following command line tools are optional, but recommended:
 - [UnixShellUtils][unix_shell_utils] :
   a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
-  curated from [MSYS] [msys] and other utilities ([srecord]) used to build 
-  projects using advanced Makefiles.
+  curated from [MSYS][msys] and other utilities ([srecord]) to build projects 
+  using Makefile scripts.
 - [GNU Tools for Arm Embedded Processors][gnu_arm_tools] :
   A GNU GCC build toolchain for C and C++.
-
-*Atollic TrueSTUDIO does include a GNU C and C++ build toolchain as well as a 
-limited set of GNU utilities like [make] and rm (from the 
-[CoreUtils] [core_utils] package) but lacks* **sh** *that is required for 
-advanced Makefiles. [UnixShellUtils][unix_shell_utils] and 
-[GNU Tools for Arm Embedded Processors][gnu_arm_tools] compensates for this gap.*
 
 @tip_s
 For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
@@ -49,7 +50,7 @@ For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
 
 The reference documents can also be found here for off-line viewing:
 
-    boards/arm/stm32/piconomix_hero_board/docs
+    px-lib/boards/arm/stm32/piconomix_hero_board/docs
 
 2. Tutorials {#STM32_QS_TUTORIALS}
 ==================================
@@ -66,7 +67,7 @@ them in the order presented.
 |@ref STM32_TUT01_GPIO_PART_D  |How to configure and use general purpose I/O pins - part D                    |
 |@ref STM32_TUT02_SYSCLK_INT   |How to use the SysClk peripheral to generate a periodic interrupt             |
 |@ref STM32_TUT03_GPIO_EXT_INT |How to generate an external GPIO interrupt                                    |
-
+|@ref STM32_TUT04_STOP_MODE    |How to wake up from STOP mode with an external interrupt                      |
 
 @warn_s
 The tutorials may need to be modified for your specific target board.
@@ -75,11 +76,11 @@ The tutorials may need to be modified for your specific target board.
 3. Examples {#STM32_QS_EXAMPLES}
 ================================
 
-These examples show how the Piconomix FW library can be used to achieve two
-embedded equivalents of the "hello world" program on a PC.
+These examples show how **px-lib** can be used to achieve two embedded 
+equivalents of the "hello world" program on a PC.
 
-|Example                  |Description                                                       |
-|-------------------------|------------------------------------------------------------------|
+|Example                    |Description                                                       |
+|---------------------------|------------------------------------------------------------------|
 |@ref STM32_EX_FLASHING_LED |This example toggles the LED once a second                        |
 |@ref STM32_EX_PRINTF       |Redirect stdout to UART and print strings stored in FLASH and SRAM|
 

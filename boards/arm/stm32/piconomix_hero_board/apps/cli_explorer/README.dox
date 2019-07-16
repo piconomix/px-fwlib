@@ -9,9 +9,9 @@ Introduction {#HERO_BOARD_APP_CLI_INTRO}
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 
 This is a fun, full-featured CLI (Command Line Interpreter) application running
-on the Piconomix Hero Board that creates a "Un*x Shell"-like environment so that 
-you can easily experiment with GPIO, ADC, DAC, UART, I2C and SPI using only 
-ANSI/VT100 Terminal software (for example [Tera Term] [tera_term])... it is 
+on the Hero Board that creates a "Un*x Shell"-like environment so that you can 
+easily experiment with GPIO, ADC, DAC, UART, I2C and SPI using only ANSI/VT100 
+Terminal software (for example [Tera Term] [tera_term])... it is 
 really cool!
 
 ![CLI Exlorer executing on a Hero Board](hero_board_cli_preview.gif)
@@ -266,7 +266,7 @@ To continuously report values once a second:
     3 0517 417 mV
 
 @tip_s
-Press the 6/YES button on the board to stop.
+Press the 6/NO button on the board to stop.
 @tip_e
 
 To measure the battery voltage:
@@ -274,7 +274,7 @@ To measure the battery voltage:
     >adc b
     4155 mV
 
-A resistive divider is used to scale the battery voltage to an ADC input range 
+A resistor divider is used to scale the battery voltage to an ADC input range 
 from 0 mV to 3300 mV. Equal resistor values divide the battery voltage by two,
 so a battery voltage of 4100 mV will result in an ADC level of 2050 mV. The 
 circuit is engaged using GPIO pin PC7 and released after the measurement to 
@@ -334,11 +334,11 @@ To get the status GPIO0:
     Input Pull-Up 1
 
 @tip_s
-The 6/YES button is connected to Port C, pin 9 (PC9). The GPIO pin is configured
-as an input with pull-up resistor enabled. When the button is pressed, it will
-pull the resistor to GND (+0V). Execute the command again while the button is
-being pressed. When you press the button, the CLI will report "PB6". This is 
-normal. See @ref HERO_BOARD_CLI_BUTTONS
+The 6/NO button is connected to Port C, pin 9 (PC9). The GPIO pin is configured
+as an input with internal pull-up resistor enabled. When the button is pressed, 
+it will pull the resistor to GND (+0V). Execute the command again while the 
+button is being pressed. When you press the button, the CLI will report "PB6". 
+This is normal. See @ref HERO_BOARD_CLI_BUTTONS
 @tip_e
 
 To get the status of all the pins:
@@ -404,8 +404,8 @@ Connect a wire from GPIO0 to GND and repeat the command. What do you expect?
     uart s    <timeout ms> <"w str"> [cr|lf|crlf]      : Write str and receive str. Use quotes if str has spaces
 
 The Hero Board has UART2 and UART3 routed to the breakout header and UART1 
-routed to a USB-Serial bridge (USB2) for the *deluxe edition* or header H17 for 
-the *lite edition*. Normally UART1 is used for debug output and firmware 
+routed to a USB-Serial bridge (USB2) for the *Deluxe Edition* or header H17 for 
+the *Lite Edition*. Normally UART1 is used for debug output and firmware 
 upgrades.
 
 @tip_s
@@ -429,7 +429,7 @@ This is a very powerful feature! You can now communicate directly with the
 connected device, for example send AT commands to a GSM module, or see NMEA 
 strings sent from a GPS module. You can also close the ANSI/VT100 software and
 use other software to communicate with the device after the link has been 
-established. To quit and return to the CLI, press the 6/YES button.
+established. To quit and return to the CLI, press the 6/NO button.
 @tip_e
 
 To send 4 bytes:
@@ -517,7 +517,7 @@ that you are able to write and read from the I2C slave.
 
 An SPI slave device can also be connected to the breakout header. For this 
 example, let's rather experiment with the onboard AT25S Serial Flash available 
-on the *deluxe edition*.
+on the *Deluxe Edition*.
 
 @tip_s
 Click [HERE](https://www.adestotech.com/wp-content/uploads/DS-AT25SF041_044.pdf)
@@ -759,7 +759,7 @@ To read 16-bit register GPIOC_IDR ("9.4.5 GPIO port input data register" page 24
     0x3301 13057
 
 @tip_s
-Keep the 6/YES button pressed and repeat the last command. What changed? Why?
+Keep the 6/NO button pressed and repeat the last command. What changed? Why?
 @tip_e
 
 To dump the first 64 bytes of Flash:

@@ -111,9 +111,9 @@ A Board Support Package (@ref BOARDS_AVR_PICONOMIX_SCORPION) is provided that:
 - provide a delay functions
 
 Files:
-- boards/avr/piconomix_scorpion_board/px_board.h
-- boards/avr/piconomix_scorpion_board/px_board_gpio.h
-- boards/avr/piconomix_scorpion_board/px_board.c
+- px-lib/boards/avr/piconomix_scorpion_board/px_board.h
+- px-lib/boards/avr/piconomix_scorpion_board/px_board_gpio.h
+- px-lib/boards/avr/piconomix_scorpion_board/px_board.c
 
 7. Getting started {#SCORPION_BOARD_START}
 ==========================================

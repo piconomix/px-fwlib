@@ -76,7 +76,7 @@ The following steps show how to create a new Makefile managed C project
 for an existing project in the library. The following example project will be 
 used:
 
-    boards\arm\stm32\piconomix_hero_board\examples\gpio
+    px-lib/boards/arm/stm32/piconomix_hero_board/examples/gpio
 
 @tip_s
 If the project already contains STM32CubeIDE project files, they can be deleted 
@@ -108,7 +108,7 @@ Specify the target microcontroller (in this example STM32L072RBTx):
 
 
 Specify the project name and project location (new empty directory). Specify the
-"Targeted Project Type" as Empty and press "Finish":
+"Targeted Project Type" as "Empty" and press "Finish":
 
 ![](sci_project_setup.png)
 
@@ -141,7 +141,7 @@ This is the wizard generated file & folder structure:
 
 You only need the ".cproject" and ".project" file and ".settings" folder. 
 Delete the other wizard generated files & folders by selecting the 
-files & folders, right-clicking on the selection and selecting "Delete" (or 
+files and folders, right-clicking on the selection and selecting "Delete" (or 
 by pressing the Delete keyboard button):
 
 ![](sci_delete_wizard_files.png)
@@ -151,7 +151,7 @@ files and folders in "gpio_old" into "gpio"). Refresh the project:
     
 ![](sci_refresh_project.png)
 
-The original files & folders should now be listed under the project:
+The original files and folders should now be listed under the project:
 
 ![](sci_project_files.png)
 
@@ -160,7 +160,7 @@ A common mistake (for me at least) is trying to execute a project related
 commmand without the project being selected, for example pressing the F5 
 keyboard button to refresh the project, but the project does not have a light 
 blue background (indicating that it is selected). IDE menu options related to a 
-project may also not be available until the project is selected.
+project may also be unavailable until the project is selected.
 @warn_e
 
 4.3 Update project to use the Makefile {#STM32CUBEIDE_USE_MAKEFILE}
@@ -172,7 +172,8 @@ Open the project property page by right-clicking on the project and selecting
 ![](sci_project_properties.png)
 
 Select "C/C++ Build", untick "Generate Makefiles Automatically" and change the 
-Build directory to use the root folder (remove the "/Debug" part):
+Build directory to use the root folder where the Makefile is located (remove the 
+"/Debug" part):
 
 ![](sci_project_builder_settings.png)
 

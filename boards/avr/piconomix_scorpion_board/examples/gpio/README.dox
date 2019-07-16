@@ -12,7 +12,7 @@ your development setup works. The LED is on while the user button is being
 pressed and off while the button is released.
   
 File(s):
-- boards/avr/piconomix_scorpion_board/examples/01_gpio/src/main.c
+- px-lib/boards/avr/piconomix_scorpion_board/examples/01_gpio/src/main.c
 
 The following modules are used:
 - @ref PX_DEFINES

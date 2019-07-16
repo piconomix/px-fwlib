@@ -91,7 +91,7 @@ The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
 - Spring-loaded push-push micro SD card connector for easy insertion and removal
 - [Sparkfun QWIIC](https://www.sparkfun.com/qwiic) and 
   [seeed GROVE](http://wiki.seeedstudio.com/Grove_System/) connector for easy 
-  connection to a whole ecosystem of I2C boards.
+  connection to a whole ecosystem of +3.3V I2C boards.
 - Intuitive 2.54 mm (0.1 inch) pitch PRG/DBG SWD header
 - Standard 10-pin 1.27 mm (0.05 inch) [ARM Cortex Debug Connector](http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf)
 - 4 x 3.4 mm mounting holes; ideal for 
@@ -100,21 +100,32 @@ The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
 5. Comparision between Lite and Deluxe Edition {#HERO_BOARD_EDITIONS}
 =====================================================================
 
+Some hardware blocks are absent on the Lite Edition to provide a lower cost 
+option. The [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf)
+contains 3 build variants (full, Lite and Deluxe) and can be consulted for an 
+exact view of electronic components that are present or absent.
+
+On the Lite Edition, the USB-Serial bridge (USB2) is left out, but a vertical 
+2.54 mm (0.1 inch) header is populated to provide a connection to UART1 of the 
+STM32.
+
+Here is a feature summary table highlighting the differences:
+
 |Feature                                                                 | Lite Edition | Deluxe Edition |
 |------------------------------------------------------------------------|--------------|----------------|
 | STM32L072RB Microcontroller (128k Flash, 20k SRAM, 6k EEPROM)          | YES          | YES            |
 | User Interface (LCD with backlight, LED, Buzzer, 7 x Buttons)          | YES          | YES            |
-| Li-Po battery charger with charging LED                                | NO           | YES            |
-| Zero-burden battery voltage monitoring circuit                         | NO           | YES            |
-| Efficient power-path management                                        | NO           | YES            |
-| True power on/off circuit                                              | NO           | YES            |
 | Peripheral connector (PWR, 4 x ADC, DAC, 8 x GPIO, 2 x UART, I2C, SPI) | YES          | YES            |
-| 95% efficient +3V3 step-down DC-DC converter                           | YES          | YES            |
-| USB-Serial bridge (USB2)                                               | NO           | YES            |
-| 512k SPI Serial Flash Memory                                           | NO           | YES            |
 | Spring-loaded push-push micro SD card connector                        | YES          | YES            |
 | 2.54 mm (0.1 inch) Debug / Program header                              | YES          | YES            |
 | 10-pin 1.27 mm (0.05 inch) Standard ARM Cortex Debug Connector         | NO           | NO             |
+| 95% efficient +3V3 step-down DC-DC converter                           | YES          | YES            |
+| True power on/off circuit                                              | NO           | YES            |
+| Li-Po battery charger with charging LED                                | NO           | YES            |
+| Zero-burden battery voltage monitoring circuit                         | NO           | YES            |
+| Efficient power-path management                                        | NO           | YES            |
+| USB-Serial bridge (USB2)                                               | NO           | YES            |
+| 512k SPI Serial Flash Memory                                           | NO           | YES            |
 | Sparkfun QWICC Connector                                               | YES          | YES            |
 | seeed GROVE I2C Connector                                              | NO           | YES            |
 
@@ -133,7 +144,7 @@ lowers the barrier in terms of design openness... judge for yourself:
 
 The design documents can also be found here for off-line viewing:
 
-    boards/arm/stm32/piconomix_hero_board/docs
+    px-lib/boards/arm/stm32/piconomix_hero_board/docs
 
 7. Reference documents {#HERO_BOARD_REFS}
 =========================================
@@ -145,7 +156,7 @@ The design documents can also be found here for off-line viewing:
 
 The reference documents can also be found here for off-line viewing:
 
-    boards/arm/stm32/piconomix_hero_board/docs
+    px-lib/boards/arm/stm32/piconomix_hero_board/docs
 
 8. Disclaimer {#HERO_BOARD_DISCLAIMER}
 ======================================
@@ -179,9 +190,9 @@ A Board Support Package (@ref BOARDS_STM32_PICONOMIX_HERO) is provided that:
 - provide us and ms delay functions
 
 Files:
-- boards/arm/stm32/piconomix_hero_board/px_board.h
-- boards/arm/stm32/piconomix_hero_board/px_board_gpio.h
-- boards/arm/stm32/piconomix_hero_board/px_board.c
+- px-lib/boards/arm/stm32/piconomix_hero_board/px_board.h
+- px-lib/boards/arm/stm32/piconomix_hero_board/px_board_gpio.h
+- px-lib/boards/arm/stm32/piconomix_hero_board/px_board.c
 
 10. Getting started {#HERO_BOARD_START}
 =======================================
@@ -197,7 +208,7 @@ The following free software tools are needed:
   @ref HERO_BOARD_BOOTLOADER_USB_UF2.
 - [Tera Term][tera_term] : 
   Free terminal emulation software to interact with @ref HERO_BOARD_APP_CLI 
-  or upload new firmware using @ref HERO_BOARD_BOOTLOADER_UART_XMODEM
+  or upload new firmware using the @ref HERO_BOARD_BOOTLOADER_UART_XMODEM
 - FTDI FT230XS USB-UART Bridge [Virtual Com Port (VCP) driver][ftdi_vcp_driver]
 
 The following command line tools are optional, but recommended:
@@ -215,8 +226,7 @@ The Hero Board is shipped with the @ref HERO_BOARD_APP_CLI app. Connect USB1 to
 the PC.
 
 @tip_s
-The app will enable the LED and display the Hero logo on the LCD with the 
-backlight enabled.
+The app will enable the LED and display the Hero logo on the LCD when it starts.
 @tip_e
 
 The app implements a Virtual COM port (USB CDC class) driver for communication.
@@ -274,7 +284,7 @@ flash on the board.
 -------------------
 
 Click [HERE][python] to download and install Python 3. It is needed to create a 
-UF2 file suitable for uploading via @ref HERO_BOARD_BOOTLOADER_USB_UF2. The 
+UF2 file suitable for uploading via the @ref HERO_BOARD_BOOTLOADER_USB_UF2. The 
 script can be found here:
 
     px-lib/tools/uf2conv.py
@@ -350,8 +360,8 @@ the app, the Makefile executes a Python script to create a UF2 file suitable for
 uploading via the bootloader.
 @tip_e
 
-10.8 Upload example to Hero Board
----------------------------------
+10.8 Upload example to Hero Board via bootloader
+------------------------------------------------
 
 After building the @ref HERO_BOARD_EXAMPLE_GPIO succesfully, you will 
 have a UF2 file called "gpio.uf2" in the "RELEASE_FOR_BOOT" subdirectory. 
@@ -392,7 +402,7 @@ It is not strictly required, because STM32CubeIDE does have a similiar set of
 tools, but the path is rather inconvenient:
 @tip_e
 
-    plugins\com.st.stm32cube.ide.mcu.externaltools.make.win32_1.0.1.201906111312\tools\bin
+    [INSTALL DIR]\plugins\com.st.stm32cube.ide.mcu.externaltools.make.win32_1.0.1.201906111312\tools\bin
 
 ### 10.9.2 Install GNU Tools for Arm Embedded Processors ###
 
@@ -403,7 +413,7 @@ It is not strictly required, because STM32CubeIDE does have a GNU C and C++
 build toolchain, but the path is also inconvenient:
 @tip_e
 
-    plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-arm-embedded.7-2018-q2-update.win32_1.0.0.201904081647\tools\bin
+    [INSTALL DIR]\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-arm-embedded.7-2018-q2-update.win32_1.0.0.201904081647\tools\bin
 
 It is recommended to specify a conveniently short installation path, e.g.
 
@@ -417,19 +427,19 @@ The complete documentation will be located here:
 
     c:\Program Files (x86)\gnu_arm\share\doc\gcc-arm-none-eabi\pdf
 
-### 10.9.3 CLI Build ###
+### 10.9.3 Perform CLI Build ###
 
 *Let's try it out!*
 
 Start a windows shell Command Prompt by typing "cmd" in the search bar. Set the
 PATH to UnixShellUtils and GNU Tools by executing the following command:
 
-    > PATH=C:\UnixShellUtils\bin;c:\Program Files (x86)\gnu_arm\bin
+    > PATH=c:\UnixShellUtils\bin;c:\Program Files (x86)\gnu_arm\bin
 
 @tip_s
 You don't need to type the whole line. Copy the text above (without the ">" 
-prompt of course), select the Command Prompt window and press `Ctrl+V` to paste 
-the text into the window.
+prompt of course), select the Command Prompt window and press the `Ctrl+V` 
+keyboard combo to paste the text into the window.
 @tip_e
 
 Change the directory to @ref HERO_BOARD_EXAMPLE_GPIO, e.g.
@@ -448,8 +458,8 @@ Execute `make' to build the whole project:
 
 **Congratulations Hero!!**
 
-11. STM32 quick start guide {#HERO_BOARD_STM32_QUICK_START_GUIDE}
-=================================================================
+11. The next step {#HERO_BOARD_NEXT_STEP}
+=========================================
 
 You now have a working development environment and I really hope it was quick 
 and straight forward to set up (if not, please use @ref FEEDBACK). You should be 
@@ -458,6 +468,9 @@ able to compile an application in the IDE and upload it using the bootloader.
 @tip_s
 To make sure, build and upload @ref HERO_BOARD_APP_CLI
 @tip_e
+
+[HERE](@ref HERO_BOARD_EXAMPLES) is a full list of curated Hero Board specific 
+examples to try out.
 
 The next step is to learn how to write C programs for the STM32 architecture. A 
 quick start guide with tutorials and examples have been created as an 

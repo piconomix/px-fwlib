@@ -16,7 +16,7 @@ The string "Hello World!" is sent and then any bytes received is echoed back.
 ![Serial example interacting with Tera Term](arduino_uno_serial_example.png)
   
 File(s):
-- boards/avr/arduino_uno_board/examples/02_serial/src/main.c
+- px-lib/boards/avr/arduino_uno_board/examples/02_serial/src/main.c
 
 The following modules are used:
 - @ref PX_DEFINES

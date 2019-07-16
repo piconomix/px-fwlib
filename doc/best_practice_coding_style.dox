@@ -72,9 +72,9 @@ object, e.g. `&tmr`.
 
 Template files have been created for consistent organisation of each C module.
 See:
-- common/px_template.h
-- common/px_template.c
-- common/px_template.S
+- px-lib/common/px_template.h
+- px-lib/common/px_template.c
+- px-lib/common/px_template.S
 
 5. Comments {#STYLE_COMMENTS}
 =============================
@@ -235,7 +235,7 @@ indicate that it is a struct. Example:
 ================================
 
 *Use standard types (uint8_t, int8_t, uint16_t, int16_t, uint32_t, int32_t, 
-uint64_t, int64_t, bool, false, true) defined via "common/px_defines.h"*
+uint64_t, int64_t, bool, false, true) defined via "px-lib/common/px_defines.h"*
 
 The size of a variable declared as an `int` depends on the architecture that
 it is compiled for. For the 8-bit Microchip AVR architecture, the size of an 

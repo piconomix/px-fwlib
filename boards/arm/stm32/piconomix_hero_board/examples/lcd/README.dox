@@ -7,7 +7,7 @@ images (bitmaps) on the 128 x 64 graphic LCD:
 ![](hero_board_example_lcd.png)
   
 File(s):
-- boards/arm/stm32/piconomix_hero_board/examples/lcd/src/main.c
+- px-lib/boards/arm/stm32/piconomix_hero_board/examples/lcd/src/main.c
 
 The following modules are used:
 - @ref BOARDS_STM32_PICONOMIX_HERO

@@ -4,7 +4,7 @@ Low Power Example {#HERO_BOARD_EXAMPLE_LOW_POWER}
 This demonstrates how to put the STM32 into STOP low power mode.
 
 File(s):
-- boards/arm/stm32/piconomix_hero_board/examples/low_power/src/main.c
+- px-lib/boards/arm/stm32/piconomix_hero_board/examples/low_power/src/main.c
 
 The following modules are used:
 - @ref BOARDS_STM32_PICONOMIX_HERO
@@ -25,9 +25,9 @@ References:
 The reference documents can also be found here for off-line viewing:
 @tip_e
 
-    boards/arm/stm32/piconomix_hero_board/docs/stm32l072_manual.pdf
-    boards/arm/stm32/piconomix_hero_board/docs/stm32l0_cortex-m0p_programming_manual.pdf
-    boards/arm/stm32/piconomix_hero_board/docs/stm32l0_errata.pdf
+    px-lib/boards/arm/stm32/piconomix_hero_board/docs/stm32l072_manual.pdf
+    px-lib/boards/arm/stm32/piconomix_hero_board/docs/stm32l0_cortex-m0p_programming_manual.pdf
+    px-lib/boards/arm/stm32/piconomix_hero_board/docs/stm32l0_errata.pdf
 
 For more information, see:
 - Digi-Key [Low-Power Modes on the STM32L0 Series](https://www.digikey.com/eewiki/display/microcontroller/Low-Power+Modes+on+the+STM32L0+Series)
