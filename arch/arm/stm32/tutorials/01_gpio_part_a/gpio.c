@@ -89,12 +89,12 @@
  *  to GPIOH_BRR[0].
  *  
  *  @tip_s
- *  Atollic TrueSTUDIO enables you to view the address and content of each
+ *  STM32CubeIDE enables you to view the address and content of each
  *  peripheral register and also to modify it manually when using the debugging
  *  perspective:
  *  @tip_e
  *  
- *  ![Atollic TrueSTUDIO Special Function Register window](ats_sfr_window.png)
+ *  ![STM32CubeIDE Special Function Register window](sci_debug_sfr.png)
  */
 
 // Include standard type integer definitions, e.g. uint8_t, uint16_t, uint32_t, ...
