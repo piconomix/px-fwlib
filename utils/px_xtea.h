@@ -41,6 +41,10 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
+/// Key size in bytes
+#define XTEA_KEY_SIZE_BYTES     16
+/// Data block size in bytes
+#define XTEA_BLOCK_SIZE_BYTES   8
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
@@ -62,11 +66,51 @@ void px_xtea_init(const uint32_t key[4]);
 void px_xtea_encrypt(uint32_t data[2]);
 
 /**
+ *  Encrypt a data buffer.
+ *  
+ *  If the data_in is not an exact multiple of the block size (8 bytes), zero
+ *  padding is used for the last block. The data_out buffer MUST be a multiple
+ *  of 8 bytes.
+ *  
+ *  The data can be encrypted in place by setting both the data_in and data_out
+ *  pointer to the start of the buffer to be encrypted.
+ *  
+ *  @param data_in          Pointer to data buffer to be encrypted
+ *  @param data_out         Pointer to data buffer to contain encrypted data
+ *  @param nr_of_bytes_in   Number of bytes to encrypt
+ *  
+ *  @returns size_t         Number of bytes encrypted (multiple of block size)
+ */
+size_t px_xtea_encrypt_data(const void * data_in,
+                            void *       data_out, 
+                            size_t       nr_of_bytes_in);
+
+/**
  *  Decrypt 64-bit data with 128-bit key. 
  *   
  *  @param data     2 x 32-bit values 
  */
 void px_xtea_decrypt(uint32_t data[2]);
+
+/**
+ *  Decrypt a data buffer.
+ *  
+ *  If the data_in is not an exact multiple of the block size (8 bytes), zero
+ *  padding is used for the last block. The data_out buffer MUST be a multiple
+ *  of 8 bytes.
+ *  
+ *  The data can be decrypted in place by setting both the data_in and data_out
+ *  pointer to the start of the buffer to be decrypted.
+ *  
+ *  @param data_in          Pointer to data buffer to be decrypted
+ *  @param data_out         Pointer to data buffer to contain decrypted data
+ *  @param nr_of_bytes_in   Number of bytes to decrypt
+ *  
+ *  @returns size_t         Number of bytes decrypted (multiple of block size)
+ */
+size_t px_xtea_decrypt_data(const void * data_in, 
+                            void *       data_out,
+                            size_t       nr_of_bytes_in);
 
 /* _____MACROS_______________________________________________________________ */
 

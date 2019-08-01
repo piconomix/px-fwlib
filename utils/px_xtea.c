@@ -17,6 +17,7 @@
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
+#include <string.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_xtea.h"
@@ -68,6 +69,46 @@ void px_xtea_encrypt(uint32_t data[2])
     data[1] = d1;
 }
 
+size_t px_xtea_encrypt_data(const void * data_in, void * data_out, size_t nr_of_bytes_in)
+{
+    uint32_t buf[2];
+    size_t   nr_of_bytes_out = 0;
+
+    while(nr_of_bytes_in != 0)
+    {
+        // Less than 8 bytes (64 bits)?
+        if(nr_of_bytes_in < 8)
+        {
+            // Set bytes to zero
+            buf[0] = 0;
+            buf[1] = 0;
+            // Copy remaining bytes
+            memcpy(buf, data_in, nr_of_bytes_in);
+            // Encrypt block
+            px_xtea_encrypt(buf);
+            memcpy(data_out, buf, 8);
+            // Next block
+            nr_of_bytes_out += 8;
+            // Done
+            break;
+        }
+        else
+        {
+            // Copy 8 bytes
+            memcpy(buf, data_in, 8);
+            // Encrypt block
+            px_xtea_encrypt(buf);
+            memcpy(data_out, buf, 8);
+            // Next block
+            nr_of_bytes_in  -= 8;
+            nr_of_bytes_out += 8;
+            data_in         += 8;
+            data_out        += 8;
+        }        
+    }
+    return nr_of_bytes_out;
+}
+
 void px_xtea_decrypt(uint32_t data[2])
 {
     uint8_t i;
@@ -86,3 +127,42 @@ void px_xtea_decrypt(uint32_t data[2])
     data[1] = d1;
 }
 
+size_t px_xtea_decrypt_data(const void * data_in, void * data_out, size_t nr_of_bytes_in)
+{
+    uint32_t buf[2];
+    size_t   nr_of_bytes_out = 0;
+
+    while(nr_of_bytes_in != 0)
+    {
+        // Less than 8 bytes (64 bits)?
+        if(nr_of_bytes_in < 8)
+        {
+            // Set bytes to zero
+            buf[0] = 0;
+            buf[1] = 0;
+            // Copy remaining bytes
+            memcpy(buf, data_in, nr_of_bytes_in);
+            // Decrypt block
+            px_xtea_decrypt(buf);
+            memcpy(data_out, buf, 8);
+            // Next block
+            nr_of_bytes_out += 8;
+            // Done
+            break;
+        }
+        else
+        {
+            // Copy 8 bytes
+            memcpy(buf, data_in, 8);
+            // Decrypt block
+            px_xtea_decrypt(buf);
+            memcpy(data_out, buf, 8);
+            // Next block
+            nr_of_bytes_in  -= 8;
+            nr_of_bytes_out += 8;
+            data_in         += 8;
+            data_out        += 8;
+        }        
+    }
+    return nr_of_bytes_out;
+}
