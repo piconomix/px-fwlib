@@ -9,8 +9,23 @@
 
     Copyright (c) 2007 Pieter Conradie <https://piconomix.com>
  
-    License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to
+    deal in the Software without restriction, including without limitation the
+    rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+    sell copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+    IN THE SOFTWARE.
 
     Title:          px_dbg.h : Debug module
     Author(s):      Pieter Conradie
@@ -163,7 +178,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* _____DEFINITIONS__________________________________________________________ */
+/* _____DEFINITIONS _________________________________________________________ */
 /// @name Debug message level bitmask definitions
 //@{
 /// None
@@ -187,7 +202,10 @@ extern "C" {
  *  Output info debug information: module name, line and variable argument 
  *  user format string.
  *  
- *  The line is automatically appended with a new line character ('\\n').
+ *  The line is automatically appended with a new line character ('\\n'), except 
+ *  if the format string ends with a tab character ('\\t'). The tab character at 
+ *  the end of the string is discarded.
+ *   
  *  
  *  @param name     Module / file name
  *  @param line     Line number 
@@ -202,7 +220,9 @@ void _px_dbg_log_info(const char * name,
  *  Output warning debug information: module name, line and variable argument 
  *  user format string.
  *  
- *  The line is automatically appended with a new line character ('\\n').
+ *  The line is automatically appended with a new line character ('\\n'), except 
+ *  if the format string ends with a tab character ('\\t'). The tab character at 
+ *  the end of the string is discarded.
  *  
  *  @param name     Module / file name
  *  @param line     Line number 
@@ -217,7 +237,9 @@ void _px_dbg_log_warn(const char * name,
  *  Output error debug information: module name, line and variable argument 
  *  user format string.
  *  
- *  The line is automatically appended with a new line character ('\\n').
+ *  The line is automatically appended with a new line character ('\\n'), except 
+ *  if the format string ends with a tab character ('\\t'). The tab character at 
+ *  the end of the string is discarded.
  *  
  *  @param name     Module / file name
  *  @param line     Line number 
@@ -229,10 +251,38 @@ void _px_dbg_log_err(const char * name,
                      const char * format, ...);
 
 /**
+ *  Test an expression, and block indefinitely if false.
+ *  
+ *  Before blocking the function will output debug information: module name,
+ *  line and test expression that failed.
+ *  
+ *  For supported architectures, it will also generate a debug breakpoint.
+ *  
+ *  @param condition    Outcome of assertion test
+ *  @param name         Module / file name
+ *  @param line         Line number 
+ *  @param expression   Test expression string for assertion
+ */
+void _px_dbg_assert(const char * name, 
+                    uint16_t     line, 
+                    const char * expression) PX_ATTR_NORETURN;
+
+/**
+ *  Macro that will test an expression, and block indefinitely if false.
+ *  
+ *  This macro will perform the test and if false, will output the filename and
+ *  line number with the test appended. The macro will then block indefinitely.
+ *  
+ *  @param[in] expression   Expression that evaluates to a boolean value
+ *                          (true or false)
+ */
+
+
+/**
  *  Output debug information: variable argument user format string.
  *  
- *  This function does not append a new line character ('\\n') so that multiple
- *  strings can be sent on the same line.
+ *  This function does not automatically append a new line character ('\\n') so
+ *  that multiple strings can be sent on the same line.
  *  
  *  @param format   User format string 
  *  @param ...      Variable number of arguments 
@@ -339,6 +389,8 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
  *  This macro will perform the test and if false, will output the filename and
  *  line number with the test appended. The macro will then block indefinitely.
  *  
+ *  For supported architectures, it will generate a debug breakpoint.
+ *  
  *  @param[in] expression   Expression that evaluates to a boolean value
  *                          (true or false)
  */
@@ -347,11 +399,9 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
             { \
                 if(!(expression)) \
                 { \
-                    _px_dbg_log_err(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(#expression)); \
-                    for(;;) {;} \
+                    _px_dbg_assert(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(#expression)); \
                 } \
             } while(0)
-
 #else
 
 // PX_DBG = 0; Remove debug reporting code

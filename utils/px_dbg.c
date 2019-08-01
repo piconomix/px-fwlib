@@ -7,8 +7,23 @@
 
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
  
-    License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to
+    deal in the Software without restriction, including without limitation the
+    rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+    sell copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+    IN THE SOFTWARE.
 
     Title:          px_dbg.h : Debug module
     Author(s):      Pieter Conradie
@@ -78,10 +93,18 @@ static void px_dbg_put_str_P(const char * data)
 
 static void px_dbg_trace_vargs_P(const char * format, va_list args) 
 {
+    size_t len;
+
     // Populate buffer with debug string
     vsnprintf_P(px_dbg_buf, PX_DBG_CFG_BUF_SIZE, format, args);
     // Append terminating zero in case of buffer overrun
     px_dbg_buf[PX_DBG_CFG_BUF_SIZE-1] = '\0';
+    // Remove tab character ('\t') at the end of user formatted string
+    len = strlen(px_dbg_buf);
+    if((len != 0) && (px_dbg_buf[len - 1] == '\t'))
+    {
+        px_dbg_buf[len - 1] = '\0';
+    }
     // Output user formatted string
     px_dbg_put_str(px_dbg_buf);
 }
@@ -99,10 +122,18 @@ static void px_dbg_printf_P(const char * format, ...)
 
 static void px_dbg_trace_vargs(const char * format, va_list args) 
 {
+    size_t len;
+
     // Populate buffer with debug string
     vsnprintf(px_dbg_buf, PX_DBG_CFG_BUF_SIZE, format, args);
     // Append terminating zero in case of buffer overrun
     px_dbg_buf[PX_DBG_CFG_BUF_SIZE-1] = '\0';
+    // Remove tab character ('\t') at the end of user formatted string
+    len = strlen(px_dbg_buf);
+    if((len != 0) && (px_dbg_buf[len - 1] == '\t'))
+    {
+        px_dbg_buf[len - 1] = '\0';
+    }
     // Output user formatted string
     px_dbg_put_str(px_dbg_buf);
 }
@@ -179,6 +210,25 @@ static void px_dbg_report_log_prefix(uint8_t      level,
 #endif
 }
 
+static void _px_dbg_log_terminate(const char * format)
+{
+#ifdef PX_COMPILER_GCC_AVR
+    size_t len = strlen_P(format);
+    if((len == 0) || px_pgm_rd_char(format + len - 1) != '\t')
+    {
+        // Append end-of-line
+        px_dbg_put_char('\n');
+    }
+#else
+    size_t len = strlen(format);
+    if((len == 0) || format[len - 1] != '\t')
+    {
+        // Append end-of-line
+        px_dbg_put_char('\n');
+    }
+#endif
+}
+
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void _px_dbg_log_info(const char * name, uint16_t line, const char * format, ...)
 {
@@ -196,8 +246,8 @@ void _px_dbg_log_info(const char * name, uint16_t line, const char * format, ...
 #endif
     va_end(args);
     
-    // Append end-of-line
-    px_dbg_put_char('\n');
+    // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
+    _px_dbg_log_terminate(format);
 }
 
 void _px_dbg_log_warn(const char * name, uint16_t line, const char * format, ...)
@@ -216,8 +266,8 @@ void _px_dbg_log_warn(const char * name, uint16_t line, const char * format, ...
 #endif
     va_end(args);
     
-    // Append end-of-line
-    px_dbg_put_char('\n');
+    // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
+    _px_dbg_log_terminate(format);
 }
 
 void _px_dbg_log_err(const char * name, uint16_t line, const char * format, ...)
@@ -236,8 +286,35 @@ void _px_dbg_log_err(const char * name, uint16_t line, const char * format, ...)
 #endif
     va_end(args);
     
-    // Append end-of-line
-    px_dbg_put_char('\n');
+    // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
+    _px_dbg_log_terminate(format);
+}
+
+void _px_dbg_assert(const char * name, 
+                    uint16_t     line, 
+                    const char * expression)
+{
+    // Output log prefix (level, timestamp, name and line)
+    px_dbg_report_log_prefix(PX_DBG_CFG_MSG_LEVEL_ERR, name, line);
+#ifdef PX_COMPILER_GCC_AVR
+    px_dbg_printf_P(PX_PGM_STR("ASSERT: "));
+    px_dbg_printf_P(expression);
+#else
+    px_dbg_printf("ASSERT: ");
+    px_dbg_printf(expression);
+#endif
+
+     
+#ifdef PX_COMPILER_GCC_ARM
+    // Generate debug breakpoint
+    __asm__ __volatile__("bkpt #0\n\t"::);
+#endif
+
+    // Block forever
+    for(;;)
+    {
+        ;
+    }
 }
 
 void _px_dbg_trace(const char * format, ...)
