@@ -18,7 +18,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_hdlc.h"
-#include "px_crc.h"
+#include "px_crc16.h"
 #include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -74,10 +74,12 @@ void px_hdlc_init(px_hdlc_tx_u8_fn_t       tx_u8_fn,
                   px_hdlc_on_rx_frame_fn_t on_rx_frame_fn)
 {
     px_hdlc_rx_frame_index = 0;
-    px_hdlc_rx_frame_fcs   = PX_CRC_INIT_VAL;
+    px_hdlc_rx_frame_fcs   = PX_CRC16_INIT_VAL;
     px_hdlc_rx_esc_flag    = false;
     px_hdlc_tx_u8_fn       = tx_u8_fn;
     px_hdlc_on_rx_frame_fn = on_rx_frame_fn;
+
+    px_crc16_init();
 }
 
 void px_hdlc_on_rx_u8(uint8_t data)
@@ -94,7 +96,7 @@ void px_hdlc_on_rx_u8(uint8_t data)
         }
         // Minimum requirement for a valid frame is reception of good FCS
         else if(  (px_hdlc_rx_frame_index >= sizeof(px_hdlc_rx_frame_fcs)) 
-                &&(px_hdlc_rx_frame_fcs   == PX_CRC_MAGIC_VAL            )  )
+                &&(px_hdlc_rx_frame_fcs   == PX_CRC16_MAGIC_VAL            )  )
         {
             // Pass on frame with FCS field removed
             (*px_hdlc_on_rx_frame_fn)(px_hdlc_rx_frame,
@@ -102,7 +104,7 @@ void px_hdlc_on_rx_u8(uint8_t data)
         }
         // Reset for next packet
         px_hdlc_rx_frame_index = 0;
-        px_hdlc_rx_frame_fcs   = PX_CRC_INIT_VAL;
+        px_hdlc_rx_frame_fcs   = PX_CRC16_INIT_VAL;
         return;
     }
 
@@ -126,7 +128,7 @@ void px_hdlc_on_rx_u8(uint8_t data)
     px_hdlc_rx_frame[px_hdlc_rx_frame_index] = data;
 
     // Update checksum
-    px_hdlc_rx_frame_fcs = px_crc_update_u8(px_hdlc_rx_frame_fcs, data);
+    px_hdlc_rx_frame_fcs = px_crc16_update_u8(px_hdlc_rx_frame_fcs, data);
 
     // Advance to next position in buffer
     px_hdlc_rx_frame_index++;
@@ -145,7 +147,7 @@ void px_hdlc_on_rx_u8(uint8_t data)
 void px_hdlc_tx_frame(const uint8_t * data, size_t nr_of_bytes)
 {
     uint8_t  data_u8;
-    px_crc_t fcs = PX_CRC_INIT_VAL;    
+    px_crc_t fcs = PX_CRC16_INIT_VAL;    
 
     // Send start marker
     px_hdlc_tx_u8(PX_HDLC_FLAG_SEQUENCE);
@@ -157,7 +159,7 @@ void px_hdlc_tx_frame(const uint8_t * data, size_t nr_of_bytes)
         data_u8 = *data++;
         
         // Update checksum
-        fcs = px_crc_update_u8(fcs, data_u8);
+        fcs = px_crc16_update_u8(fcs, data_u8);
         
         // ESC send data
         px_hdlc_esc_tx_u8(data_u8);
