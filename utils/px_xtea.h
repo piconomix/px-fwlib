@@ -66,7 +66,7 @@ void px_xtea_init(const uint32_t key[4]);
 void px_xtea_encrypt(uint32_t data[2]);
 
 /**
- *  Encrypt a data buffer.
+ *  Encrypt a data buffer using Electronic Codebook (ECB) block cipher operation.
  *  
  *  If the data_in is not an exact multiple of the block size (8 bytes), zero
  *  padding is used for the last block. The data_out buffer MUST be a multiple
@@ -81,9 +81,9 @@ void px_xtea_encrypt(uint32_t data[2]);
  *  
  *  @returns size_t         Number of bytes encrypted (multiple of block size)
  */
-size_t px_xtea_encrypt_data(const void * data_in,
-                            void *       data_out, 
-                            size_t       nr_of_bytes_in);
+size_t px_xtea_encrypt_data_ecb(const uint8_t * data_in,
+                                uint8_t *       data_out, 
+                                size_t          nr_of_bytes_in);
 
 /**
  *  Decrypt 64-bit data with 128-bit key. 
@@ -93,7 +93,7 @@ size_t px_xtea_encrypt_data(const void * data_in,
 void px_xtea_decrypt(uint32_t data[2]);
 
 /**
- *  Decrypt a data buffer.
+ *  Decrypt a data buffer using Electronic Codebook (ECB) block cipher operation.
  *  
  *  If the data_in is not an exact multiple of the block size (8 bytes), zero
  *  padding is used for the last block. The data_out buffer MUST be a multiple
@@ -108,9 +108,9 @@ void px_xtea_decrypt(uint32_t data[2]);
  *  
  *  @returns size_t         Number of bytes decrypted (multiple of block size)
  */
-size_t px_xtea_decrypt_data(const void * data_in, 
-                            void *       data_out,
-                            size_t       nr_of_bytes_in);
+size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in, 
+                                uint8_t *       data_out,
+                                size_t          nr_of_bytes_in);
 
 /* _____MACROS_______________________________________________________________ */
 

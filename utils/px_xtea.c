@@ -41,17 +41,17 @@ static uint32_t px_xtea_key[4];
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_xtea_init(const uint32_t key[4])
+void px_xtea_init(const uint32_t key[4] )
 {
     uint8_t i;
 
-    for(i=0;i<4;i++)
+    for(i = 0; i < 4; i++)
     {
         px_xtea_key[i] = key[i];
     }
 }
 
-void px_xtea_encrypt(uint32_t data[2])
+void px_xtea_encrypt(uint32_t data[2] )
 {
     uint8_t i;
 
@@ -59,17 +59,17 @@ void px_xtea_encrypt(uint32_t data[2])
     uint32_t d1  = data[1];
     uint32_t sum = 0;
 
-    for (i=PX_XTEA_NUMBER_OF_ROUNDS; i != 0; i--)
+    for(i = PX_XTEA_NUMBER_OF_ROUNDS; i != 0; i--)
     {
         d0  += (((d1 << 4) ^ (d1 >> 5)) + d1) ^ (sum + px_xtea_key[sum & 3]);
         sum += PX_XTEA_DELTA;
-        d1  += (((d0 << 4) ^ (d0 >> 5)) + d0) ^ (sum + px_xtea_key[(sum>>11) & 3]);
+        d1  += (((d0 << 4) ^ (d0 >> 5)) + d0) ^ (sum + px_xtea_key[(sum >> 11) & 3]);
     }
     data[0] = d0;
     data[1] = d1;
 }
 
-size_t px_xtea_encrypt_data(const void * data_in, void * data_out, size_t nr_of_bytes_in)
+size_t px_xtea_encrypt_data_ecb(const uint8_t * data_in, uint8_t * data_out, size_t nr_of_bytes_in)
 {
     uint32_t buf[2];
     size_t   nr_of_bytes_out = 0;
@@ -104,22 +104,22 @@ size_t px_xtea_encrypt_data(const void * data_in, void * data_out, size_t nr_of_
             nr_of_bytes_out += 8;
             data_in         += 8;
             data_out        += 8;
-        }        
+        }
     }
     return nr_of_bytes_out;
 }
 
-void px_xtea_decrypt(uint32_t data[2])
+void px_xtea_decrypt(uint32_t data[2] )
 {
     uint8_t i;
 
     uint32_t d0  = data[0];
     uint32_t d1  = data[1];
-    uint32_t sum = PX_XTEA_DELTA*PX_XTEA_NUMBER_OF_ROUNDS;
+    uint32_t sum = (uint32_t)(PX_XTEA_DELTA * PX_XTEA_NUMBER_OF_ROUNDS);
 
-    for (i=PX_XTEA_NUMBER_OF_ROUNDS; i != 0; i--)
+    for(i = PX_XTEA_NUMBER_OF_ROUNDS; i != 0; i--)
     {
-        d1  -= (((d0 << 4) ^ (d0 >> 5)) + d0) ^ (sum + px_xtea_key[(sum>>11) & 3]);
+        d1  -= (((d0 << 4) ^ (d0 >> 5)) + d0) ^ (sum + px_xtea_key[(sum >> 11) & 3]);
         sum -= PX_XTEA_DELTA;
         d0  -= (((d1 << 4) ^ (d1 >> 5)) + d1) ^ (sum + px_xtea_key[sum & 3]);
     }
@@ -127,7 +127,7 @@ void px_xtea_decrypt(uint32_t data[2])
     data[1] = d1;
 }
 
-size_t px_xtea_decrypt_data(const void * data_in, void * data_out, size_t nr_of_bytes_in)
+size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in, uint8_t * data_out, size_t nr_of_bytes_in)
 {
     uint32_t buf[2];
     size_t   nr_of_bytes_out = 0;
@@ -162,7 +162,7 @@ size_t px_xtea_decrypt_data(const void * data_in, void * data_out, size_t nr_of_
             nr_of_bytes_out += 8;
             data_in         += 8;
             data_out        += 8;
-        }        
+        }
     }
     return nr_of_bytes_out;
 }

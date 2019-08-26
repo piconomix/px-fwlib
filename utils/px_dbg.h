@@ -251,14 +251,10 @@ void _px_dbg_log_err(const char * name,
                      const char * format, ...);
 
 /**
- *  Test an expression, and block indefinitely if false.
+ *  Report that an assertion has failed and block indefinitely.
  *  
- *  Before blocking the function will output debug information: module name,
- *  line and test expression that failed.
+ *  For supported architectures it will also generate a debug breakpoint.
  *  
- *  For supported architectures, it will also generate a debug breakpoint.
- *  
- *  @param condition    Outcome of assertion test
  *  @param name         Module / file name
  *  @param line         Line number 
  *  @param expression   Test expression string for assertion
@@ -266,17 +262,6 @@ void _px_dbg_log_err(const char * name,
 void _px_dbg_assert(const char * name, 
                     uint16_t     line, 
                     const char * expression) PX_ATTR_NORETURN;
-
-/**
- *  Macro that will test an expression, and block indefinitely if false.
- *  
- *  This macro will perform the test and if false, will output the filename and
- *  line number with the test appended. The macro will then block indefinitely.
- *  
- *  @param[in] expression   Expression that evaluates to a boolean value
- *                          (true or false)
- */
-
 
 /**
  *  Output debug information: variable argument user format string.
