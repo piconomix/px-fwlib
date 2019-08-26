@@ -1,0 +1,153 @@
+
+flashing_led.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   00000010  08000000  08000000  00000054  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         0000005c  08000010  08000010  00000064  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .ARM.attributes 00000022  00000000  00000000  000000c0  2**0
+                  CONTENTS, READONLY
+  3 .debug_line   00000068  00000000  00000000  000000e2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   00000026  00000000  00000000  0000014a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 00000014  00000000  00000000  00000170  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_aranges 00000020  00000000  00000000  00000188  2**3
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    0000006f  00000000  00000000  000001a8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+08000010 <nmi_handler>:
+/* nmi_handler() function */
+.global nmi_handler
+.type  nmi_handler, %function
+nmi_handler:
+    /* Loop here forever */
+    b       nmi_handler
+ 8000010:	e7fe      	b.n	8000010 <nmi_handler>
+
+08000012 <hard_fault_handler>:
+/* hard_fault_handler() function */
+.global hard_fault_handler
+.type  hard_fault_handler, %function
+hard_fault_handler:
+    /* Loop here forever */
+    b       hard_fault_handler
+ 8000012:	e7fe      	b.n	8000012 <hard_fault_handler>
+
+08000014 <main>:
+/* main() function */
+.global main
+.type  main, %function
+main:
+    /* Read RCC_IOPENR register value */
+    ldr     r0, =RCC_IOPENR
+ 8000014:	480e      	ldr	r0, [pc, #56]	; (8000050 <_delay_loop+0xa>)
+    ldr     r1, [r0]
+ 8000016:	6801      	ldr	r1, [r0, #0]
+    /* Set RCC_IOPENR register bit 7 to enable clock of Port H */    
+    ldr     r2, =0x00000080
+ 8000018:	4a0e      	ldr	r2, [pc, #56]	; (8000054 <_delay_loop+0xe>)
+    orrs    r1, r2
+ 800001a:	4311      	orrs	r1, r2
+    str     r1, [r0]
+ 800001c:	6001      	str	r1, [r0, #0]
+    /* Read GPIOH_MODER register value */
+    ldr     r0, =GPIOH_MODER
+ 800001e:	480e      	ldr	r0, [pc, #56]	; (8000058 <_delay_loop+0x12>)
+    ldr     r1, [r0]
+ 8000020:	6801      	ldr	r1, [r0, #0]
+    /* Set MODE0[1:0] = 01 (General purpose output mode) */
+    ldr     r2, =0xfffffffd
+ 8000022:	4a0e      	ldr	r2, [pc, #56]	; (800005c <_delay_loop+0x16>)
+    ands    r1, r2
+ 8000024:	4011      	ands	r1, r2
+    ldr     r2, =0x00000001
+ 8000026:	4a0e      	ldr	r2, [pc, #56]	; (8000060 <_delay_loop+0x1a>)
+    orrs    r1, r2
+ 8000028:	4311      	orrs	r1, r2
+    /* Write updated GPIOH_MODER register value */
+    str     r1, [r0]
+ 800002a:	6001      	str	r1, [r0, #0]
+
+    /* Load R0 with GPIOH_BSRR address */
+    ldr     r0, =GPIOH_BSRR    
+ 800002c:	480d      	ldr	r0, [pc, #52]	; (8000064 <_delay_loop+0x1e>)
+
+0800002e <_main_loop>:
+_main_loop:
+    /* Set PH0 output to enable LED */
+    ldr     r1, =0x00000001
+ 800002e:	490c      	ldr	r1, [pc, #48]	; (8000060 <_delay_loop+0x1a>)
+    str     r1, [r0]
+ 8000030:	6001      	str	r1, [r0, #0]
+    /* Call delay function; Return address is stored in LR (Link Register / R13) */
+    bl      delay
+ 8000032:	f000 f805 	bl	8000040 <delay>
+    /* Clear PH0 output to disable LED */
+    ldr     r1, =0x00010000
+ 8000036:	490c      	ldr	r1, [pc, #48]	; (8000068 <_delay_loop+0x22>)
+    str     r1, [r0]
+ 8000038:	6001      	str	r1, [r0, #0]
+    /* Call delay function; Return address is stored in LR (Link Register / R13) */
+    bl      delay
+ 800003a:	f000 f801 	bl	8000040 <delay>
+    /* Repeat forever */
+    b       _main_loop
+ 800003e:	e7f6      	b.n	800002e <_main_loop>
+
+08000040 <delay>:
+delay:
+    /*
+     * Save R0 and LR (Link Register / R13) register content on stack (SP / R14).
+     * LR contains the program address to return to when function finishes.
+     */
+    push    {r0, lr}
+ 8000040:	b501      	push	{r0, lr}
+    /* 
+     * Set R0 to 0x00040000 (262 144) by loading it with 0x04 and shifting 
+     * it left by 16 bits (multiplying it with 2^16 = 65 536)
+     */
+    movs	r0, #0x04
+ 8000042:	2004      	movs	r0, #4
+    lsls	r0, #16
+ 8000044:	0400      	lsls	r0, r0, #16
+
+08000046 <_delay_loop>:
+     * program memory (at the end in the literal pool).
+     */
+
+    /* Decrement R0 until it is zero; this is the actual delay loop */
+_delay_loop:
+    nop                     /* 1 instruction clock cycle */
+ 8000046:	46c0      	nop			; (mov r8, r8)
+    subs    r0, #1          /* 1 instruction clock cycle */
+ 8000048:	3801      	subs	r0, #1
+    bne     _delay_loop     /* 2 instruction clock cycles if branch is taken */
+ 800004a:	d1fc      	bne.n	8000046 <_delay_loop>
+    /* 
+     *  Restore R0 saved value from stack and restore LR (Link Register / R13) 
+     *  saved value directly into PC (Program Counter / R15) to return.
+     */
+    pop     {r0, pc}
+ 800004c:	bd01      	pop	{r0, pc}
+ 800004e:	0000      	.short	0x0000
+    ldr     r0, =RCC_IOPENR
+ 8000050:	4002102c 	.word	0x4002102c
+    ldr     r2, =0x00000080
+ 8000054:	00000080 	.word	0x00000080
+    ldr     r0, =GPIOH_MODER
+ 8000058:	50001c00 	.word	0x50001c00
+    ldr     r2, =0xfffffffd
+ 800005c:	fffffffd 	.word	0xfffffffd
+    ldr     r2, =0x00000001
+ 8000060:	00000001 	.word	0x00000001
+    ldr     r0, =GPIOH_BSRR    
+ 8000064:	50001c18 	.word	0x50001c18
+    ldr     r1, =0x00010000
+ 8000068:	00010000 	.word	0x00010000
