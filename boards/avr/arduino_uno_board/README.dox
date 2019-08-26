@@ -63,9 +63,9 @@ A Board Support Package (@ref BOARDS_AVR_ARDUINO_UNO) is provided that:
 - provide delay functions
 
 Files:
-- px-lib/boards/avr/arduino_uno_board/px_board.h
-- px-lib/boards/avr/arduino_uno_board/px_board_gpio.h
-- px-lib/boards/avr/arduino_uno_board/px_board.c
+- boards/avr/arduino_uno_board/px_board.h
+- boards/avr/arduino_uno_board/px_board_gpio.h
+- boards/avr/arduino_uno_board/px_board.c
 
 3. Reference documents {#ARDUINO_UNO_BOARD_REFS}
 ================================================
