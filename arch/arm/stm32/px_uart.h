@@ -50,9 +50,7 @@
      || !defined(PX_UART_CFG_UART2_EN    ) \
      || !defined(PX_UART_CFG_UART4_EN    ) \
      || !defined(PX_UART_CFG_UART5_EN    ) \
-     || !defined(PX_UART_CFG_DEFAULT_BAUD) \
-     || !defined(PX_UART_CFG_TX_BUF_SIZE ) \
-     || !defined(PX_UART_CFG_RX_BUF_SIZE )  )
+     || !defined(PX_UART_CFG_DEFAULT_BAUD)  )
 #error "One or more options not defined in 'px_uart_cfg.h'"
 #endif
 #if (   (PX_UART_CFG_UART1_EN > 1) \
@@ -70,6 +68,32 @@
 // No peripherals enabled?
 #if (PX_UART_CFG_PER_COUNT == 0)
 #error "No peripherals enabled"
+#endif
+
+// Check that all buffer sizes have been specified in "px_uart_cfg.h"
+#if PX_UART_CFG_UART1_EN
+    #if (   !defined(PX_UART_CFG_UART1_TX_BUF_SIZE) \
+         || !defined(PX_UART_CFG_UART1_RX_BUF_SIZE)  )
+    #error "One or more options not defined in 'px_uart_cfg.h'"
+    #endif
+#endif
+    #if PX_UART_CFG_UART2_EN
+    #if (   !defined(PX_UART_CFG_UART2_TX_BUF_SIZE) \
+         || !defined(PX_UART_CFG_UART2_RX_BUF_SIZE)  )
+    #error "One or more options not defined in 'px_uart_cfg.h'"
+    #endif
+#endif
+#if PX_UART_CFG_UART4_EN
+    #if (   !defined(PX_UART_CFG_UART4_TX_BUF_SIZE) \
+         || !defined(PX_UART_CFG_UART4_RX_BUF_SIZE)  )
+    #error "One or more options not defined in 'px_uart_cfg.h'"
+    #endif
+#endif
+#if PX_UART_CFG_UART5_EN
+    #if (   !defined(PX_UART_CFG_UART5_TX_BUF_SIZE) \
+         || !defined(PX_UART_CFG_UART5_RX_BUF_SIZE)  )
+    #error "One or more options not defined in 'px_uart_cfg.h'"
+    #endif
 #endif
 
 #ifdef __cplusplus

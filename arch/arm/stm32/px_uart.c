@@ -42,12 +42,8 @@ typedef struct px_uart_data_s
     volatile bool tx_finished;
     /// Transmit circular buffer
     px_circ_buf_t tx_circ_buf;
-    /// Transmit circular buffer data
-    uint8_t tx_circ_buf_data[PX_UART_CFG_TX_BUF_SIZE];
     /// Receive circular buffer
     px_circ_buf_t rx_circ_buf;
-    /// Receive circular buffer data
-    uint8_t rx_circ_buf_data[PX_UART_CFG_RX_BUF_SIZE];
 } px_uart_data_t;
 
 /* _____MACROS_______________________________________________________________ */
@@ -57,18 +53,26 @@ typedef struct px_uart_data_s
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// Allocate data for each enabled UART peripheral
 #if PX_UART_CFG_UART1_EN
+static uint8_t        px_uart1_tx_circ_buf_data[PX_UART_CFG_UART1_TX_BUF_SIZE];
+static uint8_t        px_uart1_rx_circ_buf_data[PX_UART_CFG_UART1_RX_BUF_SIZE];
 static px_uart_data_t px_uart1_data;
 #endif
 
 #if PX_UART_CFG_UART2_EN
+static uint8_t        px_uart2_tx_circ_buf_data[PX_UART_CFG_UART2_TX_BUF_SIZE];
+static uint8_t        px_uart2_rx_circ_buf_data[PX_UART_CFG_UART2_RX_BUF_SIZE];
 static px_uart_data_t px_uart2_data;
 #endif
 
 #if PX_UART_CFG_UART4_EN
+static uint8_t        px_uart4_tx_circ_buf_data[PX_UART_CFG_UART4_TX_BUF_SIZE];
+static uint8_t        px_uart4_rx_circ_buf_data[PX_UART_CFG_UART4_RX_BUF_SIZE];
 static px_uart_data_t px_uart4_data;
 #endif
 
 #if PX_UART_CFG_UART5_EN
+static uint8_t        px_uart5_tx_circ_buf_data[PX_UART_CFG_UART5_TX_BUF_SIZE];
+static uint8_t        px_uart5_rx_circ_buf_data[PX_UART_CFG_UART5_RX_BUF_SIZE];
 static px_uart_data_t px_uart5_data;
 #endif
 
@@ -84,12 +88,14 @@ static void uart_irq_handler(px_uart_data_t * uart_data)
     {
         // Read receive data register
         data = LL_USART_ReceiveData8(usart_base_adr);
+
         // Overrrun Error?
         if(LL_USART_IsActiveFlag_ORE(usart_base_adr))
         {
             // Clear error flag
             LL_USART_ClearFlag_ORE(usart_base_adr);
         }
+
         // Parity Error?
         if(LL_USART_IsActiveFlag_PE(usart_base_adr))
         {
@@ -344,48 +350,60 @@ static void px_uart_init_peripheral_data(px_uart_per_t    peripheral,
     // Set peripheral
     uart_data->peripheral = peripheral;
 
-    // Set peripheral base address
+    // Set peripheral base address and intialise circular buffers
     switch(peripheral)
     {
 #if PX_UART_CFG_UART1_EN
     case PX_UART_PER_1:
         uart_data->usart_base_adr = USART1;
+        px_circ_buf_init(&uart_data->tx_circ_buf,
+                         px_uart1_tx_circ_buf_data,
+                         PX_UART_CFG_UART1_TX_BUF_SIZE);
+        px_circ_buf_init(&uart_data->rx_circ_buf,
+                         px_uart1_rx_circ_buf_data,
+                         PX_UART_CFG_UART1_RX_BUF_SIZE);
         break;
 #endif
 #if PX_UART_CFG_UART2_EN
     case PX_UART_PER_2:
         uart_data->usart_base_adr = USART2;
+        px_circ_buf_init(&uart_data->tx_circ_buf,
+                         px_uart2_tx_circ_buf_data,
+                         PX_UART_CFG_UART2_TX_BUF_SIZE);
+        px_circ_buf_init(&uart_data->rx_circ_buf,
+                         px_uart2_rx_circ_buf_data,
+                         PX_UART_CFG_UART2_RX_BUF_SIZE);
         break;
 #endif
 #if PX_UART_CFG_UART4_EN
     case PX_UART_PER_4:
         uart_data->usart_base_adr = USART4;
+        px_circ_buf_init(&uart_data->tx_circ_buf,
+                         px_uart4_tx_circ_buf_data,
+                         PX_UART_CFG_UART4_TX_BUF_SIZE);
+        px_circ_buf_init(&uart_data->rx_circ_buf,
+                         px_uart4_rx_circ_buf_data,
+                         PX_UART_CFG_UART4_RX_BUF_SIZE);
         break;
 #endif
 #if PX_UART_CFG_UART5_EN
     case PX_UART_PER_5:
         uart_data->usart_base_adr = USART5;
+        px_circ_buf_init(&uart_data->tx_circ_buf,
+                         px_uart5_tx_circ_buf_data,
+                         PX_UART_CFG_UART5_TX_BUF_SIZE);
+        px_circ_buf_init(&uart_data->rx_circ_buf,
+                         px_uart5_rx_circ_buf_data,
+                         PX_UART_CFG_UART5_RX_BUF_SIZE);
         break;
 #endif
     default:
         break;
     }
-
     // Clear reference counter
     uart_data->open_counter = 0;
-
     // Set transmit finished flag
     uart_data->tx_finished = true;
-
-    // Initialise transmit circular buffer
-    px_circ_buf_init(&uart_data->tx_circ_buf,
-                     uart_data->tx_circ_buf_data,
-                     PX_UART_CFG_TX_BUF_SIZE);
-
-    // Initialise receive circular buffer
-    px_circ_buf_init(&uart_data->rx_circ_buf,
-                     uart_data->rx_circ_buf_data,
-                     PX_UART_CFG_RX_BUF_SIZE);
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
