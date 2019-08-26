@@ -31,8 +31,15 @@
  *  - gfx/px_gfx_lcd.h 
  *  - gfx/px_gfx_lcd_st7567_jhd12864.c 
  *  
- *  Excellent tool to convert images and fonts: 
- *  [Ruison.com LCD Image Converter](https://github.com/riuson/lcd-image-converter)
+ *  Tool to convert images and fonts:
+ *  [Ruison.com LCD Image Converter](https://github.com/riuson/lcd-image-converter) 
+ *   
+ *  Tool template files: 
+ *  - gfx/px_gfx_font.tmpl 
+ *  - gfx/px_gfx_image.tmpl 
+ *   
+ *  Tool preset file: 
+ *  - px_gfx_preset.xml 
  */
 /// @{
 
@@ -148,73 +155,235 @@ typedef struct
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void px_gfx_init                (void);
+/**
+ *  Initialise graphics library.
+ */
+void px_gfx_init(void);
 
-void px_gfx_clear_frame         (void);
-void px_gfx_draw_frame          (void);
-void px_gfx_update_frame        (void);
-bool px_gfx_update_area_get     (px_gfx_area_t * area);
+/**
+ *  Clear frame buffer.
+ */
+void px_gfx_clear_frame(void);
 
-void           px_gfx_draw_attr_reset   (void);
-px_gfx_color_t px_gfx_color_fg_set      (px_gfx_color_t  color);
-px_gfx_color_t px_gfx_color_bg_set      (px_gfx_color_t  color);
-px_gfx_align_t px_gfx_align_set         (px_gfx_align_t  align);
-void           px_gfx_view_port_set     (px_gfx_xy_t     x,
-                                         px_gfx_xy_t     y,
-                                         px_gfx_xy_t     width,
-                                         px_gfx_xy_t     height,
-                                         px_gfx_xy_ref_t xy_ref);
-void           px_gfx_view_port_reset   (void);
+/**
+ *  Redraw LCD display using frame buffer.
+ */
+void px_gfx_draw_frame(void);
 
-void px_gfx_draw_pixel(px_gfx_xy_t    x,
-                       px_gfx_xy_t    y);
+/**
+ *  Update LCD display with total area that has changed in frame buffer.
+ *  
+ */
+void px_gfx_update_frame(void);
 
-void px_gfx_draw_line(px_gfx_xy_t    x1,
-                      px_gfx_xy_t    y1,
-                      px_gfx_xy_t    x2,
-                      px_gfx_xy_t    y2);
+/**
+ *  Get total area of frame that has changed.
+ *  
+ *  @param area     Pointer to structure to contain area that has changed
+ *  
+ *  @retval true    frame has changed
+ *  @retval false   frame has stayed the same (no change)
+ */
+bool px_gfx_update_area_get(px_gfx_area_t * area);
 
-void px_gfx_draw_line_hor(px_gfx_xy_t    x,
-                          px_gfx_xy_t    y,
-                          px_gfx_xy_t    width);
+/**
+ *  Reset drawing attributes to default.
+ */
+void px_gfx_draw_attr_reset(void);
 
-void px_gfx_draw_line_ver(px_gfx_xy_t    x,
-                          px_gfx_xy_t    y,
-                          px_gfx_xy_t    height);
+/**
+ *  Set the new foreground drawing color.
+ *  
+ *  @param color            New drawing color
+ *  
+ *  @return px_gfx_color_t  Old drawing color
+ */
+px_gfx_color_t px_gfx_color_fg_set(px_gfx_color_t  color);
 
-void px_gfx_draw_rect(px_gfx_xy_t    x,
-                      px_gfx_xy_t    y,
-                      px_gfx_xy_t    width,
-                      px_gfx_xy_t    height);
+/**
+ *  Set the new background drawing color.
+ *  
+ *  @param color            New drawing color
+ *  
+ *  @return px_gfx_color_t  Old drawing color
+ */
+px_gfx_color_t px_gfx_color_bg_set(px_gfx_color_t  color);
 
-void px_gfx_draw_fill_fg(px_gfx_xy_t    x,
-                         px_gfx_xy_t    y,
-                         px_gfx_xy_t    width,
-                         px_gfx_xy_t    height);
+/**
+ *  Set the new alignment.
+ *  
+ *  @param align            New alignment
+ *  
+ *  @return px_gfx_align_t  Old alignment
+ */
+px_gfx_align_t px_gfx_align_set(px_gfx_align_t  align);
 
-void px_gfx_draw_fill_bg(px_gfx_xy_t    x,
-                         px_gfx_xy_t    y,
-                         px_gfx_xy_t    width,
-                         px_gfx_xy_t    height);
+/**
+ *  Set a drawing view port.
+ *  
+ *  Pixels outside the view port is clipped. Drawing coordinates can relative to
+ *  the top left corner of the view port with the #PX_GFX_XY_REF_REL option or
+ *  absolute (relative to the top left corner of the display) using the
+ *  #PX_GFX_XY_REF_ABS option.
+ *  
+ *  @param x        Top left X coordinate of view port
+ *  @param y        Top left Y coordinate of view port
+ *  @param width    Width of view port
+ *  @param height   Height of view port
+ *  @param xy_ref   Coordinate are absolute (to display) or relative to view port
+ */
+void px_gfx_view_port_set(px_gfx_xy_t     x,
+                          px_gfx_xy_t     y,
+                          px_gfx_xy_t     width,
+                          px_gfx_xy_t     height,
+                          px_gfx_xy_ref_t xy_ref);
 
-void px_gfx_draw_circ(px_gfx_xy_t    x,
-                      px_gfx_xy_t    y,
-                      px_gfx_xy_t    radius);
+/**
+ *  Reset view port.
+ *  
+ *  The view port is set to the whole display.
+ */
+void px_gfx_view_port_reset(void);
 
-void px_gfx_draw_img(const px_gfx_img_t *  img,
-                     px_gfx_xy_t           x,
-                     px_gfx_xy_t           y);
+/**
+ *  Draw a pixel using the current foreground color.
+ *  
+ *  @param x    X coordinate of pixel
+ *  @param y    Y coordinate of pixel
+ */
+void px_gfx_draw_pixel(px_gfx_xy_t x,
+                       px_gfx_xy_t y);
 
+/**
+ *  Draw a line using the current foreground color.
+ *  
+ *  @param x1   X coordinate of start point of the line
+ *  @param y1   Y coordinate of start point of the line
+ *  @param x2   X coordinate of end point of the line
+ *  @param y2   Y coordinate of end point of the line
+ */
+void px_gfx_draw_line(px_gfx_xy_t x1,
+                      px_gfx_xy_t y1,
+                      px_gfx_xy_t x2,
+                      px_gfx_xy_t y2);
+
+/**
+ *  Draw a horizontal line using the current foreground color.
+ *  
+ *  @param x        X coordinate of left point of the line
+ *  @param y        X coordinate of left point of the line
+ *  @param width    Width of the line (right)
+ */
+void px_gfx_draw_line_hor(px_gfx_xy_t x,
+                          px_gfx_xy_t y,
+                          px_gfx_xy_t width);
+
+/**
+ *  Draw a vertical line using the current foreground color.
+ *  
+ *  @param x        X coordinate of top point of the line
+ *  @param y        X coordinate of top point of the line
+ *  @param height   Height of the line (down)
+ */
+void px_gfx_draw_line_ver(px_gfx_xy_t x,
+                          px_gfx_xy_t y,
+                          px_gfx_xy_t height);
+
+/**
+ *  Draw a rectangle using the current foreground color.
+ *  
+ *  @param x        X coordinate of top left point of rectangle
+ *  @param y        Y coordinate of top left point of rectangle
+ *  @param width    Width of rectangle (right)
+ *  @param height   Height of rectangle (down)
+ */
+void px_gfx_draw_rect(px_gfx_xy_t x,
+                      px_gfx_xy_t y,
+                      px_gfx_xy_t width,
+                      px_gfx_xy_t height);
+
+/**
+ *  Draw a solid rectangular fill in the current foreground color.
+ *  
+ *  @param x        X coordinate of top left point of fill
+ *  @param y        Y coordinate of top left point of fill
+ *  @param width    Width of fill (right)
+ *  @param height   Height of fill (down)
+ */
+void px_gfx_draw_fill_fg(px_gfx_xy_t x,
+                         px_gfx_xy_t y,
+                         px_gfx_xy_t width,
+                         px_gfx_xy_t height);
+
+/**
+ *  Draw a solid rectangular fill in the current background color.
+ *  
+ *  @param x        X coordinate of top left point of fill
+ *  @param y        Y coordinate of top left point of fill
+ *  @param width    Width of fill (right)
+ *  @param height   Height of fill (down)
+ */
+void px_gfx_draw_fill_bg(px_gfx_xy_t x,
+                         px_gfx_xy_t y,
+                         px_gfx_xy_t width,
+                         px_gfx_xy_t height);
+
+/**
+ *  Draw a circle using the current foreground color.
+ *  
+ *  @param x        X coordinate of the circle center.
+ *  @param y        X coordinate of the circle center.
+ *  @param radius   Radius of the circle.
+ */
+void px_gfx_draw_circ(px_gfx_xy_t x,
+                      px_gfx_xy_t y,
+                      px_gfx_xy_t radius);
+
+/**
+ *  Draw a graphic image using the current foreground and background color.
+ *  
+ *  @param img  Pointer to image structure
+ *  @param x    X coordinate of image
+ *  @param y    Y coordinate of image
+ */
+void px_gfx_draw_img(const px_gfx_img_t * img,
+                     px_gfx_xy_t          x,
+                     px_gfx_xy_t          y);
+
+/**
+ *  Draw a font character using the current foreground color.
+ *  
+ *  @param font     Pointer to font structure
+ *  @param x        X coordinate of font character
+ *  @param y        Y coordinate of font character
+ *  @param glyph    Character in font to draw
+ */
 void px_gfx_draw_char(const px_gfx_font_t * font,
                       px_gfx_xy_t           x,
                       px_gfx_xy_t           y,
                       char                  glyph);
 
+/**
+ *  Draw a font string using the current foreground color.
+ *  
+ *  @param font     Pointer to font structure
+ *  @param x        X coordinate of starting point of string
+ *  @param y        Y coordinate of starting point of string
+ *  @param str      String to draw
+ */
 void px_gfx_draw_str(const px_gfx_font_t * font,
                      px_gfx_xy_t           x,
                      px_gfx_xy_t           y,
                      const char *          str);
 
+/**
+ *  Draw a formatted font string using the current foreground color.
+ *  
+ *  @param font     Pointer to font structure
+ *  @param x        X coordinate of starting point of string
+ *  @param y        Y coordinate of starting point of string
+ *  @param format   Format string
+ */
 void px_gfx_printf(const px_gfx_font_t * font,
                    px_gfx_xy_t           x,
                    px_gfx_xy_t           y,

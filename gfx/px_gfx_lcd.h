@@ -40,7 +40,7 @@ extern "C"
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void px_gfx_lcd_clear_frame               (void);
+void px_gfx_lcd_clear_frame         (void);
 void px_gfx_lcd_draw_pixel          (px_gfx_xy_t    x,
                                      px_gfx_xy_t    y,
                                      px_gfx_color_t color);
