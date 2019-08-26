@@ -224,6 +224,9 @@ int main(void)
     // Enable LED
     PX_USR_LED_ON();
 
+    // Report debug output
+    PX_DBG_TRACE("Debug enabled\n");
+
     // Initialize debounced buttons
     px_debounce_init(&px_debounce_pb1, px_gpio_pin_is_hi(&px_gpio_lcd_btn_1_lt));
     px_debounce_init(&px_debounce_pb2, px_gpio_pin_is_hi(&px_gpio_lcd_btn_2_rt));

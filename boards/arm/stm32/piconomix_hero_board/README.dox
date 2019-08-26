@@ -37,7 +37,7 @@ Extensive ecosystem included:
 
 The flagship application is the @ref HERO_BOARD_APP_CLI that creates a 
 "Un*x Shell"-like environment running on the Hero Board so that you can easily 
-experiment with GPIO, ADC, I2C and SPI using only 
+experiment with GPIO, ADC, I2C, SPI and 1-Wire using only 
 [ANSI/VT100 Terminal][tera_term] software:
 
 ![](hero_board_cli_preview.gif)
@@ -47,13 +47,13 @@ The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
 @ref HERO_BOARD_APP_CLI pre-programmed.
 @tip_e
 
-2. Top View {#HERO_BOARD_TOP_VIEW}
-==================================
+2. Board layout - top view {#HERO_BOARD_TOP_VIEW}
+=================================================
 
 ![](hero_board_top_annotated.png)
 
-3. Bottom View {#HERO_BOARD_BOT_VIEW}
-=====================================
+3. Board layout - bottom view {#HERO_BOARD_BOT_VIEW}
+====================================================
 
 ![](hero_board_bot_annotated.png)
 
@@ -69,7 +69,7 @@ The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
     + Piezo buzzer for audio feedback
     + 6 **LARGE** tactile user buttons (1/LEFT, 2/RIGHT, 3/UP, 4/DOWN, 5/YES, 6/NO/PWR)
     + Reset button
-- Intuitive 2.54 mm (0.1 inch) pitch peripheral connector (accessible from **TOP** and **BOTTOM**):
+- Intuitive 2.54 mm (0.1 inch) pitch peripheral connector:
     + PWR (+3.6V to +5V power bus)
     + ADC x 4 (Analog to Digital inputs)
     + DAC x 1 (Digital to Analog output)
@@ -109,7 +109,7 @@ On the Lite Edition, the USB-Serial bridge (USB2) is left out, but a vertical
 2.54 mm (0.1 inch) header is populated to provide a connection to UART1 of the 
 STM32.
 
-Here is a feature summary table highlighting the differences:
+Here is a table highlighting the differences:
 
 |Feature                                                                 | Lite Edition | Deluxe Edition |
 |------------------------------------------------------------------------|--------------|----------------|
@@ -190,18 +190,18 @@ A Board Support Package (@ref BOARDS_STM32_PICONOMIX_HERO) is provided that:
 - provide us and ms delay functions
 
 Files:
-- px-lib/boards/arm/stm32/piconomix_hero_board/px_board.h
-- px-lib/boards/arm/stm32/piconomix_hero_board/px_board_gpio.h
-- px-lib/boards/arm/stm32/piconomix_hero_board/px_board.c
+- boards/arm/stm32/piconomix_hero_board/px_board.h
+- boards/arm/stm32/piconomix_hero_board/px_board_gpio.h
+- boards/arm/stm32/piconomix_hero_board/px_board.c
 
 10. Getting started {#HERO_BOARD_START}
 =======================================
 
 The following free software tools are needed:
 - [STM32CubeIDE][stm32cubeide] : 
-  a free cross-platform Integrated Development Environment (IDE) 
+  a free cross-platform IDE (Integrated Development Environment)
   based on [Eclipse CDT](https://www.eclipse.org/cdt/) to build and debug 
-  STM32 microcontroller applications. It includes a GNU GCC build toolchain for 
+  STM32 microcontroller applications. It includes a GCC build toolchain for 
   C and C++.
 - [Python 3][python] : an extremely popular scripting language. In this case it
   is used to create a UF2 file suitable for uploading via the
@@ -300,7 +300,7 @@ Make sure sure that the path has been set up to find Python and it's scripts:
 
 Follow the steps [HERE] (@ref HOWTO_STM32CUBEIDE) to install STM32CubeIDE.
 The section also describes how to create a new project that uses an external 
-Makefile as used in with this library.
+Makefile as used in this library.
 
 10.7 Build an example in the IDE
 --------------------------------
@@ -308,6 +308,10 @@ Makefile as used in with this library.
 The tutorials and examples are provided with pre-configured STM32CubeIDE 
 projects. External Makefiles are referenced, instead of using STM32CubeIDE's 
 build system, to make the projects easier to maintain.
+
+@tip_s
+For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
+@tip_e
 
 Open and build the @ref HERO_BOARD_EXAMPLE_GPIO. The project file is here:
 
@@ -469,7 +473,7 @@ able to compile an application in the IDE and upload it using the bootloader.
 To make sure, build and upload @ref HERO_BOARD_APP_CLI
 @tip_e
 
-[HERE](@ref HERO_BOARD_EXAMPLES) is a full list of curated Hero Board specific 
+[HERE](@ref HERO_BOARD_EXAMPLES) is a list of curated Hero Board specific 
 examples to try out.
 
 The next step is to learn how to write C programs for the STM32 architecture. A 

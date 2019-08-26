@@ -19,7 +19,7 @@
 /*
  *  This linker script is for the STM32cubeL0 library and in particular the 
  *  following C startup code:
- *  libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
+ *  px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
  *
  *  The default linker script for normal executables packaged with the GNU ARM 
  *  toolchain was consulted:
@@ -72,24 +72,16 @@
  *
  */
 
-/*
- *  Set the output format based on the desired endianness (default, big, little)
- */
+/* Set the output format based on the desired endianness (default, big, little) */
 OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm","elf32-littlearm")
 
-/*
- *  Specify the output machine architecture
- */
+/* Specify the output machine architecture */
 OUTPUT_ARCH(arm)
 
-/*
- *  Specify the program entry point (first instruction to be executed)
- */
+/* Specify the program entry point (first instruction to be executed) */
 ENTRY(Reset_Handler)
 
-/*
- *  Describe the location and size of blocks of memory in the target
- */
+/* Describe the location and size of blocks of memory in the target */
 FLASH_OFFSET = DEFINED(FLASH_OFFSET)? FLASH_OFFSET : 0;
 FLASH_ORIGIN = 0x08000000 + FLASH_OFFSET;
 FLASH_LENGTH = 128k - FLASH_OFFSET;
@@ -100,30 +92,24 @@ MEMORY
     SRAM  (w!rw) : ORIGIN = 0x20000000, LENGTH = 20k
 }
 
-/*
- *  Define the stack size allocated for the application
- */
+/* Define the stack size allocated for the application */
 STACK_SIZE = 1024;
 
-/*
- *  Define the heap size allocated for the application
- */
+/* Define the heap size allocated for the application */
 HEAP_SIZE = 1024;
 
-/*
- *  Define the start address of the stack (placed at the end of SRAM)
- */
+/* Define the start address of the stack (placed at the end of SRAM) */
 STACK_START = ORIGIN(SRAM) + LENGTH(SRAM) - STACK_SIZE;
 
 /* 
- *  Inform linker how to map input sections into output sections, and where to 
- *  place the output sections in memory.
+ * Inform linker how to map input sections into output sections, and where to 
+ * place the output sections in memory.
  */
 SECTIONS
 {    
     /*
-     *  ISR_VECTOR section contains the ARM vector table as defined in 
-     *  startup_stm32l072xx.s
+     * ISR_VECTOR section contains the ARM vector table as defined in 
+     * startup_stm32l072xx.s
      */
     .isr_vector :
     {
@@ -132,8 +118,8 @@ SECTIONS
     } > FLASH
     
     /*
-     *  INIT section holds executable instructions that contribute to the
-     *  process initialization code.
+     * INIT section holds executable instructions that contribute to the
+     * process initialization code.
      */
     .init :
     {
@@ -141,9 +127,7 @@ SECTIONS
           . = ALIGN(4);
     } > FLASH
     
-    /*
-     * TEXT segment holds executable instructions and constant data
-     */
+    /* TEXT segment holds executable instructions and constant data */
     .text :
     {
           /* .text sections (executable code) */
@@ -195,8 +179,8 @@ SECTIONS
     } > FLASH
 
     /*
-     *  INIT_ARRAY section holds an array of function pointers to call for
-     *  C++ static constructors and C library initialization code.
+     * INIT_ARRAY section holds an array of function pointers to call for
+     * C++ static constructors and C library initialization code.
      */
     .init_array :
     {
@@ -207,8 +191,8 @@ SECTIONS
     } > FLASH
 
     /*
-     *  FINI_ARRAY section holds an array of function pointers to call for
-     *  C++ static destructors C library finalization code.
+     * FINI_ARRAY section holds an array of function pointers to call for
+     * C++ static destructors C library finalization code.
      */
     .fini_array :
     {
@@ -219,8 +203,8 @@ SECTIONS
     } > FLASH
     
     /*
-     *  DATA section holds initialized variables. Initialisation values are 
-     *  stored in FLASH (LMA) and copied to SRAM (VMA) on startup.
+     * DATA section holds initialized variables. Initialisation values are 
+     * stored in FLASH (LMA) and copied to SRAM (VMA) on startup.
      */
     .data :
     {
@@ -241,9 +225,7 @@ SECTIONS
           _edata = .;
     } > SRAM AT> FLASH
     
-    /*
-     * BSS section holds uninitialized variables. It is set to zero on startup.
-     */
+    /* BSS section holds uninitialized variables. It is set to zero on startup. */
     .bss (NOLOAD) :
     {
           /* Create symbols to mark start of unitialized data in SRAM */
@@ -291,8 +273,8 @@ SECTIONS
     } > SRAM
 
     /*
-     *  STACK section allocates space for the application stack. It is placed
-     *  at the end of SRAM.
+     * STACK section allocates space for the application stack. It is placed
+     * at the end of SRAM.
      */
     .stack STACK_START :
     {
@@ -300,7 +282,7 @@ SECTIONS
         _estack = .;
     } > SRAM
     
-    /* Stabs debugging sections.  */
+    /* Stabs debugging sections */
     .stab          0 : { *(.stab) }
     .stabstr       0 : { *(.stabstr) }
     .stab.excl     0 : { *(.stab.excl) }
@@ -309,9 +291,11 @@ SECTIONS
     .stab.indexstr 0 : { *(.stab.indexstr) }
     .comment       0 : { *(.comment) }
     
-    /* DWARF debug sections.
-       Symbols in the DWARF debugging sections are relative to the beginning
-       of the section so we begin them at 0.  */
+    /* 
+     * DWARF debug sections.
+     * Symbols in the DWARF debugging sections are relative to the beginning
+     * of the section so we begin them at 0.
+     */
     
     /* DWARF 1 */
     .debug          0 : { *(.debug) }
@@ -348,9 +332,9 @@ SECTIONS
     .note.gnu.arm.ident 0 : { KEEP (*(.note.gnu.arm.ident)) }
     
     /*
-     *  DISCARD section.
-     *  Discard input sections. See [1], §3.6.7 "Output Section Discarding"
-     *  https://sourceware.org/binutils/docs/ld/Output-Section-Discarding.html#Output-Section-Discarding
+     * DISCARD section.
+     * Discard input sections. See [1], §3.6.7 "Output Section Discarding"
+     * https://sourceware.org/binutils/docs/ld/Output-Section-Discarding.html#Output-Section-Discarding
      */
     /DISCARD/ :
     {

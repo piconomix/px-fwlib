@@ -240,7 +240,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(BSP)/STM32L072xB.ld
+LDFLAGS += -T $(BSP)/stm32l072xb.ld
 
 LDFLAGS_DEBUG += -Og
 

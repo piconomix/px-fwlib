@@ -141,7 +141,7 @@ int main(void)
     // Power down Serial Flash to minimise power consumption
     px_at25s_power_down();
 
-    // Select Port C pin 9 (6/YES button) for extended interrupt on EXTI9
+    // Select Port C pin 9 (6/NO button) for extended interrupt on EXTI9
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE9);
     // Enable falling edge external interrupt on line 9
     LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_9);

@@ -9,9 +9,9 @@ Introduction {#HERO_BOARD_APP_CLI_INTRO}
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 
 This is a fun, full-featured CLI (Command Line Interpreter) application running
-on the Hero Board that creates a "Un*x Shell"-like environment so that you can 
-easily experiment with GPIO, ADC, DAC, UART, I2C and SPI using only ANSI/VT100 
-Terminal software (for example [Tera Term] [tera_term])... it is 
+on the PX_HER0 Board that creates a "Un*x Shell"-like environment so that you 
+can easily experiment with GPIO, ADC, DAC, UART, I2C, SPI and 1-Wire using only 
+ANSI/VT100 Terminal software (for example [Tera Term] [tera_term])... it is 
 really cool!
 
 ![CLI Exlorer executing on a Hero Board](hero_board_cli_preview.gif)
@@ -26,6 +26,7 @@ With this application you will be able to:
 - Communicate with UART devices
 - Discover and communicate with I2C slaves
 - Communicate with SPI devices
+- Discover and communicate with 1-Wire devices
 - Read and write to the AT25S Serial Flash
 - Mount an SD card and list files or view raw data blocks
 - Set and read the RTC
@@ -554,6 +555,63 @@ Take Chip Select high to end transaction:
 The Manufacturer and Device ID value for the AT25S is 1Fh 84h 01h. This 
 confirms that you are able to communicate with the SPI device.
 @tip_e
+
+3.10 1-Wire {#HERO_BOARD_CLI_OW}
+--------------------------------
+
+    >help ow
+    ow info                                                  : Report status of 1-Wire line
+    ow rst                                                   : Perform 1-Wire reset procedure
+    ow scan                                                  : Discover all connected 1-Wires devices
+    ow rd_rom       [ROM0] ... [ROM7]                        : Issue Read ROM using 8-byte adr
+    ow skip_rom                                              : Issue Skip ROM
+    ow match_rom    [ROM0] ... [ROM7]                        : Issue Match ROM using 8-byte adr
+    ow w            <d0> .. [d7]                             : Write up to 8 bytes of data to a 1-Wire device
+    ow r            <nr of bytes>                            : Read up to 16 bytes of data from a 1-Wire device
+    ow ds18b20_temp <ROM0> ... <ROM7>                        : Read DS18B20 temperature (8-byte adr optional)
+
+A 1-Wire device can be connected to the breakout header and verified that it 
+works before creating a device driver for it. GPIO0 is used to bit-bang the 
+1-Wire protocol. An external 4.7 kOhm resistor must be connected between GPIO0 
+and +3V3. As an example, an
+[Maxim DS18B20 Temperature Sensor](https://www.maximintegrated.com/en/products/sensors/DS18B20.html)
+is connected to the 1-Wire bus.
+
+Make sure that 1-Wire bus is pulled high:
+
+    >ow info
+    1-Wire (GPIO0) = 1
+
+Scan and report ROM codes of all 1-wire devices connected to bus:
+
+    >ow s
+    28 FF 62 79 B3 16 04 9E
+
+There is only one device connected. Issue a SKIP ROM command:
+
+    >ow skip_rom
+
+Issue a CONVERT_T command:
+
+    >ow w 0x44
+
+Issue another SKIP ROM command:
+
+    >ow skip_rom
+
+Issue a RD_SCRATCHPAD command:
+
+    >ow w 0xbe
+
+Read SCRATCHPAD content:
+
+    >ow r 9
+    20 01 4B 46 7F FF 0C 10 5D
+
+Read DS18B20 temperature:
+
+    >ow ds18b20_temp
+    0x0120 18.0 deg C
 
 3.10 Serial Flash {#HERO_BOARD_CLI_SF}
 --------------------------------------

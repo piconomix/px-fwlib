@@ -14,7 +14,7 @@ The string "Hello World!" is sent and then any bytes received is echoed back.
 ![UART printf example interacting with Tera Term](hero_board_example_uart_printf.png)
   
 File(s):
-- px-lib/boards/arm/stm32/piconomix_hero_board/examples/uart_printf/src/main.c
+- boards/arm/stm32/piconomix_hero_board/examples/uart_printf/src/main.c
 
 The following modules are used:
 - @ref BOARDS_STM32_PICONOMIX_HERO

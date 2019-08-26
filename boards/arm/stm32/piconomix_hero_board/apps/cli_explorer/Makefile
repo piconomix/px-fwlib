@@ -74,6 +74,7 @@ SRC += src/px_cli_cmds_gpio.c
 SRC += src/px_cli_cmds_i2c.c
 SRC += src/px_cli_cmds_lcd.c
 SRC += src/px_cli_cmds_mem.c
+SRC += src/px_cli_cmds_ow.c
 SRC += src/px_cli_cmds_rtc.c
 SRC += src/px_cli_cmds_sd.c
 SRC += src/px_cli_cmds_sf.c
@@ -98,11 +99,13 @@ SRC += $(PICOLIB)/$(ARCH)/px_uart.c
 #SRC += $(PICOLIB)/$(ARCH)/px_uart_stdio.c
 SRC += $(PICOLIB)/$(ARCH)/px_usb_cdc_stdio.c
 SRC += $(PICOLIB)/comms/px_cli.c
+SRC += $(PICOLIB)/comms/px_one_wire.c
 SRC += $(PICOLIB)/comms/px_vt100.c
 SRC += $(PICOLIB)/comms/px_xmodem.c
 SRC += $(PICOLIB)/devices/display/px_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/devices/mem/px_at25s.c
 SRC += $(PICOLIB)/devices/mem/px_sd.c
+SRC += $(PICOLIB)/devices/sensor/px_ds18b20.c
 SRC += $(PICOLIB)/gfx/px_gfx.c
 SRC += $(PICOLIB)/gfx/px_gfx_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
@@ -269,7 +272,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(BSP)/STM32L072xB.ld
+LDFLAGS += -T $(BSP)/stm32l072xb.ld
 
 LDFLAGS_DEBUG += -Og
 

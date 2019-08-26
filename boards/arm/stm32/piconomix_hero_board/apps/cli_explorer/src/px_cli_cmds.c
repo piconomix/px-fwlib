@@ -32,6 +32,7 @@
 #include "px_cli_cmds_i2c.h"
 #include "px_cli_cmds_lcd.h"
 #include "px_cli_cmds_mem.h"
+#include "px_cli_cmds_ow.h"
 #include "px_cli_cmds_spi.h"
 #include "px_cli_cmds_rtc.h"
 #include "px_cli_cmds_uart.h"
@@ -181,6 +182,7 @@ PX_CLI_CMD_LIST_CREATE()
     PX_CLI_GROUP_ADD   (px_cli_group_uart)
     PX_CLI_GROUP_ADD   (px_cli_group_i2c)
     PX_CLI_GROUP_ADD   (px_cli_group_spi)
+    PX_CLI_GROUP_ADD   (px_cli_group_ow)
     PX_CLI_GROUP_ADD   (px_cli_group_sf)
     PX_CLI_GROUP_ADD   (px_cli_group_sd)
     PX_CLI_GROUP_ADD   (px_cli_group_rtc)

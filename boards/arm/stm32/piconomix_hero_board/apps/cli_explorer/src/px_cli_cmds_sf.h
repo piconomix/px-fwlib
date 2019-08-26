@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_cli_cmds_sf.h : CLI commands for AT45D Serial Flash
+    Title:          px_cli_cmds_sf.h : CLI commands for AT25S Serial Flash
     Author(s):      Pieter Conradie
     Creation Date:  2018-03-09
 

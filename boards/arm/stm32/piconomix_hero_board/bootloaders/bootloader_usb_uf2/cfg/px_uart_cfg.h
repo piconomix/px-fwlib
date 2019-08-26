@@ -39,10 +39,29 @@
 /// Default BAUD rate
 #define PX_UART_CFG_DEFAULT_BAUD 115200ul
 
-/// Size of transmit buffer
-#define PX_UART_CFG_TX_BUF_SIZE 64
+/// General size of UART transmit buffer
+#define PX_UART_CFG_UART_TX_BUF_SIZE    64
+/// General size of UART receive buffer
+#define PX_UART_CFG_UART_RX_BUF_SIZE    64
 
-/// Size of receive buffer
-#define PX_UART_CFG_RX_BUF_SIZE 64
+/// Size of UART1 transmit buffer
+#define PX_UART_CFG_UART1_TX_BUF_SIZE   PX_UART_CFG_UART_TX_BUF_SIZE
+/// Size of UART1 receive buffer
+#define PX_UART_CFG_UART1_RX_BUF_SIZE   PX_UART_CFG_UART_RX_BUF_SIZE
+
+/// Size of UART2 transmit buffer
+#define PX_UART_CFG_UART2_TX_BUF_SIZE   PX_UART_CFG_UART_TX_BUF_SIZE
+/// Size of UART2 receive buffer
+#define PX_UART_CFG_UART2_RX_BUF_SIZE   PX_UART_CFG_UART_RX_BUF_SIZE
+
+/// Size of UART4 transmit buffer
+#define PX_UART_CFG_UART4_TX_BUF_SIZE   PX_UART_CFG_UART_TX_BUF_SIZE
+/// Size of UART4 receive buffer
+#define PX_UART_CFG_UART4_RX_BUF_SIZE   PX_UART_CFG_UART_RX_BUF_SIZE
+
+/// Size of UART5 transmit buffer
+#define PX_UART_CFG_UART5_TX_BUF_SIZE   PX_UART_CFG_UART_TX_BUF_SIZE
+/// Size of UART5 receive buffer
+#define PX_UART_CFG_UART5_RX_BUF_SIZE   PX_UART_CFG_UART_RX_BUF_SIZE
 
 #endif // #ifndef __PX_UART_CFG_H__

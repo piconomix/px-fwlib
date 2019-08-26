@@ -179,7 +179,7 @@ Location:
 
     px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 
-The linker script px-lib/boards/arm/stm32/piconomix_hero_board/STM32L072xB.ld allows 
+The linker script px-lib/boards/arm/stm32/piconomix_hero_board/stm32l072xb.ld allows 
 the start address to be changed with the FLASH_OFFSET symbol:
 
     /*

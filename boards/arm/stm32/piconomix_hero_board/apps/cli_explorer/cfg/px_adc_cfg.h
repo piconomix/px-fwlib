@@ -36,7 +36,7 @@
 #define PX_ADC_CFG_CLK                  PX_ADC_CFG_CLK_PCLK
 
 /// Specify ADC sampling time (see 'px_adc_cfg_sample_time_t')
-#define PX_ADC_CFG_SAMPLE_TIME          PX_ADC_CFG_SAMPLE_TIME_7_5
+#define PX_ADC_CFG_SAMPLE_TIME          PX_ADC_CFG_SAMPLE_TIME_160_5
 
 /// Specify ADC resolution (see 'px_adc_cfg_res_t')
 #define PX_ADC_CFG_RES                  PX_ADC_CFG_RES_12_BITS

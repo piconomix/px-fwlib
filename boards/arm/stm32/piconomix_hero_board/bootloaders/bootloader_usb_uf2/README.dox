@@ -158,7 +158,7 @@ It has been modified to allow VECT_TAB_OFFSET to be overriden externally:
 
 The linker script is located here:
 
-    px-lib/boards/arm/stm32/piconomix_hero_board/STM32L072xB.ld
+    px-lib/boards/arm/stm32/piconomix_hero_board/stm32l072xb.ld
 
 It allows the start address to be changed with the FLASH_OFFSET symbol:
 

@@ -1,10 +1,10 @@
-Low Power Example {#HERO_BOARD_EXAMPLE_LOW_POWER}
-=================================================
+Low Power STOP Mode Example {#HERO_BOARD_EXAMPLE_LOW_POWER}
+===========================================================
 
 This demonstrates how to put the STM32 into STOP low power mode.
 
 File(s):
-- px-lib/boards/arm/stm32/piconomix_hero_board/examples/low_power/src/main.c
+- boards/arm/stm32/piconomix_hero_board/examples/low_power/src/main.c
 
 The following modules are used:
 - @ref BOARDS_STM32_PICONOMIX_HERO
