@@ -1,4 +1,4 @@
-6.1 STM32 quick start guide {#STM32_QUICK_START_GUIDE}
+6.2 STM32 quick start guide {#STM32_QUICK_START_GUIDE}
 ======================================================
 
 [TOC]
@@ -8,83 +8,354 @@
 
 [stm32cubeide]:       https://www.st.com/en/development-tools/stm32cubeide.html
 [python]:             https://www.python.org/downloads
-[tera_term]:          http://en.sourceforge.jp/projects/ttssh2
-[ftdi_ignore_ser]:    http://www.ftdichip.com/Support/Utilities/IgnoreSerialNo.zip
-[ftdi_uninstaller]:   http://www.ftdichip.com/Support/Utilities/CDMUninstaller_v1.4.zip
-[ftdi_vcp_driver]:    http://www.ftdichip.com/Drivers/VCP.htm
 [gnu_arm_tools]:      http://gnu-arm.com
 [unix_shell_utils]:   https://sourceforge.net/projects/unixshellutils/files/latest/download
 [msys]:               http://www.mingw.org/wiki/MSYS
 [srecord]:            http://srecord.sourceforge.net
 
-This is a quick start guide for the person who wants to switch extensive STM32 
-ARM-Cortex based microcontroller portfolio and learns by example. C programming 
-experience is a prerequisite.
+This is a quick start guide for the person who wants to gain experience with the 
+extensive STM32 Arm&reg;-Cortex&reg; microcontroller portfolio and learns by 
+example.
 
-The following free software tools are needed:
+@subpage STM32_TUTORIALS "Tutorials" and @subpage STM32_EXAMPLES "examples" are 
+provided as part of a mapped journey to ascend Arm&reg; mountain. *A working 
+knowledge of C is essential.*
+
+The following free software tool is needed to get started:
 - [STM32CubeIDE][stm32cubeide] : 
-  a free cross-platform Integrated Development Environment (IDE) 
+  a free cross-platform IDE (Integrated Development Environment)
   based on [Eclipse CDT](https://www.eclipse.org/cdt/) to build and debug 
-  STM32 microcontroller applications. It includes a GNU GCC build toolchain for 
+  STM32 microcontroller applications. It includes a GCC build toolchain for 
   C and C++.
-
-The following command line tools are optional, but recommended:
-- [UnixShellUtils][unix_shell_utils] :
-  a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
-  curated from [MSYS][msys] and other utilities ([srecord]) to build projects 
-  using Makefile scripts.
-- [GNU Tools for Arm Embedded Processors][gnu_arm_tools] :
-  A GNU GCC build toolchain for C and C++.
-
-@tip_s
-For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
-@tip_e
 
 1.1 Reference documents {#STM32_QS_REF}
 ---------------------------------------
 
-- [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf)
-- [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
-- [STM32L072RB Errata](https://www.st.com/resource/en/errata_sheet/dm00148855.pdf)
-- [STM32L0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
+The STM32 portfolio is vast and the [STM32L072RB](https://www.st.com/en/microcontrollers-microprocessors/stm32l072rb.html)
+has been selected as a good practical introduction to start the journey. It is 
+comprehensively documented here:
+
+- *[1]* [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf)
+- *[2]* [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
+- *[3]* [STM32L072RB Errata](https://www.st.com/resource/en/errata_sheet/dm00148855.pdf)
+- *[4]* [STM32L0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
 
 The reference documents can also be found here for off-line viewing:
 
     px-lib/boards/arm/stm32/piconomix_hero_board/docs
 
-2. Tutorials {#STM32_QS_TUTORIALS}
-==================================
+2. Brief introduction to processor architecture {#STM32_QS_PROCESSOR_INTRO}
+===========================================================================
 
-These tutorials demonstrate how to use a peripheral by offering a distilled 
-example. The tutorials build on each other, so it is recommended to work through
-them in the order presented.
+The STM32L072RB incorporates the ubiquitous 32-bit [Arm Cortex-M0+](https://developer.arm.com/ip-products/processors/cortex-m/cortex-m0-plus)
+processor core. ST licenses the standard core design from [Arm](https://www.arm.com), 
+decides which core options to use and designs vendor specific clocks, memory and
+peripherals around the core.
 
-|Tutorial                      |Description                                                                   |
-|------------------------------|------------------------------------------------------------------------------|
-|@ref STM32_TUT01_GPIO_PART_A  |How to configure and use general purpose I/O pins - part A                    |
-|@ref STM32_TUT01_GPIO_PART_B  |How to configure and use general purpose I/O pins - part B                    |
-|@ref STM32_TUT01_GPIO_PART_C  |How to configure and use general purpose I/O pins - part C                    |
-|@ref STM32_TUT01_GPIO_PART_D  |How to configure and use general purpose I/O pins - part D                    |
-|@ref STM32_TUT02_SYSCLK_INT   |How to use the SysClk peripheral to generate a periodic interrupt             |
-|@ref STM32_TUT03_GPIO_EXT_INT |How to generate an external GPIO interrupt                                    |
-|@ref STM32_TUT04_STOP_MODE    |How to wake up from STOP mode with an external interrupt                      |
+@tip_s
+This intro may feel totally weird and alien at first and it may help to read it 
+again in conjunction with the first tutorial @ref STM32_TUT01_ASM.
+@tip_e
+
+2.1 32-bit general purpose registers R0 to R15
+----------------------------------------------
+
+![](stm32_regs.png)
+
+The processor core has sixteen 32-bit general purpose registers R0 to R15. A 
+special function is assigned to R13 (SP - Stack Pointer), R14 (LR - Link 
+Register) and R15 (PC - Program Counter).
+
+R15 / PC contains the address of the current executing function. If a value is 
+written to PC, the processor core will execute the instruction at that address 
+next. The PC value is also handy to read constant values stored relative to the 
+current instruction, e.g. `ldr	r0, [pc, #56]` (Load Register R0 with the 32-bit
+value stored at PC + 56)
+
+R14 / LR is used when a function (or subroutine) is called using the "bl" 
+(Branch Link) instruction, e.g. `bl delay`. The processor core save the return 
+address in LR before jumping to the function. When the function ends, it can 
+simply load PC with LR to return.
+
+R13 / SP contains the address of the current 32-bit value saved on the stack.
+Saving a value on the stack is known as "pushing" (e.g. `push {r0, lr}`) and 
+restoring a saved value from the stack is known as "popping" (e.g. 
+`pop {r0, pc}`).
+
+2.2 PSR - Program Status Register
+---------------------------------
+
+![](stm32_psr.png)
+
+The PSR is a combination of three registers that can be accessed separately or 
+as a whole.
+
+The APSR (Application Program Status Register) contains the condition code 
+flags: N = Negative Flag, Z = Zero Flag, C = Carry Flag and V = Overflow Flag. 
+The condition flags are set as the result of an instruction, e.g. `subs r0, #1`.
+An instruction can then be executed conditionally depending on the state of a 
+flag, e.g. `bne _delay_loop` (Branch Not Equal: jump to address if Zero Flag is
+not set).
+
+The IPSR (Interrupt Program Status Register) contains the number of the 
+exception (interrupt) currently executing.
+
+The EPSR (Execution Program Status Register) contains the T (Thumb bit). This 
+bit is to ensure code compatibility with processor cores that support switching 
+between 32-bit ARM instructions and 16-bit Thumb instructions.
+
+The LSB (Least Significant Bit) of a 32-bit address must be set to indicate to 
+the processor core that it is jumping to a 16-bit Thumb instruction, not a 
+32-bit ARM instruction. The assembler and processor core takes care of this 
+automatically, but it explains why the value does not match the actual 
+instruction address, for example in @ref STM32_TUT01_ASM, the reset address 
+value stored in the vector table is 0x0800_0B15, but the actual address of 
+`main()` is 0x0800_0B14. Also, the return value stored in LR when calling 
+`delay()` is 0x0800_0037, but the actual return instruction address is 
+0x0800_0036.
 
 @warn_s
-The tutorials may need to be modified for your specific target board.
+The Cortex-M0+ core only supports 16-bit Thumb instructions and it will result 
+in a Hard Fault if the T bit is not set.
 @warn_e
 
-3. Examples {#STM32_QS_EXAMPLES}
-================================
+2.3 PRIMASK - Priority Mask Register
+------------------------------------
 
-These examples show how **px-lib** can be used to achieve two embedded 
-equivalents of the "hello world" program on a PC.
+![](stm32_primask.png)
 
-|Example                    |Description                                                       |
-|---------------------------|------------------------------------------------------------------|
-|@ref STM32_EX_FLASHING_LED |This example toggles the LED once a second                        |
-|@ref STM32_EX_PRINTF       |Redirect stdout to UART and print strings stored in FLASH and SRAM|
+The PRIMASK (Priority Mask) Register contains the PM flag. If this flag is set, 
+interrupts are enabled. If this flag is cleared, interrupts are disabled. 
+
+@tip_s
+Interrupts are enabled by default.
+@tip_e
+
+2.4 CONTROL Register
+--------------------
+
+![](stm32_control.png)
+
+The CONTROL Register is mentioned here, but it can be safely ignored for normal
+bare metal applications. The processor core has built-in partitioning 
+("firewall") support for an operating system. Two separate stack pointers 
+(MSP - Main Stack Pointer and PSP - Process Stack Pointer) are available to 
+protect the operating system stack from a faulty application. Two modes (Thread 
+Mode and Handler Mode) are also available to restrict an application's access to
+critical resources and to prevent a faulty application from stalling or 
+corrupting the operating system.
+
+2.5 16-bit / 32-bit instructions
+--------------------------------
+
+![](stm32_instructions.png)
+
+The Arm Cortex-M0+ implements the Thumb-2 instruction set. Most are 16-bit, but
+six instructions are 32-bit. The 16-bit and 32-bit instructions can be 
+intermixed freely. The instructions are summarized in *[4] "3. Cortex-M0+ 
+instruction set"* (page 36) and thoroughly documented in the beefy
+[Armv6-M Architecture Reference Manual](https://developer.arm.com/docs/ddi0419/latest/armv6-m-architecture-reference-manual).
+
+Most 16-bit instructions can only access the lower eight general purpose 
+registers R0 - R7 and a small number of 16-bit instructions can access the high 
+registers R8 - R15.
+
+2.6 32-bit (4 GB) Memory map
+-----------------------------
+
+![](stm32_mem_map.png)
+
+The 32-bit processor core can access 4 GB of memory space (0x0000_0000 to 
+0xFFFF_FFFF), but most of it will not be accessible (RESERVED).
+
+At address 0x0000_0000, the processor core expects the Vector Table. At a 
+minimum it must contain the initial Stack Pointer value and the reset address 
+(the address of the first instruction to execute).
+
+Normally Flash memory is mapped to 0x0000_0000, but System Memory (Read 
+Only Memory containing the ST Bootloader) or SRAM can be also be mapped to 
+0x0000_0000 by pulling the BOOT0 pin low or changing the BOOT1 configuration 
+option bit. For more info, see *[3] "2.4 Boot configuration"* (page 63).
+
+2.7 Vector Table
+----------------
+
+![](stm32_vector_table.png)
+
+When the processor core starts, it loads the value stored at 0x0000_0000 into
+SP (Stack Pointer). It then jumps to the instruction address stored at 
+0x0000_0004.
+
+The NMI (Non Maskable Interrupt) handler is called when an external crystal is
+used as a clock source and it stops working. "Non Maskable" means that the 
+interrupt cannot be disabled.
+
+The HardFault handler is called to signal various fault conditions, for example
+if a misaligned memory read or write is performed, or if the firmware attemps to
+read from or write to nonexistent (reserved) memory locations.
 
 @warn_s
-The examples may need to be modified for your specific target board.
+A word (32-bit) read or write must be perfomed on a word aligned 32-bit address.
+A half-word (16-bit) read or write must be performed on a half-word aligned 
+32-bit address. A byte (8-bit) read or write can be performed on any memory 
+adress.
 @warn_e
+
+The SysTick handler is called when the standarm Arm SysTick 24-bit timer 
+peripheral generates an interrupt. It is most often used to generate a 1 ms 
+interrupt to increment a counter to track timing or used as an embedded 
+operating system tick to stop the current executing task and decide which task 
+should execute next.
+
+IRQ0 to IRQ31 is generated by the Standard Arm NVIC (Nested Vectored Interrupt 
+Controller) peripheral. The interrupts are mapped to peripherals, for example
+IRQ27 is connected to the USART1 peripheral interrupt.
+
+Each exception / interrupt has an exception number, for example the SysTick 
+interrupt's exception number is 15. When an interrupt occurs, the processor core
+will load this value in the IPSR (Interrupt Program Status Register).
+
+For more info, see *[4] "2.3.4 Vector table"* (page 29).
+
+2.8 Full-descending stack
+-------------------------
+
+![](stm32_stack.png)
+
+SP (Stack Pointer) is initialised with an adress value pointing to top of SRAM. 
+Note that it starts in the reserved region *just* above the top of SRAM. As 
+32-bit values are saved on the stack ("pushed"), SP decreases: the stack grows 
+downwards. As values are restored from the stack ("popped"), SP increases. SP 
+will point to the last item pushed on the stack.
+
+2.9 Clocks
+-----------
+
+![STM32CubeMX clock configuration](stm32_clocks.png)
+
+Power consumption increases as the clock frequency goes up and it becomes vital 
+to manage the clock frequency and distribution to the peripherals. 
+Microcontrollers with Arm processor cores have an extensive number of flexible 
+clocking options and it is the most complex aspect of the microcontroller to 
+understand and get right. Fortunately ST provides a graphical tool called 
+[STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html) to 
+configure the clocks and generate working start up code.
+
+In the graphical example above for the [PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD) 
+the LSE (Low Speed External) clock is enabled to run from an accurate 32.768 kHz 
+crystal (&plusmn;20 ppm) and it feeds the RTC (Real Time Clock).
+
+The internal 16 MHz HSI (High Speed Internal) RC oscillator (&plusmn;1% accuracy
+at 25&deg;C after calibration) is enabled and feeds the PLL (Phase Locked Loop) 
+to scale the clock frequency up to 32 MHz. It is the principal source for SYSCLK
+(System Clock), AHB (Arm High performance Bus), APB1 (Arm Peripheral Bus 1), 
+APB2, etc.
+
+The 48 MHz RC oscillator (&plusmn;4% accuracy at 25&deg;C after calibration) is 
+also enabled to feed the USB peripheral clock. The CRS (Clock Recovery System) 
+uses the USB SOF (Start Of Frame) packet which is sent precisely every 1 ms by 
+the USB host to improve the accuracy of the 48 MHz USB clock.
+
+@tip_s
+The processor core use the MSI (Multi Speed Internal) RC oscillator at 2.1 MHz 
+when it starts.
+@tip_e
+
+3. Install IDE software {#STM32_QS_IDE_INSTALL}
+===============================================
+
+Follow the steps [HERE] (@ref HOWTO_STM32CUBEIDE) to install STM32CubeIDE. The 
+section also describes how to create a new project that uses an external 
+Makefile as used in this library.
+
+@tip_s
+For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
+@tip_e
+
+4. Build an example in the IDE {#STM32_QS_BUILD}
+================================================
+
+The tutorials and examples are provided with pre-configured STM32CubeIDE 
+projects. External Makefiles are referenced, instead of using STM32CubeIDE's 
+build system, to make the projects easier to maintain.
+
+Open and build the @ref STM32_EX_FLASHING_LED. The project file is here:
+
+    px-lib/arch/arm/stm32/examples/flashing_led/.project
+
+If the ".project" file is associated with STM32CubeIDE, then it's as simple as
+double-clicking on it, otherwise you need to add it to the workspace within
+STM32CubeIDE:
+
+    File > Open Projects from File System...
+
+![](sci_open_project.png)
+
+Specify the directory containing the STM32CubeIDE project files (".project", 
+".cproject" & ".settings" folder):
+
+![](sci_import_project_flashing_led.png)
+
+Click once on the project to make sure that it is selected:
+
+![](sci_project_files_flashing_led.png)
+
+@warn_s
+A common mistake (for me at least) is trying to execute a project related 
+commmand without the project being selected, for example pressing the F5 
+keyboard button to refresh the project, but the project does not have a light 
+blue background (indicating that it is selected). IDE menu options related to a 
+project may also not be available until the project is selected.
+@warn_e
+
+Check that the active build is set to "BUILD_DEBUG" to creates a build suitable 
+for debugging in the "BUILD_DEBUG" output directory:
+
+![](sci_set_active_build_flashing_led.png)
+
+Start the build by clicking on the hammer icon or selecting 
+"Project > Build All  Ctrl+B" or pressing the "Ctrl+B" keyboard combo:
+
+![](sci_start_build_flashing_led.png)
+
+The build output will appear in the console window:
+
+![](sci_console_build_flashing_led.png)
+
+@tip_s
+Observe that the IDE is executing a `make build=debug all` command by 
+spotting the "DEBUG" text in the start and end banner.
+@tip_e
+
+5. Program and debug example in IDE {#STM32_QS_DEBUG}
+=====================================================
+
+Before debugging can start a debug configuration must exist. See
+[HERE](@ref STM32CUBEIDE_DEBUG_CONFIG) for the required steps.
+
+You can start debugging by clicking on the green bug icon or selecting 
+"Run > Debug  F11" or pressing the "F11" keyboard button:
+
+![](sci_debug_start_flashing_led.png)
+
+All of the debug commands and keyboard shortcuts can be found in the Run menu:
+
+![](sci_debug_run_flashing_led.png)
+
+The SFR (Special Function Register) window is great for inspecting the content 
+of the microcontroller's peripheral registers:
+
+![](sci_debug_sfr.png)
+
+By selecting "Run > Instruction Stepping Mode", the code can be stepped on an 
+assembly level:
+
+![](sci_debug_asm_flashing_led.png)
+
+The processor core register content can be inspected in the Registers window:
+
+![](sci_debug_regs.png)
+
+Click [HERE](@ref STM32_TUTORIALS) to proceed to the tutorials section.
+
 

@@ -72,9 +72,9 @@ object, e.g. `&tmr`.
 
 Template files have been created for consistent organisation of each C module.
 See:
-- px-lib/common/px_template.h
-- px-lib/common/px_template.c
-- px-lib/common/px_template.S
+- common/px_template.h
+- common/px_template.c
+- common/px_template.S
 
 5. Comments {#STYLE_COMMENTS}
 =============================

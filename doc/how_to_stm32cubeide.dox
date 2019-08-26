@@ -197,7 +197,7 @@ Open the Manage build window:
 
     Project > Build Configurations > Manage ...
 
-![](build_configurations.png)
+![](sci_build_configurations.png)
 
 Delete the "Release" configuration:
 
@@ -288,8 +288,8 @@ All of the debug commands and keyboard shortcuts can be found in the Run menu:
 ![](sci_debug_run.png)
 
 @tip_s
-The SFR window is great for inspecting the content of the microcontroller's
-peripheral registers:
+The SFR (Special Function Register) window is great for inspecting the content 
+of the microcontroller's peripheral registers:
 @tip_e
 
 ![](sci_debug_sfr.png)
@@ -300,3 +300,9 @@ assembly level:
 @tip_e
 
 ![](sci_debug_asm.png)
+
+@tip_s
+The state of the core can be inspected in the the Register window:
+@tip_e
+
+![](sci_debug_registers.png)
