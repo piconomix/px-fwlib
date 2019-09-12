@@ -33,6 +33,7 @@
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stdio.h>
+#include <string.h>
 #include <stdarg.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
