@@ -10,7 +10,7 @@
 #include "px_gfx.h"
 
 
-static const uint8_t px_gfx_3x5_data[] = 
+static const uint8_t px_gfx_font_3x5_data[] = 
 {
 
     // ' ' ; w = 4, h = 6,
@@ -902,9 +902,9 @@ static const uint8_t px_gfx_3x5_data[] =
     0x00,
 };
 
-const px_gfx_font_t px_gfx_3x5 =
+const px_gfx_font_t px_gfx_font_3x5 =
 {
     .width  = 4,
     .height = 6,
-    .data   = px_gfx_3x5_data,
+    .data   = px_gfx_font_3x5_data,
 };
