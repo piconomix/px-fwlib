@@ -44,8 +44,6 @@ void px_log_fs_glue_rd(void *   buffer,
                        uint16_t nr_of_bytes)
 {
     // Sanity checks
-    PX_DBG_ASSERT(page >= PX_LOG_FS_CFG_PAGE_START);    
-    PX_DBG_ASSERT(page <= PX_LOG_FS_CFG_PAGE_END);
     PX_DBG_ASSERT(start_byte_in_page < PX_LOG_FS_CFG_PAGE_SIZE);
     PX_DBG_ASSERT(nr_of_bytes <= (PX_LOG_FS_CFG_PAGE_SIZE - start_byte_in_page));    
 
@@ -59,8 +57,6 @@ void px_log_fs_glue_wr(const void * buffer,
                        uint16_t     nr_of_bytes)
 {
     // Sanity checks
-    PX_DBG_ASSERT(page >= PX_LOG_FS_CFG_PAGE_START);    
-    PX_DBG_ASSERT(page <= PX_LOG_FS_CFG_PAGE_END);
     PX_DBG_ASSERT(start_byte_in_page < PX_LOG_FS_CFG_PAGE_SIZE);
     PX_DBG_ASSERT(nr_of_bytes <= (PX_LOG_FS_CFG_PAGE_SIZE - start_byte_in_page));
 
@@ -71,9 +67,7 @@ void px_log_fs_glue_wr(const void * buffer,
 void px_log_fs_glue_erase_block(uint16_t page)
 {
     // Sanity checks
-    PX_DBG_ASSERT(page >= PX_LOG_FS_CFG_PAGE_START);    
-    PX_DBG_ASSERT(page <= PX_LOG_FS_CFG_PAGE_END);
-    PX_DBG_ASSERT(page & (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1) == 0);
+    PX_DBG_ASSERT((page & (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1)) == 0);
     
 #if   (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE == PX_AT25S_PAGES_PER_BLOCK_4KB)
 
