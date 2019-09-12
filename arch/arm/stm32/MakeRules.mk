@@ -90,6 +90,7 @@ MSG_SIZE                = 'Size:'
 MSG_FLASH_HEX           = 'Creating HEX load file for Flash:'
 MSG_FLASH_BIN           = 'Creating BIN load file for Flash:'
 MSG_FLASH_UF2           = 'Creating UF2 load file for Flash:'
+MSG_PROG_UF2            = 'Programming UF2 load file:'
 MSG_EEPROM              = 'Creating load file for EEPROM:'
 MSG_EXTENDED_LISTING    = 'Creating Extended Listing:'
 MSG_SYMBOL_TABLE        = 'Creating Symbol Table:'
@@ -179,7 +180,13 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
 $(BUILD_DIR)/%.uf2: $(BUILD_DIR)/%.bin
 	@echo
 	@echo $(MSG_FLASH_UF2) $@
-	python $(PICOLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c -o $@
+	python $(PICOLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c
+
+# Write UF2 bootloader format file (*.uf2) to target
+prog_uf2: $(BUILD_DIR)/$(PROJECT).bin
+	@echo
+	@echo $(MSG_PROG_UF2) $@
+	python $(PICOLIB)/tools/uf2conv.py $< -b $(BOOTLOADER_SIZE) -f 0xe892273c -d $(drive)
 
 # Create extended listing file (*.lss) from ELF output file
 $(BUILD_DIR)/%.lss: $(BUILD_DIR)/%.elf
@@ -310,6 +317,6 @@ $(shell mkdir $(BUILD_DIR) 2>/dev/null)
 
 # Listing of phony targets
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
-build elf hex bin uf2 lss sym clean clean_list mostlyclean mostlyclean_list \
+build elf hex bin uf2 prog_uf2 lss sym clean clean_list mostlyclean mostlyclean_list \
 program openocd gdb
 

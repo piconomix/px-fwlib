@@ -42,7 +42,6 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_stm32cube.h"
 
 // Include project specific config. See "px_spi_cfg_template.h"
 #include "px_spi_cfg.h"
