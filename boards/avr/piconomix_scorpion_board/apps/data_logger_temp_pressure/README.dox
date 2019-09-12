@@ -31,15 +31,13 @@ Type 'help' to list commands with parameters and descriptions:
     m                                     : Measure temperature and barometric pressure.
 
     log s                                 : Start logging
-    log ls                                : List logs
-    log dump <number>                     : Dump log
-    log del                               : Delete all logs
+    log dump                              : Dump log
+    log del                               : Delete log
 
     rtc r                                 : Read RTC time
     rtc w    <yy-mm-dd> <hh:mm:ss>        : Write RTC time
 
     fs info                               : Report file system info
-    fs ls                                 : List files
 
     sf info                               : Report Serial Flash info
     sf e     [start page] [end page]      : Erase Serial Flash page(s)
@@ -58,43 +56,31 @@ Type 'm' to perform a single temperature and pressure measurement:
 
 Type 'rtc w <yy-mm-dd hh:mm:ss>' to set the date and time:
 
-    >rtc w 14-09-07 15:28:58
+    >rtc w 19-09-12 11:26:00
 
 Type 'log s' to start logging (every half hour):
 
     >log s
-    00000   14-09-07        15:30   222     100377
-    00001   14-09-07        16:00   210     100376
-    00002   14-09-07        16:30   205     100392
+    19-09-12 11:30:00       1853    100012
+    19-09-12 12:00:00       1899    100013
 
 @tip_s
 Press SPACE or press the button on the board to stop.
 @tip_e
 
-Type 'log ls' to list log(s):
+Type 'log dump' to dump the content of log:
 
-    >log ls
-    File 1 [14-09-07 15:21:23]
+    >log dump
+    19-09-12 11:30:00       1853    100012
+    19-09-12 12:00:00       1899    100013
+    19-09-12 12:30:00       1882    100019
+    19-09-12 13:00:00       1963    100026
+    19-09-12 13:30:00       1961    100045
+    19-09-12 14:00:00       1988    100078
+    19-09-12 14:30:00       1999    100090
 
-Type 'log dump 1' to dump the content of the first log:
-
-    >log dump 1
-    File 1 [14-09-07 15:21:23]
-    00000   14-09-07        15:30   222     100377
-    00001   14-09-07        16:00   210     100376
-    00002   14-09-07        16:30   205     100392
-    00003   14-09-07        17:00   207     100379
-    00004   14-09-07        17:30   208     100439
-    00005   14-09-07        18:00   207     100452
-    00006   14-09-07        18:30   206     100502
-    00007   14-09-07        19:00   203     100552
-    00008   14-09-07        19:30   202     100587
-    00009   14-09-07        20:00   200     100619
-    00010   14-09-07        20:30   199     100614
-
-Type 'log del' to delete all logs:
+Type 'log del' to delete the log:
 
     >log del
-    Deleted 1 files
 
 

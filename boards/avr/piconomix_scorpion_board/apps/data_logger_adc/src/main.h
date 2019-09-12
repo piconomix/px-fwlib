@@ -25,6 +25,7 @@
 #include "px_uart.h"
 #include "px_spi.h"
 #include "px_i2c.h"
+#include "px_log_fs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,10 +36,11 @@ extern "C" {
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-extern px_uart_handle_t px_uart_handle;
-extern px_spi_handle_t  px_at45d_spi_handle;
+extern px_uart_handle_t   px_uart_handle;
+extern px_spi_handle_t    px_at45d_spi_handle;
+extern px_log_fs_handle_t px_log_fs_handle;
 
-extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+extern uint8_t            main_buffer[MAIN_BUFFER_SIZE];
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 

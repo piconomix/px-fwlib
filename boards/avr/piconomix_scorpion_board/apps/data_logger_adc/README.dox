@@ -34,9 +34,8 @@ Type 'help' to list commands with parameters and descriptions:
     >help
 
     log s                                    : Start logging
-    log ls                                   : List logs
-    log dump    <number>                     : Dump log
-    log del                                  : Delete all logs
+    log dump                                 : Dump log
+    log del                                  : Delete log
     log info                                 : Report ADC settings
     log fit     <ch> <scale> <offset>        : Configure linear fit of ADC channel (y = scale x ADC + offset)
     log samples <nr of samples>              : Set number of samples accumulated for each ADC channel
@@ -45,7 +44,6 @@ Type 'help' to list commands with parameters and descriptions:
     rtc w       <yy-mm-dd> <hh:mm:ss>        : Write RTC time
 
     fs info                                  : Report file system info
-    fs ls                                    : List files
 
     sf info                                  : Report Serial Flash info
     sf e        [start page] [end page]      : Erase Serial Flash page(s)
@@ -59,7 +57,7 @@ Type 'help' to list commands with parameters and descriptions:
 
 Type 'rtc w <yy-mm-dd hh:mm:ss>' to set the date and time:
 
-    >rtc w 14-09-07 15:28:58
+    >rtc w 19-09-12 15:28:58
 
 The raw 10-bit ADC values (0 to 1023) is scaled and an offset added. The default
 scale and offset value for each channel converts the raw ADC value into 
@@ -91,12 +89,11 @@ or slower. For example, to make the logging rate 500 ms (0.5 s):
 Type 'log s' to start logging (MIN, MAX and AVERAGE value for ADC0, ADC1, ADC2 and ADC3):
 
     >log s
-    Number  ADC0_MIN        ADC0_MAX        ADC0_AVE        ADC1_MIN        ADC1_MAX        ADC1_AVE        ADC2_MIN        ADC2_MAX        ADC2_AVE        ADC3_MIN        ADC3_MAX        ADC3_AVE
-    00000   238.709690      922.580630      506.590330      745.161320      1838.709700     1227.416100     0.000000        35.483871       0.390323        0.000000        35.483871       0.106452
-    00001   70.967743       245.161290      138.832260      277.419340      745.161320      477.403200      0.000000        35.483871       0.035484        0.000000        0.000000        0.000000
-    00002   12.903226       74.193550       42.783871       100.000000      280.645170      174.341930      0.000000        35.483871       0.248387        0.000000        106.451610      0.248387
-    00003   0.000000        29.032259       5.735484        32.258064       112.903230      65.541939       0.000000        35.483871       0.070968        0.000000        70.967743       0.106452
-    00004   0.000000        0.000000        0.000000        3.225806        41.935486       18.025806       0.000000        35.483871       0.070968        0.000000        35.483871       0.319355
+    Timestamp       ADC0_MIN        ADC0_MAX        ADC0_AVE        ADC1_MIN        ADC1_MAX        ADC1_AVE        ADC2_MIN        ADC2_MAX        ADC2_AVE        ADC3_MIN        ADC3_MAX        ADC3_AVE
+    19-09-12 10:41:09       0.000000        3.225806        1907996.800000  54306.453000    131864.520000   71500.586000    73522.578000    8374.193400     76201048.000000 81754.844000    588996.810000   39149624.000000
+    19-09-12 10:41:10       0.000000        3.225806        1907996.800000  54306.453000    131864.520000   71500.586000    73522.578000    8374.193400     76201048.000000 81754.844000    588996.810000   39149624.000000
+    19-09-12 10:41:11       0.000000        9.677420        1907996.800000  54306.453000    131864.520000   71500.586000    73522.578000    8374.193400     76201048.000000 81754.844000    588996.810000   39149624.000000
+    19-09-12 10:41:12       0.000000        12.903226       1907996.800000  54306.453000    131864.520000   71500.586000    73522.578000    8374.193400     76201048.000000 81754.844000    588996.810000   39149624.000000
 
 @tip_s
 Press SPACE or press the button on the board to stop.

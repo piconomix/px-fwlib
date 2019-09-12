@@ -46,23 +46,22 @@ PX_DBG_DECL_NAME("cli");
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-static log_data_t         log_data;
-static px_rtc_date_time_t log_date_time;
-static px_rtc_date_time_t log_alarm;
+static px_log_fs_record_data_t record_data;
+static px_rtc_date_time_t      log_date_time;
+static px_rtc_date_time_t      log_alarm;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static const char* px_cli_cmd_meas_fn(uint8_t argc, char* argv[])
 {
-    if(!px_bmp280_read(&log_data.bmp280_temp, &log_data.bmp280_press))
+    if(!px_bmp280_read(&record_data.bmp280_temp, &record_data.bmp280_press))
     {
         return PX_PGM_STR("Error! BMP280 read failed");
     }
-
     PX_PRINTF_P("Temp = %ld, Pressure = %ld\n", 
-             log_data.bmp280_temp, 
-             log_data.bmp280_press);
+             record_data.bmp280_temp, 
+             record_data.bmp280_press);
 
     return NULL;
 }
@@ -70,22 +69,9 @@ static const char* px_cli_cmd_meas_fn(uint8_t argc, char* argv[])
 static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
 {
     uint8_t  data;
-    uint16_t nr;
     uint8_t  retry;
 
-    // Record must be big enough to hold log data
-    PX_DBG_ASSERT(PX_LOG_FS_CFG_REC_DATA_SIZE >= sizeof(log_data));
-
-    // Get RTC time
-    px_rtc_util_date_time_rd(&log_date_time);
-    // Create a new log file
-    if(px_log_fs_create((px_log_fs_time_stamp_t *)&log_date_time) != PX_LOG_FS_ERR_NONE)
-    {
-        return PX_PGM_STR("Error. Unable to create file");
-    }
-
     // Start sampling
-    nr = 0;
     while(true)
     {
         // Set alarm
@@ -148,28 +134,19 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
         PX_LED_ON();
 
         // Get RTC time
-        px_rtc_util_date_time_rd(&log_data.date_time);
-
+        px_rtc_util_date_time_rd(&log_date_time);
+        record_data.timestamp = px_rtc_util_date_time_to_sec_since_y2k(&log_date_time);
         // Perform temperature and pressure measurement
-        if(!px_bmp280_read(&log_data.bmp280_temp, &log_data.bmp280_press))
+        if(!px_bmp280_read(&record_data.bmp280_temp, &record_data.bmp280_press))
         {
             return PX_PGM_STR("Error! BMP280 read failed");
         }
-
         // Display TAB separated data
-        PX_PRINTF_P("%05u\t%02hu-%02hu-%02hu\t%02hu:%02hu\t%ld\t%ld\n",
-                 nr++,
-                 (unsigned short)log_data.date_time.year,
-                 (unsigned short)log_data.date_time.month,
-                 (unsigned short)log_data.date_time.day,
-                 (unsigned short)log_data.date_time.hour,
-                 (unsigned short)log_data.date_time.min,
-                 log_data.bmp280_temp,
-                 log_data.bmp280_press);
-    
+        px_rtc_util_report_date_time(&log_date_time);
+        PX_PRINTF_P("\t%ld\t%ld\n", record_data.bmp280_temp, record_data.bmp280_press);    
         // Log data
         retry = 8;
-        while(px_log_fs_record_wr(&log_data,  sizeof(log_data)) != PX_LOG_FS_ERR_NONE)
+        while(px_log_fs_wr(&px_log_fs_handle, &record_data,  sizeof(record_data)) != PX_LOG_FS_ERR_NONE)
         {
             if(--retry == 0)
             {
@@ -183,121 +160,41 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_list_fn(uint8_t argc, char* argv[])
-{
-    px_log_fs_err_t    px_log_fs_err;
-    px_log_fs_file_t   file;
-    uint16_t           file_nr = 1;
-
-    px_log_fs_err = px_log_fs_file_find_first(&file);
-    while(px_log_fs_err == PX_LOG_FS_ERR_NONE)
-    {
-        PX_PRINTF_P("File %u [%02hu-%02hu-%02hu %02hu:%02hu:%02hu]\n",
-                 file_nr++,
-                 (unsigned short)file.time_stamp.year,
-                 (unsigned short)file.time_stamp.month,
-                 (unsigned short)file.time_stamp.day,
-                 (unsigned short)file.time_stamp.hour,
-                 (unsigned short)file.time_stamp.min,
-                 (unsigned short)file.time_stamp.sec);
-        px_log_fs_err = px_log_fs_file_find_next(&file);
-    }
-
-    return NULL;
-}
-
 static const char* px_cli_cmd_log_dump_fn(uint8_t argc, char* argv[])
 {
-    uint16_t         nr;
-    px_log_fs_err_t  px_log_fs_err;
-    px_log_fs_file_t file;
-    log_data_t    record_data;
+    px_log_fs_err_t    px_log_fs_err;
+    px_rtc_date_time_t date_time;
 
-    // <number>
-    if(!px_cli_util_argv_to_u16(0, 1, 65535))
-    {
-        return PX_PGM_STR("Error. <number> must be 1 to 65535");
-    }
-
-    nr = 0;
-    px_log_fs_err = px_log_fs_file_find_first(&file);
-    while(px_log_fs_err == PX_LOG_FS_ERR_NONE)
-    {
-        // File number found?
-        if(++nr == px_cli_argv_val.u16)
-        {
-            break;
-        }        
-        px_log_fs_err = px_log_fs_file_find_next(&file);
-    }
-    if(px_log_fs_err != PX_LOG_FS_ERR_NONE)
-    {
-        return PX_PGM_STR("Error. File not found");
-    }
-
-    PX_PRINTF_P("File %d [%02hu-%02hu-%02hu %02hu:%02hu:%02hu]\n",
-                 nr,
-                 (unsigned short)file.time_stamp.year,
-                 (unsigned short)file.time_stamp.month,
-                 (unsigned short)file.time_stamp.day,
-                 (unsigned short)file.time_stamp.hour,
-                 (unsigned short)file.time_stamp.min,
-                 (unsigned short)file.time_stamp.sec);
-
-    if(px_log_fs_open(&file) != PX_LOG_FS_ERR_NONE)
-    {
-        return PX_PGM_STR("Error. Unable to open file");
-    }
-
-    nr = 0;
-    px_log_fs_err = px_log_fs_record_rd_first(&record_data, sizeof(log_data_t));
+    px_log_fs_err = px_log_fs_rd_first(&px_log_fs_handle, &record_data, sizeof(record_data));
     while(px_log_fs_err == PX_LOG_FS_ERR_NONE)
     {
         // Display TAB separated data
-        PX_PRINTF_P("%05u\t%02hu-%02hu-%02hu\t%02hu:%02hu\t%ld\t%ld\n",
-                 nr++,
-                 (unsigned short)record_data.date_time.year,
-                 (unsigned short)record_data.date_time.month,
-                 (unsigned short)record_data.date_time.day,
-                 (unsigned short)record_data.date_time.hour,
-                 (unsigned short)record_data.date_time.min,
-                 record_data.bmp280_temp,
-                 record_data.bmp280_press);
-
+        px_rtc_util_sec_since_y2k_to_date_time(record_data.timestamp, &date_time);
+        px_rtc_util_report_date_time(&date_time);
+        PX_PRINTF_P("\t%ld\t%ld\n", record_data.bmp280_temp, record_data.bmp280_press);
         // Next record
-        px_log_fs_err = px_log_fs_record_rd_next(&record_data, sizeof(log_data_t));
+        px_log_fs_err = px_log_fs_rd_next(&px_log_fs_handle, &record_data, sizeof(record_data));
     }
     return NULL;
 }
 
 static const char* px_cli_cmd_log_del_fn(uint8_t argc, char* argv[])
 {
-    uint16_t         nr;
-    px_log_fs_err_t  px_log_fs_err;
-    px_log_fs_file_t file;
-
-    nr = 0;
-    px_log_fs_err = px_log_fs_file_find_first(&file);
-    while(px_log_fs_err == PX_LOG_FS_ERR_NONE)
+    // Reset file system
+    if(px_log_fs_reset(&px_log_fs_handle, 0, PX_AT45D_PAGES - 1) != PX_LOG_FS_ERR_NONE)
     {
-        px_log_fs_file_delete(&file);
-        px_log_fs_err = px_log_fs_file_find_first(&file);
-        nr++;
-    }
-
-    PX_PRINTF_P("Deleted %u files\n", nr);
+        return PX_PGM_STR("Error. Unable reset file system");
+    }    
     return NULL;
 }
 
 // Create CLI command structures
 PX_CLI_CMD_CREATE(px_cli_cmd_log_start, "s",    0, 0,   "",                         "Start logging")
-PX_CLI_CMD_CREATE(px_cli_cmd_log_list,  "ls",   0, 0,   "",                         "List logs")
-PX_CLI_CMD_CREATE(px_cli_cmd_log_dump,  "dump", 1, 1,   "<number>",                 "Dump log")
-PX_CLI_CMD_CREATE(px_cli_cmd_log_del,   "del",  0, 0,   "",                         "Delete all logs")
+PX_CLI_CMD_CREATE(px_cli_cmd_log_dump,  "dump", 0, 0,   "",                         "Dump log")
+PX_CLI_CMD_CREATE(px_cli_cmd_log_del,   "del",  0, 0,   "",                         "Delete log")
 
 PX_CLI_GROUP_CREATE(px_cli_group_log,   "log")
     PX_CLI_CMD_ADD(px_cli_cmd_log_start,     px_cli_cmd_log_start_fn)
-    PX_CLI_CMD_ADD(px_cli_cmd_log_list,      px_cli_cmd_log_list_fn)
     PX_CLI_CMD_ADD(px_cli_cmd_log_dump,      px_cli_cmd_log_dump_fn)
     PX_CLI_CMD_ADD(px_cli_cmd_log_del,       px_cli_cmd_log_del_fn)    
 PX_CLI_GROUP_END()

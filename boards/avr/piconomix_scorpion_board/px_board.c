@@ -54,7 +54,7 @@ PX_DBG_DECL_NAME("board");
 void px_board_init(void)
 {
     // Initialise General Purpose Input/Output pins
-    PORTB = GPIO_PORTB_INIT_VAL;      
+    PORTB = GPIO_PORTB_INIT_VAL;
     DDRB  = GPIO_DDRB_INIT_VAL;
 
     PORTC = GPIO_PORTC_INIT_VAL;

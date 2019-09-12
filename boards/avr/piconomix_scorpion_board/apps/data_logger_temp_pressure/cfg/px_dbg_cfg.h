@@ -39,7 +39,7 @@
  * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN) : Report errors + warnings
  * - PX_DBG_CFG_MSG_LEVEL = (PX_DBG_CFG_MSG_LEVEL_ERR|PX_DBG_CFG_MSG_LEVEL_WARN|PX_DBG_CFG_MSG_LEVEL_INFO) : Report errors + warnings + info
  */
-#define PX_DBG_CFG_MSG_LEVEL PX_DBG_CFG_MSG_LEVEL_ERR
+#define PX_DBG_CFG_MSG_LEVEL (PX_DBG_CFG_MSG_LEVEL_ERR | PX_DBG_CFG_MSG_LEVEL_WARN)
 #else
 #warning "PX_DBG_CFG_MSG_LEVEL already defined"
 #endif
@@ -55,6 +55,6 @@
 #define PX_DBG_CFG_COLOR 1
 
 /// Debug output string buffer size
-#define PX_DBG_CFG_BUF_SIZE 32
+#define PX_DBG_CFG_BUF_SIZE 64
 
 #endif // #ifndef __PX_DBG_CFG_H__

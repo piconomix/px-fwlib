@@ -66,42 +66,32 @@ static float px_cli_adc_scaled_ave(uint8_t channel, uint32_t adc_sum)
     return scaled_val;
 }
 
-static void px_cli_adc_disp_data(const px_adc_data_t * adc_data)
+static void px_cli_disp_record(const px_log_fs_record_data_t * record_data)
 {
     uint8_t i;
+    px_rtc_date_time_t date_time;
 
+    px_rtc_util_sec_since_y2k_to_date_time(record_data->timestamp, &date_time);
+    px_rtc_util_report_date_time(&date_time);
     for(i=0; i<PX_ADC_NR_OF_CHANNELS; i++)
     {
         PX_PRINTF_P("\t%f\t%f\t%f", 
-                 px_cli_adc_scaled_val(i, adc_data[i].min),
-                 px_cli_adc_scaled_val(i, adc_data[i].max), 
-                 px_cli_adc_scaled_ave(i, adc_data[i].sum));
+                 px_cli_adc_scaled_val(i, record_data->adc_data[i].min),
+                 px_cli_adc_scaled_val(i, record_data->adc_data[i].max), 
+                 px_cli_adc_scaled_ave(i, record_data->adc_data[i].sum));
     }
     putchar('\n');
 }
 
 static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
 {
-    uint8_t                data;
-    uint16_t               nr;
-    const px_adc_data_t  * adc_data;
-    px_rtc_date_time_t     date_time;
-    uint8_t                retry;
-    uint8_t                i;
-
-    // Record must be big enough to hold ADC Data
-    PX_DBG_ASSERT(PX_LOG_FS_CFG_REC_DATA_SIZE >= sizeof(px_adc_data_t)*PX_ADC_NR_OF_CHANNELS);
-
-    // Get RTC time
-    px_rtc_util_date_time_rd(&date_time);
-    // Create a new log file
-    if(px_log_fs_create((px_log_fs_time_stamp_t *)&date_time) != PX_LOG_FS_ERR_NONE)
-    {
-        return PX_PGM_STR("Error. Unable to create file");
-    }
+    uint8_t                 data;
+    px_log_fs_record_data_t record_data;
+    uint8_t                 retry;
+    uint8_t                 i;
 
     // Print column headings
-    PX_PRINTF_P("Number");
+    PX_PRINTF_P("Timestamp");
     for(i=0; i<4; i++)
     {
         PX_PRINTF_P("\tADC%u_MIN\tADC%u_MAX\tADC%u_AVE", i, i, i);
@@ -109,7 +99,6 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
     PX_PRINTF_P("\n");
 
     // Start ADC sampling
-    nr = 0;
     px_adc_start(1000, cfg.nr_of_samples);    
     while(true)
     {
@@ -120,10 +109,12 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
             // Reset flag
             px_adc_rst_data_ready_flag();
             // Get ADC data
-            adc_data = px_adc_get_data(0);
+            memcpy(&record_data.adc_data, px_adc_get_data(0), PX_SIZEOF_ARRAY(record_data.adc_data));
+            // Get RTC time
+            record_data.timestamp = px_rtc_util_sec_since_y2k_rd();
             // Log data
             retry = 8;
-            while(px_log_fs_record_wr(adc_data, sizeof(px_adc_data_t) * PX_ADC_NR_OF_CHANNELS) != PX_LOG_FS_ERR_NONE)
+            while(px_log_fs_wr(&px_log_fs_handle, &record_data, sizeof(record_data)) != PX_LOG_FS_ERR_NONE)
             {
                 if(--retry == 0)
                 {
@@ -131,12 +122,9 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
                     PX_PRINTF_P("Error. Log file full or write error\n");
                     break;
                 }
-            }
-            
-            // Display TAB separated ADC data for each channel
-            PX_PRINTF_P("%05u", nr++);
-            px_cli_adc_disp_data(adc_data);
-            
+            }            
+            // Display record_data
+            px_cli_disp_record(&record_data);            
             PX_LED_OFF();
         }
 
@@ -163,110 +151,38 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_list_fn(uint8_t argc, char* argv[])
-{
-    px_log_fs_err_t  px_log_fs_err;
-    px_log_fs_file_t file;
-    uint16_t         file_nr = 1;
-
-    px_log_fs_err = px_log_fs_file_find_first(&file);
-    while(px_log_fs_err == PX_LOG_FS_ERR_NONE)
-    {
-        PX_PRINTF_P("File %u [%02hu-%02hu-%02hu %02hu:%02hu:%02hu]\n",
-                 file_nr++,
-                 (unsigned short)file.time_stamp.year,
-                 (unsigned short)file.time_stamp.month,
-                 (unsigned short)file.time_stamp.day,
-                 (unsigned short)file.time_stamp.hour,
-                 (unsigned short)file.time_stamp.min,
-                 (unsigned short)file.time_stamp.sec);
-        px_log_fs_err = px_log_fs_file_find_next(&file);
-    }
-
-    return NULL;
-}
-
 static const char* px_cli_cmd_log_dump_fn(uint8_t argc, char* argv[])
 {
-    uint8_t          i;
-    uint16_t         nr;
-    px_log_fs_err_t  px_log_fs_err;
-    px_log_fs_file_t file;
-    px_adc_data_t    adc_data[PX_ADC_NR_OF_CHANNELS];
-
-    // <number>
-    if(!px_cli_util_argv_to_u16(0, 1, 65535))
-    {
-        return PX_PGM_STR("Error. <number> must be 1 to 65535");
-    }
-
-    nr = 0;
-    px_log_fs_err = px_log_fs_file_find_first(&file);
-    while(px_log_fs_err == PX_LOG_FS_ERR_NONE)
-    {
-        // File number found?
-        if(++nr == px_cli_argv_val.u16)
-        {
-            break;
-        }        
-        px_log_fs_err = px_log_fs_file_find_next(&file);
-    }
-    if(px_log_fs_err != PX_LOG_FS_ERR_NONE)
-    {
-        return PX_PGM_STR("Error. File not found");
-    }
-
-    PX_PRINTF_P("File %u [%02hu-%02hu-%02hu %02hu:%02hu:%02hu]\n",
-             nr++,
-             (unsigned short)file.time_stamp.year,
-             (unsigned short)file.time_stamp.month,
-             (unsigned short)file.time_stamp.day,
-             (unsigned short)file.time_stamp.hour,
-             (unsigned short)file.time_stamp.min,
-             (unsigned short)file.time_stamp.sec);
-
-    if(px_log_fs_open(&file) != PX_LOG_FS_ERR_NONE)
-    {
-        return PX_PGM_STR("Error. Unable to open file");
-    }
+    uint8_t                 i;
+    px_log_fs_err_t         px_log_fs_err;
+    px_log_fs_record_data_t record_data;
 
     // Print column headings
-    PX_PRINTF_P("Number");
+    PX_PRINTF_P("Timestamp");
     for(i=0; i<4; i++)
     {
         PX_PRINTF_P("\tADC%u_MIN\tADC%u_MAX\tADC%u_AVE", i, i, i);
     }
     PX_PRINTF_P("\n");
 
-    nr = 0;
-    px_log_fs_err = px_log_fs_record_rd_first(adc_data, sizeof(adc_data));
+    px_log_fs_err = px_log_fs_rd_first(&px_log_fs_handle, &record_data, sizeof(record_data));
     while(px_log_fs_err == PX_LOG_FS_ERR_NONE)
     {
-        // Display TAB separated ADC data for each channel
-        PX_PRINTF_P("%05u", nr++);
-        px_cli_adc_disp_data(adc_data);
-        // Next record
-        px_log_fs_err = px_log_fs_record_rd_next(adc_data, sizeof(adc_data));
+        // Display record_data
+        px_cli_disp_record(&record_data);
+        // Next record_data
+        px_log_fs_err = px_log_fs_rd_next(&px_log_fs_handle, &record_data, sizeof(record_data));
     }
     return NULL;
 }
 
 static const char* px_cli_cmd_log_del_fn(uint8_t argc, char* argv[])
 {
-    uint16_t         nr;
-    px_log_fs_err_t  px_log_fs_err;
-    px_log_fs_file_t file;
-
-    nr = 0;
-    px_log_fs_err = px_log_fs_file_find_first(&file);
-    while(px_log_fs_err == PX_LOG_FS_ERR_NONE)
+    // Reset file system
+    if(px_log_fs_reset(&px_log_fs_handle, 0, PX_AT45D_PAGES - 1) != PX_LOG_FS_ERR_NONE)
     {
-        px_log_fs_file_delete(&file);
-        px_log_fs_err = px_log_fs_file_find_first(&file);
-        nr++;
-    }
-
-    PX_PRINTF_P("Deleted %u files\n", nr);
+        return PX_PGM_STR("Error. Unable reset file system");
+    }    
     return NULL;
 }
 
@@ -332,16 +248,14 @@ static const char* px_cli_cmd_log_samples_fn(uint8_t argc, char* argv[])
 
 // Create CLI command structures
 PX_CLI_CMD_CREATE(px_cli_cmd_log_start,     "s",        0, 0,   "",                         "Start logging")
-PX_CLI_CMD_CREATE(px_cli_cmd_log_list,      "ls",       0, 0,   "",                         "List logs")
-PX_CLI_CMD_CREATE(px_cli_cmd_log_dump,      "dump",     1, 1,   "<number>",                 "Dump log")
-PX_CLI_CMD_CREATE(px_cli_cmd_log_del,       "del",      0, 0,   "",                         "Delete all logs")
+PX_CLI_CMD_CREATE(px_cli_cmd_log_dump,      "dump",     0, 0,   "",                         "Dump log")
+PX_CLI_CMD_CREATE(px_cli_cmd_log_del,       "del",      0, 0,   "",                         "Delete log")
 PX_CLI_CMD_CREATE(px_cli_cmd_log_info,      "info",     0, 0,   "",                         "Report ADC settings")
 PX_CLI_CMD_CREATE(px_cli_cmd_log_fit,       "fit",      3, 3,   "<ch> <scale> <offset>",    "Configure linear fit of ADC channel (y = scale x ADC + offset)")
 PX_CLI_CMD_CREATE(px_cli_cmd_log_samples,   "samples",  1, 1,   "<nr of samples>",          "Set number of samples accumulated for each ADC channel")
 
 PX_CLI_GROUP_CREATE(px_cli_group_log, "log")
     PX_CLI_CMD_ADD(px_cli_cmd_log_start,     px_cli_cmd_log_start_fn)
-    PX_CLI_CMD_ADD(px_cli_cmd_log_list,      px_cli_cmd_log_list_fn)
     PX_CLI_CMD_ADD(px_cli_cmd_log_dump,      px_cli_cmd_log_dump_fn)
     PX_CLI_CMD_ADD(px_cli_cmd_log_del,       px_cli_cmd_log_del_fn)
     PX_CLI_CMD_ADD(px_cli_cmd_log_info,      px_cli_cmd_log_info_fn)

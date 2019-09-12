@@ -43,11 +43,12 @@
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-px_uart_handle_t px_uart_handle;
-px_spi_handle_t  px_at45d_spi_handle;
-px_i2c_handle_t  px_bmp280_i2c_handle;
+px_uart_handle_t   px_uart_handle;
+px_spi_handle_t    px_at45d_spi_handle;
+px_i2c_handle_t    px_bmp280_i2c_handle;
+px_log_fs_handle_t px_log_fs_handle;
 
-uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+uint8_t            main_buffer[MAIN_BUFFER_SIZE];
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// CLI splash text on start up. Back slashes ('\') have to be escaped ('\\')
@@ -103,7 +104,10 @@ static bool main_init(void)
     }
 
     // Initialise file system
-    px_log_fs_init();
+    if(px_log_fs_init(&px_log_fs_handle, 0, PX_AT45D_PAGES - 1) != PX_LOG_FS_ERR_NONE)
+    {
+        return false;
+    }
 
     // Initialise BMP280 pressure & temp sensor
     px_bmp280_init(&px_bmp280_i2c_handle);

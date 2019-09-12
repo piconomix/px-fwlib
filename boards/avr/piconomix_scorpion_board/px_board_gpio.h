@@ -82,10 +82,10 @@ static const px_gpio_handle_t px_gpio_pb            = {PX_GPIO_PB};
 /* _____MACROS_______________________________________________________________ */
 #define PX_GPIO_B0 PX_GPIO_LED
 #define PX_GPIO_B1 PX_GPIO_SPI_CS_DF
-#define PX_GPIO_B2 PX_GPIO_CS
-#define PX_GPIO_B3 PX_GPIO_MOSI
-#define PX_GPIO_B4 PX_GPIO_MISO
-#define PX_GPIO_B5 PX_GPIO_SCK
+#define PX_GPIO_B2 PX_GPIO_SPI_CS
+#define PX_GPIO_B3 PX_GPIO_SPI_MOSI
+#define PX_GPIO_B4 PX_GPIO_SPI_MISO
+#define PX_GPIO_B5 PX_GPIO_SPI_SCK
 
 #define PX_GPIO_C0 PX_GPIO_ADC1
 #define PX_GPIO_C1 PX_GPIO_ADC0

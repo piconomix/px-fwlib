@@ -25,7 +25,7 @@
 #include "px_uart.h"
 #include "px_spi.h"
 #include "px_i2c.h"
-#include "px_rtc_util.h"
+#include "px_log_fs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,21 +34,14 @@ extern "C" {
 #define MAIN_BUFFER_SIZE 512
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
-/// Timestamped temperature and pressure data to be logged
-typedef struct
-{
-    px_rtc_date_time_t date_time;
-    int32_t            bmp280_temp;
-    int32_t            bmp280_press;
-    int16_t            ds18b20_temp;
-} log_data_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-extern px_uart_handle_t px_uart_handle;
-extern px_spi_handle_t  px_at45d_spi_handle;
-extern px_i2c_handle_t  px_bmp280_i2c_handle;
+extern px_uart_handle_t   px_uart_handle;
+extern px_spi_handle_t    px_at45d_spi_handle;
+extern px_i2c_handle_t    px_bmp280_i2c_handle;
+extern px_log_fs_handle_t px_log_fs_handle;
 
-extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+extern uint8_t            main_buffer[MAIN_BUFFER_SIZE];
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 

@@ -25,7 +25,7 @@
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// Option to also keep track of seconds elapsed since Y2K (2000-01-01 00:00:00)
-#define PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K    0
+#define PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K    1
 
 /// Option to enable periodic flags (minute, hour and day)
 #define PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS   0
