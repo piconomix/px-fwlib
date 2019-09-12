@@ -293,3 +293,16 @@ int16_t px_ds18b20_util_convert_t_to_deci_deg(uint8_t temp_msb, uint8_t temp_lsb
     PX_DBG_INFO("Temp = %d", i);
     return i;
 }
+
+uint16_t px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg)
+{
+    switch(cfg_reg & PX_DS18B20_CFG_REG_RES_MASK)
+    {
+    case PX_DS18B20_CFG_REG_RES_9BIT:   return PX_DS18B20_CONV_TIME_MS_9BIT;
+    case PX_DS18B20_CFG_REG_RES_10BIT:  return PX_DS18B20_CONV_TIME_MS_10BIT;
+    case PX_DS18B20_CFG_REG_RES_11BIT:  return PX_DS18B20_CONV_TIME_MS_11BIT;
+    case PX_DS18B20_CFG_REG_RES_12BIT:  return PX_DS18B20_CONV_TIME_MS_12BIT;
+    default:                            return PX_DS18B20_CONV_TIME_MS_12BIT;
+    }
+}
+

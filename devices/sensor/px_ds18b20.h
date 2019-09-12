@@ -110,6 +110,8 @@ int16_t            px_ds18b20_util_convert_t_to_deci_deg(uint8_t temp_msb,
                                                          uint8_t temp_lsb, 
                                                          uint8_t cfg_reg);
 
+uint16_t          px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg);
+
 /* _____MACROS_______________________________________________________________ */
 
 /// @}
