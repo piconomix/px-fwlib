@@ -180,7 +180,7 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
 $(BUILD_DIR)/%.uf2: $(BUILD_DIR)/%.bin
 	@echo
 	@echo $(MSG_FLASH_UF2) $@
-	python $(PICOLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c
+	python $(PICOLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c -o $@
 
 # Write UF2 bootloader format file (*.uf2) to target
 prog_uf2: $(BUILD_DIR)/$(PROJECT).bin
