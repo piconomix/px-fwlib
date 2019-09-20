@@ -91,7 +91,7 @@ static void main_init(void)
     px_at25s_init(&px_spi_sf_handle);
     // Resume Serial Flash in case it was left in a power down state and the 
     // processor reset
-    px_at25s_resume_from_power_down();
+    px_at25s_resume_from_deep_power_down();
 
     // Initialise SD Card driver
     px_spi_open2(&px_spi_sd_handle,
@@ -139,7 +139,7 @@ int main(void)
     }
 
     // Power down Serial Flash to minimise power consumption
-    px_at25s_power_down();
+    px_at25s_deep_power_down();
 
     // Select Port C pin 9 (6/NO button) for extended interrupt on EXTI9
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE9);

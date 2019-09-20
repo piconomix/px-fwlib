@@ -61,7 +61,7 @@ typedef struct
 /**
  *  Initialise driver.
  *  
- *  @param handle I2C handle of device
+ *  @param handle   I2C handle of device
  *  
  *  @retval true    Device detected on I2C and ID value is correct
  *  @retval false   Device not detected on I2C bus 

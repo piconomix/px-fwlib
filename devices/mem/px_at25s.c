@@ -100,7 +100,7 @@ void px_at25s_init(px_spi_handle_t * handle)
     px_at25s_spi_handle = handle;
 }
 
-void px_at25s_power_down(void)
+void px_at25s_deep_power_down(void)
 {
     uint8_t data[1];
 
@@ -108,7 +108,7 @@ void px_at25s_power_down(void)
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
 }
 
-void px_at25s_resume_from_power_down(void)
+void px_at25s_resume_from_deep_power_down(void)
 {
     uint8_t data[1];
 
@@ -124,20 +124,16 @@ void px_at25s_rd(void *   buffer,
 
     // See if specified address is out of bounds
     PX_DBG_ASSERT(address <= PX_AT25S_ADR_MAX);
-
     // Wait until Serial Flash is not busy
     while(!px_at25s_ready())
     {
         ;
     }
-
     // Send command
     data[0] = PX_AT25S_CMD_READ_ARRAY;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
-    
     // Send address
     px_at25s_tx_adr(address);
-   
     // Read data
     px_spi_rd(px_at25s_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
 }
@@ -168,20 +164,15 @@ void px_at25s_wr_page(const void * buffer, uint16_t page)
     {
         ;
     }
-
     // Send Write Enable command
     px_at25s_write_enable();
-
     // Send command
     data[0] = PX_AT25S_CMD_BYTE_PAGE_PROG;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send address
     px_at25s_tx_adr(page * PX_AT25S_PAGE_SIZE);
-
     // Send data to be written
     px_spi_wr(px_at25s_spi_handle, buffer, PX_AT25S_PAGE_SIZE, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_at25s_ready_flag = false;
 }
@@ -198,20 +189,15 @@ void px_at25s_wr_page_offset(const void * buffer,
     {
         ;
     }
-
     // Send Write Enable command
     px_at25s_write_enable();
-
     // Send command
     data[0] = PX_AT25S_CMD_BYTE_PAGE_PROG;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send address
     px_at25s_tx_adr(page * PX_AT25S_PAGE_SIZE + start_byte_in_page);
-
     // Send data to be written
     px_spi_wr(px_at25s_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_at25s_ready_flag = false;
 }
@@ -227,10 +213,8 @@ void px_at25s_erase(px_at25s_block_t block,
     {
         ;
     }
-
     // Send Write Enable command
     px_at25s_write_enable();
-
     // Select command according to specified block size
     switch(block)
     {
@@ -259,19 +243,14 @@ void px_at25s_erase(px_at25s_block_t block,
         PX_DBG_ERR("Invalid block size specified");
         return;
     }
-
     // Calculate address
     adr = page * PX_AT25S_PAGE_SIZE;
-
     // Send command
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send address
     px_at25s_tx_adr(adr);
-
     // Deselect Serial Flash
     px_spi_wr(px_at25s_spi_handle, NULL, 0, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_at25s_ready_flag = false;
 }
@@ -285,14 +264,11 @@ void px_at25s_erase_chip(void)
     {
         ;
     }
-
     // Send Write Enable command
     px_at25s_write_enable();
-
     // Send command
     data[0] = PX_AT25S_CMD_CHIP_ERASE;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
-
     // Set flag to busy
     px_at25s_ready_flag = false;
 }
@@ -306,10 +282,8 @@ bool px_at25s_ready(void)
     {
         return true;
     }
-
     // Read status
     data = px_at25s_rd_status_reg1();
-
     // See if Serial Flash is ready
     if(PX_BIT_IS_LO(data, PX_AT25S_STATUS_REG1_BSY))
     {
@@ -330,7 +304,6 @@ uint8_t px_at25s_rd_status_reg1(void)
     // Send command
     data[0] = PX_AT25S_CMD_RD_STATUS_REG_BYTE_1;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Read status
     px_spi_rd(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_STOP);
 
@@ -344,7 +317,6 @@ void px_at25s_rd_man_and_dev_id(uint8_t * buffer)
     // Send command
     data[0] = PX_AT25S_CMD_RD_MAN_AND_DEVICE_ID;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Read manufacturer and device ID
     px_spi_rd(px_at25s_spi_handle, buffer, 3, PX_SPI_FLAG_STOP);
 }

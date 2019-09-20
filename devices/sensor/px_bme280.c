@@ -387,9 +387,17 @@ bool px_bme280_read(px_bme280_data_t * data)
     uint8_t ctrl;
     uint8_t status;
 
-    // Start new "forced" measurement (pressure x 8, temperature x 1 oversampled)
+    // Set humidity oversampling to 1
+    if(!px_bme280_reg_wr(PX_BME280_REG_CTRL_HUM, PX_BME280_REG_CTRL_HUM_OVERS_1))
+    {
+        // Error
+        PX_DBG_ERR("Unable to set humidity oversampling");
+        return false;
+    }
+
+    // Start new "forced" measurement (pressure x 1, temperature x 1 oversampled)
     ctrl =   (PX_BME280_REG_CTRL_MEAS_OVERS_1     << PX_BME280_REG_CTRL_MEAS_OSRS_T_POS)
-           + (PX_BME280_REG_CTRL_MEAS_OVERS_8     << PX_BME280_REG_CTRL_MEAS_OSRS_P_POS)
+           + (PX_BME280_REG_CTRL_MEAS_OVERS_1     << PX_BME280_REG_CTRL_MEAS_OSRS_P_POS)
            + (PX_BME280_REG_CTRL_MEAS_MODE_FORCED << PX_BME280_REG_CTRL_MEAS_MODE_POS);
     if(!px_bme280_reg_wr(PX_BME280_REG_CTRL_MEAS, ctrl))
     {

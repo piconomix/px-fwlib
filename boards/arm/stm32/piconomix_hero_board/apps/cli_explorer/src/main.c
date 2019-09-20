@@ -156,7 +156,7 @@ static bool main_init(void)
 
     // Resume Serial Flash in case it was left in a power down state and the 
     // processor reset
-    px_at25s_resume_from_power_down();
+    px_at25s_resume_from_deep_power_down();
 
     // Success
     return true;
@@ -244,9 +244,7 @@ int main(void)
     PX_LCD_BACKLIGHT_ON();
     px_gfx_init();
     px_gfx_align_set(PX_GFX_ALIGN_MID);
-    px_gfx_draw_img(&px_gfx_img_hero_logo,
-                    PX_GFX_DISP_SIZE_X / 2, 
-                    PX_GFX_DISP_SIZE_Y / 2);    
+    px_gfx_draw_img(&px_gfx_img_hero_logo, PX_GFX_X_MID, PX_GFX_Y_MID);    
     px_gfx_update_frame();
     px_gfx_draw_attr_reset();
 

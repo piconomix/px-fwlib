@@ -138,12 +138,26 @@ void px_at45d_init(px_spi_handle_t * handle);
 /** 
  *  Power down device to minimise power consumption.
  */
-void px_at45d_power_down(void);
+void px_at45d_deep_power_down(void);
 
 /** 
  *  Power up device to resume communication.
  */
-void px_at45d_resume_from_power_down(void);
+void px_at45d_resume_from_deep_power_down(void);
+
+/** 
+ *  Power down device to minimise power consumption.
+ */
+void px_at45d_ultra_deep_power_down(void);
+
+/** 
+ *  Power up device to resume communication.
+ *  
+ *  After this function call, wait at least 120 us (see tXUDPD in
+ *  datasheet) for DataFlash to wake up, otherwise it will will ignore the
+ *  commands.
+ */
+void px_at45d_resume_from_ultra_deep_power_down(void);
 
 /**
  *  Read data from DataFlash.

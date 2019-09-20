@@ -80,6 +80,9 @@ extern bool px_bme280_read(px_bme280_data_t * data);
 /**
  *  Calculate compensated temperature from raw data.
  *  
+ *  Returns temperature in deg C; Resolution is 0.01 deg C. For example "5123"
+ *  equals 51.23 deg C.
+ *  
  *  The data->t_fine field is updated during this step and used subsequently
  *  for compensated pressure and humidity calculations.
  *  
@@ -92,6 +95,9 @@ extern int32_t  px_bme280_temperature(px_bme280_data_t * data);
 /**
  *  Calculate compensated pressure from raw data.
  *  
+ *  Returns pressure in Pa as unsigned 32-bit integer. For example "96386"
+ *  represents 96386 Pa = 963.862 hPa
+ *  
  *  px_bme280_temperature() must be called first so that the data->t_fine
  *  is updated.
  *  
@@ -103,6 +109,10 @@ extern uint32_t px_bme280_pressure(px_bme280_data_t * data);
 
 /**
  *  Calculate compensated humidity from raw data.
+ *  
+ *  Returns humidity in %RH as unsigned 32-bit integer in Q22.10 format (22
+ *  integer bits and 10 fractional bits). For example "47445" represents
+ *  47445/1024 = 46.333 %RH
  *  
  *  px_bme280_temperature() must be called first so that the data->t_fine
  *  is updated.

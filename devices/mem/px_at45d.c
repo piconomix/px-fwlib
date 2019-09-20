@@ -52,8 +52,10 @@
 #define PX_AT45D_CMD_MAIN_MEM_PAGE_TO_BUF2             0x55
 //@}
 
-#define PX_AT45D_CMD_MAIN_POWER_DOWN                   0xb9
-#define PX_AT45D_CMD_MAIN_RESUME_FROM_POWER_DOWN       0xab
+#define PX_AT45D_CMD_MAIN_DEEP_PWR_DN                  0xb9
+#define PX_AT45D_CMD_MAIN_RESUME_FROM_DEEP_PWR_DN      0xab
+#define PX_AT45D_CMD_MAIN_ULTRA_DEEP_PWR_DN            0x79
+
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -102,19 +104,35 @@ void px_at45d_init(px_spi_handle_t * handle)
     px_at45d_spi_handle = handle;
 }
 
-void px_at45d_power_down(void)
+void px_at45d_deep_power_down(void)
 {
     uint8_t data[1];
 
-    data[0] = PX_AT45D_CMD_MAIN_POWER_DOWN;
+    data[0] = PX_AT45D_CMD_MAIN_DEEP_PWR_DN;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
 }
 
-void px_at45d_resume_from_power_down(void)
+void px_at45d_resume_from_deep_power_down(void)
 {
     uint8_t data[1];
 
-    data[0] = PX_AT45D_CMD_MAIN_RESUME_FROM_POWER_DOWN;
+    data[0] = PX_AT45D_CMD_MAIN_RESUME_FROM_DEEP_PWR_DN;
+    px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
+}
+
+void px_at45d_ultra_deep_power_down(void)
+{
+    uint8_t data[1];
+
+    data[0] = PX_AT45D_CMD_MAIN_ULTRA_DEEP_PWR_DN;
+    px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
+}
+
+void px_at45d_resume_from_ultra_deep_power_down(void)
+{
+    uint8_t data[1];
+
+    data[0] = 0x00;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
 }
 

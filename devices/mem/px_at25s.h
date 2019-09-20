@@ -144,12 +144,12 @@ void px_at25s_init(px_spi_handle_t * handle);
 /** 
  *  Power down device to minimise power consumption.
  */
-void px_at25s_power_down(void);
+void px_at25s_deep_power_down(void);
 
 /** 
  *  Power up device to resume communication.
  */
-void px_at25s_resume_from_power_down(void);
+void px_at25s_resume_from_deep_power_down(void);
 
 /**
  *  Read data from Serial Flash.
