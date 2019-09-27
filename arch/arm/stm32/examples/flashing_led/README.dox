@@ -1,0 +1,15 @@
+7.1 STM32 Flashing LED Example {#STM32_EX_FLASHING_LED}
+=======================================================
+
+This is a basic GPIO example using **px-lib**. It is the embedded equivalent of 
+a "hello world" program on a PC to kick the tires and know that your development
+setup works.
+
+The LED flashes at a slow 1 Hz.
+  
+File(s):
+- arch/arm/stm32/examples/flashing_led/src/main.c
+
+The following modules are used:
+- @ref BOARDS_STM32_PICONOMIX_HERO
+- @ref STM32_GPIO

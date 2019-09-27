@@ -1,0 +1,122 @@
+02 GPIO part B {#STM32_TUT02_GPIO_PART_B}
+=========================================
+
+[TOC]
+
+1. Introduction {#STM32_TUT02_GPIO_PART_B_INTRO}
+================================================
+
+*How to configure and use General Purpose (digital) I/O pins - part B*
+
+File(s): 
+- arch/arm/stm32/tutorials/02_gpio_part_b/gpio.c
+
+Reference(s):
+- *[1]* [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
+
+This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the 
+[PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD), the LED is wired to Port H pin 0.
+PH0 must be configured as a digital output pin. Set PH0 high to enable the LED 
+and set PH0 low to disable the LED.
+
+2. Peripheral access {#STM32_TUT02_GPIO_PART_B_PERIPHERALS}
+===========================================================
+
+The relative register map of each GPIO peripheral stays the same, it is
+just the base address that changes:
+- GPIOA : 0x5000_0000
+- GPIOB : 0x5000_0400
+- GPIOC : 0x5000_0800
+- GPIOD : 0x5000_0C00
+- GPIOE : 0x5000_1000
+- GPIOH : 0x5000_1C00
+
+An advanced C pointer technique is used to declare the relative register map
+once using a structure and reusing it for each GPIO peripheral by just changing 
+the base address.
+
+A structure type `gpio_peripheral_t` is created that defines the GPIO
+peripheral register offset map and a C pointer `gpioh` is created to point
+to the GPIO peripheral base address. Each GPIO register is accessed relative
+to this base address using a structure pointer operator, e.g. `gpioh->bsrr`
+will access the register at address 0x5000_1C00.
+
+@warn_s
+Note the use of the `volatile` keyword for each member of the structure.
+@warn_e
+
+The structure definition is thus a template that defines how a certain
+memory area should be treated.
+
+2. Compound operation bit set/clear operation {#STM32_TUT02_GPIO_PART_B_COMPOUND}
+=================================================================================
+
+In this tutorial the bitwise left shift and bitwise complement operator is also
+demonstrated. Let's break this down into individual steps:
+
+    @code{.c}
+    // Compound statement to clear bit 1 and bit 0 
+    val &= ~(3 << 0);
+
+    // Step 1: Expand &= (AND EQUALS) operator
+    val  = val & (~(3 << 0));
+    // Step 2: Perform bitwise shift operator (zero shift means no change)
+    val  = val & (~(0x00000003));
+    // Step 3: Perform bitwise complement operator (flip/invert bits)
+    val  = val & 0xfffffffc;
+    @endcode
+
+3. Memory alignment and padding {#STM32_TUT02_GPIO_PART_B_ALIGNMENT}
+====================================================================
+
+It is important to remember that the ARM Cortex M0+ requires 32-bit reads
+and writes to be aligned on addresses that is an exact multiple of 32-bits 
+(4 bytes). A 32-bit memory read from address 0x2000_0010 is good, but a read 
+from address 0x2000_0012 will result in a Hard Fault.
+
+For 16-bit reads and writes the address must be aligned on a 16-bit boundary (an
+exact multiple of 16-bits or 2 bytes).
+
+The default behaviour of the compiler is to create a structure with members 
+correctly aligned by inserting padding, but it is sometimes better to 
+explicitely declare the padding, for example:
+
+    @code{.c}
+    typedef struct
+    {
+        uint8_t  field1;        // Offset 0
+        uint8_t  reserved_1[3]; // Padding of 3 bytes
+        uint32_t field2;        // Offset 4
+        uint16_t field3;        // Offset 8
+        uint8_t  reserved_2[2]; // Padding of 2 bytes
+        uint32_t field4;        // Offset 12
+    } my_struct_t;
+    @endcode
+
+@tip_s
+Being aware of compiler padding, it is even better to rearrange the members of a 
+structure to avoid or minimise padding.
+@tip_e
+
+If you want to insist that the compiler must not use padding, then use the 
+following (at the expense of generating extra instructions to access the 
+non-aligned members):
+
+    @code{.c}
+    // Save current packing setting
+    #pragma push
+    // Set packing to 1 byte
+    #pragma pack(1)
+    typedef struct
+    {
+        uint8_t  field1;        // Offset 0
+        uint32_t field2;        // Offset 1
+        uint16_t field3;        // Offset 5
+        uint32_t field4;        // Offset 7
+    } my_struct_t;
+    // Restore packing setting
+    #pragma pop    
+    @endcode
+
+
+

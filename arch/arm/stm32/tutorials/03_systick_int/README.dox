@@ -1,0 +1,214 @@
+03 SysTick periodic interrupt {#STM32_TUT03_SYSTICK_INT}
+========================================================
+
+[TOC]
+
+1. Introduction {#STM32_TUT03_SYSTICK_INT_INTRO}
+================================================
+
+*How to use the standard SysTick peripheral to generate a periodic interrupt*
+
+File(s): 
+- arch/arm/stm32/tutorials/03_systick_int/systick_int.c
+
+Reference(s):
+- *[1]* [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
+- *[2]* [STM32L0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
+
+The LED flashes at 1 Hz (500 ms on; 500 ms off).
+
+2. Vector Table {#STM32_TUT03_SYSTICK_INT_VECTOR_TABLE}
+=======================================================
+
+The vector table contains the reset value of the Stack Pointer (SP / R13), the 
+address of the first instruction to execute after reset and the addresses of 
+functions to jump to when a fault or interrupt occurs. These functions are 
+called exception handlers.
+
+On reset the processor core expects the vector table to be at address 
+0x0000_0000. The location of the vector table can be changed by using the 
+Vector Table Offset Register (VTOR). This **optional** feature was not present 
+on the Cortex-M0 and was introduced on the Cortex-M0+. It is great for creating 
+apps that co-exist with a bootloader.
+
+@tip_s
+See [2] "2.3.4 Vector table" on page 29 for more info.
+@tip_e
+
+In the STM32Cube library, the vector table is defined here (line 132 or search for "g_pfnVectors"):
+
+    px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
+
+@tip_s
+In case you were wondering, the prefix "g_pfn" is short for "Global Pointer to 
+Function". It's an ugly dinosaur from the Hungarian Naming Convention period :)
+@tip_e
+
+The vector table is located in the ".isr_vector" section and the linker script 
+"stm32l072xb.ld" makes sure that it is placed at address 0x0000_0000. You can 
+verify this by inspecting "BUILD_DEBUG/systick_int.lss":
+
+    BUILD_DEBUG/systick_int.elf:     file format elf32-littlearm
+
+    Sections:
+    Idx Name          Size      VMA       LMA       File off  Algn
+      0 .isr_vector   000000c0  08000000  08000000  00010000  2**0
+                      CONTENTS, ALLOC, LOAD, READONLY, DATA
+      1 .init         0000000c  080000c0  080000c0  000100c0  2**2
+                      CONTENTS, ALLOC, LOAD, READONLY, CODE
+      2 .text         000001e4  080000cc  080000cc  000100cc  2**2
+                      CONTENTS, ALLOC, LOAD, READONLY, CODE
+
+@tip_s
+Do you see that the ".isr_vector" section starts at 0x0800_0000, it's size is
+0xc0 (192 bytes) and that the ".init" section starts after it at 0x0800_00C0?
+@tip_e
+
+0x0800_0000 is the address of the start of Flash memory, but it is also mapped
+to 0x0000_0000.
+
+@tip_s
+See *[1] "2.2 Memory organization"* (page 57) for more info.
+@tip_e
+
+3. Interrupts {#STM32_TUT03_SYSTICK_INT_INTERRUPTS}
+===================================================
+
+"SysTick_Handler" is the name of the exception handler function that is called 
+by the processor core to handle the SysTick interrupt. If you search for it's 
+name, you will find it in "startup_stm32l072xx.s" on line 152 and line 206:
+
+    g_pfnVectors:
+      .word  _estack
+      .word  Reset_Handler
+      .word  NMI_Handler
+      .word  HardFault_Handler
+
+    ...
+
+      .word  SysTick_Handler
+      .word  WWDG_IRQHandler    /* Window WatchDog                 */
+      .word  PVD_IRQHandler     /* PVD through EXTI Line detection */
+
+    ...
+
+       .weak      SysTick_Handler
+       .thumb_set SysTick_Handler,Default_Handler
+
+The `Default_Handler()` function will be called to handle the interrupt, but it 
+is declared as weak, which allows you to provide your own handler (with the same
+name) and it will be called instead of `Default_Handler()`.
+
+4. SysTick timer {#STM32_TUT03_SYSTICK_INT_SYSTICK}
+===================================================
+
+The SysTick timer is a standard Arm core peripheral. It's a 24-bit count down 
+timer that is programmed using the standard 
+[CMSIS](https://developer.arm.com/tools-and-software/embedded/cmsis) function 
+`SysTick_Config()`.
+
+See *[2] "4.4 SysTick timer (STK)"* (page 95)
+
+5. Nested Vectored Interrupt Controller (NVIC) {#STM32_TUT03_SYSTICK_INT_NVIC}
+==============================================================================
+
+The NVIC is also a standard Arm core peripheral and it is responsible for 
+prioritizing and signalling interrupts to the processor core. The SysTick 
+interrupt is enabled using the standard [CMSIS](https://developer.arm.com/tools-and-software/embedded/cmsis)
+function `NVIC_EnableIRQ(SysTick_IRQn)`
+
+See *[2] "4.2 Nested vectored interrupt controller"* (page 82)
+
+Interrupts are enabled by default, but it can be disabled with the CMSIS
+`__disable_irq()` function and re-enabled with the `__enable_irq()' function.
+
+Here is CMSIS example code to create a critical section where an atomic 
+operation can be performed while interrupts are disabled and restored to it's 
+original state afterwards:
+
+    @code{.c}
+    {
+        uint32_t primask;
+    	
+        // Save interrupt status
+        primask = __get_PRIMASK();
+        // Disable interrupts
+        __disable_irq();
+        __DMB();
+            
+        // Perform atomic operation that will not be interrupted ...
+
+        // Restore interrupt status
+        __DMB();
+        __set_PRIMASK(primask);    
+    }
+    @endcode
+
+The interrupt status is accessible in the PRIMASK (Priority Mask) register. See
+*[2] " Priority Mask Register"* (page 17).
+
+The [DMB](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0497a/BABDFABI.html)
+(Data Memory Barrier) 32-bit Thumb instruction is not required for the Cortex 
+M0+ processor core, but is included for compatibilty with ARM cores that have 
+more complex memory systems and pipelines.
+
+6. Interrupt stack frame {#STM32_TUT03_SYSTICK_INT_STACK}
+=========================================================
+
+The normal instruction execution flow is interrupted when an exception occurs.
+The processor core must save sufficient state information before jumping to the
+interrupt handler so that normal execution flow can continue as if nothing 
+happened after the interrupt has finished.
+
+The core saves the current content of the Application Program Status 
+Register (APSR) register on the stack first. The APSR register contains the 
+condition flags (N = Negative Flag, Z = Zero Flag, C = Carry Flag, V = Overflow 
+Flag).
+
+It also saves the return address (PC), the Link Register (LR / R13), R12, R3, 
+R2, R1 and R0.
+
+![Stack Frame (reproduced from ST manual)](stm32_int_stack.png)
+
+For more info, see *[2] "2.3.6 Exception entry and return"* (page 30).
+
+The core then loads LR with the magic value 0xFFFFFFF9 (EXC_RETURN) and jumps to
+the interrupt handler function `SysTick_Handler()`. When the function finishes,
+it executes a `bx lr` assembly instruction (Branch Exchange). The magic value in
+LR indicates to the core that it is returning from an interrupt handler and it
+uses the information stored on the stack to return to the normal instruction 
+flow (as if nothing happened).
+
+For more info regarding EXC_RETURN, see *[2] "Exception return"* (page 32).
+
+7. AAPCS - Procedure Calling Standard for the ARM Architecture {#STM32_TUT03_SYSTICK_INT_AAPCS}
+===============================================================================================
+
+Why does the processor core save the content of R12, R3, R2, R1 and R0 too 
+before it jumps to the interrupt handler? It is done so that a regular C 
+function can be used to handle the interrupt.
+
+The AAPCS describes a contract between a calling function and a called function.
+Up to four registers (R0 - R3) can be used by the calling function to pass 
+parameters to the called function. The called function can return a result in R0
+and R1. Most of the remaining registers, except for R12 **must be preserved** by
+the called function.
+
+Thus the called interrupt handler C function is allowed to clobber R0, R1, R2, 
+R3 and R12 and the processor core needs to restore these values, before 
+returning to the regular execution flow (as if nothing happened).
+
+See [HERE](https://community.arm.com/developer/ip-products/processors/b/processors-ip-blog/posts/on-the-aapcs-with-an-application-to-efficient-parameter-passing)
+for more info.
+
+8. 'volatile' keyword {#STM32_TUT03_SYSTICK_INT_VOLATILE}
+=========================================================
+
+Did you spot the `volatile` keyword in the following line?
+
+    @code{.c}
+    // Delay counter decremented once every 1 ms by the SysTick interrupt
+    volatile uint32_t systick_delay;
+    @endcode
+
+It is VERY important. Delete it and run the tutorial... what happens? Why?

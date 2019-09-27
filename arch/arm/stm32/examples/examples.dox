@@ -1,0 +1,16 @@
+7. Examples {#STM32_EXAMPLES}
+==============================
+
+These examples show how **px-lib** can be used to achieve two embedded 
+equivalents of the "hello world" program on a PC.
+
+|Example                        |Description                                      |
+|-------------------------------|-------------------------------------------------|
+|@subpage STM32_EX_FLASHING_LED |This example flashes the LED at 1 Hz             |
+|@subpage STM32_EX_UART_PRINTF  |Redirect stdout to UART and print "hello world!" |
+
+@warn_s
+The examples have been created for the [PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD)
+and may need to be modified for your specific target board.
+@warn_e
+

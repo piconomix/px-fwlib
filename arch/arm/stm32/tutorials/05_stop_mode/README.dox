@@ -1,0 +1,25 @@
+05 STOP low power mode {#STM32_TUT05_STOP_MODE}
+===============================================
+
+[TOC]
+
+1. Introduction {#STM32_TUT05_STOP_MODE_INTRO}
+==============================================
+
+*How to put the processor into STOP low power mode and wake up on an external 
+interrupt on a GPIO pin*
+
+File(s): 
+- arch/arm/stm32/tutorials/05_stop_mode/stop_mode.c
+
+Reference(s):
+- *[1]* [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
+- *[2]* [STM32L0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
+
+The button GPIO pin (PC9) is configured as an input with pull-up enabled.
+The EXTI peripheral is configured to generate an interrupt when a falling
+edge (button press event) is detected on line 9. The `EXTI4_15_IRQHandler()`
+function is called to handle external interrupts 4 to 15 and it clears
+the interrupt flag for external interrupt 9. The interrupt wakes up the
+processor core and the LED will be flashed before it goes back to sleep.
+

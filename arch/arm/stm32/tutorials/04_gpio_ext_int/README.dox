@@ -1,0 +1,47 @@
+04 GPIO external interrupt {#STM32_TUT04_GPIO_EXT_INT}
+======================================================
+
+[TOC]
+
+1. Introduction {#STM32_TUT04_GPIO_EXT_INT_INTRO}
+=================================================
+
+*How to wake up on an external interrupt from a GPIO pin*
+
+File(s): 
+- arch/arm/stm32/tutorials/04_gpio_ext_int/gpio_ext_int.c
+
+Reference(s):
+- *[1]* [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
+- *[2]* [STM32L0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
+
+The button GPIO pin (PC9) is configured as an input with pull-up enabled.
+The EXTI peripheral is configured to generate an interrupt when a falling
+edge (button press event) is detected on line 9. The `EXTI4_15_IRQHandler()`
+function is called that handles external interrupts 4 to 15 and it clears
+the interrupt flag for external interrupt 9. The interrupt wakes up the
+core and the LED will be flashed before it goes back to sleep.
+
+2. 13 Extended interrupt and event controller (EXTI) {#STM32_TUT04_GPIO_EXT_INT_EXTI}
+=====================================================================================
+
+The EXTI peripheral manages events / interrupts and is also able to wake up the
+processor core.
+
+See *[1] "13 Extended interrupt and event controller (EXTI)"* (page 282)
+
+All of the GPIO pins are multiplexed to only 16 interrupt lines. For example: 
+PA9, PB9 & PC9 share the same interrupt line EXTI9. This means that if PC9 is 
+used to generate an external interrupt, then PA9 or PB9 can not be used too:
+EXTI9 is already allocated to PC9.
+
+See *[1] "13.4 EXTI interrupt/event line mapping"* (page 285)
+
+EXTI4 up to EXTI15 are combined and handled by a single interrupt handler
+function `EXTI4_15_IRQHandler()`. It is up to the handler function to figure out
+which specific external interrupt generated the exception by inspecting which 
+flags are set in the EXTI_PR register and clearing it.
+
+See *[1] "13.5.6 EXTI pending register (EXTI_PR)"* (page 290)
+
+
