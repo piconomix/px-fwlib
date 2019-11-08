@@ -23,7 +23,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_uart.h"
 #include "px_uart_defs.h"
-#include "px_circ_buffer_macros.h"
+#include "px_ring_buffer_macros.h"
 #include "px_board.h"
 #include "px_dbg.h"
 
@@ -40,9 +40,9 @@ typedef struct px_uart_data_s
     /// Transmit finished flag
     volatile bool tx_finished;
     /// Transmit circular buffer
-    PX_CIRC_BUF_DECLARE(tx_circ_buf, PX_UART_CFG_TX_BUF_SIZE);
+    PX_RING_BUF_DECLARE(tx_circ_buf, PX_UART_CFG_TX_BUF_SIZE);
     /// Receive circular buffer
-    PX_CIRC_BUF_DECLARE(rx_circ_buf, PX_UART_CFG_RX_BUF_SIZE);
+    PX_RING_BUF_DECLARE(rx_circ_buf, PX_UART_CFG_RX_BUF_SIZE);
 } px_uart_data_t;
 
 /* _____MACROS_______________________________________________________________ */
@@ -77,10 +77,10 @@ ISR(USART0_RX_vect)
         return;
     }
     // Make sure there is space available in buffer.
-    if(!PX_CIRC_BUF_FULL(px_uart0_data.rx_circ_buf))
+    if(!PX_RING_BUF_FULL(px_uart0_data.rx_circ_buf))
     {
         // Add data to ring buffer
-        PX_CIRC_BUF_WRITE(px_uart0_data.rx_circ_buf, data);
+        PX_RING_BUF_WRITE(px_uart0_data.rx_circ_buf, data);
     }
 }
 
@@ -90,7 +90,7 @@ ISR(USART0_UDRE_vect)
     uint8_t data;
 
     // Finished sending data?
-    if(PX_CIRC_BUF_EMPTY(px_uart0_data.tx_circ_buf))
+    if(PX_RING_BUF_EMPTY(px_uart0_data.tx_circ_buf))
     {
         // Disable transmit data register empty interrupt
         PX_BIT_SET_LO(UCSR0B, UDRIE0);
@@ -99,7 +99,7 @@ ISR(USART0_UDRE_vect)
         return;
     }
     // Send data
-    PX_CIRC_BUF_READ(px_uart0_data.tx_circ_buf, data);
+    PX_RING_BUF_READ(px_uart0_data.tx_circ_buf, data);
     UDR0 = data;
     // Clear flag to indicate that transmission is busy
     px_uart0_data.tx_finished = false;
@@ -129,10 +129,10 @@ ISR(USART1_RX_vect)
         return;
     }
     // Make sure there is space available in buffer.
-    if(!PX_CIRC_BUF_FULL(px_uart1_data.rx_circ_buf))
+    if(!PX_RING_BUF_FULL(px_uart1_data.rx_circ_buf))
     {
         // Add data to ring buffer
-        PX_CIRC_BUF_WRITE(px_uart1_data.rx_circ_buf, data);
+        PX_RING_BUF_WRITE(px_uart1_data.rx_circ_buf, data);
     }
 }
 
@@ -142,7 +142,7 @@ ISR(USART1_UDRE_vect)
     uint8_t data;
 
     // Finished sending data?
-    if(PX_CIRC_BUF_EMPTY(px_uart1_data.tx_circ_buf))
+    if(PX_RING_BUF_EMPTY(px_uart1_data.tx_circ_buf))
     {
         // Disable transmit data register empty interrupt
         PX_BIT_SET_LO(UCSR1B, UDRIE1);
@@ -151,7 +151,7 @@ ISR(USART1_UDRE_vect)
         return;
     }
     // Send data
-    PX_CIRC_BUF_READ(px_uart1_data.tx_circ_buf, data);
+    PX_RING_BUF_READ(px_uart1_data.tx_circ_buf, data);
     UDR1 = data;
     // Clear flag to indicate that transmission is busy
     px_uart1_data.tx_finished = false;
@@ -278,9 +278,9 @@ static void px_uart_init_peripheral_data(px_uart_per_t    peripheral,
     // Set transmit finished flag
     uart_data->tx_finished = true;
     // Initialise transmit circular buffer
-    PX_CIRC_BUF_INIT(uart_data->tx_circ_buf);
+    PX_RING_BUF_INIT(uart_data->tx_circ_buf);
     // Initialise receive circular buffer
-    PX_CIRC_BUF_INIT(uart_data->rx_circ_buf);
+    PX_RING_BUF_INIT(uart_data->rx_circ_buf);
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -522,13 +522,13 @@ void px_uart_put_char(px_uart_handle_t * handle, char data)
     PX_DBG_ASSERT(uart_data->open_counter != 0);
 
     // Wait until transmit buffer has space for one byte
-    while(PX_CIRC_BUF_FULL(uart_data->tx_circ_buf))
+    while(PX_RING_BUF_FULL(uart_data->tx_circ_buf))
     {
         ;
     }
 
     // Buffer the byte to be transmitted
-    PX_CIRC_BUF_WRITE(uart_data->tx_circ_buf, (uint8_t)data);
+    PX_RING_BUF_WRITE(uart_data->tx_circ_buf, (uint8_t)data);
 
     // Make sure transmit process is started by enabling interrupt
     px_uart_start_tx(uart_data->peripheral);
@@ -546,11 +546,11 @@ bool px_uart_wr_u8(px_uart_handle_t * handle, uint8_t data)
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
 
-    if(PX_CIRC_BUF_FULL(uart_data->tx_circ_buf))
+    if(PX_RING_BUF_FULL(uart_data->tx_circ_buf))
     {
         return false;
     }
-    PX_CIRC_BUF_WRITE(uart_data->tx_circ_buf, data);
+    PX_RING_BUF_WRITE(uart_data->tx_circ_buf, data);
 
     // Make sure transmit process is started by enabling interrupt
     px_uart_start_tx(uart_data->peripheral);
@@ -575,13 +575,13 @@ size_t px_uart_wr(px_uart_handle_t * handle, const void* data, size_t nr_of_byte
     while(nr_of_bytes)
     {
         // Make sure there is space available in buffer
-        if(PX_CIRC_BUF_FULL(uart_data->tx_circ_buf))
+        if(PX_RING_BUF_FULL(uart_data->tx_circ_buf))
         {
             break;
         }
 
         // Insert data into buffer
-        PX_CIRC_BUF_WRITE(uart_data->tx_circ_buf, *data_u8++);
+        PX_RING_BUF_WRITE(uart_data->tx_circ_buf, *data_u8++);
 
         // Next byte
         bytes_buffered++;
@@ -608,13 +608,13 @@ char px_uart_get_char(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data->open_counter != 0);
 
     // Wait until at least one byte has been received
-    while(PX_CIRC_BUF_EMPTY(uart_data->rx_circ_buf))
+    while(PX_RING_BUF_EMPTY(uart_data->rx_circ_buf))
     {
         ;
     }
 
     // Fetch received byte
-    PX_CIRC_BUF_READ(uart_data->rx_circ_buf, data);
+    PX_RING_BUF_READ(uart_data->rx_circ_buf, data);
 
     return (char)data;
 }
@@ -631,13 +631,13 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t* data)
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
 
-    if(PX_CIRC_BUF_EMPTY(uart_data->rx_circ_buf))
+    if(PX_RING_BUF_EMPTY(uart_data->rx_circ_buf))
     {
         return false;
     }
     else
     {
-        PX_CIRC_BUF_READ(uart_data->rx_circ_buf, *data);
+        PX_RING_BUF_READ(uart_data->rx_circ_buf, *data);
         return true;
     }
 }
@@ -659,12 +659,12 @@ size_t px_uart_rd(px_uart_handle_t * handle, void* buffer, size_t nr_of_bytes)
     while(nr_of_bytes)
     {
         // See if there is data in the buffer
-        if(PX_CIRC_BUF_EMPTY(uart_data->rx_circ_buf))
+        if(PX_RING_BUF_EMPTY(uart_data->rx_circ_buf))
         {
             break;
         }
         // Fetch byte
-        PX_CIRC_BUF_READ(uart_data->rx_circ_buf, *buffer_u8++);
+        PX_RING_BUF_READ(uart_data->rx_circ_buf, *buffer_u8++);
 
         // Next byte
         data_received++;
@@ -686,7 +686,7 @@ bool px_uart_wr_buf_full(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
 
-    if(PX_CIRC_BUF_FULL(uart_data->tx_circ_buf))
+    if(PX_RING_BUF_FULL(uart_data->tx_circ_buf))
     {
         return true;
     }
@@ -708,7 +708,7 @@ bool px_uart_wr_buf_empty(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
 
-    if(PX_CIRC_BUF_EMPTY(uart_data->tx_circ_buf))
+    if(PX_RING_BUF_EMPTY(uart_data->tx_circ_buf))
     {
         return true;
     }
@@ -730,7 +730,7 @@ bool px_uart_wr_finished(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
 
-    if(!(PX_CIRC_BUF_EMPTY(uart_data->tx_circ_buf)))
+    if(!(PX_RING_BUF_EMPTY(uart_data->tx_circ_buf)))
     {
         return false;
     }
@@ -749,7 +749,7 @@ bool px_uart_rd_buf_empty(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data != NULL);
     PX_DBG_ASSERT(uart_data->open_counter != 0);
 
-    if(PX_CIRC_BUF_EMPTY(uart_data->rx_circ_buf))
+    if(PX_RING_BUF_EMPTY(uart_data->rx_circ_buf))
     {
         return true;
     }

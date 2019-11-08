@@ -1,5 +1,5 @@
-#ifndef __PX_CIRC_BUFFER_MACROS_H__
-#define __PX_CIRC_BUFFER_MACROS_H__
+#ifndef __PX_RING_BUFFER_MACROS_H__
+#define __PX_RING_BUFFER_MACROS_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
     
-    Title:          px_circ_buffer_macros.h : Tiny, macro based, circular buffer implementation
+    Title:          px_ring_buffer_macros.h : Tiny, macro based, circular buffer implementation
     Author(s):      Pieter Conradie
     Creation Date:  2012-06-10
 
@@ -20,12 +20,12 @@
 
 /** 
  * @ingroup UTILS 
- * @defgroup PX_CIRC_BUFFER_MACROS px_circ_buffer_macros.h : Tiny, macro based, circular buffer implementation
+ * @defgroup PX_RING_BUFFER_MACROS px_ring_buffer_macros.h : Tiny, macro based, circular buffer implementation
  *  
  * Tiny, macro based, circular buffer implementation.
  *  
  * File(s):
- * - utils/px_circ_buffer_macros.h
+ * - utils/px_ring_buffer_macros.h
  *  
  * Source:
  *  
@@ -77,7 +77,7 @@ extern "C" {
 /* _____DEFINITIONS__________________________________________________________ */
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
-typedef uint8_t px_circ_buf_index_t;
+typedef uint8_t px_ring_buf_index_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
@@ -87,83 +87,83 @@ typedef uint8_t px_circ_buf_index_t;
 /**
  * Declare a static circular buffer structure.
  *  
- * @param px_circ_buf          Name of the circular buffer structure
- * @param px_circ_buf_size     Data buffer size, which *MUST* be a multiple of 2
- *                          and equal to or less than MAX_OF_TYPE(px_circ_buf_index_t),
+ * @param px_ring_buf          Name of the circular buffer structure
+ * @param px_ring_buf_size     Data buffer size, which *MUST* be a multiple of 2
+ *                          and equal to or less than MAX_OF_TYPE(px_ring_buf_index_t),
  *                          e.g. 2, 4, 8, 16, 32, ...
  */
-#define PX_CIRC_BUF_DECLARE(px_circ_buf, px_circ_buf_size) \
+#define PX_RING_BUF_DECLARE(px_ring_buf, px_ring_buf_size) \
 struct \
 { \
-    volatile px_circ_buf_index_t read_index; \
-    volatile px_circ_buf_index_t write_index; \
-    uint8_t                      buffer[(px_circ_buf_size)]; \
-} px_circ_buf
+    volatile px_ring_buf_index_t read_index; \
+    volatile px_ring_buf_index_t write_index; \
+    uint8_t                      buffer[(px_ring_buf_size)]; \
+} px_ring_buf
 
 /**
  * Initialise the circular buffer structure to be empty. 
  *  
- * @param px_circ_buf      Name of the circular buffer structure 
+ * @param px_ring_buf      Name of the circular buffer structure 
  */
-#define PX_CIRC_BUF_INIT(px_circ_buf) \
+#define PX_RING_BUF_INIT(px_ring_buf) \
    do \
    { \
-      (px_circ_buf).read_index  = 0; \
-      (px_circ_buf).write_index = 0; \
+      (px_ring_buf).read_index  = 0; \
+      (px_ring_buf).write_index = 0; \
    } \
    while(0)
 
 /**
  *  Test to see if the circular buffer is empty.
  *  
- *  @param px_circ_buf     Name of the circular buffer structure 
+ *  @param px_ring_buf     Name of the circular buffer structure 
  */
-#define PX_CIRC_BUF_EMPTY(px_circ_buf) \
-   ((px_circ_buf).read_index == (px_circ_buf).write_index)
+#define PX_RING_BUF_EMPTY(px_ring_buf) \
+   ((px_ring_buf).read_index == (px_ring_buf).write_index)
 
 
 /**
  *  Test to see if the circular buffer is full.
  *  
- *  @param px_circ_buf     Name of the circular buffer structure 
+ *  @param px_ring_buf     Name of the circular buffer structure 
  */
-#define PX_CIRC_BUF_FULL(px_circ_buf) \
-   ((px_circ_buf).read_index == (((px_circ_buf).write_index + 1) & (PX_SIZEOF_ARRAY((px_circ_buf).buffer)-1)))
+#define PX_RING_BUF_FULL(px_ring_buf) \
+   ((px_ring_buf).read_index == (((px_ring_buf).write_index + 1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer)-1)))
 
 /**
  *  Reads the next available byte from the circular buffer.
  *  
  *  The caller is responsible for making sure the circular buffer is not empty
- *  before the call. See PX_CIRC_BUF_EMPTY()
+ *  before the call. See PX_RING_BUF_EMPTY()
  *  
- *  @param px_circ_buf     Name of the circular buffer structure
+ *  @param px_ring_buf     Name of the circular buffer structure
  *  @param data         The variable that the byte will be stored in
  */
-#define PX_CIRC_BUF_READ(px_circ_buf, data) \
+#define PX_RING_BUF_READ(px_ring_buf, data) \
    do \
    { \
-      px_circ_buf_index_t index = (px_circ_buf).read_index; \
-      (data) = (px_circ_buf).buffer[index]; \
-      index = (index+1) & (PX_SIZEOF_ARRAY((px_circ_buf).buffer)-1); \
-      (px_circ_buf).read_index = index; \
+      px_ring_buf_index_t index = (px_ring_buf).read_index; \
+      (data) = (px_ring_buf).buffer[index]; \
+      index = (index+1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer)-1); \
+      (px_ring_buf).read_index = index; \
    } while(0)
 
 /**
  *  Writes a byte into the circular buffer.
  *  
  *  The caller is responsible for making sure the circular buffer is not full before
- *  the call. See PX_CIRC_BUF_FULL()
+ *  the call. See PX_RING_BUF_FULL()
  *  
- *  @param px_circ_buf     Name of the circular buffer structure
+ *  @param px_ring_buf     Name of the circular buffer structure
  *  @param data         The byte that will be written to the circular buffer
  */
-#define PX_CIRC_BUF_WRITE(px_circ_buf, data) \
+#define PX_RING_BUF_WRITE(px_ring_buf, data) \
    do \
    { \
-      px_circ_buf_index_t index = (px_circ_buf).write_index; \
-      (px_circ_buf).buffer[index] = (data); \
-      index = (index+1) & (PX_SIZEOF_ARRAY((px_circ_buf).buffer)-1); \
-      (px_circ_buf).write_index = index; \
+      px_ring_buf_index_t index = (px_ring_buf).write_index; \
+      (px_ring_buf).buffer[index] = (data); \
+      index = (index+1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer)-1); \
+      (px_ring_buf).write_index = index; \
    } while(0)
 
 /// @}
@@ -171,4 +171,4 @@ struct \
 }
 #endif
 
-#endif // #ifndef __PX_CIRC_BUFFER_MACROS_H__
+#endif // #ifndef __PX_RING_BUFFER_MACROS_H__

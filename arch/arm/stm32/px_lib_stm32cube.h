@@ -57,8 +57,5 @@
 #include "stm32l0xx_ll_wwdg.h"
 
 /// @}
-#ifdef __cplusplus
-}
-#endif
 
 #endif // #ifndef __PX_LIB_STM32CUBE_H__

@@ -22,7 +22,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_usb_cdc_stdio.h"
-#include "px_circ_buffer.h"
+#include "px_ring_buffer.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 #define PX_USB_CDC_STDIO_TX_BUF_SIZE   1024
@@ -47,11 +47,11 @@ FILE __stdin;
 #endif
 
 // Transmit circular buffer
-static px_circ_buf_t px_usb_cdc_stdio_tx_buffer;
+static px_ring_buf_t px_usb_cdc_stdio_tx_buffer;
 static uint8_t       px_usb_cdc_stdio_tx_buffer_data[PX_USB_CDC_STDIO_TX_BUF_SIZE];
 
 // Receive circular buffer
-static px_circ_buf_t px_usb_cdc_stdio_rx_buffer;
+static px_ring_buf_t px_usb_cdc_stdio_rx_buffer;
 static uint8_t       px_usb_cdc_stdio_rx_buffer_data[PX_USB_CDC_STDIO_RX_BUF_SIZE];
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
@@ -106,11 +106,11 @@ void _sys_exit(int return_code)
 void px_usb_cdc_stdio_init(void)
 {
     // Initialise transmit circular buffer
-    px_circ_buf_init(&px_usb_cdc_stdio_tx_buffer, 
+    px_ring_buf_init(&px_usb_cdc_stdio_tx_buffer, 
                      px_usb_cdc_stdio_tx_buffer_data, 
                      PX_USB_CDC_STDIO_TX_BUF_SIZE);
     // Initialise receive circular buffer
-    px_circ_buf_init(&px_usb_cdc_stdio_rx_buffer, 
+    px_ring_buf_init(&px_usb_cdc_stdio_rx_buffer, 
                      px_usb_cdc_stdio_rx_buffer_data, 
                      PX_USB_CDC_STDIO_RX_BUF_SIZE);
 
@@ -131,7 +131,7 @@ int px_usb_cdc_stdio_put_char(char data)
     }
     
     // Buffer transmit byte (wait until circular buffer accepts byte)
-    while(!px_circ_buf_wr_u8(&px_usb_cdc_stdio_tx_buffer, (uint8_t)data))
+    while(!px_ring_buf_wr_u8(&px_usb_cdc_stdio_tx_buffer, (uint8_t)data))
     {
         ;
     }
@@ -144,7 +144,7 @@ int px_usb_cdc_stdio_get_char(void)
     uint8_t data;
 
     // Wait until a byte has been received
-    while(!px_circ_buf_rd_u8(&px_usb_cdc_stdio_rx_buffer, &data))
+    while(!px_ring_buf_rd_u8(&px_usb_cdc_stdio_rx_buffer, &data))
     {
         ;
     }
@@ -154,31 +154,31 @@ int px_usb_cdc_stdio_get_char(void)
 
 bool px_usb_cdc_stdio_rd_u8(uint8_t * data)
 {
-    return px_circ_buf_rd_u8(&px_usb_cdc_stdio_rx_buffer, data);
+    return px_ring_buf_rd_u8(&px_usb_cdc_stdio_rx_buffer, data);
 }
 
 bool px_usb_cdc_stdio_wr_u8(uint8_t data)
 {
-    return px_circ_buf_wr_u8(&px_usb_cdc_stdio_tx_buffer, data);
+    return px_ring_buf_wr_u8(&px_usb_cdc_stdio_tx_buffer, data);
 }
 
 void _px_usb_cdc_stdio_on_rx_byte(uint8_t data)
 {
-    px_circ_buf_wr_u8(&px_usb_cdc_stdio_rx_buffer, data);
+    px_ring_buf_wr_u8(&px_usb_cdc_stdio_rx_buffer, data);
 }
 
 void _px_usb_cdc_stdio_on_rx_data(const uint8_t * data, uint16_t nr_of_bytes)
 {
-    px_circ_buf_wr(&px_usb_cdc_stdio_rx_buffer, data, nr_of_bytes);
+    px_ring_buf_wr(&px_usb_cdc_stdio_rx_buffer, data, nr_of_bytes);
 }
 
 bool _px_usb_cdc_stdio_get_tx_byte(uint8_t * data)
 {
-    return px_circ_buf_rd_u8(&px_usb_cdc_stdio_tx_buffer, data);
+    return px_ring_buf_rd_u8(&px_usb_cdc_stdio_tx_buffer, data);
 }
 
 uint16_t _px_usb_cdc_stdio_get_tx_data(uint8_t * data, uint16_t nr_of_bytes)
 {
-    return px_circ_buf_rd(&px_usb_cdc_stdio_tx_buffer, data, nr_of_bytes);
+    return px_ring_buf_rd(&px_usb_cdc_stdio_tx_buffer, data, nr_of_bytes);
 }
 

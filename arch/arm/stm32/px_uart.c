@@ -22,7 +22,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_uart.h"
 #include "px_board.h"
-#include "px_circ_buffer.h"
+#include "px_ring_buffer.h"
 #include "px_lib_stm32cube.h"
 #include "px_dbg.h"
 
@@ -41,9 +41,9 @@ typedef struct px_uart_data_s
     /// Transmit finished flag
     volatile bool tx_finished;
     /// Transmit circular buffer
-    px_circ_buf_t tx_circ_buf;
+    px_ring_buf_t tx_circ_buf;
     /// Receive circular buffer
-    px_circ_buf_t rx_circ_buf;
+    px_ring_buf_t rx_circ_buf;
 } px_uart_data_t;
 
 /* _____MACROS_______________________________________________________________ */
@@ -62,6 +62,12 @@ static px_uart_data_t px_uart1_data;
 static uint8_t        px_uart2_tx_circ_buf_data[PX_UART_CFG_UART2_TX_BUF_SIZE];
 static uint8_t        px_uart2_rx_circ_buf_data[PX_UART_CFG_UART2_RX_BUF_SIZE];
 static px_uart_data_t px_uart2_data;
+#endif
+
+#if PX_UART_CFG_UART3_EN
+static uint8_t        px_uart3_tx_circ_buf_data[PX_UART_CFG_UART3_TX_BUF_SIZE];
+static uint8_t        px_uart3_rx_circ_buf_data[PX_UART_CFG_UART3_RX_BUF_SIZE];
+static px_uart_data_t px_uart3_data;
 #endif
 
 #if PX_UART_CFG_UART4_EN
@@ -112,7 +118,7 @@ static void uart_irq_handler(px_uart_data_t * uart_data)
         {
             // Add received byte to circular buffer
             // (byte is discarded if buffer is full)
-            px_circ_buf_wr_u8(&uart_data->rx_circ_buf, data);
+            px_ring_buf_wr_u8(&uart_data->rx_circ_buf, data);
         }
     }
 
@@ -123,7 +129,7 @@ static void uart_irq_handler(px_uart_data_t * uart_data)
         if(LL_USART_IsActiveFlag_TXE(usart_base_adr))
         {
             // Data to transmit?
-            if(px_circ_buf_rd_u8(&uart_data->tx_circ_buf, &data))
+            if(px_ring_buf_rd_u8(&uart_data->tx_circ_buf, &data))
             {
                 // Load transmit register with data
                 LL_USART_TransmitData8(usart_base_adr, data);
@@ -167,6 +173,14 @@ void USART1_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
     uart_irq_handler(&px_uart2_data);
+}
+#endif
+
+#if PX_UART_CFG_UART3_EN
+/// USART2 interrupt handler
+void USART3_IRQHandler(void)
+{
+    uart_irq_handler(&px_uart3_data);
 }
 #endif
 
@@ -217,6 +231,11 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
 #if PX_UART_CFG_UART2_EN
     case PX_UART_PER_2:
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART2);
+        break;
+#endif
+#if PX_UART_CFG_UART3_EN
+    case PX_UART_PER_3:
+        LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART3);
         break;
 #endif
 #if PX_UART_CFG_UART4_EN
@@ -326,6 +345,11 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
         NVIC_EnableIRQ(USART2_IRQn);
         break;
 #endif
+#if PX_UART_CFG_UART3_EN
+    case PX_UART_PER_3:
+        NVIC_EnableIRQ(USART3_IRQn);
+        break;
+#endif
 #if PX_UART_CFG_UART4_EN
     case PX_UART_PER_4:
         NVIC_EnableIRQ(USART4_5_IRQn);
@@ -356,10 +380,10 @@ static void px_uart_init_peripheral_data(px_uart_per_t    peripheral,
 #if PX_UART_CFG_UART1_EN
     case PX_UART_PER_1:
         uart_data->usart_base_adr = USART1;
-        px_circ_buf_init(&uart_data->tx_circ_buf,
+        px_ring_buf_init(&uart_data->tx_circ_buf,
                          px_uart1_tx_circ_buf_data,
                          PX_UART_CFG_UART1_TX_BUF_SIZE);
-        px_circ_buf_init(&uart_data->rx_circ_buf,
+        px_ring_buf_init(&uart_data->rx_circ_buf,
                          px_uart1_rx_circ_buf_data,
                          PX_UART_CFG_UART1_RX_BUF_SIZE);
         break;
@@ -367,21 +391,32 @@ static void px_uart_init_peripheral_data(px_uart_per_t    peripheral,
 #if PX_UART_CFG_UART2_EN
     case PX_UART_PER_2:
         uart_data->usart_base_adr = USART2;
-        px_circ_buf_init(&uart_data->tx_circ_buf,
+        px_ring_buf_init(&uart_data->tx_circ_buf,
                          px_uart2_tx_circ_buf_data,
                          PX_UART_CFG_UART2_TX_BUF_SIZE);
-        px_circ_buf_init(&uart_data->rx_circ_buf,
+        px_ring_buf_init(&uart_data->rx_circ_buf,
                          px_uart2_rx_circ_buf_data,
                          PX_UART_CFG_UART2_RX_BUF_SIZE);
+        break;
+#endif
+#if PX_UART_CFG_UART3_EN
+    case PX_UART_PER_3:
+        uart_data->usart_base_adr = USART3;
+        px_ring_buf_init(&uart_data->tx_circ_buf,
+                         px_uart3_tx_circ_buf_data,
+                         PX_UART_CFG_UART3_TX_BUF_SIZE);
+        px_ring_buf_init(&uart_data->rx_circ_buf,
+                         px_uart3_rx_circ_buf_data,
+                         PX_UART_CFG_UART3_RX_BUF_SIZE);
         break;
 #endif
 #if PX_UART_CFG_UART4_EN
     case PX_UART_PER_4:
         uart_data->usart_base_adr = USART4;
-        px_circ_buf_init(&uart_data->tx_circ_buf,
+        px_ring_buf_init(&uart_data->tx_circ_buf,
                          px_uart4_tx_circ_buf_data,
                          PX_UART_CFG_UART4_TX_BUF_SIZE);
-        px_circ_buf_init(&uart_data->rx_circ_buf,
+        px_ring_buf_init(&uart_data->rx_circ_buf,
                          px_uart4_rx_circ_buf_data,
                          PX_UART_CFG_UART4_RX_BUF_SIZE);
         break;
@@ -389,10 +424,10 @@ static void px_uart_init_peripheral_data(px_uart_per_t    peripheral,
 #if PX_UART_CFG_UART5_EN
     case PX_UART_PER_5:
         uart_data->usart_base_adr = USART5;
-        px_circ_buf_init(&uart_data->tx_circ_buf,
+        px_ring_buf_init(&uart_data->tx_circ_buf,
                          px_uart5_tx_circ_buf_data,
                          PX_UART_CFG_UART5_TX_BUF_SIZE);
-        px_circ_buf_init(&uart_data->rx_circ_buf,
+        px_ring_buf_init(&uart_data->rx_circ_buf,
                          px_uart5_rx_circ_buf_data,
                          PX_UART_CFG_UART5_RX_BUF_SIZE);
         break;
@@ -415,6 +450,9 @@ void px_uart_init(void)
 #endif
 #if PX_UART_CFG_UART2_EN
     px_uart_init_peripheral_data(PX_UART_PER_2, &px_uart2_data);
+#endif
+#if PX_UART_CFG_UART3_EN
+    px_uart_init_peripheral_data(PX_UART_PER_3, &px_uart3_data);
 #endif
 #if PX_UART_CFG_UART4_EN
     px_uart_init_peripheral_data(PX_UART_PER_4, &px_uart4_data);
@@ -461,6 +499,11 @@ bool px_uart_open2(px_uart_handle_t *  handle,
 #if PX_UART_CFG_UART2_EN
     case PX_UART_PER_2:
         uart_data = &px_uart2_data;
+        break;
+#endif
+#if PX_UART_CFG_UART3_EN
+    case PX_UART_PER_3:
+        uart_data = &px_uart3_data;
         break;
 #endif
 #if PX_UART_CFG_UART4_EN
@@ -541,6 +584,12 @@ bool px_uart_close(px_uart_handle_t * handle)
         break;
 #endif
 
+#if PX_UART_CFG_UART3_EN
+    case PX_UART_PER_3:
+        NVIC_DisableIRQ(USART3_IRQn);
+        break;
+#endif
+
 #if PX_UART_CFG_UART4_EN
     case PX_UART_PER_4:
 #if PX_UART_CFG_UART5_EN
@@ -583,6 +632,11 @@ bool px_uart_close(px_uart_handle_t * handle)
         LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_USART2);
         break;
 #endif
+#if PX_UART_CFG_UART3_EN
+    case PX_UART_PER_3:
+        LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_USART2);
+        break;
+#endif
 #if PX_UART_CFG_UART4_EN
     case PX_UART_PER_4:
         LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_USART4);
@@ -620,7 +674,7 @@ void px_uart_put_char(px_uart_handle_t * handle, char data)
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Wait until transmit buffer has space for one byte and add it
-    while(!px_circ_buf_wr_u8(&uart_data->tx_circ_buf, (uint8_t)data))
+    while(!px_ring_buf_wr_u8(&uart_data->tx_circ_buf, (uint8_t)data))
     {
         ;
     }
@@ -643,7 +697,7 @@ bool px_uart_wr_u8(px_uart_handle_t * handle, uint8_t data)
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Add byte to transmit buffer
-    if(!px_circ_buf_wr_u8(&uart_data->tx_circ_buf, (uint8_t)data))
+    if(!px_ring_buf_wr_u8(&uart_data->tx_circ_buf, (uint8_t)data))
     {
         // Could not buffer byte for transmission
         return false;
@@ -674,11 +728,11 @@ size_t px_uart_wr(px_uart_handle_t * handle,
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Add bytes to transmit buffer
-    bytes_buffered = px_circ_buf_wr(&uart_data->tx_circ_buf, 
-                                         data_u8, 
-                                         nr_of_bytes);
+    bytes_buffered = px_ring_buf_wr(&uart_data->tx_circ_buf, 
+                                    data_u8, 
+                                    nr_of_bytes);
     
-    if(bytes_buffered != 0)
+    if(bytes_buffered > 0)
     {
         // Make sure transmit process is started by enabling interrupt
         px_uart_start_tx(uart_data->usart_base_adr);
@@ -703,7 +757,7 @@ char px_uart_get_char(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Wait until a byte is in receive buffer and fetch it
-    while(!px_circ_buf_rd_u8(&uart_data->rx_circ_buf, &data))
+    while(!px_ring_buf_rd_u8(&uart_data->rx_circ_buf, &data))
     {
         ;
     }
@@ -725,7 +779,7 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Return byte from receive buffer (if it is available)
-    return px_circ_buf_rd_u8(&uart_data->rx_circ_buf, data);
+    return px_ring_buf_rd_u8(&uart_data->rx_circ_buf, data);
 }
 
 size_t px_uart_rd(px_uart_handle_t * handle, 
@@ -744,7 +798,7 @@ size_t px_uart_rd(px_uart_handle_t * handle,
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Fetch data from receive buffer (up to the specified number of bytes)
-    return px_circ_buf_rd(&uart_data->rx_circ_buf, 
+    return px_ring_buf_rd(&uart_data->rx_circ_buf, 
                                buffer, 
                                nr_of_bytes);
 }
@@ -762,7 +816,7 @@ bool px_uart_wr_buf_full(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data->open_counter != 0);
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
-    return px_circ_buf_full(&uart_data->tx_circ_buf);
+    return px_ring_buf_is_full(&uart_data->tx_circ_buf);
 }
 
 bool px_uart_wr_buf_empty(px_uart_handle_t * handle)
@@ -778,7 +832,7 @@ bool px_uart_wr_buf_empty(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data->open_counter != 0);
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
-    return px_circ_buf_empty(&uart_data->tx_circ_buf);
+    return px_ring_buf_is_empty(&uart_data->tx_circ_buf);
 }
 
 bool px_uart_wr_finished(px_uart_handle_t * handle)
@@ -795,7 +849,7 @@ bool px_uart_wr_finished(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
     // Any data to be transmitted in buffer?
-    if(!px_circ_buf_empty(&uart_data->tx_circ_buf))
+    if(!px_ring_buf_is_empty(&uart_data->tx_circ_buf))
     {
         return false;
     }
@@ -816,7 +870,7 @@ bool px_uart_rd_buf_empty(px_uart_handle_t * handle)
     PX_DBG_ASSERT(uart_data->open_counter != 0);
     PX_DBG_ASSERT(uart_data->usart_base_adr != NULL);
 
-    return px_circ_buf_empty(&uart_data->rx_circ_buf);
+    return px_ring_buf_is_empty(&uart_data->rx_circ_buf);
 }
 
 void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)

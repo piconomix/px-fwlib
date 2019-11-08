@@ -37,7 +37,7 @@ Extensive ecosystem included:
 
 The flagship application is the @ref HERO_BOARD_APP_CLI that creates a 
 "Un*x Shell"-like environment running on the Hero Board so that you can easily 
-experiment with GPIO, ADC, I2C, SPI and 1-Wire using only 
+experiment with GPIO, ADC, DAC, I2C, SPI and 1-Wire using only 
 [ANSI/VT100 Terminal][tera_term] software:
 
 ![](hero_board_cli_preview.gif)
@@ -78,22 +78,24 @@ The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
     + I2C x 1 with 4.7k pull-up resistors (NXP Inter-Integrated Circuit bus)
     + SPI x 1 (Serial Peripheral Interface)
 - Li-Po battery charger and zero-burden voltage monitoring circuit
-- Efficient power-path management (power from USB or battery; ideal diode circuit)
+- Efficient power-path management (power from USB or battery using ideal diode circuit)
 - True power on/off circuit
 - 95% efficient [TI LM3670MF](http://www.ti.com/lit/ds/symlink/lm3670.pdf)
   step-down DC-DC regulator for outstanding battery life (350 mA max load; Iq = 15 uA)
 - Rock-solid [FTDI FT230XS](http://www.ftdichip.com/Products/ICs/FT230X.html) 
-  USB-Serial bridge for serial communication, bootloader and alternative +5V 
+  USB-Serial bridge for serial communication, bootloader or alternative +5V 
   supply.
 - [Adesto AT25SF041](https://www.adestotech.com/wp-content/uploads/DS-AT25SF041_044.pdf)
   4 Mbit (512 kB) SPI Serial Flash Memory for uncomplicated data storage 
   capability
 - Spring-loaded push-push micro SD card connector for easy insertion and removal
-- [Sparkfun QWIIC](https://www.sparkfun.com/qwiic) and 
-  [seeed GROVE](http://wiki.seeedstudio.com/Grove_System/) connector for easy 
-  connection to a whole ecosystem of +3.3V I2C boards.
+- [Sparkfun Qwiic](https://www.sparkfun.com/qwiic) / [STEMMA QT](https://learn.adafruit.com/introducing-adafruit-stemma-qt/what-is-stemma-qt)
+  and [Seeed GROVE](http://wiki.seeedstudio.com/Grove_System/) connector for 
+  easy connection to a whole ecosystem of **+3.3V** [I2C](https://www.nxp.com/video/what-is-the-i2c-bus-an-introduction-from-nxp:NXP-WHAT-IS-THE-I2C-BUS)
+  boards.
 - Intuitive 2.54 mm (0.1 inch) pitch PRG/DBG SWD header
 - Standard 10-pin 1.27 mm (0.05 inch) [ARM Cortex Debug Connector](http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf)
+  SMD footprint
 - 4 x 3.4 mm mounting holes; ideal for 
   [M3 threaded hexagonal spacers](http://www.digikey.com/catalog/en/partgroup/hexagonal-metric-spacers/12921)
 
@@ -105,7 +107,7 @@ option. The [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/
 contains 3 build variants (full, Lite and Deluxe) and can be consulted for an 
 exact view of electronic components that are present or absent.
 
-On the Lite Edition, the USB-Serial bridge (USB2) is left out, but a vertical 
+On the Lite Edition, the USB-Serial bridge (USB2) is absent, but a vertical 
 2.54 mm (0.1 inch) header is populated to provide a connection to UART1 of the 
 STM32.
 
@@ -125,9 +127,9 @@ Here is a table highlighting the differences:
 | Zero-burden battery voltage monitoring circuit                         | NO           | YES            |
 | Efficient power-path management                                        | NO           | YES            |
 | USB-Serial bridge (USB2)                                               | NO           | YES            |
-| 512k SPI Serial Flash Memory                                           | NO           | YES            |
-| Sparkfun QWICC Connector                                               | YES          | YES            |
-| seeed GROVE I2C Connector                                              | NO           | YES            |
+| 512k SPI Serial Flash Memory                                           | YES          | YES            |
+| Sparkfun Qwiic / STEMMA QT Connector                                   | YES          | YES            |
+| Seeed GROVE I2C Connector                                              | YES          | YES            |
 
 6. Design Documents{#HERO_BOARD_DESIGN}
 =======================================
