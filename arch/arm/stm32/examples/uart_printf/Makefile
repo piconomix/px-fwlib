@@ -71,7 +71,7 @@ SRC += $(BSP)/px_board.c
 SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
 SRC += $(PICOLIB)/$(ARCH)/px_uart.c
 SRC += $(PICOLIB)/$(ARCH)/px_uart_stdio.c
-SRC += $(PICOLIB)/utils/px_ring_buffer.c
+SRC += $(PICOLIB)/utils/px_ring_buf.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 

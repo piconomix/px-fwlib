@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
     
-    Title:          px_ring_buffer_macros.h : Tiny, macro based, circular buffer implementation
+    Title:          px_ring_buf_macros.h : Tiny, macro based, circular buffer implementation
     Author(s):      Pieter Conradie
     Creation Date:  2012-06-10
 
@@ -20,12 +20,12 @@
 
 /** 
  * @ingroup UTILS 
- * @defgroup PX_RING_BUFFER_MACROS px_ring_buffer_macros.h : Tiny, macro based, circular buffer implementation
+ * @defgroup PX_RING_BUFFER_MACROS px_ring_buf_macros.h : Tiny, macro based, circular buffer implementation
  *  
  * Tiny, macro based, circular buffer implementation.
  *  
  * File(s):
- * - utils/px_ring_buffer_macros.h
+ * - utils/px_ring_buf_macros.h
  *  
  * Source:
  *  

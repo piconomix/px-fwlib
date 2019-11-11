@@ -78,7 +78,7 @@ SRC += $(PICOLIB)/gfx/px_gfx.c
 SRC += $(PICOLIB)/gfx/px_gfx_lcd_st7567_jhd12864.c
 SRC += $(PICOLIB)/gfx/fonts/px_gfx_font_5x7.c
 SRC += $(PICOLIB)/utils/px_dbg.c
-SRC += $(PICOLIB)/utils/px_ring_buffer.c
+SRC += $(PICOLIB)/utils/px_ring_buf.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 

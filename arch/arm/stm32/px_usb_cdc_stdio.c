@@ -22,7 +22,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_usb_cdc_stdio.h"
-#include "px_ring_buffer.h"
+#include "px_ring_buf.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 #define PX_USB_CDC_STDIO_TX_BUF_SIZE   1024

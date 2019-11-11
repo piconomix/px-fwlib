@@ -22,7 +22,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_uart.h"
 #include "px_board.h"
-#include "px_ring_buffer.h"
+#include "px_ring_buf.h"
 #include "px_lib_stm32cube.h"
 #include "px_dbg.h"
 

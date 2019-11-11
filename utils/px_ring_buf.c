@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
     
-    Title:          px_ring_buffer.h : FIFO circular buffer
+    Title:          px_ring_buf.h : FIFO circular buffer
     Author(s):      Pieter Conradie
     Creation Date:  2008-08-06
 
@@ -19,7 +19,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_ring_buffer.h"
+#include "px_ring_buf.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 
@@ -79,17 +79,14 @@ bool px_ring_buf_wr_u8(px_ring_buf_t * px_ring_buf,
 {
     // Calculate next position
     px_ring_buf_idx_t next = px_ring_buf_next(px_ring_buf, px_ring_buf->wr);
-
     // Buffer full?
     if (next == px_ring_buf->rd)
     {
         // Yes. Discard byte
         return false;
     }
-
     // Add data to buffer
     px_ring_buf->buf[px_ring_buf->wr] = data;
-
     // Advance index
     px_ring_buf->wr = next;
 
@@ -114,13 +111,10 @@ px_ring_buf_idx_t px_ring_buf_wr(px_ring_buf_t * px_ring_buf,
             // Yes. Discard rest of data
             break;
         }
-
         // Add data to buffer
         px_ring_buf->buf[px_ring_buf->wr] = *data_u8++;
-
         // Advance index
         px_ring_buf->wr = next;
-
         // Next byte
         bytes_written++;
         nr_of_bytes_to_wr--;
@@ -138,10 +132,8 @@ bool px_ring_buf_rd_u8(px_ring_buf_t * px_ring_buf,
         // Buffer is empty
         return false;
     }
-
     // Fetch data
     *data = px_ring_buf->buf[px_ring_buf->rd];
-
     // Advance index
     px_ring_buf->rd = px_ring_buf_next(px_ring_buf, px_ring_buf->rd);
 
@@ -163,13 +155,10 @@ px_ring_buf_idx_t px_ring_buf_rd(px_ring_buf_t * px_ring_buf,
             // Buffer is empty
             break;
         }
-
         // Fetch data
         *data_u8++ = px_ring_buf->buf[px_ring_buf->rd];
-
         // Advance index
         px_ring_buf->rd = px_ring_buf_next(px_ring_buf, px_ring_buf->rd);
-
         // Next byte
         bytes_read++;
         nr_of_bytes_to_rd--;

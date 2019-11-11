@@ -23,7 +23,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_uart.h"
 #include "px_uart_defs.h"
-#include "px_ring_buffer_macros.h"
+#include "px_ring_buf_macros.h"
 #include "px_board.h"
 #include "px_dbg.h"
 

@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
     
-    Title:          px_ring_buffer.h : FIFO circular buffer
+    Title:          px_ring_buf.h : FIFO circular buffer
     Author(s):      Pieter Conradie
     Creation Date:  2008-08-06
 
@@ -20,16 +20,16 @@
 
 /** 
  *  @ingroup UTILS
- *  @defgroup PX_RING_BUFFER px_ring_buffer.h : FIFO circular buffer
+ *  @defgroup PX_RING_BUFFER px_ring_buf.h : FIFO circular buffer
  *  
  *  A data structure that uses a single, fixed-size buffer as if it were
  *  connected end-to-end (circular).
  *  
  *  File(s):
- *  - utils/px_ring_buffer.h
- *  - utils/px_ring_buffer.c
+ *  - utils/px_ring_buf.h
+ *  - utils/px_ring_buf.c
  *  
- *  A fixed-sized buffer is managed as a FIFO buffer with a "zero-copy" policy,
+ *  A fixed-sized array is managed as a FIFO buffer with a "zero-copy" policy,
  *  i.e. data is not shifted (copied) when data is removed or added to the
  *  buffer. If more data is written to the buffer than there is space for, it is
  *  ignored/discarded; no buffer overflow vulnerability.
