@@ -674,7 +674,7 @@ size_t px_uart_rd(px_uart_handle_t * handle, void* buffer, size_t nr_of_bytes)
     return data_received;
 }
 
-bool px_uart_wr_buf_full(px_uart_handle_t * handle)
+bool px_uart_wr_buf_is_full(px_uart_handle_t * handle)
 {
     px_uart_data_t * uart_data;
 
@@ -696,7 +696,7 @@ bool px_uart_wr_buf_full(px_uart_handle_t * handle)
     }
 }
 
-bool px_uart_wr_buf_empty(px_uart_handle_t * handle)
+bool px_uart_wr_buf_is_empty(px_uart_handle_t * handle)
 {
     px_uart_data_t * uart_data;
 
@@ -718,7 +718,7 @@ bool px_uart_wr_buf_empty(px_uart_handle_t * handle)
     }
 }
 
-bool px_uart_wr_finished(px_uart_handle_t * handle)
+bool px_uart_wr_is_done(px_uart_handle_t * handle)
 {
     px_uart_data_t * uart_data;
 
@@ -737,7 +737,7 @@ bool px_uart_wr_finished(px_uart_handle_t * handle)
     return uart_data->tx_finished;
 }
 
-bool px_uart_rd_buf_empty(px_uart_handle_t * handle)
+bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle)
 {
     px_uart_data_t * uart_data;
 

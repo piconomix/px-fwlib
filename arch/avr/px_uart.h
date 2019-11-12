@@ -239,7 +239,7 @@ size_t px_uart_rd(px_uart_handle_t * handle,
  *  @retval true    Transmit buffer is full
  *  @retval false   Transmit buffer has space for at least one byte
  */
-bool px_uart_wr_buf_full(px_uart_handle_t * handle);
+bool px_uart_wr_buf_is_full(px_uart_handle_t * handle);
 
 /** 
  *  See if transmit buffer is empty.
@@ -253,7 +253,7 @@ bool px_uart_wr_buf_full(px_uart_handle_t * handle);
  *  @retval true    Transmit buffer is empty
  *  @retval false   Transmit buffer has space for at least one byte
  */
-bool px_uart_wr_buf_empty(px_uart_handle_t * handle);
+bool px_uart_wr_buf_is_empty(px_uart_handle_t * handle);
 
 /** 
  *  See if all transmission has finished, including last byte.
@@ -266,7 +266,7 @@ bool px_uart_wr_buf_empty(px_uart_handle_t * handle);
  *  @retval true    Transmision completely finished
  *  @retval false   Busy with transmission
  */
-bool px_uart_wr_finished(px_uart_handle_t * handle);
+bool px_uart_wr_is_done(px_uart_handle_t * handle);
 
 /**
  *  See if there is received data in the receive buffer.
@@ -276,7 +276,7 @@ bool px_uart_wr_finished(px_uart_handle_t * handle);
  *  @retval true    There is received data in the receive buffer
  *  @retval false   The receive buffer is empty
  */
-bool px_uart_rd_buf_empty(px_uart_handle_t * handle);
+bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle);
 
 /**
  *  Change UART peripheral baud rate. 

@@ -54,7 +54,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
     uint8_t     i;    
 
     // Wait until last byte has been transmitted
-    while(!px_uart_wr_finished(&px_uart_handle))
+    while(!px_uart_wr_is_done(&px_uart_handle))
     {
         ;
     }
@@ -74,7 +74,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
     }
 
     // Wait until last byte has been transmitted
-    while(!px_uart_wr_finished(&px_uart_handle))
+    while(!px_uart_wr_is_done(&px_uart_handle))
     {
         ;
     }
@@ -111,7 +111,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     timeout_ms = px_cli_argv_val.u16;
 
     // Wait until last byte has been transmitted
-    while(!px_uart_wr_finished(&px_uart_handle))
+    while(!px_uart_wr_is_done(&px_uart_handle))
     {
         ;
     }
@@ -137,7 +137,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     nr_of_bytes = i;
 
     // Wait until last byte has been transmitted
-    while(!px_uart_wr_finished(&px_uart_handle))
+    while(!px_uart_wr_is_done(&px_uart_handle))
     {
         ;
     }
@@ -181,7 +181,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     timeout_ms = px_cli_argv_val.u16;
 
     // Wait until last byte has been transmitted
-    while(!px_uart_wr_finished(&px_uart_handle))
+    while(!px_uart_wr_is_done(&px_uart_handle))
     {
         ;
     }
@@ -218,7 +218,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     nr_of_bytes = i;
 
     // Wait until last byte has been transmitted
-    while(!px_uart_wr_finished(&px_uart_handle))
+    while(!px_uart_wr_is_done(&px_uart_handle))
     {
         ;
     }
@@ -255,7 +255,7 @@ static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
     timeout_ms = px_cli_argv_val.u16;
 
     // Wait until last byte has been transmitted
-    while(!px_uart_wr_finished(&px_uart_handle))
+    while(!px_uart_wr_is_done(&px_uart_handle))
     {
         ;
     }
@@ -313,7 +313,7 @@ static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
     data[i] = '\0';
 
     // Wait until last byte has been transmitted
-    while(!px_uart_wr_finished(&px_uart_handle))
+    while(!px_uart_wr_is_done(&px_uart_handle))
     {
         ;
     }    
