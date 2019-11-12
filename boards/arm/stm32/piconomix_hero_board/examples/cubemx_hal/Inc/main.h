@@ -121,8 +121,8 @@ void Error_Handler(void);
 #define VBAT_MEAS_EN_GPIO_Port GPIOC
 #define PWR_HOLD_Pin GPIO_PIN_8
 #define PWR_HOLD_GPIO_Port GPIOC
-#define LCD_BTN_6_YES_Pin GPIO_PIN_9
-#define LCD_BTN_6_YES_GPIO_Port GPIOC
+#define LCD_BTN_6_NO_Pin GPIO_PIN_9
+#define LCD_BTN_6_NO_GPIO_Port GPIOC
 #define USB_DET_Pin GPIO_PIN_8
 #define USB_DET_GPIO_Port GPIOA
 #define UART1_TX_Pin GPIO_PIN_9
@@ -137,8 +137,8 @@ void Error_Handler(void);
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14
 #define SWCLK_GPIO_Port GPIOA
-#define LCD_BTN_5_NO_Pin GPIO_PIN_15
-#define LCD_BTN_5_NO_GPIO_Port GPIOA
+#define LCD_BTN_5_YES_Pin GPIO_PIN_15
+#define LCD_BTN_5_YES_GPIO_Port GPIOA
 #define UART4_TX_Pin GPIO_PIN_10
 #define UART4_TX_GPIO_Port GPIOC
 #define UART4_RX_Pin GPIO_PIN_11

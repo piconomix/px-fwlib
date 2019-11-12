@@ -77,6 +77,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
+  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -120,15 +121,15 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
       // Button being pressed?
-      if(HAL_GPIO_ReadPin(LCD_BTN_6_YES_GPIO_Port, LCD_BTN_6_YES_Pin) == GPIO_PIN_RESET)
+      if(HAL_GPIO_ReadPin(LCD_BTN_5_YES_GPIO_Port, LCD_BTN_5_YES_Pin) == GPIO_PIN_RESET)
       {
           // Enable LED
-          HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_SET);
+          HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_RESET);
       }
       else
       {
           // Disable LED
-          HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_RESET);
+          HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_SET);
       }
   }
   /* USER CODE END 3 */

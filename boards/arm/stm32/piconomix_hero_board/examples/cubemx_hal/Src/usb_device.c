@@ -85,6 +85,7 @@ void MX_USB_DEVICE_Init(void)
   {
     Error_Handler();
   }
+
   /* USER CODE BEGIN USB_DEVICE_Init_PostTreatment */
   
   /* USER CODE END USB_DEVICE_Init_PostTreatment */
