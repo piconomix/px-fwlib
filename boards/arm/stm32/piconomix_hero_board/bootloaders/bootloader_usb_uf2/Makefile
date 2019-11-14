@@ -147,7 +147,7 @@ INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
 CDEFS += PX_DBG=0
-CDEFS += STM32L072xx
+CDEFS += STM32L0 STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER
 #CDEFS += BOOT_CLEAR_REST_OF_FLASH
@@ -155,7 +155,7 @@ CDEFS += USE_FULL_LL_DRIVER
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
 #CPPDEFS += __STDC_LIMIT_MACROS
 #CPPDEFS += __STDC_CONSTANT_MACROS
-CPPDEFS += 
+CPPDEFS += STM32L0 STM32L072xx
 
 # (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
 ADEFS += 
