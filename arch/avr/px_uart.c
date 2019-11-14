@@ -37,8 +37,8 @@ typedef struct px_uart_data_s
     px_uart_per_t peripheral;
     /// Number of open handles referencing peripheral
     uint8_t open_counter;
-    /// Transmit finished flag
-    volatile bool tx_finished;
+    /// Transmit done flag
+    volatile bool tx_done;
     /// Transmit circular buffer
     PX_RING_BUF_DECLARE(tx_circ_buf, PX_UART_CFG_TX_BUF_SIZE);
     /// Receive circular buffer
@@ -102,14 +102,14 @@ ISR(USART0_UDRE_vect)
     PX_RING_BUF_READ(px_uart0_data.tx_circ_buf, data);
     UDR0 = data;
     // Clear flag to indicate that transmission is busy
-    px_uart0_data.tx_finished = false;
+    px_uart0_data.tx_done = false;
 }
 
 /// Transmit complete interrupt handler
 ISR(USART0_TX_vect)
 {
     // Set flag to indicate that transmission has finished
-    px_uart0_data.tx_finished = true;
+    px_uart0_data.tx_done = true;
     // Disable interrupt
     PX_BIT_SET_LO(UCSR0B, TXCIE0);
 }
@@ -154,14 +154,14 @@ ISR(USART1_UDRE_vect)
     PX_RING_BUF_READ(px_uart1_data.tx_circ_buf, data);
     UDR1 = data;
     // Clear flag to indicate that transmission is busy
-    px_uart1_data.tx_finished = false;
+    px_uart1_data.tx_done = false;
 }
 
 /// Transmit complete interrupt handler
 ISR(USART1_TX_vect)
 {
     // Set flag to indicate that transmission has finished
-    px_uart1_data.tx_finished = true;
+    px_uart1_data.tx_done = true;
     // Disable interrupt
     PX_BIT_SET_LO(UCSR1B, TXCIE1);
 }
@@ -275,8 +275,8 @@ static void px_uart_init_peripheral_data(px_uart_per_t    peripheral,
     uart_data->peripheral = peripheral;
     // Clear reference counter
     uart_data->open_counter = 0;
-    // Set transmit finished flag
-    uart_data->tx_finished = true;
+    // Set transmit done flag
+    uart_data->tx_done = true;
     // Initialise transmit circular buffer
     PX_RING_BUF_INIT(uart_data->tx_circ_buf);
     // Initialise receive circular buffer
@@ -734,7 +734,7 @@ bool px_uart_wr_is_done(px_uart_handle_t * handle)
     {
         return false;
     }
-    return uart_data->tx_finished;
+    return uart_data->tx_done;
 }
 
 bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle)

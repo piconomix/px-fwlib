@@ -107,6 +107,7 @@ typedef enum
 {
     PX_UART_PER_1 = 1,
     PX_UART_PER_2 = 2,
+    PX_UART_PER_3 = 3,
     PX_UART_PER_4 = 4,
     PX_UART_PER_5 = 5,
 } px_uart_per_t;

@@ -38,8 +38,8 @@ typedef struct px_uart_data_s
     px_uart_per_t peripheral;
     /// Number of open handles referencing peripheral
     uint8_t open_counter;
-    /// Transmit finished flag
-    volatile bool tx_finished;
+    /// Transmit done flag
+    volatile bool tx_done;
     /// Transmit circular buffer
     px_ring_buf_t tx_circ_buf;
     /// Receive circular buffer
@@ -134,7 +134,7 @@ static void uart_irq_handler(px_uart_data_t * uart_data)
                 // Load transmit register with data
                 LL_USART_TransmitData8(usart_base_adr, data);
                 // Clear flag to indicate that transmission is busy
-                uart_data->tx_finished = false;
+                uart_data->tx_done = false;
             }
             else
             {
@@ -153,7 +153,7 @@ static void uart_irq_handler(px_uart_data_t * uart_data)
         if(LL_USART_IsActiveFlag_TC(usart_base_adr))
         {
             // Set flag to indicate that transmission has finished
-            uart_data->tx_finished = true;
+            uart_data->tx_done = true;
             // Disable Transmit complete interrupt
             LL_USART_DisableIT_TC(usart_base_adr);
         }
@@ -437,8 +437,8 @@ static void px_uart_init_peripheral_data(px_uart_per_t    peripheral,
     }
     // Clear reference counter
     uart_data->open_counter = 0;
-    // Set transmit finished flag
-    uart_data->tx_finished = true;
+    // Set transmit done flag
+    uart_data->tx_done = true;
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -528,8 +528,8 @@ bool px_uart_open2(px_uart_handle_t *  handle,
         return false;
     }
 
-    // Set transmit finished flag
-    uart_data->tx_finished = true;
+    // Set transmit done flag
+    uart_data->tx_done = true;
 
     // Initialise peripheral
     if(!px_uart_init_peripheral(uart_data->usart_base_adr,
@@ -853,8 +853,8 @@ bool px_uart_wr_is_done(px_uart_handle_t * handle)
     {
         return false;
     }
-    // Return transmission finished flag
-    return uart_data->tx_finished;
+    // Return transmission done flag
+    return uart_data->tx_done;
 }
 
 bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle)
