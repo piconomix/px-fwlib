@@ -34,17 +34,18 @@ Extensive ecosystem included:
 * @subpage HERO_BOARD_BOOTLOADERS "Bootloaders"
 * @subpage HERO_BOARD_APPS "Applications"
 * @subpage HERO_BOARD_EXAMPLES "Examples"
+* @subpage HERO_BOARD_ARDUINO "Arduino IDE support and examples"
 
 The flagship application is the @ref HERO_BOARD_APP_CLI that creates a 
 "Un*x Shell"-like environment running on the Hero Board so that you can easily 
-experiment with GPIO, ADC, DAC, I2C, SPI and 1-Wire using only 
-[ANSI/VT100 Terminal][tera_term] software:
+experiment with GPIO, PWM, ADC, DAC, I2C, SPI and 1-Wire using only 
+[ANSI/VT100 terminal software][tera_term]:
 
 ![](hero_board_cli_preview.gif)
 
 @tip_s
-The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and 
-@ref HERO_BOARD_APP_CLI pre-programmed.
+The Hero Board is shipped with a @ref HERO_BOARD_BOOTLOADER_USB_UF2 and 
+@ref HERO_BOARD_APP_CLI preprogrammed.
 @tip_e
 
 2. Board layout - top view {#HERO_BOARD_TOP_VIEW}
@@ -73,14 +74,14 @@ The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
     + PWR (+3.6V to +5V power bus)
     + ADC x 4 (Analog to Digital inputs)
     + DAC x 1 (Digital to Analog output)
-    + GPIO x 8 (General Purpose Input / Output pins)
+    + GPIO x 8 (General Purpose Input / Output pins) / PWM x 4 (Pulse Width Modulation outputs)
     + UART x 2 (serial communication)
     + I2C x 1 with 4.7k pull-up resistors (NXP Inter-Integrated Circuit bus)
     + SPI x 1 (Serial Peripheral Interface)
 - Li-Po battery charger and zero-burden voltage monitoring circuit
 - Efficient power-path management (power from USB or battery using ideal diode circuit)
 - True power on/off circuit
-- 95% efficient [TI LM3670MF](http://www.ti.com/lit/ds/symlink/lm3670.pdf)
+- 95% efficient [TI LM3670](http://www.ti.com/lit/ds/symlink/lm3670.pdf)
   step-down DC-DC regulator for outstanding battery life (350 mA max load; Iq = 15 uA)
 - Rock-solid [FTDI FT230XS](http://www.ftdichip.com/Products/ICs/FT230X.html) 
   USB-Serial bridge for serial communication, bootloader or alternative +5V 
@@ -93,7 +94,7 @@ The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
   and [Seeed GROVE](http://wiki.seeedstudio.com/Grove_System/) connector for 
   easy connection to a whole ecosystem of **+3.3V** [I2C](https://www.nxp.com/video/what-is-the-i2c-bus-an-introduction-from-nxp:NXP-WHAT-IS-THE-I2C-BUS)
   boards.
-- Intuitive 2.54 mm (0.1 inch) pitch PRG/DBG SWD header
+- Intuitive 2.54 mm (0.1 inch) pitch program & debug SWD header
 - Standard 10-pin 1.27 mm (0.05 inch) [ARM Cortex Debug Connector](http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf)
   SMD footprint
 - 4 x 3.4 mm mounting holes; ideal for 
@@ -103,7 +104,7 @@ The Hero Board is shipped with the @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
 =====================================================================
 
 Some hardware blocks are absent on the Lite Edition to provide a lower cost 
-option. The [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf)
+option. The [schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf)
 contains 3 build variants (full, Lite and Deluxe) and can be consulted for an 
 exact view of electronic components that are present or absent.
 
@@ -113,23 +114,23 @@ STM32.
 
 Here is a table highlighting the differences:
 
-|Feature                                                                 | Lite Edition | Deluxe Edition |
-|------------------------------------------------------------------------|--------------|----------------|
-| STM32L072RB Microcontroller (128k Flash, 20k SRAM, 6k EEPROM)          | YES          | YES            |
-| User Interface (LCD with backlight, LED, Buzzer, 7 x Buttons)          | YES          | YES            |
-| Peripheral connector (PWR, 4 x ADC, DAC, 8 x GPIO, 2 x UART, I2C, SPI) | YES          | YES            |
-| Spring-loaded push-push micro SD card connector                        | YES          | YES            |
-| 2.54 mm (0.1 inch) Debug / Program header                              | YES          | YES            |
-| 10-pin 1.27 mm (0.05 inch) Standard ARM Cortex Debug Connector         | NO           | NO             |
-| 95% efficient +3V3 step-down DC-DC converter                           | YES          | YES            |
-| True power on/off circuit                                              | NO           | YES            |
-| Li-Po battery charger with charging LED                                | NO           | YES            |
-| Zero-burden battery voltage monitoring circuit                         | NO           | YES            |
-| Efficient power-path management                                        | NO           | YES            |
-| USB-Serial bridge (USB2)                                               | NO           | YES            |
-| 512k SPI Serial Flash Memory                                           | YES          | YES            |
-| Sparkfun Qwiic / STEMMA QT Connector                                   | YES          | YES            |
-| Seeed GROVE I2C Connector                                              | YES          | YES            |
+|Feature                                                                           | Lite Edition | Deluxe Edition |
+|----------------------------------------------------------------------------------|--------------|----------------|
+| STM32L072RB Microcontroller (128k Flash, 20k SRAM, 6k EEPROM)                    | YES          | YES            |
+| User Interface (LCD with backlight, LED, Buzzer, 7 x Buttons)                    | YES          | YES            |
+| Peripheral connector (PWR, ADC x 4, DAC, GPIO x 8 / PWM x 4, UART x 2, I2C, SPI) | YES          | YES            |
+| Spring-loaded push-push micro SD card connector                                  | YES          | YES            |
+| 2.54 mm (0.1 inch) Debug / Program header                                        | YES          | YES            |
+| 10-pin 1.27 mm (0.05 inch) Standard ARM Cortex Debug Connector                   | NO           | NO             |
+| 95% efficient +3V3 step-down DC-DC converter                                     | YES          | YES            |
+| True power on/off circuit                                                        | NO           | YES            |
+| Li-Po battery charger with charging LED                                          | NO           | YES            |
+| Zero-burden battery voltage monitoring circuit                                   | NO           | YES            |
+| Efficient power-path management                                                  | NO           | YES            |
+| USB-Serial bridge (USB2)                                                         | NO           | YES            |
+| 512k SPI Serial Flash Memory                                                     | YES          | YES            |
+| Sparkfun Qwiic / STEMMA QT Connector                                             | YES          | YES            |
+| Seeed GROVE I2C Connector                                                        | YES          | YES            |
 
 6. Design Documents{#HERO_BOARD_DESIGN}
 =======================================
@@ -189,7 +190,7 @@ A Board Support Package (@ref BOARDS_STM32_PICONOMIX_HERO) is provided that:
 - defines convenience macros to manipulate GPIO functions
 - initializes the clock system and GPIO pins
 - provide SPI driver support to manipulate chip select pins
-- provide us and ms delay functions
+- provide microsecond and millisecond delay functions
 
 Files:
 - boards/arm/stm32/piconomix_hero_board/px_board.h
@@ -206,8 +207,8 @@ The following free software tools are needed:
   STM32 microcontroller applications. It includes a GCC build toolchain for 
   C and C++.
 - [Python 3][python] : an extremely popular scripting language. In this case it
-  is used to create a UF2 file suitable for uploading via the
-  @ref HERO_BOARD_BOOTLOADER_USB_UF2.
+  is used to create a [UF2] (https://github.com/Microsoft/uf2) file suitable for 
+  uploading via the @ref HERO_BOARD_BOOTLOADER_USB_UF2.
 - [Tera Term][tera_term] : 
   Free terminal emulation software to interact with @ref HERO_BOARD_APP_CLI 
   or upload new firmware using the @ref HERO_BOARD_BOOTLOADER_UART_XMODEM
@@ -286,8 +287,8 @@ flash on the board.
 -------------------
 
 Click [HERE][python] to download and install Python 3. It is needed to create a 
-UF2 file suitable for uploading via the @ref HERO_BOARD_BOOTLOADER_USB_UF2. The 
-script can be found here:
+[UF2] (https://github.com/Microsoft/uf2) file suitable for uploading via the 
+@ref HERO_BOARD_BOOTLOADER_USB_UF2. The script can be found here:
 
     px-lib/tools/uf2conv.py
 
@@ -433,7 +434,7 @@ The complete documentation will be located here:
 
     c:\Program Files (x86)\gnu_arm\share\doc\gcc-arm-none-eabi\pdf
 
-### 10.9.3 Perform CLI Build ###
+### 10.9.3 Perform command line build ###
 
 *Let's try it out!*
 
@@ -482,3 +483,6 @@ The next step is to learn how to write C programs for the STM32 architecture. A
 quick start guide with tutorials and examples have been created as an 
 introduction. Click [HERE](@ref STM32_QUICK_START_GUIDE) to proceed to the STM32
 quick start guide.
+
+Alternatively, you are welcome to try out the PX-HER0 board in the Arduino IDE
+environment. Click [HERE](@ref HERO_BOARD_ARDUINO) to proceed.

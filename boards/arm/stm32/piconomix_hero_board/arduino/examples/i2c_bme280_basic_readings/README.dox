@@ -1,0 +1,15 @@
+I2C BME280 basic readings example {#HERO_BOARD_ARDUINO_EX_I2C_BME280_BASIC_READINGS}
+====================================================================================
+
+This is a modified [Sparkfun BME280 Arduino Library](https://github.com/sparkfun/SparkFun_BME280_Arduino_Library) 
+example that reports readings from a Bosch [BME280](https://www.bosch-sensortec.com/bst/products/all_products/bme280)
+pressure, humidity and temperature sensor.
+
+The [SparkFun BME280 Atmospheric Sensor board](https://www.sparkfun.com/products/15440)
+can be connected to the PX-HER0 board's QWIIC connector.
+
+You need to install the Sparkfun BME280 Arduino Library:
+
+    Sketch > Include Library > Manage Libraries Ctrl+Shift+I
+
+Type "Sparkfun BME280" into the search bar and install the library.

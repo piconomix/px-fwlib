@@ -1,0 +1,12 @@
+LCD hello world example {#HERO_BOARD_ARDUINO_EX_LCD_HELLO_WORLD}
+================================================================
+
+This is a modified [U8g2 Arduino Library](https://github.com/olikraus/u8g2) 
+example that displays "Hello World!" on the LCD. It uses a software SPI to 
+communicate with the LCD.
+
+You need to install the U8G2 Arduino Library:
+
+    Sketch > Include Library > Manage Libraries Ctrl+Shift+I
+
+Type "U8g2" into the search bar and install the library.

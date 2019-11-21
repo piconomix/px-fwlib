@@ -1,0 +1,234 @@
+14. Arduino {#HERO_BOARD_ARDUINO}
+=================================
+  
+[TOC]
+
+1. Introduction {#HERO_ARDUINO_INTRO}
+=====================================
+
+With it's massive community and extensive set of supported boards and libraries, 
+the Arduino development environment has become a force of nature. Here are the
+steps to set up and use the Arduino IDE for the PX-HER0 board.
+
+2. Download and install the Arduino IDE {#HERO_ARDUINO_INSTALL_IDE}
+===================================================================
+
+Go to [THIS] (https://www.arduino.cc/en/Main/OldSoftwareReleases#previous) page
+to download and install Arduino **1.8.9**
+
+@warn_s
+Arduino 1.8.10 has a [bug](https://forum.arduino.cc/index.php?topic=648226.0) in 
+the command line arduino-builder that prevents it from compiling (building) a 
+sketch for the PX-HER0 board. The bug should be fixed in the next release.
+@warn_e
+
+3. Install support for STM32 based boards {#HERO_ARDUINO_INSTALL_STM32}
+=======================================================================
+
+Support for STM32 boards are provided [HERE](https://github.com/stm32duino/Arduino_Core_STM32).
+
+![](arduino_hero_preferences_menu.png)
+
+Open the Preferences dialog in the Arduino IDE:
+
+    File > Preferences Ctrl+Comma
+
+![](arduino_hero_preferences.png)
+
+@tip_s
+Note the path to the Arduino sketchbook. This path will be used in the next step
+to add specific support for the PX-HER0 board.
+@tip_e
+
+Add a link to the stm32duino JSON file in the "Additional Boards Manager URLs" field:
+
+    https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json
+
+@tip_s
+More than one link (URL) can be added by using the button next to the text field.
+@tip_e
+
+![](arduino_hero_board_manager_menu.png)
+
+Now open the Boards Manager window in the Arduino IDE:
+
+    Tools > Board: "xxx" > Boards Manager...
+
+![](arduino_hero_board_manager.png)
+
+Type "STM32" into the search bar to narrow down the list of packages and install
+the "STM32 Cores by STMicroelectronics" package.
+
+4. Add support for the PX-HER0 board {#HERO_ARDUINO_ADD_HERO}
+=============================================================
+
+Use the path to the Arduino sketchbook as noted in the previous step. For the 
+Windows platform it will be:
+
+    C:\Users\[User Name]\Documents\Arduino
+
+Copy the the PX-HER0 "hardware" directory and files into the sketchbook 
+directory. It is located here:
+
+    px-lib/boards/arm/stm32/piconomix_hero_board/arduino/hardware
+
+After copying it, the tree must look like this:
+
+    Documents
+    \---Arduino
+        \---hardware
+            \---piconomix
+                \---stm32
+                    |   boards.txt
+                    |   platform.txt
+                    |
+                    \---variants
+                        \---PX_HER0
+                                ldscript.ld
+                                PeripheralPins.c
+                                PinNamesVar.h
+                                variant.cpp
+                                variant.h
+
+![](arduino_hero_board_support.png)
+
+5. Specify the PX-HER0 board {#HERO_ARDUINO_SPECIFY_HERO}
+=========================================================
+
+Select the PX-HER0 board from the list of supported boards:
+
+    Tools > Board: "xxx" > PX-HER0
+
+![](arduino_hero_select.png)
+
+Options can be specified for the PX-HER0 board in sub menus:
+
+![](arduino_hero_options.png)
+
+Select "STM32CubeProgrammer (USB)" as the upload method. The Arduino IDE will 
+use the STM32CubeProgrammer command line software to program the STM32 via it's
+bootloader in ROM. We will use the USB1 connector on the PX-HER0 board to 
+program the STM32.
+
+Select "CDC (generic 'Serial supersede U(S)ART)" as the USB interface. This will
+configure the Arduino firmware to stream all Serial communication over USB.  We 
+will use the USB1 connector on the PX-HER0 board for serial communication too.
+
+6. Build a sketch {#HERO_ARDUINO_BUILD_SKETCH}
+==============================================
+
+Open the "serial_hello_world" sketch. It is located here:
+
+    px-lib/boards/arm/stm32/piconomix_hero_board/arduino/examples/serial_hello_world/serial_hello_world.ino
+
+Build the sketch:
+
+    Sketch > Verify/Compile Ctrl+R
+
+7. Uploading a sketch to the PX-HER0 board {#HERO_ARDUINO_UPLOAD_SKETCH}
+========================================================================
+
+Connect the BOOT jumper on the PX-HER0 board. It will pull the BOOT0 pin of the 
+STM32 low and the built-in bootloader will be activated upon reset or power up.
+
+Press the RST button. This will activate the bootloader.
+
+Upload the sketch:
+
+    Sketch > Upload Ctrl+U
+
+After the sketch has been uploaded, the program will imediately start to run.
+
+Open [Tera Term](http://en.sourceforge.jp/projects/ttssh2) and connect to the 
+virtual serial port created the PX-HER0 board. The program will wait for the PC
+to connect and then start to send the string "Hello World!" once a second:
+
+![](arduino_hero_board_tera_term_hello_world.png)
+
+Success!!
+
+@tip_s
+You can keep the BOOT jumper connected while developing. When you want to upload 
+a new sketch, tap the RST button and the STM32 will go back into boot mode, 
+ready to receive a new program.
+@tip_e
+
+@warn_s
+remove the BOOT jumper when you are finished. Otherwise, the STM32 will appear 
+"dead", because it is in boot mode and not executing your program.
+@warn_e
+
+8. Next step {#HERO_ARDUINO_NEXT_STEP}
+======================================
+
+Several @subpage HERO_BOARD_ARDUINO_EXAMPLES "examples" are provided to 
+demonstrate different parts of the board. Click [HERE](@ref HERO_BOARD_ARDUINO_EXAMPLES)
+to proceed...
+
+9. Digital pin mapping {#HERO_ARDUINO_PIN_MAP}
+==============================================
+
+The PX-HER0 board pins are mapped in the following file:
+
+    px-lib/boards/arm/stm32/piconomix_hero_board/arduino/hardware/piconomix/stm32/variants/variant.h
+
+Here is the map table:
+
+|Digital pin | Alias 1 | Alias 2          |
+|------------|---------|------------------|
+| 0          | PA6     | PX_GPIO0         |
+| 1          | PA5     | PX_GPIO1         |
+| 2          | PA1     | PX_GPIO2         |
+| 3          | PA0     | PX_GPIO3         |
+| 4          | PC3     | PX_GPIO4         |
+| 5          | PC2     | PX_GPIO5         |
+| 6          | PC1     | PX_GPIO6         |
+| 7          | PB7     | PX_GPIO7         |
+| 8          | PH0     | PX_USR_LED       |
+| 9          | PC0     | PX_LCD_BTN_1_LT  |
+| 10         | PH1     | PX_LCD_BTN_2_RT  |
+| 11         | PC13    | PX_LCD_BTN_3_UP  |
+| 12         | PC12    | PX_LCD_BTN_4_DN  |
+| 13         | PA15    | PX_LCD_BTN_5_YES |
+| 14         | PC9     | PX_LCD_BTN_6_NO  |
+| 15         | PA8     | PX_USB_DET       |
+| 16         | PB11    | PX_LCD_RS        |
+| 17         | PB12    | PX_LCD_BACKLIGHT |
+| 18         | PC6     | PX_PWM_BUZZER    |
+| 19         | PC7     | PX_VBAT_MEAS_EN  |
+| 20         | PC8     | PX_PWR_HOLD      |
+| 21         | PA9     | PX_UART1_TX      |
+| 22         | PA10    | PX_UART1_RX      |
+| 23         | PA2     | PX_UART2_TX      |
+| 24         | PA3     | PX_UART2_RX      |
+| 25         | PC10    | PX_UART4_TX      |
+| 26         | PC11    | PX_UART4_RX      |
+| 27         | PB8     | PX_I2C1_SCL      |
+| 28         | PB9     | PX_I2C1_SDA      |
+| 29         | PB6     | PX_SPI1_CS       |
+| 30         | PB3     | PX_SPI1_SCK      |
+| 31         | PB5     | PX_SPI1_MOSI     |
+| 32         | PB4     | PX_SPI1_MISO     |
+| 33         | PB2     | PX_SPI2_CS_SF    |
+| 34         | PB10    | PX_SPI2_CS_LCD   |
+| 35         | PD2     | PX_SPI2_CS_SD    |
+| 36         | PB13    | PX_SPI2_SCK      |
+| 37         | PB15    | PX_SPI2_MOSI     |
+| 38         | PB14    | PX_SPI2_MISO     |
+| 39         | PA4     | PX_DAC1          |
+| 40         | PB0     | PX_ADC0          |
+| 41         | PC5     | PX_ADC1          |
+| 42         | PC4     | PX_ADC2          |
+| 43         | PA7     | PX_ADC3          |
+| 44         | PB1     | PX_ADC_VBAT      |
+
+Thus the following code lines are all equivalent:
+
+    @code{.c}
+    digitalWrite(8,           HIGH);
+    digitalWrite(PH0,         HIGH);
+    digitalWrite(PX_USR_LED,  HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
+    @endcode
+
+
