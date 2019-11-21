@@ -127,9 +127,6 @@ Methods of communication:
 - [Forum](https://piconomix.com/forum)
 - [Contact page](https://piconomix.com/contact)
 
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/pieterconradie)
-Click [HERE](https://saythanks.io/to/pieterconradie) to say thanks!
-
 Support
 =======
 

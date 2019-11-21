@@ -13,7 +13,7 @@ application to FLASH if the file is properly formatted using the UF2 tool.
 
 Read these pages for an excellent introduction:
 - [One chip to flash them all] (https://makecode.com/blog/one-chip-to-flash-them-all) 
-- [USB Flashing Format (UF2)] (https://github.com/Microsoft/uf2) 
+- [USB Flashing Format (UF2)] (https://github.com/Microsoft/uf2)
 - [UF2 Bootloader] (https://github.com/Microsoft/uf2-samdx1)
 
 A single press of the RESET button will perform a normal reset and the 
