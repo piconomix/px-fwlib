@@ -141,7 +141,7 @@ void px_board_stop_mode(void);
 
 /* _____MACROS_______________________________________________________________ */
 /// User button
-#define PX_USR_PB_IS_PRESSED()      px_gpio_pin_is_lo(&px_gpio_lcd_btn_6_yes)
+#define PX_USR_PB_IS_PRESSED()      px_gpio_pin_is_lo(&px_gpio_lcd_btn_6_no)
 
 /// User LED
 #define PX_USR_LED_ON()             px_gpio_pin_set_hi(&px_gpio_usr_led)

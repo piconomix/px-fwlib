@@ -43,7 +43,7 @@ extern "C" {
 #define PX_GPIO_USB1D_P         PX_GPIO(A, 12, PX_GPIO_MODE_ANA,    PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_NO,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
 #define PX_GPIO_SWDIO           PX_GPIO(A, 13, PX_GPIO_MODE_AF,     PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_HI,  PX_GPIO_PULL_UP,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_0)
 #define PX_GPIO_SWDCK           PX_GPIO(A, 14, PX_GPIO_MODE_AF,     PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_DN,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_0)
-#define PX_GPIO_LCD_BTN_5_NO    PX_GPIO(A, 15, PX_GPIO_MODE_IN,     PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_UP,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
+#define PX_GPIO_LCD_BTN_5_YES   PX_GPIO(A, 15, PX_GPIO_MODE_IN,     PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_UP,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
 
 #define PX_GPIO_ADC0            PX_GPIO(B, 0,  PX_GPIO_MODE_ANA,    PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_NO,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
 #define PX_GPIO_ADC_VBAT        PX_GPIO(B, 1,  PX_GPIO_MODE_ANA,    PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_NO,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
@@ -71,7 +71,7 @@ extern "C" {
 #define PX_GPIO_PWM_BUZZER      PX_GPIO(C, 6,  PX_GPIO_MODE_ANA,    PX_GPIO_OTYPE_PP,   PX_GPIO_OSPEED_HI,  PX_GPIO_PULL_NO,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_2)
 #define PX_GPIO_VBAT_MEAS_EN    PX_GPIO(C, 7,  PX_GPIO_MODE_OUT,    PX_GPIO_OTYPE_PP,   PX_GPIO_OSPEED_LO,  PX_GPIO_PULL_NO,    PX_GPIO_OUT_INIT_LO,    PX_GPIO_AF_NA)
 #define PX_GPIO_3V3_HOLD        PX_GPIO(C, 8,  PX_GPIO_MODE_OUT,    PX_GPIO_OTYPE_PP,   PX_GPIO_OSPEED_LO,  PX_GPIO_PULL_NO,    PX_GPIO_OUT_INIT_HI,    PX_GPIO_AF_NA)
-#define PX_GPIO_LCD_BTN_6_YES   PX_GPIO(C, 9,  PX_GPIO_MODE_IN,     PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_UP,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
+#define PX_GPIO_LCD_BTN_6_NO    PX_GPIO(C, 9,  PX_GPIO_MODE_IN,     PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_UP,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
 #define PX_GPIO_UART4_TX        PX_GPIO(C, 10, PX_GPIO_MODE_AF,     PX_GPIO_OTYPE_PP,   PX_GPIO_OSPEED_LO,  PX_GPIO_PULL_NO,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_6)
 #define PX_GPIO_UART4_RX        PX_GPIO(C, 11, PX_GPIO_MODE_AF,     PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_LO,  PX_GPIO_PULL_UP,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_6)
 #define PX_GPIO_LCD_BTN_4_DN    PX_GPIO(C, 12, PX_GPIO_MODE_IN,     PX_GPIO_OTYPE_NA,   PX_GPIO_OSPEED_NA,  PX_GPIO_PULL_UP,    PX_GPIO_OUT_INIT_NA,    PX_GPIO_AF_NA)
@@ -102,7 +102,7 @@ static const px_gpio_handle_t px_gpio_usb1d_n =         {PX_GPIO_USB1D_N};
 static const px_gpio_handle_t px_gpio_usb1d_p =         {PX_GPIO_USB1D_P};
 static const px_gpio_handle_t px_gpio_swdio =           {PX_GPIO_SWDIO};
 static const px_gpio_handle_t px_gpio_swdck =           {PX_GPIO_SWDCK};
-static const px_gpio_handle_t px_gpio_lcd_btn_5_no =    {PX_GPIO_LCD_BTN_5_NO};
+static const px_gpio_handle_t px_gpio_lcd_btn_5_yes =    {PX_GPIO_LCD_BTN_5_YES};
 
 static const px_gpio_handle_t px_gpio_adc0 =            {PX_GPIO_ADC0};
 static const px_gpio_handle_t px_gpio_adc_vbat =        {PX_GPIO_ADC_VBAT};
@@ -130,7 +130,7 @@ static const px_gpio_handle_t px_gpio_adc1 =            {PX_GPIO_ADC1};
 static const px_gpio_handle_t px_gpio_pwm_buzzer =      {PX_GPIO_PWM_BUZZER};
 static const px_gpio_handle_t px_gpio_vbat_meas_en =    {PX_GPIO_VBAT_MEAS_EN};
 static const px_gpio_handle_t px_gpio_3v3_hold =        {PX_GPIO_3V3_HOLD};
-static const px_gpio_handle_t px_gpio_lcd_btn_6_yes =   {PX_GPIO_LCD_BTN_6_YES};
+static const px_gpio_handle_t px_gpio_lcd_btn_6_no =    {PX_GPIO_LCD_BTN_6_NO};
 static const px_gpio_handle_t px_gpio_uart4_tx =        {PX_GPIO_UART4_TX};
 static const px_gpio_handle_t px_gpio_uart4_rx =        {PX_GPIO_UART4_RX};
 static const px_gpio_handle_t px_gpio_lcd_btn_4_dn =    {PX_GPIO_LCD_BTN_4_DN};
@@ -161,7 +161,7 @@ static const px_gpio_handle_t px_gpio_lcd_btn_2_rt =    {PX_GPIO_LCD_BTN_2_RT};
 #define PX_GPIO_A12 PX_GPIO_USB1D_P
 #define PX_GPIO_A13 PX_GPIO_SWDIO
 #define PX_GPIO_A14 PX_GPIO_SWDCK
-#define PX_GPIO_A15 PX_GPIO_LCD_BTN_5_NO
+#define PX_GPIO_A15 PX_GPIO_LCD_BTN_5_YES
 
 #define PX_GPIO_B0  PX_GPIO_ADC0
 #define PX_GPIO_B1  PX_GPIO_ADC_VBAT
@@ -189,7 +189,7 @@ static const px_gpio_handle_t px_gpio_lcd_btn_2_rt =    {PX_GPIO_LCD_BTN_2_RT};
 #define PX_GPIO_C6  PX_GPIO_PWM_BUZZER
 #define PX_GPIO_C7  PX_GPIO_VBAT_MEAS_EN
 #define PX_GPIO_C8  PX_GPIO_3V3_HOLD
-#define PX_GPIO_C9  PX_GPIO_LCD_BTN_6_YES
+#define PX_GPIO_C9  PX_GPIO_LCD_BTN_6_NO
 #define PX_GPIO_C10 PX_GPIO_UART4_TX
 #define PX_GPIO_C11 PX_GPIO_UART4_RX
 #define PX_GPIO_C12 PX_GPIO_LCD_BTN_4_DN
