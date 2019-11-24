@@ -168,7 +168,7 @@ int main(void)
         // Draw new counter value on LCD
         sprintf(str, "%04u", ++counter);
         px_gfx_clear_frame();
-        px_gfx_draw_str(&px_gfx_font_5x7, 0, 0, str);
+        px_gfx_draw_str(0, 0, str);
         px_gfx_update_frame();
         // Wait until button is released
         do

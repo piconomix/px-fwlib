@@ -432,7 +432,7 @@ static const char* px_cli_cmd_fn_lcd_str(uint8_t argc, char* argv[])
     }
 
     px_gfx_color_fg_set(color);
-    px_gfx_draw_str(&px_gfx_font_5x7, x, y, argv[2]);
+    px_gfx_draw_str(x, y, argv[2]);
     px_gfx_update_frame();
 
     return NULL;

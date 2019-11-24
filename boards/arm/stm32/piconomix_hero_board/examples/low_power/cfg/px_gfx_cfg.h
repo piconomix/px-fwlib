@@ -32,6 +32,9 @@
 /// Maximum allocated string size
 #define PX_GFX_CFG_STR_BUFFER_SIZE  32
 
+/// Default font
+#define PX_GFX_CFG_DEFAULT_FONT     px_gfx_font_5x7
+
 /* _____DEFINITIONS__________________________________________________________ */
 
 #endif // #ifndef __PX_GFX_CFG_H__

@@ -54,7 +54,8 @@
 // Check that all project specific options have been specified in "px_gfx_cfg.h"
 #if (   !defined(PX_GFX_DISP_SIZE_X        ) \
      || !defined(PX_GFX_DISP_SIZE_Y        ) \
-     || !defined(PX_GFX_CFG_STR_BUFFER_SIZE)  )
+     || !defined(PX_GFX_CFG_STR_BUFFER_SIZE) \
+     || !defined(PX_GFX_CFG_DEFAULT_FONT   ) )
       )
 #error "One or more options not defined in 'px_gfx_cfg.h'"
 #endif
@@ -246,6 +247,15 @@ void px_gfx_view_port_set(px_gfx_xy_t     x,
 void px_gfx_view_port_reset(void);
 
 /**
+ *  Set the new font.
+ *  
+ *  @param font             New font
+ *  
+ *  @return px_gfx_font_t * Old font
+ */
+const px_gfx_font_t * px_gfx_font_set(const px_gfx_font_t * font);
+
+/**
  *  Draw a pixel using the current foreground color.
  *  
  *  @param x    X coordinate of pixel
@@ -353,39 +363,33 @@ void px_gfx_draw_img(const px_gfx_img_t * img,
 /**
  *  Draw a font character using the current foreground color.
  *  
- *  @param font     Pointer to font structure
  *  @param x        X coordinate of font character
  *  @param y        Y coordinate of font character
  *  @param glyph    Character in font to draw
  */
-void px_gfx_draw_char(const px_gfx_font_t * font,
-                      px_gfx_xy_t           x,
+void px_gfx_draw_char(px_gfx_xy_t           x,
                       px_gfx_xy_t           y,
                       char                  glyph);
 
 /**
  *  Draw a font string using the current foreground color.
  *  
- *  @param font     Pointer to font structure
  *  @param x        X coordinate of starting point of string
  *  @param y        Y coordinate of starting point of string
  *  @param str      String to draw
  */
-void px_gfx_draw_str(const px_gfx_font_t * font,
-                     px_gfx_xy_t           x,
+void px_gfx_draw_str(px_gfx_xy_t           x,
                      px_gfx_xy_t           y,
                      const char *          str);
 
 /**
  *  Draw a formatted font string using the current foreground color.
  *  
- *  @param font     Pointer to font structure
  *  @param x        X coordinate of starting point of string
  *  @param y        Y coordinate of starting point of string
  *  @param format   Format string
  */
-void px_gfx_printf(const px_gfx_font_t * font,
-                   px_gfx_xy_t           x,
+void px_gfx_printf(px_gfx_xy_t           x,
                    px_gfx_xy_t           y,
                    const char *          format, ...);
 

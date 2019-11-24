@@ -23,6 +23,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx.h"
 #include "px_gfx_lcd.h"
+#include "px_gfx_fonts.h"
 #include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -31,18 +32,19 @@ PX_DBG_DECL_NAME("px_gfx");
 /// Graphic drawing attributes
 typedef struct
 {
-    px_gfx_color_t      color_fg;       ///< Foreground color
-    px_gfx_color_t      color_bg;       ///< Background color
-    px_gfx_align_t      align;          ///< Alignment
-    bool                vp_active;      ///< View port active flag
-    px_gfx_view_port_t  vp;             ///< View port
+    px_gfx_color_t          color_fg;       ///< Foreground color
+    px_gfx_color_t          color_bg;       ///< Background color
+    px_gfx_align_t          align;          ///< Alignment
+    bool                    vp_active;      ///< View port active flag
+    px_gfx_view_port_t      vp;             ///< View port
+    const px_gfx_font_t *   font;           ///< Current font
 } px_gfx_draw_attr_t;
 
 /// Graphics state definition
 typedef struct
 {
-    px_gfx_draw_attr_t  attr;
-    px_gfx_area_t       update_area;    ///< Area of frame to be updated
+    px_gfx_draw_attr_t      attr;
+    px_gfx_area_t           update_area;    ///< Area of frame to be updated
 } px_gfx_t;
 
 /* _____MACROS_______________________________________________________________ */
@@ -67,7 +69,8 @@ static const px_gfx_draw_attr_t px_gfx_attr_default =
         .width  = PX_GFX_DISP_SIZE_X,
         .height = PX_GFX_DISP_SIZE_Y,
         .xy_ref = PX_GFX_XY_REF_REL,
-    },     
+    },
+    .font       = &PX_GFX_CFG_DEFAULT_FONT,
 };
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
@@ -253,6 +256,13 @@ void px_gfx_view_port_reset(void)
 {
     memcpy(&px_gfx.attr.vp, &px_gfx_attr_default.vp, sizeof(px_gfx.attr.vp));
 	px_gfx.attr.vp_active = false;
+}
+
+const px_gfx_font_t * px_gfx_font_set(const px_gfx_font_t * font)
+{
+    const px_gfx_font_t * old = px_gfx.attr.font;
+    px_gfx.attr.font          = font;
+    return old;
 }
 
 void px_gfx_draw_pixel(px_gfx_xy_t    x,
@@ -599,14 +609,14 @@ void px_gfx_draw_img(const px_gfx_img_t * img,
     }   
 }
 
-void px_gfx_draw_char(const px_gfx_font_t * font,
-                      px_gfx_xy_t           x,
+void px_gfx_draw_char(px_gfx_xy_t           x,
                       px_gfx_xy_t           y,
                       char                  glyph)
 {
-    px_gfx_img_t    img;
-    const uint8_t * data        = font->data;
-	int             width_bytes = (font->width + 7) / 8;
+    px_gfx_img_t          img;
+    const px_gfx_font_t * font        = px_gfx.attr.font;
+    const uint8_t *       data        = font->data;
+	int                   width_bytes = (font->width + 7) / 8;
 
     // Find glyph
     while(*data != 0x00)
@@ -638,11 +648,12 @@ void px_gfx_draw_char(const px_gfx_font_t * font,
     px_gfx_draw_img(&img, x, y);
 }
 
-void px_gfx_draw_str(const px_gfx_font_t * font,
-                     px_gfx_xy_t           x,
+void px_gfx_draw_str(px_gfx_xy_t           x,
                      px_gfx_xy_t           y,
                      const char *          str)
 {
+    const px_gfx_font_t * font = px_gfx.attr.font;
+
     // Save alignment
     px_gfx_align_t align = px_gfx.attr.align;
 
@@ -674,7 +685,7 @@ void px_gfx_draw_str(const px_gfx_font_t * font,
     // Draw each glyph
     while(*str != '\0')
     {
-        px_gfx_draw_char(font, x, y, *str++);
+        px_gfx_draw_char(x, y, *str++);
         x += font->width;
     }
 
@@ -682,8 +693,7 @@ void px_gfx_draw_str(const px_gfx_font_t * font,
     px_gfx.attr.align = align;
 }
 
-void px_gfx_printf(const px_gfx_font_t * font,
-                   px_gfx_xy_t           x,
+void px_gfx_printf(px_gfx_xy_t           x,
                    px_gfx_xy_t           y,
                    const char *          format, ...)
 {
@@ -698,6 +708,6 @@ void px_gfx_printf(const px_gfx_font_t * font,
     // Append terminating zero in case of buffer overrun
     str[PX_GFX_CFG_STR_BUFFER_SIZE-1] = '\0';
 
-    px_gfx_draw_str(font, x, y, str);
+    px_gfx_draw_str(x, y, str);
 }
 

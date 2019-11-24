@@ -75,7 +75,7 @@ int main(void)
     px_gfx_draw_circ(PX_GFX_X_MID, PX_GFX_Y_MID, 20);
 
     // Draw text
-    px_gfx_draw_str(&px_gfx_font_5x7, 30, 2, "Hello World!");
+    px_gfx_draw_str(30, 2, "Hello World!");
 
     // Draw image
     px_gfx_draw_img(&px_gfx_img_dino,
