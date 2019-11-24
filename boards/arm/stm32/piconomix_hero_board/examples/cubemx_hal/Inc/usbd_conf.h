@@ -69,8 +69,6 @@
 /*---------- -----------*/
 #define USBD_MAX_STR_DESC_SIZ     512U
 /*---------- -----------*/
-#define USBD_SUPPORT_USER_STRING     0U
-/*---------- -----------*/
 #define USBD_DEBUG_LEVEL     0U
 /*---------- -----------*/
 #define USBD_SELF_POWERED     1U
