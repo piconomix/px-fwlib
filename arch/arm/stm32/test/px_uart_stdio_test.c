@@ -13,10 +13,8 @@ int main(void)
 
     // Initialise board
     px_board_init();
-
     // Initialise module
     px_uart_init();
-
     // Open UART1 @ 115200 BAUD, 8 data bits, no parity, 1 stop bit
     px_uart_open2(&px_uart_handle,
                   PX_UART_PER_1,
@@ -24,7 +22,6 @@ int main(void)
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
-
     // Initialise stdio stream to use the specified UART
     px_uart_stdio_init(&px_uart_handle);
 

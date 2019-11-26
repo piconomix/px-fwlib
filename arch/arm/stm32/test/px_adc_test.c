@@ -10,16 +10,12 @@ int main(void)
 
     // Initialise board
     px_board_init();
-
     // Initialise ADC driver
     px_adc_init();
-
     // Open handle to ADC peripheral
     px_adc_open(&px_adc_handle, PX_ADC_PER_1);
-
     // Perform an ADC measurement on channel 0
     data = px_adc_sample(&px_adc_handle, PX_ADC_CH0);
-
     // Close ADC Handle
     px_adc_close(px_adc_handle);
 }
