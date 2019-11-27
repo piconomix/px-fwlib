@@ -16,7 +16,6 @@ px_hero.name=PX-HER0
 
 px_hero.build.vid=0x0483
 px_hero.build.core=STM32:arduino
-px_hero.node=NODE_L072RB
 px_hero.upload.maximum_size=131072
 px_hero.upload.maximum_data_size=20480
 px_hero.upload.tool=
@@ -40,7 +39,7 @@ px_hero.menu.upload_method.serialMethod.upload.protocol=1
 px_hero.menu.upload_method.serialMethod.upload.options={serial.port.file} -s
 px_hero.menu.upload_method.serialMethod.upload.tool=STM32:stm32CubeProg
 
-px_hero.menu.upload_method.dfuMethod=STM32CubeProgrammer (USB)
+px_hero.menu.upload_method.dfuMethod=STM32CubeProgrammer (DFU)
 px_hero.menu.upload_method.dfuMethod.upload.protocol=2
 px_hero.menu.upload_method.dfuMethod.upload.options=-g
 px_hero.menu.upload_method.dfuMethod.upload.tool=STM32:stm32CubeProg
@@ -49,7 +48,7 @@ px_hero.menu.upload_method.dfuMethod.upload.tool=STM32:stm32CubeProg
 px_hero.menu.xserial.generic=Enabled (generic 'Serial')
 px_hero.menu.xserial.none=Enabled (no generic 'Serial')
 px_hero.menu.xserial.none.build.xSerial=-DHAL_UART_MODULE_ENABLED -DHWSERIAL_NONE
-px_hero.menu.xserial.disabled=Disabled (No Serial support)
+px_hero.menu.xserial.disabled=Disabled (no Serial support)
 px_hero.menu.xserial.disabled.build.xSerial=
 
 # USB connectivity
@@ -60,11 +59,6 @@ px_hero.menu.usb.CDC=CDC (no generic 'Serial')
 px_hero.menu.usb.CDC.build.enable_usb={build.usb_flags} -DUSBD_USE_CDC -DDISABLE_GENERIC_SERIALUSB
 px_hero.menu.usb.HID=HID (keyboard and mouse)
 px_hero.menu.usb.HID.build.enable_usb={build.usb_flags} -DUSBD_USE_HID_COMPOSITE
-px_hero.menu.xusb.FS=Low/Full Speed
-px_hero.menu.xusb.HS=High Speed
-px_hero.menu.xusb.HS.build.usb_speed=-DUSE_USB_HS
-px_hero.menu.xusb.HSFS=High Speed in Full Speed mode
-px_hero.menu.xusb.HSFS.build.usb_speed=-DUSE_USB_HS -DUSE_USB_HS_IN_FS
 
 # Optimizations
 px_hero.menu.opt.osstd=Smallest (-Os default)

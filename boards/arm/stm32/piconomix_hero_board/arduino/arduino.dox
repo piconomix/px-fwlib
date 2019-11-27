@@ -105,7 +105,7 @@ Options can be specified for the PX-HER0 board in sub menus:
 
 ![](arduino_hero_options.png)
 
-Select "STM32CubeProgrammer (USB)" as the upload method. The Arduino IDE will 
+Select "STM32CubeProgrammer (DFU)" as the upload method. The Arduino IDE will 
 use the STM32CubeProgrammer command line software to program the STM32 via it's
 bootloader in ROM. We will use the USB1 connector on the PX-HER0 board to 
 program the STM32.
