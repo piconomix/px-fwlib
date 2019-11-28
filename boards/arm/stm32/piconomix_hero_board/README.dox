@@ -41,7 +41,7 @@ The flagship application is the @ref HERO_BOARD_APP_CLI that creates a
 experiment with GPIO, PWM, ADC, DAC, I2C, SPI and 1-Wire using only 
 [ANSI/VT100 terminal software][tera_term]:
 
-![](hero_board_cli_preview.gif)
+![](hero_board_cli.gif)
 
 @tip_s
 The Hero Board is shipped with a @ref HERO_BOARD_BOOTLOADER_USB_UF2 and 
@@ -254,7 +254,7 @@ using the COM port noted previously.
 You are now ready to use Tera Term to interact with the CLI explorer app. Follow
 the full documentation [HERE](@ref HERO_BOARD_APP_CLI).
 
-![CLI Exlorer executing on a Hero Board](hero_board_cli_preview.gif)
+![CLI Exlorer executing on a Hero Board](hero_board_cli.gif)
 
 10.4 Install USB-UART Bridge Virtual Com Port (VCP) USB driver
 --------------------------------------------------------------

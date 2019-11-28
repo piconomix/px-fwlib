@@ -14,8 +14,6 @@ can easily experiment with GPIO, ADC, DAC, UART, I2C, SPI and 1-Wire using only
 ANSI/VT100 Terminal software (for example [Tera Term] [tera_term])... it is 
 really cool!
 
-![CLI Exlorer executing on a Hero Board](hero_board_cli_preview.gif)
-
 With this application you will be able to:
 - Switch the LED on and off
 - Make the buzzer beep
@@ -32,6 +30,8 @@ With this application you will be able to:
 - Set and read the RTC
 - Perform raw memory read and write operations
 - Reset the microcontroller
+
+![CLI Exlorer executing on a Hero Board](hero_board_cli.gif)
 
 2. CLI features {#HERO_BOARD_CLI_FEATURES}
 ==========================================
