@@ -10,6 +10,11 @@ With it's massive community and extensive set of supported boards and libraries,
 the Arduino development environment has become a force of nature. Here are the
 steps to set up and use the Arduino IDE for the PX-HER0 board.
 
+@tip_s
+Native support for the PX-HER0 board has been added in [Arduino_Core_STM32](https://github.com/stm32duino/Arduino_Core_STM32) 
+and will be available in release 1.8.0. The following are interim steps...
+@tip_e
+
 2. Download and install the Arduino IDE {#HERO_ARDUINO_INSTALL_IDE}
 ===================================================================
 
@@ -158,14 +163,7 @@ remove the BOOT jumper when you are finished. Otherwise, the STM32 will appear
 "dead", because it is in boot mode and not executing your program.
 @warn_e
 
-8. Next step {#HERO_ARDUINO_NEXT_STEP}
-======================================
-
-Several @subpage HERO_BOARD_ARDUINO_EXAMPLES "examples" are provided to 
-demonstrate different parts of the board. Click [HERE](@ref HERO_BOARD_ARDUINO_EXAMPLES)
-to proceed...
-
-9. Digital pin mapping {#HERO_ARDUINO_PIN_MAP}
+8. Digital pin mapping {#HERO_ARDUINO_PIN_MAP}
 ==============================================
 
 The PX-HER0 board pins are mapped in the following file:
@@ -231,4 +229,9 @@ Thus the following code lines are all equivalent:
     digitalWrite(LED_BUILTIN, HIGH);
     @endcode
 
+9. Next step {#HERO_ARDUINO_NEXT_STEP}
+======================================
 
+Several @subpage HERO_BOARD_ARDUINO_EXAMPLES "examples" are provided to 
+demonstrate different parts of the board. Click [HERE](@ref HERO_BOARD_ARDUINO_EXAMPLES)
+to proceed...
