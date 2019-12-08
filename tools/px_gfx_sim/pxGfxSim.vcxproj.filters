@@ -87,9 +87,6 @@
     <ClInclude Include="px_gfx_cfg.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="px_gfx_lcd_sim.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="px_gfx_test.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -102,8 +99,14 @@
     <ClInclude Include="..\..\gfx\px_gfx_obj.h">
       <Filter>px-lib\gfx</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gfx\px_gfx_obj_container.h">
+    <ClInclude Include="..\..\gfx\px_gfx_obj_label.h">
       <Filter>px-lib\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\px_gfx_obj_window.h">
+      <Filter>px-lib\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="px_gfx_display_sim.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -134,9 +137,6 @@
     <ClCompile Include="..\..\utils\px_dbg.c">
       <Filter>px-lib\utils</Filter>
     </ClCompile>
-    <ClCompile Include="px_gfx_lcd_sim.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="px_gfx_test.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -146,7 +146,16 @@
     <ClCompile Include="..\..\gfx\px_gfx_obj.c">
       <Filter>px-lib\gfx</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj_container.c">
+    <ClCompile Include="..\..\gfx\px_gfx_obj_label.c">
+      <Filter>px-lib\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\px_gfx_obj_window.c">
+      <Filter>px-lib\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="px_gfx_display_sim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\px_gfx_obj_graph.c">
       <Filter>px-lib\gfx</Filter>
     </ClCompile>
   </ItemGroup>

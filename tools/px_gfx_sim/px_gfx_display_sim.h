@@ -1,5 +1,5 @@
-#ifndef __PX_GFX_LCD_SIM_H__
-#define __PX_GFX_LCD_SIM_H__
+#ifndef __PX_GFX_DISPLAY_SIM_H__
+#define __PX_GFX_DISPLAY_SIM_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_gfx_lcd.h : Glue layer to physical display
+    Title:          px_gfx_display.h : Glue layer to physical display
     Author(s):      Pieter Conradie
     Creation Date:  2019-05-28
 
@@ -38,7 +38,7 @@ extern "C"
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-extern uint8_t px_gfx_lcd_frame_buf[PX_GFX_DISP_SIZE_Y][PX_GFX_DISP_SIZE_X];
+extern uint8_t px_gfx_frame_buf[PX_GFX_DISP_SIZE_Y][PX_GFX_DISP_SIZE_X];
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 
@@ -49,4 +49,4 @@ extern uint8_t px_gfx_lcd_frame_buf[PX_GFX_DISP_SIZE_Y][PX_GFX_DISP_SIZE_X];
 }
 #endif
 
-#endif // #ifndef __PX_GFX_LCD_SIM_H__
+#endif // #ifndef __PX_GFX_DISPLAY_SIM_H__
