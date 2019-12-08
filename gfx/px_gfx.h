@@ -28,8 +28,8 @@
  *  - gfx/px_gfx.h 
  *  - gfx/px_gfx_cfg_template.h
  *  - gfx/px_gfx.c 
- *  - gfx/px_gfx_lcd.h 
- *  - gfx/px_gfx_lcd_st7567_jhd12864.c 
+ *  - gfx/px_gfx_display.h 
+ *  - gfx/px_gfx_display_st7567_jhd12864.c 
  *  
  *  Tool to convert images and fonts:
  *  [Ruison.com LCD Image Converter](https://github.com/riuson/lcd-image-converter) 
@@ -83,8 +83,8 @@ typedef int16_t px_gfx_xy_t;
 /// Foreground and background color definitions
 typedef enum
 {
-    PX_GFX_COLOR_ON,
     PX_GFX_COLOR_OFF,
+    PX_GFX_COLOR_ON,
     PX_GFX_COLOR_INVERT,
     PX_GFX_COLOR_TRANSPARENT,
 } px_gfx_color_t;
@@ -162,35 +162,35 @@ typedef struct
 void px_gfx_init(void);
 
 /**
- *  Clear frame buffer.
+ *  Clear display buffer.
  */
-void px_gfx_clear_frame(void);
+void px_gfx_buf_clear(void);
 
 /**
- *  Redraw LCD display using frame buffer.
+ *  Redraw whole display using display buffer.
  */
-void px_gfx_draw_frame(void);
+void px_gfx_draw(void);
 
 /**
- *  Update LCD display with total area that has changed in frame buffer.
+ *  Update display with total area that has changed in display buffer.
  *  
  */
-void px_gfx_update_frame(void);
+void px_gfx_draw_update(void);
 
 /**
  *  Get total area of frame that has changed.
  *  
  *  @param area     Pointer to structure to contain area that has changed
  *  
- *  @retval true    frame has changed
- *  @retval false   frame has stayed the same (no change)
+ *  @retval true    frame buffer has changed
+ *  @retval false   frame buffer has stayed the same (no change)
  */
 bool px_gfx_update_area_get(px_gfx_area_t * area);
 
 /**
- *  Reset drawing attributes to default.
+ *  Reset drawing properties to default.
  */
-void px_gfx_draw_attr_reset(void);
+void px_gfx_draw_prop_reset(void);
 
 /**
  *  Set the new foreground drawing color.
@@ -199,7 +199,7 @@ void px_gfx_draw_attr_reset(void);
  *  
  *  @return px_gfx_color_t  Old drawing color
  */
-px_gfx_color_t px_gfx_color_fg_set(px_gfx_color_t  color);
+px_gfx_color_t px_gfx_color_fg_set(px_gfx_color_t color);
 
 /**
  *  Set the new background drawing color.
@@ -208,7 +208,7 @@ px_gfx_color_t px_gfx_color_fg_set(px_gfx_color_t  color);
  *  
  *  @return px_gfx_color_t  Old drawing color
  */
-px_gfx_color_t px_gfx_color_bg_set(px_gfx_color_t  color);
+px_gfx_color_t px_gfx_color_bg_set(px_gfx_color_t color);
 
 /**
  *  Set the new alignment.
@@ -217,7 +217,7 @@ px_gfx_color_t px_gfx_color_bg_set(px_gfx_color_t  color);
  *  
  *  @return px_gfx_align_t  Old alignment
  */
-px_gfx_align_t px_gfx_align_set(px_gfx_align_t  align);
+px_gfx_align_t px_gfx_align_set(px_gfx_align_t align);
 
 /**
  *  Set a drawing view port.
@@ -367,9 +367,9 @@ void px_gfx_draw_img(const px_gfx_img_t * img,
  *  @param y        Y coordinate of font character
  *  @param glyph    Character in font to draw
  */
-void px_gfx_draw_char(px_gfx_xy_t           x,
-                      px_gfx_xy_t           y,
-                      char                  glyph);
+void px_gfx_draw_char(px_gfx_xy_t x,
+                      px_gfx_xy_t y,
+                      char        glyph);
 
 /**
  *  Draw a font string using the current foreground color.
@@ -378,9 +378,9 @@ void px_gfx_draw_char(px_gfx_xy_t           x,
  *  @param y        Y coordinate of starting point of string
  *  @param str      String to draw
  */
-void px_gfx_draw_str(px_gfx_xy_t           x,
-                     px_gfx_xy_t           y,
-                     const char *          str);
+void px_gfx_draw_str(px_gfx_xy_t  x,
+                     px_gfx_xy_t  y,
+                     const char * str);
 
 /**
  *  Draw a formatted font string using the current foreground color.
@@ -389,9 +389,9 @@ void px_gfx_draw_str(px_gfx_xy_t           x,
  *  @param y        Y coordinate of starting point of string
  *  @param format   Format string
  */
-void px_gfx_printf(px_gfx_xy_t           x,
-                   px_gfx_xy_t           y,
-                   const char *          format, ...);
+void px_gfx_printf(px_gfx_xy_t  x,
+                   px_gfx_xy_t  y,
+                   const char * format, ...);
 
 /* _____MACROS_______________________________________________________________ */
 

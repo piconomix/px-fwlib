@@ -1,5 +1,5 @@
-#ifndef __PX_GFX_LCD_H__
-#define __PX_GFX_LCD_H__
+#ifndef __PX_GFX_OBJ_LABEL_H__
+#define __PX_GFX_OBJ_LABEL_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -12,14 +12,21 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_gfx_lcd.h : Glue layer to physical display
+    Title:          px_gfx_obj_label.h : Graphical text label object
     Author(s):      Pieter Conradie
-    Creation Date:  2019-05-28
+    Creation Date:  2019-11-24
 
 ============================================================================= */
 
 /** 
- *  @addtogroup GFX
+ *  @ingroup GFX
+ *  @defgroup PX_GFX_OBJ_LABEL px_gfx_obj_label.h : Graphical text label object
+ *  
+ *  Graphical text label object.
+ *  
+ *  File(s):
+ *  - gfx/px_gfx_obj_label.h 
+ *  - gfx/px_gfx_obj_label.c
  */
 /// @{
 
@@ -28,6 +35,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_gfx.h"
+#include "px_gfx_obj.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -36,16 +44,33 @@ extern "C"
 /* _____DEFINITIONS__________________________________________________________ */
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
+/// Label object properties
+typedef struct
+{
+    px_gfx_xy_t           x;        ///< X coordinate
+    px_gfx_xy_t           y;        ///< Y coordinate
+    const char *          str;
+    const px_gfx_font_t * font;
+    px_gfx_color_t        color_fg;
+    px_gfx_color_t        color_bg;
+    px_gfx_align_t        align;
+} px_gfx_obj_label_prop_t;
+
+/// Label object data structure
+typedef struct
+{
+    px_gfx_obj_t                    obj;
+    const px_gfx_obj_label_prop_t * prop;    
+} px_gfx_obj_label_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void px_gfx_lcd_clear_frame         (void);
-void px_gfx_lcd_draw_pixel          (px_gfx_xy_t    x,
-                                     px_gfx_xy_t    y,
-                                     px_gfx_color_t color);
-void px_gfx_lcd_update              (const px_gfx_area_t * area);
-void px_gfx_lcd_dbg_frame_buf_report(void);
+px_gfx_obj_handle_t             px_gfx_obj_label_create  (const px_gfx_obj_label_prop_t * prop);
+const px_gfx_obj_label_prop_t * px_gfx_obj_label_prop_get(const px_gfx_obj_handle_t       obj);
+void                            px_gfx_obj_label_prop_set(px_gfx_obj_handle_t             obj,
+                                                          const px_gfx_obj_label_prop_t * prop);
+
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -54,4 +79,4 @@ void px_gfx_lcd_dbg_frame_buf_report(void);
 }
 #endif
 
-#endif // #ifndef __PX_GFX_H__
+#endif // #ifndef __PX_GFX_OBJ_LABEL_H__
