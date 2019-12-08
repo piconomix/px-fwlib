@@ -39,8 +39,8 @@ PX_DBG_DECL_NAME("cli_cmds_lcd");
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static const char* px_cli_cmd_fn_lcd_clr(uint8_t argc, char* argv[])
 {
-    px_gfx_clear_frame();
-    px_gfx_update_frame();
+    px_gfx_buf_clear();
+    px_gfx_draw_update();
 
     return NULL;
 }
@@ -110,7 +110,7 @@ static const char* px_cli_cmd_fn_lcd_pixel(uint8_t argc, char* argv[])
 
     px_gfx_color_fg_set(color);
     px_gfx_draw_pixel(x, y);
-    px_gfx_update_frame();
+    px_gfx_draw_update();
 
     return NULL;
 }
@@ -180,7 +180,7 @@ static const char* px_cli_cmd_fn_lcd_line(uint8_t argc, char* argv[])
 
     px_gfx_color_fg_set(color);
     px_gfx_draw_line(x1, y1, x2, y2);
-    px_gfx_update_frame();
+    px_gfx_draw_update();
 
     return NULL;
 }
@@ -250,7 +250,7 @@ static const char* px_cli_cmd_fn_lcd_rect(uint8_t argc, char* argv[])
 
     px_gfx_color_fg_set(color);
     px_gfx_draw_rect(x, y, w, h);
-    px_gfx_update_frame();
+    px_gfx_draw_update();
 
     return NULL;
 }
@@ -320,7 +320,7 @@ static const char* px_cli_cmd_fn_lcd_fill(uint8_t argc, char* argv[])
 
     px_gfx_color_fg_set(color);
     px_gfx_draw_fill_fg(x, y, w, h);
-    px_gfx_update_frame();
+    px_gfx_draw_update();
 
     return NULL;
 }
@@ -381,7 +381,7 @@ static const char* px_cli_cmd_fn_lcd_circle(uint8_t argc, char* argv[])
 
     px_gfx_color_fg_set(color);
     px_gfx_draw_circ(x, y, r);
-    px_gfx_update_frame();
+    px_gfx_draw_update();
 
     return NULL;
 }
@@ -433,7 +433,7 @@ static const char* px_cli_cmd_fn_lcd_str(uint8_t argc, char* argv[])
 
     px_gfx_color_fg_set(color);
     px_gfx_draw_str(x, y, argv[2]);
-    px_gfx_update_frame();
+    px_gfx_draw_update();
 
     return NULL;
 }

@@ -83,7 +83,7 @@ int main(void)
     for(;;)
     {
         // Clear display area
-        px_gfx_clear_frame();
+        px_gfx_buf_clear();
         // Draw image
         img = img_array[i];
         px_gfx_align_set(PX_GFX_ALIGN_MID);
@@ -91,7 +91,7 @@ int main(void)
                         PX_GFX_DISP_SIZE_X / 2,
                         PX_GFX_DISP_SIZE_Y / 2 - 1);
         // Update display
-        px_gfx_update_frame();
+        px_gfx_draw_update();
         // Delay
         px_board_delay_ms(100);
         // Next image

@@ -245,8 +245,8 @@ int main(void)
     px_gfx_init();
     px_gfx_align_set(PX_GFX_ALIGN_MID);
     px_gfx_draw_img(&px_gfx_img_hero_logo, PX_GFX_X_MID, PX_GFX_Y_MID);    
-    px_gfx_update_frame();
-    px_gfx_draw_attr_reset();
+    px_gfx_draw_update();
+    px_gfx_draw_prop_reset();
 
     // Initialize CLI
     px_cli_init(main_cli_init_str);

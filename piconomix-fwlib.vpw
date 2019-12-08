@@ -1,6 +1,8 @@
 <!DOCTYPE Workspace SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpw.dtd">
 <Workspace Version="10.0" VendorName="SlickEdit" VCSProject="Subversion:">
 	<Projects>
-		<Project File="piconomix-fwlib.vpj" />
+		<Project File="C:/Users/Pieter/Documents/Arduino/Arduino.vpj"/>
+		<Project File="../../Arduino_Core_STM32/Arduino_Core_STM32.vpj"/>
+		<Project File="piconomix-fwlib.vpj"/>
 	</Projects>
 </Workspace>

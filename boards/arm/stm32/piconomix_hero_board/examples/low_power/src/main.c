@@ -167,9 +167,9 @@ int main(void)
         PX_USR_LED_ON();
         // Draw new counter value on LCD
         sprintf(str, "%04u", ++counter);
-        px_gfx_clear_frame();
+        px_gfx_buf_clear();
         px_gfx_draw_str(0, 0, str);
-        px_gfx_update_frame();
+        px_gfx_draw_update();
         // Wait until button is released
         do
         {
