@@ -520,8 +520,8 @@ void px_gfx_draw_circ(px_gfx_xy_t    x,
     x = px_gfx_vp_adjust_x(x);
     y = px_gfx_vp_adjust_y(y);
     // Update dirty area
-    px_gfx_update_area(x - radius + 1, y - radius + 1,
-                       x + radius - 1, y + radius - 1);
+    px_gfx_update_area(x - radius, y - radius,
+                       x + radius, y + radius);
     // 0 deg (12 o'clock)
     px_gfx_vp_draw_pixel(x,            y + radius, px_gfx.draw_prop.color_fg);
     // 90 deg (3 o'clock)
