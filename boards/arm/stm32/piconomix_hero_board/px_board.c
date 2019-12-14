@@ -372,6 +372,8 @@ void px_board_stop_mode(void)
         ;
     }
 
+    // Clear SLEEPDEEP bit of Cortex System Control Register
+    LL_LPM_EnableSleep();
     // Must SysTick interrupt be restored?
     if(systick_int_enabled)
     {
