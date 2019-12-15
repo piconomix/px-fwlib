@@ -9,7 +9,7 @@ all: html
 # Create HTML documentation
 html:
 	mkdir -p html
-	cp -R images/* html
+	cp -R images/html/* html
 	( cat Doxyfile ; echo "PROJECT_NUMBER = \"$(LIB_REVISION)\"" ) | doxygen -
 #	doxygen Doxyfile
 
