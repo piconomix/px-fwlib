@@ -1,0 +1,10 @@
+*.d
+*.lst
+*.o
+*.lss
+*.map
+*.sym
+*.vpwhist
+*.vtg
+doc/html
+
