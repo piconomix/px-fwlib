@@ -174,14 +174,19 @@ static const char* px_cli_cmd_fn_i2c_wr(uint8_t argc, char* argv[])
 
     // <data>
     nr_of_bytes = argc - 1;
-    for(i=1; i<argc; i++)
+    if(nr_of_bytes > 8)
     {
-        if(!px_cli_util_argv_to_u8(i, 0, 255))
+        return "Error. Number of bytes to write must be 8 or less";
+    }
+
+    for(i = 0; i < nr_of_bytes; i++)
+    {
+        if(!px_cli_util_argv_to_u8(i + 1, 0, 255))
         {
-            printf("Error. <data> at index %d invalid\n", i);
+            printf("Error. <data> at index %d invalid\n", i + 1);
             return NULL;
         }
-        data[i-1] = px_cli_argv_val.u8;
+        data[i] = px_cli_argv_val.u8;
     }
 
     px_i2c_ioctl_change_slave_adr(&px_i2c_handle, adr);
@@ -220,7 +225,63 @@ static const char* px_cli_cmd_fn_i2c_rd(uint8_t argc, char* argv[])
         return "Error!";
     }    
 
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
+    {
+        printf("%02X ", (unsigned int)data[i]);
+    }
+    putchar('\n');
+
+    return NULL;
+}
+
+static const char* px_cli_cmd_fn_i2c_wr_rd(uint8_t argc, char* argv[])
+{
+    uint8_t i;
+    uint8_t adr;
+    uint8_t data[16];
+    uint8_t rd_nr_of_bytes;
+    uint8_t wr_nr_of_bytes;
+
+    // <adr>
+    if(!px_cli_util_argv_to_u8(0, 0, 127))
+    {
+        return "Error. <adr> must be 0 to 127";
+    }
+    adr = px_cli_argv_val.u8;
+
+    // <rd nr of bytes>
+    if(!px_cli_util_argv_to_u8(1, 1, 16))
+    {
+        return "Error. <rd nr of bytes> must be 1 to 16";
+    }
+    rd_nr_of_bytes = px_cli_argv_val.u8;
+
+    // <data>
+    wr_nr_of_bytes = argc - 2;
+    if(wr_nr_of_bytes > 8)
+    {
+        return "Error. Number of bytes to write must be 8 or less";
+    }
+    for(i = 0; i < wr_nr_of_bytes; i++)
+    {
+        if(!px_cli_util_argv_to_u8(i + 2, 0, 255))
+        {
+            printf("Error. <data> at index %d invalid\n", i + 2);
+            return NULL;
+        }
+        data[i] = px_cli_argv_val.u8;
+    }
+
+    px_i2c_ioctl_change_slave_adr(&px_i2c_handle, adr);
+    if(!px_i2c_wr(&px_i2c_handle, data, wr_nr_of_bytes, PX_I2C_FLAG_START_AND_END))
+    {
+        return "Write error!";
+    }
+    if(!px_i2c_rd(&px_i2c_handle, data, rd_nr_of_bytes, PX_I2C_FLAG_REP_START_AND_STOP))
+    {
+        return "Read error!";
+    }
+    for(i = 0; i < rd_nr_of_bytes; i++)
     {
         printf("%02X ", (unsigned int)data[i]);
     }
@@ -230,11 +291,12 @@ static const char* px_cli_cmd_fn_i2c_rd(uint8_t argc, char* argv[])
 }
 
 // Create CLI command structures
-PX_CLI_CMD_CREATE(px_cli_cmd_i2c_info,        "info", 0, 0,   "",                       "Report status of SCL and SDA pins")
-PX_CLI_CMD_CREATE(px_cli_cmd_i2c_reset,       "rst",  0, 0,   "",                       "Perform I2C bus reset procedure")
-PX_CLI_CMD_CREATE(px_cli_cmd_i2c_scan,        "scan", 0, 0,   "",                       "Scan for all connected I2C slaves")
-PX_CLI_CMD_CREATE(px_cli_cmd_i2c_wr,          "w",    1, 9,   "<adr> <d0> .. [d7]",     "Write up to 8 bytes of data to an I2C slave")
-PX_CLI_CMD_CREATE(px_cli_cmd_i2c_rd,          "r",    2, 2,   "<adr> <nr of bytes>",    "Read up to 16 bytes of data from an I2C slave")
+PX_CLI_CMD_CREATE(px_cli_cmd_i2c_info,        "info", 0,  0,  "",                                       "Report status of SCL and SDA pins")
+PX_CLI_CMD_CREATE(px_cli_cmd_i2c_reset,       "rst",  0,  0,  "",                                       "Perform I2C bus reset procedure")
+PX_CLI_CMD_CREATE(px_cli_cmd_i2c_scan,        "scan", 0,  0,  "",                                       "Scan for all connected I2C slaves")
+PX_CLI_CMD_CREATE(px_cli_cmd_i2c_wr,          "w",    1,  9,  "<adr> <d0> .. [d7]",                     "Write up to 8 bytes of data to an I2C slave")
+PX_CLI_CMD_CREATE(px_cli_cmd_i2c_rd,          "r",    2,  2,  "<adr> <nr of bytes>",                    "Read up to 16 bytes of data from an I2C slave")
+PX_CLI_CMD_CREATE(px_cli_cmd_i2c_wr_rd,       "w+r",  3, 10,  "<adr> <rd nr of bytes> <d0> .. [d7]",    "Write up to 8 bytes to an I2C slave and read up to 16 bytes (REP START)")
 
 PX_CLI_GROUP_CREATE(px_cli_group_i2c, "i2c")
     PX_CLI_CMD_ADD(px_cli_cmd_i2c_info,        px_cli_cmd_fn_i2c_info)
@@ -242,4 +304,5 @@ PX_CLI_GROUP_CREATE(px_cli_group_i2c, "i2c")
     PX_CLI_CMD_ADD(px_cli_cmd_i2c_scan,        px_cli_cmd_fn_i2c_scan)
     PX_CLI_CMD_ADD(px_cli_cmd_i2c_wr,          px_cli_cmd_fn_i2c_wr)
     PX_CLI_CMD_ADD(px_cli_cmd_i2c_rd,          px_cli_cmd_fn_i2c_rd)
+    PX_CLI_CMD_ADD(px_cli_cmd_i2c_wr_rd,       px_cli_cmd_fn_i2c_wr_rd)
 PX_CLI_GROUP_END()
