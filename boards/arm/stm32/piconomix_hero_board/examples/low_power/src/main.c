@@ -159,8 +159,10 @@ int main(void)
     
     for(;;)
     {
+#if (CFG_LCD_STAY_ON == 0)
         // Turn LCD power save off
         px_lcd_power_save_off();
+#endif
         // Enable LCD backlight
         PX_LCD_BACKLIGHT_ON();
         // LED on
@@ -181,8 +183,10 @@ int main(void)
         PX_USR_LED_OFF();
         // Disable LCD backlight
         PX_LCD_BACKLIGHT_OFF();
+#if (CFG_LCD_STAY_ON == 0)
         // Turn LCD power save on
         px_lcd_power_save_on();
+#endif
 
         // Put core into STOP mode until an interrupt occurs
         px_board_stop_mode();
