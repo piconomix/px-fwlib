@@ -10,22 +10,11 @@ With it's massive community and extensive set of supported boards and libraries,
 the Arduino development environment has become a force of nature. Here are the
 steps to set up and use the Arduino IDE for the PX-HER0 board.
 
-@tip_s
-Native support for the PX-HER0 board has been added in [Arduino_Core_STM32](https://github.com/stm32duino/Arduino_Core_STM32) 
-and will be available in release 1.8.0. The following are interim steps...
-@tip_e
-
 2. Download and install the Arduino IDE {#HERO_ARDUINO_INSTALL_IDE}
 ===================================================================
 
-Go to [THIS] (https://www.arduino.cc/en/Main/OldSoftwareReleases#previous) page
-to download and install Arduino **1.8.9**
-
-@warn_s
-Arduino 1.8.10 has a [bug](https://forum.arduino.cc/index.php?topic=648226.0) in 
-the command line arduino-builder that prevents it from compiling (building) a 
-sketch for the PX-HER0 board. The bug should be fixed in the next release.
-@warn_e
+Go to [THIS](https://www.arduino.cc/en/main/software) page to download and 
+install Arduino 1.8.10 or newer.
 
 3. Install support for STM32 based boards {#HERO_ARDUINO_INSTALL_STM32}
 =======================================================================
@@ -39,11 +28,6 @@ Open the Preferences dialog in the Arduino IDE:
     File > Preferences Ctrl+Comma
 
 ![](arduino_hero_preferences.png)
-
-@tip_s
-Note the path to the Arduino sketchbook. This path will be used in the next step
-to add specific support for the PX-HER0 board.
-@tip_e
 
 Add a link to the stm32duino JSON file in the "Additional Boards Manager URLs" field:
 
@@ -64,45 +48,13 @@ Now open the Boards Manager window in the Arduino IDE:
 Type "STM32" into the search bar to narrow down the list of packages and install
 the "STM32 Cores by STMicroelectronics" package.
 
-4. Add support for the PX-HER0 board {#HERO_ARDUINO_ADD_HERO}
-=============================================================
-
-Use the path to the Arduino sketchbook as noted in the previous step. For the 
-Windows platform it will be:
-
-    C:\Users\[User Name]\Documents\Arduino
-
-Copy the the PX-HER0 "hardware" directory and files into the sketchbook 
-directory. It is located here:
-
-    px-lib/boards/arm/stm32/piconomix_hero_board/arduino/hardware
-
-After copying it, the tree must look like this:
-
-    Documents
-    \---Arduino
-        \---hardware
-            \---piconomix
-                \---stm32
-                    |   boards.txt
-                    |   platform.txt
-                    |
-                    \---variants
-                        \---PX_HER0
-                                ldscript.ld
-                                PeripheralPins.c
-                                PinNamesVar.h
-                                variant.cpp
-                                variant.h
-
-![](arduino_hero_board_support.png)
-
-5. Specify the PX-HER0 board {#HERO_ARDUINO_SPECIFY_HERO}
+4. Specify the PX-HER0 board {#HERO_ARDUINO_SPECIFY_HERO}
 =========================================================
 
 Select the PX-HER0 board from the list of supported boards:
 
-    Tools > Board: "xxx" > PX-HER0
+    Tools > Board: "xxx" > STM32 Boards > Generic STM32L0 series
+    Tools > Board part number: "xxx" > PX-HERO
 
 ![](arduino_hero_select.png)
 
@@ -110,16 +62,16 @@ Options can be specified for the PX-HER0 board in sub menus:
 
 ![](arduino_hero_options.png)
 
+Select "CDC (generic 'Serial supersede U(S)ART)" as the USB interface. This will
+configure the Arduino firmware to stream all Serial communication over USB.  We 
+will use the USB1 connector on the PX-HER0 board for serial communication.
+
 Select "STM32CubeProgrammer (DFU)" as the upload method. The Arduino IDE will 
 use the STM32CubeProgrammer command line software to program the STM32 via it's
 bootloader in ROM. We will use the USB1 connector on the PX-HER0 board to 
-program the STM32.
+program the STM32 too.
 
-Select "CDC (generic 'Serial supersede U(S)ART)" as the USB interface. This will
-configure the Arduino firmware to stream all Serial communication over USB.  We 
-will use the USB1 connector on the PX-HER0 board for serial communication too.
-
-6. Build a sketch {#HERO_ARDUINO_BUILD_SKETCH}
+5. Build a sketch {#HERO_ARDUINO_BUILD_SKETCH}
 ==============================================
 
 Open the "serial_hello_world" sketch. It is located here:
@@ -166,9 +118,10 @@ remove the BOOT jumper when you are finished. Otherwise, the STM32 will appear
 8. Digital pin mapping {#HERO_ARDUINO_PIN_MAP}
 ==============================================
 
-The PX-HER0 board pins are mapped in the following file:
+The PX-HER0 board pins are mapped in [THIS](https://github.com/stm32duino/Arduino_Core_STM32/blob/master/variants/PX_HER0/variant.h)
+file. It is duplicated here for easy offline viewing:
 
-    px-lib/boards/arm/stm32/piconomix_hero_board/arduino/hardware/piconomix/stm32/variants/variant.h
+    px-lib/boards/arm/stm32/piconomix_hero_board/arduino/variants/PX_HERO/variant.h
 
 Here is the map table:
 
