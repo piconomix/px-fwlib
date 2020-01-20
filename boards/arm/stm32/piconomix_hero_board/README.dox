@@ -68,16 +68,16 @@ The Hero Board is shipped with a @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
     + Low-power 128 x 64 monochrome graphic LCD with LED backlight
     + User LED and Battery Charger LED
     + Piezo buzzer for audio feedback
-    + 6 **LARGE** tactile user buttons (1/LEFT, 2/RIGHT, 3/UP, 4/DOWN, 5/YES, 6/NO/PWR)
+    + 6 **LARGE** tactile user buttons
     + Reset button
-- Intuitive 2.54 mm (0.1 inch) pitch peripheral connector:
+- Intuitive 2.54 mm (0.1") pitch peripheral connector:
     + PWR (+3.6V to +5V power bus)
-    + ADC x 4 (Analog to Digital inputs)
-    + DAC x 1 (Digital to Analog output)
-    + GPIO x 8 (General Purpose Input / Output pins) / PWM x 4 (Pulse Width Modulation outputs)
-    + UART x 2 (serial communication)
-    + I2C x 1 with 4.7k pull-up resistors (NXP Inter-Integrated Circuit bus)
-    + SPI x 1 (Serial Peripheral Interface)
+    + ADC x 4
+    + DAC x 1
+    + GPIO x 8 / PWM x 4
+    + UART x 2
+    + I2C x 1
+    + SPI x 1
 - Li-Po battery charger and zero-burden voltage monitoring circuit
 - Efficient power-path management (power from USB or battery using ideal diode circuit)
 - True power on/off circuit
@@ -89,16 +89,14 @@ The Hero Board is shipped with a @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
 - [Adesto AT25SF041](https://www.adestotech.com/wp-content/uploads/DS-AT25SF041_044.pdf)
   4 Mbit (512 kB) SPI Serial Flash Memory for uncomplicated data storage 
   capability
-- Spring-loaded push-push micro SD card connector for easy insertion and removal
+- Spring-loaded push-push microSD card connector for easy insertion and removal
 - [Sparkfun Qwiic](https://www.sparkfun.com/qwiic) / [STEMMA QT](https://learn.adafruit.com/introducing-adafruit-stemma-qt/what-is-stemma-qt)
   and [Seeed GROVE](http://wiki.seeedstudio.com/Grove_System/) connector for 
   easy connection to a whole ecosystem of **+3.3V** [I2C](https://www.nxp.com/video/what-is-the-i2c-bus-an-introduction-from-nxp:NXP-WHAT-IS-THE-I2C-BUS)
   boards.
-- Intuitive 2.54 mm (0.1 inch) pitch program & debug SWD header
-- Standard 10-pin 1.27 mm (0.05 inch) [ARM Cortex Debug Connector](http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf)
-  SMD footprint
-- 4 x 3.4 mm mounting holes; ideal for 
-  [M3 threaded hexagonal spacers](http://www.digikey.com/catalog/en/partgroup/hexagonal-metric-spacers/12921)
+- Intuitive 2.54 mm (0.1\") pitch program & debug SWD header
+- Standard 10-pin 1.27 mm (0.05\") [ARM Cortex Debug Connector](http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf)
+- 4 x 3.4 mm mounting holes; ideal for [M3 threaded hexagonal spacers](http://www.digikey.com/catalog/en/partgroup/hexagonal-metric-spacers/12921)
 
 5. Comparision between Lite and Deluxe Edition {#HERO_BOARD_EDITIONS}
 =====================================================================
@@ -120,8 +118,7 @@ Here is a table highlighting the differences:
 | User Interface (LCD with backlight, LED, Buzzer, 7 x Buttons)                    | YES          | YES            |
 | Peripheral connector (PWR, ADC x 4, DAC, GPIO x 8 / PWM x 4, UART x 2, I2C, SPI) | YES          | YES            |
 | Spring-loaded push-push micro SD card connector                                  | YES          | YES            |
-| 2.54 mm (0.1 inch) Debug / Program header                                        | YES          | YES            |
-| 10-pin 1.27 mm (0.05 inch) Standard ARM Cortex Debug Connector                   | NO           | NO             |
+| 10-pin 1.27 mm (0.05\") Standard ARM Cortex Debug Connector                      | YES          | YES            |
 | 95% efficient +3V3 step-down DC-DC converter                                     | YES          | YES            |
 | True power on/off circuit                                                        | NO           | YES            |
 | Li-Po battery charger with charging LED                                          | NO           | YES            |
