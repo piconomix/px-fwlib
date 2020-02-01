@@ -112,6 +112,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
+ 
+ 
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -123,12 +125,12 @@ int main(void)
       // Button being pressed?
       if(HAL_GPIO_ReadPin(LCD_BTN_5_YES_GPIO_Port, LCD_BTN_5_YES_Pin) == GPIO_PIN_RESET)
       {
-          // Enable LED
+          // Disable LED
           HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_RESET);
       }
       else
       {
-          // Disable LED
+          // Enable LED
           HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_SET);
       }
   }
