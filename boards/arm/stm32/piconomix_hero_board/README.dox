@@ -98,36 +98,40 @@ The Hero Board is shipped with a @ref HERO_BOARD_BOOTLOADER_USB_UF2 and
 - Standard 10-pin 1.27 mm (0.05\") [ARM Cortex Debug Connector](http://infocenter.arm.com/help/topic/com.arm.doc.faqs/attached/13634/cortex_debug_connectors.pdf)
 - 4 x 3.4 mm mounting holes; ideal for [M3 threaded hexagonal spacers](http://www.digikey.com/catalog/en/partgroup/hexagonal-metric-spacers/12921)
 
-5. Comparision between Lite and Deluxe Edition {#HERO_BOARD_EDITIONS}
+5. Comparision between Deluxe and Lite Edition {#HERO_BOARD_EDITIONS}
 =====================================================================
 
-Some hardware blocks are absent on the Lite Edition to provide a lower cost 
+@tip_s
+In the future a Lite Edition may also be available.
+@tip_e
+ 
+Some hardware blocks will be absent on the Lite Edition to provide a lower cost 
 option. The [schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf)
-contains 3 build variants (full, Lite and Deluxe) and can be consulted for an 
+contains 3 build variants (full, Deluxe and Lite) and can be consulted for an 
 exact view of electronic components that are present or absent.
 
 On the Lite Edition, the USB-Serial bridge (USB2) is absent, but a vertical 
-2.54 mm (0.1 inch) header is populated to provide a connection to UART1 of the 
-STM32.
+2.54 mm pitch [header](https://www.digikey.com/product-detail/en/harwin-inc/M20-8770442/952-2353-ND/3906342) 
+is populated to provide an easy connection to UART1 of the STM32.
 
 Here is a table highlighting the differences:
 
-|Feature                                                                           | Lite Edition | Deluxe Edition |
-|----------------------------------------------------------------------------------|--------------|----------------|
-| STM32L072RB Microcontroller (128k Flash, 20k SRAM, 6k EEPROM)                    | YES          | YES            |
-| User Interface (LCD with backlight, LED, Buzzer, 7 x Buttons)                    | YES          | YES            |
-| Peripheral connector (PWR, ADC x 4, DAC, GPIO x 8 / PWM x 4, UART x 2, I2C, SPI) | YES          | YES            |
-| Spring-loaded push-push micro SD card connector                                  | YES          | YES            |
-| 10-pin 1.27 mm (0.05\") Standard ARM Cortex Debug Connector                      | YES          | YES            |
-| 95% efficient +3V3 step-down DC-DC converter                                     | YES          | YES            |
-| True power on/off circuit                                                        | NO           | YES            |
-| Li-Po battery charger with charging LED                                          | NO           | YES            |
-| Zero-burden battery voltage monitoring circuit                                   | NO           | YES            |
-| Efficient power-path management                                                  | NO           | YES            |
-| USB-Serial bridge (USB2)                                                         | NO           | YES            |
-| 512k SPI Serial Flash Memory                                                     | YES          | YES            |
-| Sparkfun Qwiic / STEMMA QT Connector                                             | YES          | YES            |
-| Seeed GROVE I2C Connector                                                        | YES          | YES            |
+|Feature                                                                           | Deluxe Edition | Lite Edition |
+|----------------------------------------------------------------------------------|----------------|--------------|
+| STM32L072RB Microcontroller (128k Flash, 20k SRAM, 6k EEPROM)                    | YES            | YES          |
+| User Interface (LCD with backlight, LED, Buzzer, 7 x Buttons)                    | YES            | YES          |
+| Peripheral connector (PWR, ADC x 4, DAC, GPIO x 8 / PWM x 4, UART x 2, I2C, SPI) | YES            | YES          |
+| Spring-loaded push-push micro SD card connector                                  | YES            | YES          |
+| 10-pin 1.27 mm (0.05\") Standard ARM Cortex Debug Connector                      | YES            | YES          |
+| 95% efficient +3V3 step-down DC-DC converter                                     | YES            | YES          |
+| True power on/off circuit                                                        | YES            | NO           |
+| Li-Po battery charger with charging LED                                          | YES            | NO           |
+| Zero-burden battery voltage monitoring circuit                                   | YES            | NO           |
+| Efficient power-path management                                                  | YES            | NO           |
+| USB-Serial bridge (USB2)                                                         | YES            | NO           |
+| 512k SPI Serial Flash Memory                                                     | YES            | YES          |
+| Sparkfun Qwiic / STEMMA QT Connector                                             | YES            | YES          |
+| Seeed GROVE I2C Connector                                                        | YES            | YES          |
 
 6. Design Documents{#HERO_BOARD_DESIGN}
 =======================================
@@ -137,10 +141,11 @@ follow and complete manufacturer part numbers are not disclosed. The Hero Board
 lowers the barrier in terms of design openness... judge for yourself:
 
 - [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf)
-- [Bill Of Materials - Lite Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_bom_lite_edition.pdf)
 - [Bill Of Materials - Deluxe Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_bom_deluxe_edition.pdf)
+- [Bill Of Materials - Lite Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_bom_lite_edition.pdf)
 - [Assembly Drawings - part designators & silkscreen](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_assy.pdf)
 - [Mechanical Dimensions](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_mec.pdf)
+- [3D Model](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_3d.step)
 
 The design documents can also be found here for off-line viewing:
 
