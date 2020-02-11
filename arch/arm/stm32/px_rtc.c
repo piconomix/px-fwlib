@@ -56,7 +56,7 @@ void RTC_IRQHandler(void)
         // Alarm A interrupt flag set?
         if(LL_RTC_IsActiveFlag_ALRA(RTC))
         {
-            // Clear interrupt
+            // Clear interrupt flag
             LL_RTC_ClearFlag_ALRA(RTC);
             // Set flag
             px_rtc_alarm_a_flag = true;
@@ -70,7 +70,7 @@ void RTC_IRQHandler(void)
         // Wakeup Timer interrupt flag set?
         if(LL_RTC_IsActiveFlag_WUT(RTC))
         {
-            // Clear interrupt
+            // Clear interrupt flag
             LL_RTC_ClearFlag_WUT(RTC);
             // Set flag
             px_rtc_wakeup_tmr_flag = true;
@@ -223,18 +223,19 @@ void px_rtc_alarm_a_enable(const px_rtc_date_time_t * alarm,
     RTC->ALRMAR = rtc_alrmar;
     // Clear flag
     px_rtc_alarm_a_flag = false;
+    // Clear interrupt flag
+    LL_RTC_ClearFlag_ALRA(RTC);
+    // Enable rising edge external interrupt on line 17
+    LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_17);
+    LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_17);
+    // Enable RTC interrupt
+    NVIC_EnableIRQ(RTC_IRQn);
     // Enable Alarm A interrupt
     LL_RTC_EnableIT_ALRA(RTC);
     // Enable Alarm
     LL_RTC_ALMA_Enable(RTC);
     // Enable write protection for RTC registers
     LL_RTC_EnableWriteProtection(RTC);
-
-    // Enable rising edge external interrupt on line 17
-    LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_17);
-    LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_17);
-    // Enable RTC interrupt
-    NVIC_EnableIRQ(RTC_IRQn);
 }
 
 void px_rtc_alarm_a_disable(void)
@@ -283,17 +284,19 @@ void px_rtc_wakeup_tmr_enable(px_rtc_wakeup_presc_clk_t wakeup_presc_clk,
     LL_RTC_WAKEUP_SetAutoReload(RTC, wakeup_reload);
     // Clear flag
     px_rtc_wakeup_tmr_flag = false;
+    // Clear WUT interrupt flag
+    LL_RTC_ClearFlag_WUT(RTC);
+    // Enable rising edge external interrupt on line 20
+    LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_20);
+    LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_20);
+    // Enable RTC interrupt
+    NVIC_EnableIRQ(RTC_IRQn);
     // Enable Wakeup Timer interrupt
     LL_RTC_EnableIT_WUT(RTC);
     // Enable Wakeup Timer
     LL_RTC_WAKEUP_Enable(RTC);
     // Enable write protection for RTC registers
-    LL_RTC_EnableWriteProtection(RTC);
-    // Enable rising edge external interrupt on line 20
-    LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_20);
-    LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_20);
-    // Enable RTC interrupt
-    NVIC_EnableIRQ(RTC_IRQn);
+    LL_RTC_EnableWriteProtection(RTC);    
 }
 
 void px_rtc_wakeup_tmr_disable(void)
