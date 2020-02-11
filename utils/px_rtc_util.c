@@ -274,90 +274,69 @@ void px_rtc_util_on_tick(void)
         // No
         return;
     }
-
-    // Seconds match?
-    if(px_rtc_util_date_time.sec != px_rtc_util_alarm.sec)
-    {
-        // No
-        return;
-    }
     // Compare seconds?
-    if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_SEC)
+    if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_SEC)
     {
-        /// Set flag to indicate that an alarm has occurred
-        px_rtc_util_alarm_flag = true;
-        return;
-    }
-
-    // Minutes match?
-    if(px_rtc_util_date_time.min != px_rtc_util_alarm.min)
-    {
-        // No
-        return;
+        // Seconds match?
+        if(px_rtc_util_date_time.sec != px_rtc_util_alarm.sec)
+        {
+            // No
+            return;
+        }
     }
     // Compare minutes?
-    if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_MIN)
+    if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_MIN)
     {
-        /// Set flag to indicate that an alarm has occurred
-        px_rtc_util_alarm_flag = true;
-        return;
-    }
-
-    // Hours match?
-    if(px_rtc_util_date_time.hour != px_rtc_util_alarm.hour)
-    {
-        // No
-        return;
+        // Seconds match?
+        if(px_rtc_util_date_time.min != px_rtc_util_alarm.min)
+        {
+            // No
+            return;
+        }
     }
     // Compare hours?
-    if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_HOUR)
+    if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_HOUR)
     {
-        /// Set flag to indicate that an alarm has occurred
-        px_rtc_util_alarm_flag = true;
-        return;
-    }
-
-    // Days match?
-    if(px_rtc_util_date_time.day != px_rtc_util_alarm.day)
-    {
-        // No
-        return;
+        // Hours match?
+        if(px_rtc_util_date_time.hour != px_rtc_util_alarm.hour)
+        {
+            // No
+            return;
+        }
     }
     // Compare days?
-    if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_DAY)
+    if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_DAY)
     {
-        /// Set flag to indicate that an alarm has occurred
-        px_rtc_util_alarm_flag = true;
-        return;
-    }
-
-    // Months match?
-    if(px_rtc_util_date_time.month != px_rtc_util_alarm.month)
-    {
-        // No
-        return;
+        // Days match?
+        if(px_rtc_util_date_time.day != px_rtc_util_alarm.day)
+        {
+            // No
+            return;
+        }
     }
     // Compare months?
-    if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_MONTH)
+    if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_MONTH)
     {
-        /// Set flag to indicate that an alarm has occurred
-        px_rtc_util_alarm_flag = true;
-        return;
-    }
-
-    // Years match?
-    if(px_rtc_util_date_time.year != px_rtc_util_alarm.year)
-    {
-        // No
-        return;
+        // Months match?
+        if(px_rtc_util_date_time.month != px_rtc_util_alarm.month)
+        {
+            // No
+            return;
+        }
     }
     // Compare years?
-    if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_YEAR)
+    if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_YEAR)
     {
-        /// Set flag to indicate that an alarm has occurred
-        px_rtc_util_alarm_flag = true;
-        return;
-    }    
+        // Years match?
+        if(px_rtc_util_date_time.year != px_rtc_util_alarm.year)
+        {
+            // No
+            return;
+        }
+    }
+
+    /// Set flag to indicate that an alarm has occurred
+    px_rtc_util_alarm_flag = true;    
 }
 
 void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time)

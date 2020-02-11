@@ -53,6 +53,17 @@ extern "C" {
 #define PX_RTC_SEC_PER_HOUR (60*PX_RTC_SEC_PER_MIN)
 #define PX_RTC_SEC_PER_DAY  (24*PX_RTC_SEC_PER_HOUR)
 
+/// @name Alarm bit mask
+//@{
+#define PX_RTC_UTIL_ALARM_MASK_DIS      0       ///< Disable alarm
+#define PX_RTC_UTIL_ALARM_MASK_SEC      (1<<0)  ///< Alarm match on second
+#define PX_RTC_UTIL_ALARM_MASK_MIN      (1<<1)  ///< Alarm match on minute
+#define PX_RTC_UTIL_ALARM_MASK_HOUR     (1<<2)  ///< Alarm match on hour
+#define PX_RTC_UTIL_ALARM_MASK_DAY      (1<<3)  ///< Alarm match on day
+#define PX_RTC_UTIL_ALARM_MASK_MONTH    (1<<4)  ///< Alarm match on month
+#define PX_RTC_UTIL_ALARM_MASK_YEAR     (1<<5)  ///< Alarm match on year
+//@}
+
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /// Size definition to track seconds since Y2K (2000-01-01 00:00:00)
 typedef uint32_t px_rtc_sec_since_y2k_t;
@@ -77,16 +88,7 @@ typedef enum
 } px_rtc_time_compare_t;
 
 /// Alarm mask
-typedef enum
-{
-    PX_RTC_UTIL_ALARM_MASK_DIS = 0,     ///< Disable alarm
-    PX_RTC_UTIL_ALARM_MASK_SEC,         ///< Alarm match on second
-    PX_RTC_UTIL_ALARM_MASK_MIN,         ///< Alarm match on second and minute
-    PX_RTC_UTIL_ALARM_MASK_HOUR,        ///< Alarm match on second, minute and hour
-    PX_RTC_UTIL_ALARM_MASK_DAY,         ///< Alarm match on second, minute, hour and day
-    PX_RTC_UTIL_ALARM_MASK_MONTH,       ///< Alarm match on second, minute, hour, day and month
-    PX_RTC_UTIL_ALARM_MASK_YEAR,        ///< Alarm match on second, minute, hour, day, month and year
-} px_rtc_alarm_mask_t;
+typedef uint8_t px_rtc_alarm_mask_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
