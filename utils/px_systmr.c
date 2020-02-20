@@ -36,10 +36,8 @@ void px_systmr_start(px_systmr_t * systmr, const px_systmr_ticks_t delay_in_tick
 {
     // Save delay in case timer is restarted
     systmr->delay_in_ticks = delay_in_ticks;
-
     // Store start tick
     systmr->start_tick = px_sysclk_get_tick_count();
-
     // Set state to indicate that timer has started
     systmr->state = PX_SYSTMR_STARTED;
 }
@@ -59,28 +57,39 @@ bool px_systmr_has_started(const px_systmr_t * systmr)
 bool px_systmr_has_expired(px_systmr_t * systmr)
 {
     px_systmr_ticks_t tick;
+    px_systmr_ticks_t start;
+    px_systmr_ticks_t end;
 
     // See if timer has been stopped
     if (systmr->state == PX_SYSTMR_STOPPED) 
     {
         return false;
     }
-
     // See if timer has already expired
     if (systmr->state == PX_SYSTMR_EXPIRED) 
     {
         return true;
     }
-
-    // Fetch current time
-    tick = px_sysclk_get_tick_count();
-
     // Timer expire test
-    if( (tick - systmr->start_tick) < systmr->delay_in_ticks )
+    tick = px_sysclk_get_tick_count();
+    start = systmr->start_tick;
+    end   = systmr->start_tick + systmr->delay_in_ticks;
+    if(start < end)
     {
-        return false;
+        if(  (tick >= start) && (tick < end)  )
+        {
+            // Timer has not expired yet
+            return false;
+        }
     }
-
+    else
+    {
+        if(  (tick >= start) || (tick < end)  )
+        {
+            // Timer has not expired yet
+            return false;
+        }
+    }
     // Set state to indicate that timer has expired
     systmr->state = PX_SYSTMR_EXPIRED;
 
@@ -97,7 +106,6 @@ void px_systmr_restart(px_systmr_t * systmr)
 {
     // Store start tick
     systmr->start_tick = px_sysclk_get_tick_count();
-
     // Set state to indicate that timer has started
     systmr->state = PX_SYSTMR_STARTED;
 }
@@ -106,7 +114,6 @@ void px_systmr_reset(px_systmr_t * systmr)
 {
     // Calculate and store new start tick
     systmr->start_tick += systmr->delay_in_ticks;
-
     // Set state to indicate that timer has started
     systmr->state = PX_SYSTMR_STARTED;
 }
@@ -116,7 +123,6 @@ void px_systmr_wait(const px_systmr_ticks_t delay_in_ticks)
     px_systmr_t systmr;
 
     px_systmr_start(&systmr, delay_in_ticks);
-
     while (!px_systmr_has_expired(&systmr))
     {
         ;
