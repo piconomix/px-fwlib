@@ -302,7 +302,7 @@ assembly level:
 ![](sci_debug_asm.png)
 
 @tip_s
-The state of the core can be inspected in the the Register window:
+The state of the processor core can be inspected in the the Register window:
 @tip_e
 
 ![](sci_debug_registers.png)
