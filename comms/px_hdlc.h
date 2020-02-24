@@ -57,8 +57,8 @@
  *  
  *  @warn_s
  *  The overhead with escaping may mean that a packet may be up to 
- *  double in size if all of the data bytes is 0x7D or 0x7E, but the 
- *  probability of this sequency occuring is low.
+ *  double in size if all of the data bytes are 0x7D or 0x7E, but the 
+ *  probability of this sequence occuring is low.
  *  @warn_e
  *  
  *  Linking dependency to the higher communication layer is avoided by 
