@@ -128,6 +128,7 @@ bool px_one_wire_reset(void)
 {
     bool presence_detected;
 
+    PX_ONE_WIRE_CFG_INTS_DISABLE();
     PX_ONE_WIRE_CFG_PIN_SET_LO();
     PX_ONE_WIRE_CFG_DELAY_US(480);
     PX_ONE_WIRE_CFG_PIN_DIR_SET_IN();
@@ -144,6 +145,7 @@ bool px_one_wire_reset(void)
         // No
         presence_detected = false;
     }
+    PX_ONE_WIRE_CFG_INTS_ENABLE();
     PX_ONE_WIRE_CFG_DELAY_US(410);
 
     return presence_detected;
