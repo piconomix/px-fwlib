@@ -1,0 +1,116 @@
+7.6 How to get started with STM32CubeMX {#HOWTO_STM32CUBEMX}
+============================================================
+
+[stm32cubemx]: https://www.st.com/en/development-tools/stm32cubemx.html
+[cmsis]: https://developer.arm.com/tools-and-software/embedded/cmsis
+
+[TOC]
+
+1. Introduction {#STM32CUBEMX_INTRO}
+====================================
+
+STM32CubeMX is a free cross-platform graphical tool to generate code for STM32 
+microcontrollers. It's the easiest way to generate test / demo code for a new
+microcontroller and understand it's complex clock system. It's also handy to 
+check pin function assignments before commiting to PCB layout.
+
+
+2. Download and Install {#STM32CUBEMX_INSTALL}
+==============================================
+
+[HERE][stm32cubemx] is the download page.
+
+2.1 Install required packages {#STM32CUBEMX_PACKAGES}
+-----------------------------------------------------
+
+Open the Embedded Software Packages Manager dialog:
+
+    Help > Manage embedded software packages Alt-U
+
+Note that by default the "STM32Cube MCU Packages" tab is selected, but you can 
+also select the "ARM" or "STMicroelectronics" tab to respectively install 
+[CMSIS][cmsis] and ST middleware libraries.
+
+Expand the STM32L0 series by clicking on the black triangle and tick the latest 
+"STM32Cube MCU Package for STM32L0 Series".
+
+3. Create a new project {STM32CUBEMX_NEW_PROJECT}
+=================================================
+
+    File > New Project Ctrl-N
+
+Note that by default the "MCU/MPU Selector" tab is selected, but you can 
+also select the "Board Selector" or "Cross Selector" tab.
+
+In Part Number Search type in "STM32L072RB" and double-click on 
+"STM32L072RBTx" (the LQFP64 chip package).
+
+You will now be presented with a chip view of the microcontroller pins.
+
+Save your new project.
+
+    File > Save Project As Ctrl-A
+
+@warn_s
+Be sure to save your project early and often as the software does crash 
+sometimes.
+@warn_e
+
+4. Assign a function to each pin {STM32CUBEMX_PIN}
+==================================================
+
+Left click on a pin and a menu will appear that list all of the possible 
+functions that can be assigned to that pin. Left click on the desired function
+and it will be assigned to that pin.
+
+You can remove an assignment by left clicking on the pin and left clicking on 
+"Reset_State".
+
+To give a new label or change a label, right click on the pin and left click on
+"Enter User Label"
+
+@warn_s
+It's a little annoying, but if you change a pin assignment (e.g. from 
+"GPIO_Output" to "GPIO_Input") it will lose it's label and you will have to type
+it in again.
+@warn_e
+
+The Alternative functions for each pin are listed in tables 17 - 22 starting on 
+p.51 of the [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf)
+
+From this table it's easy to spot that USART2_TX can be assign to PA2 by 
+selecting AF4 (Alternate Function 4).
+
+    System Core > GPIO
+
+Change GPIO mode to "Output Push Pull" or "Output Open Drain" or enable an 
+internal pull-up or pull-down resistor. The maximum output speed can be changed
+from "Low" to "Medium", "High" or "Very High".
+
+@tip_s
+Click on column heading "User Label" to sort the pins by asigned name or 
+"Pin Name" to return to back to default sorting.
+@tip_e
+
+5. Clock configuration {STM32CUBEMX_CLOCKS}
+===========================================
+
+6. Project Manager {STM32CUBEMX_PROJECT_MANAGER}
+================================================
+
+6.1 Project {STM32CUBEMX_PROJECT}
+---------------------------------
+
+6.2 Code Generator {STM32CUBEMX_CODE_GENERATOR}
+-----------------------------------------------
+
+6.3 Advanced Settings {STM32CUBEMX_ADV_SETTINGS}
+------------------------------------------------
+
+7. Generate Code
+================
+
+8. Help
+=======
+
+    Docs & Resources Alt-D
