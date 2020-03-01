@@ -6,3 +6,4 @@
 - @subpage HOWTO_FTDI
 - @subpage HOWTO_TERA_TERM
 - @subpage HOWTO_STM32CUBEIDE
+- @subpage HOWTO_STM32CUBEMX

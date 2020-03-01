@@ -1,0 +1,262 @@
+7.6 How to get started with STM32CubeMX {#HOWTO_STM32CUBEMX}
+============================================================
+
+[stm32cubemx]: https://www.st.com/en/development-tools/stm32cubemx.html
+[cmsis]: https://developer.arm.com/tools-and-software/embedded/cmsis
+
+[TOC]
+
+1. Introduction {#STM32CUBEMX_INTRO}
+====================================
+
+STM32CubeMX is a free cross-platform graphical tool to generate code for STM32 
+microcontrollers. It's the easiest way to generate test / demo code for a new
+microcontroller and understand it's complex clock system. It's also handy to 
+check pin function assignments before commiting to PCB layout.
+
+@tip_s
+STm32CubeMX is now integrated into STM32CudeIDE, but my personal preference is 
+to use it as a standalone tool.
+@tip_e
+
+2. Download and Install {#STM32CUBEMX_INSTALL}
+==============================================
+
+[HERE][stm32cubemx] is the download page.
+
+2.1 Install required packages {#STM32CUBEMX_PACKAGES}
+-----------------------------------------------------
+
+Open the Embedded Software Packages Manager dialog:
+
+    Help > Manage embedded software packages Alt-U
+
+![](cmx_embedded_software_package_manager.png)
+
+Note that by default the "STM32Cube MCU Packages" tab is selected, but you can 
+also select the "ARM" or "STMicroelectronics" tab to respectively install 
+[CMSIS][cmsis] and ST middleware libraries.
+
+Expand the STM32L0 series by clicking on the black triangle and tick the latest 
+"STM32Cube MCU Package for STM32L0 Series". Press the "Install Now" button" to 
+download and install the support package.
+
+3. Create a new project {#STM32CUBEMX_NEW_PROJECT}
+==================================================
+
+Open the New Project dialog:
+
+    File > New Project Ctrl-N
+
+![](cmx_new_project.png)
+
+Note that by default the "MCU/MPU Selector" tab is selected, but you can 
+also select the "Board Selector" or "Cross Selector" tab.
+
+In Part Number Search type in "stm32l072rb" and double-click on 
+"STM32L072RBTx" (the LQFP64 chip package).
+
+You will now be presented with a Pinout view of the microcontroller pins.
+
+![](cmx_pinout_view.png)
+
+Save your new project.
+
+    File > Save Project As .. Ctrl-A
+
+@warn_s
+Be sure to save your project early and often as the software does crash 
+sometimes.
+@warn_e
+
+4. Assign a function to each pin {#STM32CUBEMX_PIN}
+===================================================
+
+![](cmx_pin_function.png)
+
+Left click on a pin and a menu will appear that list all of the possible 
+functions that can be assigned to that pin. Left click on the desired function
+and it will be assigned to that pin.
+
+You can also remove an assignment by left clicking on the pin and left clicking 
+on "Reset_State".
+
+![](cmx_pin_label.png)
+
+To give a new label or change a label, right click on the pin and left click on
+"Enter User Label"
+
+@warn_s
+It's slightly annoying, but if you change a pin assignment (e.g. from 
+"GPIO_Output" to "GPIO_Input") it will lose it's label and you will have to type
+it in again.
+@warn_e
+
+The Alternate functions for each pin are listed in tables 17 - 22 starting on 
+p.53 of the [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf):
+
+![](cmx_alternate_function.png)
+
+From this table it's easy to spot for example that USART2_TX can be assign to 
+PA2 by selecting AF4 (Alternate Function 4).
+
+![](cmx_px_hero_sch.png)
+
+@tip_s
+The PX-HER0 board schematic makes it easy. Each possible pin function is listed 
+in the schematic symbol of the STM32L072 IC and the assigned function is 
+underlined in red.
+@tip_e
+
+    System Core > GPIO
+
+![](cmx_gpio.png)
+
+Expand the System Core group by left clicking on it and activate the GPIO window 
+by left clicking on it. Each pin's attributes can be changed in the "GPIO Mode 
+and Configuration" window.
+
+@tip_s
+Click on the column heading "User Label" to sort the pins by asigned name or 
+"Pin Name" to return back to default sorting.
+@tip_e
+
+Select a pin in the list by clicking on it and the Configuration window will 
+appear. If the pin is configured as an output, the initial level can be changed 
+from "Low" to "High". The GPIO mode can be changed from "Output Push Pull" to 
+"Output Open Drain" or the internal pull-up or pull-down resistor can be 
+enabled. The maximum output speed can be changed from "Low" to "Medium", "High" 
+or "Very High". It is also an opportunity to change the user label.
+
+5. Assign a peripheral function {#STM32CUBEMX_PERIPHERAL}
+=========================================================
+
+![](cmx_peripheral_disabled.png)
+
+You will notice that when you configure PA2 as USART2_TX it turns yellow and not 
+green. This indicates that the peripheral has not been enabled yet.
+
+    Connectivity > USART2
+
+![](cmx_peripheral_enabled.png)
+
+Expand the Connectivity group by left clicking on it and activate the USART2 
+window by left clicking on it. Change the Mode to Asynchronous to enable the 
+peripheral. PA2 and PA3 will turn green to indicate that the peripheral is 
+enabled.
+
+By default the Parameter Settings tab is selected. The Baud Rate, Word Length,
+Parity and Stop Bits can be changed if desired.
+
+The NVIC Settings tab allows the USART2 interrupt to be enabled.
+
+The GPIO Settings tab allows for example to enable the pull-up resistor on 
+PA3 (USART2_RX).
+
+@warn_s
+You may need to scroll the window down to see the PA3 Configuration dialog.
+@warn_e
+
+    System Core > GPIO
+
+![](cmx_gpio_peripheral.png)
+
+If you return to the GPIO window you will see that a USART tab has appeared. It
+provides an alternative way to enable the pull-up resistor of PA3. You can also
+change the pin from "Alternate Function Push Pull" to "Alternate Function Open 
+Drain". Very versatile!
+
+5. Clock configuration {#STM32CUBEMX_CLOCKS}
+============================================
+
+    Timers > RTC
+
+![](cmx_rtc.png)
+
+Configure PC14 and PC15 as OSC32 pins to use an external 32.768 kHz crystal as
+a clock source. Expand the Timers group and select the RTC window. Activate the 
+Clock Source and Calender.
+
+![](cmx_clocks.png)
+
+Select the Clock Configuration tab. You will notice that the LSE (Low Speed 
+External) clock source is the 32.768 kHz crystal. The LSE is selected as the 
+clock source for the RTC in the RTC Source Mux symbol.
+
+The 16 MHz HSI RC (High Speed Internal RC Oscillator) is enabled and selected
+as the clock source for the PLL in the PLL Source Mux symbol. The PLL (Phase 
+Locked Loop) is configured to multiply the input clock frequency by 4 and divide
+it by 2.
+
+The 32 MHz PLLCLK is selected as the clock source for SYSCLK (System Clock) in 
+the System Clock Mux symbol. The SYSCLK is then distributed to all of the 
+different busses.
+
+You will notice that the USBCLK is grayed out, because the USB peripheral has 
+not been enabled yet. It can be supplied from the PLL or a separate 48 MHz 
+RC oscillator. The accuracy of the clock can be improved by using the USB SOF 
+([Start Of Frame](https://www.beyondlogic.org/usbnutshell/usb3.shtml)) packet 
+that is received every 1 ms.
+
+6. Project Manager {#STM32CUBEMX_PROJECT_MANAGER}
+=================================================
+
+Select the Project Manager tab.
+
+6.1 Project {#STM32CUBEMX_PROJECT}
+----------------------------------
+
+![](cmx_project.png)
+
+The Project tab will be selected by default. The Toolchain / IDE can be changed
+to STM32CubeIDE. The location of the complete STM32Cube library is displayed at 
+the bottom.
+
+6.2 Code Generator {#STM32CUBEMX_CODE_GENERATOR}
+------------------------------------------------
+
+![](cmx_code_generator.png)
+
+The Code Generator will only copy the neccesary library files into the project.
+Tick "Generate peripheral initialization as a pair of '.c/.h' files per 
+peripheral" and "Set all free pins as analog (to optimize the power 
+consumption)".
+
+6.3 Advanced Settings {#STM32CUBEMX_ADV_SETTINGS}
+-------------------------------------------------
+
+![](cmx_advanced_settings.png)
+
+In Advanced Settings the tool can be configured to general HAL (Hardware 
+Abstraction Layer) or LL (Low Level) code for each peripheral.
+
+@tip_s
+I use the tool to generate lean LL code for the RCC (Reset and Clock Control) 
+peripheral and use it to enable the clocks for the PX-HER0 board in 
+@ref BOARDS_STM32_PICONOMIX_HERO.
+@tip_e
+
+7. Generate Code {#STM32CUBEMX_GENERATE}
+========================================
+
+![](cmx_generate_code.png)
+
+Click on the "Generate Code" button. After the tool has finished, you can open
+the folder to view the files or open the project in STM32CubeIDE. Great!
+
+8. Help {#STM32CUBEMX_HELP}
+===========================
+
+    Help > Docs & Resources Alt-D
+
+![](cmx_help_docs.png)
+
+The relevant documents for the selected microcontroller is neatly collected in 
+the "Docs & Resources" window. Once downloaded it's just a few mouse clicks 
+away.
+
+9. Example {#STM32CUBEMX_EXAMPLE}
+=================================
+
+A complete STM32CubeMX project has been created for the PX-HER0 board and can be 
+found @ref HERO_BOARD_EXAMPLE_CUBEMX_HAL "HERE".
