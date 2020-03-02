@@ -7,7 +7,7 @@ STM32CubeMX HAL example {#HERO_BOARD_EXAMPLE_CUBEMX_HAL}
 ======================================================
 
 This is a [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
-HAL project created for the Hero Board.
+HAL project configured for the Hero Board.
 
 @tip_s
 For an introduction to the STM32CubeMX tool, click @ref HOWTO_STM32CUBEMX "HERE".
@@ -23,3 +23,21 @@ For an introduction to the STM32CubeMX tool, click @ref HOWTO_STM32CUBEMX "HERE"
 ==========================================================
 
 ![](hero_board_cubemx_clk_setup.png)
+
+The 32.768 kHz crystal (&plusmn;20 ppm accuracy) is the clock source for the LSE 
+(Low Speed External) oscillator. The LSE is selected as the clock source for the 
+RTC (Real Time Clock) in the RTC Source Mux symbol.
+
+The 16 MHz HSI RC (High Speed Internal RC Oscillator; &plusmn;2% accuracy) is 
+enabled and selected as the clock source for the PLL (Phase Locked Loop) in the 
+PLL Source Mux symbol. The PLL is configured to multiply the input clock 
+frequency by 4 and divide it by 2.
+
+The 32 MHz PLLCLK is selected as the clock source for SYSCLK (System Clock) in 
+the System Clock Mux symbol. The SYSCLK is then distributed to all of the 
+different peripherals.
+
+The 48 MHz RC Oscillator (&plusmn;4% accuracy) is enabled and selected as the 
+clock source for USBCLK in the 48M Source Mux symbol. The CRS (Clock Recovery 
+System) is configured to use the USB SOF ([Start Of Frame](https://www.beyondlogic.org/usbnutshell/usb3.shtml)) 
+packet that is received every 1 ms to improve the accuracy of the clock.
