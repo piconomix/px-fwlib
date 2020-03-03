@@ -126,6 +126,12 @@ void px_board_buzzer_on(uint16_t freq_hz);
 void px_board_buzzer_off(void);
 
 /**
+ *  Enable DBG module during SLEEP and STOP mode.
+ *  
+ */
+void px_board_dbg_enable(void);
+
+/**
  *  Disable DBG module.
  */
 void px_board_dbg_disable(void);

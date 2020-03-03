@@ -301,6 +301,20 @@ void px_board_buzzer_off(void)
     LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_TIM3);
 }
 
+void px_board_dbg_enable(void)
+{
+    // Enable SWD pins with pull resistors
+    px_gpio_mode_set(&px_gpio_swdck, PX_GPIO_MODE_AF);
+    px_gpio_pulldn_enable(&px_gpio_swdck);
+    px_gpio_mode_set(&px_gpio_swdio, PX_GPIO_MODE_AF);
+    px_gpio_pullup_enable(&px_gpio_swdio);
+
+    // Enable Debug Module during SLEEP and STOP mode
+    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_DBGMCU);
+    LL_DBGMCU_EnableDBGSleepMode();
+    LL_DBGMCU_EnableDBGStopMode();
+}
+
 void px_board_dbg_disable(void)
 {
     // Set SWD pins to analog with no pull resistors
