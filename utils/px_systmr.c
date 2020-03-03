@@ -88,7 +88,7 @@ bool px_systmr_has_expired(px_systmr_t * systmr)
     {
         // |xxxxxxx__________________xxx|
         //  >>>>>>E                  S>>
-        if(  (tick < end) || (tick >= start)  )
+        if(  (tick >= start) || (tick < end)  )
         {
             // Timer has not expired yet
             return false;
