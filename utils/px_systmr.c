@@ -76,6 +76,8 @@ bool px_systmr_has_expired(px_systmr_t * systmr)
     end   = systmr->start_tick + systmr->delay_in_ticks;
     if(start < end)
     {
+        // |________xxxxxxxxxx__________|
+        //          S>>>>>>>>E
         if(  (tick >= start) && (tick < end)  )
         {
             // Timer has not expired yet
@@ -84,7 +86,9 @@ bool px_systmr_has_expired(px_systmr_t * systmr)
     }
     else
     {
-        if(  (tick >= start) || (tick < end)  )
+        // |xxxxxxx__________________xxx|
+        //  >>>>>>E                  S>>
+        if(  (tick < end) || (tick >= start)  )
         {
             // Timer has not expired yet
             return false;
