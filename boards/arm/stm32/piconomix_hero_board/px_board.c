@@ -388,6 +388,8 @@ void px_board_stop_mode(void)
 
     // Clear SLEEPDEEP bit of Cortex System Control Register
     LL_LPM_EnableSleep();
+    // Clear LPSDSR bit to switch regulator back to main mode
+    LL_PWR_SetRegulModeLP(LL_PWR_REGU_LPMODES_MAIN);
     // Must SysTick interrupt be restored?
     if(systick_int_enabled)
     {
