@@ -5,7 +5,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2008 - 2012 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
  
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
@@ -135,7 +135,8 @@ void px_systmr_wait(const px_systmr_ticks_t delay_in_ticks)
 px_systmr_ticks_t px_systmr_ticks_elapsed(px_systmr_t * systmr)
 {
     // Fetch current time
-    px_systmr_ticks_t tick = px_sysclk_get_tick_count();
+    px_systmr_ticks_t tick          = px_sysclk_get_tick_count();
+    px_systmr_ticks_t ticks_elapsed = tick - systmr->start_tick;
 
-    return (tick - systmr->start_tick);
+    return ticks_elapsed;
 }
