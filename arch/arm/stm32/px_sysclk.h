@@ -89,6 +89,11 @@ void px_sysclk_init(void);
  */
 px_sysclk_ticks_t px_sysclk_get_tick_count(void);
 
+/**
+ *  Reset tick count.
+ */
+void px_sysclk_reset_tick_count(void);
+
 /* _____MACROS_______________________________________________________________ */
 
 /// @}

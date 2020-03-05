@@ -100,3 +100,8 @@ px_sysclk_ticks_t px_sysclk_get_tick_count(void)
 {
     return px_sysclk_tick_counter;
 }
+
+void px_sysclk_reset_tick_count(void)
+{
+    px_sysclk_tick_counter = 0;
+}
