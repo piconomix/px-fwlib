@@ -338,7 +338,7 @@ void px_spi_wr(px_spi_handle_t * handle,
 {
     px_spi_data_t * spi_data;
     SPI_TypeDef *   spi_base_adr;
-    const uint8_t * data_u8 = (const uint8_t *)data;
+    const uint8_t * data_wr_u8 = (const uint8_t *)data;
     uint8_t         data_rx ;
 
     // Verify that pointer to handle is not NULL
@@ -364,24 +364,22 @@ void px_spi_wr(px_spi_handle_t * handle,
 
     while(nr_of_bytes)
     {
-        // Wait until peripheral is ready to accept new transmit data
-        while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr))
+        // Is peripheral ready to accept new transmit data?
+        if(LL_SPI_IsActiveFlag_TXE(spi_base_adr))
         {
-            ;
-        }
-        // Buffer byte to be sent
-        LL_SPI_TransmitData8(spi_base_adr, *data_u8++);
-        // Wait until byte has been transfered
-        while(!LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
+            // Buffer byte to be sent
+            LL_SPI_TransmitData8(spi_base_adr, *data_wr_u8++);
+        }        
+        // New byte received?
+        if(LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
         {
-            ;
+            // Read received byte (and discard)
+            data_rx = LL_SPI_ReceiveData8(spi_base_adr);
+            // Avoid compiler warning that variable was set but not used
+            (void)data_rx;
+            // Next byte
+            nr_of_bytes--;
         }
-        // Read received byte (and discard)
-        data_rx = LL_SPI_ReceiveData8(spi_base_adr);
-        // Avoid compiler warning that variable was set but not used
-        (void)data_rx;
-        // Next byte
-        nr_of_bytes--;
     }
 
     if(flags & PX_SPI_FLAG_STOP)
@@ -398,7 +396,7 @@ void px_spi_rd(px_spi_handle_t * handle,
 {
     px_spi_data_t * spi_data;
     SPI_TypeDef *   spi_base_adr;
-    uint8_t *       data_u8 = (uint8_t *)data;
+    uint8_t *       data_rd_u8 = (uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
@@ -424,22 +422,20 @@ void px_spi_rd(px_spi_handle_t * handle,
     // Repeat until all of the bytes have been read
     while(nr_of_bytes)
     {
-        // Wait until peripheral is ready to accept new transmit data
-        while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr))
+        // Is peripheral ready to accept new transmit data?
+        if(LL_SPI_IsActiveFlag_TXE(spi_base_adr))
         {
-            ;
-        }
-        // Buffer dummy byte to be sent
-        LL_SPI_TransmitData8(spi_base_adr, handle->mo_dummy_byte);
-        // Wait until byte has been transfered
-        while(!LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
+            // Buffer dummy byte to be sent
+            LL_SPI_TransmitData8(spi_base_adr, handle->mo_dummy_byte);
+        }        
+        // New byte received?
+        if(LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
         {
-            ;
+            // Read received byte
+            *data_rd_u8++ = LL_SPI_ReceiveData8(spi_base_adr);
+            // Next byte
+            nr_of_bytes--;
         }
-        // Read received byte
-        *data_u8++ = LL_SPI_ReceiveData8(spi_base_adr);
-        // Next byte
-        nr_of_bytes--;
     }
 
     if(flags & PX_SPI_FLAG_STOP)
@@ -484,22 +480,20 @@ void px_spi_xc(px_spi_handle_t * handle,
     // Repeat until all of the bytes have been exchanged
     while(nr_of_bytes)
     {
-        // Wait until peripheral is ready to accept new transmit data
-        while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr))
+        // Is peripheral ready to accept new transmit data?
+        if(LL_SPI_IsActiveFlag_TXE(spi_base_adr))
         {
-            ;
-        }
-        // Buffer byte to be sent
-        LL_SPI_TransmitData8(spi_base_adr, *data_wr_u8++);
-        // Wait until byte has been transfered
-        while(!LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
+            // Buffer byte to be sent
+            LL_SPI_TransmitData8(spi_base_adr, *data_wr_u8++);
+        }        
+        // New byte received?
+        if(LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
         {
-            ;
-        }
-        // Read received byte
-        *data_rd_u8++ = LL_SPI_ReceiveData8(spi_base_adr);
-        // Next byte
-        nr_of_bytes--;
+            // Read received byte
+            *data_rd_u8++ = LL_SPI_ReceiveData8(spi_base_adr);
+            // Next byte
+            nr_of_bytes--;
+        }        
     }
 
     if(flags & PX_SPI_FLAG_STOP)
