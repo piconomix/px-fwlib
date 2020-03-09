@@ -254,10 +254,15 @@ SCANF_LIB =
 #SCANF_LIB = $(SCANF_LIB_FLOAT)
 
 # List any extra directories to look for libraries here.
-#     Each directory must be seperated by a space.
+#     Each directory must be separated by a space.
 #     Use forward slashes for directory separators.
 #     For a directory that has spaces, enclose it in quotes.
 EXTRALIBDIRS = 
+
+# List any extra libraries here.
+#     Each library must be separated by a space.
+#     The "lib" prefix and ".a" suffix must be removed.
+EXTRALIBS = 
 
 #---------------- Linker Options -----------------------------------------------
 #  -Wl,...:     tell GCC to pass this to linker.
