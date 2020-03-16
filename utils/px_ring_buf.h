@@ -207,6 +207,43 @@ px_ring_buf_idx_t px_ring_buf_rd(px_ring_buf_t * px_ring_buf,
                                  void *          data,
                                  size_t          nr_of_bytes_to_rd);
 
+
+/** 
+ * Peek data from the circular buffer, without advancing the read pointer.
+ *  
+ * @param px_ring_buf           Pointer to the circular buffer object
+ * @param data                  Pointer to location where data must be stored
+ * @param nr_of_bytes_to_peek   Number of bytes to peek    
+ * @param nr_of_bytes_to_peek   Number of bytes to skip, before peeking    
+ *  
+ * @return px_ring_buf_idx_t    The actual number of bytes peeked, which may 
+ *                              be less than the number specified, because the 
+ *                              buffer is empty.
+ */
+px_ring_buf_idx_t px_ring_buf_peek(px_ring_buf_t * px_ring_buf, 
+                                 void *          data,
+                                 size_t          nr_of_bytes_to_peek,
+                                 size_t          nr_of_bytes_to_skip);
+
+
+
+/** 
+ * Get free bytes available in buffer, an empty buffer has one less byte than the size
+ *  
+ * @param px_ring_buf           Pointer to the circular buffer object
+ * @return px_ring_buf_idx_t    The actual number of bytes available in the buffer
+ */
+px_ring_buf_idx_t px_ring_buf_free(px_ring_buf_t * px_ring_buf);
+
+
+/** 
+ * Get the number of bytes in the buffer, how full is the buffer?
+ *  
+ * @param px_ring_buf           Pointer to the circular buffer object
+ * @return px_ring_buf_idx_t    The actual number of bytes in the buffer
+ */
+px_ring_buf_idx_t px_ring_buf_full(px_ring_buf_t * px_ring_buf);
+
 /* _____MACROS_______________________________________________________________ */
 
 /// @}
