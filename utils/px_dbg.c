@@ -57,7 +57,7 @@ static char px_dbg_buf[PX_DBG_CFG_BUF_SIZE];
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void px_dbg_put_char(char data)
+static void inline px_dbg_put_char(char data)
 {
 #ifdef PX_DBG_CFG_PUT_CHAR
     // Output character using configured function
@@ -74,6 +74,25 @@ static void px_dbg_put_str(const char  * data)
     {
         px_dbg_put_char(*data++);
     }
+}
+
+static void inline px_dbg_put_hex04(uint8_t data)
+{
+    if(data < 10)
+    {
+        data += (uint8_t)'0';
+    }
+    else
+    {
+        data += (uint8_t)'A' - 10;
+    }
+    px_dbg_put_char((char)data);
+}
+
+static void inline px_dbg_put_hex08(uint8_t data)
+{
+    px_dbg_put_hex04(PX_U8_HI4(data));
+    px_dbg_put_hex04(PX_U8_LO4(data));    
 }
 
 #ifdef PX_COMPILER_GCC_AVR
@@ -339,11 +358,8 @@ void _px_dbg_trace_data(const void * data, size_t nr_of_bytes)
 
     for(i=0; i<nr_of_bytes; i++)
     {
-#ifdef PX_COMPILER_GCC_AVR
-        px_dbg_printf_P(PX_PGM_STR("%02hX "), *data_u8++);
-#else
-        px_dbg_printf("%02hX ", *data_u8++);
-#endif
+        px_dbg_put_hex08(*data_u8++);
+        px_dbg_put_char(' ');
     }
 }
 
@@ -378,11 +394,8 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes)
             if((i+j) < nr_of_bytes)
             {
                 // No
-#ifdef PX_COMPILER_GCC_AVR
-                px_dbg_printf_P(PX_PGM_STR("%02hX "), row_data[j]);
-#else
-                px_dbg_printf("%02hX ", row_data[j]);
-#endif
+                px_dbg_put_hex08(row_data[j]);
+                px_dbg_put_char(' ');
             }
             else
             {
