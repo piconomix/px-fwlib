@@ -32,6 +32,10 @@ typedef struct px_spi_data_s
 {
     /// SPI peripheral base register address
     SPI_TypeDef * spi_base_adr;
+    /// DMA RX channel base register address
+    DMA_Channel_TypeDef * dma_rx_base_adr;
+    /// DMA TX channel base register address
+    DMA_Channel_TypeDef * dma_tx_base_adr;
     /// Peripheral
     px_spi_per_t peripheral;
     /// Number of open handles referencing peripheral
@@ -59,17 +63,37 @@ static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
                                    px_spi_per_t  peripheral,
                                    uint32_t      spi_cr1_val)
 {
-    // Enable peripheral clock
+    // Enable peripheral clocks
     switch(peripheral)
     {
 #if PX_SPI_CFG_SPI1_EN
     case PX_SPI_PER_1:
+        // Enable peripheral clocks
         LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
+        LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
+        // Configure DMA channel 2 (SPI1_RX)
+        LL_DMA_SetPeriphAddress(DMA1, 2, (uint32_t)&SPI1->DR);
+        DMA1_Channel2->CCR = DMA_CCR_MINC;
+        LL_DMA_SetPeriphRequest(DMA1, 2, LL_DMA_REQUEST_1);
+        // Configure DMA channel 3 (SPI1_TX)
+        LL_DMA_SetPeriphAddress(DMA1, 3, (uint32_t)&SPI1->DR);
+        DMA1_Channel3->CCR = DMA_CCR_MINC | DMA_CCR_DIR;
+        LL_DMA_SetPeriphRequest(DMA1, 3, LL_DMA_REQUEST_1);
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
     case PX_SPI_PER_2:
+        // Enable peripheral clocks
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_SPI2);
+        LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
+        // Configure DMA channel 4 (SPI2_RX)
+        LL_DMA_SetPeriphAddress(DMA1, 4, (uint32_t)&SPI2->DR);
+        DMA1_Channel4->CCR = DMA_CCR_MINC;
+        LL_DMA_SetPeriphRequest(DMA1, 4, LL_DMA_REQUEST_2);
+        // Configure FMA channel 5 (SPI2_TX)
+        LL_DMA_SetPeriphAddress(DMA1, 5, (uint32_t)&SPI2->DR);
+        DMA1_Channel5->CCR = DMA_CCR_MINC | DMA_CCR_DIR;
+        LL_DMA_SetPeriphRequest(DMA1, 5, LL_DMA_REQUEST_2);
         break;
 #endif
     default:
@@ -81,10 +105,6 @@ static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
     // Set SPI Control Register 1:
     // master, data order, clock divisor, mode (clock polarity & phase)
     spi_base_adr->CR1 = spi_cr1_val;
-#if 0
-    // Set SS output enable
-    spi_base_adr->CR2 |= SPI_CR2_SSOE;
-#endif
     // Enable peripheral
     LL_SPI_Enable(spi_base_adr);
 }
@@ -113,12 +133,16 @@ static void px_spi_init_peripheral_data(px_spi_per_t    peripheral,
     {
 #if PX_SPI_CFG_SPI1_EN
     case PX_SPI_PER_1:
-        spi_data->spi_base_adr = SPI1;
+        spi_data->spi_base_adr    = SPI1;
+        spi_data->dma_rx_base_adr = DMA1_Channel2;
+        spi_data->dma_tx_base_adr = DMA1_Channel3;
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
     case PX_SPI_PER_2:
-        spi_data->spi_base_adr = SPI2;
+        spi_data->spi_base_adr    = SPI2;
+        spi_data->dma_rx_base_adr = DMA1_Channel4;
+        spi_data->dma_tx_base_adr = DMA1_Channel5;
         break;
 #endif
     default:
@@ -324,7 +348,6 @@ void px_spi_wr(px_spi_handle_t * handle,
     px_spi_data_t * spi_data;
     SPI_TypeDef *   spi_base_adr;
     const uint8_t * data_wr_u8 = (const uint8_t *)data;
-    uint8_t         data_rx_u8;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
@@ -346,27 +369,62 @@ void px_spi_wr(px_spi_handle_t * handle,
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
-    while(nr_of_bytes)
+    // Disable peripheral
+    LL_SPI_Disable(spi_base_adr);
+    // Configure and enable DMA TX channel
+    spi_data->dma_tx_base_adr->CMAR  = (uint32_t)data_wr_u8;
+    spi_data->dma_tx_base_adr->CNDTR = nr_of_bytes;
+    spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
+    // Enable DMA request for TX
+    LL_SPI_EnableDMAReq_TX(spi_base_adr);
+    // Enable peripheral
+    LL_SPI_Enable(spi_base_adr);
+
+    // Block until TX DMA transfer is complete
+    switch(spi_data->peripheral)
     {
-        // Wait until peripheral is ready to accept new transmit data
-        while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr))
+#if PX_SPI_CFG_SPI1_EN
+    case PX_SPI_PER_1:
+        while(!LL_DMA_IsActiveFlag_TC3(DMA1))
         {
             ;
         }
-        // Buffer byte to be sent
-        LL_SPI_TransmitData8(spi_base_adr, *data_wr_u8++);
-        // Wait until byte has been transfered
-        while(!LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
+        LL_DMA_ClearFlag_TC3(DMA1);
+        break;
+#endif
+#if PX_SPI_CFG_SPI2_EN
+    case PX_SPI_PER_2:
+        while(!LL_DMA_IsActiveFlag_TC5(DMA1))
         {
             ;
         }
-        // Read received byte (and discard)
-        data_rx_u8 = LL_SPI_ReceiveData8(spi_base_adr);
-        // Avoid compiler warning that variable was set but not used
-        (void)data_rx_u8;
-        // Next byte
-        nr_of_bytes--;
+        LL_DMA_ClearFlag_TC5(DMA1);
+        break;
+#endif
+    default:
+        PX_DBG_ERR("Invalid peripheral");
+        break;
     }
+    // Wait until SPI transmit of last byte is complete
+    while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr))
+    {
+        ;
+    }
+    while(LL_SPI_IsActiveFlag_BSY(spi_base_adr))
+    {
+        ;
+    }
+    // Clear data overrun
+    LL_SPI_ClearFlag_OVR(spi_base_adr);
+
+    // Disable DMA TX channel
+    spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
+    // Disable peripheral
+    LL_SPI_Disable(spi_base_adr);
+    // Disable DMA request for TX
+    spi_base_adr->CR2 = 0;
+    // Enable peripheral
+    LL_SPI_Enable(spi_base_adr);
 
     if(flags & PX_SPI_FLAG_STOP)
     {
@@ -404,26 +462,61 @@ void px_spi_rd(px_spi_handle_t * handle,
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
-    // Repeat until all of the bytes have been read
-    while(nr_of_bytes)
+    // Disable peripheral
+    LL_SPI_Disable(spi_base_adr);
+    // Enable DMA request for RX
+    LL_SPI_EnableDMAReq_RX(spi_base_adr);
+    // Configure and enable DMA RX channel
+    spi_data->dma_rx_base_adr->CMAR   = (uint32_t)data_rd_u8;
+    spi_data->dma_rx_base_adr->CNDTR  = nr_of_bytes;
+    spi_data->dma_rx_base_adr->CCR   |= DMA_CCR_EN;
+    // Configure and enable DMA TX channel
+    spi_data->dma_tx_base_adr->CMAR  = (uint32_t)&handle->mo_dummy_byte;
+    spi_data->dma_tx_base_adr->CNDTR = nr_of_bytes;
+    spi_data->dma_tx_base_adr->CCR   &= ~DMA_CCR_MINC;
+    spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
+    // Enable DMA request for TX
+    LL_SPI_EnableDMAReq_TX(spi_base_adr);
+    // Enable peripheral
+    LL_SPI_Enable(spi_base_adr);
+
+    // Block until RX DMA transfer is complete
+    switch(spi_data->peripheral)
     {
-        // Wait until peripheral is ready to accept new transmit data
-        while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr))
+#if PX_SPI_CFG_SPI1_EN
+    case PX_SPI_PER_1:
+        while(!LL_DMA_IsActiveFlag_TC2(DMA1))
         {
             ;
         }
-        // Buffer dummy byte to be sent
-        LL_SPI_TransmitData8(spi_base_adr, handle->mo_dummy_byte);
-        // Wait until byte has been transfered
-        while(!LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
+        LL_DMA_ClearFlag_TC2(DMA1);
+        break;
+#endif
+#if PX_SPI_CFG_SPI2_EN
+    case PX_SPI_PER_2:
+        while(!LL_DMA_IsActiveFlag_TC4(DMA1))
         {
             ;
         }
-        // Read received byte
-        *data_rd_u8++ = LL_SPI_ReceiveData8(spi_base_adr);
-        // Next byte
-        nr_of_bytes--;
+        LL_DMA_ClearFlag_TC4(DMA1);
+        break;
+#endif
+    default:
+        PX_DBG_ERR("Invalid peripheral");
+        break;
     }
+
+    // Disable DMA RX channel
+    spi_data->dma_rx_base_adr->CCR &= ~DMA_CCR_EN;
+    // Disable DMA TX channel
+    spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
+    spi_data->dma_tx_base_adr->CCR |= DMA_CCR_MINC;
+    // Disable peripheral
+    LL_SPI_Disable(spi_base_adr);
+    // Disable DMA request for RX and TX
+    spi_base_adr->CR2 = 0;
+    // Enable peripheral
+    LL_SPI_Enable(spi_base_adr);
 
     if(flags & PX_SPI_FLAG_STOP)
     {
@@ -463,26 +556,59 @@ void px_spi_xc(px_spi_handle_t * handle,
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
-    // Repeat until all of the bytes have been exchanged
-    while(nr_of_bytes)
+    // Disable peripheral
+    LL_SPI_Disable(spi_base_adr);
+    // Enable DMA request for RX
+    LL_SPI_EnableDMAReq_RX(spi_base_adr);
+    // Configure and enable DMA RX channel
+    spi_data->dma_rx_base_adr->CMAR   = (uint32_t)data_rd_u8;
+    spi_data->dma_rx_base_adr->CNDTR  = nr_of_bytes;
+    spi_data->dma_rx_base_adr->CCR   |= DMA_CCR_EN;
+    // Configure and enable DMA TX channel
+    spi_data->dma_tx_base_adr->CMAR  = (uint32_t)data_wr_u8;
+    spi_data->dma_tx_base_adr->CNDTR = nr_of_bytes;
+    spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
+    // Enable DMA request for TX
+    LL_SPI_EnableDMAReq_TX(spi_base_adr);
+    // Enable peripheral
+    LL_SPI_Enable(spi_base_adr);
+
+    // Block until TX DMA transfer is complete
+    switch(spi_data->peripheral)
     {
-        // Wait until peripheral is ready to accept new transmit data
-        while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr))
+#if PX_SPI_CFG_SPI1_EN
+    case PX_SPI_PER_1:
+        while(!LL_DMA_IsActiveFlag_TC2(DMA1))
         {
             ;
         }
-        // Buffer byte to be sent
-        LL_SPI_TransmitData8(spi_base_adr, *data_wr_u8++);
-        // Wait until byte has been transfered
-        while(!LL_SPI_IsActiveFlag_RXNE(spi_base_adr))
+        LL_DMA_ClearFlag_TC2(DMA1);
+        break;
+#endif
+#if PX_SPI_CFG_SPI2_EN
+    case PX_SPI_PER_2:
+        while(!LL_DMA_IsActiveFlag_TC4(DMA1))
         {
             ;
         }
-        // Read received byte
-        *data_rd_u8++ = LL_SPI_ReceiveData8(spi_base_adr);
-        // Next byte
-        nr_of_bytes--;
+        LL_DMA_ClearFlag_TC4(DMA1);
+        break;
+#endif
+    default:
+        PX_DBG_ERR("Invalid peripheral");
+        break;
     }
+
+    // Disable DMA RX channel
+    spi_data->dma_rx_base_adr->CCR &= ~DMA_CCR_EN;
+    // Disable DMA TX channel
+    spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
+    // Disable peripheral
+    LL_SPI_Disable(spi_base_adr);
+    // Disable DMA request for RX and TX
+    spi_base_adr->CR2 = 0;
+    // Enable peripheral
+    LL_SPI_Enable(spi_base_adr);
 
     if(flags & PX_SPI_FLAG_STOP)
     {
