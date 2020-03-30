@@ -369,16 +369,12 @@ void px_spi_wr(px_spi_handle_t * handle,
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
-    // Disable peripheral
-    LL_SPI_Disable(spi_base_adr);
     // Configure and enable DMA TX channel
     spi_data->dma_tx_base_adr->CMAR  = (uint32_t)data_wr_u8;
     spi_data->dma_tx_base_adr->CNDTR = nr_of_bytes;
     spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
     // Enable DMA request for TX
-    LL_SPI_EnableDMAReq_TX(spi_base_adr);
-    // Enable peripheral
-    LL_SPI_Enable(spi_base_adr);
+    LL_SPI_EnableDMAReq_TX(spi_base_adr);    
 
     // Block until TX DMA transfer is complete
     switch(spi_data->peripheral)
@@ -419,12 +415,8 @@ void px_spi_wr(px_spi_handle_t * handle,
 
     // Disable DMA TX channel
     spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
-    // Disable peripheral
-    LL_SPI_Disable(spi_base_adr);
     // Disable DMA request for TX
-    spi_base_adr->CR2 = 0;
-    // Enable peripheral
-    LL_SPI_Enable(spi_base_adr);
+    spi_base_adr->CR2 = 0;    
 
     if(flags & PX_SPI_FLAG_STOP)
     {
@@ -462,8 +454,6 @@ void px_spi_rd(px_spi_handle_t * handle,
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
-    // Disable peripheral
-    LL_SPI_Disable(spi_base_adr);
     // Enable DMA request for RX
     LL_SPI_EnableDMAReq_RX(spi_base_adr);
     // Configure and enable DMA RX channel
@@ -476,9 +466,7 @@ void px_spi_rd(px_spi_handle_t * handle,
     spi_data->dma_tx_base_adr->CCR   &= ~DMA_CCR_MINC;
     spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
     // Enable DMA request for TX
-    LL_SPI_EnableDMAReq_TX(spi_base_adr);
-    // Enable peripheral
-    LL_SPI_Enable(spi_base_adr);
+    LL_SPI_EnableDMAReq_TX(spi_base_adr);    
 
     // Block until RX DMA transfer is complete
     switch(spi_data->peripheral)
@@ -511,12 +499,8 @@ void px_spi_rd(px_spi_handle_t * handle,
     // Disable DMA TX channel
     spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
     spi_data->dma_tx_base_adr->CCR |= DMA_CCR_MINC;
-    // Disable peripheral
-    LL_SPI_Disable(spi_base_adr);
     // Disable DMA request for RX and TX
-    spi_base_adr->CR2 = 0;
-    // Enable peripheral
-    LL_SPI_Enable(spi_base_adr);
+    spi_base_adr->CR2 = 0;    
 
     if(flags & PX_SPI_FLAG_STOP)
     {
@@ -556,8 +540,6 @@ void px_spi_xc(px_spi_handle_t * handle,
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
-    // Disable peripheral
-    LL_SPI_Disable(spi_base_adr);
     // Enable DMA request for RX
     LL_SPI_EnableDMAReq_RX(spi_base_adr);
     // Configure and enable DMA RX channel
@@ -569,11 +551,9 @@ void px_spi_xc(px_spi_handle_t * handle,
     spi_data->dma_tx_base_adr->CNDTR = nr_of_bytes;
     spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
     // Enable DMA request for TX
-    LL_SPI_EnableDMAReq_TX(spi_base_adr);
-    // Enable peripheral
-    LL_SPI_Enable(spi_base_adr);
+    LL_SPI_EnableDMAReq_TX(spi_base_adr);    
 
-    // Block until TX DMA transfer is complete
+    // Block until RX DMA transfer is complete
     switch(spi_data->peripheral)
     {
 #if PX_SPI_CFG_SPI1_EN
@@ -603,12 +583,8 @@ void px_spi_xc(px_spi_handle_t * handle,
     spi_data->dma_rx_base_adr->CCR &= ~DMA_CCR_EN;
     // Disable DMA TX channel
     spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
-    // Disable peripheral
-    LL_SPI_Disable(spi_base_adr);
     // Disable DMA request for RX and TX
-    spi_base_adr->CR2 = 0;
-    // Enable peripheral
-    LL_SPI_Enable(spi_base_adr);
+    spi_base_adr->CR2 = 0;    
 
     if(flags & PX_SPI_FLAG_STOP)
     {
