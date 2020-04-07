@@ -94,7 +94,42 @@ void px_rtc_alarm_a_disable(void);
  *  @retval true    Alarm has expired
  *  @retval false   Alarm has not expired
  */
-bool px_rtc_alarm_a_has_expired(void);
+bool px_rtc_alarm_a_flag_is_set(void);
+
+/**
+ *  Clear Alarm A flag.
+ *  
+ */
+void px_rtc_alarm_a_flag_clear(void);
+
+/**
+ *  Enable Alarm B.
+ *  
+ *  @param[in] alarm        Pointer to a structure that contains alarm fields
+ *                          (day, hour, min, sec).
+ *  @param[in] alarm_mask   Bit mask indicating on which fields (day, hour, min,
+ *                          sec) alarm must match.
+ */
+void px_rtc_alarm_b_enable(const px_rtc_date_time_t * alarm, 
+                           px_rtc_alarm_mask_t        alarm_mask);
+
+/**
+ *  Disable Alarm B.
+ */
+void px_rtc_alarm_b_disable(void);
+
+/**
+ *  Check if Alarm B has expired.
+ *  
+ *  @retval true    Alarm has expired
+ *  @retval false   Alarm has not expired
+ */
+bool px_rtc_alarm_b_flag_is_set(void);
+
+/**
+ *  Clear Alarm B flag.
+ */
+void px_rtc_alarm_b_flag_clear(void);
 
 /**
  *  Enable Wakeup Timer
@@ -116,7 +151,12 @@ void px_rtc_wakeup_tmr_disable(void);
  *  @retval true    Timer has expired
  *  @retval false   Timer has not expired
  */
-bool px_rtc_wakeup_tmr_has_expired(void);
+bool px_rtc_wakeup_tmr_flag_is_set(void);
+
+/**
+ *  Clear Wakeup Timer flag.
+ */
+void px_rtc_wakeup_tmr_flag_clear(void);
 
 /* _____MACROS_______________________________________________________________ */
 

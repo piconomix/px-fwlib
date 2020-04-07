@@ -29,6 +29,7 @@ PX_DBG_DECL_NAME("rtc");
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 static volatile bool px_rtc_alarm_a_flag;
+static volatile bool px_rtc_alarm_b_flag;
 static volatile bool px_rtc_wakeup_tmr_flag;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
@@ -60,6 +61,20 @@ void RTC_IRQHandler(void)
             LL_RTC_ClearFlag_ALRA(RTC);
             // Set flag
             px_rtc_alarm_a_flag = true;
+        }
+        // Clear EXTI line flag associated with RTC Alarm
+        LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_17);
+    }
+    // Alarm B interrupt enabled?
+    if(LL_RTC_IsEnabledIT_ALRB(RTC))
+    {
+        // Alarm B interrupt flag set?
+        if(LL_RTC_IsActiveFlag_ALRB(RTC))
+        {
+            // Clear interrupt flag
+            LL_RTC_ClearFlag_ALRB(RTC);
+            // Set flag
+            px_rtc_alarm_b_flag = true;
         }
         // Clear EXTI line flag associated with RTC Alarm
         LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_17);
@@ -254,17 +269,99 @@ void px_rtc_alarm_a_disable(void)
     LL_RTC_EnableWriteProtection(RTC);
 }
 
-bool px_rtc_alarm_a_has_expired(void)
+bool px_rtc_alarm_a_flag_is_set(void)
 {
-    bool flag = px_rtc_alarm_a_flag;
+    return px_rtc_alarm_a_flag;
+}
 
-    if(flag)
+void px_rtc_alarm_a_flag_clear(void)
+{
+    px_rtc_alarm_a_flag = false;
+}
+
+void px_rtc_alarm_b_enable(const px_rtc_date_time_t * alarm, 
+                           px_rtc_alarm_mask_t        alarm_mask)
+{
+    uint32_t rtc_alrmbr;
+
+    // Sanity check
+    if(alarm_mask == PX_RTC_UTIL_ALARM_MASK_DIS)
     {
-        // Clear flag
-        px_rtc_alarm_a_flag = false;
+        return;
     }
+    
+    // Disable RTC write protection
+    LL_RTC_DisableWriteProtection(RTC);
+    // Disable Alarm
+    LL_RTC_ALMB_Disable(RTC);
+    while(!LL_RTC_IsActiveFlag_ALRBW(RTC))
+    {
+        ;
+    }
+    // Set alarm and mask
+    rtc_alrmbr = RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1;
+    if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_SEC)
+    {
+        rtc_alrmbr |= (uint32_t)px_rtc_bin_to_bcd(alarm->sec) << RTC_ALRMAR_SU_Pos;
+        rtc_alrmbr &= ~RTC_ALRMAR_MSK1;
+    }
+    if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_MIN)
+    {
+        rtc_alrmbr |= (uint32_t)px_rtc_bin_to_bcd(alarm->min) << RTC_ALRMAR_MNU_Pos;
+        rtc_alrmbr &= ~RTC_ALRMAR_MSK2;
+    }
+    if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_HOUR)
+    {
+        rtc_alrmbr |= (uint32_t)px_rtc_bin_to_bcd(alarm->hour) << RTC_ALRMAR_HU_Pos;
+        rtc_alrmbr &= ~RTC_ALRMAR_MSK3;
+    }
+    if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_DAY)
+    {
+        rtc_alrmbr |= (uint32_t)px_rtc_bin_to_bcd(alarm->day) << RTC_ALRMAR_DU_Pos;
+        rtc_alrmbr &= ~RTC_ALRMAR_MSK3;
+    }
+    RTC->ALRMBR = rtc_alrmbr;
+    // Clear flag
+    px_rtc_alarm_b_flag = false;
+    // Clear interrupt flag
+    LL_RTC_ClearFlag_ALRB(RTC);
+    // Enable rising edge external interrupt on line 17
+    LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_17);
+    LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_17);
+    // Enable RTC interrupt
+    NVIC_EnableIRQ(RTC_IRQn);
+    // Enable Alarm B interrupt
+    LL_RTC_EnableIT_ALRB(RTC);
+    // Enable Alarm
+    LL_RTC_ALMB_Enable(RTC);
+    // Enable write protection for RTC registers
+    LL_RTC_EnableWriteProtection(RTC);
+}
 
-    return flag;
+void px_rtc_alarm_b_disable(void)
+{
+    // Disable RTC write protection
+    LL_RTC_DisableWriteProtection(RTC);
+    // Disable Alarm
+    LL_RTC_ALMB_Disable(RTC);
+    while(!LL_RTC_IsActiveFlag_ALRBW(RTC))
+    {
+        ;
+    }
+    // Disable Alarm B interrupt
+    LL_RTC_DisableIT_ALRB(RTC);
+    // Enable write protection for RTC registers
+    LL_RTC_EnableWriteProtection(RTC);
+}
+
+bool px_rtc_alarm_b_flag_is_set(void)
+{
+    return px_rtc_alarm_b_flag;
+}
+
+void px_rtc_alarm_b_flag_clear(void)
+{
+    px_rtc_alarm_b_flag = false;    
 }
 
 void px_rtc_wakeup_tmr_enable(px_rtc_wakeup_presc_clk_t wakeup_presc_clk,
@@ -315,15 +412,12 @@ void px_rtc_wakeup_tmr_disable(void)
     LL_RTC_EnableWriteProtection(RTC);
 }
 
-bool px_rtc_wakeup_tmr_has_expired(void)
+bool px_rtc_wakeup_tmr_flag_is_set(void)
 {
-    bool flag = px_rtc_wakeup_tmr_flag;
+    return px_rtc_wakeup_tmr_flag;
+}
 
-    if(flag)
-    {
-        // Clear flag
-        px_rtc_wakeup_tmr_flag = false;
-    }
-
-    return flag;
+void px_rtc_wakeup_tmr_flag_clear(void)
+{
+    px_rtc_wakeup_tmr_flag = false;    
 }
