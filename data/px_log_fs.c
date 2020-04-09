@@ -327,7 +327,7 @@ static bool px_log_fs_record_wr(px_log_fs_record_t *    record,
     px_log_fs_record_t record_rd;
 
     // Sanity check
-    if(adr->offset + sizeof(px_log_fs_record_t) >= PX_LOG_FS_CFG_PAGE_SIZE)
+    if(adr->offset + sizeof(px_log_fs_record_t) > PX_LOG_FS_CFG_PAGE_SIZE)
     {
         PX_DBG_ERR("Record will overflow the page");
         return false;
