@@ -22,6 +22,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_board.h"
+#include "px_exti.h"
 #include "px_spi.h"
 #include "px_uart.h"
 #include "px_at25s.h"
@@ -45,20 +46,15 @@ px_spi_handle_t  px_spi_sd_handle;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-void EXTI4_15_IRQHandler(void)
-{
-    // Pending flag set for line 9?
-    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_9))
-    {
-        // Clear pending flag
-        LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_9);
-    }    
+static void main_exti9_handler(void)
+{    
 }
 
 static void main_init(void)
 {
     // Initialize board
     px_board_init();
+    px_exti_init();
     px_spi_init();
     px_uart_init();
 
@@ -141,13 +137,11 @@ int main(void)
     // Power down Serial Flash to minimise power consumption
     px_at25s_deep_power_down();
 
-    // Select Port C pin 9 (6/NO button) for extended interrupt on EXTI9
-    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE9);
-    // Enable falling edge external interrupt on line 9
-    LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_9);
-    LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_9);
-    // Enable EXTI4_15 interrupt
-    NVIC_EnableIRQ(EXTI4_15_IRQn);
+    // Enable external falling edge interrupt on Port C pin 9 (6/NO button)
+    px_exti_enable(PX_EXTI_PORT_C, 
+                   PX_EXTI_LINE_9, 
+                   PX_EXTI_TYPE_FALLING_EDGE, 
+                   &main_exti9_handler);
 
     // Disable debug interface
     px_board_dbg_disable();
