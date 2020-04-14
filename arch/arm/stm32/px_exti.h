@@ -142,17 +142,24 @@ typedef void (*px_exti_handler_t)(void);
 void px_exti_init(void);
 
 /**
- *  Enable External Interrupt
+ *  Configure External Interrupt
  *  
  *  @param exti_port        Port (A, B,C, D, E or H)
  *  @param exti_line        Line (0, 1, 2, ... or 15)
  *  @param exti_type        Falling or Rising Edge
  *  @param exti_handler     Handler function to be called when interrupt is triggered
  */
-void px_exti_enable(px_exti_port_t    exti_port,
-                    px_exti_line_t    exti_line,
-                    px_exti_type_t    exti_type,
-                    px_exti_handler_t exti_handler);
+void px_exti_open(px_exti_port_t    exti_port,
+                  px_exti_line_t    exti_line,
+                  px_exti_type_t    exti_type,
+                  px_exti_handler_t exti_handler);
+
+/**
+ *  Enable External Interrupt
+ *  
+ *  @param exti_line        Line (0, 1, 2, ... or 15)
+ */
+void px_exti_enable(px_exti_line_t exti_line);
 
 /**
  *  Disable External Interrupt
