@@ -31,7 +31,14 @@
  *  
  *  The driver must be configured by supplying a project specific 
  *  "px_exti_cfg.h". "px_exti_cfg_template.h" can be copied, renamed and 
- *  modified to supply compile time options.
+ *  modified to supply compile time options. 
+ *   
+ *  There are only 16 external interrupts (0 to 15). If Port A 
+ *  pin 0 is configured as external interrupt 0 for example, then Port B pin 0 
+ *  can not be configured too, because it has already been assigned to A0. 
+ *   
+ *  When an external interrupt is disabled, it will not detect an interrupt 
+ *  condition and will not set the interrupt pending flag.
  *  
  */
 /// @{
@@ -124,6 +131,7 @@ typedef enum
 {
     PX_EXTI_TYPE_FALLING_EDGE = 0,
     PX_EXTI_TYPE_RISING_EDGE,
+    PX_EXTI_TYPE_BOTH_EDGES,
 } px_exti_type_t;
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
@@ -151,8 +159,16 @@ void px_exti_init(void);
  */
 void px_exti_open(px_exti_port_t    exti_port,
                   px_exti_line_t    exti_line,
-                  px_exti_type_t    exti_type,
                   px_exti_handler_t exti_handler);
+
+/**
+ *  Set External Interrupt type (fallig or rising edge or both)
+ *  
+ *  @param exti_line        Line (0, 1, 2, ... or 15)
+ *  @param exti_type        Falling or Rising Edge or Both
+ */
+void px_exti_type_set(px_exti_line_t    exti_line,
+                      px_exti_type_t    exti_type);
 
 /**
  *  Enable External Interrupt

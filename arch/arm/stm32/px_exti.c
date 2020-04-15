@@ -254,7 +254,6 @@ void px_exti_init(void)
 
 void px_exti_open(px_exti_port_t    exti_port,
                   px_exti_line_t    exti_line,
-                  px_exti_type_t    exti_type,
                   px_exti_handler_t exti_handler)
 {
     switch(exti_line)
@@ -263,14 +262,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_0:
         px_exti_0_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE0);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_0);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_0);
-        }
         break;
 #endif
 
@@ -278,14 +269,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_1:
         px_exti_1_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE1);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_1);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_1);
-        }
         break;
 #endif
 
@@ -293,14 +276,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_2:
         px_exti_2_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE2);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_2);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_2);
-        }
         break;
 #endif
 
@@ -308,14 +283,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_3:
         px_exti_3_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE3);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_3);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_3);
-        }
         break;
 #endif
 
@@ -323,14 +290,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_4:
         px_exti_4_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE4);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_4);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_4);
-        }
         break;
 #endif
 
@@ -338,14 +297,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_5:
         px_exti_5_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE5);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_5);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_5);
-        }
         break;
 #endif
 
@@ -353,14 +304,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_6:
         px_exti_6_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE6);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_6);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_6);
-        }
         break;
 #endif
 
@@ -368,14 +311,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_7:
         px_exti_7_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE7);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_7);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_7);
-        }
         break;
 #endif
 
@@ -383,14 +318,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_8:
         px_exti_8_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE8);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_8);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_8);
-        }
         break;
 #endif
 
@@ -398,14 +325,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_9:
         px_exti_9_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE9);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_9);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_9);
-        }
         break;
 #endif
 
@@ -413,14 +332,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_10:
         px_exti_10_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE10);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_10);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_10);
-        }
         break;
 #endif
 
@@ -428,14 +339,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_11:
         px_exti_11_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE11);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_11);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_11);
-        }
         break;
 #endif
 
@@ -443,14 +346,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_12:
         px_exti_12_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE12);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_12);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_12);
-        }
         break;
 #endif
 
@@ -458,14 +353,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_13:
         px_exti_13_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE13);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_13);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_13);
-        }
         break;
 #endif
 
@@ -473,14 +360,6 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_14:
         px_exti_14_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE14);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_14);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_14);
-        }
         break;
 #endif
 
@@ -488,228 +367,52 @@ void px_exti_open(px_exti_port_t    exti_port,
     case PX_EXTI_LINE_15:
         px_exti_15_handler = exti_handler;
         LL_SYSCFG_SetEXTISource(exti_port, LL_SYSCFG_EXTI_LINE15);
-        if(exti_type == PX_EXTI_TYPE_FALLING_EDGE)
-        {
-            LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_15);
-        }
-        else if(exti_type == PX_EXTI_TYPE_RISING_EDGE)
-        {
-            LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_15);
-        }
         break;
 #endif
 
     default:
         PX_DBG_ERR("Invalid EXTI line specified");
+    }
+}
+
+void px_exti_type_set(px_exti_line_t    exti_line,
+                      px_exti_type_t    exti_type)
+{
+    uint32_t exti_line_mask = (1 << exti_line);
+
+    switch(exti_type)
+    {
+    case PX_EXTI_TYPE_FALLING_EDGE:
+        LL_EXTI_EnableFallingTrig_0_31(exti_line_mask);
+        LL_EXTI_DisableRisingTrig_0_31(exti_line_mask);
+        break;
+
+    case PX_EXTI_TYPE_RISING_EDGE:
+        LL_EXTI_EnableRisingTrig_0_31(exti_line_mask);
+        LL_EXTI_DisableFallingTrig_0_31(exti_line_mask);
+        break;
+
+    case PX_EXTI_TYPE_BOTH_EDGES:
+        LL_EXTI_EnableFallingTrig_0_31(exti_line_mask);
+        LL_EXTI_EnableRisingTrig_0_31(exti_line_mask);
+        break;
+
+    default:
+        PX_DBG_ERR("Invalid EXTI type specified");
+        break;
     }
 }
 
 void px_exti_enable(px_exti_line_t exti_line)
 {
-    switch(exti_line)
-    {
-#if PX_EXTI_CFG_INT0_EN
-    case PX_EXTI_LINE_0:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_0);
-        break;
-#endif
+    uint32_t exti_line_mask = (1 << exti_line);
 
-#if PX_EXTI_CFG_INT1_EN
-    case PX_EXTI_LINE_1:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_1);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT2_EN
-    case PX_EXTI_LINE_2:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_2);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT3_EN
-    case PX_EXTI_LINE_3:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_3);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT4_EN
-    case PX_EXTI_LINE_4:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_4);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT5_EN
-    case PX_EXTI_LINE_5:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_5);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT6_EN
-    case PX_EXTI_LINE_6:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_6);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT7_EN
-    case PX_EXTI_LINE_7:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_7);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT8_EN
-    case PX_EXTI_LINE_8:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_8);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT9_EN
-    case PX_EXTI_LINE_9:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_9);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT10_EN
-    case PX_EXTI_LINE_10:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_10);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT11_EN
-    case PX_EXTI_LINE_11:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_11);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT12_EN
-    case PX_EXTI_LINE_12:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_12);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT13_EN
-    case PX_EXTI_LINE_13:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_13);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT14_EN
-    case PX_EXTI_LINE_14:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_14);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT15_EN
-    case PX_EXTI_LINE_15:
-        LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_15);
-        break;
-#endif
-
-    default:
-        PX_DBG_ERR("Invalid EXTI line specified");
-    }
+    LL_EXTI_EnableIT_0_31(exti_line_mask);
 }
 
 void px_exti_disable(px_exti_line_t exti_line)
 {
-    switch(exti_line)
-    {
-#if PX_EXTI_CFG_INT0_EN
-    case PX_EXTI_LINE_0:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_0);
-        break;
-#endif
+    uint32_t exti_line_mask = (1 << exti_line);
 
-#if PX_EXTI_CFG_INT1_EN
-    case PX_EXTI_LINE_1:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_1);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT2_EN
-    case PX_EXTI_LINE_2:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_2);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT3_EN
-    case PX_EXTI_LINE_3:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_3);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT4_EN
-    case PX_EXTI_LINE_4:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_4);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT5_EN
-    case PX_EXTI_LINE_5:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_5);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT6_EN
-    case PX_EXTI_LINE_6:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_6);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT7_EN
-    case PX_EXTI_LINE_7:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_7);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT8_EN
-    case PX_EXTI_LINE_8:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_8);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT9_EN
-    case PX_EXTI_LINE_9:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_9);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT10_EN
-    case PX_EXTI_LINE_10:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_10);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT11_EN
-    case PX_EXTI_LINE_11:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_11);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT12_EN
-    case PX_EXTI_LINE_12:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_12);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT13_EN
-    case PX_EXTI_LINE_13:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_13);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT14_EN
-    case PX_EXTI_LINE_14:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_14);
-        break;
-#endif
-
-#if PX_EXTI_CFG_INT15_EN
-    case PX_EXTI_LINE_15:
-        LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_15);
-        break;
-#endif
-
-    default:
-        PX_DBG_ERR("Invalid EXTI line specified");
-    }
+    LL_EXTI_DisableIT_0_31(exti_line_mask);
 }
