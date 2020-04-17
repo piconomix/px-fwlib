@@ -86,8 +86,8 @@ extern "C" {
 /// Specify SPI peripheral
 typedef enum
 {
-    PX_SPI_PER_0 = 0,
-} px_spi_per_t;
+    PX_SPI_NR_0 = 0,
+} px_spi_nr_t;
 
 /// Specify SPI Clock polarity / Clock phase
 typedef enum
@@ -130,11 +130,11 @@ typedef enum
 /// Define SPI handle
 typedef struct
 {
-    struct px_spi_data_s * spi_data;        ///< SPI peripheral data
-    uint8_t                cs_id;           ///< Chip Select GPIO ID
-    uint8_t                spcr;            ///< SPI Control Register value
-    bool                   use_spi2x;       ///< Use 2X clock rate
-    uint8_t                mo_dummy_byte;   ///< Master Out dummy byte when data is read from Master In
+    struct px_spi_per_s * spi_per;          ///< SPI peripheral data
+    uint8_t               cs_id;            ///< Chip Select GPIO ID
+    uint8_t               spcr;             ///< SPI Control Register value
+    bool                  use_spi2x;        ///< Use 2X clock rate
+    uint8_t               mo_dummy_byte;    ///< Master Out dummy byte when data is read from Master In
 } px_spi_handle_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -149,21 +149,21 @@ void px_spi_init(void);
  *  Open SPI peripheral using predefined (default) parameters.
  *  
  *  @param handle       Pointer to handle data structure
- *  @param peripheral   SPI peripheral
+ *  @param spi_nr       SPI peripheral number
  *  @param cs_id        ID to use when calling PX_SPI_CS_xx() macro
  *  
  *  @retval false       Error: peripheral was not opened
  *  @retval true        Success: peripheral was opened
  */
 bool px_spi_open(px_spi_handle_t * handle,
-                 px_spi_per_t      peripheral,
+                 px_spi_nr_t       spi_nr,
                  uint8_t           cs_id);
 
 /**
  *  Open SPI peripheral using specified parameters. 
  *  
  *  @param handle           Pointer to handle data structure
- *  @param peripheral       SPI peripheral
+ *  @param spi_nr           SPI peripheral number
  *  @param cs_id            ID to use when calling PX_SPI_CS() macro
  *  @param baud             Desired BAUD rate as a division of peripheral clock
  *  @param mode             Clock mode 0,1,2 or 3 @see px_spi_mode_t
@@ -175,7 +175,7 @@ bool px_spi_open(px_spi_handle_t * handle,
  *  @retval true            Success: peripheral was opened
  */
 bool px_spi_open2(px_spi_handle_t * handle,
-                  px_spi_per_t      peripheral,
+                  px_spi_nr_t       spi_nr,
                   uint8_t           cs_id,
                   px_spi_baud_t     baud,
                   px_spi_mode_t     mode, 

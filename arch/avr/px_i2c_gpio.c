@@ -24,13 +24,11 @@
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// Definition of data for each I2C peripheral
-typedef struct px_i2c_data_s
+typedef struct px_i2c_per_s
 {
-    /// Peripheral
-    px_i2c_per_t peripheral;
-    /// Number of open handles referencing peripheral
-    uint8_t open_counter;
-} px_i2c_data_t;
+    px_i2c_nr_t i2c_nr;         ///< I2C Peripheral number
+    uint8_t open_counter;       ///< Number of open handles referencing peripheral    
+} px_i2c_per_t;
 
 /// I2C Start transaction with Read (1) or Write (0) bit
 typedef enum
@@ -46,7 +44,7 @@ typedef enum
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// Allocate data for each enabled I2C peripheral
 #if PX_I2C_CFG_I2C0_EN
-static px_i2c_data_t px_i2c0_data;
+static px_i2c_per_t px_i2c0_per;
 #endif
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
@@ -61,8 +59,8 @@ static bool px_i2c_start_repeat                     (uint8_t sla_adr,
 static bool px_i2c_stop                             (void);
 static bool px_i2c_wr_u8                            (uint8_t data);
 static bool px_i2c_rd_u8                            (uint8_t * data, bool nak);
-static void px_i2c_init_peripheral_data             (px_i2c_per_t    peripheral,
-                                                     px_i2c_data_t * i2c_data);
+static void px_i2c_init_peripheral_data             (px_i2c_nr_t    i2c_nr,
+                                                     px_i2c_per_t * i2c_per);
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_i2c_delay_half_clk(void)
@@ -264,11 +262,11 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     {
         // Error
 
-static void px_i2c_init_peripheral_data(px_i2c_per_t    peripheral,
-                                        px_i2c_data_t * i2c_data)
+static void px_i2c_init_peripheral_data(px_i2c_nr_t    i2c_nr,
+                                        px_i2c_per_t * i2c_per)
 {
     // Set peripheral
-    i2c_data->peripheral = peripheral;
+    i2c_data->spi_nr = i2c_nr;
     // Clear reference counter
     i2c_data->open_counter = 0;
 }
@@ -278,7 +276,7 @@ void px_i2c_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_I2C_CFG_I2C0_EN
-    px_i2c_init_peripheral_data(PX_I2C_PER_0, &px_i2c0_data);
+    px_i2c_init_peripheral_data(PX_I2C_NR_0, &px_i2c0_per);
 #endif
 
     // Set bus to free state (Hi-Z)
@@ -288,23 +286,23 @@ void px_i2c_init(void)
 }
 
 bool px_i2c_open(px_i2c_handle_t * handle,
-                 px_i2c_per_t      peripheral,
+                 px_i2c_nr_t       i2c_nr,
                  uint8_t           slave_adr)
 {
-px_i2c_data_t * i2c_data;
+    px_i2c_per_t * i2c_per;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
 
     // Handle not initialised
-    handle->i2c_data = NULL;
+    handle->i2c_per = NULL;
 
     // Set pointer to peripheral data
-    switch(peripheral)
+    switch(i2c_nr)
     {
 #if PX_I2C_CFG_I2C0_EN
-    case PX_I2C_PER_0:
-        i2c_data = &px_i2c0_data;
+    case PX_I2C_NR_0:
+        i2c_per = &px_i2c0_per;
         break;
 #endif
     default:
@@ -316,39 +314,39 @@ px_i2c_data_t * i2c_data;
     handle->slave_adr = slave_adr;
 
     // Point handle to peripheral
-    handle->i2c_data = i2c_data;
+    handle->i2c_per = i2c_per;
 
     // Success
-    i2c_data->open_counter++;
+    i2c_per->open_counter++;
     return true;
 }
 
 bool px_i2c_close(px_i2c_handle_t * handle)
 {
-    px_i2c_data_t * i2c_data;
+    px_i2c_per_t * i2c_per;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    i2c_data = handle->i2c_data;
+    i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_data != NULL);
-    PX_DBG_ASSERT(i2c_data->open_counter != 0);
+    PX_DBG_ASSERT(i2c_per != NULL);
+    PX_DBG_ASSERT(i2c_per->open_counter != 0);
 
     // Decrement open count
-    i2c_data->open_counter--;
+    i2c_per->open_counter--;
 
     // More open handles referencing peripheral?
-    if(i2c_data->open_counter != 0)
+    if(i2c_per->open_counter != 0)
     {
         // Close handle
-        handle->i2c_data = NULL;
+        handle->i2c_per = NULL;
         // Success
         return true;
     }
 
    // Close handle
-   handle->i2c_data = NULL;
+   handle->i2c_per = NULL;
 
     // Success
     return true;
@@ -359,21 +357,21 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
                size_t            nr_of_bytes,
                uint8_t           flags)
 {
-    px_i2c_data_t * i2c_data;
+    px_i2c_per_t *  i2c_per;
     const uint8_t * data_u8 = (const uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    i2c_data = handle->i2c_data;
+    i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_data != NULL);
-    PX_DBG_ASSERT(i2c_data->open_counter != 0);
+    PX_DBG_ASSERT(i2c_per != NULL);
+    PX_DBG_ASSERT(i2c_per->open_counter != 0);
     // Check that slave address is 7 bits
     PX_DBG_ASSERT(handle->slave_adr < 0x80);
 #if !DBG
     // Supress compiler warning about unused variable
-    (void)i2c_data;
+    (void)i2c_per;
 #endif
 
     // Generate START or REPEATED START condition?
@@ -426,21 +424,21 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
                size_t            nr_of_bytes,
                uint8_t           flags)
 {
-    px_i2c_data_t * i2c_data;
+    px_i2c_per_t *  i2c_per;
     uint8_t *       data_u8 = (uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    i2c_data = handle->i2c_data;
+    i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_data != NULL);
-    PX_DBG_ASSERT(i2c_data->open_counter != 0);
+    PX_DBG_ASSERT(i2c_per != NULL);
+    PX_DBG_ASSERT(i2c_per->open_counter != 0);
     // Check that slave address is 7 bits
     PX_DBG_ASSERT(handle->slave_adr < 0x80);
 #if !DBG
     // Supress compiler warning about unused variable
-    (void)i2c_data;
+    (void)i2c_per;
 #endif
 
     // Generate START or REPEATED START condition?

@@ -60,7 +60,7 @@ static void main_init(void)
 
     // Open UART1
     px_uart_open2(&px_uart1_handle,
-                  PX_UART_PER_1,
+                  PX_UART_NR_1,
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
@@ -68,7 +68,7 @@ static void main_init(void)
 
     // Initialise LCD driver
     px_spi_open2(&px_spi_lcd_handle,
-                 PX_SPI_PER_2,
+                 PX_SPI_NR_2,
                  PX_BOARD_SPI2_CS_LCD,
                  px_spi_util_baud_hz_to_clk_div(PX_LCD_MAX_SPI_CLOCK_HZ),
                  PX_LCD_SPI_MODE, 
@@ -78,7 +78,7 @@ static void main_init(void)
 
     // Initialise AT25S Serial Flash driver
     px_spi_open2(&px_spi_sf_handle,
-                 PX_SPI_PER_2,
+                 PX_SPI_NR_2,
                  PX_BOARD_SPI2_CS_SF,
                  px_spi_util_baud_hz_to_clk_div(PX_AT25S_MAX_SPI_CLOCK_HZ), 
                  PX_AT25S_SPI_MODE, 
@@ -91,7 +91,7 @@ static void main_init(void)
 
     // Initialise SD Card driver
     px_spi_open2(&px_spi_sd_handle,
-                 PX_SPI_PER_1,
+                 PX_SPI_NR_1,
                  PX_BOARD_SPI1_CS_SD,
                  px_spi_util_baud_hz_to_clk_div(PX_SD_MAX_SPI_CLOCK_HZ),
                  PX_SD_SPI_MODE, 

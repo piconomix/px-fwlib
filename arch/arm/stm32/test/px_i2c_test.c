@@ -16,7 +16,7 @@ int main(void)
     // Initialise I2C driver
     px_i2c_init();
     // Open handle to I2C slave device
-    px_i2c_open(&px_i2c_handle, PX_I2C_PER_1, I2C_SLA_ADR);
+    px_i2c_open(&px_i2c_handle, PX_I2C_NR_1, I2C_SLA_ADR);
     // START I2C write transaction and write register address
     data[0] = 0xd0;
     px_i2c_wr(&px_i2c_handle, 

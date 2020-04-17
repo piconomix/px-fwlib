@@ -72,8 +72,8 @@ extern "C" {
 /// Specify I2C peripheral
 typedef enum
 {
-    PX_I2C_PER_0 = 0,
-} px_i2c_per_t;
+    PX_I2C_NR_0 = 0,
+} px_i2c_nr_t;
 
 /// @name I2C bit flags to demarcate the start and end of a transaction
 //@{
@@ -98,8 +98,8 @@ typedef enum
 /// Define I2C handle for a slave
 typedef struct
 {
-    struct px_i2c_data_s * i2c_data;      ///< I2C peripheral data
-    uint8_t                slave_adr;     ///< 7-bit I2C slave address
+    struct px_i2c_per_s * i2c_per;      ///< I2C peripheral data
+    uint8_t               slave_adr;    ///< 7-bit I2C slave address
 } px_i2c_handle_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -114,14 +114,14 @@ void px_i2c_init(void);
  *  Open I2C slave handle.
  *  
  *  @param handle       Pointer to handle data structure
- *  @param peripheral   I2C Peripheral
+ *  @param i2c_nr       I2C peripheral number
  *  @param slave_adr    7-bit I2C slave address
  *  
  *  @retval false       Error - handle was not opened
  *  @retval true        Success - handle was opened
  */
 bool px_i2c_open(px_i2c_handle_t * handle, 
-                 px_i2c_per_t      peripheral,
+                 px_i2c_nr_t       i2c_nr,
                  uint8_t           slave_adr);
 
 /**

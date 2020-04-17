@@ -27,20 +27,15 @@
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 PX_DBG_DECL_NAME("px_spi");
 
-/// Internal data for each SPI handle
-typedef struct px_spi_data_s
+/// Internal data for each SPI peripheral
+typedef struct px_spi_per_s
 {
-    /// SPI peripheral base register address
-    SPI_TypeDef * spi_base_adr;
-    /// DMA RX channel base register address
-    DMA_Channel_TypeDef * dma_rx_base_adr;
-    /// DMA TX channel base register address
-    DMA_Channel_TypeDef * dma_tx_base_adr;
-    /// Peripheral
-    px_spi_per_t peripheral;
-    /// Number of open handles referencing peripheral
-    uint8_t open_counter;
-} px_spi_data_t;
+    SPI_TypeDef *         spi_base_adr;     ///< SPI peripheral base register address    
+    DMA_Channel_TypeDef * dma_rx_base_adr;  ///< DMA RX channel base register address    
+    DMA_Channel_TypeDef * dma_tx_base_adr;  ///< DMA TX channel base register address    
+    px_spi_nr_t           spi_nr;           ///< Peripheral number
+    uint8_t               open_counter;     ///< Number of open handles referencing peripheral    
+} px_spi_per_t;
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -49,25 +44,25 @@ typedef struct px_spi_data_s
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// Allocate data for each enabled SPI peripheral
 #if PX_SPI_CFG_SPI1_EN
-static px_spi_data_t px_spi1_data;
+static px_spi_per_t px_spi_per_1;
 #endif
 
 #if PX_SPI_CFG_SPI2_EN
-static px_spi_data_t px_spi2_data;
+static px_spi_per_t px_spi_per_2;
 #endif
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
-                                   px_spi_per_t  peripheral,
+                                   px_spi_nr_t   spi_nr,
                                    uint32_t      spi_cr1_val)
 {
     // Enable peripheral clocks
-    switch(peripheral)
+    switch(spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_PER_1:
+    case PX_SPI_NR_1:
         // Enable peripheral clocks
         LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
         LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
@@ -82,7 +77,7 @@ static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_PER_2:
+    case PX_SPI_NR_2:
         // Enable peripheral clocks
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_SPI2);
         LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
@@ -123,34 +118,34 @@ static void px_spi_update_cfg(SPI_TypeDef * spi_base_adr, uint32_t spi_cr1_val)
     }
 }
 
-static void px_spi_init_peripheral_data(px_spi_per_t    peripheral,
-                                        px_spi_data_t * spi_data)
+static void px_spi_init_peripheral_data(px_spi_nr_t    spi_nr,
+                                        px_spi_per_t * spi_per)
 {
-    // Set peripheral
-    spi_data->peripheral = peripheral;
+    // Set peripheral number
+    spi_per->spi_nr = spi_nr;
     // Set peripheral base address
-    switch(peripheral)
+    switch(spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_PER_1:
-        spi_data->spi_base_adr    = SPI1;
-        spi_data->dma_rx_base_adr = DMA1_Channel2;
-        spi_data->dma_tx_base_adr = DMA1_Channel3;
+    case PX_SPI_NR_1:
+        spi_per->spi_base_adr    = SPI1;
+        spi_per->dma_rx_base_adr = DMA1_Channel2;
+        spi_per->dma_tx_base_adr = DMA1_Channel3;
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_PER_2:
-        spi_data->spi_base_adr    = SPI2;
-        spi_data->dma_rx_base_adr = DMA1_Channel4;
-        spi_data->dma_tx_base_adr = DMA1_Channel5;
+    case PX_SPI_NR_2:
+        spi_per->spi_base_adr    = SPI2;
+        spi_per->dma_rx_base_adr = DMA1_Channel4;
+        spi_per->dma_tx_base_adr = DMA1_Channel5;
         break;
 #endif
     default:
         PX_DBG_ERR("Invalid peripheral");
         return;
     }
-    // Clear reference counter
-    spi_data->open_counter = 0;
+    // Clear open counter
+    spi_per->open_counter = 0;
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -158,35 +153,35 @@ void px_spi_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_SPI_CFG_SPI1_EN
-    px_spi_init_peripheral_data(PX_SPI_PER_1, &px_spi1_data);
+    px_spi_init_peripheral_data(PX_SPI_NR_1, &px_spi_per_1);
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    px_spi_init_peripheral_data(PX_SPI_PER_2, &px_spi2_data);
+    px_spi_init_peripheral_data(PX_SPI_NR_2, &px_spi_per_2);
 #endif
 }
 
 bool px_spi_open(px_spi_handle_t * handle,
-                   px_spi_per_t    peripheral,
+                   px_spi_nr_t     spi_nr,
                    uint8_t         cs_id)
 {
-    px_spi_data_t * spi_data;
-    uint32_t        spi_cr1_val = 0;
+    px_spi_per_t * spi_per;
+    uint32_t       spi_cr1_val = 0;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Handle not initialised
-    handle->spi_data = NULL;
+    handle->spi_per = NULL;
     // Set pointer to peripheral data
-    switch(peripheral)
+    switch(spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_PER_1:
-        spi_data = &px_spi1_data;
+    case PX_SPI_NR_1:
+        spi_per = &px_spi_per_1;
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_PER_2:
-        spi_data = &px_spi2_data;
+    case PX_SPI_NR_2:
+        spi_per = &px_spi_per_2;
         break;
 #endif
     default:
@@ -212,44 +207,48 @@ bool px_spi_open(px_spi_handle_t * handle,
     // Set default Master Out dummy byte
     handle->mo_dummy_byte = 0x00;
 
-    // Initialise peripheral
-    px_spi_init_peripheral(spi_data->spi_base_adr,
-                           peripheral,
-                           spi_cr1_val);
+    // Peripheral already initialized?
+    if(spi_per->open_counter == 0)
+    {
+        // No. Initialise peripheral
+        px_spi_init_peripheral(spi_per->spi_base_adr,
+                               spi_nr,
+                               spi_cr1_val);
+    }
     // Point handle to peripheral
-    handle->spi_data = spi_data;
+    handle->spi_per = spi_per;
 
     // Success
-    spi_data->open_counter++;
+    spi_per->open_counter++;
     return true;
 }
 
 bool px_spi_open2(px_spi_handle_t * handle,
-                  px_spi_per_t      peripheral,
+                  px_spi_nr_t       spi_nr,
                   uint8_t           cs_id,
                   px_spi_baud_t     baud, 
                   px_spi_mode_t     mode,
                   px_spi_dord_t     data_order,
                   uint8_t           mo_dummy_byte)
 {
-    px_spi_data_t * spi_data;
-    uint32_t        spi_cr1_val = 0;
+    px_spi_per_t * spi_per;
+    uint32_t       spi_cr1_val = 0;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Handle not initialised
-    handle->spi_data = NULL;
+    handle->spi_per = NULL;
     // Set pointer to peripheral data
-    switch(peripheral)
+    switch(spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_PER_1:
-        spi_data = &px_spi1_data;
+    case PX_SPI_NR_1:
+        spi_per = &px_spi_per_1;
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_PER_2:
-        spi_data = &px_spi2_data;
+    case PX_SPI_NR_2:
+        spi_per = &px_spi_per_2;
         break;
 #endif
     default:
@@ -278,55 +277,59 @@ bool px_spi_open2(px_spi_handle_t * handle,
     // Save Master Out dummy byte
     handle->mo_dummy_byte = mo_dummy_byte;
 
-    // Initialise peripheral
-    px_spi_init_peripheral(spi_data->spi_base_adr,
-                           peripheral,
-                           spi_cr1_val);
+    // Peripheral already initialized?
+    if(spi_per->open_counter == 0)
+    {
+        // No. Initialise peripheral
+        px_spi_init_peripheral(spi_per->spi_base_adr,
+                               spi_nr,
+                               spi_cr1_val);
+    }
     // Point handle to peripheral
-    handle->spi_data = spi_data;
+    handle->spi_per = spi_per;
 
     // Success
-    spi_data->open_counter++;
+    spi_per->open_counter++;
     return true;
 }
 
 bool px_spi_close(px_spi_handle_t * handle)
 {
-    px_spi_data_t * spi_data;
-    SPI_TypeDef *   spi_base_adr;
+    px_spi_per_t * spi_per;
+    SPI_TypeDef *  spi_base_adr;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    spi_data = handle->spi_data;
+    spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_data != NULL);
-    PX_DBG_ASSERT(spi_data->open_counter != 0);
+    PX_DBG_ASSERT(spi_per != NULL);
+    PX_DBG_ASSERT(spi_per->open_counter != 0);
 
     // Get SPI peripheral base register address
-    spi_base_adr = spi_data->spi_base_adr;
+    spi_base_adr = spi_per->spi_base_adr;
     // Decrement open count
-    spi_data->open_counter--;
+    spi_per->open_counter--;
     // More open handles referencing peripheral?
-    if(spi_data->open_counter != 0)
+    if(spi_per->open_counter != 0)
     {        
-        // Close handle
-        handle->spi_data = NULL;
+        // Yes. Only close handle
+        handle->spi_per = NULL;
         // Success
         return true;
     }
     // Disable peripheral
     LL_SPI_Disable(spi_base_adr);
     // Disable peripheral clock
-    switch(handle->spi_data->peripheral)
+    switch(spi_per->spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_PER_1:
+    case PX_SPI_NR_1:
         LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_SPI1);
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_PER_2:
+    case PX_SPI_NR_2:
         LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_SPI2);
         break;
 #endif
@@ -334,7 +337,7 @@ bool px_spi_close(px_spi_handle_t * handle)
         break;
     }
     // Close handle
-    handle->spi_data = NULL;
+    handle->spi_per = NULL;
 
     // Success
     return true;
@@ -345,20 +348,20 @@ void px_spi_wr(px_spi_handle_t * handle,
                size_t            nr_of_bytes,
                uint8_t           flags)
 {
-    px_spi_data_t * spi_data;
+    px_spi_per_t *  spi_per;
     SPI_TypeDef *   spi_base_adr;
     const uint8_t * data_wr_u8 = (const uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    spi_data = handle->spi_data;
+    spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_data != NULL);
-    PX_DBG_ASSERT(spi_data->open_counter != 0);
+    PX_DBG_ASSERT(spi_per != NULL);
+    PX_DBG_ASSERT(spi_per->open_counter != 0);
 
     // Get SPI peripheral base register address
-    spi_base_adr = spi_data->spi_base_adr;
+    spi_base_adr = spi_per->spi_base_adr;
     PX_DBG_ASSERT(spi_base_adr != NULL);
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
@@ -370,17 +373,17 @@ void px_spi_wr(px_spi_handle_t * handle,
     }
 
     // Configure and enable DMA TX channel
-    spi_data->dma_tx_base_adr->CMAR  = (uint32_t)data_wr_u8;
-    spi_data->dma_tx_base_adr->CNDTR = nr_of_bytes;
-    spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
+    spi_per->dma_tx_base_adr->CMAR   = (uint32_t)data_wr_u8;
+    spi_per->dma_tx_base_adr->CNDTR  = nr_of_bytes;
+    spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
     // Enable DMA request for TX
     LL_SPI_EnableDMAReq_TX(spi_base_adr);    
 
     // Block until TX DMA transfer is complete
-    switch(spi_data->peripheral)
+    switch(spi_per->spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_PER_1:
+    case PX_SPI_NR_1:
         while(!LL_DMA_IsActiveFlag_TC3(DMA1))
         {
             ;
@@ -389,7 +392,7 @@ void px_spi_wr(px_spi_handle_t * handle,
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_PER_2:
+    case PX_SPI_NR_2:
         while(!LL_DMA_IsActiveFlag_TC5(DMA1))
         {
             ;
@@ -414,7 +417,7 @@ void px_spi_wr(px_spi_handle_t * handle,
     LL_SPI_ClearFlag_OVR(spi_base_adr);
 
     // Disable DMA TX channel
-    spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
+    spi_per->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
     // Disable DMA request for TX
     spi_base_adr->CR2 = 0;    
 
@@ -430,20 +433,20 @@ void px_spi_rd(px_spi_handle_t * handle,
                size_t            nr_of_bytes,
                uint8_t           flags)
 {
-    px_spi_data_t * spi_data;
+    px_spi_per_t *  spi_per;
     SPI_TypeDef *   spi_base_adr;
     uint8_t *       data_rd_u8 = (uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    spi_data = handle->spi_data;
+    spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_data != NULL);
-    PX_DBG_ASSERT(spi_data->open_counter != 0);
+    PX_DBG_ASSERT(spi_per != NULL);
+    PX_DBG_ASSERT(spi_per->open_counter != 0);
 
     // Get SPI peripheral base register address
-    spi_base_adr = spi_data->spi_base_adr;
+    spi_base_adr = spi_per->spi_base_adr;
     PX_DBG_ASSERT(spi_base_adr != NULL);
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
@@ -457,22 +460,22 @@ void px_spi_rd(px_spi_handle_t * handle,
     // Enable DMA request for RX
     LL_SPI_EnableDMAReq_RX(spi_base_adr);
     // Configure and enable DMA RX channel
-    spi_data->dma_rx_base_adr->CMAR   = (uint32_t)data_rd_u8;
-    spi_data->dma_rx_base_adr->CNDTR  = nr_of_bytes;
-    spi_data->dma_rx_base_adr->CCR   |= DMA_CCR_EN;
+    spi_per->dma_rx_base_adr->CMAR   = (uint32_t)data_rd_u8;
+    spi_per->dma_rx_base_adr->CNDTR  = nr_of_bytes;
+    spi_per->dma_rx_base_adr->CCR   |= DMA_CCR_EN;
     // Configure and enable DMA TX channel
-    spi_data->dma_tx_base_adr->CMAR  = (uint32_t)&handle->mo_dummy_byte;
-    spi_data->dma_tx_base_adr->CNDTR = nr_of_bytes;
-    spi_data->dma_tx_base_adr->CCR   &= ~DMA_CCR_MINC;
-    spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
+    spi_per->dma_tx_base_adr->CMAR   = (uint32_t)&handle->mo_dummy_byte;
+    spi_per->dma_tx_base_adr->CNDTR  = nr_of_bytes;
+    spi_per->dma_tx_base_adr->CCR   &= ~DMA_CCR_MINC;
+    spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
     // Enable DMA request for TX
     LL_SPI_EnableDMAReq_TX(spi_base_adr);    
 
     // Block until RX DMA transfer is complete
-    switch(spi_data->peripheral)
+    switch(spi_per->spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_PER_1:
+    case PX_SPI_NR_1:
         while(!LL_DMA_IsActiveFlag_TC2(DMA1))
         {
             ;
@@ -481,7 +484,7 @@ void px_spi_rd(px_spi_handle_t * handle,
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_PER_2:
+    case PX_SPI_NR_2:
         while(!LL_DMA_IsActiveFlag_TC4(DMA1))
         {
             ;
@@ -495,10 +498,10 @@ void px_spi_rd(px_spi_handle_t * handle,
     }
 
     // Disable DMA RX channel
-    spi_data->dma_rx_base_adr->CCR &= ~DMA_CCR_EN;
+    spi_per->dma_rx_base_adr->CCR &= ~DMA_CCR_EN;
     // Disable DMA TX channel
-    spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
-    spi_data->dma_tx_base_adr->CCR |= DMA_CCR_MINC;
+    spi_per->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
+    spi_per->dma_tx_base_adr->CCR |= DMA_CCR_MINC;
     // Disable DMA request for RX and TX
     spi_base_adr->CR2 = 0;    
 
@@ -515,7 +518,7 @@ void px_spi_xc(px_spi_handle_t * handle,
                size_t            nr_of_bytes,
                uint8_t           flags)
 {
-    px_spi_data_t * spi_data;
+    px_spi_per_t *  spi_per;
     SPI_TypeDef *   spi_base_adr;
     const uint8_t * data_wr_u8 = (const uint8_t *)data_wr;
     uint8_t *       data_rd_u8 = (uint8_t *)data_rd;
@@ -523,13 +526,13 @@ void px_spi_xc(px_spi_handle_t * handle,
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    spi_data = handle->spi_data;
+    spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_data != NULL);
-    PX_DBG_ASSERT(spi_data->open_counter != 0);
+    PX_DBG_ASSERT(spi_per != NULL);
+    PX_DBG_ASSERT(spi_per->open_counter != 0);
 
     // Get SPI peripheral base register address
-    spi_base_adr = spi_data->spi_base_adr;
+    spi_base_adr = spi_per->spi_base_adr;
     PX_DBG_ASSERT(spi_base_adr != NULL);
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
@@ -543,21 +546,21 @@ void px_spi_xc(px_spi_handle_t * handle,
     // Enable DMA request for RX
     LL_SPI_EnableDMAReq_RX(spi_base_adr);
     // Configure and enable DMA RX channel
-    spi_data->dma_rx_base_adr->CMAR   = (uint32_t)data_rd_u8;
-    spi_data->dma_rx_base_adr->CNDTR  = nr_of_bytes;
-    spi_data->dma_rx_base_adr->CCR   |= DMA_CCR_EN;
+    spi_per->dma_rx_base_adr->CMAR   = (uint32_t)data_rd_u8;
+    spi_per->dma_rx_base_adr->CNDTR  = nr_of_bytes;
+    spi_per->dma_rx_base_adr->CCR   |= DMA_CCR_EN;
     // Configure and enable DMA TX channel
-    spi_data->dma_tx_base_adr->CMAR  = (uint32_t)data_wr_u8;
-    spi_data->dma_tx_base_adr->CNDTR = nr_of_bytes;
-    spi_data->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
+    spi_per->dma_tx_base_adr->CMAR   = (uint32_t)data_wr_u8;
+    spi_per->dma_tx_base_adr->CNDTR  = nr_of_bytes;
+    spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
     // Enable DMA request for TX
     LL_SPI_EnableDMAReq_TX(spi_base_adr);    
 
     // Block until RX DMA transfer is complete
-    switch(spi_data->peripheral)
+    switch(spi_per->spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_PER_1:
+    case PX_SPI_NR_1:
         while(!LL_DMA_IsActiveFlag_TC2(DMA1))
         {
             ;
@@ -566,7 +569,7 @@ void px_spi_xc(px_spi_handle_t * handle,
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_PER_2:
+    case PX_SPI_NR_2:
         while(!LL_DMA_IsActiveFlag_TC4(DMA1))
         {
             ;
@@ -580,9 +583,9 @@ void px_spi_xc(px_spi_handle_t * handle,
     }
 
     // Disable DMA RX channel
-    spi_data->dma_rx_base_adr->CCR &= ~DMA_CCR_EN;
+    spi_per->dma_rx_base_adr->CCR &= ~DMA_CCR_EN;
     // Disable DMA TX channel
-    spi_data->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
+    spi_per->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
     // Disable DMA request for RX and TX
     spi_base_adr->CR2 = 0;    
 
@@ -596,20 +599,20 @@ void px_spi_xc(px_spi_handle_t * handle,
 void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
                               px_spi_baud_t     baud)
 {
-    px_spi_data_t * spi_data;
-    SPI_TypeDef *   spi_base_adr;
-    uint32_t        spi_cr1_val;
+    px_spi_per_t * spi_per;
+    SPI_TypeDef *  spi_base_adr;
+    uint32_t       spi_cr1_val;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    spi_data = handle->spi_data;
+    spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_data != NULL);
-    PX_DBG_ASSERT(spi_data->open_counter != 0);
+    PX_DBG_ASSERT(spi_per != NULL);
+    PX_DBG_ASSERT(spi_per->open_counter != 0);
 
     // Get SPI peripheral base register address
-    spi_base_adr = spi_data->spi_base_adr;
+    spi_base_adr = spi_per->spi_base_adr;
     PX_DBG_ASSERT(spi_base_adr != NULL);
     // Disable peripheral
     LL_SPI_Disable(spi_base_adr);

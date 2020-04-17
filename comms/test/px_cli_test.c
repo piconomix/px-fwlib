@@ -79,7 +79,7 @@ int main(void)
 
     // Open UART0 @ 115200 BAUD, 8 data bits, no parity, 1 stop bit
     px_uart_open2(&px_uart_handle,
-                  PX_UART_PER_0, 
+                  PX_UART_NR_0, 
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 

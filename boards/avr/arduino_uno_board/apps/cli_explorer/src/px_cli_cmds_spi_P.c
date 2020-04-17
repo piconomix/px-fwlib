@@ -140,7 +140,7 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
 
     // Open SPI device handle
     if(!px_spi_open2(&px_spi_handle, 
-                     PX_SPI_PER_0,
+                     PX_SPI_NR_0,
                      PX_BOARD_SPI_CS_NONE,
                      baud,
                      mode,

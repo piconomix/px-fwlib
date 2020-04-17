@@ -59,7 +59,7 @@ static bool main_init(void)
 
     // Open UART1
     px_uart_open2(&px_uart1_handle,
-                  PX_UART_PER_1,
+                  PX_UART_NR_1,
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
@@ -67,7 +67,7 @@ static bool main_init(void)
 
     // Initialise SD Card driver
     px_spi_open2(&px_spi_sd_handle,
-                 PX_SPI_PER_1,
+                 PX_SPI_NR_1,
                  PX_BOARD_SPI1_CS_SD,
                  px_spi_util_baud_hz_to_clk_div(PX_SD_MAX_SPI_CLOCK_HZ),
                  PX_SD_SPI_MODE, 

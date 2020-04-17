@@ -67,7 +67,7 @@ int main(void)
 
     // Open UART1 @ 115200 BAUD, 8 data bits, no parity, 1 stop bit
     px_uart_open2(&px_uart1_handle,
-                  PX_UART_PER_1,
+                  PX_UART_NR_1,
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
@@ -78,7 +78,7 @@ int main(void)
 
     // Open UART2 @ 9600 BAUD, 8 data bits, no parity, 1 stop bit
     px_uart_open2(&px_uart2_handle,
-                  PX_UART_PER_2,
+                  PX_UART_NR_2,
                   PX_GT511_UART_DEFAULT_BAUD, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 

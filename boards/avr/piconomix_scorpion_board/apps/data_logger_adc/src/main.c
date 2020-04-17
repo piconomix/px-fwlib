@@ -71,7 +71,7 @@ static bool main_init(void)
     px_buzzer_init();
     px_uart_init();
     px_uart_open2(&px_uart_handle,
-                  PX_UART_PER_0,
+                  PX_UART_NR_0,
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
@@ -87,7 +87,7 @@ static bool main_init(void)
 
     // Initialise AT45D driver
     px_spi_open2(&px_at45d_spi_handle,
-                 PX_SPI_PER_0,
+                 PX_SPI_NR_0,
                  PX_BOARD_SPI_CS_DF,
                  px_spi_util_baud_hz_to_clk_div(PX_AT45D_MAX_SPI_CLOCK_HZ),
                  PX_AT45D_SPI_MODE, 

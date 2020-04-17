@@ -64,7 +64,7 @@ int main(void)
     // Initialise LCD driver
     px_spi_init();
     px_spi_open2(&px_spi_lcd_handle,
-                 PX_SPI_PER_2,
+                 PX_SPI_NR_2,
                  PX_BOARD_SPI2_CS_LCD,
                  px_spi_util_baud_hz_to_clk_div(PX_LCD_MAX_SPI_CLOCK_HZ),
                  PX_LCD_SPI_MODE, 

@@ -43,7 +43,7 @@ static void px_i2c_gpio_enable(void)
 
 static void px_i2c_gpio_disable(void)
 {
-    px_i2c_open(&px_i2c_handle, PX_I2C_PER_0, 0x00);
+    px_i2c_open(&px_i2c_handle, PX_I2C_NR_0, 0x00);
 }
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */

@@ -224,7 +224,7 @@ int main(void)
     // Open UART1
     px_uart_init();
     px_uart_open2(&px_uart_handle,
-                  PX_UART_PER_1,
+                  PX_UART_NR_1,
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 

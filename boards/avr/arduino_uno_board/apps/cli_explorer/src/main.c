@@ -62,7 +62,7 @@ static bool main_init(void)
     px_rtc_util_init();
     px_uart_init();
     px_uart_open2(&px_uart_handle,
-                  PX_UART_PER_0,
+                  PX_UART_NR_0,
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
@@ -71,7 +71,7 @@ static bool main_init(void)
 
     px_spi_init();
     px_i2c_init();
-    px_i2c_open(&px_i2c_handle, PX_I2C_PER_0, 0x00);
+    px_i2c_open(&px_i2c_handle, PX_I2C_NR_0, 0x00);
     
     // Enable interrupts
     px_interrupts_enable();

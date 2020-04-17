@@ -44,7 +44,7 @@ static bool            px_uart_handle_open;
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
 {
-    px_uart_per_t       per;
+    px_uart_nr_t       per;
     uint32_t               baud_rate_hz;
     px_uart_data_bits_t data_bits = PX_UART_DATA_BITS_8;
     px_uart_parity_t    parity    = PX_UART_PARITY_NONE;
@@ -54,10 +54,10 @@ static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
     switch(argv[0][0])
     {
     case '2':
-        per = PX_UART_PER_2;
+        per = PX_UART_NR_2;
         break;
     case '4':
-        per = PX_UART_PER_4;
+        per = PX_UART_NR_4;
         break;
     default:
         return "Error. <per> must be 2 or 4";

@@ -22,7 +22,7 @@ int main(void)
     // Initialise modules
     px_board_init();
     px_spi_init();
-    px_spi_open2(&px_at25s_spi_handle, PX_SPI_PER_1, PX_BOARD_SPI_CS_AT25S,
+    px_spi_open2(&px_at25s_spi_handle, PX_SPI_NR_1, PX_BOARD_SPI_CS_AT25S,
                  PX_AT25S_MAX_SPI_CLOCK_HZ, PX_AT25S_SPI_MODE, 
                  PX_AT25S_SPI_DATA_ORDER, 0x00);
     px_at25s_init(&px_at25s_spi_handle);

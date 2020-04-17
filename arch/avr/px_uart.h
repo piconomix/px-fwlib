@@ -75,9 +75,9 @@ extern "C" {
 /// Specify UART peripheral
 typedef enum
 {
-    PX_UART_PER_0 = 0,
-    PX_UART_PER_1 = 1,
-} px_uart_per_t;
+    PX_UART_NR_0 = 0,
+    PX_UART_NR_1 = 1,
+} px_uart_nr_t;
 
 /// Specify UART parity (none, odd or even)
 typedef enum
@@ -106,7 +106,7 @@ typedef enum
 /// Define UART handle
 typedef struct
 {
-    struct px_uart_data_s * uart_data;      ///< USART peripheral data
+    struct px_uart_per_s * uart_per;      ///< USART peripheral data
 } px_uart_handle_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -121,19 +121,19 @@ void  px_uart_init(void);
  *  Open UART peripheral using predefined (default) parameters
  *  
  *  @param handle        Pointer to handle data structure
- *  @param peripheral    UART Peripheral
+ *  @param uart_nr       UART peripheral number
  *  
  *  @retval false        Error: peripheral was not opened
  *  @retval true         Success: peripheral was opened
  */
 bool px_uart_open(px_uart_handle_t * handle, 
-                  px_uart_per_t      peripheral);
+                  px_uart_nr_t       uart_nr);
 
 /** 
  *  Open UART peripheral using specified parameters
  *  
  *  @param handle        Pointer to handle data structure
- *  @param peripheral    UART Peripheral
+ *  @param uart_nr       UART peripheral number
  *  @param baud          Baud rate in bits/s
  *  @param data_bits     Data bits (5, 6, 7 or 8)
  *  @param parity        Parity(NONE, ODD or EVEN)
@@ -143,7 +143,7 @@ bool px_uart_open(px_uart_handle_t * handle,
  *  @retval true         Success: peripheral was opened
  */
 bool px_uart_open2(px_uart_handle_t *  handle,
-                   px_uart_per_t       peripheral,
+                   px_uart_nr_t        uart_nr,
                    uint32_t            baud, 
                    px_uart_data_bits_t data_bits, 
                    px_uart_parity_t    parity, 

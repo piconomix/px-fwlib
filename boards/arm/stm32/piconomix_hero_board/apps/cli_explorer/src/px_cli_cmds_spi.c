@@ -46,7 +46,7 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
 {
     const char *  result;
     uint32_t      baud_rate_hz;
-    px_spi_per_t  per;
+    px_spi_nr_t  per;
     px_spi_baud_t baud;
     px_spi_mode_t mode;
     px_spi_dord_t data_order;
@@ -57,10 +57,10 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
         switch(argv[0][0])
         {
         case '1':
-            per = PX_SPI_PER_1;
+            per = PX_SPI_NR_1;
             break;
         case '2':
-            per = PX_SPI_PER_2;
+            per = PX_SPI_NR_2;
             break;
         default:
             return "Error. [per] must be 1 or 2";
@@ -68,7 +68,7 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
     }
     else
     {
-        per = PX_SPI_PER_1;
+        per = PX_SPI_NR_1;
     }
 
     // [cs]
