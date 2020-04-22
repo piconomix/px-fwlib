@@ -248,11 +248,19 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
 
     // Set baud rate
     LL_USART_SetBaudRate(usart_base_adr, 
-                         PX_BOARD_PER_CLK_HZ, 
+                         PX_BOARD_PER_CLK_HZ,
+#if STM32G0
+                         LL_USART_PRESCALER_DIV1,
+#endif
                          LL_USART_OVERSAMPLING_16,
                          baud);
+
     // Set transmitter and receiver and receive interrupt
+#if STM32G0
+    usart_cr1_val = USART_CR1_RXNEIE_RXFNEIE | USART_CR1_TE | USART_CR1_RE;
+#else
     usart_cr1_val = USART_CR1_RXNEIE | USART_CR1_TE | USART_CR1_RE;
+#endif
     // Parity specified?
     if(parity != PX_UART_PARITY_NONE)
     {
@@ -866,6 +874,9 @@ void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
     // Set baud rate
     LL_USART_SetBaudRate(uart_per->usart_base_adr,
                          PX_BOARD_PER_CLK_HZ, 
+#if STM32G0
+                         LL_USART_PRESCALER_DIV1,
+#endif
                          LL_USART_OVERSAMPLING_16,
                          baud);
 }
