@@ -1,0 +1,26 @@
+SD Card Bootloader with LCD choice menu {#HERO_BOARD_BOOTLOADER_SD_LCD}
+=======================================================================
+  
+[TOC]
+
+1. Introduction {#HERO_BOARD_BOOTLOADER_SD_LCD_INTRO}
+=====================================================
+
+![](hero_board_bootloader_sd_lcd.gif)
+
+This bootloader provides an easy method to switch apps stored on an SD card. It 
+displays the list of [UF2]((https://github.com/Microsoft/uf2)) formatted app 
+files found on the inserted SD card and allows the user to select which file to 
+upgrade the STM32's firmware with by pressing the 3/UP, 4/DN and 5/YES button.
+
+@tip_s
+For an explanation of the UF2 format, see @ref HERO_BOARD_BOOTLOADER_USB_UF2
+@tip_e
+
+A single press of the RESET button will perform a normal reset and the 
+bootloader will jump to the application after a 1/2 second timeout. A 
+"double-tap" of the RESET button (press twice within 0.5 s) will start the 
+SD/LCD bootloader.
+
+You can use @ref HERO_BOARD_EXAMPLE_USB_MSD_SD to manage files stored on the SD 
+card.

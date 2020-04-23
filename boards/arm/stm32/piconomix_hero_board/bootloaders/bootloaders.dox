@@ -3,6 +3,8 @@
 
 - @subpage HERO_BOARD_BOOTLOADER_USB_UF2
   ![](uf2_copy_file_preview.png)
+- @subpage HERO_BOARD_BOOTLOADER_SD_LCD
+  ![](hero_board_bootloader_sd_lcd.gif)
 - @subpage HERO_BOARD_BOOTLOADER_UART_XMODEM
   ![](tera_term_xmodem_send01_preview.png)
 
