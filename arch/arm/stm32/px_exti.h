@@ -154,7 +154,6 @@ void px_exti_init(void);
  *  
  *  @param exti_port        Port (A, B,C, D, E or H)
  *  @param exti_line        Line (0, 1, 2, ... or 15)
- *  @param exti_type        Falling or Rising Edge
  *  @param exti_handler     Handler function to be called when interrupt is triggered
  */
 void px_exti_open(px_exti_port_t    exti_port,

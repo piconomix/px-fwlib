@@ -214,16 +214,16 @@ px_ring_buf_idx_t px_ring_buf_rd(px_ring_buf_t * px_ring_buf,
  * @param px_ring_buf           Pointer to the circular buffer object
  * @param data                  Pointer to location where data must be stored
  * @param nr_of_bytes_to_peek   Number of bytes to peek    
- * @param nr_of_bytes_to_peek   Number of bytes to skip, before peeking    
+ * @param nr_of_bytes_to_skip   Number of bytes to skip, before peeking    
  *  
  * @return px_ring_buf_idx_t    The actual number of bytes peeked, which may 
  *                              be less than the number specified, because the 
  *                              buffer is empty.
  */
 px_ring_buf_idx_t px_ring_buf_peek(px_ring_buf_t * px_ring_buf, 
-                                 void *          data,
-                                 size_t          nr_of_bytes_to_peek,
-                                 size_t          nr_of_bytes_to_skip);
+                                   void *          data,
+                                   size_t          nr_of_bytes_to_peek,
+                                   size_t          nr_of_bytes_to_skip);
 
 
 
