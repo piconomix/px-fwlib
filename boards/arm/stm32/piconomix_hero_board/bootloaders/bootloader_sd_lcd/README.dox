@@ -22,5 +22,5 @@ bootloader will jump to the application after a 1/2 second timeout. A
 "double-tap" of the RESET button (press twice within 0.5 s) will start the 
 SD/LCD bootloader.
 
-You can use @ref HERO_BOARD_EXAMPLE_USB_MSD_SD to manage files stored on the SD 
+You can use @ref HERO_BOARD_APP_USB_MSD_SD to manage files stored on the SD 
 card.

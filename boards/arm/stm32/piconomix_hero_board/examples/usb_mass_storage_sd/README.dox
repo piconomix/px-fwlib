@@ -1,5 +1,0 @@
-USB Mass Storage Device for SD example {#HERO_BOARD_EXAMPLE_USB_MSD_SD}
-=======================================================================
-
-Insert an SD card and run this example. The SD card will show up as a Mass 
-Storage Device over USB and allow you to read from or write to the SD card.
