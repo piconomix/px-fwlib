@@ -24,3 +24,7 @@ SD/LCD bootloader.
 
 You can use @ref HERO_BOARD_APP_USB_MSD_SD to manage files stored on the SD 
 card.
+
+@htmlonly
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RvDCoX9ojIg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+@endhtmlonly

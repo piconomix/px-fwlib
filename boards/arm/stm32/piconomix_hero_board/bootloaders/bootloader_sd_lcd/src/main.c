@@ -508,6 +508,7 @@ int main(void)
     main_init();
     px_gfx_init();
     PX_LCD_BACKLIGHT_ON();
+    main_beep();
 
     // Mount SD card
     main_sd_mount();
