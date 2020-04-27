@@ -283,9 +283,9 @@ static void px_i2c_init_peripheral_data(px_i2c_nr_t    i2c_nr,
                                         px_i2c_per_t * i2c_per)
 {
     // Set peripheral
-    i2c_data->i2c_nr = i2c_nr;
+    i2c_per->i2c_nr = i2c_nr;
     // Clear reference counter
-    i2c_data->open_counter = 0;
+    i2c_per->open_counter = 0;
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */

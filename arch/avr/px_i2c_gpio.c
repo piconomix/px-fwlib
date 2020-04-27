@@ -261,14 +261,18 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     if(!px_i2c_tx_bit(nak))
     {
         // Error
+        return false;
+    }
+    return true;
+}
 
 static void px_i2c_init_peripheral_data(px_i2c_nr_t    i2c_nr,
                                         px_i2c_per_t * i2c_per)
 {
     // Set peripheral
-    i2c_data->spi_nr = i2c_nr;
+    i2c_per->spi_nr = i2c_nr;
     // Clear reference counter
-    i2c_data->open_counter = 0;
+    i2c_per->open_counter = 0;
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
