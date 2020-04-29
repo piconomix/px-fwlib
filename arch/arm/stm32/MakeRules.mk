@@ -27,6 +27,7 @@ NM         = $(CPREFIX)-nm
 DEBUGGER   = $(CPREFIX)-gdb
 REMOVE     = rm -f
 REMOVEDIR  = rm -rf
+MKDIR      = mkdir -p
 COPY       = cp
 
 # Determine build (debug, release or release for boot)
@@ -206,6 +207,7 @@ $(BUILD_DIR)/%.sym: $(BUILD_DIR)/%.elf
 $(BUILD_DIR)/%.elf: $(OBJECTS)
 	@echo
 	@echo $(MSG_LINKING) $@
+	@$(MKDIR) $(@D)
 	$(CC) $(ALL_LDFLAGS) $^ -o $@
 
 # Compile: create object files from C source files
@@ -215,6 +217,7 @@ define create_c_obj_rule
 $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING) $$<
+	@$(MKDIR) $$(@D)
 	$(CC) -c $(ALL_CFLAGS) $$< -o $$@
 endef
 $(foreach file,$(SRC),$(eval $(call create_c_obj_rule,$(file)))) 
@@ -226,6 +229,7 @@ define create_cpp_obj_rule
 $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING_CPP) $$<
+	@$(MKDIR) $$(@D)
 	$(CC) -c $(ALL_CPPFLAGS) $$< -o $$@ 
 endef
 $(foreach file,$(CPPSRC),$(eval $(call create_cpp_obj_rule,$(file)))) 
@@ -237,6 +241,7 @@ define create_asm_obj_rule
 $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_ASSEMBLING) $$<
+	@$(MKDIR) $$(@D)
 	$(CC) -c $(ALL_AFLAGS) $$< -o $$@
 endef
 $(foreach file,$(ASRC),$(eval $(call create_asm_obj_rule,$(file)))) 
@@ -309,14 +314,11 @@ gdb: $(GDB_SCRIPT) elf
 	@echo $(MSG_GDB)
 	$(DEBUGGER) --command=$(GDB_SCRIPT)
 
-# Create object file directory
-$(shell mkdir $(BUILD_DIR) 2>/dev/null)
-
 # Include the compiler generated dependency files
 -include $(OBJECTS:%.o=%.d)
 
 # Listing of phony targets
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
-build elf hex bin uf2 prog_uf2 lss sym clean clean_list mostlyclean mostlyclean_list \
-program openocd gdb
+         build elf hex bin uf2 prog_uf2 lss sym clean clean_list \
+         mostlyclean mostlyclean_list program openocd gdb
 

@@ -26,6 +26,7 @@ NM        = $(CPREFIX)-nm
 DEBUGGER  = $(CPREFIX)-gdb
 REMOVE    = rm -f
 REMOVEDIR = rm -rf
+MKDIR     = mkdir -p
 COPY      = cp
 
 # Define Messages
@@ -145,6 +146,7 @@ gccversion :
 %.elf: $(OBJECTS)
 	@echo
 	@echo $(MSG_LINKING) $@
+	@$(MKDIR) $(@D)
 	$(CC) $(ALL_LDFLAGS) $^ -o $@
 
 # Compile: create object files from C source files
@@ -154,6 +156,7 @@ define create_c_obj_rule
 $(OBJDIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING) $$<
+	@$(MKDIR) $$(@D)
 	$(CC) -c $(ALL_CFLAGS) $$< -o $$@
 endef
 $(foreach file,$(SRC),$(eval $(call create_c_obj_rule,$(file)))) 
@@ -165,6 +168,7 @@ define create_cpp_obj_rule
 $(OBJDIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING_CPP) $$<
+	@$(MKDIR) $$(@D)
 	$(CC) -c $(ALL_CPPFLAGS) $$< -o $$@ 
 endef
 $(foreach file,$(CPPSRC),$(eval $(call create_cpp_obj_rule,$(file)))) 
@@ -176,6 +180,7 @@ define create_asm_obj_rule
 $(OBJDIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_ASSEMBLING) $$<
+	@$(MKDIR) $$(@D)
 	$(CC) -c $(ALL_AFLAGS) $$< -o $$@
 endef
 $(foreach file,$(ASRC),$(eval $(call create_asm_obj_rule,$(file)))) 
@@ -192,13 +197,10 @@ clean_list :
 	$(REMOVE) $(PROJECT).elf
 	$(REMOVEDIR) $(OBJDIR)
 
-# Create object file directory
-$(shell mkdir $(OBJDIR) 2>/dev/null)
-
 # Include the compiler generated dependency files
 -include $(OBJECTS:%.o=%.d)
 
 # Listing of phony targets
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
-build elf hex bin eep lss sym clean clean_list
+         build elf hex bin eep lss sym clean clean_list
 
