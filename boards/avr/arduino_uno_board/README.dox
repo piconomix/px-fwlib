@@ -12,7 +12,7 @@
 [optiboot]:          https://github.com/Optiboot/optiboot
 [avrdude]:           http://www.nongnu.org/avrdude/
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
-[msys]:              http://www.mingw.org/wiki/MSYS
+[msys2]:             https://www.msys2.org
 [make]:              http://gnuwin32.sourceforge.net/packages/make.htm
 [core_utils]:        http://gnuwin32.sourceforge.net/packages/coreutils.htm
 [srecord]:           http://srecord.sourceforge.net
@@ -85,7 +85,7 @@ The following free software tools are needed:
   C++.
 - [UnixShellUtils] [unix_shell_utils] :
   a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
-  curated from [MSYS] [msys] and other utilities ([srecord]) used to build 
+  curated from [MSYS2] [msys2] and other utilities ([srecord]) used to build 
   projects using advanced Makefiles.
 - [XLoader] [xloader] :
   a GUI tool packaged with [avrdude] to upload a \*.HEX file to the Arduino 

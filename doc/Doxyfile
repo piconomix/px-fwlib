@@ -852,6 +852,7 @@ EXCLUDE                = ../boards/arm/stm32/piconomix_hero_board/apps/usb_mass_
                          ../boards/arm/stm32/piconomix_hero_board/examples/cubemx_hal/Middlewares \
                          ../boards/arm/stm32/piconomix_hero_board/examples/cubemx_hal/Src \
                          ../boards/avr/piconomix_scorpion_board/examples/arduino/bootloader_optiboot \
+                         ../libs/FreeRTOS \
                          ../libs/STM32Cube \
                          ../libs/STM32Cube_USB
 

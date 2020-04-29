@@ -8,7 +8,7 @@
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
-[msys]:              http://www.mingw.org/wiki/MSYS
+[msys2]:             https://www.msys2.org
 [make]:              http://gnuwin32.sourceforge.net/packages/make.htm
 [core_utils]:        http://gnuwin32.sourceforge.net/packages/coreutils.htm
 [doxygen]:           http://www.doxygen.org/index.html
@@ -44,7 +44,7 @@ Here is my list of recommended tools:
   ARM Cortex and AVR microcontroller applications on the Microsoft 
   Windows operating system. It includes the GNU GCC build toolchain for C and 
   C++.
-- [MSYS] [msys] : a collection of GNU utilities such as bash, make, gawk and 
+- [MSYS2] [msys2] : a collection of GNU utilities such as bash, make, gawk and 
   grep to allow building of applications and programs which depend on 
   traditionally Unix tools to be present. Note that a minimal set is provided
   with [UnixShellUtils] [unix_shell_utils].

@@ -1,116 +1,111 @@
-7.1 How to download and install MinGW / MSYS {#HOWTO_MSYS}
-==========================================================
+7.1 How to download and install MSYS2 {#HOWTO_MSYS2}
+====================================================
 
 [TOC]
 
 [unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
-[msys]:              http://www.mingw.org/wiki/MSYS
+[msys2]:             https://www.msys2.org
 
-1. Introduction {#MSYS_INTRO}
-=============================
+1. Introduction {#MSYS2_INTRO}
+==============================
 
-Here is a step by step guide to download and install [MSYS] [msys].
+Here is a step by step guide to download and install [MSYS2] [msys2].
 
-[MSYS] [msys] is a collection of GNU utilities such as bash, make, gawk and 
-grep to allow building of applications and programs which depend on 
-traditionally Unix tools to be present.
+[MSYS2] [msys2] is a software distro and building platform for Windows. It 
+contains a collection of GNU utilities such as bash, make, gawk and grep to 
+allow building of applications and programs which depend on traditionally Unix 
+tools to be present.
 
 Reference:
-- [MinGW - Getting Started](http://www.mingw.org/wiki/Getting_Started)
+- [MSYS2 - Getting Started] [msys2]
 
-2. Download and run 'mingw-get-setup.exe' {#MSYS_DOWNLOAD}
-==========================================================
+2. Download and run 'msys2-x86_64_XXXXXXXX.exe' {#MSYS2_DOWNLOAD}
+=================================================================
 
-- [mingw-get-setup.exe](https://sourceforge.net/projects/mingw/files/latest/download) (version 0.6.2-beta-20131004-1)
+![](msys2_download.png)
 
-![](mingw_install_tool_01.png)
+3. Installation wizard {#MSYS2_WIZARD}
+======================================
 
-@tip_s
-This GUI installer assistant is used for first time installation only. To manage 
-your installation and perform further package installations, run the following 
-GUI installer (assuming MinGW is installed in it's default location):
-@tip_e
+Start the installation by clicking "Next":
 
-    c:\MinGW\bin\mingw-get.exe
+![](msys2_install_01.png)
 
-3. Installation wizard {#MSYS_WIZARD}
-=====================================
+Specify the installation path as "C:\msys64":
 
-The initial configuration is best described with a series of screenshots: 
+![](msys2_install_02.png)
 
-![](mingw_install_tool_02.png)
 
-@warn_s
-Stick to the default path (C:\\MinGW).
-@warn_e
+Check that "Run MSYS2 now" is ticked and click "Finish":
 
-![](mingw_install_tool_03.png)
+![](msys2_install_03.png)
 
-![](mingw_install_tool_04.png)
+Update the package database and core system packages with:
 
-![](mingw_install_tool_05.png)
+    pacman -Syu
 
-![](mingw_install_tool_06.png)
+![](msys2_pacman_01.png)
 
-4. Set path to command line utilities {#MSYS_PATH}
-==================================================
+Close MSYS2:
+
+![](msys2_pacman_02.png)
+
+Run MSYS2 again from Start menu. Update the rest with:
+
+    pacman -Su
+
+![](msys2_pacman_03.png)
+
+Install the development packages (Press Enter when prompted to install all):
+
+    pacman -S --needed base-devel mingw-w64-i686-toolchain mingw-w64-x86_64-toolchain git mingw-w64-x86_64-cmake
+
+4. Utilities included with UnixShellUtils {#MSYS2_UNIX_SHELL_UTILS}
+===================================================================
 
 The command line utilities are located in:
 
-    c:\MinGW\msys\1.0\bin
-
-Start > Control Panel > System > Advanced System Settings > Environment Variables > Path
-
-![](mingw_path.png)
-
-@tip_s
-For the sake of this guide, the simplest solution has been shown.
-@tip_e
-
-5. Utilities included with UnixShellUtils {#MSYS_UNIX_SHELL_UTILS}
-==================================================================
-
-As stated previously, the command line utilities are located in:
-
-    c:\MinGW\msys\1.0\bin
+    c:\msys64\usr\bin
 
 These are the files included with [UnixShellUtils] [unix_shell_utils]:
 
-    c:\UnixShellUtils\usr\bin\cat.exe   
-    c:\UnixShellUtils\usr\bin\cmp.exe   
-    c:\UnixShellUtils\usr\bin\cp.exe    
-    c:\UnixShellUtils\usr\bin\date.exe  
-    c:\UnixShellUtils\usr\bin\diff.exe  
-    c:\UnixShellUtils\usr\bin\dos2unix.exe    
-    c:\UnixShellUtils\usr\bin\echo.exe        
-    c:\UnixShellUtils\usr\bin\file.exe        
-    c:\UnixShellUtils\usr\bin\find.exe        
-    c:\UnixShellUtils\usr\bin\gawk.exe  
-    c:\UnixShellUtils\usr\bin\gawk-3.1.7.exe 
-    c:\UnixShellUtils\usr\bin\grep.exe  
-    c:\UnixShellUtils\usr\bin\join.exe  
-    c:\UnixShellUtils\usr\bin\less.exe  
-    c:\UnixShellUtils\usr\bin\ls.exe    
-    c:\UnixShellUtils\usr\bin\make.exe          
-    c:\UnixShellUtils\usr\bin\mkdir.exe         
-    c:\UnixShellUtils\usr\bin\msys-1.0.dll      
-    c:\UnixShellUtils\usr\bin\msys-iconv-2.dll  
-    c:\UnixShellUtils\usr\bin\msys-intl-8.dll   
-    c:\UnixShellUtils\usr\bin\msys-termcap-0.dll  
-    c:\UnixShellUtils\usr\bin\msys-regex-1.dll    
-    c:\UnixShellUtils\usr\bin\mv.exe              
-    c:\UnixShellUtils\usr\bin\printenv.exe        
-    c:\UnixShellUtils\usr\bin\printf.exe          
-    c:\UnixShellUtils\usr\bin\pwd.exe    
-    c:\UnixShellUtils\usr\bin\rm.exe     
-    c:\UnixShellUtils\usr\bin\rmdir.exe  
-    c:\UnixShellUtils\usr\bin\sed.exe    
-    c:\UnixShellUtils\usr\bin\sh.exe     
-    c:\UnixShellUtils\usr\bin\sort.exe       
-    c:\UnixShellUtils\usr\bin\split.exe      
+    c:\UnixShellUtils\usr\bin\cat.exe
+    c:\UnixShellUtils\usr\bin\cmp.exe
+    c:\UnixShellUtils\usr\bin\cp.exe
+    c:\UnixShellUtils\usr\bin\date.exe
+    c:\UnixShellUtils\usr\bin\diff.exe
+    c:\UnixShellUtils\usr\bin\dos2unix.exe
+    c:\UnixShellUtils\usr\bin\echo.exe
+    c:\UnixShellUtils\usr\bin\file.exe
+    c:\UnixShellUtils\usr\bin\find.exe
+    c:\UnixShellUtils\usr\bin\gawk-5.1.0.exe
+    c:\UnixShellUtils\usr\bin\gawk.exe
+    c:\UnixShellUtils\usr\bin\grep.exe
+    c:\UnixShellUtils\usr\bin\join.exe
+    c:\UnixShellUtils\usr\bin\less.exe
+    c:\UnixShellUtils\usr\bin\ls.exe
+    c:\UnixShellUtils\usr\bin\make.exe
+    c:\UnixShellUtils\usr\bin\mkdir.exe
+    c:\UnixShellUtils\usr\bin\msys-2.0.dll
+    c:\UnixShellUtils\usr\bin\msys-iconv-2.dll
+    c:\UnixShellUtils\usr\bin\msys-intl-8.dll
+    c:\UnixShellUtils\usr\bin\mv.exe
+    c:\UnixShellUtils\usr\bin\printenv.exe
+    c:\UnixShellUtils\usr\bin\printf.exe
+    c:\UnixShellUtils\usr\bin\pwd.exe
+    c:\UnixShellUtils\usr\bin\rm.exe
+    c:\UnixShellUtils\usr\bin\rmdir.exe
+    c:\UnixShellUtils\usr\bin\sed.exe
+    c:\UnixShellUtils\usr\bin\sh.exe
+    c:\UnixShellUtils\usr\bin\sort.exe
+    c:\UnixShellUtils\usr\bin\split.exe
+    c:\UnixShellUtils\usr\bin\srec_cat.exe
+    c:\UnixShellUtils\usr\bin\srec_cmp.exe
+    c:\UnixShellUtils\usr\bin\srec_info.exe
     c:\UnixShellUtils\usr\bin\touch.exe
     c:\UnixShellUtils\usr\bin\unix2dos.exe
     
+    c:\UnixShellUtils\etc\profile <- An empty file required by sh.exe    
     c:\UnixShellUtils\tmp         <- An empty directory required by sh.exe
-    c:\UnixShellUtils\etc\profile <- An empty file required by sh.exe
+
 

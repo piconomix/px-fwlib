@@ -9,10 +9,10 @@
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [make]:              http://gnuwin32.sourceforge.net/packages/make.htm
 [unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
-[msys]:              http://www.mingw.org/wiki/MSYS
+[msys2]:             https://www.msys2.org
 
 [Make] [make] is a command-line utility packaged with IDEs such as 
-[Atmel Studio] [atmel_studio] and build systems such as [MSYS] [msys] or 
+[Atmel Studio] [atmel_studio] and build systems such as [MSYS2] [msys2] or 
 [UnixShellUtils] [unix_shell_utils]. All of the projects in this library 
 are built using a Makefile. Normally it is used as as an intelligent 
 command-line script to compile a project's source file(s) and link the 

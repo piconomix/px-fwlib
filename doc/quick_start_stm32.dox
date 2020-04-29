@@ -10,7 +10,7 @@
 [python]:             https://www.python.org/downloads
 [gnu_arm_tools]:      http://gnu-arm.com
 [unix_shell_utils]:   https://sourceforge.net/projects/unixshellutils/files/latest/download
-[msys]:               http://www.mingw.org/wiki/MSYS
+[msys2]:              https://www.msys2.org
 [srecord]:            http://srecord.sourceforge.net
 
 This is a quick start guide for the person who wants to gain experience with the 
