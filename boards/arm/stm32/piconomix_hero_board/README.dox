@@ -443,7 +443,7 @@ The complete documentation will be located here:
 Start a windows shell Command Prompt by typing "cmd" in the search bar. Set the
 PATH to UnixShellUtils and GNU Tools by executing the following command:
 
-    > PATH=c:\UnixShellUtils\bin;c:\Program Files (x86)\gnu_arm\bin
+    > PATH=c:\UnixShellUtils\usr\bin;c:\Program Files (x86)\gnu_arm\bin
 
 @tip_s
 You don't need to type the whole line. Copy the text above (without the ">" 

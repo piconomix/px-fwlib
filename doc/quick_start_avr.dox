@@ -429,7 +429,7 @@ Open a command prompt in the root of the project where the Makefile is located:
 
 Set the path to the AVR GCC toolchain and the build tools (UnixShellUtils):
 
-    path=c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\UnixShellUtils\bin
+    path=c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\UnixShellUtils\usr\bin
 
 You can verify that the path is correct by executing 'avr-gcc --version' and
 'make --version':

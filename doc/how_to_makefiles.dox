@@ -23,7 +23,7 @@ I recommend that you download [UnixShellUtils] [unix_shell_utils] so that you
 are not restricted to the build tools packaged with one specific IDE. If you 
 extract UnixShellUtils to "C:\UnixShellUtils", you will find Make here:
 
-    C:\UnixShellUtils\bin\make.exe
+    C:\UnixShellUtils\usr\bin\make.exe
 
 I prefer to create my own Makefile over an automated IDE build where I can, 
 because then I can use the same editor (for example [SlickEdit](http://www.slickedit.com))

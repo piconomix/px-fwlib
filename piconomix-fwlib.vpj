@@ -150,7 +150,7 @@
             Filters=""></Folder>
     </CustomFolders>
     <Macro>
-        <ExecMacro CmdLine="CONCUR_COMMAND path=c:\UnixShellUtils\bin;c:\Program Files\doxygen\bin;c:\Program Files\TortoiseSVN\bin;c:\Program Files (x86)\gnu_arm\bin;c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Program Files\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Python\3.6;c:\Program Files (x86)\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin;c:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"/>
+        <ExecMacro CmdLine="CONCUR_COMMAND path=c:\UnixShellUtils\usr\bin;c:\Program Files\doxygen\bin;c:\Program Files\TortoiseSVN\bin;c:\Program Files (x86)\gnu_arm\bin;c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Program Files\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Python\3.6;c:\Program Files (x86)\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin;c:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"/>
     </Macro>
     <Files AutoFolders="DirectoryView">
         <F

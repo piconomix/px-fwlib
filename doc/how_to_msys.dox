@@ -76,40 +76,41 @@ As stated previously, the command line utilities are located in:
 
 These are the files included with [UnixShellUtils] [unix_shell_utils]:
 
-    c:\UnixShellUtils\bin\cat.exe   
-    c:\UnixShellUtils\bin\cmp.exe   
-    c:\UnixShellUtils\bin\cp.exe    
-    c:\UnixShellUtils\bin\date.exe  
-    c:\UnixShellUtils\bin\diff.exe  
-    c:\UnixShellUtils\bin\dos2unix.exe    
-    c:\UnixShellUtils\bin\echo.exe        
-    c:\UnixShellUtils\bin\file.exe        
-    c:\UnixShellUtils\bin\find.exe        
-    c:\UnixShellUtils\bin\gawk.exe  
-    c:\UnixShellUtils\bin\gawk-3.1.7.exe 
-    c:\UnixShellUtils\bin\grep.exe  
-    c:\UnixShellUtils\bin\join.exe  
-    c:\UnixShellUtils\bin\less.exe  
-    c:\UnixShellUtils\bin\ls.exe    
-    c:\UnixShellUtils\bin\make.exe          
-    c:\UnixShellUtils\bin\mkdir.exe         
-    c:\UnixShellUtils\bin\msys-1.0.dll      
-    c:\UnixShellUtils\bin\msys-iconv-2.dll  
-    c:\UnixShellUtils\bin\msys-intl-8.dll   
-    c:\UnixShellUtils\bin\msys-termcap-0.dll  
-    c:\UnixShellUtils\bin\msys-regex-1.dll    
-    c:\UnixShellUtils\bin\mv.exe              
-    c:\UnixShellUtils\bin\printenv.exe        
-    c:\UnixShellUtils\bin\printf.exe          
-    c:\UnixShellUtils\bin\pwd.exe    
-    c:\UnixShellUtils\bin\rm.exe     
-    c:\UnixShellUtils\bin\rmdir.exe  
-    c:\UnixShellUtils\bin\sed.exe    
-    c:\UnixShellUtils\bin\sh.exe     
-    c:\UnixShellUtils\bin\sort.exe       
-    c:\UnixShellUtils\bin\split.exe      
-    c:\UnixShellUtils\bin\touch.exe
-    c:\UnixShellUtils\bin\unix2dos.exe
+    c:\UnixShellUtils\usr\bin\cat.exe   
+    c:\UnixShellUtils\usr\bin\cmp.exe   
+    c:\UnixShellUtils\usr\bin\cp.exe    
+    c:\UnixShellUtils\usr\bin\date.exe  
+    c:\UnixShellUtils\usr\bin\diff.exe  
+    c:\UnixShellUtils\usr\bin\dos2unix.exe    
+    c:\UnixShellUtils\usr\bin\echo.exe        
+    c:\UnixShellUtils\usr\bin\file.exe        
+    c:\UnixShellUtils\usr\bin\find.exe        
+    c:\UnixShellUtils\usr\bin\gawk.exe  
+    c:\UnixShellUtils\usr\bin\gawk-3.1.7.exe 
+    c:\UnixShellUtils\usr\bin\grep.exe  
+    c:\UnixShellUtils\usr\bin\join.exe  
+    c:\UnixShellUtils\usr\bin\less.exe  
+    c:\UnixShellUtils\usr\bin\ls.exe    
+    c:\UnixShellUtils\usr\bin\make.exe          
+    c:\UnixShellUtils\usr\bin\mkdir.exe         
+    c:\UnixShellUtils\usr\bin\msys-1.0.dll      
+    c:\UnixShellUtils\usr\bin\msys-iconv-2.dll  
+    c:\UnixShellUtils\usr\bin\msys-intl-8.dll   
+    c:\UnixShellUtils\usr\bin\msys-termcap-0.dll  
+    c:\UnixShellUtils\usr\bin\msys-regex-1.dll    
+    c:\UnixShellUtils\usr\bin\mv.exe              
+    c:\UnixShellUtils\usr\bin\printenv.exe        
+    c:\UnixShellUtils\usr\bin\printf.exe          
+    c:\UnixShellUtils\usr\bin\pwd.exe    
+    c:\UnixShellUtils\usr\bin\rm.exe     
+    c:\UnixShellUtils\usr\bin\rmdir.exe  
+    c:\UnixShellUtils\usr\bin\sed.exe    
+    c:\UnixShellUtils\usr\bin\sh.exe     
+    c:\UnixShellUtils\usr\bin\sort.exe       
+    c:\UnixShellUtils\usr\bin\split.exe      
+    c:\UnixShellUtils\usr\bin\touch.exe
+    c:\UnixShellUtils\usr\bin\unix2dos.exe
     
+    c:\UnixShellUtils\tmp         <- An empty directory required by sh.exe
     c:\UnixShellUtils\etc\profile <- An empty file required by sh.exe
 
