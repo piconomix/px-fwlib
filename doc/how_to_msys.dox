@@ -35,8 +35,8 @@ Specify the installation path as "C:\msys64":
 
 ![](msys2_install_02.png)
 
-
-Check that "Run MSYS2 now" is ticked and click "Finish":
+Press "Next" until the final page is reached. Check that "Run MSYS2 now" is 
+ticked and click "Finish":
 
 ![](msys2_install_03.png)
 
@@ -45,6 +45,8 @@ Update the package database and core system packages with:
     pacman -Syu
 
 ![](msys2_pacman_01.png)
+
+To proceed with installation press the CAPITAL Y key (shift+y) and ENTER.
 
 Close MSYS2:
 
@@ -56,9 +58,11 @@ Run MSYS2 again from Start menu. Update the rest with:
 
 ![](msys2_pacman_03.png)
 
-Install the development packages (Press Enter when prompted to install all):
+Install the base development packages (Press Enter when prompted to install all):
 
-    pacman -S --needed base-devel mingw-w64-i686-toolchain mingw-w64-x86_64-toolchain git mingw-w64-x86_64-cmake
+    pacman -S --needed base-devel
+
+![](msys2_pacman_04.png)
 
 4. Utilities included with UnixShellUtils {#MSYS2_UNIX_SHELL_UTILS}
 ===================================================================
