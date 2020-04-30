@@ -20,8 +20,12 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_board.h"
+#include "px_gpio_init_port_a.h"
+#include "px_gpio_init_port_b.h"
+#include "px_gpio_init_port_c.h"
+#include "px_gpio_init_port_d.h"
+#include "px_gpio_init_port_h.h"
 #include "px_lib_stm32cube.h"
-#include "px_gpio_init_stm32l072rb.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 // Check that correct 'board.h' has been included
