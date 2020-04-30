@@ -1,0 +1,12 @@
+Basic GPIO example {#NUCLEO64_L053_EXAMPLE_GPIO}
+================================================
+
+This is a basic GPIO example for the ST Nucleo64 L053R8 board. It is the 
+embedded equivalent of a "hello world" program on a PC to kick the tires and 
+know that your development setup works.
+
+The LED flashes at a slow 2 Hz while the 6/NO button is released and at a fast 
+8 Hz while the button is being pressed.
+  
+File(s):
+- boards/arm/stm32/st_nucleo64_l053/examples/gpio/src/main.c
