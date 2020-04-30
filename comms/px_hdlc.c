@@ -34,7 +34,7 @@ PX_DBG_DECL_NAME("px_hdlc");
 /* _____LOCAL VARIABLES______________________________________________________ */
 static uint8_t   px_hdlc_rx_frame[PX_HDLC_MRU];
 static uint8_t   px_hdlc_rx_frame_index;
-static px_crc_t  px_hdlc_rx_frame_fcs;
+static uint16_t  px_hdlc_rx_frame_fcs;
 static bool px_hdlc_rx_esc_flag;
 
 /// Pointer to the function that will be called to send a character
@@ -147,7 +147,7 @@ void px_hdlc_on_rx_u8(uint8_t data)
 void px_hdlc_tx_frame(const uint8_t * data, size_t nr_of_bytes)
 {
     uint8_t  data_u8;
-    px_crc_t fcs = PX_CRC16_INIT_VAL;    
+    uint16_t fcs = PX_CRC16_INIT_VAL;    
 
     // Send start marker
     px_hdlc_tx_u8(PX_HDLC_FLAG_SEQUENCE);
