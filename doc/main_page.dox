@@ -76,6 +76,7 @@ Here is the collection of boards that are supported with Board Support Packages
 |Microchip ATmega328P-AU  | [Arduino Uno R3 board](@ref ARDUINO_UNO_BOARD)                         |
 |Microchip ATmega328P-AU  | [Piconomix ATmega328p Scorpion Board](@ref PICONOMIX_SCORPION_BOARD)   |
 |ST STM32L072RB           | [Piconomix STM32L072RB PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD) |
+|ST STM32L053R8T6         | [ST Nucleo64 L053R8 Board](@ref NUCLEO64_L053_BOARD)                   |
 
 1.5 Library Examples {#EXAMPLES}
 ================================

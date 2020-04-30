@@ -33,7 +33,7 @@
 // Report board support package
 #warning "This BSP is for Nucleo L053 board"
 // Test for correct microcontroller
-#ifndef STM32L052xx
+#ifndef STM32L053xx
 #warning "This Board contains a different microcontroller"
 #endif
 

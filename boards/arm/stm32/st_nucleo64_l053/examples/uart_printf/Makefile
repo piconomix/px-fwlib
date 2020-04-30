@@ -86,7 +86,7 @@ CPPSRC +=
 #      Even though the MS-DOS/MS-Windows filesystem matches both .s and .S the 
 #      same, it will preserve the spelling of the filenames, and gcc itself does
 #      care about how the name is spelled on its command-line.
-ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l052xx.s
+ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l053xx.s
 
 # (5) List all directories to look for include files here
 #
@@ -127,14 +127,14 @@ INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
 #CDEFS += PX_DBG=1
-CDEFS += STM32L0 STM32L052xx
+CDEFS += STM32L0 STM32L053xx
 CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
 #CPPDEFS += __STDC_LIMIT_MACROS
 #CPPDEFS += __STDC_CONSTANT_MACROS
-CPPDEFS += STM32L0 STM32L052xx
+CPPDEFS += STM32L0 STM32L053xx
 
 # (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
 ADEFS += 
