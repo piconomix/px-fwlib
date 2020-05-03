@@ -8,7 +8,7 @@
         Name="Debug"
         Type="cpp"
         DebugCallbackName="gdb"
-        OutputFile="%bdpiconomix-fwlib"
+        OutputFile="%bdpx-lib"
         CompilerConfigName="None">
         <Menu>
             <Target
@@ -68,7 +68,7 @@
         Name="Release"
         Type="cpp"
         DebugCallbackName="gdb"
-        OutputFile="%bdpiconomix-fwlib"
+        OutputFile="%bdpx-lib"
         CompilerConfigName="AVR-GCC-ATMEL">
         <Menu>
             <Target

@@ -26,11 +26,11 @@
  *  
  *  File(s):
  *  - utils/px_debounce.h
- *  - utils/px_debounce_cfg_template.h
+ *  - utils/px_debounce_cfg_default.h
  *  - utils/px_debounce.c
  *  
  *  This module must be configured by supplying a project specific
- *  "px_debounce_cfg.h". "px_debounce_cfg_template.h" can be copied, renamed and
+ *  "px_debounce_cfg.h". "px_debounce_cfg_default.h" can be copied, renamed and
  *  modified to supply compile time options.
  *  
  *  It is ideal for a noisy digital input such as a button. When a key is
@@ -67,8 +67,16 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-// Include project specific config. See "px_debounce_cfg_template.h"
+#include "px_lib_cfg.h"
+
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_DEBOUNCE_CFG
+// Include project specific configuration
 #include "px_debounce_cfg.h"
+#else
+// Include default configuration
+#include "px_debounce_cfg_default.h"
+#endif
 
 // Check that all project specific options have been specified in "px_debounce_cfg.h"
 #if (   !defined(PX_DEBOUNCE_CFG_COUNT_MAX   ) \

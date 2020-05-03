@@ -26,12 +26,12 @@
  *  
  *  File(s):
  *  - arch/avr/px_i2c.h
- *  - arch/avr/px_i2c_cfg_template.h
+ *  - arch/avr/px_i2c_cfg_default.h
  *  - arch/avr/px_i2c_twi.c  (TWI peripheral version)
  *  - arch/avr/px_i2c_gpio.c (GPIO "bit-bang" version)
  *  
  *  The driver must be configured by supplying a project specific "px_i2c_cfg.h".
- *  "px_i2c_cfg_template.h" can be copied, renamed and modified to supply 
+ *  "px_i2c_cfg_default.h" can be copied, renamed and modified to supply 
  *  compile time options.
  *  
  *  @par Example:
@@ -43,9 +43,16 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_i2c_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_I2C_CFG
+// Include project specific configuration
 #include "px_i2c_cfg.h"
+#else
+// Include default configuration
+#include "px_i2c_cfg_default.h"
+#endif
 
 // Check that all project specific options have been specified in "px_i2c_cfg.h"
 #if (   !defined(PX_I2C_CFG_I2C0_EN          ) \

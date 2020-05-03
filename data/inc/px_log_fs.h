@@ -26,7 +26,7 @@
  *  
  *  File(s):
  *  - data/px_log_fs.h
- *  - data/px_log_fs_cfg_template.h
+ *  - data/px_log_fs_cfg_default.h
  *  - data/px_log_fs.c 
  *  - data/px_log_fs_glue.h 
  *  - data/px_log_fs_glue_at25s.c
@@ -60,7 +60,7 @@
  *  file is full (#PX_LOG_FS_CFG_STOP_WR_WHEN_FULL = 1).
  *  
  *  The size of each record is configured with #PX_LOG_FS_CFG_REC_DATA_SIZE. 
- *  See 'px_log_fs_cfg_template.h' 
+ *  See 'px_log_fs_cfg_default.h' 
  *   
  *  The erase block size (number of pages) is configurable with 
  *  #PX_LOG_FS_CFG_ERASE_BLOCK_SIZE. For example a single page of the Adesto 
@@ -177,9 +177,16 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_log_fs_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_LOG_FS_CFG
+// Include project specific configuration
 #include "px_log_fs_cfg.h"
+#else
+// Include default configuration
+#include "px_log_fs_cfg_default.h"
+#endif
 
 // Check that all project specific options have been specified in "px_log_fs_cfg.h"
 #if (   !defined(PX_LOG_FS_CFG_PAGE_SIZE        ) \

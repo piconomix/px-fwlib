@@ -25,7 +25,7 @@
  *  
  *  File(s):
  *  - devices/mem/px_at25s.h
- *  - devices/mem/px_at25s_cfg_template.h
+ *  - devices/mem/px_at25s_cfg_default.h
  *  - devices/mem/px_at25s.c
  *  
  *  Reference:
@@ -41,9 +41,16 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_spi.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_at25s_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_AT25S_CFG
+// Include project specific configuration
 #include "px_at25s_cfg.h"
+#else
+// Include default configuration
+#include "px_at25s_cfg_default.h"
+#endif
 
 // Check that all project specific options have been specified in "px_at25s_cfg.h"
 #ifndef PX_AT25S_CFG_DEVICE

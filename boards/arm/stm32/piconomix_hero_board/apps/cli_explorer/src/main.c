@@ -39,7 +39,7 @@
 #include "px_sd.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
-#include "px_gfx_resources.h"
+#include "px_gfx_res.h"
 #include "usb_device.h"
 #include "px_dbg.h"
 

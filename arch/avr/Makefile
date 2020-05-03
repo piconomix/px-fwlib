@@ -55,13 +55,13 @@ BSP = $(PICOLIB)/boards/avr/piconomix_scorpion_board
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += main.c
-SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
-SRC += $(PICOLIB)/$(ARCH)/px_spi.c
-SRC += $(PICOLIB)/$(ARCH)/px_sysclk.c
-SRC += $(PICOLIB)/$(ARCH)/px_uart.c
-SRC += $(PICOLIB)/$(ARCH)/px_uart_stdio.c
-SRC += $(PICOLIB)/utils/px_systmr.c
-SRC += $(BSP)/px_board.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_gpio.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_spi.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_sysclk.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_uart.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_uart_stdio.c
+SRC += $(PICOLIB)/utils/src/px_systmr.c
+SRC += $(BSP)/src/px_board.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
 CPPSRC += 
@@ -87,10 +87,10 @@ ASRC +=
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
 INCDIRS += $(PICOLIB)
-INCDIRS += $(PICOLIB)/$(ARCH)
-INCDIRS += $(PICOLIB)/common
-INCDIRS += $(PICOLIB)/utils
-INCDIRS += $(BSP)
+INCDIRS += $(PICOLIB)/$(ARCH)/inc
+INCDIRS += $(PICOLIB)/common/inc
+INCDIRS += $(PICOLIB)/utils/inc
+INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
 #CDEFS += PX_DBG=0

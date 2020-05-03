@@ -40,7 +40,7 @@
  *  
  *  File(s):
  *  - utils/px_dbg.h
- *  - utils/px_dbg_cfg_template.h
+ *  - utils/px_dbg_cfg_default.h
  *  - utils/px_dbg.c
  *  
  *  An old school debugging technique which still works well is to add debug 
@@ -143,28 +143,21 @@
 #include "px_defines.h"
 #include "px_compiler.h"
 #include "px_pgm_P.h"
+#include "px_lib_cfg.h"
+
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_DBG_CFG
+// Include project specific configuration
+#include "px_dbg_cfg.h"
+#else
+// Include default configuration
+#include "px_dbg_cfg_default.h"
+#endif
 
 // Define PX_DBG for the benefit of Doxygen references
 #ifdef __DOX__
 /// Set flag to disable (PX_DBG=0) or enable (PX_DBG=1) debug.
 #define PX_DBG 1
-#endif
-
-// PX_DBG symbol defined in Makefile?
-#if defined(PX_DBG)
-
-// Yes: Include project specific config. See "px_dbg_cfg_template.h"
-#include "px_dbg_cfg.h"
-
-#else
-
-// No: Remove all debugging code.
-#define PX_DBG                     0
-#define PX_DBG_CFG_MSG_LEVEL       PX_DBG_CFG_MSG_LEVEL_NONE
-#define PX_DBG_CFG_NAME_LINE_ONLY  0
-#define PX_DBG_CFG_BUF_SIZE        32
-#define PX_DBG_CFG_COLOR           0
-
 #endif
 
 // Check that all project specific options have been specified in "px_dbg_cfg.h"

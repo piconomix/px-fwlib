@@ -35,9 +35,16 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_spi.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_lcd_st7567_jhd12864_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_LCD_ST7567_JHD12864_CFG
+// Include project specific configuration
 #include "px_lcd_st7567_jhd12864_cfg.h"
+#else
+// Include default configuration
+#include "px_lcd_st7567_jhd12864_cfg_default.h"
+#endif
 
 // Check that all project specific options have been specified in "px_lcd_st7567_jhd12864_cfg.h"
 #if (   !defined(PX_LCD_CFG_RST_LO     ) \

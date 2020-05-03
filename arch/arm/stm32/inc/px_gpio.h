@@ -26,11 +26,11 @@
  *  
  *  File(s):
  *  - arch/arm/stm32/px_gpio.h
- *  - arch/arm/stm32/px_gpio_cfg_template.h
+ *  - arch/arm/stm32/px_gpio_cfg_default.h
  *  - arch/arm/stm32/px_gpio.c
  *  
  *  The driver must be configured by supplying a project specific "px_gpio_cfg.h".
- *  "px_gpio_cfg_template.h" can be copied, renamed and modified to supply 
+ *  "px_gpio_cfg_default.h" can be copied, renamed and modified to supply 
  *  compile time options.
  *  
  *  @par Example:

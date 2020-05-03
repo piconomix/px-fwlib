@@ -26,7 +26,7 @@
  *  
  *  File(s):
  *  - comms/px_uf2.h 
- *  - comms/px_uf2_cfg_template.h 
+ *  - comms/px_uf2_cfg_default.h 
  *  - comms/px_uf2.c
  *  
  *  References: 
@@ -46,9 +46,16 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_uf2_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_UF2_CFG
+// Include project specific configuration
 #include "px_uf2_cfg.h"
+#else
+// Include default configuration
+#include "px_uf2_cfg_default.h"
+#endif
 
 // Check that all project specific options have been correctly specified
 #if (   !defined(PX_UF2_CFG_FLASH_START_ADR) \

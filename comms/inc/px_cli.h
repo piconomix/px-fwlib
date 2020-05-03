@@ -27,7 +27,7 @@
  *  
  *  File(s):
  *  - comms/px_cli.h
- *  - comms/px_cli_cfg_template.h
+ *  - comms/px_cli_cfg_default.h
  *  - comms/px_cli.c (general version)
  *  - comms/px_cli_P.c (minimise RAM usage by using Program Memory. See @ref PX_PGM_P)
  *  
@@ -109,9 +109,16 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_pgm_P.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_cli_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_CLI_CFG
+// Include project specific configuration
 #include "px_cli_cfg.h"
+#else
+// Include default configuration
+#include "px_cli_cfg_default.h"
+#endif
 
 // Check that all project specific options have been correctly specified
 #if (   !defined(PX_CLI_CFG_ARGV_MAX          ) \

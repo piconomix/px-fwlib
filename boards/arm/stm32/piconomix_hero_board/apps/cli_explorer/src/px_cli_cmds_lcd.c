@@ -21,8 +21,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_cli.h"
+#include "px_board.h"
 #include "px_gfx.h"
-#include "px_gfx_resources.h"
+#include "px_gfx_res.h"
 #include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */

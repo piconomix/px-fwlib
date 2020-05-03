@@ -66,22 +66,22 @@ SRC += src/px_cli_cmds_uart_P.c
 SRC += src/px_cli_cmds_P.c
 SRC += src/main.c
 SRC += src/px_xmodem_glue.c
-SRC += $(PICOLIB)/$(ARCH)/px_gpio.c
-SRC += $(PICOLIB)/$(ARCH)/px_spi.c
-SRC += $(PICOLIB)/$(ARCH)/px_sysclk.c
-SRC += $(PICOLIB)/$(ARCH)/px_uart.c
-SRC += $(PICOLIB)/$(ARCH)/px_uart_stdio.c
-SRC += $(PICOLIB)/$(ARCH)/px_i2c_twi.c
-#SRC += $(PICOLIB)/$(ARCH)/px_i2c_gpio.c
-SRC += $(PICOLIB)/devices/mem/px_at45d.c
-SRC += $(PICOLIB)/comms/px_vt100.c
-SRC += $(PICOLIB)/comms/px_cli_P.c
-SRC += $(PICOLIB)/comms/px_xmodem.c
-SRC += $(PICOLIB)/utils/px_dbg.c
-SRC += $(PICOLIB)/utils/px_debounce.c
-SRC += $(PICOLIB)/utils/px_rtc_util.c
-SRC += $(PICOLIB)/utils/px_systmr.c
-SRC += $(BSP)/px_board.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_gpio.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_spi.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_sysclk.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_uart.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_uart_stdio.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_i2c_twi.c
+#SRC += $(PICOLIB)/$(ARCH)/src/px_i2c_gpio.c
+SRC += $(PICOLIB)/devices/mem/src/px_at45d.c
+SRC += $(PICOLIB)/comms/src/px_vt100.c
+SRC += $(PICOLIB)/comms/src/px_cli_P.c
+SRC += $(PICOLIB)/comms/src/px_xmodem.c
+SRC += $(PICOLIB)/utils/src/px_dbg.c
+SRC += $(PICOLIB)/utils/src/px_debounce.c
+SRC += $(PICOLIB)/utils/src/px_rtc_util.c
+SRC += $(PICOLIB)/utils/src/px_systmr.c
+SRC += $(BSP)/src/px_board.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
 CPPSRC += 
@@ -106,15 +106,16 @@ ASRC +=
 #
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
-INCDIRS += src
 INCDIRS += cfg
+INCDIRS += inc
+INCDIRS += src
 INCDIRS += $(PICOLIB)
-INCDIRS += $(PICOLIB)/$(ARCH)
-INCDIRS += $(PICOLIB)/common
-INCDIRS += $(PICOLIB)/comms
-INCDIRS += $(PICOLIB)/devices/mem
-INCDIRS += $(PICOLIB)/utils
-INCDIRS += $(BSP)
+INCDIRS += $(PICOLIB)/$(ARCH)/inc
+INCDIRS += $(PICOLIB)/common/inc
+INCDIRS += $(PICOLIB)/comms/inc
+INCDIRS += $(PICOLIB)/devices/mem/inc
+INCDIRS += $(PICOLIB)/utils/inc
+INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
 CDEFS += PX_DBG=0

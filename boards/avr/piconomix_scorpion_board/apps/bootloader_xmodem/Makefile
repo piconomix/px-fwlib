@@ -60,9 +60,9 @@ BSP     = $(PICOLIB)/boards/avr/piconomix_scorpion_board
 SRC += src/main.c
 SRC += src/px_tmr.c
 SRC += src/px_uart.c
-SRC += $(PICOLIB)/$(ARCH)/px_flash.c
-SRC += $(PICOLIB)/comms/px_xmodem.c
-SRC += $(BSP)/px_board.c
+SRC += $(PICOLIB)/$(ARCH)/src/px_flash.c
+SRC += $(PICOLIB)/comms/src/px_xmodem.c
+SRC += $(BSP)/src/px_board.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
 CPPSRC += 
@@ -87,14 +87,15 @@ ASRC += src/gcrt1.S
 #
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
-INCDIRS += src
 INCDIRS += cfg
+INCDIRS += inc
+INCDIRS += src
 INCDIRS += $(PICOLIB)
-INCDIRS += $(PICOLIB)/$(ARCH)
-INCDIRS += $(PICOLIB)/common
-INCDIRS += $(PICOLIB)/comms
-INCDIRS += $(PICOLIB)/utils
-INCDIRS += $(BSP)
+INCDIRS += $(PICOLIB)/$(ARCH)/inc
+INCDIRS += $(PICOLIB)/common/inc
+INCDIRS += $(PICOLIB)/comms/inc
+INCDIRS += $(PICOLIB)/utils/inc
+INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
 CDEFS += FLASH_BOOT_START=$(FLASH_BOOT_START_ADR)

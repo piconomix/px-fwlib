@@ -25,7 +25,8 @@
  *  16-bit CRC (Cyclic Redundancy Check) calculator for checksums.
  *  
  *  File(s):
- *  - utils/px_crc16.h
+ *  - utils/px_crc16.h 
+ *  - utils/px_crc16_cfg_default.h
  *  - utils/px_crc16.c
  *  
  *  A CRC is an error-detecting code that is used for data integrity checks.
@@ -42,11 +43,18 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_crc16_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_CRC16_CFG
+// Include project specific configuration
 #include "px_crc16_cfg.h"
+#else
+// Include default configuration
+#include "px_crc16_cfg_default.h"
+#endif
 
-// Check that all project specific options have been specified in "px_rtc_util_cfg.h"
+// Check that all project specific options have been specified in "px_crc16_cfg.h"
 #if (   !defined(PX_CRC16_RAM_TABLE) \
      || !defined(PX_CRC16_ROM_TABLE)  )
       )

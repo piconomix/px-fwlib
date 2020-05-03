@@ -1,5 +1,5 @@
 #include "px_gfx.h"
-#include "px_gfx_resources.h"
+#include "px_gfx_res.h"
 
 int px_gfx_start(void)
 {

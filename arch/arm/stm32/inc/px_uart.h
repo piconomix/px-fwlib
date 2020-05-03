@@ -26,11 +26,11 @@
  *  
  *  File(s):
  *  - arch/arm/stm32/px_uart.h
- *  - arch/arm/stm32/px_uart_cfg_template.h
+ *  - arch/arm/stm32/px_uart_cfg_default.h
  *  - arch/arm/stm32/px_uart.c
  *  
  *  The driver must be configured by supplying a project specific 
- *  "px_uart_cfg.h". "px_uart_cfg_template.h" can be copied, renamed and 
+ *  "px_uart_cfg.h". "px_uart_cfg_default.h" can be copied, renamed and 
  *  modified to supply compile time options.
  *  
  *  @include arch/arm/stm32/test/px_uart_test.c
@@ -41,9 +41,16 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_uart_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_UART_CFG
+// Include project specific configuration
 #include "px_uart_cfg.h"
+#else
+// Include default configuration
+#include "px_uart_cfg_default.h"
+#endif
 
 // Check that all project specific options have been specified in "px_uart_cfg.h"
 #if (   !defined(PX_UART_CFG_UART1_EN    ) \

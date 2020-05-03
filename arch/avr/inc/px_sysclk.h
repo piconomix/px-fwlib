@@ -27,7 +27,7 @@
  *  
  *  File(s):
  *  - arch/avr/px_sysclk.h
- *  - arch/avr/px_sysclk_cfg_template.h
+ *  - arch/avr/px_sysclk_cfg_default.h
  *  - arch/avr/px_sysclk.c
  *  
  *  px_sysclk_init() configures TMRx to expire every 1/PX_SYSCLK_TICKS_PER_SEC second
@@ -51,9 +51,16 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_lib_cfg.h"
 
-// Include project specific config. See "px_sysclk_cfg_template.h"
+// Config override in "px_lib_cfg.h"?
+#ifdef PX_SYSCLK_CFG
+// Include project specific configuration
 #include "px_sysclk_cfg.h"
+#else
+// Include default configuration
+#include "px_sysclk_cfg_default.h"
+#endif
 
 // Check that all project specific options have been specified in "px_sysclk_cfg.h"
 #if (   !defined(PX_SYSCLK_CFG_TICKS_PER_SEC) \
