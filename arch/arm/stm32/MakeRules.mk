@@ -25,6 +25,7 @@ OBJDUMP    = $(CPREFIX)-objdump
 SIZE       = $(CPREFIX)-size
 NM         = $(CPREFIX)-nm
 DEBUGGER   = $(CPREFIX)-gdb
+AR         = $(CPREFIX)-ar
 REMOVE     = rm -f
 REMOVEDIR  = rm -rf
 MKDIR      = mkdir -p
@@ -96,6 +97,7 @@ MSG_EEPROM              = 'Creating load file for EEPROM:'
 MSG_EXTENDED_LISTING    = 'Creating Extended Listing:'
 MSG_SYMBOL_TABLE        = 'Creating Symbol Table:'
 MSG_LINKING             = 'Linking:'
+MSG_ARCHIVING           = 'Creating static library:'
 MSG_COMPILING           = 'Compiling C:'
 MSG_COMPILING_CPP       = 'Compiling C++:'
 MSG_ASSEMBLING          = 'Assembling:'
@@ -140,6 +142,7 @@ bin: $(BUILD_DIR)/$(PROJECT).bin
 uf2: $(BUILD_DIR)/$(PROJECT).uf2
 lss: $(BUILD_DIR)/$(PROJECT).lss
 sym: $(BUILD_DIR)/$(PROJECT).sym
+lib: $(BUILD_DIR)/$(PROJECT).a
 
 # Default target to create specified source files.
 # If this rule is executed then the input source file does not exist.
@@ -209,6 +212,13 @@ $(BUILD_DIR)/%.elf: $(OBJECTS)
 	@echo $(MSG_LINKING) $@
 	@$(MKDIR) $(@D)
 	$(CC) $(ALL_LDFLAGS) $^ -o $@
+
+# Archive: create static library (*.a) from object files
+$(BUILD_DIR)/%.a: $(OBJECTS)
+	@echo
+	@echo $(MSG_ARCHIVING) $@
+	@$(MKDIR) $(@D)
+	$(AR) rcs $@ $^
 
 # Compile: create object files from C source files
 #   A separate rule is created for each SRC file to ensure that the correct
