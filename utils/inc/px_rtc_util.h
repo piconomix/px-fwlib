@@ -25,7 +25,7 @@
  *  
  *  File(s):
  *  - utils/px_rtc_util.h
- *  - utils/px_rtc_util_cfg_default.h
+ *  - utils/px_rtc_util_cfg_template.h
  *  - utils/px_rtc_util.c
  *  
  */
@@ -33,16 +33,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_RTC_UTIL_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_rtc_util_cfg_template.h"
 #include "px_rtc_util_cfg.h"
-#else
-// Include default configuration
-#include "px_rtc_util_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_rtc_util_cfg.h"
 #if (   !defined(PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K ) \

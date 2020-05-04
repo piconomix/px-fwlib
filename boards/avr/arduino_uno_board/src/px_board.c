@@ -21,7 +21,9 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_board.h"
 #include <util/delay.h>
-#include "px_gpio_init_atmega328p.h"
+#include "px_gpio_init_port_b.h"
+#include "px_gpio_init_port_c.h"
+#include "px_gpio_init_port_d.h"
 #include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */

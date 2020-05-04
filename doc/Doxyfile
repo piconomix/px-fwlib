@@ -843,9 +843,9 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = ../boards/arm/stm32/piconomix_hero_board/apps/usb_mass_storage_sd/src/usbd_storage_if.h \
+EXCLUDE                = ../boards/arm/stm32/piconomix_hero_board/apps/usb_mass_storage_sd/inc/usbd_storage_if.h \
                          ../boards/arm/stm32/piconomix_hero_board/apps/usb_mass_storage_sd/src/usbd_storage_if.c \
-                         ../boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_usb_uf2/src/usbd_storage_if.h \
+                         ../boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_usb_uf2/inc/usbd_storage_if.h \
                          ../boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_usb_uf2/src/usbd_storage_if.c \
                          ../boards/arm/stm32/piconomix_hero_board/examples/cubemx_hal/Drivers \
                          ../boards/arm/stm32/piconomix_hero_board/examples/cubemx_hal/Inc \

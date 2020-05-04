@@ -26,7 +26,7 @@
  *  
  *  File(s):
  *  - gfx/px_gfx.h 
- *  - gfx/px_gfx_cfg_default.h
+ *  - gfx/px_gfx_cfg_template.h
  *  - gfx/px_gfx.c 
  *  - gfx/px_gfx_display.h 
  *  - gfx/px_gfx_display_st7567_jhd12864.c 
@@ -47,16 +47,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_GFX_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_gfx_cfg_template.h"
 #include "px_gfx_cfg.h"
-#else
-// Include default configuration
-#include "px_gfx_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_gfx_cfg.h"
 #if (   !defined(PX_GFX_DISP_SIZE_X        ) \

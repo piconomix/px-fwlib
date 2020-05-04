@@ -26,11 +26,11 @@
  *  
  *  File(s):
  *  - arch/arm/stm32/px_exti.h
- *  - arch/arm/stm32/px_exti_cfg_default.h
+ *  - arch/arm/stm32/px_exti_cfg_template.h
  *  - arch/arm/stm32/px_exti.c
  *  
  *  The driver must be configured by supplying a project specific 
- *  "px_exti_cfg.h". "px_exti_cfg_default.h" can be copied, renamed and 
+ *  "px_exti_cfg.h". "px_exti_cfg_template.h" can be copied, renamed and 
  *  modified to supply compile time options. 
  *   
  *  There are only 16 external interrupts (0 to 15). If Port A 
@@ -47,16 +47,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_EXTI_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_exti_cfg_template.h"
 #include "px_exti_cfg.h"
-#else
-// Include default configuration
-#include "px_exti_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_exti_cfg.h"
 #if (   !defined(PX_EXTI_CFG_INT0_EN    ) \

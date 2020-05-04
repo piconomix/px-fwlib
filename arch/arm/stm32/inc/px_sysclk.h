@@ -27,7 +27,7 @@
  *  
  *  File(s):
  *  - arch/arm/stm32/px_sysclk.h
- *  - arch/arm/stm32/px_sysclk_cfg_default.h
+ *  - arch/arm/stm32/px_sysclk_cfg_template.h
  *  - arch/arm/stm32/px_sysclk.c
  *  
  *  px_sysclk_init() configures SysTick to expire every 
@@ -53,16 +53,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_SYSCLK_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_sysclk_cfg_template.h"
 #include "px_sysclk_cfg.h"
-#else
-// Include default configuration
-#include "px_sysclk_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_sysclk_cfg.h"
 #if (   !defined(PX_SYSCLK_CFG_TICKS_PER_SEC  ) \

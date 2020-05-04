@@ -44,13 +44,6 @@
 #warning "PX_DBG_CFG_MSG_LEVEL already defined"
 #endif
 
-#ifndef PX_DBG_CFG_NAME_LINE_ONLY
-/// Option to decrease debug footprint by displaying name and line only
-#define PX_DBG_CFG_NAME_LINE_ONLY 0
-#else
-#warning "PX_DBG_CFG_NAME_LINE_ONLY already defined"
-#endif
-
 /// Disable (0) or Enable (1) VT100 terminal color output
 #define PX_DBG_CFG_COLOR 1
 

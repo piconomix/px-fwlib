@@ -25,7 +25,7 @@
  *  
  *  File(s):
  *  - arch/avr/px_async_tmr.h
- *  - arch/avr/px_async_tmr_cfg_default.h
+ *  - arch/avr/px_async_tmr_cfg_template.h
  *  - arch/avr/px_async_tmr.c
  *  
  *  Asynchronous 8-bit TMRx operation is selected to use an external
@@ -39,16 +39,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_ASYNC_TMR_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_async_tmr_cfg_template.h"
 #include "px_async_tmr_cfg.h"
-#else
-// Include default configuration
-#include "px_async_tmr_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_async_tmr_cfg.h"
 #if (   !defined(ASYNC_TMR_CFG_PERIOD_MS) \

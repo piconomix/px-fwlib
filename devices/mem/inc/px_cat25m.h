@@ -25,7 +25,7 @@
  *  
  *  File(s):
  *  - devices/mem/px_cat25m.h
- *  - devices/mem/px_cat25m_cfg_default.h
+ *  - devices/mem/px_cat25m_cfg_template.h
  *  - devices/mem/px_cat25m.c
  *  
  *  Reference:
@@ -37,16 +37,9 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_spi.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_CAT25M_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_cat25m_cfg_template.h"
 #include "px_cat25m_cfg.h"
-#else
-// Include default configuration
-#include "px_cat25m_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_cat25m_cfg.h"
 #ifndef PX_CAT25M_CFG_DEVICE

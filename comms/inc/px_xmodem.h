@@ -26,7 +26,7 @@
  *  
  *  File(s):
  *  - comms/px_xmodem.h
- *  - comms/px_xmodem_cfg_default.h
+ *  - comms/px_xmodem_cfg_template.h
  *  - comms/px_xmodem.c
  *  
  *  XMODEM-CRC is a simple file transfer protocol. The file is broken up into a 
@@ -59,16 +59,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_XMODEM_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_xmodem_cfg_template.h"
 #include "px_xmodem_cfg.h"
-#else
-// Include default configuration
-#include "px_xmodem_cfg_default.h"
-#endif
 
 // Check that all project specific options have been correctly specified
 #if (   !defined(PX_XMODEM_CFG_MAX_RETRIES      ) \

@@ -26,11 +26,11 @@
  *  
  *  File(s):
  *  - arch/arm/stm32/px_adc.h
- *  - arch/arm/stm32/px_adc_cfg_default.h
+ *  - arch/arm/stm32/px_adc_cfg_template.h
  *  - arch/arm/stm32/px_adc.c
  *  
  *  The driver must be configured by supplying a project specific "px_adc_cfg.h".
- *  "px_adc_cfg_default.h" can be copied, renamed and modified to supply 
+ *  "px_adc_cfg_template.h" can be copied, renamed and modified to supply 
  *  compile time options.
  *  
  *  @par Example:
@@ -42,16 +42,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_ADC_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_adc_cfg_template.h"
 #include "px_adc_cfg.h"
-#else
-// Include default configuration
-#include "px_adc_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_adc_cfg.h"
 #if (   !defined(PX_ADC_CFG_ADC1_EN           ) \

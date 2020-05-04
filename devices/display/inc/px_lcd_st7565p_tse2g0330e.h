@@ -35,16 +35,9 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_spi.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_LCD_ST7565P_TSE2G0330E_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_lcd_st7565p_tse2g0330e_cfg_template.h"
 #include "px_lcd_st7565p_tse2g0330e_cfg.h"
-#else
-// Include default configuration
-#include "px_lcd_st7565p_tse2g0330e_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_lcd_st7565p_tse2g0330e_cfg.h"
 #if (   !defined(PX_LCD_CFG_RST_LO     ) \

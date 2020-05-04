@@ -25,7 +25,7 @@
  *  
  *  File(s):
  *  - devices/mem/px_at45d.h
- *  - devices/mem/px_at45d_cfg_default.h
+ *  - devices/mem/px_at45d_cfg_template.h
  *  - devices/mem/px_at45d.c
  *  
  *  Reference:
@@ -41,16 +41,9 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_spi.h"
-#include "px_lib_cfg.h"
 
-// Config override in "px_lib_cfg.h"?
-#ifdef PX_AT45D_CFG
-// Include project specific configuration
+// Include project specific configuration. See "px_at45d_cfg_template.h"
 #include "px_at45d_cfg.h"
-#else
-// Include default configuration
-#include "px_at45d_cfg_default.h"
-#endif
 
 // Check that all project specific options have been specified in "px_at45d_cfg.h"
 #ifndef PX_AT45D_CFG_DEVICE
