@@ -120,8 +120,11 @@ void px_hdlc_init(px_hdlc_tx_u8_fn_t       tx_u8_fn,
  *  
  *  @param[in] data     received 8-bit data
  *  
+ *  @retval true        Valid HDLC frame has been received
+ *  @retval false       Valid HDLC frame has not been received yet
+ *  
  */
-void px_hdlc_on_rx_u8(uint8_t data);
+bool px_hdlc_on_rx_u8(uint8_t data);
 
 /**
  *  Encapsulate and send an HDLC frame.

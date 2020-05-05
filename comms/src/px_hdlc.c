@@ -82,7 +82,7 @@ void px_hdlc_init(px_hdlc_tx_u8_fn_t       tx_u8_fn,
     px_crc16_init();
 }
 
-void px_hdlc_on_rx_u8(uint8_t data)
+bool px_hdlc_on_rx_u8(uint8_t data)
 {
     // Start/End sequence?
     if(data == PX_HDLC_FLAG_SEQUENCE)
@@ -101,11 +101,15 @@ void px_hdlc_on_rx_u8(uint8_t data)
             // Pass on frame with FCS field removed
             (*px_hdlc_on_rx_frame_fn)(px_hdlc_rx_frame,
                                    px_hdlc_rx_frame_index - sizeof(px_hdlc_rx_frame_fcs));
+            // Reset for next packet
+            px_hdlc_rx_frame_index = 0;
+            px_hdlc_rx_frame_fcs   = PX_CRC16_INIT_VAL;
+            return true;
         }
         // Reset for next packet
         px_hdlc_rx_frame_index = 0;
         px_hdlc_rx_frame_fcs   = PX_CRC16_INIT_VAL;
-        return;
+        return false;
     }
 
     // Escape sequence processing?
@@ -121,7 +125,7 @@ void px_hdlc_on_rx_u8(uint8_t data)
         // Set flag to indicate that the next byte's escape bit must be toggled
         px_hdlc_rx_esc_flag = true;
         // Discard control escape byte (do not buffer it)
-        return;
+        return false;
     }
 
     // Store received data
@@ -142,6 +146,8 @@ void px_hdlc_on_rx_u8(uint8_t data)
         // Invalidate FCS so that packet will be rejected
         px_hdlc_rx_frame_fcs  ^= 0xFFFF;
     }
+
+    return false;
 }
 
 void px_hdlc_tx_frame(const uint8_t * data, size_t nr_of_bytes)
