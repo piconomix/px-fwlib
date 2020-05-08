@@ -45,9 +45,19 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 #define PX_FLASH_BASE_ADR                 FLASH_BASE
+
+#if STM32G0
+#define PX_FLASH_PAGE_SIZE                2048
+#define PX_FLASH_ROW_SIZE                 256
+#define PX_FLASH_ROW_SIZE_WORDS           (PX_FLASH_ROW_SIZE / 4)
+#define PX_FLASH_ROW_SIZE_DOUBLE_WORDS    (PX_FLASH_ROW_SIZE / 8)
+#endif
+
+#if STM32L0
 #define PX_FLASH_PAGE_SIZE                128
 #define PX_FLASH_HALF_PAGE_SIZE           (PX_FLASH_PAGE_SIZE / 2)
 #define PX_FLASH_HALF_PAGE_SIZE_WORDS     (PX_FLASH_HALF_PAGE_SIZE / 4)
+#endif
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
@@ -69,6 +79,7 @@ void px_flash_lock(void);
  */
 void px_flash_erase_page(const uint32_t address);
 
+#if STM32L0
 /**
  *  Function to write a half page.
  *  
@@ -76,6 +87,17 @@ void px_flash_erase_page(const uint32_t address);
  *  @param data      Pointer to buffer containing data to write
  */
 void px_flash_wr_half_page(const uint32_t address, const  uint32_t * data);
+#endif
+
+#if STM32G0
+/**
+ *  Function to write a row.
+ *  
+ *  @param address   Row address
+ *  @param data      Pointer to buffer containing data to write
+ */
+void px_flash_wr_row(const uint32_t address, const  uint32_t * data);
+#endif
 
 /* _____MACROS_______________________________________________________________ */
 

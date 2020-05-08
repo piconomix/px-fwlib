@@ -23,6 +23,10 @@
 #include "px_lib_stm32cube.h"
 #include "px_dbg.h"
 
+#ifdef STM32G0
+#warning "Flash driver needs porting and testing"
+#endif
+
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 PX_DBG_DECL_NAME("px_flash");
 
@@ -45,12 +49,18 @@ PX_ATTR_RAMFUNC void px_flash_unlock(void)
     primask = __get_PRIMASK();
     // Disable interrupts
     px_interrupts_disable();
+#if STM32G0
+    // Unlock
+    FLASH->KEYR = 0x45670123;
+    FLASH->KEYR = 0xcdef89ab;
+#else
     // Unlock PELOCK
     FLASH->PEKEYR = 0x89abcdef;
     FLASH->PEKEYR = 0x02030405;
     // Unlock PRGLOCK
     FLASH->PRGKEYR = 0x8c9daebf;
     FLASH->PRGKEYR = 0x13141516;
+#endif
     // Restore interrupt status
     __set_PRIMASK(primask);
 }
@@ -63,14 +73,21 @@ PX_ATTR_RAMFUNC void px_flash_lock(void)
     primask = __get_PRIMASK();
     // Disable interrupts
     px_interrupts_disable();
+#if STM32G0
+    // Lock
+    FLASH->CR |= FLASH_CR_LOCK;
+#else
     // Lock PRGLOCK
     FLASH->PECR |= FLASH_PECR_PRGLOCK;
     // Lock PELOCK
     FLASH->PECR |= FLASH_PECR_PELOCK;
+#endif
     // Restore interrupt status
     __set_PRIMASK(primask);
 }
 
+
+#if STM32L0
 PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
 {
     uint32_t primask;
@@ -79,8 +96,10 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
     primask = __get_PRIMASK();
     // Disable interrupts
     px_interrupts_disable();
+    
     // Enable page erase
     FLASH->PECR |= (FLASH_PECR_PROG | FLASH_PECR_ERASE);
+
     // Write 32-bit value in page to start erase sequence
     *(uint32_t *)address = (uint32_t)0;
     // Wait until erase has finished (not busy)
@@ -96,6 +115,7 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
     }
     // Disable page erase
     FLASH->PECR &= ~(FLASH_PECR_ERASE | FLASH_PECR_PROG);
+
     // Restore interrupt status
     __set_PRIMASK(primask);
 }
@@ -133,4 +153,73 @@ PX_ATTR_RAMFUNC void px_flash_wr_half_page(const uint32_t address, const uint32_
     // Restore interrupt status
     __set_PRIMASK(primask);
 }
+#endif
 
+#if STM32G0
+PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
+{
+    uint32_t primask;
+    uint32_t flash_cr;
+    uint8_t  page;
+
+    // Save interrupt status
+    primask = __get_PRIMASK();
+    // Disable interrupts
+    px_interrupts_disable();
+    
+    // Set page to erase
+    flash_cr   = FLASH->CR & ~FLASH_CR_PNB;
+    page       = (address >> 11) & 0x3f;
+    flash_cr  |= page << FLASH_CR_PNB_Pos;
+    FLASH->CR  = flash_cr;        
+    // Enable page erase
+    FLASH->CR |= FLASH_CR_PER;
+    // Start page erase
+    FLASH->CR |= FLASH_CR_STRT;    
+    // Wait until erase has finished (not busy)
+    while ((FLASH->SR & FLASH_SR_BSY1) != 0)
+    {
+        continue;
+    }
+    // Disable page erase
+    FLASH->CR &= ~FLASH_CR_PER;
+
+    // Restore interrupt status
+    __set_PRIMASK(primask);
+}
+
+PX_ATTR_RAMFUNC void px_flash_wr_row(const uint32_t address, const uint32_t * data)
+{
+    uint8_t    i;
+    uint32_t   primask;
+    uint32_t * dest = (uint32_t *)address;
+
+    // Save interrupt status
+    primask = __get_PRIMASK();
+    // Disable interrupts
+    px_interrupts_disable();
+    // Enable fast programming
+    FLASH->CR |= FLASH_CR_FSTPG;
+    // Write row by copying data (64-bits at a time)
+    for (i = 0; i < PX_FLASH_ROW_SIZE_DOUBLE_WORDS; i++)
+    {
+        *dest++ = *data++;
+        *dest++ = *data++;
+    }
+    // Wait until programming has finished (not busy)
+    while ((FLASH->SR & FLASH_SR_BSY1) != 0)
+    {
+        continue;
+    }
+    // EOP (End Of Programming) Flag is set?
+    while ((FLASH->SR & FLASH_SR_EOP) != 0)
+    {
+        // Reset EOP flag
+        FLASH->SR = FLASH_SR_EOP;
+    }    
+    // Disable fast programming
+    FLASH->CR &= ~FLASH_CR_FSTPG;
+    // Restore interrupt status
+    __set_PRIMASK(primask);
+}
+#endif
