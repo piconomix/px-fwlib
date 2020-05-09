@@ -63,6 +63,10 @@ else
     $(error "Unsupported build specified. Use 'make build=debug', 'make build=release' or 'make build=release-boot'")
 endif
 
+
+# Specify Flash, SRAM, Stack and heap size to linker script
+LDFLAGS += -Wl,--defsym,FLASH_SIZE=$(FLASH_SIZE),--defsym,SRAM_SIZE=$(SRAM_SIZE),--defsym,STACK_SIZE=$(STACK_SIZE),--defsym,HEAP_SIZE=$(HEAP_SIZE)
+
 # Allocate space for bootloader in release for boot build (if specified)
 #
 # VTOR register (Vector Table Offset Register) must be set to correct value in:

@@ -45,7 +45,11 @@ PROJECT = stop_mode
 BOOTLOADER_SIZE = 0x4000
 
 # (2) MCU option(s)
-MCU = -mthumb -mcpu=cortex-m0plus
+MCU        = -mthumb -mcpu=cortex-m0plus
+FLASH_SIZE = 128k
+SRAM_SIZE  = 20k
+STACK_SIZE = 1024
+HEAP_SIZE  = 1024
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
 PICOLIB = ../../../../..
@@ -122,14 +126,16 @@ INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
 #CDEFS += PX_DBG=0
-CDEFS += STM32L0 STM32L072xx
+CDEFS += STM32L0
+CDEFS += STM32L072xx
 #CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
 #CPPDEFS += __STDC_LIMIT_MACROS
 #CPPDEFS += __STDC_CONSTANT_MACROS
-CPPDEFS += STM32L0 STM32L072xx
+CPPDEFS += STM32L0
+CPPDEFS += STM32L072xx
 
 # (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
 ADEFS += 
@@ -212,7 +218,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(BSP)/stm32l072xb.ld
+LDFLAGS += -T $(PICOLIB)/$(ARCH)/stm32_flash.ld
 
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename

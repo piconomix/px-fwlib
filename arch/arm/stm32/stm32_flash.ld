@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
     
-    Title:          STM32L052.ld : STM32L052 Linker Script for GNU ld
+    Title:          stm32.ld : STM32 Linker Script for GNU ld
     Author(s):      Pieter Conradie
     Creation Date:  2018-05-18
 
@@ -19,7 +19,7 @@
 /*
  *  This linker script is for the STM32cubeL0 library and in particular the 
  *  following C startup code:
- *  px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l052xx.s
+ *  px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
  *
  *  The default linker script for normal executables packaged with the GNU ARM 
  *  toolchain was consulted:
@@ -81,22 +81,29 @@ OUTPUT_ARCH(arm)
 /* Specify the program entry point (first instruction to be executed) */
 ENTRY(Reset_Handler)
 
+/* Define the flash size allocated for the application if not already specified */
+FLASH_SIZE = DEFINED(FLASH_SIZE)? FLASH_SIZE : 32k;
+
+/* Define the SRAM size allocated for the application if not already specified */
+SRAM_SIZE = DEFINED(SRAM_SIZE)? SRAM_SIZE : 8k;
+
 /* Describe the location and size of blocks of memory in the target */
 FLASH_OFFSET = DEFINED(FLASH_OFFSET)? FLASH_OFFSET : 0;
 FLASH_ORIGIN = 0x08000000 + FLASH_OFFSET;
-FLASH_LENGTH = 64k - FLASH_OFFSET;
+FLASH_LENGTH = FLASH_SIZE - FLASH_OFFSET;
+SRAM_LENGTH  = SRAM_SIZE;
 
 MEMORY
 {
     FLASH (rx)   : ORIGIN = FLASH_ORIGIN, LENGTH = FLASH_LENGTH
-    SRAM  (w!rw) : ORIGIN = 0x20000000, LENGTH = 8k
+    SRAM  (w!rw) : ORIGIN = 0x20000000, LENGTH = SRAM_LENGTH
 }
 
-/* Define the stack size allocated for the application */
-STACK_SIZE = 1024;
+/* Define the stack size allocated for the application if not already specified */
+STACK_SIZE = DEFINED(STACK_SIZE)? STACK_SIZE : 1024;
 
-/* Define the heap size allocated for the application */
-HEAP_SIZE = 1024;
+/* Define the heap size allocated for the application if not already specified */
+HEAP_SIZE = DEFINED(HEAP_SIZE)? HEAP_SIZE : 1024;
 
 /* Define the start address of the stack (placed at the end of SRAM) */
 STACK_START = ORIGIN(SRAM) + LENGTH(SRAM) - STACK_SIZE;
@@ -109,7 +116,7 @@ SECTIONS
 {    
     /*
      * ISR_VECTOR section contains the ARM vector table as defined in 
-     * startup_stm32l052xx.s
+     * for example startup_stm32l072xx.s
      */
     .isr_vector :
     {
