@@ -45,13 +45,13 @@ PROJECT = cli_explorer
 MCU = atmega328p
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PICOLIB = ../../../../..
+PX_LIB = ../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/avr
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PICOLIB)/boards/avr/arduino_uno_board
+BSP = $(PX_LIB)/boards/avr/arduino_uno
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/px_adc.c
@@ -63,18 +63,18 @@ SRC += src/px_cli_cmds_rtc_P.c
 SRC += src/px_cli_cmds_spi_P.c
 SRC += src/px_cli_cmds_P.c
 SRC += src/main.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_gpio.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_spi.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_sysclk.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_uart.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_uart_stdio.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_i2c_twi.c
-#SRC += $(PICOLIB)/$(ARCH)/src/px_i2c_gpio.c
-SRC += $(PICOLIB)/comms/src/px_vt100.c
-SRC += $(PICOLIB)/comms/src/px_cli_P.c
-SRC += $(PICOLIB)/utils/src/px_dbg.c
-SRC += $(PICOLIB)/utils/src/px_rtc_util.c
-SRC += $(PICOLIB)/utils/src/px_systmr.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_gpio.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_spi.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_sysclk.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_uart.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_uart_stdio.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_i2c_twi.c
+#SRC += $(PX_LIB)/$(ARCH)/src/px_i2c_gpio.c
+SRC += $(PX_LIB)/comms/src/px_vt100.c
+SRC += $(PX_LIB)/comms/src/px_cli_P.c
+SRC += $(PX_LIB)/utils/src/px_dbg.c
+SRC += $(PX_LIB)/utils/src/px_rtc_util.c
+SRC += $(PX_LIB)/utils/src/px_systmr.c
 SRC += $(BSP)/src/px_board.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
@@ -103,11 +103,11 @@ ASRC +=
 INCDIRS += cfg
 INCDIRS += inc
 INCDIRS += src
-INCDIRS += $(PICOLIB)
-INCDIRS += $(PICOLIB)/$(ARCH)/inc
-INCDIRS += $(PICOLIB)/common/inc
-INCDIRS += $(PICOLIB)/comms/inc
-INCDIRS += $(PICOLIB)/utils/inc
+INCDIRS += $(PX_LIB)
+INCDIRS += $(PX_LIB)/$(ARCH)/inc
+INCDIRS += $(PX_LIB)/common/inc
+INCDIRS += $(PX_LIB)/comms/inc
+INCDIRS += $(PX_LIB)/utils/inc
 INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
@@ -223,4 +223,4 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 
 #===============================================================================
 
-include $(PICOLIB)/$(ARCH)/MakeRules.mk
+include $(PX_LIB)/$(ARCH)/MakeRules.mk

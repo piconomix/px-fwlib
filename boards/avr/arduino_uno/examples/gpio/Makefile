@@ -45,13 +45,13 @@ PROJECT = gpio
 MCU = atmega328p
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PICOLIB = ../../../../..
+PX_LIB = ../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/avr
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PICOLIB)/boards/avr/arduino_uno_board
+BSP = $(PX_LIB)/boards/avr/arduino_uno
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
@@ -82,11 +82,11 @@ ASRC +=
 #     be found first in the search order specified below.
 INCDIRS += cfg
 INCDIRS += src
-INCDIRS += $(PICOLIB)
-INCDIRS += $(PICOLIB)/$(ARCH)/inc
-INCDIRS += $(PICOLIB)/common/inc
-INCDIRS += $(PICOLIB)/comms/inc
-INCDIRS += $(PICOLIB)/utils/inc
+INCDIRS += $(PX_LIB)
+INCDIRS += $(PX_LIB)/$(ARCH)/inc
+INCDIRS += $(PX_LIB)/common/inc
+INCDIRS += $(PX_LIB)/comms/inc
+INCDIRS += $(PX_LIB)/utils/inc
 INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
@@ -202,4 +202,4 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 
 #===============================================================================
 
-include $(PICOLIB)/$(ARCH)/MakeRules.mk
+include $(PX_LIB)/$(ARCH)/MakeRules.mk

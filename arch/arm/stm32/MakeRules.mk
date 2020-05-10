@@ -188,13 +188,13 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
 $(BUILD_DIR)/%.uf2: $(BUILD_DIR)/%.bin
 	@echo
 	@echo $(MSG_FLASH_UF2) $@
-	python $(PICOLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c -o $@
+	python $(PX_LIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c -o $@
 
 # Write UF2 bootloader format file (*.uf2) to target
 prog_uf2: $(BUILD_DIR)/$(PROJECT).bin
 	@echo
 	@echo $(MSG_PROG_UF2) $@
-	python $(PICOLIB)/tools/uf2conv.py $< -b $(BOOTLOADER_SIZE) -f 0xe892273c -d $(drive)
+	python $(PX_LIB)/tools/uf2conv.py $< -b $(BOOTLOADER_SIZE) -f 0xe892273c -d $(drive)
 
 # Create extended listing file (*.lss) from ELF output file
 $(BUILD_DIR)/%.lss: $(BUILD_DIR)/%.elf

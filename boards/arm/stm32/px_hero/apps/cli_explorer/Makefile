@@ -52,22 +52,22 @@ STACK_SIZE = 1024
 HEAP_SIZE  = 1024
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PICOLIB = ../../../../../..
+PX_LIB = ../../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/arm/stm32
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PICOLIB)/boards/arm/stm32/piconomix_hero_board
+BSP = $(PX_LIB)/boards/arm/stm32/px_hero
 
 # (3d) Path to ST STMCube library (relative to Makefile)
-STMCUBE = $(PICOLIB)/libs/STM32Cube/L0
+STMCUBE = $(PX_LIB)/libs/STM32Cube/L0
 
 # (3e) Path to ST STMCube USB library (relative to Makefile)
-STMCUBE_USB = $(PICOLIB)/libs/STM32Cube_USB
+STMCUBE_USB = $(PX_LIB)/libs/STM32Cube_USB
 
 # (3f) Path to ChaN's FatFs library (relative to Makefile)
-CHAN_FATFS = $(PICOLIB)/libs/ChaN_FatFs
+CHAN_FATFS = $(PX_LIB)/libs/ChaN_FatFs
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
@@ -92,33 +92,33 @@ SRC += src/usbd_cdc_if.c
 SRC += src/usbd_conf.c
 SRC += src/usbd_desc.c
 SRC += $(BSP)/src/px_board.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_adc.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_dac.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_gpio.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_i2c.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_rtc.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_spi.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_sysclk.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_uart.c
-#SRC += $(PICOLIB)/$(ARCH)/px_uart_stdio.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_usb_cdc_stdio.c
-SRC += $(PICOLIB)/comms/src/px_cli.c
-SRC += $(PICOLIB)/comms/src/px_one_wire.c
-SRC += $(PICOLIB)/comms/src/px_vt100.c
-SRC += $(PICOLIB)/comms/src/px_xmodem.c
-SRC += $(PICOLIB)/devices/display/src/px_lcd_st7567_jhd12864.c
-SRC += $(PICOLIB)/devices/mem/src/px_at25s.c
-SRC += $(PICOLIB)/devices/mem/src/px_sd.c
-SRC += $(PICOLIB)/devices/sensor/src/px_ds18b20.c
-SRC += $(PICOLIB)/gfx/src/px_gfx.c
-SRC += $(PICOLIB)/gfx/src/px_gfx_display_st7567_jhd12864.c
-SRC += $(PICOLIB)/gfx/fonts/src/px_gfx_font_5x7.c
-SRC += $(PICOLIB)/gfx/images/src/px_gfx_img_hero_logo.c
-SRC += $(PICOLIB)/utils/src/px_ring_buf.c
-SRC += $(PICOLIB)/utils/src/px_dbg.c
-SRC += $(PICOLIB)/utils/src/px_debounce.c
-SRC += $(PICOLIB)/utils/src/px_rtc_util.c
-SRC += $(PICOLIB)/utils/src/px_systmr.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_adc.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_dac.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_gpio.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_i2c.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_rtc.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_spi.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_sysclk.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_uart.c
+#SRC += $(PX_LIB)/$(ARCH)/px_uart_stdio.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_usb_cdc_stdio.c
+SRC += $(PX_LIB)/comms/src/px_cli.c
+SRC += $(PX_LIB)/comms/src/px_one_wire.c
+SRC += $(PX_LIB)/comms/src/px_vt100.c
+SRC += $(PX_LIB)/comms/src/px_xmodem.c
+SRC += $(PX_LIB)/devices/display/src/px_lcd_st7567_jhd12864.c
+SRC += $(PX_LIB)/devices/mem/src/px_at25s.c
+SRC += $(PX_LIB)/devices/mem/src/px_sd.c
+SRC += $(PX_LIB)/devices/sensor/src/px_ds18b20.c
+SRC += $(PX_LIB)/gfx/src/px_gfx.c
+SRC += $(PX_LIB)/gfx/src/px_gfx_display_st7567_jhd12864.c
+SRC += $(PX_LIB)/gfx/fonts/src/px_gfx_font_5x7.c
+SRC += $(PX_LIB)/gfx/images/src/px_gfx_img_hero_logo.c
+SRC += $(PX_LIB)/utils/src/px_ring_buf.c
+SRC += $(PX_LIB)/utils/src/px_dbg.c
+SRC += $(PX_LIB)/utils/src/px_debounce.c
+SRC += $(PX_LIB)/utils/src/px_rtc_util.c
+SRC += $(PX_LIB)/utils/src/px_systmr.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.c
@@ -159,21 +159,21 @@ INCDIRS += cfg
 INCDIRS += inc
 INCDIRS += res
 INCDIRS += $(BSP)/inc
-INCDIRS += $(PICOLIB)
-INCDIRS += $(PICOLIB)/$(ARCH)/inc
-INCDIRS += $(PICOLIB)/common/inc
-INCDIRS += $(PICOLIB)/comms/inc
-INCDIRS += $(PICOLIB)/data/inc
-INCDIRS += $(PICOLIB)/devices/comms/inc
-INCDIRS += $(PICOLIB)/devices/display/inc
-INCDIRS += $(PICOLIB)/devices/general/inc
-INCDIRS += $(PICOLIB)/devices/mem/inc
-INCDIRS += $(PICOLIB)/devices/rtc/inc
-INCDIRS += $(PICOLIB)/devices/sensor/inc
-INCDIRS += $(PICOLIB)/gfx/inc
-INCDIRS += $(PICOLIB)/gfx/fonts/inc
-INCDIRS += $(PICOLIB)/gfx/images/inc
-INCDIRS += $(PICOLIB)/utils/inc
+INCDIRS += $(PX_LIB)
+INCDIRS += $(PX_LIB)/$(ARCH)/inc
+INCDIRS += $(PX_LIB)/common/inc
+INCDIRS += $(PX_LIB)/comms/inc
+INCDIRS += $(PX_LIB)/data/inc
+INCDIRS += $(PX_LIB)/devices/comms/inc
+INCDIRS += $(PX_LIB)/devices/display/inc
+INCDIRS += $(PX_LIB)/devices/general/inc
+INCDIRS += $(PX_LIB)/devices/mem/inc
+INCDIRS += $(PX_LIB)/devices/rtc/inc
+INCDIRS += $(PX_LIB)/devices/sensor/inc
+INCDIRS += $(PX_LIB)/gfx/inc
+INCDIRS += $(PX_LIB)/gfx/fonts/inc
+INCDIRS += $(PX_LIB)/gfx/images/inc
+INCDIRS += $(PX_LIB)/utils/inc
 INCDIRS += $(CHAN_FATFS)
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
@@ -276,7 +276,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(PICOLIB)/$(ARCH)/stm32_flash.ld
+LDFLAGS += -T $(PX_LIB)/$(ARCH)/stm32_flash.ld
 
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
@@ -297,4 +297,4 @@ GDB_SCRIPT ?= init.gdb
 
 #===============================================================================
 
-include $(PICOLIB)/$(ARCH)/MakeRules.mk
+include $(PX_LIB)/$(ARCH)/MakeRules.mk

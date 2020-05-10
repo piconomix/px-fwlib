@@ -52,24 +52,24 @@ STACK_SIZE = 1024
 HEAP_SIZE  = 1024
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PICOLIB = ../../../../../..
+PX_LIB = ../../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/arm/stm32
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PICOLIB)/boards/arm/stm32/piconomix_hero_board
+BSP = $(PX_LIB)/boards/arm/stm32/px_hero
 
 # (3d) Path to ST STMCube library (relative to Makefile)
-STMCUBE = $(PICOLIB)/libs/STM32Cube/L0
+STMCUBE = $(PX_LIB)/libs/STM32Cube/L0
 
 # (3e) Path to FreeRTOS library (relative to Makefile)
-FREERTOS = $(PICOLIB)/libs/FreeRTOS/Source
+FREERTOS = $(PX_LIB)/libs/FreeRTOS/Source
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
 SRC += $(BSP)/src/px_board.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_gpio.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_gpio.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 SRC += $(FREERTOS)/croutine.c
@@ -110,10 +110,10 @@ INCDIRS += cfg
 INCDIRS += inc
 INCDIRS += src
 INCDIRS += $(BSP)/inc
-INCDIRS += $(PICOLIB)
-INCDIRS += $(PICOLIB)/$(ARCH)/inc
-INCDIRS += $(PICOLIB)/common/inc
-INCDIRS += $(PICOLIB)/utils/inc
+INCDIRS += $(PX_LIB)
+INCDIRS += $(PX_LIB)/$(ARCH)/inc
+INCDIRS += $(PX_LIB)/common/inc
+INCDIRS += $(PX_LIB)/utils/inc
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
@@ -216,7 +216,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(PICOLIB)/$(ARCH)/stm32_flash.ld
+LDFLAGS += -T $(PX_LIB)/$(ARCH)/stm32_flash.ld
 
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
@@ -237,4 +237,4 @@ GDB_SCRIPT ?= init.gdb
 
 #===============================================================================
 
-include $(PICOLIB)/$(ARCH)/MakeRules.mk
+include $(PX_LIB)/$(ARCH)/MakeRules.mk

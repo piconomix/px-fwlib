@@ -45,18 +45,18 @@ PROJECT = serial
 MCU = atmega328p
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PICOLIB = ../../../../..
+PX_LIB = ../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/avr
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PICOLIB)/boards/avr/arduino_uno_board
+BSP = $(PX_LIB)/boards/avr/arduino_uno
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_uart.c
-SRC += $(PICOLIB)/$(ARCH)/src/px_uart_stdio.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_uart.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_uart_stdio.c
 SRC += $(BSP)/src/px_board.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
@@ -86,11 +86,11 @@ INCDIRS += cfg
 INCDIRS += inc
 INCDIRS += src
 INCDIRS += $(BSP)/inc
-INCDIRS += $(PICOLIB)
-INCDIRS += $(PICOLIB)/$(ARCH)/inc
-INCDIRS += $(PICOLIB)/common/inc
-INCDIRS += $(PICOLIB)/comms/inc
-INCDIRS += $(PICOLIB)/utils/inc
+INCDIRS += $(PX_LIB)
+INCDIRS += $(PX_LIB)/$(ARCH)/inc
+INCDIRS += $(PX_LIB)/common/inc
+INCDIRS += $(PX_LIB)/comms/inc
+INCDIRS += $(PX_LIB)/utils/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
 CDEFS += 
@@ -205,4 +205,4 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 
 #===============================================================================
 
-include $(PICOLIB)/$(ARCH)/MakeRules.mk
+include $(PX_LIB)/$(ARCH)/MakeRules.mk
