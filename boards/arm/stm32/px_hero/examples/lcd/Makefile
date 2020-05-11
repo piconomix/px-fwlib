@@ -229,7 +229,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(PX_LIB)/$(ARCH)/stm32_flash.ld
+LDFLAGS += -T $(PX_LIB)/$(ARCH)/px_stm32_flash.ld
 
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
