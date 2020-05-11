@@ -185,7 +185,8 @@ CFLAGS += -Wstrict-prototypes
 #CFLAGS += -Wunreachable-code
 #CFLAGS += -Wsign-compare
 CFLAGS += -std=gnu99
-CFLAGS += -ffunction-sections -fdata-sections
+CFLAGS += -ffunction-sections
+CFLAGS += -fdata-sections
 CFLAGS += --specs=nano.specs
 
 CFLAGS_DEBUG   += -Og
@@ -209,7 +210,8 @@ CPPFLAGS += -Wall
 #CPPFLAGS += -Wunreachable-code
 #CPPFLAGS += -Wsign-compare
 CPPFLAGS += -std=gnu99
-CPPFLAGS += -ffunction-sections -fdata-sections
+CPPFLAGS += -ffunction-sections
+CPPFLAGS += -fdata-sections
 CPPFLAGS += --specs=nano.specs
 
 CPPFLAGS_DEBUG   += -Og

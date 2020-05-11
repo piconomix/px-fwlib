@@ -124,7 +124,8 @@ CFLAGS += -Wstrict-prototypes
 #CFLAGS += -Wunreachable-code
 #CFLAGS += -Wsign-compare
 CFLAGS += -std=gnu99
-CFLAGS += -ffunction-sections -fdata-sections
+CFLAGS += -ffunction-sections
+CFLAGS += -fdata-sections
 
 #---------------- Compiler Options C++ -----------------------------------------
 #  -g*:          generate debugging information
