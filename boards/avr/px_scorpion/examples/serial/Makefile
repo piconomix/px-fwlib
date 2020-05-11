@@ -47,10 +47,10 @@ MCU = atmega328p
 PX_LIB = ../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
-ARCH    = arch/avr
+ARCH = arch/avr
 
 # (3c) Path to board support package (relative to Makefile)
-BSP     = $(PX_LIB)/boards/avr/px_scorpion
+BSP = $(PX_LIB)/boards/avr/px_scorpion
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
