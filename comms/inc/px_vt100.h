@@ -25,8 +25,8 @@
  *  Parses VT100 / ANSI escape sequences to interface with a terminal emulator.
  *  
  *  File(s):
- *  - comms/px_vt100.h
- *  - comms/px_vt100.c
+ *  - comms/inc/px_vt100.h
+ *  - comms/src/px_vt100.c
  *  
  *  @see
  *  - http://en.wikipedia.org/wiki/ANSI_escape_code

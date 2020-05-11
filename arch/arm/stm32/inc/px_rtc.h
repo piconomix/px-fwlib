@@ -22,8 +22,8 @@
  *  @defgroup STM32_RTC px_rtc.h : RTC peripheral driver
  *  
  *  File(s):
- *  - arch/arm/stm32/px_rtc.h
- *  - arch/arm/stm32/px_rtc.c
+ *  - arch/arm/stm32/inc/px_rtc.h
+ *  - arch/arm/stm32/src/px_rtc.c
  *  
  */
 /// @{

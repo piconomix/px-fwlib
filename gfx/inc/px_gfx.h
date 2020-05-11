@@ -25,11 +25,11 @@
  *  A basic monochrome (1 bit per pixel) graphics library.
  *  
  *  File(s):
- *  - gfx/px_gfx.h 
- *  - gfx/px_gfx_cfg_template.h
- *  - gfx/px_gfx.c 
- *  - gfx/px_gfx_display.h 
- *  - gfx/px_gfx_display_st7567_jhd12864.c 
+ *  - gfx/inc/px_gfx.h 
+ *  - gfx/inc/px_gfx_cfg_template.h
+ *  - gfx/src/px_gfx.c 
+ *  - gfx/inc/px_gfx_display.h 
+ *  - gfx/src/px_gfx_display_st7567_jhd12864.c 
  *  
  *  Tool to convert images and fonts:
  *  [Ruison.com LCD Image Converter](https://github.com/riuson/lcd-image-converter) 

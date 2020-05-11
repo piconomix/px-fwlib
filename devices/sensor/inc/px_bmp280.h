@@ -23,8 +23,8 @@
  *  @defgroup PX_BMP280 px_bmp280.h : Bosch BMP280 Barometric pressure sensor driver
  *  
  *  File(s):
- *  - devices/sensor/px_bmp280.h
- *  - devices/sensor/px_bmp280.c 
+ *  - devices/sensor/inc/px_bmp280.h
+ *  - devices/sensor/src/px_bmp280.c 
  *   
  *  Reference: 
  *  - [Bosch BMP280 datasheet](https://www.bosch-sensortec.com/bst/products/all_products/bmp280) 

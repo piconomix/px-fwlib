@@ -26,8 +26,8 @@
  *  have expired.
  *  
  *  File(s):
- *  - utils/px_systmr.h
- *  - utils/px_systmr.c
+ *  - utils/inc/px_systmr.h
+ *  - utils/src/px_systmr.c
  *  
  *  These timers are suitable for applications that are not timing critical.
  *  A global counter is incremented with each clock tick and this value is

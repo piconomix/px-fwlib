@@ -9,7 +9,7 @@
 *How to configure and use General Purpose (digital) I/O pins - part D*
 
 File(s): 
-- arch/arm/stm32/tutorials/02_gpio_part_d/gpio.c
+- arch/arm/stm32/tutorials/02_gpio_part_d/src/gpio.c
 
 This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the 
 [PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD), the LED is wired to Port H pin 0.

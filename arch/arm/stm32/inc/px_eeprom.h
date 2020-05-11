@@ -25,8 +25,8 @@
  *  This module can erase a page and write a half page of internal EEPROM.
  *  
  *  File(s):
- *  - arch/arm/stm32/px_eeprom.h
- *  - arch/arm/stm32/px_eeprom.c 
+ *  - arch/arm/stm32/inc/px_eeprom.h
+ *  - arch/arm/stm32/src/px_eeprom.c 
  *   
  *  @note 
  *  The flash erase and program functions must be executed from SRAM, not EEPROM.

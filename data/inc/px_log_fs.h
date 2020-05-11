@@ -25,12 +25,12 @@
  *  Record-based file system for Serial Flash.
  *  
  *  File(s):
- *  - data/px_log_fs.h
- *  - data/px_log_fs_cfg_template.h
- *  - data/px_log_fs.c 
- *  - data/px_log_fs_glue.h 
- *  - data/px_log_fs_glue_at25s.c
- *  - data/px_log_fs_glue_at45d.c
+ *  - data/inc/px_log_fs.h
+ *  - data/inc/px_log_fs_cfg_template.h
+ *  - data/src/px_log_fs.c 
+ *  - data/inc/px_log_fs_glue.h 
+ *  - data/src/px_log_fs_glue_at25s.c
+ *  - data/src/px_log_fs_glue_at45d.c
  *  
  *  1. Introduction
  *  ===============

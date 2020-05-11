@@ -25,9 +25,9 @@
  *  Driver for the UART peripheral for serial communication.
  *  
  *  File(s):
- *  - arch/avr/px_uart.h
- *  - arch/avr/px_uart_cfg_template.h
- *  - arch/avr/px_uart.c
+ *  - arch/avr/inc/px_uart.h
+ *  - arch/avr/inc/px_uart_cfg_template.h
+ *  - arch/avr/src/px_uart.c
  *  
  *  The driver must be configured by supplying a project specific 
  *  "px_uart_cfg.h". "px_uart_cfg_template.h" can be copied, renamed and 

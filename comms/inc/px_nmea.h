@@ -25,8 +25,8 @@
  *  GPS NMEA protocol parser.
  *  
  *  File(s):
- *  - comms/px_nmea.h
- *  - comms/px_nmea.c
+ *  - comms/inc/px_nmea.h
+ *  - comms/src/px_nmea.c
  *  
  *  @see http://en.wikipedia.org/wiki/NMEA_0183
  */

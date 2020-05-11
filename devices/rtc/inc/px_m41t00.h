@@ -24,8 +24,8 @@
  *  This driver interface with an ST M41T00 RTC using I2C
  *  
  *  File(s):
- *  - devices/rtc/px_m41t00.h
- *  - devices/rtc/px_m41t00.c
+ *  - devices/rtc/inc/px_m41t00.h
+ *  - devices/rtc/src/px_m41t00.c
  *  
  *  Reference:
  *  - [ST M41T00M6E](http://us1.st.com/stonline/products/literature/ds/6100.pdf) datasheet

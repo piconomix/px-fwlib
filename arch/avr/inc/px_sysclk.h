@@ -26,9 +26,9 @@
  *  generated.
  *  
  *  File(s):
- *  - arch/avr/px_sysclk.h
- *  - arch/avr/px_sysclk_cfg_template.h
- *  - arch/avr/px_sysclk.c
+ *  - arch/avr/inc/px_sysclk.h
+ *  - arch/avr/inc/px_sysclk_cfg_template.h
+ *  - arch/avr/src/px_sysclk.c
  *  
  *  px_sysclk_init() configures TMRx to expire every 1/PX_SYSCLK_TICKS_PER_SEC second
  *  and generate an interrupt during which a clock tick counter is incremented.

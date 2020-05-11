@@ -103,7 +103,7 @@ PA2 by selecting AF4 (Alternate Function 4).
 ![](cmx_px_hero_sch.png)
 
 @tip_s
-The PX-HER0 board [schematic](https://github.com/piconomix/piconomix-fwlib/blob/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf) 
+The PX-HER0 board [schematic](https://github.com/piconomix/piconomix-fwlib/blob/master/boards/arm/stm32/px_hero/docs/px_hero_sch.pdf) 
 makes it easy. Each possible pin function is listed in the schematic symbol of 
 the STM32L072 IC and the assigned function is underlined in red.
 @tip_e

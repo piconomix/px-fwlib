@@ -25,9 +25,9 @@
  *  This module debounces a digital input and remembers a rising or falling edge.
  *  
  *  File(s):
- *  - utils/px_debounce.h
- *  - utils/px_debounce_cfg_template.h
- *  - utils/px_debounce.c
+ *  - utils/inc/px_debounce.h
+ *  - utils/inc/px_debounce_cfg_template.h
+ *  - utils/src/px_debounce.c
  *  
  *  This module must be configured by supplying a project specific
  *  "px_debounce_cfg.h". "px_debounce_cfg_template.h" can be copied, renamed and

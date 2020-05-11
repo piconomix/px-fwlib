@@ -25,8 +25,8 @@
  *  This component can clear and write a page of internal FLASH.
  *  
  *  File(s):
- *  - arch/avr/px_flash.h
- *  - arch/avr/px_flash.c
+ *  - arch/avr/inc/px_flash.h
+ *  - arch/avr/src/px_flash.c
  *  
  *  @warn_s
  *  These routines must always reside in the bootloader section. If mixing

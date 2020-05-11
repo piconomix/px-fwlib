@@ -66,10 +66,10 @@ There is:
 3. Design Documents and Files {#SCORPION_BOARD_DESIGN}
 ======================================================
 
-- [Schematic](https://piconomix.com/download/piconomix_scorpion_board_sch.pdf)
-- [Bill Of Materials](https://piconomix.com/download/piconomix_scorpion_board_bom.pdf)
-- [Board Layout](https://piconomix.com/download/piconomix_scorpion_board_layout.pdf)
-- [Gerber Files](https://piconomix.com/download/piconomix_scorpion_board_gerbers.7z)
+- [Schematic](https://piconomix.com/download/px_scorpion_sch.pdf)
+- [Bill Of Materials](https://piconomix.com/download/px_scorpion_bom.pdf)
+- [Board Layout](https://piconomix.com/download/px_scorpion_layout.pdf)
+- [Gerber Files](https://piconomix.com/download/px_scorpion_gerbers.7z)
 
 4. Disclaimer {#SCORPION_BOARD_DISCLAIMER}
 ==========================================
@@ -111,9 +111,9 @@ A Board Support Package (@ref BOARDS_AVR_PICONOMIX_SCORPION) is provided that:
 - provide a delay functions
 
 Files:
-- boards/avr/piconomix_scorpion_board/px_board.h
-- boards/avr/piconomix_scorpion_board/px_board_gpio.h
-- boards/avr/piconomix_scorpion_board/px_board.c
+- boards/avr/px_scorpion/inc/px_board.h
+- boards/avr/px_scorpion/inc/px_board_gpio.h
+- boards/avr/px_scorpion/src/px_board.c
 
 7. Getting started {#SCORPION_BOARD_START}
 ==========================================
@@ -269,7 +269,7 @@ Studio's build system, to make the projects cross-platform.
 
 Open and build @ref SCORPION_BOARD_EXAMPLE_GPIO. It is located here:
 
-    px-lib/boards/avr/piconomix_scorpion_board/examples/01_gpio/gpio.atsln
+    px-lib/boards/avr/px_scorpion/examples/01_gpio/gpio.atsln
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 

@@ -24,8 +24,8 @@
  *  Initialises the stdout stream to output to a USB CDC port.
  *  
  *  File(s):
- *  - arch/avr/px_usb_cdc_stdio.h
- *  - arch/avr/px_usb_cdc_stdio.c
+ *  - arch/avr/inc/px_usb_cdc_stdio.h
+ *  - arch/avr/src/px_usb_cdc_stdio.c
  *  
  *  This component initialises the @b stdout stream to output over USB.
  *  

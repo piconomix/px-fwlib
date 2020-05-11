@@ -24,8 +24,8 @@
  *  Driver that communicates with an SD (Secure Digital) Card using SPI.
  *  
  *  File(s):
- *  - devices/mem/px_sd.h
- *  - devices/mem/px_sd_spi.c
+ *  - devices/mem/inc/px_sd.h
+ *  - devices/mem/src/px_sd_spi.c
  *  
  *  Reference:
  *  - 1. [SD Specifications Part 1 Physical Layer Simplified Specification 4.10](https://www.sdcard.org/downloads/pls/simplified_specs)

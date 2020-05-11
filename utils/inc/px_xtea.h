@@ -25,8 +25,8 @@
  *  Block cipher encryption/decryption algorithm.
  *  
  *  File(s):
- *  - utils/px_xtea.h
- *  - utils/px_xtea.c
+ *  - utils/inc/px_xtea.h
+ *  - utils/src/px_xtea.c
  *  
  *  @see http://en.wikipedia.org/wiki/XTEA
  */

@@ -27,9 +27,9 @@
  *  License: [Creative Commons Attribution ShareAlike 3.0](http://creativecommons.org/licenses/by-sa/3.0/legalcode)
  *  
  *  File(s):
- *  - boards/avr/arduino_uno_board/px_board.h 
- *  - boards/avr/arduino_uno_board/px_board_gpio.h 
- *  - boards/avr/arduino_uno_board/px_board.c
+ *  - boards/avr/arduino_uno/inc/px_board.h 
+ *  - boards/avr/arduino_uno/inc/px_board_gpio.h 
+ *  - boards/avr/arduino_uno/src/px_board.c
  */   
 /// @{
 

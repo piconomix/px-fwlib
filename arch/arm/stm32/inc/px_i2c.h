@@ -25,9 +25,9 @@
  *  Driver to communicate with I2C slaves.
  *  
  *  File(s):
- *  - arch/arm/stm32/px_i2c.h
- *  - arch/arm/stm32/px_i2c_cfg_template.h
- *  - arch/arm/stm32/px_i2c.c
+ *  - arch/arm/stm32/inc/px_i2c.h
+ *  - arch/arm/stm32/inc/px_i2c_cfg_template.h
+ *  - arch/arm/stm32/src/px_i2c.c
  *  
  *  The driver must be configured by supplying a project specific "px_i2c_cfg.h".
  *  "px_i2c_cfg_template.h" can be copied, renamed and modified to supply 

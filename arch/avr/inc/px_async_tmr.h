@@ -24,9 +24,9 @@
  *  This component provides basic time, calender and alarm functionality.
  *  
  *  File(s):
- *  - arch/avr/px_async_tmr.h
- *  - arch/avr/px_async_tmr_cfg_template.h
- *  - arch/avr/px_async_tmr.c
+ *  - arch/avr/inc/px_async_tmr.h
+ *  - arch/avr/inc/px_async_tmr_cfg_template.h
+ *  - arch/avr/src/px_async_tmr.c
  *  
  *  Asynchronous 8-bit TMRx operation is selected to use an external
  *  32768 Hz crystal. TMRx is configured to generate an interrupt and call a

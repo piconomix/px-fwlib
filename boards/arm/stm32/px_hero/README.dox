@@ -106,7 +106,7 @@ In the future a Lite Edition may also be available.
 @tip_e
  
 Some hardware blocks will be absent on the Lite Edition to provide a lower cost 
-option. The [schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf)
+option. The [schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_sch.pdf)
 contains 3 build variants (full, Deluxe and Lite) and can be consulted for an 
 exact view of electronic components that are present or absent.
 
@@ -140,16 +140,16 @@ Most OSHW designs hide some of the "magic sauce". The schematics are hard to
 follow and complete manufacturer part numbers are not disclosed. The Hero Board
 lowers the barrier in terms of design openness... judge for yourself:
 
-- [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_sch.pdf)
-- [Bill Of Materials - Deluxe Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_bom_deluxe_edition.pdf)
-- [Bill Of Materials - Lite Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_bom_lite_edition.pdf)
-- [Assembly Drawings - part designators & silkscreen](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_assy.pdf)
-- [Mechanical Dimensions](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_mec.pdf)
-- [3D Model](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/piconomix_hero_board/docs/piconomix_hero_board_3d.step)
+- [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_sch.pdf)
+- [Bill Of Materials - Deluxe Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_bom_deluxe_edition.pdf)
+- [Bill Of Materials - Lite Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_bom_lite_edition.pdf)
+- [Assembly Drawings - part designators & silkscreen](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_assy.pdf)
+- [Mechanical Dimensions](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_mec.pdf)
+- [3D Model](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_3d.step)
 
 The design documents can also be found here for off-line viewing:
 
-    px-lib/boards/arm/stm32/piconomix_hero_board/docs
+    px-lib/boards/arm/stm32/px_hero/docs
 
 7. Reference documents {#HERO_BOARD_REFS}
 =========================================
@@ -161,7 +161,7 @@ The design documents can also be found here for off-line viewing:
 
 The reference documents can also be found here for off-line viewing:
 
-    px-lib/boards/arm/stm32/piconomix_hero_board/docs
+    px-lib/boards/arm/stm32/px_hero/docs
 
 8. Disclaimer {#HERO_BOARD_DISCLAIMER}
 ======================================
@@ -195,9 +195,9 @@ A Board Support Package (@ref BOARDS_STM32_PICONOMIX_HERO) is provided that:
 - provide microsecond and millisecond delay functions
 
 Files:
-- boards/arm/stm32/piconomix_hero_board/px_board.h
-- boards/arm/stm32/piconomix_hero_board/px_board_gpio.h
-- boards/arm/stm32/piconomix_hero_board/px_board.c
+- boards/arm/stm32/px_hero/inc/px_board.h
+- boards/arm/stm32/px_hero/inc/px_board_gpio.h
+- boards/arm/stm32/px_hero/src/px_board.c
 
 10. Getting started {#HERO_BOARD_START}
 =======================================
@@ -320,7 +320,7 @@ For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
 
 Open and build the @ref HERO_BOARD_EXAMPLE_GPIO. The project file is here:
 
-    px-lib/boards/avr/piconomix_hero_board/examples/gpio/.project
+    px-lib/boards/avr/px_hero/examples/gpio/.project
 
 If the ".project" file is associated with STM32CubeIDE, then it's as simple as
 double-clicking on it, otherwise you need to add it to the workspace within
@@ -453,7 +453,7 @@ keyboard combo to paste the text into the window.
 
 Change the directory to @ref HERO_BOARD_EXAMPLE_GPIO, e.g.
 
-    > cd px-lib\boards\arm\stm32\piconomix_hero_board\examples\gpio
+    > cd px-lib\boards\arm\stm32\px_hero\examples\gpio
 
 Execute `make clean` to delete all of the build files:
 

@@ -25,7 +25,7 @@
  * Tiny, macro based, circular buffer implementation.
  *  
  * File(s):
- * - utils/px_ring_buf_macros.h
+ * - utils/inc/px_ring_buf_macros.h
  *  
  * Source:
  *  

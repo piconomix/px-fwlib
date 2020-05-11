@@ -26,9 +26,9 @@
  *  interrupt is generated.
  *  
  *  File(s):
- *  - arch/arm/stm32/px_sysclk.h
- *  - arch/arm/stm32/px_sysclk_cfg_template.h
- *  - arch/arm/stm32/px_sysclk.c
+ *  - arch/arm/stm32/inc/px_sysclk.h
+ *  - arch/arm/stm32/inc/px_sysclk_cfg_template.h
+ *  - arch/arm/stm32/src/px_sysclk.c
  *  
  *  px_sysclk_init() configures SysTick to expire every 
  *  1/PX_SYSCLK_TICKS_PER_SEC second and generate an interrupt during which a 

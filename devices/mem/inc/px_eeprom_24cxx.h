@@ -25,8 +25,8 @@
  *  Driver that communicates with an ST 24Cxx EEPROM using I2C.
  *  
  *  File(s):
- *  - devices/mem/px_eeprom_24cxx.h
- *  - devices/mem/px_eeprom_24cxx.c
+ *  - devices/mem/inc/px_eeprom_24cxx.h
+ *  - devices/mem/src/px_eeprom_24cxx.c
  *  
  *  Reference:
  *  - [ST 24Cxx] (http://www.st.com/internet/com/TECHNICAL_RESOURCES/TECHNICAL_LITERATURE/DATASHEET/DM00061111.pdf) 16-Kbit serial I2C bus EEPROM datasheet

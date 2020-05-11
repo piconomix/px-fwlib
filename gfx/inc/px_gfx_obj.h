@@ -25,8 +25,8 @@
  *  Graphical object layer on primitive drawing layer.
  *  
  *  File(s):
- *  - gfx/px_gfx_obj.h 
- *  - gfx/px_gfx_obj.c
+ *  - gfx/inc/px_gfx_obj.h 
+ *  - gfx/src/px_gfx_obj.c
  */
 /// @{
 

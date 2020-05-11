@@ -24,9 +24,9 @@
  *  Driver that communicates with an Adesto AT25S Serial Flash using SPI.
  *  
  *  File(s):
- *  - devices/mem/px_at25s.h
- *  - devices/mem/px_at25s_cfg_template.h
- *  - devices/mem/px_at25s.c
+ *  - devices/mem/inc/px_at25s.h
+ *  - devices/mem/inc/px_at25s_cfg_template.h
+ *  - devices/mem/src/px_at25s.c
  *  
  *  Reference:
  *  - [Adesto AT25S041](https://www.adestotech.com/wp-content/uploads/DS-AT25S041_044.pdf) 4-Mbit SPI Serial Flash Memory datasheet

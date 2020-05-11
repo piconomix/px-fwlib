@@ -25,10 +25,10 @@
  *  Driver for the SPI peripheral to communicate with SPI slaves.
  *  
  *  File(s):
- *  - arch/avr/px_spi.h
- *  - arch/avr/px_spi_cfg_template.h
- *  - arch/avr/px_spi_defs.h
- *  - arch/avr/px_spi.c
+ *  - arch/avr/inc/px_spi.h
+ *  - arch/avr/inc/px_spi_cfg_template.h
+ *  - arch/avr/inc/px_spi_defs.h
+ *  - arch/avr/src/px_spi.c
  *  
  *  The driver must be configured by supplying a project specific "px_spi_cfg.h".
  *  "px_spi_cfg_template.h" can be copied, renamed and modified to supply 

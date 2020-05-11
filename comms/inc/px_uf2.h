@@ -25,9 +25,9 @@
  *  Microsoft UF2 bootloader over USB MSD (Mass Storage Device).
  *  
  *  File(s):
- *  - comms/px_uf2.h 
- *  - comms/px_uf2_cfg_template.h 
- *  - comms/px_uf2.c
+ *  - comms/inc/px_uf2.h 
+ *  - comms/inc/px_uf2_cfg_template.h 
+ *  - comms/src/px_uf2.c
  *  
  *  References: 
  *  - [One chip to flash them all] (https://makecode.com/blog/one-chip-to-flash-them-all) 

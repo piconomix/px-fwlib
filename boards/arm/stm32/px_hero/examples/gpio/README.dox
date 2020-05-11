@@ -9,7 +9,7 @@ The LED flashes at a slow 2 Hz while the 6/NO button is released and at a fast
 8 Hz while the button is being pressed.
   
 File(s):
-- boards/arm/stm32/piconomix_hero_board/examples/gpio/src/main.c
+- boards/arm/stm32/px_hero/examples/gpio/src/main.c
 
 The following modules are used:
 - @ref BOARDS_STM32_PICONOMIX_HERO

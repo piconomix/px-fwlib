@@ -25,7 +25,7 @@
  *  This file includes all the required files from the STM32Cube library
  *  
  *  File(s):
- *  - arm/stm32/px_lib_stm32cube.h
+ *  - arm/stm32/inc/px_lib_stm32cube.h
  *  
  */
 /// @{

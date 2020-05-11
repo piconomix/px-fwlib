@@ -25,8 +25,8 @@
  *  Full featured matrix (row/column) keyboard scanning module
  *  
  *  File(s):
- *  - devices/general/px_kbd_matrix.h
- *  - devices/general/px_kbd_matrix.c
+ *  - devices/general/inc/px_kbd_matrix.h
+ *  - devices/general/src/px_kbd_matrix.c
  *  
  *  This module implements or makes provision for:
  *  - Optimised matrix row/column key scanning

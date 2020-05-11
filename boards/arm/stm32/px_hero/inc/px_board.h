@@ -22,9 +22,9 @@
  *  @defgroup BOARDS_STM32_PICONOMIX_HERO px_board.h : STM32L072RB PX-HER0 Board
  *  
  *  File(s):
- *  - boards/arm/stm32/piconomix_hero_board/px_board.h 
- *  - boards/arm/stm32/piconomix_hero_board/px_board_gpio.h 
- *  - boards/arm/stm32/piconomix_hero_board/px_board.c
+ *  - boards/arm/stm32/px_hero/inc/px_board.h 
+ *  - boards/arm/stm32/px_hero/inc/px_board_gpio.h 
+ *  - boards/arm/stm32/px_hero/src/px_board.c
  */   
 /// @{
 

@@ -26,8 +26,8 @@
  *  connected end-to-end (circular).
  *  
  *  File(s):
- *  - utils/px_ring_buf.h
- *  - utils/px_ring_buf.c
+ *  - utils/inc/px_ring_buf.h
+ *  - utils/src/px_ring_buf.c
  *  
  *  A fixed-sized array is managed as a FIFO buffer with a "zero-copy" policy,
  *  i.e. data is not shifted (copied) when data is removed or added to the

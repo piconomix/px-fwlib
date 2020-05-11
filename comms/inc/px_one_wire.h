@@ -25,9 +25,9 @@
  *  Implements a Dallas/Maxim 1-Wire bit-bang driver.
  *  
  *  File(s):
- *  - comms/px_one_wire.h
- *  - comms/px_one_wire_cfg_template.h
- *  - comms/px_one_wire.c
+ *  - comms/inc/px_one_wire.h
+ *  - comms/inc/px_one_wire_cfg_template.h
+ *  - comms/src/px_one_wire.c
  *  
  *  References:
  *  - [Maxim AN126 - 1-Wire Communication Through Software] (https://www.maximintegrated.com/en/app-notes/index.mvp/id/126)

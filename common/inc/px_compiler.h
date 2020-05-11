@@ -28,7 +28,7 @@
  *  - [Pre-defined C/C++ Compiler Macros](https://sourceforge.net/p/predef/wiki/Home/)
  *  
  *  File(s):
- *  - common/px_compiler.h
+ *  - common/inc/px_compiler.h
  */
 /// @{
 

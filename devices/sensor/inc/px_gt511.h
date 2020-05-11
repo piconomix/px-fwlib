@@ -26,8 +26,8 @@
  *  tested on the GT-511C1R and GT-511C3 sensor. 
  *  
  *  File(s):
- *  - devices/sensor/px_gt511.h
- *  - devices/sensor/px_gt511.c
+ *  - devices/sensor/inc/px_gt511.h
+ *  - devices/sensor/src/px_gt511.c
  *  
  *  Reference: 
  *  - ADH Tech [GT-511C1R] (http://www.adh-tech.com.tw/?21,gt-511c1r-gt-511c11-%28uart%29) sensor datasheet 

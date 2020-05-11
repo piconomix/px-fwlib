@@ -25,9 +25,9 @@
  *  Driver to communicate with GPIO slaves.
  *  
  *  File(s):
- *  - arch/arm/stm32/px_gpio.h
- *  - arch/arm/stm32/px_gpio_cfg_template.h
- *  - arch/arm/stm32/px_gpio.c
+ *  - arch/arm/stm32/inc/px_gpio.h
+ *  - arch/arm/stm32/inc/px_gpio_cfg_template.h
+ *  - arch/arm/stm32/src/px_gpio.c
  *  
  *  The driver must be configured by supplying a project specific "px_gpio_cfg.h".
  *  "px_gpio_cfg_template.h" can be copied, renamed and modified to supply 

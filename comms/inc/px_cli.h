@@ -26,8 +26,8 @@
  *  terminal emulator.
  *  
  *  File(s):
- *  - comms/px_cli.h
- *  - comms/px_cli_cfg_template.h
+ *  - comms/inc/px_cli.h
+ *  - comms/inc/px_cli_cfg_template.h
  *  - comms/px_cli.c (general version)
  *  - comms/px_cli_P.c (minimise RAM usage by using Program Memory. See @ref PX_PGM_P)
  *  

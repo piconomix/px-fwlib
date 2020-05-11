@@ -24,8 +24,8 @@
  *  Initialises the stdout stream to output to UART.
  *  
  *  File(s):
- *  - arch/avr/px_uart_stdio.h
- *  - arch/avr/px_uart_stdio.c
+ *  - arch/avr/inc/px_uart_stdio.h
+ *  - arch/avr/src/px_uart_stdio.c
  *  
  *  This component initialises the @b stdout stream to output over UART.
  *  

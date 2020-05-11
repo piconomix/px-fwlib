@@ -24,8 +24,8 @@
  *  This component encapsulates packets in HDLC-like frames.
  *  
  *  File(s):
- *  - comms/px_hdlc.h
- *  - comms/px_hdlc.c
+ *  - comms/inc/px_hdlc.h
+ *  - comms/src/px_hdlc.c
  *  
  *  The purpose of this module is detect the start and end of a data packet and
  *  if any errors occured during transmission.

@@ -24,9 +24,9 @@
  *  Driver that communicates with an Adesto AT45D DataFlash using SPI.
  *  
  *  File(s):
- *  - devices/mem/px_at45d.h
- *  - devices/mem/px_at45d_cfg_template.h
- *  - devices/mem/px_at45d.c
+ *  - devices/mem/inc/px_at45d.h
+ *  - devices/mem/inc/px_at45d_cfg_template.h
+ *  - devices/mem/src/px_at45d.c
  *  
  *  Reference:
  *  - [Adesto AT45DB041E](http://www.adestotech.com/sites/default/files/datasheets/doc8783.pdf) 4Mbit DataFlash datasheet

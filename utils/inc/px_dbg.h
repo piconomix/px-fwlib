@@ -39,9 +39,9 @@
  *  Outputs debug information to a serial console
  *  
  *  File(s):
- *  - utils/px_dbg.h
- *  - utils/px_dbg_cfg_template.h
- *  - utils/px_dbg.c
+ *  - utils/inc/px_dbg.h
+ *  - utils/inc/px_dbg_cfg_template.h
+ *  - utils/src/px_dbg.c
  *  
  *  An old school debugging technique which still works well is to add debug 
  *  print statements in the source code to track program flow and check for 

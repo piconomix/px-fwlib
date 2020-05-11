@@ -25,8 +25,8 @@
  *  Brief description (which ends at the dot).
  *  
  *  File(s):
- *  - common/px_template.h
- *  - common/px_template.c
+ *  - common/inc/px_template.h
+ *  - common/src/px_template.c
  *  
  *  Detailed description.
  */

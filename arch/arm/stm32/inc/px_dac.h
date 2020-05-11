@@ -25,9 +25,9 @@
  *  Driver to output analogue values.
  *  
  *  File(s):
- *  - arch/arm/stm32/px_dac.h
- *  - arch/arm/stm32/px_dac_cfg_template.h
- *  - arch/arm/stm32/px_dac.c
+ *  - arch/arm/stm32/inc/px_dac.h
+ *  - arch/arm/stm32/inc/px_dac_cfg_template.h
+ *  - arch/arm/stm32/src/px_dac.c
  *  
  *  The driver must be configured by supplying a project specific "px_dac_cfg.h".
  *  "px_dac_cfg_template.h" can be copied, renamed and modified to supply 

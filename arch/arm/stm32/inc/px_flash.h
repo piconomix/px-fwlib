@@ -25,8 +25,8 @@
  *  This module can erase a page and write a half page of internal FLASH.
  *  
  *  File(s):
- *  - arch/arm/stm32/px_flash.h
- *  - arch/arm/stm32/px_flash.c 
+ *  - arch/arm/stm32/inc/px_flash.h
+ *  - arch/arm/stm32/src/px_flash.c 
  *   
  *  @note 
  *  The flash erase and program functions must be executed from SRAM, not FLASH.

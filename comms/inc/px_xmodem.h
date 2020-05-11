@@ -25,9 +25,9 @@
  *  Receive or send a file via the XMODEM-CRC protocol. 
  *  
  *  File(s):
- *  - comms/px_xmodem.h
- *  - comms/px_xmodem_cfg_template.h
- *  - comms/px_xmodem.c
+ *  - comms/inc/px_xmodem.h
+ *  - comms/inc/px_xmodem_cfg_template.h
+ *  - comms/src/px_xmodem.c
  *  
  *  XMODEM-CRC is a simple file transfer protocol. The file is broken up into a 
  *  series of packets that are sent to the receiver.

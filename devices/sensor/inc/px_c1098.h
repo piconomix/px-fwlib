@@ -23,8 +23,8 @@
  *  @defgroup PX_C1098 px_c1098.h : COMedia C1098 CMOS Camera Module driver
  *  
  *  File(s):
- *  - devices/sensor/px_c1098.h
- *  - devices/sensor/px_c1098.c
+ *  - devices/sensor/inc/px_c1098.h
+ *  - devices/sensor/src/px_c1098.c
  *  
  *  Reference:
  *  - [COMedia C1098](http://www.comedia.com.hk/FP13/Spec_PDF/PX_C1098_UM.pdf) CMOS Camera module

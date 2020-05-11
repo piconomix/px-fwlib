@@ -475,9 +475,9 @@ the output:
     Compiling C: ../../../../utils/px_systmr.c
     avr-gcc -c -mmcu=atmega328p -gdwarf-2 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffu
 
-    Compiling C: ../../../../boards/avr/piconomix_scorpion_board/px_board.c
+    Compiling C: ../../../../boards/avr/px_scorpion/px_board.c
     avr-gcc -c -mmcu=atmega328p -gdwarf-2 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffu
-    ../../../../boards/avr/piconomix_scorpion_board/px_board.c:54:2: warning: #warning "This BSP is for Piconomix ATmega328P Scorpion Board" [-
+    ../../../../boards/avr/px_scorpion/px_board.c:54:2: warning: #warning "This BSP is for Piconomix ATmega328P Scorpion Board" [-
      #warning "This BSP is for Piconomix ATmega328P Scorpion Board"
       ^
 

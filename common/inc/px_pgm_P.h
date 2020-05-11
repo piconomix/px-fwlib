@@ -26,7 +26,7 @@
  *  constant data in program memory.
  *  
  *  File(s):
- *  - common/px_pgm_P.h
+ *  - common/inc/px_pgm_P.h
  *  
  *  This utility module attempts to provide a standardised method to store and
  *  read constant data in program memory for devices with separate program and

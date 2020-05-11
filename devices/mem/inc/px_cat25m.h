@@ -24,9 +24,9 @@
  *  Driver that communicates with an On Semiconductor CAT25M EEPROM using SPI.
  *  
  *  File(s):
- *  - devices/mem/px_cat25m.h
- *  - devices/mem/px_cat25m_cfg_template.h
- *  - devices/mem/px_cat25m.c
+ *  - devices/mem/inc/px_cat25m.h
+ *  - devices/mem/inc/px_cat25m_cfg_template.h
+ *  - devices/mem/src/px_cat25m.c
  *  
  *  Reference:
  *  - [On Semiconductor CAT25M01](http://www.onsemi.com/pub/Collateral/CAT25M01-D.PDF) 1 Mbit SPI Serial CMOS EEPROM datasheet

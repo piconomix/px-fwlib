@@ -25,8 +25,8 @@
  *  Driver to communicate with I2C slaves.
  *  
  *  File(s):
- *  - arch/avr/px_i2c.h
- *  - arch/avr/px_i2c_cfg_template.h
+ *  - arch/avr/inc/px_i2c.h
+ *  - arch/avr/inc/px_i2c_cfg_template.h
  *  - arch/avr/px_i2c_twi.c  (TWI peripheral version)
  *  - arch/avr/px_i2c_gpio.c (GPIO "bit-bang" version)
  *  

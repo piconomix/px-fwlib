@@ -25,7 +25,7 @@
  *  Graphical objects.
  *  
  *  File(s):
- *  - gfx/px_gfx_objects.h 
+ *  - gfx/inc/px_gfx_objects.h 
  */
 /// @{
 

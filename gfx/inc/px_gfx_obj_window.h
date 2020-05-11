@@ -23,8 +23,8 @@
  *  @defgroup PX_GFX_OBJ_WINDOW px_gfx_obj_window.h : Graphical window object
  *  
  *  File(s):
- *  - gfx/px_gfx_obj_window.h 
- *  - gfx/px_gfx_obj_window.c
+ *  - gfx/inc/px_gfx_obj_window.h 
+ *  - gfx/src/px_gfx_obj_window.c
  */
 /// @{
 

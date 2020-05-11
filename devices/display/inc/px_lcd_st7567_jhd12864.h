@@ -24,8 +24,8 @@
  *  @defgroup PX_LCD_ST7567_JHD12864 px_lcd_st7567_jhd12864.h : JHD JHD12864-G176BSW 128x64 monochrome LCD wtih Sitronix ST7567 driver
  *
  *  File(s):
- *  - devices/display/px_lcd_st7567_jhd12864.h
- *  - devices/display/px_lcd_st7567_jhd12864.c
+ *  - devices/display/inc/px_lcd_st7567_jhd12864.h
+ *  - devices/display/src/px_lcd_st7567_jhd12864.c
  *
  */
 /// @{

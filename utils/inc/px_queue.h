@@ -25,8 +25,8 @@
  *  A FIFO (First In First Out) queue of fixed sized items using pointers.
  *  
  *  File(s):
- *  - utils/px_queue.h
- *  - utils/px_queue.c
+ *  - utils/inc/px_queue.h
+ *  - utils/src/px_queue.c
  *  
  *  @see https://en.wikipedia.org/wiki/Queue_(abstract_data_type)
  */

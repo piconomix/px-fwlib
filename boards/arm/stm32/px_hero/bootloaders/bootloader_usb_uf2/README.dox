@@ -64,7 +64,7 @@ The LED will blink continuously to indicate that it is in UF2 boot mode.
 
 1. Locate the UF2 application file, for example:
 
-    px-lib/boards/arm/stm32/piconomix_hero_board/examples/gpio/BUILD_RELEASE_BOOT/gpio.uf2
+    px-lib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.uf2
 
 2. With the left mouse button, click on the file and (keeping the button pressed)
    drag the file to the drive.
@@ -114,7 +114,7 @@ The UF2 bootloader is ~13.5k in size and occupies the first 16k (0x00000000 to
 0x00003FFF). The start address of the application is set in the bootloader's 
 main.c (0x4000 = 16384 = 16k):
 
-@snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_usb_uf2/src/main.c Address mapping of App
+@snippetlineno boards/arm/stm32/px_hero/bootloaders/bootloader_usb_uf2/src/main.c Address mapping of App
 
 The application would normally start at the first address in FLASH, but it must
 be moved to a higher address to accomodate the bootloader which is executed 
@@ -158,7 +158,7 @@ It has been modified to allow VECT_TAB_OFFSET to be overriden externally:
 
 The linker script is located here:
 
-    px-lib/boards/arm/stm32/piconomix_hero_board/stm32l072xb.ld
+    px-lib/boards/arm/stm32/px_hero/stm32l072xb.ld
 
 It allows the start address to be changed with the FLASH_OFFSET symbol:
 
@@ -171,7 +171,7 @@ It allows the start address to be changed with the FLASH_OFFSET symbol:
 
 The generated LSS file is located here:
 
-    px-lib/boards/arm/stm32/piconomix_hero_board/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss
+    px-lib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss
 
 It can be inspected to verify that the application has been moved to the right 
 address:
@@ -195,6 +195,6 @@ address:
 The bootloader will perform a number of sanity checks on the UF2 file programmed
 in FLASH, before it will jump to the start address of the application:
 
-@snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_uart_xmodem/src/main.c Execute App
+@snippetlineno boards/arm/stm32/px_hero/bootloaders/bootloader_uart_xmodem/src/main.c Execute App
 
 

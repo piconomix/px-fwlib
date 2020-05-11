@@ -23,8 +23,8 @@
  *  @defgroup PX_DS18B20 px_ds18b20.h : Maxim 1-Wire digital thermometer driver
  *  
  *  File(s):
- *  - devices/sensor/px_ds18b20.h
- *  - devices/sensor/px_ds18b20.c 
+ *  - devices/sensor/inc/px_ds18b20.h
+ *  - devices/sensor/src/px_ds18b20.c 
  *   
  *  Reference: 
  *  - [Maxim DS18B20 datasheet](https://datasheets.maximintegrated.com/en/ds/DS18B20.pdf) 

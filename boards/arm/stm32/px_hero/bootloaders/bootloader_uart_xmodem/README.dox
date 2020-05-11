@@ -99,7 +99,7 @@ The application's Makefile and linker script has been set up to create a BIN
 file for upload to the bootloader when the 'make build=release-boot' command is 
 executed:
 
-    px-lib\boards\arm\stm32\piconomix_hero_board\examples\gpio>make build=release-boot
+    px-lib\boards\arm\stm32\px_hero\examples\gpio>make build=release-boot
 
     -------- begin (RELEASE FOR BOOT) --------
     arm-none-eabi-gcc.exe (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM/embedded-7-branch revision 255204]
@@ -109,7 +109,7 @@ executed:
 
 
     Compiling C: src/main.c
-    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Os -DSTM32L072xx -DUSE_FULL_LL_DRIVER -DVECT_TAB_OFFSET=0x4000 -Wa,-adhlns=BUILD_RELEASE_BOOT/main.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/piconomix_hero_board -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_RELEASE_BOOT/main.d src/main.c -o BUILD_RELEASE_BOOT/main.o
+    arm-none-eabi-gcc -c -mthumb -mcpu=cortex-m0plus -gdwarf-2 -funsigned-char -funsigned-bitfields -fshort-enums -Wall -Wstrict-prototypes -std=gnu99 -ffunction-sections -fdata-sections --specs=nano.specs -Os -DSTM32L072xx -DUSE_FULL_LL_DRIVER -DVECT_TAB_OFFSET=0x4000 -Wa,-adhlns=BUILD_RELEASE_BOOT/main.lst -I. -Icfg -Ires -Isrc -I../../../../../../boards/arm/stm32/px_hero -I../../../../../.. -I../../../../../../arch/arm/stm32 -I../../../../../../common -I../../../../../../comms -I../../../../../../data -I../../../../../../devices/comms -I../../../../../../devices/display -I../../../../../../devices/general -I../../../../../../devices/mem -I../../../../../../devices/rtc -I../../../../../../devices/sensor -I../../../../../../gfx -I../../../../../../gfx/fonts -I../../../../../../gfx/images -I../../../../../../utils -I../../../../../../libs/ChaN_FatFs -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../../../../../../libs/STM32Cube/L0/Drivers/CMSIS/Include -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc -I../../../../../../libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Legacy -I../../../../../../libs/STM32Cube_USB/Class/CDC/Inc -I../../../../../../libs/STM32Cube_USB/Core/Inc -MMD -MP -MF BUILD_RELEASE_BOOT/main.d src/main.c -o BUILD_RELEASE_BOOT/main.o
 
     ...    
 
@@ -137,7 +137,7 @@ for more complex bootloaders, for example @ref HERO_BOARD_BOOTLOADER_USB_UF2.
 The start address of the application is set in the bootloader's main.c 
 (0x4000 = 16384 = 16k):
 
-@snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_uart_xmodem/src/main.c Address mapping of App
+@snippetlineno boards/arm/stm32/px_hero/bootloaders/bootloader_uart_xmodem/src/main.c Address mapping of App
 
 The application would normally start at the first address in Flash, but it must
 be moved to a higher address to accomodate the bootloader which is executed 
@@ -179,7 +179,7 @@ Location:
 
     px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 
-The linker script px-lib/boards/arm/stm32/piconomix_hero_board/stm32l072xb.ld allows 
+The linker script px-lib/boards/arm/stm32/px_hero/stm32l072xb.ld allows 
 the start address to be changed with the FLASH_OFFSET symbol:
 
     /*
@@ -190,7 +190,7 @@ the start address to be changed with the FLASH_OFFSET symbol:
     FLASH_LENGTH = 128k - FLASH_OFFSET;
 
 The generated LSS file, for example
-px-lib/boards/arm/stm32/piconomix_hero_board/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss,
+px-lib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss,
 can be inspected to verify that the application has been moved to the right 
 address:
 
@@ -213,6 +213,6 @@ address:
 The bootloader will perform a number of sanity checks on the BIN file programmed
 in Flash, before it will jump to the start address of the application:
 
-@snippetlineno boards/arm/stm32/piconomix_hero_board/bootloaders/bootloader_usb_uf2/src/main.c Execute App
+@snippetlineno boards/arm/stm32/px_hero/bootloaders/bootloader_usb_uf2/src/main.c Execute App
 
 

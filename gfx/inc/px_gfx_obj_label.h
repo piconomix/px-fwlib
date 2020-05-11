@@ -25,8 +25,8 @@
  *  Graphical text label object.
  *  
  *  File(s):
- *  - gfx/px_gfx_obj_label.h 
- *  - gfx/px_gfx_obj_label.c
+ *  - gfx/inc/px_gfx_obj_label.h 
+ *  - gfx/src/px_gfx_obj_label.c
  */
 /// @{
 

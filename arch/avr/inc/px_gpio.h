@@ -26,8 +26,8 @@
  *  General Purpose I/O pins.
  *  
  *  File(s):
- *  - arch/avr/px_gpio.h
- *  - arch/avr/px_gpio.c
+ *  - arch/avr/inc/px_gpio.h
+ *  - arch/avr/src/px_gpio.c
  *  
  *  @warn_s
  *  Use a minimum compiler optimization level of 1, otherwise code bloat will

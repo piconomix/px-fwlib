@@ -25,8 +25,8 @@
  *  Graphical graph object.
  *  
  *  File(s):
- *  - gfx/px_gfx_obj_graph.h 
- *  - gfx/px_gfx_obj_graph.c
+ *  - gfx/inc/px_gfx_obj_graph.h 
+ *  - gfx/src/px_gfx_obj_graph.c
  */
 /// @{
 

@@ -23,8 +23,8 @@
  *  @defgroup PX_VEML6075 px_veml6075.h : Vishay VEML6075 UV light sensor driver
  *  
  *  File(s):
- *  - devices/sensor/px_veml6075.h
- *  - devices/sensor/px_veml6075.c
+ *  - devices/sensor/inc/px_veml6075.h
+ *  - devices/sensor/src/px_veml6075.c
  *  
  *  Reference: 
  *  - [Vishay VEML6075 datasheet](http://www.vishay.com/docs/84304/veml6075.pdf)

@@ -25,8 +25,8 @@
  *  A double (forward and backward) linked list using pointers.
  *  
  *  File(s):
- *  - utils/px_link_list.h
- *  - utils/px_link_list.c
+ *  - utils/inc/px_link_list.h
+ *  - utils/src/px_link_list.c
  *  
  *  @see http://en.wikipedia.org/wiki/Linked_list
  *  

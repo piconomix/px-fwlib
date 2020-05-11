@@ -24,7 +24,7 @@
  *  Definition of standard types, boolean, scope and utility macros.
  *  
  *  File:
- *  - common/px_defines.h
+ *  - common/inc/px_defines.h
  */
 /// @{
 

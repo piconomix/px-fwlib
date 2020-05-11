@@ -42,7 +42,7 @@ comprehensively documented here:
 
 The reference documents can also be found here for off-line viewing:
 
-    px-lib/boards/arm/stm32/piconomix_hero_board/docs
+    px-lib/boards/arm/stm32/px_hero/docs
 
 2. Brief introduction to processor architecture {#STM32_QS_PROCESSOR_INTRO}
 ===========================================================================

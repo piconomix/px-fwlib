@@ -23,8 +23,8 @@
  *  @defgroup PX_BME280 px_bme280.h : Bosch BME280 Barometric pressure sensor driver
  *  
  *  File(s):
- *  - devices/sensor/px_bme280.h
- *  - devices/sensor/px_bme280.c 
+ *  - devices/sensor/inc/px_bme280.h
+ *  - devices/sensor/src/px_bme280.c 
  *   
  *  Reference: 
  *  - [Bosch BME280 datasheet](https://www.bosch-sensortec.com/bst/products/all_products/bme280) 

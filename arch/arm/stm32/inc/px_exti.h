@@ -25,9 +25,9 @@
  *  Driver for external interrupts.
  *  
  *  File(s):
- *  - arch/arm/stm32/px_exti.h
- *  - arch/arm/stm32/px_exti_cfg_template.h
- *  - arch/arm/stm32/px_exti.c
+ *  - arch/arm/stm32/inc/px_exti.h
+ *  - arch/arm/stm32/inc/px_exti_cfg_template.h
+ *  - arch/arm/stm32/src/px_exti.c
  *  
  *  The driver must be configured by supplying a project specific 
  *  "px_exti_cfg.h". "px_exti_cfg_template.h" can be copied, renamed and 

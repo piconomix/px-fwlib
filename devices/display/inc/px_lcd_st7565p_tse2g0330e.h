@@ -24,8 +24,8 @@
  *  @defgroup PX_LCD_ST7565P_TSE2G0330E px_lcd_st7565p_tse2g0330e.h : Truly TSE2G0330-E 128x64 monochrome LCD wtih Sitronix ST7565P driver
  *
  *  File(s):
- *  - devices/display/px_lcd_st7565p_tse2g0330e.h
- *  - devices/display/px_lcd_st7565p_tse2g0330e.c
+ *  - devices/display/inc/px_lcd_st7565p_tse2g0330e.h
+ *  - devices/display/src/px_lcd_st7565p_tse2g0330e.c
  *
  */
 /// @{

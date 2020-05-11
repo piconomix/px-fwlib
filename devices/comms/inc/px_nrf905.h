@@ -23,8 +23,8 @@
  *  @defgroup PX_NRF905 px_nrf905.h : Nordic Semiconductor nRF905 RF Transceiver driver
  *  
  *  File(s):
- *  - devices/comms/px_nrf905.h
- *  - devices/comms/px_nrf905.c 
+ *  - devices/comms/inc/px_nrf905.h
+ *  - devices/comms/src/px_nrf905.c 
  *   
  *  Reference: 
  *  -  [Nordic nRF905] (https://www.nordicsemi.com/eng/Products/Sub-1-GHz-RF/nRF905) datasheet
