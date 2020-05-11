@@ -140,12 +140,12 @@ Most OSHW designs hide some of the "magic sauce". The schematics are hard to
 follow and complete manufacturer part numbers are not disclosed. The Hero Board
 lowers the barrier in terms of design openness... judge for yourself:
 
-- [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_sch.pdf)
-- [Bill Of Materials - Deluxe Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_bom_deluxe_edition.pdf)
-- [Bill Of Materials - Lite Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_bom_lite_edition.pdf)
-- [Assembly Drawings - part designators & silkscreen](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_assy.pdf)
-- [Mechanical Dimensions](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_mec.pdf)
-- [3D Model](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_3d.step)
+- [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_sch.pdf)
+- [Bill Of Materials - Deluxe Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_bom_deluxe_edition.pdf)
+- [Bill Of Materials - Lite Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_bom_lite_edition.pdf)
+- [Assembly Drawings - part designators & silkscreen](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_assy.pdf)
+- [Mechanical Dimensions](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_mec.pdf)
+- [3D Model](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_3d.step)
 
 The design documents can also be found here for off-line viewing:
 
