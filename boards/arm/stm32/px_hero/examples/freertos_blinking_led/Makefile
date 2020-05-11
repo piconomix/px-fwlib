@@ -69,6 +69,7 @@ FREERTOS = $(PX_LIB)/libs/FreeRTOS/Source
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
 SRC += $(BSP)/src/px_board.c
+SRC += $(PX_LIB)/$(ARCH)/src/px_exti.c
 SRC += $(PX_LIB)/$(ARCH)/src/px_gpio.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c

@@ -1,4 +1,15 @@
 FreeRTOS Blinking LED example {#HERO_BOARD_EXAMPLE_FREERTOS_BLINKING_LED}
 =========================================================================
 
+This elaborate example to change the blinking rate of an LED demonstrates
+a few key RTOS concepts. It creates two tasks (LED and BTN).
 
+The LED task toggles an LED every 250 ms initially. The LED task checks if there 
+is a 3/UP or 4/DN button press event on the queue and increases or decreases the 
+blinking rate.
+
+The BTN task enables the falling edge interrupt for 3/UP (Port C pin 13) and 
+4/DN (Port C pin 12). A semaphore is given in each interrupt handler to signal
+to the BTN task that a button has been pressed. The BTN task will block on both
+semaphores and when a sempahore is given in the interrupt handler, it will add
+an event to the LED task's queue.
