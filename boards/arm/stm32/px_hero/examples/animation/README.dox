@@ -4,7 +4,7 @@ LCD graphic animation example {#HERO_BOARD_EXAMPLE_ANIMATION}
 This example displays 8 graphic images in succesion on the Graphic LCD to form 
 an animation:
 
-![](boards/arm/stm32/px_hero/examples/animation/resources/animation.gif)
+![](boards/arm/stm32/px_hero/examples/animation/res/animation.gif)
 
 Image source: [NUTS & VOLTS: Building your own Bitmaps and Animation for the 128x64 Graphics Kit](http://www.nutsvolts.com/blog/post/building_your_own_bitmaps_and_animation_for_the_128x64_graphics_kit)
   
