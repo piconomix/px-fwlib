@@ -72,8 +72,8 @@ extern "C" {
 /// Specify ADC peripheral
 typedef enum
 {
-    PX_ADC_PER_1 = 1,
-} px_adc_per_t;
+    PX_ADC_NR_1 = 1,
+} px_adc_nr_t;
 
 /// Specify ADC channel
 typedef enum
@@ -160,7 +160,7 @@ typedef enum
 /// Define ADC handle
 typedef struct
 {
-    struct px_adc_data_s * adc_data;        ///< ADC peripheral data
+    struct px_adc_per_s * adc_per;          ///< ADC peripheral data
 } px_adc_handle_t;
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
@@ -177,13 +177,13 @@ void px_adc_init(void);
  *  Open ADC peripheral using predefined (default) parameters.
  *  
  *  @param handle       Pointer to handle data structure
- *  @param peripheral   ADC peripheral
+ *  @param adc_nr       ADC peripheral number
  *  
  *  @retval false       Error: peripheral was not opened
  *  @retval true        Success: peripheral was opened
  */
 bool px_adc_open(px_adc_handle_t * handle,
-                 px_adc_per_t      peripheral);
+                 px_adc_nr_t       adc_nr);
 
 /**
  *  Close specified device.

@@ -118,7 +118,7 @@ static bool main_init(void)
     px_i2c_open(&px_i2c_handle, PX_I2C_NR_1, 0x3c);
 
     // Open ADC
-    px_adc_open(&px_adc_handle, PX_ADC_PER_1);
+    px_adc_open(&px_adc_handle, PX_ADC_NR_1);
 
     // Open DAC
     px_dac_open(&px_dac_handle, PX_DAC_PER_1);
