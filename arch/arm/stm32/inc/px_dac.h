@@ -71,8 +71,8 @@ extern "C" {
 /// Specify DAC peripheral
 typedef enum
 {
-    PX_DAC_PER_1 = 1,
-} px_dac_per_t;
+    PX_DAC_NR_1 = 1,
+} px_dac_nr_t;
 
 /// Specify DAC channel
 typedef enum
@@ -84,7 +84,7 @@ typedef enum
 /// Define DAC handle
 typedef struct
 {
-    struct px_dac_data_s * dac_data;        ///< DAC peripheral data
+    struct px_dac_per_s * dac_per;        ///< DAC peripheral data
 } px_dac_handle_t;
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
@@ -101,13 +101,13 @@ void px_dac_init(void);
  *  Open DAC peripheral using predefined (default) parameters.
  *  
  *  @param handle       Pointer to handle data structure
- *  @param peripheral   DAC peripheral
+ *  @param dac_nr       DAC peripheral number
  *  
  *  @retval false       Error: peripheral was not opened
  *  @retval true        Success: peripheral was opened
  */
 bool px_dac_open(px_dac_handle_t * handle,
-                 px_dac_per_t      peripheral);
+                 px_dac_nr_t       dac_nr);
 
 /**
  *  Close specified device.

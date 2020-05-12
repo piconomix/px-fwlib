@@ -121,7 +121,7 @@ static bool main_init(void)
     px_adc_open(&px_adc_handle, PX_ADC_NR_1);
 
     // Open DAC
-    px_dac_open(&px_dac_handle, PX_DAC_PER_1);
+    px_dac_open(&px_dac_handle, PX_DAC_NR_1);
 
 
     // Initialise SD Card driver

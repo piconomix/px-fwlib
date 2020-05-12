@@ -28,15 +28,12 @@
 PX_DBG_DECL_NAME("px_dac");
 
 /// Internal data for each DAC handle
-typedef struct px_dac_data_s
+typedef struct px_dac_per_s
 {
-    /// DAC peripheral base register address
-    DAC_TypeDef * dac_base_adr;
-    /// Peripheral
-    px_dac_per_t peripheral;
-    /// Number of open handles referencing peripheral
-    uint8_t open_counter;
-} px_dac_data_t;
+    DAC_TypeDef * dac_base_adr;     ///< DAC peripheral base register address
+    px_dac_nr_t   dac_nr;           ///< Peripheral
+    uint8_t       open_counter;     ///< Number of open handles referencing peripheral
+} px_dac_per_t;
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -45,22 +42,22 @@ typedef struct px_dac_data_s
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// Allocate data for each enabled DAC peripheral
 #if PX_DAC_CFG_DAC1_EN
-static px_dac_data_t px_dac1_data;
+static px_dac_per_t px_dac_per_1;
 #endif
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_dac_init_peripheral(DAC_TypeDef * dac_base_adr,
-                                   px_dac_per_t  peripheral)
+                                   px_dac_nr_t   dac_nr)
 {
     uint32_t dac_channel = 0;
 
     // Enable peripheral clock
-    switch(peripheral)
+    switch(dac_nr)
     {
 #if PX_DAC_CFG_DAC1_EN
-    case PX_DAC_PER_1:
+    case PX_DAC_NR_1:
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_DAC1);
         break;
 #endif
@@ -80,17 +77,17 @@ static void px_dac_init_peripheral(DAC_TypeDef * dac_base_adr,
 }
 
 
-static void px_dac_init_peripheral_data(px_dac_per_t    peripheral,
-                                        px_dac_data_t * dac_data)
+static void px_dac_init_peripheral_data(px_dac_nr_t    dac_nr,
+                                        px_dac_per_t * dac_per)
 {
     // Set peripheral
-    dac_data->peripheral = peripheral;
+    dac_per->dac_nr = dac_nr;
     // Set peripheral base address
-    switch(peripheral)
+    switch(dac_nr)
     {
 #if PX_DAC_CFG_DAC1_EN
-    case PX_DAC_PER_1:
-        dac_data->dac_base_adr = DAC1;
+    case PX_DAC_NR_1:
+        dac_per->dac_base_adr = DAC1;
         break;
 #endif
     default:
@@ -98,7 +95,7 @@ static void px_dac_init_peripheral_data(px_dac_per_t    peripheral,
         return;
     }
     // Clear reference counter
-    dac_data->open_counter = 0;
+    dac_per->open_counter = 0;
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -106,75 +103,68 @@ void px_dac_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_DAC_CFG_DAC1_EN
-    px_dac_init_peripheral_data(PX_DAC_PER_1, &px_dac1_data);
+    px_dac_init_peripheral_data(PX_DAC_NR_1, &px_dac_per_1);
 #endif
 }
 
 bool px_dac_open(px_dac_handle_t * handle,
-                 px_dac_per_t      peripheral)
+                 px_dac_nr_t       dac_nr)
 {
-    px_dac_data_t * dac_data;
+    px_dac_per_t * dac_per;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
 
     // Handle not initialised
-    handle->dac_data = NULL;
-
+    handle->dac_per = NULL;
     // Set pointer to peripheral data
-    switch(peripheral)
+    switch(dac_nr)
     {
 #if PX_DAC_CFG_DAC1_EN
-    case PX_DAC_PER_1:
-        dac_data = &px_dac1_data;
+    case PX_DAC_NR_1:
+        dac_per = &px_dac_per_1;
         break;
 #endif
     default:
         PX_DBG_ERR("Invalid peripheral specified");
         return false;
     }
-
     // Initialise peripheral
-    px_dac_init_peripheral(dac_data->dac_base_adr,
-                           peripheral);
-
+    px_dac_init_peripheral(dac_per->dac_base_adr,
+                           dac_nr);
     // Point handle to peripheral
-    handle->dac_data = dac_data;
-
+    handle->dac_per = dac_per;
     // Success
-    dac_data->open_counter++;
+    dac_per->open_counter++;
     return true;
 }
 
 bool px_dac_close(px_dac_handle_t * handle)
 {
-    px_dac_data_t * dac_data;
-    DAC_TypeDef *   dac_base_adr;
-    uint32_t        dac_channel = 0;
+    px_dac_per_t * dac_per;
+    DAC_TypeDef *  dac_base_adr;
+    uint32_t       dac_channel = 0;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    dac_data = handle->dac_data;
+    dac_per = handle->dac_per;
     // Check that handle is open
-    PX_DBG_ASSERT(dac_data != NULL);
-    PX_DBG_ASSERT(dac_data->open_counter != 0);
+    PX_DBG_ASSERT(dac_per != NULL);
+    PX_DBG_ASSERT(dac_per->open_counter != 0);
 
     // Get DAC peripheral base register address
-    dac_base_adr = dac_data->dac_base_adr;
-
+    dac_base_adr = dac_per->dac_base_adr;
     // Decrement open count
-    dac_data->open_counter--;
-
+    dac_per->open_counter--;
     // More open handles referencing peripheral?
-    if(dac_data->open_counter != 0)
+    if(dac_per->open_counter != 0)
     {        
         // Close handle
-        handle->dac_data = NULL;
+        handle->dac_per = NULL;
         // Success
         return true;
     }
-
     // Disable peripheral
 #if PX_DAC_CFG_DAC1_CH1_EN
     dac_channel |= LL_DAC_CHANNEL_1;
@@ -183,22 +173,19 @@ bool px_dac_close(px_dac_handle_t * handle)
     dac_channel |= LL_DAC_CHANNEL_2;
 #endif
     LL_DAC_Disable(dac_base_adr, dac_channel);
-
     // Disable peripheral clock
-    switch(handle->dac_data->peripheral)
+    switch(handle->dac_per->dac_nr)
     {
 #if PX_DAC_CFG_DAC1_EN
-    case PX_DAC_PER_1:
+    case PX_DAC_NR_1:
         LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_DAC1);
         break;
 #endif
     default:
         break;
     }
-
     // Close handle
-    handle->dac_data = NULL;
-
+    handle->dac_per = NULL;
     // Success
     return true;
 }
@@ -207,19 +194,19 @@ void px_dac_wr(px_dac_handle_t * handle,
                px_dac_channel_t  channel,
                uint16_t          data)
 {
-    px_dac_data_t * dac_data;
-    DAC_TypeDef *   dac_base_adr;
+    px_dac_per_t * dac_per;
+    DAC_TypeDef *  dac_base_adr;
 
     // Verify that pointer to handle is not NULL
     PX_DBG_ASSERT(handle != NULL);
     // Set pointer to peripheral
-    dac_data = handle->dac_data;
+    dac_per = handle->dac_per;
     // Check that handle is open
-    PX_DBG_ASSERT(dac_data != NULL);
-    PX_DBG_ASSERT(dac_data->open_counter != 0);
+    PX_DBG_ASSERT(dac_per != NULL);
+    PX_DBG_ASSERT(dac_per->open_counter != 0);
 
     // Get DAC peripheral base register address
-    dac_base_adr = dac_data->dac_base_adr;
+    dac_base_adr = dac_per->dac_base_adr;
 
     // Ouput data
     switch(channel)

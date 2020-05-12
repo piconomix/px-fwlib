@@ -13,7 +13,7 @@ int main(void)
     // Initialise DAC driver
     px_dac_init();
     // Open handle to DAC peripheral
-    px_dac_open(&px_dac_handle, PX_DAC_PER_1);
+    px_dac_open(&px_dac_handle, PX_DAC_NR_1);
     // Perform an DAC measurement on channel 0
     data = px_dac_sample(&px_dac_handle, PX_DAC_CH0);
     // Close DAC Handle
