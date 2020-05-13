@@ -49,11 +49,11 @@ Arduino Uno R3 that creates a "Un*x Shell"-like environment so that you can
 experiment with GPIO, ADC, I2C and SPI using only an ANSI/VT100 terminal 
 emulator (for example [Tera Term](http://en.sourceforge.jp/projects/ttssh2)).
 
-![Electrodragon BMP280 breakout board connected to I2C](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/arduino_uno/arduino_uno_i2c_slave_bmp280.jpg)
+![Electrodragon BMP280 breakout board connected to I2C](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/arduino_uno_board/arduino_uno_i2c_slave_bmp280.jpg)
 
 Connect your board, fire up the CLI and verify that it works:
 
-![CLI Exlorer executing on an Arduino Uno R3](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/arduino_uno/arduino_uno_cli_animated.gif)
+![CLI Exlorer executing on an Arduino Uno R3](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/arduino_uno_board/arduino_uno_cli_animated.gif)
 
 The BMP280 is found at 7-bit slave address 0x76. The chip identification 
 register value for the BMP280 is 0x58. This confirms that you are able to write 
