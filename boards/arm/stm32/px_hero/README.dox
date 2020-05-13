@@ -91,7 +91,7 @@ and @ref HERO_BOARD_APP_CLI.
     - Piezo buzzer
     - 6 **LARGE** finger-friendly user buttons
     - Reset button
-- **Peripheral connectors**:  
+- **Peripheral connectors**:
     - PWR (+3.6 V to +5 V power bus)
     - ADC x 4
     - DAC x 1

@@ -16,7 +16,7 @@ The string "Hello World!" is sent and then any bytes received is echoed back.
 ![Serial example interacting with Tera Term](scorpion_board_serial_example.png)
   
 File(s):
-- boards/avr/px_scorpion/examples/02_serial/src/main.c
+- boards/avr/px_scorpion/examples/serial/src/main.c
 
 The following modules are used:
 - @ref PX_DEFINES
