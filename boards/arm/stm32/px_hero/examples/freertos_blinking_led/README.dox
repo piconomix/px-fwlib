@@ -1,19 +1,29 @@
 FreeRTOS Blinking LED example {#HERO_BOARD_EXAMPLE_FREERTOS_BLINKING_LED}
 =========================================================================
 
-This elaborate example to change the blinking rate of an LED demonstrates
-a few key RTOS concepts. It creates two tasks (LED and BTN).
+px-lib is a bare metal embedded C library and does not have the RTOS mechanisms
+to block access to a shared resource like a UART or signal a task when an event
+has occurred for example when a character has been received, but that does not
+prevent us from trying a basic example to get a taste of what
+[FreeRTOS](https://www.freertos.org) has to offer.
+
+This over elaborate example to change the blinking rate of an LED demonstrates
+a few key RTOS concepts. It [creates](https://www.freertos.org/taskandcr.html) two 
+tasks (LED and BTN).
 
 The LED task toggles an LED every 250 ms initially. The LED task checks if there 
-is a 3/UP or 4/DN button press event on the queue and increases or decreases the 
-blinking rate.
+is a 3/UP or 4/DN button press event on the [queue](https://www.freertos.org/Embedded-RTOS-Queues.html)
+and increases or decreases the blinking rate.
 
 The BTN task enables the falling edge interrupt for 3/UP (Port C pin 13) and 
-4/DN (Port C pin 12). A semaphore is given in each interrupt handler to signal
-to the BTN task that a button has been pressed. The BTN task will block on both
-semaphores and when a sempahore is given in the interrupt handler, it will add
-an event to the LED task's queue.
+4/DN (Port C pin 12). A [binary semaphore](https://www.freertos.org/Embedded-RTOS-Binary-Semaphores.html) 
+is given in each interrupt handler to signal to the BTN task that a button has 
+been pressed. The BTN task will block on both semaphores and when a semaphore is
+given in the interrupt handler, it will add an event to the LED task's queue.
 
 File(s):
 - boards/arm/stm32/px_hero/examples/freertos_blinking_led/cfg/FreeRTOSConfig.h
 - boards/arm/stm32/px_hero/examples/freertos_blinking_led/src/main.c
+
+Reference(s):
+- [Mastering the FreeRTOS Real Time Kernel – a Hands On Tutorial Guide](https://www.freertos.org/Documentation/RTOS_book.html)

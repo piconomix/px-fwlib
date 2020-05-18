@@ -49,14 +49,22 @@ static QueueSetHandle_t  queue_set;
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void main_exti12_handler(void)
 {
+    BaseType_t higher_priority_task_woken = pdFALSE;
+
     // Give semaphore to indicate that 4/DN button has been pressed
-    xSemaphoreGiveFromISR(sem_btn_press_4_dn, NULL);
+    xSemaphoreGiveFromISR(sem_btn_press_4_dn, &higher_priority_task_woken);
+    // Switch to higher priority task if unblocked by giving semaphore
+    portYIELD_FROM_ISR(higher_priority_task_woken);
 }
 
 static void main_exti13_handler(void)
 {
+    BaseType_t higher_priority_task_woken = pdFALSE;
+
     // Give semaphore to indicate that 3/UP button has been pressed
     xSemaphoreGiveFromISR(sem_btn_press_3_up, NULL);
+    // Switch to higher priority task if unblocked by giving semaphore
+    portYIELD_FROM_ISR(higher_priority_task_woken);
 }
 
 static bool main_init(void)
@@ -171,10 +179,10 @@ int main(void)
 
     // Create event queue
     queue_events = xQueueCreate(16, sizeof(uint8_t));
-    // Create LED task
+    // Create LED task with a priority of 1
     xTaskCreate(main_task_led, "LED", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-    // Create BUTTON task
-    xTaskCreate(main_task_btn, "BTN", configMINIMAL_STACK_SIZE, NULL, 1, NULL);    
+    // Create BUTTON task with a priority of 2
+    xTaskCreate(main_task_btn, "BTN", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
     // Start scheduler
     vTaskStartScheduler();
 
