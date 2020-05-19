@@ -54,15 +54,14 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
-/// List of supported AT25S devices
-typedef enum
-{
-    PX_CFG_DEV_AT25SF041 = 0,   ///< 4 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
-    PX_CFG_DEV_AT25SF081 = 1,   ///< 8 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
-    PX_CFG_DEV_AT25SF161 = 2,   ///< 16 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
-    PX_CFG_DEV_AT25SF321 = 3,   ///< 32 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
-    PX_CFG_DEV_AT25SF641 = 4,   ///< 64 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
-} px_at25s_cfg_dev_t;
+/// @name List of supported AT25S devices
+//@{
+#define PX_CFG_DEV_AT25SF041 0		///< 4 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
+#define PX_CFG_DEV_AT25SF081 1      ///< 8 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
+#define PX_CFG_DEV_AT25SF161 2      ///< 16 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
+#define PX_CFG_DEV_AT25SF321 3      ///< 32 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
+#define PX_CFG_DEV_AT25SF641 4      ///< 64 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
+//@}
 
 /// AT25S page size
 #define PX_AT25S_PAGE_SIZE  256
