@@ -21,13 +21,13 @@ install Arduino 1.8.10 or newer.
 
 Support for STM32 boards are provided [HERE](https://github.com/stm32duino/Arduino_Core_STM32).
 
-![](arduino_hero_preferences_menu.png)
+![](hero_board_arduino_preferences_menu.png)
 
 Open the Preferences dialog in the Arduino IDE:
 
     File > Preferences Ctrl+Comma
 
-![](arduino_hero_preferences.png)
+![](hero_board_arduino_preferences.png)
 
 Add a link to the stm32duino JSON file in the "Additional Boards Manager URLs" field:
 
@@ -37,13 +37,13 @@ Add a link to the stm32duino JSON file in the "Additional Boards Manager URLs" f
 More than one link (URL) can be added by using the button next to the text field.
 @tip_e
 
-![](arduino_hero_board_manager_menu.png)
+![](hero_board_arduino_manager_menu.png)
 
 Now open the Boards Manager window in the Arduino IDE:
 
     Tools > Board: "xxx" > Boards Manager...
 
-![](arduino_hero_board_manager.png)
+![](hero_board_arduino_manager.png)
 
 Type "STM32" into the search bar to narrow down the list of packages and install
 the "STM32 Cores by STMicroelectronics" package.
@@ -56,11 +56,11 @@ Select the PX-HER0 board from the list of supported boards:
     Tools > Board: "xxx" > STM32 Boards > Generic STM32L0 series
     Tools > Board part number: "xxx" > PX-HERO
 
-![](arduino_hero_select.png)
+![](hero_board_arduino_select.png)
 
 Options can be specified for the PX-HER0 board in sub menus:
 
-![](arduino_hero_options.png)
+![](hero_board_arduino_options.png)
 
 Select "CDC (generic 'Serial supersede U(S)ART)" as the USB interface. This will
 configure the Arduino firmware to stream all Serial communication over USB.  We 
@@ -100,7 +100,7 @@ Open [Tera Term](http://en.sourceforge.jp/projects/ttssh2) and connect to the
 virtual serial port created the PX-HER0 board. The program will wait for the PC
 to connect and then start to send the string "Hello World!" once a second:
 
-![](arduino_hero_board_tera_term_hello_world.png)
+![](hero_board_arduino_tera_term_hello_world.png)
 
 Success!!
 
