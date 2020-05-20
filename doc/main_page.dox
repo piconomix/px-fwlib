@@ -17,7 +17,7 @@ resource rich 32-bit targets, but this cross-platform library aims to provide a
 good foundation before you are forced to add target specific code and getting 
 locked in.
 
-Click [HERE](https://sourceforge.net/projects/piconomic-fwlib/files) to download
+Click [HERE](https://github.com/piconomix/piconomix-fwlib/releases) to download
 releases of the open source library (source code and offline documentation).
 
 ![](hero_board_isometric_top_bot.jpg)
