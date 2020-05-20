@@ -14,7 +14,7 @@
 [ftdi_ignore_ser]:    http://www.ftdichip.com/Support/Utilities/IgnoreSerialNo.zip
 [ftdi_uninstaller]:   http://www.ftdichip.com/Support/Utilities/CDMUninstaller_v1.4.zip
 [ftdi_vcp_driver]:    http://www.ftdichip.com/Drivers/VCP.htm
-[gnu_arm_tools]:      http://gnu-arm.com
+[gnu_arm_tools]:      https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm
 [unix_shell_utils]:   https://sourceforge.net/projects/unixshellutils/files/latest/download
 [msys2]:              https://www.msys2.org
 [srecord]:            http://srecord.sourceforge.net
@@ -236,8 +236,8 @@ The following command line tools are optional, but recommended:
   a minimal collection of Unix shell utilities (make, sh, echo, rm, etc.) 
   curated from [MSYS2][msys2] and other utilities ([srecord]) to build projects 
   using Makefile scripts.
-- [GNU Tools for Arm Embedded Processors][gnu_arm_tools] :
-  A GNU GCC build toolchain for C and C++.
+- [GNU Arm Embedded Toolchain][gnu_arm_tools] : A GNU GCC build toolchain for C 
+  and C++.
 
 10.1 Connect USB1 of Hero Board to PC
 -------------------------------------
@@ -428,9 +428,9 @@ tools, but the path is rather inconvenient:
 
     [INSTALL DIR]\plugins\com.st.stm32cube.ide.mcu.externaltools.make.win32_1.0.1.201906111312\tools\bin
 
-### 10.9.2 Install GNU Tools for Arm Embedded Processors ###
+### 10.9.2 Install GNU Arm Embedded Toolchain ###
 
-Download and install [GNU Tools for Arm Embedded Processors][gnu_arm_tools].
+Download and install [GNU Arm Embedded Toolchain][gnu_arm_tools].
 
 @tip_s
 It is not strictly required, because STM32CubeIDE does have a GNU C and C++ 
