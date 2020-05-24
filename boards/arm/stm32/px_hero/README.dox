@@ -26,6 +26,7 @@ Discover and free your inner embedded hero!
 @image html hero_board_isometric.jpg width=500px
 
 Extensive ecosystem included:
+* [PX-HER0 Board User Manual](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_manual.pdf)
 * An [STM32 quick start guide](@ref STM32_QUICK_START_GUIDE) with 
   distilled [tutorials](@ref STM32_TUTORIALS) and [examples](@ref STM32_EXAMPLES)
 * A [Board Support Package](@ref HERO_BOARD_BSP)
@@ -154,6 +155,7 @@ Most OSHW designs hide some of the "magic sauce". The schematics are hard to
 follow and complete manufacturer part numbers are not disclosed. The Hero Board
 lowers the barrier in terms of design openness... judge for yourself:
 
+- [Manual](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_manual.pdf)
 - [Schematic](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_sch.pdf)
 - [Bill Of Materials - Deluxe Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_bom_deluxe_edition.pdf)
 - [Bill Of Materials - Lite Edition](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_bom_lite_edition.pdf)
