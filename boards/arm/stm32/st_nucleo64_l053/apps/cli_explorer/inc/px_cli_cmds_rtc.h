@@ -1,5 +1,5 @@
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __PX_CLI_CMDS_RTC_H__
+#define __PX_CLI_CMDS_RTC_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -7,21 +7,21 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          ST Nucleo64 L053 basic GPIO example
+    Title:          px_cli_cmds_rtc.h : CLI commands for RTC
     Author(s):      Pieter Conradie
-    Creation Date:  2017-11-13
+    Creation Date:  2014-05-31
 
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_cli.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,6 +31,7 @@ extern "C" {
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
+extern const px_cli_group_t px_cli_group_rtc;
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 
@@ -40,4 +41,4 @@ extern "C" {
 }
 #endif
 
-#endif // #ifndef __MAIN_H__
+#endif // #ifndef __PX_CLI_CMDS_RTC_H__

@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          Piconomix STM32 Hero Board minimal printf to UART demo
+    Title:          ST Nucleo64 L053 minimal printf to UART demo
     Author(s):      Pieter Conradie
     Creation Date:  2018-02-06
 

@@ -8,4 +8,6 @@
 1. Introduction {#NUCLEO64_L053_BOARD_INTRO}
 ============================================
 
+@subpage NUCLEO64_L053_APPS     "Apps"
 @subpage NUCLEO64_L053_EXAMPLES "Examples"
+

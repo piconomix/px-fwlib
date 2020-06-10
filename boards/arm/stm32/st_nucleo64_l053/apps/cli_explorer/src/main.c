@@ -5,34 +5,52 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
  
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
 
-    Title:          ST Nucleo64 L053 minimal printf to UART demo
+    Title:          ST Nucleo64 L053 CLI application
     Author(s):      Pieter Conradie
-    Creation Date:  2018-02-06
+    Creation Date:  2020-06-10
  
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
+#include "main.h"
 #include "px_defines.h"
-
+#include "px_compiler.h"
+#include "px_cli.h"
+#include "px_vt100.h"
+#include "px_systmr.h"
+#include "px_rtc.h"
 #include "px_board.h"
 #include "px_uart.h"
 #include "px_uart_stdio.h"
+#include "px_sysclk.h"
+#include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_DBG_DECL_NAME("main");
 
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-px_uart_handle_t px_uart_handle;
+px_uart_handle_t px_uart2_handle;
+uint8_t          main_buffer[MAIN_BUFFER_SIZE];
 
-/* _____LOCAL VARIABLES______________________________________________________ */
+
+/* _____LOCAL VARIABLES______________________________________________________ */             
+/// CLI splash text on start up. Back slashes ('\') have to be escaped ('\\')
+static const char main_cli_init_str[] =
+    " ____   __  __ TM\n"
+    "|  _ \\  \\ \\/ /\n"
+    "| |_) |  \\  /\n"
+    "|  __/   /  \\ PICONOMIX - Embedded Elegance\n"
+    "|_|     /_/\\_\\    https://piconomix.com\n\n";
+
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
@@ -41,14 +59,19 @@ static bool main_init(void)
 {
     // Initialize modules
     px_board_init();
-    px_uart_init();
-    px_uart_open2(&px_uart_handle,
+    px_sysclk_init();
+    px_rtc_init();
+    px_uart_init();    
+
+    // Open UART2
+    px_uart_open2(&px_uart2_handle,
                   PX_UART_NR_2,
                   115200, 
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
-    px_uart_stdio_init(&px_uart_handle);
+    // Connect stdin and stdout to UART
+    px_uart_stdio_init(&px_uart2_handle);
 
     // Success
     return true;
@@ -59,23 +82,48 @@ int main(void)
 {
     uint8_t data;
 
+    // Initialize board and peripheral drivers
     main_init();
-      
     // Enable LED
     PX_USR_LED_ON();
-
-    // Send message
-    printf("Hello World!\n");
+    // Report debug output
+    PX_DBG_TRACE("Debug enabled\n");
+    // Initialize CLI
+    px_cli_init(main_cli_init_str);
 
     for(;;)
     {
-        // Byte has been received?
-        if(px_uart_rd_u8(&px_uart_handle, &data))
+        // Received byte over UART?
+        if(px_uart_rd_u8(&px_uart2_handle, &data))
         {
-            // Echo byte
-            px_uart_wr_u8(&px_uart_handle, data);
+            // Pass received byte to Command Line Interpreter module
+            px_cli_on_rx_char((char)data);
         }
         // Put core into SLEEP mode until an interrupt occurs
         __WFI();
     }
+}
+
+void main_dbg_put_char(char data)
+{
+    // New line character?
+    if(data == '\n')
+    {
+        // Prepend a carriage return
+        main_dbg_put_char('\r');
+    }
+
+    px_uart_put_char(&px_uart2_handle, data);
+}
+
+void main_dbg_timestamp(char * str)
+{
+    px_rtc_date_time_t date_time;
+
+    px_rtc_date_time_rd(&date_time);
+
+    sprintf(str, "%02hu:%02hu:%02hu",
+                 (unsigned short)date_time.hour,
+                 (unsigned short)date_time.min,
+                 (unsigned short)date_time.sec);
 }

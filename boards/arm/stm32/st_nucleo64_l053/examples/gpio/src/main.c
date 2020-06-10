@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
     
-    Title:          Piconomix STM32 Hero Board basic GPIO example
+    Title:          ST Nucleo64 L053 basic GPIO example
     Author(s):      Pieter Conradie
     Creation Date:  2017-11-13
  
