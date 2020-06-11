@@ -337,11 +337,11 @@ For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
 
 Open and build the @ref HERO_BOARD_EXAMPLE_GPIO. The project file is here:
 
-    px-lib/boards/avr/px_hero/examples/gpio/.project
+    px-lib/boards/arm/stm32/px_hero/examples/gpio/.project
 
 If the ".project" file is associated with STM32CubeIDE, then it's as simple as
-double-clicking on it, otherwise you need to add it to the workspace within
-STM32CubeIDE:
+double-clicking on it in Windows File Explorer, otherwise you need to add it to 
+the workspace within STM32CubeIDE:
 
     File > Open Projects from File System...
 
@@ -457,8 +457,11 @@ The complete documentation will be located here:
 
 *Let's try it out!*
 
+![](hero_board_command_prompt_build.png)
+
 Start a windows shell Command Prompt by typing "cmd" in the search bar. Set the
-PATH to UnixShellUtils and GNU Tools by executing the following command:
+PATH to [UnixShellUtils] [unix_shell_utils] and [GNU Arm Embedded Toolchain][gnu_arm_tools] 
+by executing the following command:
 
     > PATH=c:\UnixShellUtils\usr\bin;c:\Program Files (x86)\gnu_arm\bin
 
@@ -479,8 +482,6 @@ Execute `make clean` to delete all of the build files:
 Execute `make' to build the whole project:
 
     > make
-
-![](hero_board_command_prompt_build.png)
 
 **Congratulations Hero!!**
 
