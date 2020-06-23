@@ -59,7 +59,7 @@ PX_ATTR_SECTION(".noinit") volatile uint32_t main_magic;
 uint32_t main_flash_adr;
 
 /// Next byte that will be written to in receive buffer
-uint8_t  main_flash_buf_index;
+uint16_t main_flash_buf_index;
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// Buffer of data to be written to FLASH
@@ -232,7 +232,7 @@ int main(void)
         {
 #ifdef BOOT_CLEAR_REST_OF_FLASH
             // Clear rest of flash page
-            uint8_t i = main_flash_buf_index;
+            uint16_t i = main_flash_buf_index;
             while(i < PX_FLASH_HALF_PAGE_SIZE)
             {
                 main_flash_buf.buf_u8[i++] = 0;
