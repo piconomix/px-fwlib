@@ -23,10 +23,6 @@
 #include "px_lib_stm32cube.h"
 #include "px_dbg.h"
 
-#ifdef STM32G0
-#warning "Flash driver needs porting and testing"
-#endif
-
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 PX_DBG_DECL_NAME("px_flash");
 
@@ -170,12 +166,13 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
     // Set page to erase
     flash_cr   = FLASH->CR & ~FLASH_CR_PNB;
     page       = (address >> 11) & 0x3f;
-    flash_cr  |= page << FLASH_CR_PNB_Pos;
-    FLASH->CR  = flash_cr;        
-    // Enable page erase
-    FLASH->CR |= FLASH_CR_PER;
-    // Start page erase
-    FLASH->CR |= FLASH_CR_STRT;    
+	flash_cr  |= page << FLASH_CR_PNB_Pos;
+	// Enable page erase
+	flash_cr |= FLASH_CR_PER;
+	// Start page erase
+	flash_cr |= FLASH_CR_STRT;    
+	// Write Flash Control Register
+	FLASH->CR  = flash_cr;        
     // Wait until erase has finished (not busy)
     while ((FLASH->SR & FLASH_SR_BSY1) != 0)
     {
@@ -200,10 +197,9 @@ PX_ATTR_RAMFUNC void px_flash_wr_row(const uint32_t address, const uint32_t * da
     px_interrupts_disable();
     // Enable fast programming
     FLASH->CR |= FLASH_CR_FSTPG;
-    // Write row by copying data (64-bits at a time)
-    for (i = 0; i < PX_FLASH_ROW_SIZE_DOUBLE_WORDS; i++)
+    // Write row by copying data
+    for (i = 0; i < PX_FLASH_ROW_SIZE_WORDS; i++)
     {
-        *dest++ = *data++;
         *dest++ = *data++;
     }
     // Wait until programming has finished (not busy)
