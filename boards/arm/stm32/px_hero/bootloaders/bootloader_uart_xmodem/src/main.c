@@ -235,7 +235,7 @@ int main(void)
             uint16_t i = main_flash_buf_index;
             while(i < PX_FLASH_HALF_PAGE_SIZE)
             {
-                main_flash_buf.buf_u8[i++] = 0;
+                main_flash_buf.buf_u8[i++] = 0xff;
             }
 #endif
             // Must flash page be erased?
