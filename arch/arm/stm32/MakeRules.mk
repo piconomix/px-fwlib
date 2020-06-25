@@ -20,6 +20,7 @@
 # Define programs and commands
 CPREFIX   ?= arm-none-eabi
 CC         = $(CPREFIX)-gcc
+CXX        = $(CPREFIX)-g++
 OBJCOPY    = $(CPREFIX)-objcopy
 OBJDUMP    = $(CPREFIX)-objdump
 SIZE       = $(CPREFIX)-size
@@ -42,21 +43,21 @@ ifeq ($(BUILD), debug)
     BUILD_DIR = BUILD_DEBUG
     CDEFS    += $(CDEFS_DEBUG)
     CFLAGS   += $(CFLAGS_DEBUG)
-    CPPFLAGS += $(CPPFLAGS_DEBUG)
+    CXXFLAGS += $(CXXFLAGS_DEBUG)
     AFLAGS   += $(AFLAGS_DEBUG)
     LDFLAGS  += $(LDFLAGS_DEBUG)
 else ifeq ($(BUILD), release)
     BUILD_DIR = BUILD_RELEASE
     CDEFS    += $(CDEFS_RELEASE)
     CFLAGS   += $(CFLAGS_RELEASE)
-    CPPFLAGS += $(CPPFLAGS_RELEASE)
+    CXXFLAGS += $(CXXFLAGS_RELEASE)
     AFLAGS   += $(AFLAGS_RELEASE)
     LDFLAGS  += $(LDFLAGS_RELEASE)
 else ifeq ($(BUILD), release-boot)
     BUILD_DIR = BUILD_RELEASE_BOOT
     CDEFS    += $(CDEFS_RELEASE)
     CFLAGS   += $(CFLAGS_RELEASE)
-    CPPFLAGS += $(CPPFLAGS_RELEASE)
+    CXXFLAGS += $(CXXFLAGS_RELEASE)
     AFLAGS   += $(AFLAGS_RELEASE)
     LDFLAGS  += $(LDFLAGS_RELEASE)
 else
@@ -111,22 +112,22 @@ MSG_GDB                 = 'Launching GDB:'
 
 # Define all object files from source files (C, C++ and Assembly)
 #     Relative paths are stripped and BUILD_DIR prefix is added.
-OBJECTS = $(foreach file,$(SRC) $(CPPSRC) $(ASRC), $(BUILD_DIR)/$(basename $(notdir $(file))).o)
+OBJECTS = $(foreach file,$(SRC) $(CXXSRC) $(ASRC), $(BUILD_DIR)/$(basename $(notdir $(file))).o)
 
 # Compiler flags to generate dependency files
-GENDEPFLAGS = -MMD -MP -MF $$(patsubst %.o,%.d,$$@)
+DEP_FLAGS = -MMD -MP -MF $$(patsubst %.o,%.d,$$@)
 
 # Add DEFINE macros (with -D prefixed) to compiler flags
 CFLAGS   += $(addprefix -D,$(CDEFS))
-CPPFLAGS += $(addprefix -D,$(CPPDEFS))
+CXXFLAGS += $(addprefix -D,$(CXXDEFS))
 AFLAGS   += $(addprefix -D,$(ADEFS))
 
 # Combine all necessary flags and optional flags
 #     Add target processor to flags
 #     By using ?= assignment operator, these variables can be overided in 
 #     Makefile that includes this boilerplate file
-ALL_CFLAGS   ?= $(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
-ALL_CPPFLAGS ?= $(MCU) -x c++ $(CPPFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
+ALL_CFLAGS   ?= $(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
+ALL_CXXFLAGS ?= $(MCU) -x c++ $(CXXFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
 ALL_AFLAGS   ?= $(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
 ALL_LDFLAGS  ?= $(MCU) -Wl,--start-group $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS)) $(addprefix -l,$(EXTRALIBS))
 
@@ -150,7 +151,7 @@ lib: $(BUILD_DIR)/$(PROJECT).a
 
 # Default target to create specified source files.
 # If this rule is executed then the input source file does not exist.
-$(SRC) $(CPPSRC) $(ASRC):
+$(SRC) $(CXXSRC) $(ASRC):
 	$(error "Source file does not exist: $@")
 
 # Eye candy
@@ -237,16 +238,16 @@ endef
 $(foreach file,$(SRC),$(eval $(call create_c_obj_rule,$(file)))) 
 
 # Compile: create object files from C++ source files
-#   A separate rule is created for each CPPSRC file to ensure that the correct
+#   A separate rule is created for each CXXSRC file to ensure that the correct
 #   file is used to create the object file (in the BUILD_DIR directory).
 define create_cpp_obj_rule
 $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING_CPP) $$<
 	@$(MKDIR) $$(@D)
-	$(CC) -c $(ALL_CPPFLAGS) $$< -o $$@ 
+	$(CC) -c $(ALL_CXXFLAGS) $$< -o $$@ 
 endef
-$(foreach file,$(CPPSRC),$(eval $(call create_cpp_obj_rule,$(file)))) 
+$(foreach file,$(CXXSRC),$(eval $(call create_cpp_obj_rule,$(file)))) 
 
 # Assemble: create object files from assembler source files
 #   A separate rule is created for each ASRC file to ensure that the correct

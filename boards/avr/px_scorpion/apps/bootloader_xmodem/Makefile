@@ -65,7 +65,7 @@ SRC += $(PX_LIB)/comms/src/px_xmodem.c
 SRC += $(BSP)/src/px_board.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
-CPPSRC += 
+CXXSRC += 
 
 # (4c) List Assembler source files WITH PATHS (relative to Makefile) here
 #
@@ -102,9 +102,9 @@ CDEFS += FLASH_BOOT_START=$(FLASH_BOOT_START_ADR)
 CDEFS += 
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
-#CPPDEFS += __STDC_LIMIT_MACROS
-#CPPDEFS += __STDC_CONSTANT_MACROS
-CPPDEFS += 
+#CXXDEFS += __STDC_LIMIT_MACROS
+#CXXDEFS += __STDC_CONSTANT_MACROS
+CXXDEFS += 
 
 # (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
 ADEFS += 
@@ -140,21 +140,21 @@ CFLAGS += -fdata-sections
 #  -O*:          optimization level (0,1,2,3 or s)
 #  -f...:        tuning, see GCC manual and avr-libc documentation
 #  -Wall...:     warning level
-CPPFLAGS += -gdwarf-2
-CPPFLAGS += -Os
-CPPFLAGS += -funsigned-char
-CPPFLAGS += -funsigned-bitfields
-CPPFLAGS += -fpack-struct
-CPPFLAGS += -fshort-enums
-CPPFLAGS += -fno-exceptions
-CPPFLAGS += -Wall
-CPPFLAGS += -Wundef
-#CPPFLAGS += -mshort-calls
-#CPPFLAGS += -fno-unit-at-a-time
-#CPPFLAGS += -Wstrict-prototypes
-#CPPFLAGS += -Wunreachable-code
-#CPPFLAGS += -Wsign-compare
-CPPFLAGS += -std=gnu99
+CXXFLAGS += -gdwarf-2
+CXXFLAGS += -Os
+CXXFLAGS += -funsigned-char
+CXXFLAGS += -funsigned-bitfields
+CXXFLAGS += -fpack-struct
+CXXFLAGS += -fshort-enums
+CXXFLAGS += -fno-exceptions
+CXXFLAGS += -Wall
+CXXFLAGS += -Wundef
+#CXXFLAGS += -mshort-calls
+#CXXFLAGS += -fno-unit-at-a-time
+#CXXFLAGS += -Wstrict-prototypes
+#CXXFLAGS += -Wunreachable-code
+#CXXFLAGS += -Wsign-compare
+CXXFLAGS += -std=gnu++11
 
 #---------------- Assembler Options --------------------------------------------
 #  -Wa,...:   tell GCC to pass this to the assembler.

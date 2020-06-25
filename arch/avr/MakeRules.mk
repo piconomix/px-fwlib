@@ -46,22 +46,22 @@ MSG_CLEANING            = 'Cleaning project:'
 
 # Define all object files from source files (C, C++ and Assembly)
 #     Relative paths are stripped and OBJDIR prefix is added.
-OBJECTS = $(foreach file,$(SRC) $(CPPSRC) $(ASRC), $(OBJDIR)/$(basename $(notdir $(file))).o)
+OBJECTS = $(foreach file,$(SRC) $(CXXSRC) $(ASRC), $(OBJDIR)/$(basename $(notdir $(file))).o)
 
 # Compiler flags to generate dependency files
-GENDEPFLAGS = -MMD -MP -MF $$(patsubst %.o,%.d,$$@)
+DEP_FLAGS = -MMD -MP -MF $$(patsubst %.o,%.d,$$@)
 
 # Add DEFINE macros (with -D prefixed) to compiler flags
 CFLAGS   += $(addprefix -D,$(CDEFS))
-CPPFLAGS += $(addprefix -D,$(CPPDEFS))
+CXXFLAGS += $(addprefix -D,$(CXXDEFS))
 AFLAGS   += $(addprefix -D,$(ADEFS))
 
 # Combine all necessary flags and optional flags
 #     Add target processor to flags
 #     By using ?= assignment operator, these variables can be overided in 
 #     Makefile that includes this boilerplate file
-ALL_CFLAGS   ?= -mmcu=$(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
-ALL_CPPFLAGS ?= -mmcu=$(MCU) -x c++ $(CPPFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(GENDEPFLAGS)
+ALL_CFLAGS   ?= -mmcu=$(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
+ALL_CXXFLAGS ?= -mmcu=$(MCU) -x c++ $(CXXFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
 ALL_AFLAGS   ?= -mmcu=$(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
 ALL_LDFLAGS  ?= -mmcu=$(MCU) $(LDFLAGS) -Wl,-Map=$(OBJDIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS))
 
@@ -80,7 +80,7 @@ sym: $(PROJECT).sym
 
 # Default target to create specified source files.
 # If this rule is executed then the input source file does not exist.
-$(SRC) $(CPPSRC) $(ASRC):
+$(SRC) $(CXXSRC) $(ASRC):
 	$(error "Source file does not exist: $@")
 
 # Check that specified Object files directory is not empty or the current directory
@@ -162,16 +162,16 @@ endef
 $(foreach file,$(SRC),$(eval $(call create_c_obj_rule,$(file)))) 
 
 # Compile: create object files from C++ source files
-#   A separate rule is created for each CPPSRC file to ensure that the correct
+#   A separate rule is created for each CXXSRC file to ensure that the correct
 #   file is used to create the object file (in the OBJDIR directory).
 define create_cpp_obj_rule
 $(OBJDIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING_CPP) $$<
 	@$(MKDIR) $$(@D)
-	$(CC) -c $(ALL_CPPFLAGS) $$< -o $$@ 
+	$(CC) -c $(ALL_CXXFLAGS) $$< -o $$@ 
 endef
-$(foreach file,$(CPPSRC),$(eval $(call create_cpp_obj_rule,$(file)))) 
+$(foreach file,$(CXXSRC),$(eval $(call create_cpp_obj_rule,$(file)))) 
 
 # Assemble: create object files from assembler source files
 #   A separate rule is created for each ASRC file to ensure that the correct

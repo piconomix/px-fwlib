@@ -83,7 +83,7 @@ SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm3
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
-CPPSRC += 
+CXXSRC += 
 
 # (4c) List Assembler source files WITH PATHS (relative to Makefile) here
 #
@@ -141,10 +141,10 @@ CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
-#CPPDEFS += __STDC_LIMIT_MACROS
-#CPPDEFS += __STDC_CONSTANT_MACROS
-CPPDEFS += STM32L0
-CPPDEFS += STM32L072xx
+#CXXDEFS += __STDC_LIMIT_MACROS
+#CXXDEFS += __STDC_CONSTANT_MACROS
+CXXDEFS += STM32L0
+CXXDEFS += STM32L072xx
 
 # (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
 ADEFS += 
@@ -178,25 +178,25 @@ CFLAGS_RELEASE += -Os
 #  -O*:          optimization level (0,1,2,3 or s)
 #  -f...:        tuning, see GCC manual and avr-libc documentation
 #  -Wall...:     warning level
-CPPFLAGS += -gdwarf-2
-CPPFLAGS += -funsigned-char
-CPPFLAGS += -funsigned-bitfields
-CPPFLAGS += -fshort-enums
-CPPFLAGS += -fno-exceptions
-CPPFLAGS += -Wall
-#CPPFLAGS += -Wundef
-#CPPFLAGS += -mshort-calls
-#CPPFLAGS += -fno-unit-at-a-time
-#CPPFLAGS += -Wstrict-prototypes
-#CPPFLAGS += -Wunreachable-code
-#CPPFLAGS += -Wsign-compare
-CPPFLAGS += -std=gnu99
-CPPFLAGS += -ffunction-sections
-CPPFLAGS += -fdata-sections
-CPPFLAGS += --specs=nano.specs
+CXXFLAGS += -gdwarf-2
+CXXFLAGS += -funsigned-char
+CXXFLAGS += -funsigned-bitfields
+CXXFLAGS += -fshort-enums
+CXXFLAGS += -fno-exceptions
+CXXFLAGS += -Wall
+#CXXFLAGS += -Wundef
+#CXXFLAGS += -mshort-calls
+#CXXFLAGS += -fno-unit-at-a-time
+#CXXFLAGS += -Wstrict-prototypes
+#CXXFLAGS += -Wunreachable-code
+#CXXFLAGS += -Wsign-compare
+CXXFLAGS += -std=gnu++11
+CXXFLAGS += -ffunction-sections
+CXXFLAGS += -fdata-sections
+CXXFLAGS += --specs=nano.specs
 
-CPPFLAGS_DEBUG   += -Og
-CPPFLAGS_RELEASE += -Os
+CXXFLAGS_DEBUG   += -Og
+CXXFLAGS_RELEASE += -Os
 
 #---------------- Assembler Options --------------------------------------------
 #  -Wa,...:   tell GCC to pass this to the assembler.
