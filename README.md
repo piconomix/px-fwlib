@@ -2,7 +2,7 @@
 
 ![](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/hero_board/hero_board_isometric_top_bot.jpg)
 
-STM32L072 PX-HER0 Board Crowd Supply campaign is now live! Click [HERE](https://www.crowdsupply.com/piconomix/px-her0-board)
+STM32L072 PX-HER0 Board now in stock at Crowd Supply! Click [HERE](https://www.crowdsupply.com/piconomix/px-her0-board)
 
 Introduction
 ============
