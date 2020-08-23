@@ -291,6 +291,7 @@ program:  $(BUILD_DIR)/$(PROJECT).hex
 # Generate OpenOCD config file
 .PHONY : $(OPENOCD_SCRIPT)
 $(OPENOCD_SCRIPT):
+	$(REMOVE) $(OPENOCD_SCRIPT)
 	@echo 'gdb_port $(GDB_PORT)' >> $(OPENOCD_SCRIPT)
 	@echo 'source [find $(OPENOCD_INTERFACE)]' >> $(OPENOCD_SCRIPT)
 	@echo 'transport select hla_swd' >> $(OPENOCD_SCRIPT)
@@ -307,10 +308,11 @@ $(OPENOCD_SCRIPT):
 openocd: $(OPENOCD_SCRIPT)
 	@echo $(MSG_OPENOCD_GDB_SERVER)
 	@openocd --version
-	openocd --file $(GDBSERVER_SCRIPT)
+	openocd --file $(OPENOCD_SCRIPT)
 
 # Generate GDB config/init file
 $(GDB_SCRIPT) : 
+	$(REMOVE) $(GDB_SCRIPT)
 	@echo '# Load program to debug' >> $(GDB_SCRIPT)
 	@echo 'file $(BUILD_DIR)/$(PROJECT).elf' >> $(GDB_SCRIPT)
 	@echo '# Connect to GDB server' >> $(GDB_SCRIPT)
