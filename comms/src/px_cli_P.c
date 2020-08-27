@@ -32,13 +32,13 @@ PX_DBG_DECL_NAME("px_cli_P");
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-/// Externally defined command list that must be defined using PX_CLI_CMD_LIST_CREATE macro
-extern const px_cli_cmd_list_item_t px_cli_cmd_list[];
-
 /// Converted argument value using px_cli_util_argv_to_...() conversion function
 px_cli_argv_val_t px_cli_argv_val;
 
 /* _____LOCAL VARIABLES______________________________________________________ */
+/// Pointer to root array of commands
+static const px_cli_cmd_list_item_t * px_cli_cmd_list;
+
 /// Character buffer for command line
 static char    px_cli_line_buf[PX_CLI_CFG_LINE_LENGTH_MAX];
 /// Index of next free position in character buffer
@@ -708,7 +708,7 @@ static void px_cli_cmd_exe(void)
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_cli_init(const char* startup_str)
+void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char* startup_str)
 {
 #if PX_CLI_CFG_HISTORY_SIZE
     px_cli_hist_size_t i;
@@ -721,6 +721,10 @@ void px_cli_init(const char* startup_str)
     px_cli_hist_index_last = 0;
     px_cli_hist_index_now  = 0;
 #endif
+
+    // Save pointer to root of command list
+    PX_DBG_ASSERT(cli_cmd_list != NULL);
+    px_cli_cmd_list = cli_cmd_list;
 
     // Reset
     px_cli_line_buf_index = 0;

@@ -173,7 +173,7 @@ PX_CLI_CMD_CREATE(px_cli_cmd_delay, "delay",    1, 2,   "<delay> [ms|s]",       
 PX_CLI_CMD_CREATE(px_cli_cmd_help,  "help",     0, 1,   "[cmd(s) starts with...]",  "Display list of commands with help. Optionally the list can be reduced.")
 
 // Add CLI commands to CLI list
-PX_CLI_CMD_LIST_CREATE()
+PX_CLI_CMD_LIST_CREATE(px_cli_cmd_list)
     PX_CLI_CMD_ADD     (px_cli_cmd_reset,     px_cli_cmd_reset_fn)
     PX_CLI_CMD_ADD     (px_cli_cmd_beep,      px_cli_cmd_beep_fn)
     PX_CLI_CMD_ADD     (px_cli_cmd_led,       px_cli_cmd_led_fn)

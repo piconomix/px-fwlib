@@ -59,7 +59,7 @@ PX_CLI_CMD_CREATE(px_cli_cmd_buzzer,    "buzzer",   1, 1,   "<on time ms>",     
 PX_CLI_CMD_CREATE(px_cli_cmd_help,      "help",     0, 1,   "[cmd(s) starts with...]",  "Display list of commands with help. Optionally the list can be reduced.")
 
 // Declare CLI command list and add commands and groups
-PX_CLI_CMD_LIST_CREATE()
+PX_CLI_CMD_LIST_CREATE(px_cli_cmd_list)
     PX_CLI_CMD_ADD  (px_cli_cmd_buzzer, px_cli_cmd_buzzer_fn)
     PX_CLI_GROUP_ADD(px_cli_group_led)
     PX_CLI_CMD_ADD  (px_cli_cmd_help,   px_cli_cmd_help_fn)
@@ -92,7 +92,7 @@ int main(void)
     px_interrupts_enable();
 
     // Initialise CLI (after STDIO is ready)
-    px_cli_init(PX_PGM_STR("CLI Example\n\n"));
+    px_cli_init(px_cli_cmd_list, PX_PGM_STR("CLI Example\n\n"));
 
     // Repeat forever
     for(;;)

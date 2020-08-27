@@ -203,7 +203,7 @@ PX_CLI_CMD_CREATE(px_cli_cmd_meas,      "m",    0, 0,   "",                     
 PX_CLI_CMD_CREATE(px_cli_cmd_help,      "help", 0, 1,   "[cmd(s) starts with...]",  "Display list of commands with help. Optionally the list can be reduced.")
 
 // Add CLI commands to CLI list
-PX_CLI_CMD_LIST_CREATE()
+PX_CLI_CMD_LIST_CREATE(px_cli_cmd_list)
     PX_CLI_CMD_ADD  (px_cli_cmd_meas, px_cli_cmd_meas_fn)
     PX_CLI_GROUP_ADD(px_cli_group_log)
     PX_CLI_GROUP_ADD(px_cli_group_rtc)

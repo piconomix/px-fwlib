@@ -28,8 +28,8 @@
  *  File(s):
  *  - comms/inc/px_cli.h
  *  - comms/inc/px_cli_cfg_template.h
- *  - comms/px_cli.c (general version)
- *  - comms/px_cli_P.c (minimise RAM usage by using Program Memory. See @ref PX_PGM_P)
+ *  - comms/src/px_cli.c (general version)
+ *  - comms/src/px_cli_P.c (minimise RAM usage by using command list stored in Program Memory. See @ref PX_PGM_P)
  *  
  *  References:
  *  - http://en.wikipedia.org/wiki/PX_VT100_escape_code
@@ -227,10 +227,12 @@ extern px_cli_argv_val_t    px_cli_argv_val;
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
  *  Initialise command line module.
- *  
- *  @param startup_str   Start up string to display.
+ *   
+ *  @param cli_cmd_list  Pointer to list of commands created with PX_CLI_CMD_LIST_CREATE() macro
+ *  @param startup_str   Start up string to display. 
+ *   
  */
-extern void px_cli_init(const char * startup_str);
+extern void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char * startup_str);
 
 /** 
  *  Function called to handle a received character.
@@ -493,9 +495,14 @@ void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes);
         }, \
     };
 
-/// Macro to start a command list declaration.
-#define PX_CLI_CMD_LIST_CREATE() \
-    const px_cli_cmd_list_item_t px_cli_cmd_list[] PX_ATTR_PGM = \
+/** 
+ *  Macro to start a command list declaration
+ * 
+ *  @param cli_cmd_list     Name of command list array. Must be supplied to px_cli_init()
+ * 
+ */
+#define PX_CLI_CMD_LIST_CREATE(cli_cmd_list) \
+    const px_cli_cmd_list_item_t cli_cmd_list[] PX_ATTR_PGM = \
     {
 
 /**

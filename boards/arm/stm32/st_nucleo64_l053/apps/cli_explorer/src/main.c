@@ -23,6 +23,7 @@
 #include "px_defines.h"
 #include "px_compiler.h"
 #include "px_cli.h"
+#include "px_cli_cmds.h"
 #include "px_vt100.h"
 #include "px_systmr.h"
 #include "px_rtc.h"
@@ -89,7 +90,7 @@ int main(void)
     // Report debug output
     PX_DBG_TRACE("Debug enabled\n");
     // Initialize CLI
-    px_cli_init(main_cli_init_str);
+    px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
     for(;;)
     {

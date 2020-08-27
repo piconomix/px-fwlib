@@ -23,6 +23,7 @@
 #include "px_defines.h"
 #include "px_compiler.h"
 #include "px_cli.h"
+#include "px_cli_cmds.h"
 #include "px_vt100.h"
 #include "px_at25s.h"
 #include "px_systmr.h"
@@ -249,7 +250,7 @@ int main(void)
     px_gfx_draw_prop_reset();
 
     // Initialize CLI
-    px_cli_init(main_cli_init_str);
+    px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
     for(;;)
     {
@@ -259,7 +260,7 @@ int main(void)
             PX_DBG_INFO("USB Connect event. (Re)initialising CLI");
             main_usb_connected_event_flag = false;
             // (Re)initialise CLI
-            px_cli_init(main_cli_init_str);
+            px_cli_init(px_cli_cmd_list, main_cli_init_str);
         }
         // Received byte over USB?
         if(px_usb_cdc_stdio_rd_u8(&data))

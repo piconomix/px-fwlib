@@ -52,7 +52,7 @@ PX_DBG_DECL_NAME("cli");
 PX_CLI_CMD_CREATE(px_cli_cmd_help,  "help",     0, 1,   "[cmd(s) starts with...]",  "Display list of commands with help. Optionally the list can be reduced.")
 
 // Add CLI commands to CLI list
-PX_CLI_CMD_LIST_CREATE()
+PX_CLI_CMD_LIST_CREATE(px_cli_cmd_list)
     PX_CLI_GROUP_ADD   (px_cli_group_led)
     PX_CLI_GROUP_ADD   (px_cli_group_gpio)
     PX_CLI_GROUP_ADD   (px_cli_group_adc)

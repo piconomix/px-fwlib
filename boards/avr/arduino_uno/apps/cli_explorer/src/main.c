@@ -24,6 +24,7 @@
 #include "px_defines.h"
 #include "px_pgm_P.h"
 #include "px_cli.h"
+#include "px_cli_cmds.h"
 #include "px_systmr.h"
 #include "px_rtc_util.h"
 
@@ -88,7 +89,7 @@ int main(void)
     main_init();
 
     // Initialise CLI (after STDIO is ready)
-    px_cli_init(main_cli_init_str);
+    px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
     for(;;)
     {
