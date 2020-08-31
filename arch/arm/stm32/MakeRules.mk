@@ -27,8 +27,8 @@ SIZE       = $(CPREFIX)-size
 NM         = $(CPREFIX)-nm
 DEBUGGER   = $(CPREFIX)-gdb
 AR         = $(CPREFIX)-ar
-REMOVE     = rm -f
-REMOVEDIR  = rm -rf
+RM         = rm -f
+RMDIR      = rm -rf
 MKDIR      = mkdir -p
 COPY       = cp
 
@@ -127,9 +127,9 @@ AFLAGS   += $(addprefix -D,$(ADEFS))
 #     By using ?= assignment operator, these variables can be overided in 
 #     Makefile that includes this boilerplate file
 ALL_CFLAGS   ?= $(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
-ALL_CXXFLAGS ?= $(MCU) -x c++ $(CXXFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
+ALL_CXXFLAGS ?= $(MCU) $(CXXFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
 ALL_AFLAGS   ?= $(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
-ALL_LDFLAGS  ?= $(MCU) -Wl,--start-group $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS)) $(addprefix -l,$(EXTRALIBS))
+ALL_LDFLAGS  ?= $(MCU) $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS)) $(addprefix -l,$(EXTRALIBS))
 
 # Default target
 all: begin gccversion build size end
@@ -209,14 +209,26 @@ $(BUILD_DIR)/%.sym: $(BUILD_DIR)/%.elf
 	@echo $(MSG_SYMBOL_TABLE) $@
 	$(NM) -n $< > $@
 
-# Link: create ELF output file (*.elf) from object files
+
+ifeq ($(CXXSRC),)
+# Link: create ELF output file (*.elf) from C object files
 .SECONDARY : $(BUILD_DIR)/$(PROJECT).elf
 .PRECIOUS : $(OBJECTS)
 $(BUILD_DIR)/%.elf: $(OBJECTS)
 	@echo
 	@echo $(MSG_LINKING) $@
 	@$(MKDIR) $(@D)
-	$(CC) $(ALL_LDFLAGS) $^ -o $@
+	$(CC) -Wl,--start-group $(ALL_LDFLAGS) $^ -Wl,--end-group -o $@
+else
+# Link: create ELF output file (*.elf) from C++ and C object files
+.SECONDARY : $(BUILD_DIR)/$(PROJECT).elf
+.PRECIOUS : $(OBJECTS)
+$(BUILD_DIR)/%.elf: $(OBJECTS)
+	@echo
+	@echo $(MSG_LINKING) $@
+	@$(MKDIR) $(@D)
+	$(CXX) -Wl,--start-group $(ALL_LDFLAGS) $^ -Wl,--end-group -o $@
+endif
 
 # Archive: create static library (*.a) from object files
 $(BUILD_DIR)/%.a: $(OBJECTS)
@@ -245,7 +257,7 @@ $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING_CPP) $$<
 	@$(MKDIR) $$(@D)
-	$(CC) -c $(ALL_CXXFLAGS) $$< -o $$@ 
+	$(CXX) -c $(ALL_CXXFLAGS) $$< -o $$@ 
 endef
 $(foreach file,$(CXXSRC),$(eval $(call create_cpp_obj_rule,$(file)))) 
 
@@ -267,9 +279,9 @@ clean: begin clean_list end
 clean_list :
 	@echo
 	@echo $(MSG_CLEANING)
-	$(REMOVE) $(OPENOCD_SCRIPT)
-	$(REMOVE) $(GDB_SCRIPT)
-	$(REMOVEDIR) $(BUILD_DIR)
+	$(RM) $(OPENOCD_SCRIPT)
+	$(RM) $(GDB_SCRIPT)
+	$(RMDIR) $(BUILD_DIR)
 
 # Target: mostly clean project (remove all temporary building files, but leave final executables)
 mostlyclean: begin mostlyclean_list end
@@ -277,12 +289,12 @@ mostlyclean: begin mostlyclean_list end
 mostlyclean_list :
 	@echo
 	@echo $(MSG_CLEANING)
-	$(REMOVE) $(BUILD_DIR)/*.o
-	$(REMOVE) $(BUILD_DIR)/*.d
-	$(REMOVE) $(BUILD_DIR)/*.lst
-	$(REMOVE) $(BUILD_DIR)/$(PROJECT).lss
-	$(REMOVE) $(BUILD_DIR)/$(PROJECT).map
-	$(REMOVE) $(BUILD_DIR)/$(PROJECT).sym
+	$(RM) $(BUILD_DIR)/*.o
+	$(RM) $(BUILD_DIR)/*.d
+	$(RM) $(BUILD_DIR)/*.lst
+	$(RM) $(BUILD_DIR)/$(PROJECT).lss
+	$(RM) $(BUILD_DIR)/$(PROJECT).map
+	$(RM) $(BUILD_DIR)/$(PROJECT).sym
 
 # Program target using STM32CubeProgrammer CLI utility
 program:  $(BUILD_DIR)/$(PROJECT).hex
@@ -291,7 +303,7 @@ program:  $(BUILD_DIR)/$(PROJECT).hex
 # Generate OpenOCD config file
 .PHONY : $(OPENOCD_SCRIPT)
 $(OPENOCD_SCRIPT):
-	$(REMOVE) $(OPENOCD_SCRIPT)
+	$(RM) $(OPENOCD_SCRIPT)
 	@echo 'gdb_port $(GDB_PORT)' >> $(OPENOCD_SCRIPT)
 	@echo 'source [find $(OPENOCD_INTERFACE)]' >> $(OPENOCD_SCRIPT)
 	@echo 'transport select hla_swd' >> $(OPENOCD_SCRIPT)
@@ -312,7 +324,7 @@ openocd: $(OPENOCD_SCRIPT)
 
 # Generate GDB config/init file
 $(GDB_SCRIPT) : 
-	$(REMOVE) $(GDB_SCRIPT)
+	$(RM) $(GDB_SCRIPT)
 	@echo '# Load program to debug' >> $(GDB_SCRIPT)
 	@echo 'file $(BUILD_DIR)/$(PROJECT).elf' >> $(GDB_SCRIPT)
 	@echo '# Connect to GDB server' >> $(GDB_SCRIPT)
