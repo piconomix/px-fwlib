@@ -129,7 +129,7 @@ AFLAGS   += $(addprefix -D,$(ADEFS))
 ALL_CFLAGS   ?= $(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
 ALL_CXXFLAGS ?= $(MCU) $(CXXFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
 ALL_AFLAGS   ?= $(MCU) -x assembler-with-cpp $(AFLAGS) -I. $(addprefix -I,$(INCDIRS)) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@),--listing-cont-lines=100,--gstabs
-ALL_LDFLAGS  ?= $(MCU) $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS)) $(addprefix -l,$(EXTRALIBS))
+ALL_LDFLAGS  ?= $(MCU) $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addprefix -L,$(EXTRALIBDIRS))
 
 # Default target
 all: begin gccversion build size end
@@ -218,7 +218,7 @@ $(BUILD_DIR)/%.elf: $(OBJECTS)
 	@echo
 	@echo $(MSG_LINKING) $@
 	@$(MKDIR) $(@D)
-	$(CC) -Wl,--start-group $(ALL_LDFLAGS) $^ -Wl,--end-group -o $@
+	$(CC) $(ALL_LDFLAGS) $^ $(addprefix -l,$(EXTRALIBS)) -o $@
 else
 # Link: create ELF output file (*.elf) from C++ and C object files
 .SECONDARY : $(BUILD_DIR)/$(PROJECT).elf
@@ -227,7 +227,7 @@ $(BUILD_DIR)/%.elf: $(OBJECTS)
 	@echo
 	@echo $(MSG_LINKING) $@
 	@$(MKDIR) $(@D)
-	$(CXX) -Wl,--start-group $(ALL_LDFLAGS) $^ -Wl,--end-group -o $@
+	$(CXX) $(ALL_LDFLAGS) $^ $(addprefix -l,$(EXTRALIBS)) -o $@
 endif
 
 # Archive: create static library (*.a) from object files
