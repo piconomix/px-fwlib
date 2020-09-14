@@ -46,6 +46,13 @@ ifeq ($(BUILD), debug)
     CXXFLAGS += $(CXXFLAGS_DEBUG)
     AFLAGS   += $(AFLAGS_DEBUG)
     LDFLAGS  += $(LDFLAGS_DEBUG)
+else ifeq ($(BUILD), debug-boot)
+    BUILD_DIR = BUILD_DEBUG
+    CDEFS    += $(CDEFS_DEBUG)
+    CFLAGS   += $(CFLAGS_DEBUG)
+    CXXFLAGS += $(CXXFLAGS_DEBUG)
+    AFLAGS   += $(AFLAGS_DEBUG)
+    LDFLAGS  += $(LDFLAGS_DEBUG)
 else ifeq ($(BUILD), release)
     BUILD_DIR = BUILD_RELEASE
     CDEFS    += $(CDEFS_RELEASE)
@@ -61,20 +68,26 @@ else ifeq ($(BUILD), release-boot)
     AFLAGS   += $(AFLAGS_RELEASE)
     LDFLAGS  += $(LDFLAGS_RELEASE)
 else
-    $(error "Unsupported build specified. Use 'make build=debug', 'make build=release' or 'make build=release-boot'")
+    $(error "Unsupported build specified. Use 'make build=debug', 'make build=debug-boot', 'make build=release' or 'make build=release-boot'")
 endif
 
 
 # Specify Flash, SRAM, Stack and heap size to linker script
 LDFLAGS += -Wl,--defsym,FLASH_SIZE=$(FLASH_SIZE),--defsym,SRAM_SIZE=$(SRAM_SIZE),--defsym,STACK_SIZE=$(STACK_SIZE),--defsym,HEAP_SIZE=$(HEAP_SIZE)
 
-# Allocate space for bootloader in release for boot build (if specified)
+# Allocate space for bootloader in boot build (if specified)
 #
 # VTOR register (Vector Table Offset Register) must be set to correct value in:
 # libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 #
 # FLASH_OFFSET must be specified in linker script.
-ifeq ($(BUILD), release-boot)    
+ifeq ($(BUILD), debug-boot)
+    ifndef BOOTLOADER_SIZE
+        $(error "BOOTLOADER_SIZE not defined")
+    endif    
+    CDEFS   += VECT_TAB_OFFSET=$(BOOTLOADER_SIZE)
+    LDFLAGS += -Wl,--defsym,FLASH_OFFSET=$(BOOTLOADER_SIZE)
+else ifeq ($(BUILD), release-boot)
     ifndef BOOTLOADER_SIZE
         $(error "BOOTLOADER_SIZE not defined")
     endif    
@@ -86,6 +99,9 @@ endif
 ifeq ($(BUILD), debug)
 MSG_BEGIN               = '------------ begin (DEBUG) ---------------'
 MSG_END                 = '-------------  end (DEBUG) ---------------'
+else ifeq ($(BUILD), debug-boot)
+MSG_BEGIN               = '-------- begin (DEBUG FOR BOOT) --------'
+MSG_END                 = '--------  end (DEBUG FOR BOOT) ---------'
 else ifeq ($(BUILD), release)
 MSG_BEGIN               = '------------- begin (RELEASE) ------------'
 MSG_END                 = '-------------  end (RELEASE) -------------'
@@ -135,8 +151,10 @@ ALL_LDFLAGS  ?= $(MCU) $(LDFLAGS) -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map $(addpref
 all: begin gccversion build size end
 
 # Build targets
-ifeq ($(BUILD), release-boot)
-build: elf hex bin uf2 lss sym
+ifeq ($(BUILD), debug-boot)
+build: elf hex bin lss sym uf2
+else ifeq ($(BUILD), release-boot)
+build: elf hex bin lss sym uf2
 else
 build: elf hex bin lss sym
 endif
