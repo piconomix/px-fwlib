@@ -26,6 +26,9 @@
 #include "task.h"
 #include "semphr.h"
 #include "queue.h"
+#ifdef CFG_SEGGER_SYSVIEW_ENABLED
+#include "SEGGER_SYSVIEW.h"
+#endif
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 typedef enum
@@ -176,6 +179,11 @@ int main(void)
 {
     // Init modules
     main_init();    
+
+#ifdef CFG_SEGGER_SYSVIEW_ENABLED
+    // Configure and enable Segger SystemView
+    SEGGER_SYSVIEW_Conf();
+#endif
 
     // Create event queue
     queue_events = xQueueCreate(16, sizeof(uint8_t));

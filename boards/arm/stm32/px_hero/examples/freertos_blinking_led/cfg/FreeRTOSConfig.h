@@ -129,5 +129,9 @@ standard names - or at least those used in the unmodified vector table. */
 #define INCLUDE_xTaskGetHandle                  0
 #define INCLUDE_xTaskResumeFromISR              1
 
+#ifdef CFG_SEGGER_SYSVIEW_ENABLED
+#include "SEGGER_SYSVIEW_FreeRTOS.h"
+#endif
+
 #endif /* FREERTOS_CONFIG_H */
 

@@ -66,6 +66,9 @@ STMCUBE = $(PX_LIB)/libs/STM32Cube/L0
 # (3e) Path to FreeRTOS library (relative to Makefile)
 FREERTOS = $(PX_LIB)/libs/FreeRTOS/Source
 
+# (3e) Path to Segger SysView library (relative to Makefile)
+SYSVIEW = $(PX_LIB)/libs/segger_sysview
+
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
 SRC += $(BSP)/src/px_board.c
@@ -83,6 +86,15 @@ SRC += $(FREERTOS)/timers.c
 #SRC += $(FREERTOS)/portable/Common/mpu_wrappers.c
 SRC += $(FREERTOS)/portable/GCC/ARM_CM0/port.c
 SRC += $(FREERTOS)/portable/MemMang/heap_1.c
+
+ifeq ($(SEGGER_SYSVIEW),1)
+SRC += $(SYSVIEW)/SEGGER_RTT.c
+SRC += $(SYSVIEW)/SEGGER_RTT_Syscalls_GCC.c
+SRC += $(SYSVIEW)/SEGGER_RTT_printf.c
+SRC += $(SYSVIEW)/SEGGER_SYSVIEW.c
+SRC += $(SYSVIEW)/SEGGER_SYSVIEW_Config_FreeRTOS.c
+SRC += $(SYSVIEW)/SEGGER_SYSVIEW_FreeRTOS.c
+endif
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
 CXXSRC += 
@@ -121,6 +133,9 @@ INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Legacy
 INCDIRS += $(FREERTOS)/include
 INCDIRS += $(FREERTOS)/portable/GCC/ARM_CM0
+ifeq ($(SEGGER_SYSVIEW),1)
+INCDIRS += $(SYSVIEW)
+endif
 
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
@@ -129,6 +144,9 @@ CDEFS += STM32L0
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER
+ifeq ($(SEGGER_SYSVIEW),1)
+CDEFS += CFG_SEGGER_SYSVIEW_ENABLED
+endif
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
 #CXXDEFS += __STDC_LIMIT_MACROS
