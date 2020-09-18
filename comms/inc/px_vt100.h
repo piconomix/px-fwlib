@@ -52,8 +52,8 @@ extern "C" {
 #define PX_VT100_CHAR_BEL                   0x07
 #define PX_VT100_CHAR_BS                    0x08
 #define PX_VT100_CHAR_TAB                   0x09
-#define PX_VT100_CHAR_CR                    0x0D
-#define PX_VT100_CHAR_LF                    0x0A
+#define PX_VT100_CHAR_CR                    0x0D    // '\r'
+#define PX_VT100_CHAR_LF                    0x0A    // '\n'
 #define PX_VT100_CHAR_ESC                   0x1B
 #define PX_VT100_CHAR_DEL                   0x7F
 //@}

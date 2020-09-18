@@ -55,4 +55,11 @@
 /// Disable (0) or Enable (1) VT100 terminal color output
 #define PX_CLI_CFG_COLOR               1
 
+/// Disable (0) or Enable (1) echo of characters typed
+#define PX_CLI_CFG_ECHO_CHARS          1
+
+/// Specify ENTER character (Carriage Return '\r' or Line Feed '\n') that signifies the end of a command
+#define PX_CLI_CFG_CHAR_ENTER          PX_VT100_CHAR_CR
+//#define PX_CLI_CFG_CHAR_ENTER          PX_VT100_CHAR_LF
+
 #endif // #ifndef __PX_CLI_CFG_H__

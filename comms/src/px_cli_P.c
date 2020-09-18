@@ -776,7 +776,7 @@ void px_cli_on_rx_char(char data)
         switch(data)
         {
         // ENTER has been pressed
-        case PX_VT100_CHAR_CR:
+        case PX_CLI_CFG_CHAR_ENTER:
             // Terminate line
             putchar('\n');
 #if PX_CLI_CFG_HISTORY_SIZE
@@ -841,8 +841,10 @@ void px_cli_on_rx_char(char data)
             px_cli_line_buf[px_cli_line_buf_index++] = data;
             // Reset autocomplete to last character
             px_cli_autocomplete_reset();
+#if PX_CLI_CFG_ECHO_CHARS
             // Echo character
             putchar(data);
+#endif
         }
         else
         {
