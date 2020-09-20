@@ -27,6 +27,7 @@
 #include "semphr.h"
 #include "queue.h"
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
+#warning "Segger SystemView support enabled"
 #include "SEGGER_SYSVIEW.h"
 #endif
 
@@ -36,6 +37,12 @@ typedef enum
     MAIN_EVENT_BTN_PRESS_3_UP = 0,
     MAIN_EVENT_BTN_PRESS_4_DN = 1,
 } main_event_t;
+
+#ifdef CFG_SEGGER_SYSVIEW_ENABLED
+#define SEGGER_SYSVIEW_LOG_INFO(...) SEGGER_SYSVIEW_Print(__VA_ARGS__)
+#else
+#define SEGGER_SYSVIEW_LOG_INFO(...)
+#endif
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -84,6 +91,8 @@ static void main_task_btn(void *pvParameters)
 {
     uint8_t                event;
     QueueSetMemberHandle_t queue_set_member;
+
+    SEGGER_SYSVIEW_LOG_INFO("BTN task started");
 
     // Create binary semaphores
     sem_btn_press_3_up = xSemaphoreCreateBinary();
@@ -137,6 +146,8 @@ static void main_task_led(void *pvParameters)
     uint8_t    event;
     TickType_t delay = pdMS_TO_TICKS(250);
 
+    SEGGER_SYSVIEW_LOG_INFO("LED task started");
+
     // Loop forever
 	for(;;)
 	{
@@ -183,14 +194,19 @@ int main(void)
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
     // Configure and enable Segger SystemView
     SEGGER_SYSVIEW_Conf();
+    //SEGGER_SYSVIEW_Start();
 #endif
+
+    SEGGER_SYSVIEW_LOG_INFO("FreeRTOS Blinking LED example started");
 
     // Create event queue
     queue_events = xQueueCreate(16, sizeof(uint8_t));
+
     // Create LED task with a priority of 1
     xTaskCreate(main_task_led, "LED", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
     // Create BUTTON task with a priority of 2
     xTaskCreate(main_task_btn, "BTN", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+
     // Start scheduler
     vTaskStartScheduler();
 

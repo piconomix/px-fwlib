@@ -87,7 +87,7 @@ SRC += $(FREERTOS)/timers.c
 SRC += $(FREERTOS)/portable/GCC/ARM_CM0/port.c
 SRC += $(FREERTOS)/portable/MemMang/heap_1.c
 
-ifeq ($(SEGGER_SYSVIEW),1)
+ifeq ($(USE_SEGGER_SYSVIEW),1)
 SRC += $(SYSVIEW)/SEGGER_RTT.c
 SRC += $(SYSVIEW)/SEGGER_RTT_Syscalls_GCC.c
 SRC += $(SYSVIEW)/SEGGER_RTT_printf.c
@@ -108,6 +108,9 @@ CXXSRC +=
 #      same, it will preserve the spelling of the filenames, and gcc itself does
 #      care about how the name is spelled on its command-line.
 ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
+ifeq ($(USE_SEGGER_SYSVIEW),1)
+#ASRC += $(SYSVIEW)/SEGGER_RTT_ASM_ARMv7M.S
+endif
 
 # (5) List all directories to look for include files here
 #
@@ -133,7 +136,7 @@ INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Legacy
 INCDIRS += $(FREERTOS)/include
 INCDIRS += $(FREERTOS)/portable/GCC/ARM_CM0
-ifeq ($(SEGGER_SYSVIEW),1)
+ifeq ($(USE_SEGGER_SYSVIEW),1)
 INCDIRS += $(SYSVIEW)
 endif
 
@@ -144,7 +147,7 @@ CDEFS += STM32L0
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER
-ifeq ($(SEGGER_SYSVIEW),1)
+ifeq ($(USE_SEGGER_SYSVIEW),1)
 CDEFS += CFG_SEGGER_SYSVIEW_ENABLED
 endif
 
