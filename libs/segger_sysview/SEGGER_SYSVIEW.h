@@ -218,6 +218,12 @@ typedef struct {
 
 /*********************************************************************
 *
+*       Public variables
+*/
+extern U32 SEGGER_SYSVIEW_TickCnt;
+
+/*********************************************************************
+*
 *       Control and initialization functions
 */
 void SEGGER_SYSVIEW_Init                          (U32 SysFreq, U32 CPUFreq, const SEGGER_SYSVIEW_OS_API *pOSAPI, SEGGER_SYSVIEW_SEND_SYS_DESC_FUNC pfSendSysDesc);

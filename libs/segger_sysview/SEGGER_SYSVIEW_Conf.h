@@ -146,10 +146,7 @@ Revision: $Rev: 17066 $
 *       SystemView timestamp configuration
 */
 #if !defined(SEGGER_SYSVIEW_GET_TIMESTAMP) && !defined(SEGGER_SYSVIEW_TIMESTAMP_BITS)
-  #if SEGGER_SYSVIEW_CORE == SEGGER_SYSVIEW_CORE_CM0
-    #define SEGGER_SYSVIEW_GET_TIMESTAMP()      (*(U32 *)(0xE000E018))          // Retrieve a system timestamp. Cortex-M cycle counter.
-    #define SEGGER_SYSVIEW_TIMESTAMP_BITS       24                              // Define number of valid bits low-order delivered by clock source
-  #elif SEGGER_SYSVIEW_CORE == SEGGER_SYSVIEW_CORE_CM3
+  #if SEGGER_SYSVIEW_CORE == SEGGER_SYSVIEW_CORE_CM3
     #define SEGGER_SYSVIEW_GET_TIMESTAMP()      (*(U32 *)(0xE0001004))          // Retrieve a system timestamp. Cortex-M cycle counter.
     #define SEGGER_SYSVIEW_TIMESTAMP_BITS       32                              // Define number of valid bits low-order delivered by clock source
   #else
