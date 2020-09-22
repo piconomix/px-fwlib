@@ -351,9 +351,17 @@ void xPortPendSVHandler( void )
 }
 /*-----------------------------------------------------------*/
 
+#ifdef CFG_SEGGER_SYSVIEW_ENABLED
+volatile uint32_t SEGGER_SYSVIEW_TickCnt;
+#endif
+
 void xPortSysTickHandler( void )
 {
 uint32_t ulPreviousMask;
+
+#ifdef CFG_SEGGER_SYSVIEW_ENABLED
+    SEGGER_SYSVIEW_TickCnt++;
+#endif
 
 	ulPreviousMask = portSET_INTERRUPT_MASK_FROM_ISR();
     traceISR_ENTER();

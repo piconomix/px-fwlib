@@ -54,6 +54,7 @@ Revision: $Rev: 7745 $
 #include "FreeRTOS.h"
 #include "SEGGER_SYSVIEW.h"
 
+extern volatile uint32_t SEGGER_SYSVIEW_TickCnt;
 extern const SEGGER_SYSVIEW_OS_API SYSVIEW_X_OS_TraceAPI;
 
 /*********************************************************************

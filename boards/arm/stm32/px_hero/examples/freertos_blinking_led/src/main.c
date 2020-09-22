@@ -194,7 +194,7 @@ int main(void)
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
     // Configure and enable Segger SystemView
     SEGGER_SYSVIEW_Conf();
-    //SEGGER_SYSVIEW_Start();
+    SEGGER_SYSVIEW_Start();
 #endif
 
     SEGGER_SYSVIEW_LOG_INFO("FreeRTOS Blinking LED example started");
