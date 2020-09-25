@@ -125,8 +125,14 @@ bool px_i2c_open(px_i2c_handle_t * handle,
 {
     px_i2c_per_t * i2c_per;
 
+#if PX_DBG
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    if(handle == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
 
     // Handle not initialised
     handle->i2c_per = NULL;
@@ -147,6 +153,14 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         PX_DBG_ERR("Invalid peripheral specified");
         return false;
     }
+#if PX_DBG
+    // Check that px_i2c_init() has been called
+    if(i2c_per->i2c_base_adr == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
 
     // Save 7-bit slave address
     handle->slave_adr = slave_adr;
@@ -172,14 +186,20 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     px_i2c_per_t * i2c_per;
     I2C_TypeDef *  i2c_base_adr;    
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->i2c_per               == NULL)
+       ||(handle->i2c_per->i2c_base_adr == NULL)
+       ||(handle->i2c_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
+
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
-
     // Get I2C peripheral base register address
     i2c_base_adr = i2c_per->i2c_base_adr;
     // Decrement open count
@@ -192,7 +212,6 @@ bool px_i2c_close(px_i2c_handle_t * handle)
         // Success
         return true;
     }
-
     // Disable peripheral
     i2c_base_adr->CR1 = 0;
     // Disable peripheral clock
@@ -227,20 +246,23 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
     const uint8_t * data_u8 = (const uint8_t *)data;
     uint32_t        i2c_isr;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
-    // Set pointer to peripheral
-    i2c_per = handle->i2c_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->i2c_per               == NULL)
+       ||(handle->i2c_per->i2c_base_adr == NULL)
+       ||(handle->i2c_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Check that slave address is 7 bits
     PX_DBG_ASSERT(handle->slave_adr < 0x80);
-
+    // Set pointer to peripheral
+    i2c_per = handle->i2c_per;
     // Get I2C peripheral base register address
     i2c_base_adr = i2c_per->i2c_base_adr;
-    PX_DBG_ASSERT(i2c_base_adr != NULL);
-
     // Must RELOAD bit be cleared?
     if(  (nr_of_bytes <= 1)
        &&(  (flags & PX_I2C_FLAG_STOP) || (flags & PX_I2C_FLAG_END)  )  )
@@ -260,7 +282,6 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
     {
         LL_I2C_SetTransferSize(i2c_base_adr, 0);
     }
-
     // Generate START or REPEATED START condition?
     if(  (flags & PX_I2C_FLAG_START) || (flags & PX_I2C_FLAG_REP_START)  )
     {
@@ -316,7 +337,6 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             return false;
         }
     }
-
     // Write byte(s)
     while(true)
     {
@@ -395,7 +415,6 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             LL_I2C_SetTransferSize(i2c_base_adr, 1);
         }
     }
-
     // Generate STOP condition?
     if(flags & PX_I2C_FLAG_STOP)
     {
@@ -420,7 +439,6 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             ;
         }
     }
-
     // Success
     return true;
 }
@@ -435,20 +453,23 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
     uint8_t *      data_u8 = (uint8_t *)data;
     uint32_t       i2c_isr;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
-    // Set pointer to peripheral
-    i2c_per = handle->i2c_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->i2c_per               == NULL)
+       ||(handle->i2c_per->i2c_base_adr == NULL)
+       ||(handle->i2c_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Check that slave address is 7 bits
     PX_DBG_ASSERT(handle->slave_adr < 0x80);
-
+    // Set pointer to peripheral
+    i2c_per = handle->i2c_per;
     // Get I2C peripheral base register address
     i2c_base_adr = i2c_per->i2c_base_adr;
-    PX_DBG_ASSERT(i2c_base_adr != NULL);
-
     // Must RELOAD bit be cleared?
     if(  (nr_of_bytes <= 1)
        &&(  (flags & PX_I2C_FLAG_STOP) || (flags & PX_I2C_FLAG_END)  )  )
@@ -628,10 +649,19 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
 void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
                                    uint8_t           slave_adr)
 {
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->i2c_per               == NULL)
+       ||(handle->i2c_per->i2c_base_adr == NULL)
+       ||(handle->i2c_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return;
+    }
+#endif
     // Check that slave address is 7 bits
     PX_DBG_ASSERT(slave_adr < 0x80);
-
+    // Set new slave address
     handle->slave_adr = slave_adr;
 }

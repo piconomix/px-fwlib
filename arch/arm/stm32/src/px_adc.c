@@ -146,9 +146,14 @@ bool px_adc_open(px_adc_handle_t * handle,
 {
     px_adc_per_t * adc_per;
 
+#if PX_DBG
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
-
+    if(handle == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Handle not initialised
     handle->adc_per = NULL;
     // Set pointer to peripheral data
@@ -163,6 +168,14 @@ bool px_adc_open(px_adc_handle_t * handle,
         PX_DBG_ERR("Invalid peripheral specified");
         return false;
     }
+#if PX_DBG
+    // Check that px_adc_init() has been called
+    if(adc_per->adc_base_adr == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Initialise peripheral
     px_adc_init_peripheral(adc_per->adc_base_adr,
                            adc_nr);
@@ -178,14 +191,19 @@ bool px_adc_close(px_adc_handle_t * handle)
     px_adc_per_t * adc_per;
     ADC_TypeDef *  adc_base_adr;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->adc_per               == NULL)
+       ||(handle->adc_per->adc_base_adr == NULL)
+       ||(handle->adc_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Set pointer to peripheral
     adc_per = handle->adc_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(adc_per != NULL);
-    PX_DBG_ASSERT(adc_per->open_counter != 0);
-
     // Get ADC peripheral base register address
     adc_base_adr = adc_per->adc_base_adr;
     // Decrement open count
@@ -234,17 +252,21 @@ uint16_t px_adc_sample(px_adc_handle_t * handle, px_adc_ch_t ch)
     ADC_TypeDef *  adc_base_adr;
     uint16_t       data;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->adc_per               == NULL)
+       ||(handle->adc_per->adc_base_adr == NULL)
+       ||(handle->adc_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Set pointer to peripheral
     adc_per = handle->adc_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(adc_per != NULL);
-    PX_DBG_ASSERT(adc_per->open_counter != 0);
-
     // Get ADC peripheral base register address
     adc_base_adr = adc_per->adc_base_adr;
-
     // Select channel
     adc_base_adr->CHSELR = PX_ADC_CH_TO_BITMASK(ch);
     // Start conversion

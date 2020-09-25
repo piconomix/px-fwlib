@@ -112,9 +112,14 @@ bool px_dac_open(px_dac_handle_t * handle,
 {
     px_dac_per_t * dac_per;
 
+#if PX_DBG
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
-
+    if(handle == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Handle not initialised
     handle->dac_per = NULL;
     // Set pointer to peripheral data
@@ -129,6 +134,14 @@ bool px_dac_open(px_dac_handle_t * handle,
         PX_DBG_ERR("Invalid peripheral specified");
         return false;
     }
+#if PX_DBG
+    // Check that px_adc_init() has been called
+    if(dac_per->dac_base_adr == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Initialise peripheral
     px_dac_init_peripheral(dac_per->dac_base_adr,
                            dac_nr);
@@ -145,14 +158,19 @@ bool px_dac_close(px_dac_handle_t * handle)
     DAC_TypeDef *  dac_base_adr;
     uint32_t       dac_channel = 0;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->dac_per               == NULL)
+       ||(handle->dac_per->dac_base_adr == NULL)
+       ||(handle->dac_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Set pointer to peripheral
     dac_per = handle->dac_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(dac_per != NULL);
-    PX_DBG_ASSERT(dac_per->open_counter != 0);
-
     // Get DAC peripheral base register address
     dac_base_adr = dac_per->dac_base_adr;
     // Decrement open count
@@ -197,17 +215,21 @@ void px_dac_wr(px_dac_handle_t * handle,
     px_dac_per_t * dac_per;
     DAC_TypeDef *  dac_base_adr;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->dac_per               == NULL)
+       ||(handle->dac_per->dac_base_adr == NULL)
+       ||(handle->dac_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return;
+    }
+#endif
     // Set pointer to peripheral
     dac_per = handle->dac_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(dac_per != NULL);
-    PX_DBG_ASSERT(dac_per->open_counter != 0);
-
     // Get DAC peripheral base register address
     dac_base_adr = dac_per->dac_base_adr;
-
     // Ouput data
     switch(channel)
     {

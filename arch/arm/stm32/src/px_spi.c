@@ -167,8 +167,14 @@ bool px_spi_open(px_spi_handle_t * handle,
     px_spi_per_t * spi_per;
     uint32_t       spi_cr1_val = 0;
 
+#if PX_DBG
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    if(handle == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -188,7 +194,14 @@ bool px_spi_open(px_spi_handle_t * handle,
         PX_DBG_ERR("Invalid peripheral specified");
         return false;
     }
-
+#if PX_DBG
+    // Check that px_spi_init() has been called
+    if(spi_per->spi_base_adr == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Set SPI data order (MSB or LSB first)
     spi_cr1_val |= PX_SPI_CFG_DEFAULT_DATA_ORDER << SPI_CR1_LSBFIRST_Pos;
     // Set SPI clock divisor
@@ -234,8 +247,15 @@ bool px_spi_open2(px_spi_handle_t * handle,
     px_spi_per_t * spi_per;
     uint32_t       spi_cr1_val = 0;
 
+#if PX_DBG
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    if(handle == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
+
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -255,6 +275,14 @@ bool px_spi_open2(px_spi_handle_t * handle,
         PX_DBG_ERR("Invalid peripheral specified");
         return false;
     }
+#if PX_DBG
+    // Check that px_spi_init() has been called
+    if(spi_per->spi_base_adr == NULL)
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
 
     // Set SPI data order (MSB or LSB first)
     if(data_order == PX_SPI_DATA_ORDER_LSB)
@@ -298,14 +326,19 @@ bool px_spi_close(px_spi_handle_t * handle)
     px_spi_per_t * spi_per;
     SPI_TypeDef *  spi_base_adr;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->spi_per               == NULL)
+       ||(handle->spi_per->spi_base_adr == NULL)
+       ||(handle->spi_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return false;
+    }
+#endif
     // Set pointer to peripheral
     spi_per = handle->spi_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
-
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
     // Decrement open count
@@ -352,13 +385,20 @@ void px_spi_wr(px_spi_handle_t * handle,
     SPI_TypeDef *   spi_base_adr;
     const uint8_t * data_wr_u8 = (const uint8_t *)data;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->spi_per               == NULL)
+       ||(handle->spi_per->spi_base_adr == NULL)
+       ||(handle->spi_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return;
+    }
+#endif
+
     // Set pointer to peripheral
-    spi_per = handle->spi_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
+    spi_per = handle->spi_per;    
 
     if(flags & PX_SPI_FLAG_START)
     {
@@ -440,13 +480,20 @@ void px_spi_rd(px_spi_handle_t * handle,
     SPI_TypeDef *   spi_base_adr;
     uint8_t *       data_rd_u8 = (uint8_t *)data;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->spi_per               == NULL)
+       ||(handle->spi_per->spi_base_adr == NULL)
+       ||(handle->spi_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return;
+    }
+#endif
+
     // Set pointer to peripheral
     spi_per = handle->spi_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
 
     if(flags & PX_SPI_FLAG_START)
     {
@@ -529,13 +576,20 @@ void px_spi_xc(px_spi_handle_t * handle,
     const uint8_t * data_wr_u8 = (const uint8_t *)data_wr;
     uint8_t *       data_rd_u8 = (uint8_t *)data_rd;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->spi_per               == NULL)
+       ||(handle->spi_per->spi_base_adr == NULL)
+       ||(handle->spi_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return;
+    }
+#endif
+
     // Set pointer to peripheral
     spi_per = handle->spi_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
 
     if(flags & PX_SPI_FLAG_START)
     {
@@ -612,13 +666,20 @@ void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
     SPI_TypeDef *  spi_base_adr;
     uint32_t       spi_cr1_val;
 
-    // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+#if PX_DBG
+    // Check handle
+    if(  (handle                        == NULL)
+       ||(handle->spi_per               == NULL)
+       ||(handle->spi_per->spi_base_adr == NULL)
+       ||(handle->spi_per->open_counter == 0   )  )
+    {
+        PX_DBG_ASSERT(false);
+        return;
+    }
+#endif
+
     // Set pointer to peripheral
     spi_per = handle->spi_per;
-    // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
 
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
