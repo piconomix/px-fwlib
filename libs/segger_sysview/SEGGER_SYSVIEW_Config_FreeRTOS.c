@@ -108,6 +108,7 @@ void TIM7_IRQHandler(void)
 
 static void SEGGER_SYSVIEW_TimeStampInit(void)
 {
+#warning "TIM7 peripheral is used for Segger SysView timestamping"
     // Enable TIM7 peripheral clock
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM7);
     // Set prescaler to match timestamp frequency
