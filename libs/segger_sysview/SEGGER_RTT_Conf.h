@@ -68,11 +68,11 @@ Revision: $Rev: 18601 $
 **********************************************************************
 */
 #ifndef   SEGGER_RTT_MAX_NUM_UP_BUFFERS
-  #define SEGGER_RTT_MAX_NUM_UP_BUFFERS             (3)     // Max. number of up-buffers (T->H) available on this target    (Default: 3)
+  #define SEGGER_RTT_MAX_NUM_UP_BUFFERS             (2)     // Max. number of up-buffers (T->H) available on this target    (Default: 3)
 #endif
 
 #ifndef   SEGGER_RTT_MAX_NUM_DOWN_BUFFERS
-  #define SEGGER_RTT_MAX_NUM_DOWN_BUFFERS           (3)     // Max. number of down-buffers (H->T) available on this target  (Default: 3)
+  #define SEGGER_RTT_MAX_NUM_DOWN_BUFFERS           (2)     // Max. number of down-buffers (H->T) available on this target  (Default: 3)
 #endif
 
 #ifndef   BUFFER_SIZE_UP
