@@ -54,7 +54,9 @@ Revision: $Rev: 7745 $
 #include "FreeRTOS.h"
 #include "SEGGER_SYSVIEW.h"
 
-extern volatile uint32_t SEGGER_SYSVIEW_TickCnt;
+#include "stm32l0xx_ll_bus.h"
+#include "stm32l0xx_ll_tim.h"
+
 extern const SEGGER_SYSVIEW_OS_API SYSVIEW_X_OS_TraceAPI;
 
 /*********************************************************************
@@ -70,24 +72,13 @@ extern const SEGGER_SYSVIEW_OS_API SYSVIEW_X_OS_TraceAPI;
 #define SYSVIEW_DEVICE_NAME     "Cortex-M0+"
 
 // Frequency of the timestamp. Must match SEGGER_SYSVIEW_GET_TIMESTAMP in SEGGER_SYSVIEW_Conf.h
-#define SYSVIEW_TIMESTAMP_FREQ  (configCPU_CLOCK_HZ)
+#define SYSVIEW_TIMESTAMP_FREQ  1000000
 
 // System Frequency. SystemcoreClock is used in most CMSIS compatible projects.
 #define SYSVIEW_CPU_FREQ        configCPU_CLOCK_HZ
 
 // The lowest RAM address used for IDs (pointers)
-#define SYSVIEW_RAM_BASE        (0x10000000)
-
-/*********************************************************************
-*
-*       Defines, fixed
-*
-**********************************************************************
-*/
-#define SCB_ICSR  (*(volatile U32*) (0xE000ED04uL))  // Interrupt Control State Register
-#define SCB_ICSR_PENDSTSET_MASK     (1UL << 26)      // SysTick pending bit
-#define SYST_RVR  (*(volatile U32*) (0xE000E014uL))  // SysTick Reload Value Register
-#define SYST_CVR  (*(volatile U32*) (0xE000E018uL))  // SysTick Current Value Register
+#define SYSVIEW_RAM_BASE        (0x20000000)
 
 /********************************************************************* 
 *
@@ -101,6 +92,54 @@ static void _cbSendSystemDesc(void) {
   SEGGER_SYSVIEW_SendSysDesc("I#15=SysTick");
 }
 
+static U16 SEGGER_SYSVIEW_TickCnt;
+
+void TIM7_IRQHandler(void)
+{
+    // Interrupt flag set?
+    if(LL_TIM_IsActiveFlag_UPDATE(TIM7))
+    {
+        // Clear flag
+        LL_TIM_ClearFlag_UPDATE(TIM7);
+        // Increment counter
+        SEGGER_SYSVIEW_TickCnt++;
+    }
+}
+
+static void SEGGER_SYSVIEW_TimeStampInit(void)
+{
+    // Enable TIM7 peripheral clock
+    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM7);
+    // Set prescaler to match timestamp frequency
+    LL_TIM_SetPrescaler(TIM7, __LL_TIM_CALC_PSC(SYSVIEW_CPU_FREQ, SYSVIEW_TIMESTAMP_FREQ));
+    // Enable timer interrupt
+    NVIC_EnableIRQ(TIM7_IRQn);
+    LL_TIM_EnableIT_UPDATE(TIM7);
+    // Enable counter
+    LL_TIM_EnableCounter(TIM7);
+}
+
+U32 SEGGER_SYSVIEW_X_GetTimestamp(void) {
+  U16 Counter;
+  U16 TickCount;
+  U32 TimeStamp;
+
+  // Read timer counter and overflow counter
+  Counter   = LL_TIM_GetCounter(TIM7);
+  TickCount = SEGGER_SYSVIEW_TickCnt;
+  // If a timer interrupt is pending, adjust overflow counter
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM7))
+  {
+    TickCount++;
+    LL_TIM_ClearFlag_UPDATE(TIM7);
+  }
+
+  // Create combined timestamp
+  TimeStamp = (((U32)TickCount) << 16) | Counter;
+
+  return TimeStamp;
+}
+
 /*********************************************************************
 *
 *       Global functions
@@ -108,52 +147,10 @@ static void _cbSendSystemDesc(void) {
 **********************************************************************
 */
 void SEGGER_SYSVIEW_Conf(void) {
+  SEGGER_SYSVIEW_TimeStampInit();
   SEGGER_SYSVIEW_Init(SYSVIEW_TIMESTAMP_FREQ, SYSVIEW_CPU_FREQ, 
                       &SYSVIEW_X_OS_TraceAPI, _cbSendSystemDesc);
   SEGGER_SYSVIEW_SetRAMBase(SYSVIEW_RAM_BASE);
-}
-
-/*********************************************************************
-*
-*       SEGGER_SYSVIEW_X_GetTimestamp()
-*
-* Function description
-*   Returns the current timestamp in cycles using the system tick
-*   count and the SysTick counter.
-*   All parameters of the SysTick have to be known and are set via
-*   configuration defines on top of the file.
-*
-* Return value
-*   The current timestamp.
-*
-* Additional information
-*   SEGGER_SYSVIEW_X_GetTimestamp is always called when interrupts are
-*   disabled. Therefore locking here is not required.
-*/
-U32 SEGGER_SYSVIEW_X_GetTimestamp(void) {
-  U32 TickCount;
-  U32 Cycles;
-  U32 CyclesPerTick;
-  //
-  // Get the cycles of the current system tick.
-  // SysTick is down-counting, subtract the current value from the number of cycles per tick.
-  //
-  CyclesPerTick = SYST_RVR + 1;
-  Cycles = (CyclesPerTick - SYST_CVR);
-  //
-  // Get the system tick count.
-  //
-  TickCount = SEGGER_SYSVIEW_TickCnt;
-  //
-  // If a SysTick interrupt is pending, re-read timer and adjust result
-  //
-  if ((SCB_ICSR & SCB_ICSR_PENDSTSET_MASK) != 0) {
-    Cycles = (CyclesPerTick - SYST_CVR);
-    TickCount++;
-  }
-  Cycles += TickCount * CyclesPerTick;
-
-  return Cycles;
 }
 
 /*************************** End of file ****************************/
