@@ -149,6 +149,24 @@ typedef signed long long   int64_t;
 #define PX_CONCAT(x, y) _PX_CONCAT(x, y)
 //@}
 
+/// @name Stringify macros
+//@{
+#define _PX_STRINGIFY(x) #x
+
+/** 
+ *  Recursive stringify macro.
+ *  
+ *  Example:
+ *      @code{.c}
+ *      #define VERSION_MAJOR 2
+ *      #define VERSION_MINOR 12
+ *  
+ *      printf("Version " PX_STRINGIFY(VERSION_MAJOR) "." PX_STRINGIFY(VERSION_MINOR)); 
+ *      @endcode
+ */
+#define PX_STRINGIFY(x) _PX_STRINGIFY(x)
+//@}
+
 /// @name Bit manipulation macros useful for example to manipulate GPIO pins
 //@{
 /// Set a bit (1)
