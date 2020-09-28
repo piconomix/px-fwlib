@@ -125,8 +125,7 @@ U32 SEGGER_SYSVIEW_X_GetTimestamp(void) {
   U16 TickCount;
   U32 TimeStamp;
 
-  // Read timer counter and overflow counter
-  Counter   = LL_TIM_GetCounter(TIM7);
+  // Read overflow counter
   TickCount = SEGGER_SYSVIEW_TickCnt;
   // If a timer interrupt is pending, adjust overflow counter
   if (LL_TIM_IsActiveFlag_UPDATE(TIM7))
@@ -134,7 +133,8 @@ U32 SEGGER_SYSVIEW_X_GetTimestamp(void) {
     TickCount++;
     LL_TIM_ClearFlag_UPDATE(TIM7);
   }
-
+  // Read timer counter
+  Counter   = LL_TIM_GetCounter(TIM7);
   // Create combined timestamp
   TimeStamp = (((U32)TickCount) << 16) | Counter;
 
