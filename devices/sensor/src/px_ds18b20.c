@@ -6,10 +6,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
- 
+
     Title:          px_ds18b20.h : Maxim 1-Wire digital thermometer driver
     Author(s):      Pieter Conradie
     Creation Date:  2017-02-01
@@ -219,7 +219,7 @@ px_ds18b20_error_t px_ds18b20_rd_pwr_supply(px_one_wire_rom_t * rom,
 }
 
 px_ds18b20_error_t px_ds18b20_rd_temp(px_one_wire_rom_t * rom,
-                                      uint8_t *           temp_msb, 
+                                      uint8_t *           temp_msb,
                                       uint8_t *           temp_lsb)
 {
     px_ds18b20_error_t error;
@@ -238,14 +238,14 @@ px_ds18b20_error_t px_ds18b20_rd_temp(px_one_wire_rom_t * rom,
     *temp_lsb = px_one_wire_rd_u8();
     *temp_msb = px_one_wire_rd_u8();
     PX_DBG_INFO("Temp = %02X%02X ", *temp_msb, *temp_lsb);
-    
+
     // Success
     return PX_DS18B20_ERR_NONE;
 }
 
-int16_t px_ds18b20_util_convert_t_to_deci_deg(uint8_t temp_msb, uint8_t temp_lsb, uint8_t cfg_reg)
+int16_t px_ds18b20_util_convert_t_to_temp(uint8_t temp_msb, uint8_t temp_lsb, uint8_t cfg_reg)
 {
-    int16_t i;
+    int32_t i;
 
     // At what resolution was temperature measurement made?
     switch(cfg_reg & PX_DS18B20_CFG_REG_RES_MASK)
@@ -273,15 +273,15 @@ int16_t px_ds18b20_util_convert_t_to_deci_deg(uint8_t temp_msb, uint8_t temp_lsb
     }
 
     // Assemble MSB and LSB
-    i = (int16_t) PX_U16_CONCAT_U8(temp_msb, temp_lsb);
+    i = (int32_t)((int16_t)PX_U16_CONCAT_U8(temp_msb, temp_lsb));
 
     /*
-     *  Convert to deci degrees (0.1 deg C resolution) by multiplying with 10 
+     *  Convert to 0.01 deg C resolution by multiplying with 100
      *  and dividing by 16 (with rounding), for example:
-     *  0x0191 ->  251 (+25.1 deg Celsius)
-     *  0xff5e -> -101 (-10.1 deg Celsius)
+     *  0x0191 ->  2506 (+25.06 deg Celsius)
+     *  0xff5e -> -1013 (-10.13 deg Celsius)
      */
-    i = i * 10;
+    i = i * 100;
     if(i >= 0)
     {
         i = (i+8) / 16;
@@ -291,7 +291,7 @@ int16_t px_ds18b20_util_convert_t_to_deci_deg(uint8_t temp_msb, uint8_t temp_lsb
         i = (i-8) / 16;
     }
     PX_DBG_INFO("Temp = %d", i);
-    return i;
+    return (int16_t)i;
 }
 
 uint16_t px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg)

@@ -8,30 +8,30 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
- 
+
     Title:          px_ds18b20.h : Maxim 1-Wire digital thermometer driver
     Author(s):      Pieter Conradie
     Creation Date:  2017-02-01
 
 ============================================================================= */
 
-/** 
+/**
  *  @ingroup DEVICES_SENSOR
  *  @defgroup PX_DS18B20 px_ds18b20.h : Maxim 1-Wire digital thermometer driver
- *  
+ *
  *  File(s):
  *  - devices/sensor/inc/px_ds18b20.h
- *  - devices/sensor/src/px_ds18b20.c 
- *   
- *  Reference: 
- *  - [Maxim DS18B20 datasheet](https://datasheets.maximintegrated.com/en/ds/DS18B20.pdf) 
- *   
- *  Example: 
- *   
- *  @include devices/sensor/test/px_ds18b20_test.c 
+ *  - devices/sensor/src/px_ds18b20.c
+ *
+ *  Reference:
+ *  - [Maxim DS18B20 datasheet](https://datasheets.maximintegrated.com/en/ds/DS18B20.pdf)
+ *
+ *  Example:
+ *
+ *  @include devices/sensor/test/px_ds18b20_test.c
  */
 /// @{
 
@@ -103,11 +103,11 @@ px_ds18b20_error_t px_ds18b20_rd_pwr_supply             (px_one_wire_rom_t *    
                                                          bool *                    bus_pwr_flag);
 
 px_ds18b20_error_t px_ds18b20_rd_temp                   (px_one_wire_rom_t *       rom,
-                                                         uint8_t *                 temp_msb, 
+                                                         uint8_t *                 temp_msb,
                                                          uint8_t *                 temp_lsb);
 
-int16_t            px_ds18b20_util_convert_t_to_deci_deg(uint8_t temp_msb, 
-                                                         uint8_t temp_lsb, 
+int16_t           px_ds18b20_util_convert_t_to_temp     (uint8_t temp_msb,
+                                                         uint8_t temp_lsb,
                                                          uint8_t cfg_reg);
 
 uint16_t          px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg);
