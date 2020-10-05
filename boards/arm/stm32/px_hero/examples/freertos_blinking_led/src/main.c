@@ -6,14 +6,14 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
 
     Title:          Piconomix STM32 Hero Board FreeRTOS blinking LED example
     Author(s):      Pieter Conradie
     Creation Date:  2020-04-30
- 
+
 ============================================================================= */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
@@ -82,7 +82,7 @@ static bool main_init(void)
     // Initialize modules
     px_board_init();
     px_exti_init();
-    
+
     // Success
     return true;
 }
@@ -123,6 +123,7 @@ static void main_task_btn(void *pvParameters)
         // 3/UP button?
         if(queue_set_member == sem_btn_press_3_up)
         {
+            SEGGER_SYSVIEW_LOG_INFO("BTN 3/UP pressed");
             // Take semaphore so that it can be "given" again
             xSemaphoreTake(sem_btn_press_3_up, 0);
             // Signal event to LED task
@@ -132,6 +133,7 @@ static void main_task_btn(void *pvParameters)
         // 4/DN button?
         if(queue_set_member == sem_btn_press_4_dn)
         {
+            SEGGER_SYSVIEW_LOG_INFO("BTN 4/DN pressed");
             // Take semaphore so that it can be "given" again
             xSemaphoreTake(sem_btn_press_4_dn, 0);
             // Signal event to LED task
@@ -163,17 +165,19 @@ static void main_task_led(void *pvParameters)
             switch(event)
             {
             case MAIN_EVENT_BTN_PRESS_3_UP:
-                // Decrease delay                
+                // Decrease delay
                 if(delay > pdMS_TO_TICKS(50))
                 {
+                    SEGGER_SYSVIEW_LOG_INFO("LED blink faster");
                     delay -= pdMS_TO_TICKS(50);
                 }
                 break;
 
             case MAIN_EVENT_BTN_PRESS_4_DN:
-                // Increase delay                
+                // Increase delay
                 if(delay < pdMS_TO_TICKS(500))
                 {
+                    SEGGER_SYSVIEW_LOG_INFO("LED blink slower");
                     delay += pdMS_TO_TICKS(50);
                 }
                 break;
@@ -189,7 +193,7 @@ static void main_task_led(void *pvParameters)
 int main(void)
 {
     // Init modules
-    main_init();    
+    main_init();
 
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
     // Configure and enable Segger SystemView
@@ -204,7 +208,7 @@ int main(void)
 
     // Create LED task with a priority of 1
     xTaskCreate(main_task_led, "LED", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-    // Create BUTTON task with a priority of 2
+    // Create BUTTON task with a priority of 1
     xTaskCreate(main_task_btn, "BTN", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
     // Start scheduler
