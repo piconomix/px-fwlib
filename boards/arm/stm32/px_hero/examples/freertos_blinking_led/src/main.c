@@ -61,6 +61,8 @@ static void main_exti12_handler(void)
 {
     BaseType_t higher_priority_task_woken = pdFALSE;
 
+    // Record ISR enter event
+    traceISR_ENTER();
     // Give semaphore to indicate that 4/DN button has been pressed
     xSemaphoreGiveFromISR(sem_btn_press_4_dn, &higher_priority_task_woken);
     // Switch to higher priority task if unblocked by giving semaphore
@@ -71,6 +73,8 @@ static void main_exti13_handler(void)
 {
     BaseType_t higher_priority_task_woken = pdFALSE;
 
+    // Record ISR enter event
+    traceISR_ENTER();
     // Give semaphore to indicate that 3/UP button has been pressed
     xSemaphoreGiveFromISR(sem_btn_press_3_up, NULL);
     // Switch to higher priority task if unblocked by giving semaphore
@@ -198,6 +202,7 @@ int main(void)
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
     // Configure and enable Segger SystemView
     SEGGER_SYSVIEW_Conf();
+    // Start logging
     SEGGER_SYSVIEW_Start();
 #endif
 
@@ -208,8 +213,8 @@ int main(void)
 
     // Create LED task with a priority of 1
     xTaskCreate(main_task_led, "LED", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-    // Create BUTTON task with a priority of 1
-    xTaskCreate(main_task_btn, "BTN", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    // Create BUTTON task with a priority of 2
+    xTaskCreate(main_task_btn, "BTN", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 
     // Start scheduler
     vTaskStartScheduler();
