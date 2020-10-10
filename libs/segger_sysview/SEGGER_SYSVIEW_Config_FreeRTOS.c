@@ -80,7 +80,7 @@ extern const SEGGER_SYSVIEW_OS_API SYSVIEW_X_OS_TraceAPI;
 // The lowest RAM address used for IDs (pointers)
 #define SYSVIEW_RAM_BASE        (0x20000000)
 
-/********************************************************************* 
+/*********************************************************************
 *
 *       _cbSendSystemDesc()
 *
@@ -90,8 +90,10 @@ extern const SEGGER_SYSVIEW_OS_API SYSVIEW_X_OS_TraceAPI;
 static void _cbSendSystemDesc(void) {
   SEGGER_SYSVIEW_SendSysDesc("N="SYSVIEW_APP_NAME",D="SYSVIEW_DEVICE_NAME",O=FreeRTOS");
   SEGGER_SYSVIEW_SendSysDesc("I#15=SysTick");
+  SEGGER_SYSVIEW_SendSysDesc("I#23=EXTI[15:4]");
 }
 
+/// [SYSVIEW_TIMESTAMP]
 static U16 SEGGER_SYSVIEW_TickCnt;
 
 void TIM7_IRQHandler(void)
@@ -108,7 +110,7 @@ void TIM7_IRQHandler(void)
 
 static void SEGGER_SYSVIEW_TimeStampInit(void)
 {
-#warning "TIM7 peripheral is used for Segger SysView timestamping"
+    #warning "TIM7 peripheral is used for Segger SysView timestamping"
     // Enable TIM7 peripheral clock
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM7);
     // Set prescaler to match timestamp frequency
@@ -120,26 +122,28 @@ static void SEGGER_SYSVIEW_TimeStampInit(void)
     LL_TIM_EnableCounter(TIM7);
 }
 
-U32 SEGGER_SYSVIEW_X_GetTimestamp(void) {
-  U16 Counter;
-  U16 TickCount;
-  U32 TimeStamp;
+U32 SEGGER_SYSVIEW_X_GetTimestamp(void)
+{
+    U16 Counter;
+    U16 TickCount;
+    U32 TimeStamp;
 
-  // If a timer interrupt is pending, adjust overflow counter
-  if (LL_TIM_IsActiveFlag_UPDATE(TIM7))
-  {
-    LL_TIM_ClearFlag_UPDATE(TIM7);
-    SEGGER_SYSVIEW_TickCnt++;    
-  }
-  // Read overflow counter
-  TickCount = SEGGER_SYSVIEW_TickCnt;
-  // Read timer counter
-  Counter   = LL_TIM_GetCounter(TIM7);
-  // Create combined timestamp
-  TimeStamp = (((U32)TickCount) << 16) | Counter;
+    // If a timer interrupt is pending, adjust overflow counter
+    if (LL_TIM_IsActiveFlag_UPDATE(TIM7))
+    {
+      LL_TIM_ClearFlag_UPDATE(TIM7);
+      SEGGER_SYSVIEW_TickCnt++;
+    }
+    // Read overflow counter
+    TickCount = SEGGER_SYSVIEW_TickCnt;
+    // Read timer counter
+    Counter   = LL_TIM_GetCounter(TIM7);
+    // Create combined 32-bit timestamp
+    TimeStamp = (((U32)TickCount) << 16) | Counter;
 
-  return TimeStamp;
+    return TimeStamp;
 }
+/// [SYSVIEW_TIMESTAMP]
 
 /*********************************************************************
 *
@@ -149,7 +153,7 @@ U32 SEGGER_SYSVIEW_X_GetTimestamp(void) {
 */
 void SEGGER_SYSVIEW_Conf(void) {
   SEGGER_SYSVIEW_TimeStampInit();
-  SEGGER_SYSVIEW_Init(SYSVIEW_TIMESTAMP_FREQ, SYSVIEW_CPU_FREQ, 
+  SEGGER_SYSVIEW_Init(SYSVIEW_TIMESTAMP_FREQ, SYSVIEW_CPU_FREQ,
                       &SYSVIEW_X_OS_TraceAPI, _cbSendSystemDesc);
   SEGGER_SYSVIEW_SetRAMBase(SYSVIEW_RAM_BASE);
 }
