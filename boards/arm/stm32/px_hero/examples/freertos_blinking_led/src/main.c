@@ -34,9 +34,9 @@
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 typedef enum
 {
-    MAIN_EVENT_BTN_PRESS_3_UP = 0,
-    MAIN_EVENT_BTN_PRESS_4_DN = 1,
-} main_event_t;
+    BTN_EVENT_PRESS_3_UP = 0,
+    BTN_EVENT_PRESS_4_DN = 1,
+} btn_event_t;
 
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
 #define SSV_LOG_INFO(...)    SEGGER_SYSVIEW_Print(__VA_ARGS__)
@@ -53,34 +53,39 @@ typedef enum
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-static SemaphoreHandle_t sem_btn_press_3_up;
-static SemaphoreHandle_t sem_btn_press_4_dn;
-static QueueHandle_t     queue_events;
-static QueueSetHandle_t  queue_set;
+static SemaphoreHandle_t sem_btn_press;
+static QueueHandle_t     queue_btn_events;
+
+static volatile bool     btn_event_press_3_up_flag;
+static volatile bool     btn_event_press_4_dn_flag;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void main_exti12_handler(void)
+static void main_exti_13_handler(void)
 {
     BaseType_t higher_priority_task_woken = pdFALSE;
 
     // Record ISR enter event
     traceISR_ENTER();
-    // Give semaphore to indicate that 4/DN button has been pressed
-    xSemaphoreGiveFromISR(sem_btn_press_4_dn, &higher_priority_task_woken);
+    // Set flag to indicate that button has been pressed
+    btn_event_press_3_up_flag = true;
+    // Give semaphore to indicate that button has been pressed
+    xSemaphoreGiveFromISR(sem_btn_press, &higher_priority_task_woken);
     // Switch to higher priority task if unblocked by giving semaphore
     portYIELD_FROM_ISR(higher_priority_task_woken);
 }
 
-static void main_exti13_handler(void)
+static void main_exti_12_handler(void)
 {
     BaseType_t higher_priority_task_woken = pdFALSE;
 
     // Record ISR enter event
     traceISR_ENTER();
-    // Give semaphore to indicate that 3/UP button has been pressed
-    xSemaphoreGiveFromISR(sem_btn_press_3_up, NULL);
+    // Set flag to indicate that button has been pressed
+    btn_event_press_4_dn_flag = true;
+    // Give semaphore to indicate that button has been pressed
+    xSemaphoreGiveFromISR(sem_btn_press, &higher_priority_task_woken);
     // Switch to higher priority task if unblocked by giving semaphore
     portYIELD_FROM_ISR(higher_priority_task_woken);
 }
@@ -97,56 +102,49 @@ static bool main_init(void)
 
 static void main_task_btn(void *pvParameters)
 {
-    uint8_t                event;
-    QueueSetMemberHandle_t queue_set_member;
+    uint8_t event;
 
     SSV_LOG_INFO("BTN task started");
 
-    // Create binary semaphores
-    sem_btn_press_3_up = xSemaphoreCreateBinary();
-    sem_btn_press_4_dn = xSemaphoreCreateBinary();
-    // Create queue set for two binary semaphores
-    queue_set = xQueueCreateSet(2);
-    xQueueAddToSet(sem_btn_press_3_up, queue_set);
-    xQueueAddToSet(sem_btn_press_4_dn, queue_set);
-
-    // Enable external falling edge interrupt on Port C pin 12 (4/DN button)
-    px_exti_open(PX_EXTI_PORT_C,
-                 PX_EXTI_LINE_12,
-                 &main_exti12_handler);
-    px_exti_type_set(PX_EXTI_LINE_12, PX_EXTI_TYPE_FALLING_EDGE);
-    px_exti_enable(PX_EXTI_LINE_12);
+    // Create binary semaphore
+    sem_btn_press = xSemaphoreCreateBinary();
     // Enable external falling edge interrupt on Port C pin 13 (3/UP button)
     px_exti_open(PX_EXTI_PORT_C,
                  PX_EXTI_LINE_13,
-                 &main_exti13_handler);
+                 &main_exti_13_handler);
     px_exti_type_set(PX_EXTI_LINE_13, PX_EXTI_TYPE_FALLING_EDGE);
     px_exti_enable(PX_EXTI_LINE_13);
+    // Enable external falling edge interrupt on Port C pin 12 (4/DN button)
+    px_exti_open(PX_EXTI_PORT_C,
+                 PX_EXTI_LINE_12,
+                 &main_exti_12_handler);
+    px_exti_type_set(PX_EXTI_LINE_12, PX_EXTI_TYPE_FALLING_EDGE);
+    px_exti_enable(PX_EXTI_LINE_12);
 
     // Loop forever
 	for(;;)
 	{
         // Wait until any button is pressed
-        queue_set_member = xQueueSelectFromSet(queue_set, portMAX_DELAY);
+        xSemaphoreTake(sem_btn_press, portMAX_DELAY);
         // 3/UP button?
-        if(queue_set_member == sem_btn_press_3_up)
+        if(btn_event_press_3_up_flag)
         {
             SSV_LOG_INFO("BTN 3/UP pressed");
-            // Take semaphore so that it can be "given" again
-            xSemaphoreTake(sem_btn_press_3_up, 0);
+            // Clear flag
+            btn_event_press_3_up_flag = false;
             // Signal event to LED task
-            event = MAIN_EVENT_BTN_PRESS_3_UP;
-            xQueueSendToBack(queue_events, &event, 0);
+            event = BTN_EVENT_PRESS_3_UP;
+            xQueueSendToBack(queue_btn_events, &event, 0);
         }
         // 4/DN button?
-        if(queue_set_member == sem_btn_press_4_dn)
+        if(btn_event_press_4_dn_flag)
         {
             SSV_LOG_INFO("BTN 4/DN pressed");
-            // Take semaphore so that it can be "given" again
-            xSemaphoreTake(sem_btn_press_4_dn, 0);
+            // Clear flag
+            btn_event_press_4_dn_flag = false;
             // Signal event to LED task
-            event = MAIN_EVENT_BTN_PRESS_4_DN;
-            xQueueSendToBack(queue_events, &event, 0);
+            event = BTN_EVENT_PRESS_4_DN;
+            xQueueSendToBack(queue_btn_events, &event, 0);
         }
 	}
 }
@@ -167,12 +165,12 @@ static void main_task_led(void *pvParameters)
         vTaskDelay(delay);
 
         // Is there an event in the queue?
-        if(xQueueReceive(queue_events, &event, 0) == pdTRUE)
+        if(xQueueReceive(queue_btn_events, &event, 0) == pdTRUE)
         {
             // Button press event?
             switch(event)
             {
-            case MAIN_EVENT_BTN_PRESS_3_UP:
+            case BTN_EVENT_PRESS_3_UP:
                 // Decrease delay
                 if(delay > pdMS_TO_TICKS(50))
                 {
@@ -181,7 +179,7 @@ static void main_task_led(void *pvParameters)
                 }
                 break;
 
-            case MAIN_EVENT_BTN_PRESS_4_DN:
+            case BTN_EVENT_PRESS_4_DN:
                 // Increase delay
                 if(delay < pdMS_TO_TICKS(500))
                 {
@@ -212,7 +210,7 @@ int main(void)
 #endif
 
     // Create event queue
-    queue_events = xQueueCreate(16, sizeof(uint8_t));
+    queue_btn_events = xQueueCreate(16, sizeof(uint8_t));
 
     // Create LED task with a priority of 1
     xTaskCreate(main_task_led, "LED", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
