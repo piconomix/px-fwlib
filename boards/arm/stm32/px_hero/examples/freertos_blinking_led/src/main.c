@@ -39,9 +39,13 @@ typedef enum
 } main_event_t;
 
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
-#define SEGGER_SYSVIEW_LOG_INFO(...) SEGGER_SYSVIEW_Print(__VA_ARGS__)
+#define SSV_LOG_INFO(...)    SEGGER_SYSVIEW_Print(__VA_ARGS__)
+#define SSV_LOG_WARN(...)    SEGGER_SYSVIEW_Warn(__VA_ARGS__)
+#define SSV_LOG_ERROR(...)   SEGGER_SYSVIEW_Error(__VA_ARGS__)
 #else
-#define SEGGER_SYSVIEW_LOG_INFO(...)
+#define SSV_LOG_INFO(...)
+#define SSV_LOG_WARN(...)
+#define SSV_LOG_ERROR(...)
 #endif
 
 /* _____MACROS_______________________________________________________________ */
@@ -96,7 +100,7 @@ static void main_task_btn(void *pvParameters)
     uint8_t                event;
     QueueSetMemberHandle_t queue_set_member;
 
-    SEGGER_SYSVIEW_LOG_INFO("BTN task started");
+    SSV_LOG_INFO("BTN task started");
 
     // Create binary semaphores
     sem_btn_press_3_up = xSemaphoreCreateBinary();
@@ -127,7 +131,7 @@ static void main_task_btn(void *pvParameters)
         // 3/UP button?
         if(queue_set_member == sem_btn_press_3_up)
         {
-            SEGGER_SYSVIEW_LOG_INFO("BTN 3/UP pressed");
+            SSV_LOG_INFO("BTN 3/UP pressed");
             // Take semaphore so that it can be "given" again
             xSemaphoreTake(sem_btn_press_3_up, 0);
             // Signal event to LED task
@@ -137,7 +141,7 @@ static void main_task_btn(void *pvParameters)
         // 4/DN button?
         if(queue_set_member == sem_btn_press_4_dn)
         {
-            SEGGER_SYSVIEW_LOG_INFO("BTN 4/DN pressed");
+            SSV_LOG_INFO("BTN 4/DN pressed");
             // Take semaphore so that it can be "given" again
             xSemaphoreTake(sem_btn_press_4_dn, 0);
             // Signal event to LED task
@@ -152,7 +156,7 @@ static void main_task_led(void *pvParameters)
     uint8_t    event;
     TickType_t delay = pdMS_TO_TICKS(250);
 
-    SEGGER_SYSVIEW_LOG_INFO("LED task started");
+    SSV_LOG_INFO("LED task started");
 
     // Loop forever
 	for(;;)
@@ -172,7 +176,7 @@ static void main_task_led(void *pvParameters)
                 // Decrease delay
                 if(delay > pdMS_TO_TICKS(50))
                 {
-                    SEGGER_SYSVIEW_LOG_INFO("LED blink faster");
+                    SSV_LOG_INFO("LED blink faster");
                     delay -= pdMS_TO_TICKS(50);
                 }
                 break;
@@ -181,7 +185,7 @@ static void main_task_led(void *pvParameters)
                 // Increase delay
                 if(delay < pdMS_TO_TICKS(500))
                 {
-                    SEGGER_SYSVIEW_LOG_INFO("LED blink slower");
+                    SSV_LOG_INFO("LED blink slower");
                     delay += pdMS_TO_TICKS(50);
                 }
                 break;
@@ -204,9 +208,8 @@ int main(void)
     SEGGER_SYSVIEW_Conf();
     // Start logging
     SEGGER_SYSVIEW_Start();
+    SSV_LOG_INFO("FreeRTOS Blinking LED example started");
 #endif
-
-    SEGGER_SYSVIEW_LOG_INFO("FreeRTOS Blinking LED example started");
 
     // Create event queue
     queue_events = xQueueCreate(16, sizeof(uint8_t));
