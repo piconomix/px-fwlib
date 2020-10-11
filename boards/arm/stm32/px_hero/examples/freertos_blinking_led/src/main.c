@@ -22,22 +22,25 @@
 #include "px_defines.h"
 #include "px_board.h"
 #include "px_exti.h"
+
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
 #include "queue.h"
+
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
-#warning "Segger SystemView support enabled"
+#warning "Segger SysView support enabled"
 #include "SEGGER_SYSVIEW.h"
 #endif
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 typedef enum
 {
-    BTN_EVENT_PRESS_3_UP = 0,
-    BTN_EVENT_PRESS_4_DN = 1,
-} btn_event_t;
+    LED_TASK_CMD_BLINK_FASTER,
+    LED_TASK_CMD_BLINK_SLOWER,
+} led_task_cmd_t;
 
+/* _____MACROS_______________________________________________________________ */
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
 #define SSV_LOG_INFO(...)    SEGGER_SYSVIEW_Print(__VA_ARGS__)
 #define SSV_LOG_WARN(...)    SEGGER_SYSVIEW_Warn(__VA_ARGS__)
@@ -48,76 +51,71 @@ typedef enum
 #define SSV_LOG_ERROR(...)
 #endif
 
-/* _____MACROS_______________________________________________________________ */
-
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-static SemaphoreHandle_t sem_btn_press;
-static QueueHandle_t     queue_btn_events;
-
-static volatile bool     btn_event_press_3_up_flag;
-static volatile bool     btn_event_press_4_dn_flag;
+static volatile bool     btn_press_3_up_flag;
+static volatile bool     btn_press_4_dn_flag;
+static SemaphoreHandle_t btn_task_press_sem;
+static QueueHandle_t     led_task_cmd_queue;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void main_exti_13_handler(void)
+static void exti_13_handler(void)
 {
     BaseType_t higher_priority_task_woken = pdFALSE;
 
     // Record ISR enter event
     traceISR_ENTER();
     // Set flag to indicate that button has been pressed
-    btn_event_press_3_up_flag = true;
+    btn_press_3_up_flag = true;
     // Give semaphore to indicate that button has been pressed
-    xSemaphoreGiveFromISR(sem_btn_press, &higher_priority_task_woken);
+    xSemaphoreGiveFromISR(btn_task_press_sem, &higher_priority_task_woken);
     // Switch to higher priority task if unblocked by giving semaphore
     portYIELD_FROM_ISR(higher_priority_task_woken);
 }
 
-static void main_exti_12_handler(void)
+static void exti_12_handler(void)
 {
     BaseType_t higher_priority_task_woken = pdFALSE;
 
     // Record ISR enter event
     traceISR_ENTER();
     // Set flag to indicate that button has been pressed
-    btn_event_press_4_dn_flag = true;
+    btn_press_4_dn_flag = true;
     // Give semaphore to indicate that button has been pressed
-    xSemaphoreGiveFromISR(sem_btn_press, &higher_priority_task_woken);
+    xSemaphoreGiveFromISR(btn_task_press_sem, NULL);
     // Switch to higher priority task if unblocked by giving semaphore
     portYIELD_FROM_ISR(higher_priority_task_woken);
 }
 
-static bool main_init(void)
+static void led_task_cmd(led_task_cmd_t cmd)
 {
-    // Initialize modules
-    px_board_init();
-    px_exti_init();
-
-    // Success
-    return true;
+    uint8_t item = (uint8_t)cmd;
+    // Post command to LED task queue
+    if(xQueueSendToBack(led_task_cmd_queue, &item, 0) != pdPASS)
+    {
+        SSV_LOG_ERROR("LED task cmd queue full");
+    }
 }
 
-static void main_task_btn(void *pvParameters)
+static void task_btn(void *pvParameters)
 {
-    uint8_t event;
-
     SSV_LOG_INFO("BTN task started");
 
     // Create binary semaphore
-    sem_btn_press = xSemaphoreCreateBinary();
+    btn_task_press_sem = xSemaphoreCreateBinary();
     // Enable external falling edge interrupt on Port C pin 13 (3/UP button)
     px_exti_open(PX_EXTI_PORT_C,
                  PX_EXTI_LINE_13,
-                 &main_exti_13_handler);
+                 &exti_13_handler);
     px_exti_type_set(PX_EXTI_LINE_13, PX_EXTI_TYPE_FALLING_EDGE);
     px_exti_enable(PX_EXTI_LINE_13);
     // Enable external falling edge interrupt on Port C pin 12 (4/DN button)
     px_exti_open(PX_EXTI_PORT_C,
                  PX_EXTI_LINE_12,
-                 &main_exti_12_handler);
+                 &exti_12_handler);
     px_exti_type_set(PX_EXTI_LINE_12, PX_EXTI_TYPE_FALLING_EDGE);
     px_exti_enable(PX_EXTI_LINE_12);
 
@@ -125,33 +123,31 @@ static void main_task_btn(void *pvParameters)
 	for(;;)
 	{
         // Wait until any button is pressed
-        xSemaphoreTake(sem_btn_press, portMAX_DELAY);
+        xSemaphoreTake(btn_task_press_sem, portMAX_DELAY);
         // 3/UP button?
-        if(btn_event_press_3_up_flag)
+        if(btn_press_3_up_flag)
         {
             SSV_LOG_INFO("BTN 3/UP pressed");
             // Clear flag
-            btn_event_press_3_up_flag = false;
-            // Signal event to LED task
-            event = BTN_EVENT_PRESS_3_UP;
-            xQueueSendToBack(queue_btn_events, &event, 0);
+            btn_press_3_up_flag = false;
+            // Send command to LED task
+            led_task_cmd(LED_TASK_CMD_BLINK_FASTER);
         }
         // 4/DN button?
-        if(btn_event_press_4_dn_flag)
+        if(btn_press_4_dn_flag)
         {
             SSV_LOG_INFO("BTN 4/DN pressed");
             // Clear flag
-            btn_event_press_4_dn_flag = false;
-            // Signal event to LED task
-            event = BTN_EVENT_PRESS_4_DN;
-            xQueueSendToBack(queue_btn_events, &event, 0);
+            btn_press_4_dn_flag = false;
+            // Send command to LED task
+            led_task_cmd(LED_TASK_CMD_BLINK_SLOWER);
         }
 	}
 }
 
-static void main_task_led(void *pvParameters)
+static void task_led(void *pvParameters)
 {
-    uint8_t    event;
+    uint8_t    cmd;
     TickType_t delay = pdMS_TO_TICKS(250);
 
     SSV_LOG_INFO("LED task started");
@@ -164,13 +160,13 @@ static void main_task_led(void *pvParameters)
         // Delay
         vTaskDelay(delay);
 
-        // Is there an event in the queue?
-        if(xQueueReceive(queue_btn_events, &event, 0) == pdTRUE)
+        // Is there a command in the queue?
+        if(xQueueReceive(led_task_cmd_queue, &cmd, 0) == pdTRUE)
         {
-            // Button press event?
-            switch(event)
+            // Handle command
+            switch(cmd)
             {
-            case BTN_EVENT_PRESS_3_UP:
+            case LED_TASK_CMD_BLINK_FASTER:
                 // Decrease delay
                 if(delay > pdMS_TO_TICKS(50))
                 {
@@ -179,7 +175,7 @@ static void main_task_led(void *pvParameters)
                 }
                 break;
 
-            case BTN_EVENT_PRESS_4_DN:
+            case LED_TASK_CMD_BLINK_SLOWER:
                 // Increase delay
                 if(delay < pdMS_TO_TICKS(500))
                 {
@@ -198,8 +194,9 @@ static void main_task_led(void *pvParameters)
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
 int main(void)
 {
-    // Init modules
-    main_init();
+    // Initialize modules
+    px_board_init();
+    px_exti_init();
 
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
     // Configure and enable Segger SystemView
@@ -209,17 +206,18 @@ int main(void)
     SSV_LOG_INFO("FreeRTOS Blinking LED example started");
 #endif
 
-    // Create event queue
-    queue_btn_events = xQueueCreate(16, sizeof(uint8_t));
-
+    // Create LED command queue
+    led_task_cmd_queue = xQueueCreate(2, sizeof(uint8_t));
     // Create LED task with a priority of 1
-    xTaskCreate(main_task_led, "LED", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    xTaskCreate(&task_led, "LED", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
     // Create BUTTON task with a priority of 2
-    xTaskCreate(main_task_btn, "BTN", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
+    xTaskCreate(&task_btn, "BTN", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 
     // Start scheduler
     vTaskStartScheduler();
 
+    // Not supposed to get here
+    SSV_LOG_ERROR("FreeRTOS fatal error");
     for(;;)
     {
         ;
