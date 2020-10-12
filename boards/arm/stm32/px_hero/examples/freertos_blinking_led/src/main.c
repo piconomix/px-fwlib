@@ -189,7 +189,7 @@ static void task_led(void *pvParameters)
                 break;
 
             default:
-                SSV_LOG_ERR("Invalid LED task command");
+                SSV_LOG_ERROR("Invalid LED task command");
                 break;
             }
         }
