@@ -120,8 +120,8 @@ static void task_btn(void *pvParameters)
     px_exti_enable(PX_EXTI_LINE_12);
 
     // Loop forever
-	for(;;)
-	{
+    for(;;)
+    {
         // Wait until any button is pressed
         xSemaphoreTake(btn_task_press_sem, portMAX_DELAY);
         // 3/UP button?
@@ -142,7 +142,7 @@ static void task_btn(void *pvParameters)
             // Send command to LED task
             led_task_cmd(LED_TASK_CMD_BLINK_SLOWER);
         }
-	}
+    }
 }
 
 static void task_led(void *pvParameters)
@@ -153,8 +153,8 @@ static void task_led(void *pvParameters)
     SSV_LOG_INFO("LED task started");
 
     // Loop forever
-	for(;;)
-	{
+    for(;;)
+    {
         // Toggle LED
         PX_USR_LED_TOGGLE();
         // Delay
@@ -188,7 +188,7 @@ static void task_led(void *pvParameters)
                 break;
             }
         }
-	}
+    }
 }
 
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
