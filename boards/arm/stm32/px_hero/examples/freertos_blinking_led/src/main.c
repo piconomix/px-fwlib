@@ -119,24 +119,26 @@ static void task_btn(void *pvParameters)
     for(;;)
     {
         // Wait until any button is pressed
-        xSemaphoreTake(btn_task_press_sem, portMAX_DELAY);
-        // 3/UP button?
-        if(btn_press_3_up_flag)
+        if(xSemaphoreTake(btn_task_press_sem, portMAX_DELAY) == pdTRUE)
         {
-            SSV_LOG_INFO("BTN 3/UP pressed");
-            // Clear flag
-            btn_press_3_up_flag = false;
-            // Send command to LED task
-            led_task_cmd(LED_TASK_CMD_BLINK_FASTER);
-        }
-        // 4/DN button?
-        if(btn_press_4_dn_flag)
-        {
-            SSV_LOG_INFO("BTN 4/DN pressed");
-            // Clear flag
-            btn_press_4_dn_flag = false;
-            // Send command to LED task
-            led_task_cmd(LED_TASK_CMD_BLINK_SLOWER);
+            // 3/UP button?
+            if(btn_press_3_up_flag)
+            {
+                SSV_LOG_INFO("BTN 3/UP pressed");
+                // Clear flag
+                btn_press_3_up_flag = false;
+                // Send command to LED task
+                led_task_cmd(LED_TASK_CMD_BLINK_FASTER);
+            }
+            // 4/DN button?
+            if(btn_press_4_dn_flag)
+            {
+                SSV_LOG_INFO("BTN 4/DN pressed");
+                // Clear flag
+                btn_press_4_dn_flag = false;
+                // Send command to LED task
+                led_task_cmd(LED_TASK_CMD_BLINK_SLOWER);
+            }
         }
     }
 }
