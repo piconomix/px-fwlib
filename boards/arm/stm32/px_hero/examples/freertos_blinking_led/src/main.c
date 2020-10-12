@@ -107,15 +107,11 @@ static void task_btn(void *pvParameters)
     // Create binary semaphore
     btn_task_press_sem = xSemaphoreCreateBinary();
     // Enable external falling edge interrupt on Port C pin 13 (3/UP button)
-    px_exti_open(PX_EXTI_PORT_C,
-                 PX_EXTI_LINE_13,
-                 &exti_13_handler);
+    px_exti_open(PX_EXTI_PORT_C, PX_EXTI_LINE_13, &exti_13_handler);
     px_exti_type_set(PX_EXTI_LINE_13, PX_EXTI_TYPE_FALLING_EDGE);
     px_exti_enable(PX_EXTI_LINE_13);
     // Enable external falling edge interrupt on Port C pin 12 (4/DN button)
-    px_exti_open(PX_EXTI_PORT_C,
-                 PX_EXTI_LINE_12,
-                 &exti_12_handler);
+    px_exti_open(PX_EXTI_PORT_C, PX_EXTI_LINE_12, &exti_12_handler);
     px_exti_type_set(PX_EXTI_LINE_12, PX_EXTI_TYPE_FALLING_EDGE);
     px_exti_enable(PX_EXTI_LINE_12);
 
@@ -173,6 +169,10 @@ static void task_led(void *pvParameters)
                     SSV_LOG_INFO("LED blink faster");
                     delay -= pdMS_TO_TICKS(50);
                 }
+                else
+                {
+                    SSV_LOG_WARN("LED max blink rate");
+                }
                 break;
 
             case LED_TASK_CMD_BLINK_SLOWER:
@@ -182,9 +182,14 @@ static void task_led(void *pvParameters)
                     SSV_LOG_INFO("LED blink slower");
                     delay += pdMS_TO_TICKS(50);
                 }
+                else
+                {
+                    SSV_LOG_WARN("LED min blink rate");
+                }
                 break;
 
             default:
+                SSV_LOG_ERR("Invalid LED task command");
                 break;
             }
         }
@@ -216,7 +221,7 @@ int main(void)
     // Start scheduler
     vTaskStartScheduler();
 
-    // Not supposed to get here
+    // Error! Not supposed to get here...
     SSV_LOG_ERROR("FreeRTOS fatal error");
     for(;;)
     {
