@@ -1,26 +1,7 @@
 FreeRTOS Blinking LED example {#HERO_BOARD_EXAMPLE_FREERTOS_BLINKING_LED}
 =========================================================================
 
-**px-lib** is a *bare metal* embedded C library and does not have the RTOS
-mechanisms to manage access to a shared resource like a UART or signal a task 
-when an event has occurred, for example when a character has been received, but 
-that does not prevent us from trying a basic example to get a taste of what
-[FreeRTOS](https://www.freertos.org) has to offer.
-
-This over elaborate example to change the blinking rate of an LED demonstrates
-a few key RTOS concepts. It creates two [tasks]((https://www.freertos.org/taskandcr.html))
-(LED and BTN).
-
-The LED task toggles an LED every 250 ms initially. The LED task checks if there 
-is a 3/UP or 4/DN button press event on the [queue](https://www.freertos.org/Embedded-RTOS-Queues.html)
-and increases or decreases the blinking rate.
-
-The BTN task enables the falling edge interrupt for 3/UP (Port C pin 13) and 
-4/DN (Port C pin 12). A [binary semaphore](https://www.freertos.org/Embedded-RTOS-Binary-Semaphores.html) 
-is given in each interrupt handler to signal to the BTN task that a button has 
-been pressed. The BTN task will block on both semaphores using a 
-[queue set](https://www.freertos.org/RTOS-queue-sets.html) and when a semaphore 
-is given in the interrupt handler, it will add an event to the LED task's queue.
+[TOC]
 
 File(s):
 - boards/arm/stm32/px_hero/examples/freertos_blinking_led/cfg/FreeRTOSConfig.h
@@ -29,8 +10,135 @@ File(s):
 Reference(s):
 - [Mastering the FreeRTOS Real Time Kernel: a Hands On Tutorial Guide](https://www.freertos.org/Documentation/RTOS_book.html)
 
+1. Introduction {#HERO_BOARD_EXAMPLE_FREERTOS_INTRO}
+====================================================
+
+**px-lib** is a *bare metal* embedded C library and does not have the RTOS
+mechanisms to manage access to a shared resource like a UART or signal a task
+when an event has occurred, for example when a character has been received, but
+that does not prevent us from trying a basic example to get a taste of what
+[FreeRTOS](https://www.freertos.org) has to offer.
+
+2. Description {#HERO_BOARD_EXAMPLE_FREERTOS_DES}
+=================================================
+
+This elaborate example to change the blinking rate of an LED demonstrates
+a few key RTOS concepts. It creates two [tasks]((https://www.freertos.org/taskandcr.html))
+called LED and BTN.
+
+The LED task toggles an LED every 250 ms initially. The LED task checks if there
+is a command on the [queue](https://www.freertos.org/Embedded-RTOS-Queues.html)
+to increase or decrease the blinking rate.
+
+The BTN task enables a falling edge interrupt for 3/UP (Port C pin 13) and
+4/DN (Port C pin 12). A [binary semaphore](https://www.freertos.org/Embedded-RTOS-Binary-Semaphores.html)
+is given in each interrupt handler to signal to the BTN task that a button has
+been pressed. The BTN task will block on the semaphore and when the semaphore
+is given in the interrupt handler, it will post a command to the LED task
+command queue.
+
+@warn_s
+This example contains a subtle bug on purpose! See if you can spot it... hint at
+the end.
+@warn_e
+
+3. Segger SystemView {#HERO_BOARD_EXAMPLE_FREERTOS_SYSVIEW}
+===========================================================
+
+[Segger SystemView](https://www.segger.com/products/development-tools/systemview/)
+is a wonderful visualisation tool to record timestamped events and inspect them
+in a GUI. It requires a [Segger J-Link](https://www.segger.com/products/debug-probes/j-link/)
+debug probe to collect the data from the processor while it is executing your
+code. An inexpensive [J-Link EDU Mini](https://www.segger.com/products/debug-probes/j-link/models/j-link-edu-mini/)
+is available for non-commercial educational purposes. Segger also offers
+firmware to upgrade the on-board ST-LINK on Nucleo and Discovery boards
+(see [HERE](https://www.segger.com/products/debug-probes/j-link/models/other-j-links/st-link-on-board/)).
+
 @tip_s
-[Counting semaphores](https://www.freertos.org/Real-time-embedded-RTOS-Counting-Semaphores.html)
-or [RTOS Task Notifications](https://www.freertos.org/RTOS-task-notifications.html)
-are also mechanisms that should be considered.
+If you don't have a J-Link probe then you can still examine the saved log file
+in the SystemView GUI. Click [HERE](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/examples/freertos_blinking_led/segger_sysview_freertos_blinking_led.SVDat)
+to download the *.SVDat file saved from this session.
 @tip_e
+
+The underlying high speed communication transport mechanism is
+[Segger Real-Time Transfer (RTT)](https://www.segger.com/products/debug-probes/j-link/technology/about-real-time-transfer/).
+
+3.1 Patch FreeRTOS {#HERO_BOARD_EXAMPLE_FREERTOS_PATCH}
+-------------------------------------------------------
+
+There are a few steps required to add the Segger SystemView source code to
+your FreeRTOS project. The FreeRTOS source files must be patched to instrument
+it with more trace macros. The (Windows) default patch file location is here:
+
+    c:\Program Files\SEGGER\SystemView\Src\Sample\FreeRTOSV10\Patch\FreeRTOSV10_Core.patch
+
+@warn_s
+Unfortunately the patch does not always keep up with the latest release of
+FreeRTOS (currently 10.3.1) and I had to examine the patch and apply it manually.
+@warn_e
+
+[FreeRTOSConfig.h](https://github.com/piconomix/piconomix-fwlib/blob/master/boards/arm/stm32/px_hero/examples/freertos_blinking_led/cfg/FreeRTOSConfig.h)
+must be edited and the following line must be added at the end:
+
+	@code{.c}
+	#include "SEGGER_SYSVIEW_FreeRTOS.h"
+	@endcode
+
+3.2 Timestamps {#HERO_BOARD_EXAMPLE_FREERTOS_TIMESTAMP}
+-------------------------------------------------------
+
+All SystemView events **must** be timestamped correctly and the usual solution
+is to piggy-back on the SysTick peripheral interrupt. Unfortunately the SysTick
+peripheral is only initialized when the FreeRTOS scheduler is started with a
+call to vTaskStartScheduler(). All SystemView events before this will be
+timestamped with a zero value and it confuses the Segger SystemView GUI.
+
+@warn_s
+The timestamping mechanism **must** be initialised and running correctly before
+logging any SystemView events. Timestamps must have sequential incrementing
+values otherwise the GUI will be get confused.
+@warn_e
+
+My solution to this catch-22 situation is to use the 16-bit TIM7 counter
+peripheral as a dedicated timestamping mechanism. The 32 MHz clock frequency is
+divided by 32 to provide 1 us resolution. The 16-bit counter overflows every
+65.536 ms and results in a low overhead interrupt rate of only 15.259 Hz. It is
+also much easier to combine the two 16-bit values to provide a 32-bit timestamp
+compared to the example 1 ms SysTick implementation. The custom implementation
+is in [SEGGER_SYSVIEW_Config_FreeRTOS.c](https://github.com/piconomix/piconomix-fwlib/blob/master/libs/segger_sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c):
+
+@snippet libs/segger_sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c SYSVIEW_TIMESTAMP
+
+3.3 GUI {#HERO_BOARD_EXAMPLE_FREERTOS_GUI}
+------------------------------------------
+
+The GUI has three important windows. The Terminal window shows debug output text
+created with calls to SEGGER_SYSVIEW_Print(), SEGGER_SYSVIEW_Warn() or
+SEGGER_SYSVIEW_Error(). Click on an event in the Terminal window to navigate to
+an important event for inspection. Each timestamped event is listed seqentially
+on the left. The Timeline window displays each interrupt and task graphically
+so that it is easy to see how much time is spent.
+
+![](segger_sysview_overview.png)
+
+When the 3/UP button is pressed it triggers an external rising edge interrupt
+and the EXTI[15:4] interrupt handler is called. The interrupt handler gives a
+semaphore and the scheduler is executed to switch to the BTN task that has been
+waiting for the semaphore. The BTN task then posts an event to the LED task's
+queue. Finally it blocks waiting for the next semaphore signal and releases it's
+execution to the scheduler.
+
+The timing of events are different when the 4/DN button is pressed... why? The
+BTN task is pending for a long time and only gets a chance to run after the
+SysTick interrupt:
+
+![](segger_sysview_btn_4_dn.png)
+
+@tip_s
+This is the "bug" hinted to at the start. Compare exti_12_handler() with
+exti_13_handler() and you will spot a subtle difference.
+@tip_e
+
+What an amazing, insightful tool!! I would not have spotted the problem, because
+the code appears to run just fine but could have become a problem in a larger
+system that requires hard real time behaviour.
