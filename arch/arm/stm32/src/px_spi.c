@@ -6,10 +6,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_spi.h : SPI Peripheral Driver
     Author(s):      Pieter Conradie
     Creation Date:  2018-03-01
@@ -30,11 +30,11 @@ PX_DBG_DECL_NAME("px_spi");
 /// Internal data for each SPI peripheral
 typedef struct px_spi_per_s
 {
-    SPI_TypeDef *         spi_base_adr;     ///< SPI peripheral base register address    
-    DMA_Channel_TypeDef * dma_rx_base_adr;  ///< DMA RX channel base register address    
-    DMA_Channel_TypeDef * dma_tx_base_adr;  ///< DMA TX channel base register address    
+    SPI_TypeDef *         spi_base_adr;     ///< SPI peripheral base register address
+    DMA_Channel_TypeDef * dma_rx_base_adr;  ///< DMA RX channel base register address
+    DMA_Channel_TypeDef * dma_tx_base_adr;  ///< DMA TX channel base register address
     px_spi_nr_t           spi_nr;           ///< Peripheral number
-    uint8_t               open_counter;     ///< Number of open handles referencing peripheral    
+    uint8_t               open_counter;     ///< Number of open handles referencing peripheral
 } px_spi_per_t;
 
 /* _____MACROS_______________________________________________________________ */
@@ -69,11 +69,15 @@ static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
         // Configure DMA channel 2 (SPI1_RX)
         LL_DMA_SetPeriphAddress(DMA1, 2, (uint32_t)&SPI1->DR);
         DMA1_Channel2->CCR = DMA_CCR_MINC;
+#if defined(STM32L0) || defined(STM32G0)
         LL_DMA_SetPeriphRequest(DMA1, 2, LL_DMA_REQUEST_1);
+#endif
         // Configure DMA channel 3 (SPI1_TX)
         LL_DMA_SetPeriphAddress(DMA1, 3, (uint32_t)&SPI1->DR);
         DMA1_Channel3->CCR = DMA_CCR_MINC | DMA_CCR_DIR;
+#if defined(STM32L0) || defined(STM32G0)
         LL_DMA_SetPeriphRequest(DMA1, 3, LL_DMA_REQUEST_1);
+#endif
         break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
@@ -84,11 +88,15 @@ static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
         // Configure DMA channel 4 (SPI2_RX)
         LL_DMA_SetPeriphAddress(DMA1, 4, (uint32_t)&SPI2->DR);
         DMA1_Channel4->CCR = DMA_CCR_MINC;
+#if defined(STM32L0) || defined(STM32G0)
         LL_DMA_SetPeriphRequest(DMA1, 4, LL_DMA_REQUEST_2);
+#endif
         // Configure DMA channel 5 (SPI2_TX)
         LL_DMA_SetPeriphAddress(DMA1, 5, (uint32_t)&SPI2->DR);
         DMA1_Channel5->CCR = DMA_CCR_MINC | DMA_CCR_DIR;
+#if defined(STM32L0) || defined(STM32G0)
         LL_DMA_SetPeriphRequest(DMA1, 5, LL_DMA_REQUEST_2);
+#endif
         break;
 #endif
     default:
@@ -239,7 +247,7 @@ bool px_spi_open(px_spi_handle_t * handle,
 bool px_spi_open2(px_spi_handle_t * handle,
                   px_spi_nr_t       spi_nr,
                   uint8_t           cs_id,
-                  px_spi_baud_t     baud, 
+                  px_spi_baud_t     baud,
                   px_spi_mode_t     mode,
                   px_spi_dord_t     data_order,
                   uint8_t           mo_dummy_byte)
@@ -345,7 +353,7 @@ bool px_spi_close(px_spi_handle_t * handle)
     spi_per->open_counter--;
     // More open handles referencing peripheral?
     if(spi_per->open_counter != 0)
-    {        
+    {
         // Yes. Only close handle
         handle->spi_per = NULL;
         // Success
@@ -398,7 +406,7 @@ void px_spi_wr(px_spi_handle_t * handle,
 #endif
 
     // Set pointer to peripheral
-    spi_per = handle->spi_per;    
+    spi_per = handle->spi_per;
 
     if(flags & PX_SPI_FLAG_START)
     {
@@ -412,14 +420,14 @@ void px_spi_wr(px_spi_handle_t * handle,
         spi_base_adr = spi_per->spi_base_adr;
         PX_DBG_ASSERT(spi_base_adr != NULL);
         // Update communication parameters (if different)
-        px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);    
+        px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
 
         // Configure and enable DMA TX channel
         spi_per->dma_tx_base_adr->CMAR   = (uint32_t)data_wr_u8;
         spi_per->dma_tx_base_adr->CNDTR  = nr_of_bytes;
         spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
         // Enable DMA request for TX
-        LL_SPI_EnableDMAReq_TX(spi_base_adr);    
+        LL_SPI_EnableDMAReq_TX(spi_base_adr);
 
         // Block until TX DMA transfer is complete
         switch(spi_per->spi_nr)
@@ -461,7 +469,7 @@ void px_spi_wr(px_spi_handle_t * handle,
         // Disable DMA TX channel
         spi_per->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
         // Disable DMA request for TX
-        spi_base_adr->CR2 = 0;    
+        spi_base_adr->CR2 = 0;
     }
 
     if(flags & PX_SPI_FLAG_STOP)
@@ -507,7 +515,7 @@ void px_spi_rd(px_spi_handle_t * handle,
         spi_base_adr = spi_per->spi_base_adr;
         PX_DBG_ASSERT(spi_base_adr != NULL);
         // Update communication parameters (if different)
-        px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);    
+        px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
 
         // Enable DMA request for RX
         LL_SPI_EnableDMAReq_RX(spi_base_adr);
@@ -521,7 +529,7 @@ void px_spi_rd(px_spi_handle_t * handle,
         spi_per->dma_tx_base_adr->CCR   &= ~DMA_CCR_MINC;
         spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
         // Enable DMA request for TX
-        LL_SPI_EnableDMAReq_TX(spi_base_adr);    
+        LL_SPI_EnableDMAReq_TX(spi_base_adr);
 
         // Block until RX DMA transfer is complete
         switch(spi_per->spi_nr)
@@ -555,7 +563,7 @@ void px_spi_rd(px_spi_handle_t * handle,
         spi_per->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
         spi_per->dma_tx_base_adr->CCR |= DMA_CCR_MINC;
         // Disable DMA request for RX and TX
-        spi_base_adr->CR2 = 0;    
+        spi_base_adr->CR2 = 0;
     }
 
     if(flags & PX_SPI_FLAG_STOP)
@@ -566,7 +574,7 @@ void px_spi_rd(px_spi_handle_t * handle,
 }
 
 void px_spi_xc(px_spi_handle_t * handle,
-               const void *      data_wr, 
+               const void *      data_wr,
                void *            data_rd,
                size_t            nr_of_bytes,
                uint8_t           flags)
@@ -616,7 +624,7 @@ void px_spi_xc(px_spi_handle_t * handle,
         spi_per->dma_tx_base_adr->CNDTR  = nr_of_bytes;
         spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
         // Enable DMA request for TX
-        LL_SPI_EnableDMAReq_TX(spi_base_adr);    
+        LL_SPI_EnableDMAReq_TX(spi_base_adr);
 
         // Block until RX DMA transfer is complete
         switch(spi_per->spi_nr)
@@ -649,7 +657,7 @@ void px_spi_xc(px_spi_handle_t * handle,
         // Disable DMA TX channel
         spi_per->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
         // Disable DMA request for RX and TX
-        spi_base_adr->CR2 = 0;    
+        spi_base_adr->CR2 = 0;
     }
 
     if(flags & PX_SPI_FLAG_STOP)
