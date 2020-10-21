@@ -3,7 +3,7 @@
 #
 # Based on:
 # - WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
-# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany 
+# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany
 # - DMBS - Dean's Makefile Build System by Dean Camera [https://github.com/abcminiuser/dmbs]
 # - http://stackoverflow.com Q&A research
 # - Automatically generate makefile dependencies (http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
@@ -47,7 +47,7 @@ ifeq ($(BUILD), debug)
     AFLAGS   += $(AFLAGS_DEBUG)
     LDFLAGS  += $(LDFLAGS_DEBUG)
 else ifeq ($(BUILD), debug-boot)
-    BUILD_DIR = BUILD_DEBUG
+    BUILD_DIR = BUILD_DEBUG_BOOT
     CDEFS    += $(CDEFS_DEBUG)
     CFLAGS   += $(CFLAGS_DEBUG)
     CXXFLAGS += $(CXXFLAGS_DEBUG)
@@ -84,13 +84,13 @@ LDFLAGS += -Wl,--defsym,FLASH_SIZE=$(FLASH_SIZE),--defsym,SRAM_SIZE=$(SRAM_SIZE)
 ifeq ($(BUILD), debug-boot)
     ifndef BOOTLOADER_SIZE
         $(error "BOOTLOADER_SIZE not defined")
-    endif    
+    endif
     CDEFS   += VECT_TAB_OFFSET=$(BOOTLOADER_SIZE)
     LDFLAGS += -Wl,--defsym,FLASH_OFFSET=$(BOOTLOADER_SIZE)
 else ifeq ($(BUILD), release-boot)
     ifndef BOOTLOADER_SIZE
         $(error "BOOTLOADER_SIZE not defined")
-    endif    
+    endif
     CDEFS   += VECT_TAB_OFFSET=$(BOOTLOADER_SIZE)
     LDFLAGS += -Wl,--defsym,FLASH_OFFSET=$(BOOTLOADER_SIZE)
 endif
@@ -140,7 +140,7 @@ AFLAGS   += $(addprefix -D,$(ADEFS))
 
 # Combine all necessary flags and optional flags
 #     Add target processor to flags
-#     By using ?= assignment operator, these variables can be overided in 
+#     By using ?= assignment operator, these variables can be overided in
 #     Makefile that includes this boilerplate file
 ALL_CFLAGS   ?= $(MCU) $(CFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
 ALL_CXXFLAGS ?= $(MCU) $(CXXFLAGS) -Wa,-adhlns=$$(patsubst %.o,%.lst,$$@) -I. $(addprefix -I,$(INCDIRS)) $(DEP_FLAGS)
@@ -188,7 +188,7 @@ size: $(BUILD_DIR)/$(PROJECT).elf
 	$(SIZE) $<
 
 # Display compiler version information
-gccversion : 
+gccversion :
 	@$(CC) --version
 
 # Create final output file (*.hex) from ELF output file
@@ -265,7 +265,7 @@ $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@$(MKDIR) $$(@D)
 	$(CC) -c $(ALL_CFLAGS) $$< -o $$@
 endef
-$(foreach file,$(SRC),$(eval $(call create_c_obj_rule,$(file)))) 
+$(foreach file,$(SRC),$(eval $(call create_c_obj_rule,$(file))))
 
 # Compile: create object files from C++ source files
 #   A separate rule is created for each CXXSRC file to ensure that the correct
@@ -275,9 +275,9 @@ $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
 	@echo $(MSG_COMPILING_CPP) $$<
 	@$(MKDIR) $$(@D)
-	$(CXX) -c $(ALL_CXXFLAGS) $$< -o $$@ 
+	$(CXX) -c $(ALL_CXXFLAGS) $$< -o $$@
 endef
-$(foreach file,$(CXXSRC),$(eval $(call create_cpp_obj_rule,$(file)))) 
+$(foreach file,$(CXXSRC),$(eval $(call create_cpp_obj_rule,$(file))))
 
 # Assemble: create object files from assembler source files
 #   A separate rule is created for each ASRC file to ensure that the correct
@@ -289,7 +289,7 @@ $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@$(MKDIR) $$(@D)
 	$(CC) -c $(ALL_AFLAGS) $$< -o $$@
 endef
-$(foreach file,$(ASRC),$(eval $(call create_asm_obj_rule,$(file)))) 
+$(foreach file,$(ASRC),$(eval $(call create_asm_obj_rule,$(file))))
 
 # Target: clean project
 clean: begin clean_list end
@@ -341,7 +341,7 @@ openocd: $(OPENOCD_SCRIPT)
 	openocd --file $(OPENOCD_SCRIPT)
 
 # Generate GDB config/init file
-$(GDB_SCRIPT) : 
+$(GDB_SCRIPT) :
 	$(RM) $(GDB_SCRIPT)
 	@echo '# Load program to debug' >> $(GDB_SCRIPT)
 	@echo 'file $(BUILD_DIR)/$(PROJECT).elf' >> $(GDB_SCRIPT)
