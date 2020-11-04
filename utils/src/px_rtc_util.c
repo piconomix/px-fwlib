@@ -6,7 +6,7 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
 
@@ -56,9 +56,9 @@ static volatile bool px_rtc_util_period_hour_flag;
 
 /// Flag to indicate that days have been incremented (every 24 hours)
 static volatile bool px_rtc_util_period_day_flag;
- 
+
 #endif
- 
+
 /// Table for the number of days in each month (non leap year)
 static const uint8_t px_rtc_util_month_day_table[] PX_ATTR_PGM =
 {
@@ -127,7 +127,7 @@ static int8_t px_rtc_util_days_in_month(uint8_t year, uint8_t month)
     // Sanity checks
     PX_DBG_ASSERT(year <= 99);
     PX_DBG_ASSERT((month >= 1) && (month <= 12));
-    
+
     // Fetch number of days in month from table
     days = px_pgm_rd_u8(&px_rtc_util_month_day_table[month]);
 
@@ -336,7 +336,7 @@ void px_rtc_util_on_tick(void)
     }
 
     /// Set flag to indicate that an alarm has occurred
-    px_rtc_util_alarm_flag = true;    
+    px_rtc_util_alarm_flag = true;
 }
 
 void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time)
@@ -387,7 +387,7 @@ void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time)
 
         // Match!
         return;
-    }    
+    }
 }
 
 void px_rtc_util_date_time_rd(px_rtc_date_time_t * date_time)
@@ -400,7 +400,6 @@ void px_rtc_util_date_time_rd(px_rtc_date_time_t * date_time)
         memcpy(date_time, &px_rtc_util_date_time, sizeof(px_rtc_date_time_t));
         // Read date-time again
         memcpy(&date_time_cmp, &px_rtc_util_date_time, sizeof(px_rtc_date_time_t));
-        break;
     }
     // Match?
     while(!px_rtc_util_date_time_match(date_time, &date_time_cmp));
@@ -413,7 +412,7 @@ px_rtc_sec_since_y2k_t px_rtc_util_sec_since_y2k_rd(void)
 }
 #endif
 
-void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm, 
+void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm,
                           px_rtc_alarm_mask_t        alarm_mask)
 {
     // Sanity checks
@@ -434,10 +433,10 @@ void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm,
     px_rtc_util_alarm_flag = false;
 
     // Write alarm mask
-    px_rtc_util_alarm_mask = alarm_mask;    
+    px_rtc_util_alarm_mask = alarm_mask;
 }
 
-void px_rtc_util_alarm_rd(px_rtc_date_time_t *  alarm, 
+void px_rtc_util_alarm_rd(px_rtc_date_time_t *  alarm,
                           px_rtc_alarm_mask_t * alarm_mask)
 {
     // Read alarm
@@ -722,7 +721,7 @@ void px_rtc_util_sec_since_y2k_to_date_time(px_rtc_sec_since_y2k_t sec_since_y2k
     // Calculate number of completed days since Y2K
     days    = (uint16_t)(sec_since_y2k / PX_RTC_SEC_PER_DAY);
     // Calculate number of seconds since midnight for specified day
-    seconds = sec_since_y2k % PX_RTC_SEC_PER_DAY;    
+    seconds = sec_since_y2k % PX_RTC_SEC_PER_DAY;
 
     // Calculate hour
     date_time->hour = (uint8_t)(seconds / PX_RTC_SEC_PER_HOUR);
@@ -731,7 +730,7 @@ void px_rtc_util_sec_since_y2k_to_date_time(px_rtc_sec_since_y2k_t sec_since_y2k
     date_time->min  = (uint8_t)(seconds / PX_RTC_SEC_PER_MIN);
     // Calculate seconds
     date_time->sec  = (uint8_t)(seconds % PX_RTC_SEC_PER_MIN);
-    
+
     // Calculate year (every four years has one leap day)
     date_time->year = (uint8_t)(days / (365*4 + 1)) * 4;
     days            = days % (365*4 + 1);
