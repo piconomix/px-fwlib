@@ -516,14 +516,17 @@ void px_rtc_util_period_day_flag_clear(void)
 
 void px_rtc_util_date_time_reset(px_rtc_date_time_t * date_time)
 {
-    date_time->year      = 0;
-    date_time->month     = 1;
-    date_time->day       = 1;
-    date_time->hour      = 0;
-    date_time->min       = 0;
-    date_time->sec       = 0;
+    date_time->year         = 0;
+    date_time->month        = 1;
+    date_time->day          = 1;
+    date_time->hour         = 0;
+    date_time->min          = 0;
+    date_time->sec          = 0;
+#if PX_RTC_UTIL_CFG_DAY_OF_WEEK
+    date_time->day_of_week  = PX_RTC_UTIL_DAY_SAT;
+#endif
 #if PX_RTC_UTIL_CFG_TICKS_PER_SEC
-    date_time->ticks     = 0;
+    date_time->ticks        = 0;
 #endif
 }
 
@@ -748,6 +751,10 @@ void px_rtc_util_sec_since_y2k_to_date_time(px_rtc_sec_since_y2k_t sec_since_y2k
 
     // Calculate number of completed days since Y2K
     days    = (uint16_t)(sec_since_y2k / PX_RTC_SEC_PER_DAY);
+#if PX_RTC_UTIL_CFG_DAY_OF_WEEK
+    // Calculate day of week (2000:01:01 was a Saturday)
+    date_time->day_of_week = (days + PX_RTC_UTIL_DAY_SAT) % 7;
+#endif
     // Calculate number of seconds since midnight for specified day
     seconds = sec_since_y2k % PX_RTC_SEC_PER_DAY;
 
@@ -850,6 +857,11 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
         px_rtc_util_date_time_reset(date_time);
         return;
     }
+
+#if PX_RTC_UTIL_CFG_DAY_OF_WEEK
+    // Calculate day of week
+    date_time->day_of_week = px_rtc_util_date_to_day_of_week(date_time);
+#endif
 }
 
 void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
@@ -922,12 +934,17 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
         px_rtc_util_date_time_reset(date_time);
         return;
     }
+
+#if PX_RTC_UTIL_CFG_DAY_OF_WEEK
+    // Calculate day of week
+    date_time->day_of_week = px_rtc_util_date_to_day_of_week(date_time);
+#endif
 }
 
 px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * date_time)
 {
     int8_t      i;
-    uint32_t    days;
+    uint16_t    days;
     uint8_t     day;
 
     // Sanity checks
