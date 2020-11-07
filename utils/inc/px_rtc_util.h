@@ -40,8 +40,8 @@
 // Check that all project specific options have been specified in "px_rtc_util_cfg.h"
 #if (   !defined(PX_RTC_UTIL_CFG_SEC_SINCE_Y2K ) \
      || !defined(PX_RTC_UTIL_CFG_PERIODIC_FLAGS) \
-     || !defined(PX_RTC_UTIL_CFG_TICKS_PER_SEC)            )
-      )
+     || !defined(PX_RTC_UTIL_CFG_TICKS_PER_SEC ) \
+     || !defined(PX_RTC_UTIL_CFG_DAY_OF_WEEK   )   )
 #error "One or more options not defined in 'px_rtc_util_cfg.h'"
 #endif
 
@@ -65,8 +65,20 @@ extern "C" {
 #define PX_RTC_UTIL_ALARM_MASK_YEAR     (1<<5)  ///< Alarm match on year
 //@}
 
+/// Day of week
+typedef enum
+{
+    PX_RTC_UTIL_DAY_MON = 0,                    ///< Monday
+    PX_RTC_UTIL_DAY_TUE = 1,                    ///< Tuesday
+    PX_RTC_UTIL_DAY_WED = 2,                    ///< Wednesday
+    PX_RTC_UTIL_DAY_THU = 3,                    ///< Thursday
+    PX_RTC_UTIL_DAY_FRI = 4,                    ///< Friday
+    PX_RTC_UTIL_DAY_SAT = 5,                    ///< Saturday
+    PX_RTC_UTIL_DAY_SUN = 6,                    ///< Sunday
+} px_rtc_util_day_t;
+
 /* _____TYPE DEFINITIONS_____________________________________________________ */
-/// Size definition to track seconds since Y2K (2000-01-01 00:00:00)
+/// Size definition to track seconds since Y2K (2000-01-01 00:00:00 Saturday)
 typedef uint32_t px_rtc_sec_since_y2k_t;
 
 #if PX_RTC_UTIL_CFG_TICKS_PER_SEC
@@ -82,14 +94,17 @@ typedef uint32_t px_rtc_sec_since_y2k_t;
 /// Structure to store date and time
 typedef struct
 {
-    uint8_t                 year;       ///< Years:   0 to 99 (2000 - 2099)
-    uint8_t                 month;      ///< Months:  1 to 12
-    uint8_t                 day;        ///< Days:    1 to 31 (depending on month)
-    uint8_t                 hour;       ///< Hours:   0 to 23
-    uint8_t                 min;        ///< Minutes: 0 to 59
-    uint8_t                 sec;        ///< Seconds: 0 to 59
+    uint8_t                 year;           ///< Years:   0 to 99 (2000 - 2099)
+    uint8_t                 month;          ///< Months:  1 to 12
+    uint8_t                 day;            ///< Days:    1 to 31 (depending on month)
+    uint8_t                 hour;           ///< Hours:   0 to 23
+    uint8_t                 min;            ///< Minutes: 0 to 59
+    uint8_t                 sec;            ///< Seconds: 0 to 59
+#if PX_RTC_UTIL_CFG_DAY_OF_WEEK
+    uint8_t                 day_of_week;    ///< Day of week: Mon = 0; Sun = 6
+#endif
 #if PX_RTC_UTIL_CFG_TICKS_PER_SEC
-    px_rtc_ticks_per_sec_t  ticks;      ///< Sub second ticks
+    px_rtc_ticks_per_sec_t  ticks;          ///< Sub second ticks
 #endif
 } px_rtc_date_time_t;
 
@@ -123,7 +138,7 @@ void px_rtc_util_on_tick(void);
  *  @param[in] date_time    Pointer to a structure that contains the new date
  *                          and time.
  */
-void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time);
+void px_rtc_util_date_time_wr(px_rtc_date_time_t * date_time);
 
 /**
  *  Get a copy of the time and date.
@@ -280,7 +295,7 @@ bool px_rtc_util_date_is_equal(const px_rtc_date_time_t * date_time1,
                                const px_rtc_date_time_t * date_time2);
 
 /**
- *  Convert a date and time to seconds elapsed since 2000-01-01 00:00 (y2k)
+ *  Convert a date and time to seconds elapsed since 2000-01-01 00:00 (Y2K)
  *
  *  @param date_time            date-time structure
  *
@@ -289,7 +304,7 @@ bool px_rtc_util_date_is_equal(const px_rtc_date_time_t * date_time1,
 px_rtc_sec_since_y2k_t px_rtc_util_date_time_to_sec_since_y2k(const px_rtc_date_time_t * date_time);
 
 /**
- *  Convert seconds elapsed since 2000-01-01 00:00 (y2k) to a date and time
+ *  Convert seconds elapsed since 2000-01-01 00:00 (Y2K) to a date and time
  *
  *  @param sec_since_y2k        Seconds since Y2K (2000-01-01 00:00:00)
  *  @param date_time            date-time structure to receive calculated date and time
@@ -317,6 +332,15 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
  */
 void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
                                const px_rtc_date_time_t * date_time_dec);
+
+/**
+ *  Calculate day of week
+ *
+ *  @param date_time            date
+ *
+ *  @return px_rtc_util_day_t   day of week
+ */
+px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * date_time);
 
 /**
  *  Report date and time using printf.

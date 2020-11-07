@@ -38,5 +38,8 @@
 /// Option to specify number of ticks per second. Use 0 to disable (one tick per sec).
 #define PX_RTC_UTIL_CFG_TICKS_PER_SEC       0
 
+/// Option to enable day of week support. 0 = disable; 1=enable
+#define PX_RTC_UTIL_CFG_DAY_OF_WEEK         0
+
 /// @}
 #endif // #ifndef __PX_RTC_UTIL_CFG_H__

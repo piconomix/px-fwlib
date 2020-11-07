@@ -194,6 +194,14 @@ static void px_rtc_util_inc_date_time_on_tick(void)
     px_rtc_util_period_day_flag = true;
 #endif
 
+#if PX_RTC_UTIL_CFG_DAY_OF_WEEK
+    // Next day of week
+    if(++px_rtc_util_date_time.day_of_week > 6)
+    {
+        px_rtc_util_date_time.day_of_week = 0;
+    }
+#endif
+
     // Determine number of days in month
     days_in_month = px_rtc_util_days_in_month(px_rtc_util_date_time.year, px_rtc_util_date_time.month);
 
@@ -357,12 +365,11 @@ void px_rtc_util_on_tick(void)
     px_rtc_util_alarm_flag = true;
 }
 
-void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time)
+void px_rtc_util_date_time_wr(px_rtc_date_time_t * date_time)
 {
-    px_rtc_date_time_t date_time_cmp;
-
+    px_rtc_date_time_t      date_time_cmp;
 #if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
-    px_rtc_sec_since_y2k_t sec_since_y2k;
+    px_rtc_sec_since_y2k_t  sec_since_y2k;
 #endif
 
     // Sanity checks
@@ -372,16 +379,20 @@ void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time)
     // Convert date-time to seconds since Y2K
     sec_since_y2k = px_rtc_util_date_time_to_sec_since_y2k(date_time);
 #endif
+#if PX_RTC_UTIL_CFG_DAY_OF_WEEK
+    // Set day of week
+    date_time->day_of_week = px_rtc_util_date_to_day_of_week(date_time);
+#endif
+#if PX_RTC_UTIL_CFG_TICKS_PER_SEC
+    // Set ticks to zero
+    date_time->ticks = 0;
+#endif
 
     // Repeat writing date-time and sec since Y2K together until they match
     for(;;)
     {
         // Write date-time
         memcpy(&px_rtc_util_date_time, date_time, sizeof(px_rtc_date_time_t));
-#if PX_RTC_UTIL_CFG_TICKS_PER_SEC
-        // Set ticks to zero
-        px_rtc_util_date_time.ticks = 0;
-#endif
 #if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
         // Write seconds since Y2K
         px_rtc_util_sec_since_y2k = sec_since_y2k;
@@ -402,7 +413,6 @@ void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time)
             continue;
         }
 #endif
-
         // Match!
         return;
     }
@@ -555,14 +565,7 @@ bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time)
         PX_DBG_INFO("Second %u is invalid", date_time->sec);
         return false;
     }
-#if PX_RTC_UTIL_CFG_TICKS_PER_SEC
-    // Ticks?
-    if(date_time->ticks >= PX_RTC_UTIL_CFG_TICKS_PER_SEC)
-    {
-        PX_DBG_INFO("Tick %u is invalid", date_time->ticks);
-        return false;
-    }
-#endif
+
     return true;
 }
 
@@ -919,6 +922,40 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
         px_rtc_util_date_time_reset(date_time);
         return;
     }
+}
+
+px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * date_time)
+{
+    int8_t      i;
+    uint32_t    days;
+    uint8_t     day;
+
+    // Sanity checks
+    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+
+    // Years (ignoring extra day for each leap year)
+    days = date_time->year * 365ul;
+    // Add an extra day for each leap year using simplified (2000 to 2099)
+    // Gregorian calender rules. Every 4th year is a leap year, including 2000,
+    // e.g. 2000, 2004, 2008, 2012, ...
+    for(i = 0; i < date_time->year; i++)
+    {
+        if(px_rtc_util_is_leap_year(i))
+        {
+            days++;
+        }
+    }
+    // Calculate completed days in specified year
+    days += date_time->day - 1;
+    for(i = 1; i < date_time->month; i++)
+    {
+        days += px_rtc_util_days_in_month(date_time->year, i);
+    }
+
+    // Calculate day of week (2000:01:01 was a Saturday)
+    day = (days + PX_RTC_UTIL_DAY_SAT) % 7;
+
+    return day;
 }
 
 void px_rtc_util_report_date_time(const px_rtc_date_time_t * date_time)
