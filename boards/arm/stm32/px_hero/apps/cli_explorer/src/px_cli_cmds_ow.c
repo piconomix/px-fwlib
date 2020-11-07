@@ -6,10 +6,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
- 
+
     Title:          px_cli_cmds_ow.h : CLI commands for 1-Wire related operations
     Author(s):      Pieter Conradie
     Creation Date:  2019-08-08
@@ -74,7 +74,7 @@ static const char* px_cli_cmd_fn_ow_info(uint8_t argc, char* argv[])
     else
     {
         printf("1\n");
-    }    
+    }
 
     return NULL;
 }
@@ -104,7 +104,7 @@ static const char* px_cli_cmd_fn_ow_scan(uint8_t argc, char* argv[])
 
     // Initialise 1-wire
     px_one_wire_init();
-    
+
     // Find first 1-wire device
     one_wire_error = px_one_wire_search_rom_first(&one_wire_search);
     while(one_wire_error == PX_ONE_WIRE_ERR_NONE)
@@ -118,7 +118,7 @@ static const char* px_cli_cmd_fn_ow_scan(uint8_t argc, char* argv[])
                one_wire_search.rom.data[4],
                one_wire_search.rom.data[5],
                one_wire_search.rom.data[6],
-               one_wire_search.rom.data[7]);            
+               one_wire_search.rom.data[7]);
         // Find next 1-wire device
         one_wire_error = px_one_wire_search_rom_next(&one_wire_search);
     }
@@ -285,7 +285,7 @@ static const char* px_cli_cmd_fn_ds18b20_temp(uint8_t argc, char* argv[])
     else
     {
         error = px_ds18b20_start_temp_conversion(NULL);
-    }    
+    }
     if(error != PX_DS18B20_ERR_NONE)
     {
         return px_cli_cmd_fn_ds18b20_error_to_str(error);
@@ -309,11 +309,11 @@ static const char* px_cli_cmd_fn_ds18b20_temp(uint8_t argc, char* argv[])
         return px_cli_cmd_fn_ds18b20_error_to_str(error);
     }
     // Convert temp
-    temp = px_ds18b20_util_convert_t_to_deci_deg(scratchpad.temp_msb, scratchpad.temp_lsb, scratchpad.cfg_reg);
-    frac = temp % 10;
-    temp = temp / 10;
+    temp = px_ds18b20_util_convert_t_to_temp(scratchpad.temp_msb, scratchpad.temp_lsb, scratchpad.cfg_reg);
+    frac = temp % 100;
+    temp = temp / 100;
     // Report
-    printf("0x%02X%02X %d.%1d deg C\n", scratchpad.temp_msb, scratchpad.temp_lsb, temp, frac);
+    printf("0x%02X%02X %d.%02d deg C\n", scratchpad.temp_msb, scratchpad.temp_lsb, temp, frac);
 
     return NULL;
 }
