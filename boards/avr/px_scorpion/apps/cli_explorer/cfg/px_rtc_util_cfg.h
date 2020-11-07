@@ -8,10 +8,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_rtc.h : Software Real Time Clock module
     Author(s):      Pieter Conradie
     Creation Date:  2014-06-22
@@ -25,9 +25,12 @@
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// Option to also keep track of seconds elapsed since Y2K (2000-01-01 00:00:00)
-#define PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K    0
+#define PX_RTC_UTIL_CFG_SEC_SINCE_Y2K       0
 
 /// Option to enable periodic flags (minute, hour and day)
-#define PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS   0
+#define PX_RTC_UTIL_CFG_PERIODIC_FLAGS      0
+
+/// Option to specify number of ticks per second. Use 0 to disable (one tick per sec).
+#define PX_RTC_UTIL_CFG_TICKS_PER_SEC       0
 
 #endif // #ifndef __PX_RTC_UTIL_CFG_H__

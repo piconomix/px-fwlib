@@ -32,7 +32,7 @@ PX_DBG_DECL_NAME("rtc_util");
 /// Structure to keep track of time & date
 static px_rtc_date_time_t px_rtc_util_date_time;
 
-#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
 /// Variable to track seconds since Y2K (2000-01-01 00:00:00)
 static volatile px_rtc_sec_since_y2k_t px_rtc_util_sec_since_y2k;
 #endif
@@ -46,7 +46,7 @@ static px_rtc_alarm_mask_t px_rtc_util_alarm_mask;
 /// Flag to indicate that an alarm has occurred
 static volatile bool px_rtc_util_alarm_flag;
 
-#if PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS
+#if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
 
 /// Flag to indicate that minutes have been incremented (every 60 seconds)
 static volatile bool px_rtc_util_period_min_flag;
@@ -93,7 +93,7 @@ static bool px_rtc_util_is_leap_year(uint8_t year)
 
     //  Apply simplified (2000 to 2099) Gregorian calender rules:
     //  Every 4 years is a leap year, e.g. [2000, 2004, 2008, ..., 2096]
-    if ((year%4) == 0)
+    if ((year % 4) == 0)
     {
         return true;
     }
@@ -110,7 +110,7 @@ static uint16_t px_rtc_util_days_in_year(uint8_t year)
 
     //  Apply simplified (2000 to 2099) Gregorian calender rules:
     //  Every 4 years is a leap year, e.g. [2000, 2004, 2008, ..., 2096]
-    if ((year%4) == 0)
+    if ((year % 4) == 0)
     {
         return 366;
     }
@@ -130,7 +130,6 @@ static int8_t px_rtc_util_days_in_month(uint8_t year, uint8_t month)
 
     // Fetch number of days in month from table
     days = px_pgm_rd_u8(&px_rtc_util_month_day_table[month]);
-
     // February and leap year?
     if((month == 2) && (px_rtc_util_is_leap_year(year)))
     {
@@ -145,7 +144,16 @@ static void px_rtc_util_inc_date_time_on_tick(void)
 {
     uint8_t days_in_month;
 
-#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+#if PX_RTC_UTIL_CFG_TICKS_PER_SEC
+    // Increment sub second ticks
+    if(++px_rtc_util_date_time.ticks < PX_RTC_UTIL_CFG_TICKS_PER_SEC)
+    {
+        return;
+    }
+    px_rtc_util_date_time.ticks = 0;
+#endif
+
+#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
     // Increment seconds since Y2K
     px_rtc_util_sec_since_y2k++;
 #endif
@@ -157,9 +165,9 @@ static void px_rtc_util_inc_date_time_on_tick(void)
     }
     px_rtc_util_date_time.sec = 0;
 
-#if PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS
+#if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
     // Set minute flag
-    px_rtc_util_period_min_flag  = true;
+    px_rtc_util_period_min_flag = true;
 #endif
 
     // Increment minutes
@@ -169,9 +177,9 @@ static void px_rtc_util_inc_date_time_on_tick(void)
     }
     px_rtc_util_date_time.min = 0;
 
-#if PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS
+#if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
     // Set hour flag
-    px_rtc_util_period_hour_flag  = true;
+    px_rtc_util_period_hour_flag = true;
 #endif
 
     // Increment hours
@@ -181,9 +189,9 @@ static void px_rtc_util_inc_date_time_on_tick(void)
     }
     px_rtc_util_date_time.hour = 0;
 
-#if PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS
+#if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
     // Set day flag
-    px_rtc_util_period_day_flag  = true;
+    px_rtc_util_period_day_flag = true;
 #endif
 
     // Determine number of days in month
@@ -247,7 +255,7 @@ void px_rtc_util_init(void)
     px_rtc_util_alarm_mask = PX_RTC_UTIL_ALARM_MASK_DIS;
     px_rtc_util_alarm_flag = false;
 
-#if PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS
+#if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
     // Reset periodic flags Flag to indicate that minutes have been incremented (every 60 seconds)
     px_rtc_util_period_min_flag  = false;
     px_rtc_util_period_hour_flag = false;
@@ -258,7 +266,8 @@ void px_rtc_util_init(void)
     px_rtc_util_date_time_reset(&date_time);
     px_rtc_util_date_time_wr(&date_time);
 
-#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
+    // Reset seconds since Y2K
     px_rtc_util_sec_since_y2k = 0;
 #endif
 }
@@ -268,7 +277,16 @@ void px_rtc_util_on_tick(void)
     // Increment time
     px_rtc_util_inc_date_time_on_tick();
 
-    // Must alarm flag must be set?
+#if PX_RTC_UTIL_CFG_TICKS_PER_SEC
+    // Second elapsed?
+    if(px_rtc_util_date_time.ticks != 0)
+    {
+        // No
+        return;
+    }
+#endif
+
+    // Must alarm flag be set?
     if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_DIS)
     {
         // No
@@ -343,14 +361,14 @@ void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time)
 {
     px_rtc_date_time_t date_time_cmp;
 
-#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
     px_rtc_sec_since_y2k_t sec_since_y2k;
 #endif
 
     // Sanity checks
     PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
 
-#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
     // Convert date-time to seconds since Y2K
     sec_since_y2k = px_rtc_util_date_time_to_sec_since_y2k(date_time);
 #endif
@@ -360,23 +378,23 @@ void px_rtc_util_date_time_wr(const px_rtc_date_time_t * date_time)
     {
         // Write date-time
         memcpy(&px_rtc_util_date_time, date_time, sizeof(px_rtc_date_time_t));
-
-#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+#if PX_RTC_UTIL_CFG_TICKS_PER_SEC
+        // Set ticks to zero
+        px_rtc_util_date_time.ticks = 0;
+#endif
+#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
         // Write seconds since Y2K
         px_rtc_util_sec_since_y2k = sec_since_y2k;
 #endif
-
         // Read back date-time
         memcpy(&date_time_cmp, &px_rtc_util_date_time, sizeof(px_rtc_date_time_t));
-
         // date-time match?
         if(!px_rtc_util_date_time_match(date_time, &date_time_cmp))
         {
             // No
             continue;
         }
-
-#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
         // sec since Y2K match?
         if(px_rtc_util_sec_since_y2k != sec_since_y2k)
         {
@@ -405,7 +423,7 @@ void px_rtc_util_date_time_rd(px_rtc_date_time_t * date_time)
     while(!px_rtc_util_date_time_match(date_time, &date_time_cmp));
 }
 
-#if PX_RTC_UTIL_CFG_OPTION_SEC_SINCE_Y2K
+#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
 px_rtc_sec_since_y2k_t px_rtc_util_sec_since_y2k_rd(void)
 {
     return px_rtc_util_sec_since_y2k;
@@ -425,13 +443,10 @@ void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm,
 
     // Disable alarm first
     px_rtc_util_alarm_mask = PX_RTC_UTIL_ALARM_MASK_DIS;
-
     // Write alarm
     memcpy(&px_rtc_util_alarm, alarm, sizeof(px_rtc_util_alarm));
-
     // Reset alarm flag
     px_rtc_util_alarm_flag = false;
-
     // Write alarm mask
     px_rtc_util_alarm_mask = alarm_mask;
 }
@@ -441,7 +456,6 @@ void px_rtc_util_alarm_rd(px_rtc_date_time_t *  alarm,
 {
     // Read alarm
     memcpy(alarm, &px_rtc_util_alarm, sizeof(*alarm));
-
     // Read alarm mask
     *alarm_mask = px_rtc_util_alarm_mask;
 }
@@ -456,7 +470,7 @@ void px_rtc_util_alarm_flag_clear(void)
     px_rtc_util_alarm_flag = false;
 }
 
-#if PX_RTC_UTIL_CFG_OPTION_PERIODIC_FLAGS
+#if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
 
 bool px_rtc_util_period_min_flag_is_set(void)
 {
@@ -490,14 +504,17 @@ void px_rtc_util_period_day_flag_clear(void)
 
 #endif
 
-void px_rtc_util_date_time_reset(px_rtc_date_time_t * px_rtc_util_time)
+void px_rtc_util_date_time_reset(px_rtc_date_time_t * date_time)
 {
-    px_rtc_util_time->year  = 0;
-    px_rtc_util_time->month = 1;
-    px_rtc_util_time->day   = 1;
-    px_rtc_util_time->hour  = 0;
-    px_rtc_util_time->min   = 0;
-    px_rtc_util_time->sec   = 0;
+    date_time->year      = 0;
+    date_time->month     = 1;
+    date_time->day       = 1;
+    date_time->hour      = 0;
+    date_time->min       = 0;
+    date_time->sec       = 0;
+#if PX_RTC_UTIL_CFG_TICKS_PER_SEC
+    date_time->ticks     = 0;
+#endif
 }
 
 bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time)
@@ -538,6 +555,14 @@ bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time)
         PX_DBG_INFO("Second %u is invalid", date_time->sec);
         return false;
     }
+#if PX_RTC_UTIL_CFG_TICKS_PER_SEC
+    // Ticks?
+    if(date_time->ticks >= PX_RTC_UTIL_CFG_TICKS_PER_SEC)
+    {
+        PX_DBG_INFO("Tick %u is invalid", date_time->ticks);
+        return false;
+    }
+#endif
     return true;
 }
 
