@@ -8,96 +8,96 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_cli.h : Command Line Interpreter and command dispatcher
     Author(s):      Pieter Conradie
     Creation Date:  2008-08-01
 
 ============================================================================= */
 
-/** 
+/**
  *  @ingroup COMMS
  *  @defgroup PX_CLI px_cli.h : Command Line Interpreter
- *  
+ *
  *  Implements a command line interpreter interfacing with an ANSI/VT100
  *  terminal emulator.
- *  
+ *
  *  File(s):
  *  - comms/inc/px_cli.h
  *  - comms/inc/px_cli_cfg_template.h
  *  - comms/src/px_cli.c (general version)
  *  - comms/src/px_cli_P.c (minimise RAM usage by using command list stored in Program Memory. See @ref PX_PGM_P)
- *  
+ *
  *  References:
  *  - http://en.wikipedia.org/wiki/PX_VT100_escape_code
  *  - http://www.termsys.demon.co.uk/vtansi.htm
- *  
+ *
  *  This CLI supports autocomplete using TAB and recalling old commands
- *  using UP/DOWN (command history). Commands starting with a hash (#) is 
+ *  using UP/DOWN (command history). Commands starting with a hash (#) is
  *  regarded as comments and ignored.
- *  
+ *
  *  ![CLI using Tera Term terminal emulator](arduino_uno_cli.png)
- *  
+ *
  *  Code example:
- *  
+ *
  *  @include comms/test/px_cli_test.c
- *   
+ *
  *  The CLI command tree is declared statically using three structures:
- *   
- *  ![](cli/cli_struct_cmd_list_item.png) 
- *   
- *  A static ARRAY of px_cli_cmd_list_item_t structures are declared. The 
- *  "handler" field is the address of the function to call when that command is 
- *  executed. The second field either points to a command structure 
+ *
+ *  ![](cli/cli_struct_cmd_list_item.png)
+ *
+ *  A static ARRAY of px_cli_cmd_list_item_t structures are declared. The
+ *  "handler" field is the address of the function to call when that command is
+ *  executed. The second field either points to a command structure
  *  (if "handler" != NULL) or to a group structure (if "handler" == NULL).
- *   
- *  The end of the array is terminated with an extra item with the "handler" 
- *  field being NULL and the "cmd/group" field also NULL. This marks the end of 
+ *
+ *  The end of the array is terminated with an extra item with the "handler"
+ *  field being NULL and the "cmd/group" field also NULL. This marks the end of
  *  the array.
- *   
- *  ![](cli/cli_struct_cmd.png) 
- *   
- *  Each command is declared with a px_cli_cmd_t structure. The "name" field 
- *  contains the address of the command name string. The "argc_min" and 
- *  "argc_max" indicates respectively the minimum and maximum number of command 
- *  arguments. The "param" field contains the address of the command parameter 
- *  string and the "help" field contains the address of the command help string 
+ *
+ *  ![](cli/cli_struct_cmd.png)
+ *
+ *  Each command is declared with a px_cli_cmd_t structure. The "name" field
+ *  contains the address of the command name string. The "argc_min" and
+ *  "argc_max" indicates respectively the minimum and maximum number of command
+ *  arguments. The "param" field contains the address of the command parameter
+ *  string and the "help" field contains the address of the command help string
  *  that is displayed when the "help" command is executed.
- *  
- *  ![](cli/cli_struct_group.png) 
- *   
- *  Each group is declared with a px_cli_group_t structure. The "name" field 
- *  contains the address of the group name string. The "list" field points to 
- *  a static ARRAY of px_cli_cmd_list_item_t structures. This array will contain 
+ *
+ *  ![](cli/cli_struct_group.png)
+ *
+ *  Each group is declared with a px_cli_group_t structure. The "name" field
+ *  contains the address of the group name string. The "list" field points to
+ *  a static ARRAY of px_cli_cmd_list_item_t structures. This array will contain
  *  the sub commands for that group.
- *   
+ *
  *  Let's look again at the declaration of the command tree in the example:
- *   
- *  @snippet comms/test/px_cli_test.c CLI cmd tree declaration 
- *   
+ *
+ *  @snippet comms/test/px_cli_test.c CLI cmd tree declaration
+ *
  *  The declaration is simplified by using the following boiler-plate macros:
- *  - PX_CLI_CMD_CREATE() 
- *  - PX_CLI_GROUP_CREATE() 
- *  - PX_CLI_GROUP_END() 
- *  - PX_CLI_CMD_LIST_CREATE() 
- *  - PX_CLI_CMD_ADD() 
- *  - PX_CLI_GROUP_ADD() 
+ *  - PX_CLI_CMD_CREATE()
+ *  - PX_CLI_GROUP_CREATE()
+ *  - PX_CLI_GROUP_END()
+ *  - PX_CLI_CMD_LIST_CREATE()
+ *  - PX_CLI_CMD_ADD()
+ *  - PX_CLI_GROUP_ADD()
  *  - PX_CLI_CMD_LIST_END()
- *   
+ *
  *  The declared CLI command tree can be visualised as follows:
- *   
- *  ![](cli/cli_example.png) 
- *   
+ *
+ *  ![](cli/cli_example.png)
+ *
  *  The root list is an array of 4 px_cli_cmd_list_item_t structures:
  *  - CMD_LIST_ITEM[0] points to the GROUP_LED group structure ("handler" == NULL)
- *  - CMD_LIST_ITEM[1] points to the CMD_BUZZER cmd structure ("handler" == &buzzer_fn) 
- *  - CMD_LIST_ITEM[2] points to the CMD_HELP cmd structure ("handler" == &help_fn) 
- *  - CMD_LIST_ITEM[3] marks the end of the array 
- *   
- *  The GROUP_LED group structure points to an array of 3 px_cli_cmd_list_item_t structures: 
+ *  - CMD_LIST_ITEM[1] points to the CMD_BUZZER cmd structure ("handler" == &buzzer_fn)
+ *  - CMD_LIST_ITEM[2] points to the CMD_HELP cmd structure ("handler" == &help_fn)
+ *  - CMD_LIST_ITEM[3] marks the end of the array
+ *
+ *  The GROUP_LED group structure points to an array of 3 px_cli_cmd_list_item_t structures:
  *  - CMD_LIST_ITEM_LED[0] points to the CMD_LED_ON cmd structure ("handler" == &led_on_fn)
  *  - CMD_LIST_ITEM_LED[1] points to the CMD_LED_OFF cmd structure ("handler" == &led_off_fn)
  *  - CMD_LIST_ITEM_LED[2] marks the end of the array
@@ -151,12 +151,12 @@ extern "C" {
 /* _____DEFINITIONS__________________________________________________________ */
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
-/** 
+/**
  *  Pointer to a function that will be called to handle a command
- *   
+ *
  *  @param argc          Number of argument strings
  *  @param argv          Array of pointers to zero terminated argument strings
- *  
+ *
  *  @return const char * Response string to display; return NULL to display nothing
  */
 typedef const char * (*px_cli_handler_t)(uint8_t argc, char * argv[]);
@@ -205,14 +205,14 @@ typedef union
 } px_cli_argv_val_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-/** 
+/**
  *  Converted argument value using px_cli_util_argv_to_...() conversion function.
- * 
+ *
  *  For example, if `px_cli_util_argv_to_u8()` is used, the answer is stored as
  *  `px_cli_argv_val.u8`
- *  
+ *
  *  Example:
- * 
+ *
  *      @code{.c}
  *      uint8_t i2c_sla_adr;
  *
@@ -229,42 +229,42 @@ extern px_cli_argv_val_t    px_cli_argv_val;
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
  *  Initialise command line module.
- *   
+ *
  *  @param cli_cmd_list  Pointer to list of commands created with PX_CLI_CMD_LIST_CREATE() macro
- *  @param startup_str   Start up string to display. 
- *   
+ *  @param startup_str   Start up string to display.
+ *
  */
 extern void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char * startup_str);
 
-/** 
+/**
  *  Function called to handle a received character.
- *  
- *  This function drives the command line interpreter. All actions are taken in 
+ *
+ *  This function drives the command line interpreter. All actions are taken in
  *  response to a received character.
- *  
+ *
  *  @param data      The received character.
  */
 extern void px_cli_on_rx_char(char data);
 
 /**
  *  Handler function to call when "help" command is invoked.
- *  
+ *
  *  @param argc          Number of argument strings
  *  @param argv          Array of pointers to zero terminated argument strings
- *  
+ *
  *  @return const char * Response string to display; return NULL to display nothing
  */
 extern const char* px_cli_cmd_help_fn(uint8_t argc, char * argv[]);
 
 /**
  *  Utility function to convert an ARGV string to an option.
- *  
+ *
  *  The ARGV string is compared to a series of zero terminated strings with the
  *  end indicated by an empty string ('\0'). The index of the string that it
  *  matches is returned. 0xff is returned if no match is found.
- *  
+ *
  *  Example:
- *  
+ *
  *      @code{.c}
  *      switch(px_cli_util_argv_to_option(1, "on\0off\0")))
  *      {
@@ -277,160 +277,170 @@ extern const char* px_cli_cmd_help_fn(uint8_t argc, char * argv[]);
  *      default:
  *          return "Error: incorrect parameters!";
  *      }
- *      @endcode    
- *  
+ *      @endcode
+ *
  *  @param argv_index Index of ARGV to convert into an option
  *  @param options    Series of zero terminated strings. End is indicated by an
  *                    empty string.
- *  
+ *
  *  @return uint8_t   Index of the string that matches ARGV string.
  *  @retval 0xff      No match was found.
  */
 uint8_t px_cli_util_argv_to_option(uint8_t argv_index, const char * options);
 
-/** 
+/**
  *  Utility function to convert an ARGV string to a number.
- *  
- *  This function is useful to parse ARGV parameters. The string is converted 
- *  into a number and it is tested if the number is within the specified 
+ *
+ *  This function is useful to parse ARGV parameters. The string is converted
+ *  into a number and it is tested if the number is within the specified
  *  bounds (min <= val <= max).
- *   
+ *
  *  @param argv_index Index of ARGV to convert
  *  @param min        Minimum value accepted for number
  *  @param max        Maximum value accepted for number
- *   
- *  @retval true      String has been succesfully converted into a number and 
+ *
+ *  @retval true      String has been succesfully converted into a number and
  *                    lies between the specified bounds.
  */
 extern bool px_cli_util_argv_to_u8(uint8_t argv_index, uint8_t min, uint8_t max);
 
-/** 
+/**
  *  Utility function to convert an ARGV string to a number.
- *   
- *  This function is useful to parse ARGV parameters. The string is converted 
- *  into a number and it is tested if the number is within the specified 
+ *
+ *  This function is useful to parse ARGV parameters. The string is converted
+ *  into a number and it is tested if the number is within the specified
  *  bounds (min <= val <= max).
- *   
+ *
  *  @param argv_index Index of ARGV to convert
  *  @param min        Minimum value accepted for number
  *  @param max        Maximum value accepted for number
- *   
- *  @retval true      String has been succesfully converted into a number and 
+ *
+ *  @retval true      String has been succesfully converted into a number and
  *                    lies between the specified bounds.
  */
 extern bool px_cli_util_argv_to_u16(uint8_t argv_index, uint16_t min, uint16_t max);
 
-/** 
+/**
  *  Utility function to convert an ARGV string to a number.
- *   
- *  This function is useful to parse ARGV parameters. The string is converted 
- *  into a number and it is tested if the number is within the specified 
+ *
+ *  This function is useful to parse ARGV parameters. The string is converted
+ *  into a number and it is tested if the number is within the specified
  *  bounds (min <= val <= max).
- *   
+ *
  *  @param argv_index Index of ARGV to convert
  *  @param min        Minimum value accepted for number
  *  @param max        Maximum value accepted for number
- *   
- *  @retval true      String has been succesfully converted into a number and 
+ *
+ *  @retval true      String has been succesfully converted into a number and
  *                    lies between the specified bounds.
  */
 extern bool px_cli_util_argv_to_u32(uint8_t argv_index, uint32_t min, uint32_t max);
 
-/** 
+/**
  *  Utility function to convert an ARGV string to a number.
- *   
- *  This function is useful to parse ARGV parameters. The string is converted 
- *  into a number and it is tested if the number is within the specified 
+ *
+ *  This function is useful to parse ARGV parameters. The string is converted
+ *  into a number and it is tested if the number is within the specified
  *  bounds (min <= val <= max).
- *   
+ *
  *  @param argv_index Index of ARGV to convert
  *  @param min        Minimum value accepted for number
  *  @param max        Maximum value accepted for number
- *   
- *  @retval true      String has been succesfully converted into a number and 
+ *
+ *  @retval true      String has been succesfully converted into a number and
  *                    lies between the specified bounds.
  */
 extern bool px_cli_util_argv_to_s8(uint8_t argv_index, int8_t min, int8_t max);
 
-/** 
+/**
  *  Utility function to convert an ARGV string to a number.
- *   
- *  This function is useful to parse ARGV parameters. The string is converted 
- *  into a number and it is tested if the number is within the specified 
+ *
+ *  This function is useful to parse ARGV parameters. The string is converted
+ *  into a number and it is tested if the number is within the specified
  *  bounds (min <= val <= max).
- *   
+ *
  *  @param argv_index Index of ARGV to convert
  *  @param min        Minimum value accepted for number
  *  @param max        Maximum value accepted for number
- *   
- *  @retval true      String has been succesfully converted into a number and 
+ *
+ *  @retval true      String has been succesfully converted into a number and
  *                    lies between the specified bounds.
  */
 extern bool px_cli_util_argv_to_s16(uint8_t argv_index, int16_t min, int16_t max);
 
-/** 
+/**
  *  Utility function to convert an ARGV string to a number.
- *   
- *  This function is useful to parse ARGV parameters. The string is converted 
- *  into a number and it is tested if the number is within the specified 
+ *
+ *  This function is useful to parse ARGV parameters. The string is converted
+ *  into a number and it is tested if the number is within the specified
  *  bounds (min <= val <= max).
- *   
+ *
  *  @param argv_index Index of ARGV to convert
  *  @param min        Minimum value accepted for number
  *  @param max        Maximum value accepted for number
- *   
- *  @retval true      String has been succesfully converted into a number and 
+ *
+ *  @retval true      String has been succesfully converted into a number and
  *                    lies between the specified bounds.
  */
 extern bool px_cli_util_argv_to_s32(uint8_t argv_index, int32_t min, int32_t max);
 
-/** 
+/**
  *  Utility function to convert an ARGV string to a number.
- *   
+ *
  *  This function is useful to parse ARGV parameters.
- *   
+ *
  *  @param argv_index Index of ARGV to convert
- *   
- *  @retval true      String has been succesfully converted into a number and 
+ *
+ *  @retval true      String has been succesfully converted into a number and
  *                    lies between the specified bounds.
  */
 extern bool px_cli_util_argv_to_float(uint8_t argv_index);
 
-/** 
+/**
  *  Utility function to convert an ARGV string to a number.
- *   
+ *
  *  This function is useful to parse ARGV parameters.
- *   
+ *
  *  @param argv_index Index of ARGV to convert
- *   
- *  @retval true      String has been succesfully converted into a number and 
+ *
+ *  @retval true      String has been succesfully converted into a number and
  *                    lies between the specified bounds.
  */
 extern bool px_cli_util_argv_to_double(uint8_t argv_index);
 
 /**
  *  Utility function to display the content of a buffer.
- *   
- *  This function displays the content of a buffer in HEX and ASCII. The output 
- *  is formatted in columns of 16 bytes of HEX data and adjacent 16 characters 
- *  of ASCII data. If the ASCII data is not displayable (code < 32 or code > 127) 
+ *
+ *  This function displays the content of a buffer in HEX and ASCII. The output
+ *  is formatted in columns of 16 bytes of HEX data and adjacent 16 characters
+ *  of ASCII data. If the ASCII data is not displayable (code < 32 or code > 127)
  *  then a dot ('.') is displayed instead.
- *   
+ *
  *  @param data          Pointer to buffer containing data to display
  *  @param nr_of_bytes   Number of bytes in buffer to display.
  */
 void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes);
 
+/**
+ *  Utility function to display the content of a buffer.
+ *
+ *  This function displays the content of a buffer as an array of HEX values.
+ *
+ *  @param data          Pointer to buffer containing data to display
+ *  @param nr_of_bytes   Number of bytes in buffer to display.
+ */
+void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
+
 /* _____MACROS_______________________________________________________________ */
 /**
  *  Macro to create a new CLI command structure.
- *  
+ *
  *  Example:
- *  
+ *
  *      @code{.c}
  *      PX_CLI_CMD_CREATE(px_cli_cmd_help, "help", "Display list of commands", 0, 0)
  *      @endcode
- *  
+ *
  *  @param cli_cmd          Prefix used to name command structures
  *  @param name_str         String name of command
  *  @param nr_arg_min       Minimum number of valid arguments
@@ -468,13 +478,13 @@ void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes);
 
 /**
  *  Macro to create a new CLI command group structure.
- *  
+ *
  *  Example:
- *  
+ *
  *      @code{.c}
  *      PX_CLI_GROUP_CREATE(px_cli_group_i2c, "i2c")
  *      @endcode
- *  
+ *
  *  @param cli_group    Prefix name of command group structures
  *  @param name_str     String name of command
  */
@@ -497,11 +507,11 @@ void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes);
         }, \
     };
 
-/** 
+/**
  *  Macro to start a command list declaration
- * 
+ *
  *  @param cli_cmd_list     Name of command list array. Must be supplied to px_cli_init()
- * 
+ *
  */
 #define PX_CLI_CMD_LIST_CREATE(cli_cmd_list) \
     const px_cli_cmd_list_item_t cli_cmd_list[] PX_ATTR_PGM = \
@@ -509,11 +519,11 @@ void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes);
 
 /**
  *  Macro to add a created command structure to the list
- *  
+ *
  *  @param cli_cmd          Name of command structure
  *  @param handler_fn       Function (of type px_cli_handler_t) to be called
  *                          when command is executed
- *  
+ *
  */
 #define PX_CLI_CMD_ADD(cli_cmd, handler_fn) \
         { \
@@ -523,7 +533,7 @@ void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes);
 
 /**
  *  Macro to add a created command group structure to the list
- *  
+ *
  *  @param cli_group    Name of command group structure
  */
 #define PX_CLI_GROUP_ADD(cli_group) \

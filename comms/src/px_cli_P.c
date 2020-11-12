@@ -6,10 +6,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_cli.h : Command Line Interpreter and command dispatcher
     Author(s):      Pieter Conradie
     Creation Date:  2008-08-01
@@ -53,15 +53,15 @@ static uint8_t px_cli_autocomplete_start_index;
 static uint8_t px_cli_autocomplete_end_index;
 
 #if PX_CLI_CFG_HISTORY_SIZE
-/** 
+/**
  *  Circular buffer to store history of cmd line strings entered by user.
- *  
+ *
  *  Cmd line strings are saved in this circular buffer as a series of zero
  *  terminated strings. If the newest string partially overwrites the oldest
  *  string, the remaining characters of the oldest string is also zeroed.
- *  
+ *
  *  Example:
- *  
+ *
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *                                            px_cli_hist_index_last
  *                                                     |
@@ -69,7 +69,7 @@ static uint8_t px_cli_autocomplete_end_index;
  *                                   |
  *                           px_cli_hist_index_now
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- *  
+ *
  *  @see px_cli_hist_save_cmd()
  */
 static char px_cli_hist_circ_buf[PX_CLI_CFG_HISTORY_SIZE];
@@ -95,10 +95,10 @@ static union
     px_cli_group_t group;      ///< group data
 } px_cli_cmd_list_item_data;
 
-/** 
+/**
  *  Tree path of current command list item.
  *  @see https://en.wikipedia.org/wiki/Tree_(data_structure)
- *  
+ *
  *  This array stores a pointer to the current command list item (node) being
  *  referenced, as well as it's parent command (node), it's grand-parent
  *  command (node), etc.
@@ -147,15 +147,15 @@ static bool px_cli_cmd_get_item(const px_cli_cmd_list_item_t * item)
     if(px_cli_cmd_list_item.handler != NULL)
     {
         // Copy command structure to RAM
-        memcpy_P(&px_cli_cmd_list_item_data.cmd, 
-                 px_cli_cmd_list_item.cmd, 
+        memcpy_P(&px_cli_cmd_list_item_data.cmd,
+                 px_cli_cmd_list_item.cmd,
                  sizeof(px_cli_cmd_list_item_data.cmd));
     }
     else
     {
         // Copy group structure to RAM
-        memcpy_P(&px_cli_cmd_list_item_data.group, 
-                 px_cli_cmd_list_item.group, 
+        memcpy_P(&px_cli_cmd_list_item_data.group,
+                 px_cli_cmd_list_item.group,
                  sizeof(px_cli_cmd_list_item_data.group));
     }
 
@@ -180,7 +180,7 @@ static bool px_cli_cmd_item_get_parent(void)
         PX_DBG_ERR("Already in root");
         return false;
     }
-        
+
     // Go back to parent
     px_cli_tree_path_depth--;
 
@@ -228,7 +228,7 @@ static bool px_cli_cmd_item_get_first(void)
         // Go to first item in child list
         px_cli_tree_path[px_cli_tree_path_depth] = px_cli_cmd_list_item_data.group.list;
     }
-    
+
     // Read first item (sibling)
     return px_cli_cmd_get_item(px_cli_tree_path[px_cli_tree_path_depth]);
 }
@@ -418,7 +418,7 @@ static void px_cli_hist_save_cmd(void)
         }
     }
 
-    // Append command line string (except terminating zero) in history circular 
+    // Append command line string (except terminating zero) in history circular
     // buffer
     i = 0;
     j = px_cli_hist_index_last;
@@ -427,7 +427,7 @@ static void px_cli_hist_save_cmd(void)
         // Next index
         j = px_cli_hist_circ_buf_index_next(j);
         // Append character from line buffer
-        px_cli_hist_circ_buf[j] = px_cli_line_buf[i++];        
+        px_cli_hist_circ_buf[j] = px_cli_line_buf[i++];
     }
     while(i < px_cli_line_buf_index);
 
@@ -481,7 +481,7 @@ static void px_cli_hist_load_older_cmd(void)
     px_cli_hist_index_now = px_cli_hist_circ_buf_index_next(i);
 
     // Replace current command line with one stored in history
-    px_cli_hist_copy();    
+    px_cli_hist_copy();
 }
 
 static void px_cli_hist_load_newer_cmd(void)
@@ -504,14 +504,14 @@ static void px_cli_hist_load_newer_cmd(void)
     px_cli_hist_index_now = i;
 
     // Replace current command line with one stored in history
-    px_cli_hist_copy();    
+    px_cli_hist_copy();
 }
 #endif
 
 static void px_cli_autocomplete_reset(void)
 {
     // Reset autocomplete to last typed character
-    px_cli_autocomplete_start_index = 0; 
+    px_cli_autocomplete_start_index = 0;
     px_cli_autocomplete_end_index   = px_cli_line_buf_index;
 
     // Start at first item in root list
@@ -610,7 +610,7 @@ static bool px_cli_autocomplete(void)
     if(!px_cli_cmd_item_get_next())
     {
         // Go back to start of list
-        px_cli_cmd_item_get_first();            
+        px_cli_cmd_item_get_first();
     }
 
     return true;
@@ -622,7 +622,7 @@ static void px_cli_cmd_exe(void)
     char **      argv;
     const char * report_str;
 
-    /* 
+    /*
        Break command line string up into separate words:
        Array of pointers to zero terminated strings
      */
@@ -639,7 +639,7 @@ static void px_cli_cmd_exe(void)
     {
         return;
     }
-    
+
     // Find command in command list
     px_cli_cmd_item_get_root();
     while(true)
@@ -667,7 +667,7 @@ static void px_cli_cmd_exe(void)
             {
                 // Group item match... proceed to child list
                 px_cli_cmd_item_get_child();
-                
+
             }
         }
         else
@@ -682,7 +682,7 @@ static void px_cli_cmd_exe(void)
     argv  = &px_cli_argv[px_cli_tree_path_depth+1];
 
     // Does number of parameters exceed bounds?
-    if(  (argc < px_cli_cmd_list_item_data.cmd.argc_min) 
+    if(  (argc < px_cli_cmd_list_item_data.cmd.argc_min)
        ||(argc > px_cli_cmd_list_item_data.cmd.argc_max)  )
     {
         PX_PRINTF_P("Error! Number of parameters incorrect\n");
@@ -796,7 +796,7 @@ void px_cli_on_rx_char(char data)
             // Display prompt
             putchar('>');
             return;
-        
+
         // BACK SPACE has been pressed
         case PX_VT100_CHAR_BS:
             // Buffer not empty?
@@ -815,7 +815,7 @@ void px_cli_on_rx_char(char data)
                 putchar(PX_VT100_CHAR_BEL);
             }
             return;
-    
+
         // TAB has been pressed
         case PX_VT100_CHAR_TAB:
             if(!px_cli_autocomplete())
@@ -873,7 +873,7 @@ void px_cli_on_rx_char(char data)
 
     default:
         return;
-    }    
+    }
 }
 
 const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
@@ -941,7 +941,7 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
         {
             // Group item... proceed to child list
             px_cli_cmd_item_get_child();
-        }        
+        }
     }
     PX_DBG_INFO("Max command chars = %d", name_char_cnt);
     PX_DBG_INFO("Max param chars = %d", param_char_cnt);
@@ -978,8 +978,8 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
         {
             px_cli_cmd_get_item(px_cli_tree_path[0]);
             if(  (argc == 0)
-               ||(strncmp_P(argv[0], 
-                            px_cli_cmd_list_item_data.cmd.name, 
+               ||(strncmp_P(argv[0],
+                            px_cli_cmd_list_item_data.cmd.name,
                             strlen(argv[0])                 ) == 0)  )
             {
                 // Insert line break?
@@ -999,16 +999,16 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
                     putchar(' ');
                     len += strlen_P(px_cli_cmd_list_item_data.cmd.name) + 1;
                 }
-    
+
                 // Adjust column
                 for(i = len; i < name_char_cnt; i++)
                 {
                     putchar(' ');
                 }
-    
+
                 // Display param
                 printf_P(px_cli_cmd_list_item_data.cmd.param);
-#if PX_CLI_CFG_DISP_HELP_STR    
+#if PX_CLI_CFG_DISP_HELP_STR
                 // Adjust column
                 len = strlen_P(px_cli_cmd_list_item_data.cmd.param);
                 for(i = len; i < param_char_cnt; i++)
@@ -1016,7 +1016,7 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
                     putchar(' ');
                 }
 
-                PX_PRINTF_P(" : ");        
+                PX_PRINTF_P(" : ");
                 // Display help string
                 printf_P(px_cli_cmd_list_item_data.cmd.help);
 #endif
@@ -1271,5 +1271,15 @@ void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes)
             }
         }
         putchar('\n');
+    }
+}
+
+void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes)
+{
+    size_t i;
+
+    for(i = 0; i < nr_of_bytes; i++)
+    {
+        PX_PRINTF_P("%02hX ", data[i]);
     }
 }
