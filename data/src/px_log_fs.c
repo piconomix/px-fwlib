@@ -145,6 +145,10 @@ static uint8_t px_log_fs_crc(const void * data, size_t nr_of_bytes)
     uint8_t * data_u8 = (uint8_t *)data;
     uint8_t   crc = 0xff;
 
+    // http://www.ece.cmu.edu/~koopman/roses/dsn04/koopman04_crc_poly_embedded.pdf
+    // width=8 poly=0x4d init=0xff refin=true refout=true xorout=0xff check=0xd8
+    // name="CRC-8/KOOP"
+    
     // Repeat until all the data bytes have been processed...
     while(nr_of_bytes != 0)
     {
@@ -159,7 +163,7 @@ static uint8_t px_log_fs_crc(const void * data, size_t nr_of_bytes)
             // Is lowest bit set?
             if((crc & 1) != 0)
             {
-                // Shift right and XOR with reverse of polynomial x^8+x^6+x^3+x^2+x^0
+                // Shift right and XOR with reverse of polynomial x^8 + x^6 + x^3 + x^2 + x^0
                 crc = (crc >> 1) ^ 0xb2;
             }
             else
