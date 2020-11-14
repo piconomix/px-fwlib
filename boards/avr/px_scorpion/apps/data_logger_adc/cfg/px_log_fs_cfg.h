@@ -8,10 +8,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_log_fs_cfg.h : Log file system configuration
     Author(s):      Pieter Conradie
     Creation Date:  2014-09-09
@@ -33,6 +33,9 @@ typedef struct
     px_rtc_sec_since_y2k_t timestamp;
     px_adc_data_t          adc_data[PX_ADC_NR_OF_CHANNELS];
 } px_log_fs_record_data_t;
+
+/// Config version
+#define PX_LOG_FS_CFG_VER               2
 
 /// Page size for file system
 #define PX_LOG_FS_CFG_PAGE_SIZE         PX_AT45D_PAGE_SIZE

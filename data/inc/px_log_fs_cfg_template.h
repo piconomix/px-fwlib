@@ -8,17 +8,17 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_log_fs_cfg.h : Log file system configuration
     Author(s):      Pieter Conradie
     Creation Date:  2014-09-09
 
 ============================================================================= */
 
-/** 
+/**
  *  @addtogroup PX_LOG_FS
  */
 /// @{
@@ -30,6 +30,9 @@
 #include "px_at25s.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
+/// Config version
+#define PX_LOG_FS_CFG_VER               2
+
 /// Page size for file system
 #define PX_LOG_FS_CFG_PAGE_SIZE         PX_AT25S_PAGE_SIZE
 
