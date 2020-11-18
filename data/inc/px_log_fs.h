@@ -104,7 +104,7 @@
  *
  *  @tip_s
  *  By inspecting the bits, it can be observed that a marker can be changed from
- *  FREE to USED to USED+A to BAD, but not the other way around without erasing
+ *  FREE to PAGE to PAGE+A to BAD, but not the other way around without erasing
  *  the whole block.
  *  @tip_e
  *
@@ -112,13 +112,13 @@
  *  consists of an 8-bit marker, a 16-bit incrementing number and an 8-bit CRC.
  *  Only the first 4 bytes of each page is read to quickly index the whole file
  *  system during px_log_fs_init(). The incrementing number is used to figure
- *  out which is the oldest USED page and which is the newest during
+ *  out which is the oldest page and which is the newest during
  *  px_log_fs_init().
  *
  *  ![Page header structure](log_fs/page_header.png)
  *
- *  Pages containing records are marked as USED. Each record
- *  (px_log_fs_record_t) contains an 8-bit RECORD marker, the record data
+ *  Pages containing records are marked with PAGE (0x5F). Each record
+ *  (px_log_fs_record_t) contains an 8-bit RECORD marker (0xAF), the record data
  *  (fixed size set with #PX_LOG_FS_CFG_REC_DATA_SIZE) and an 8-bit CRC.
  *
  *  ![Record structure](log_fs/record.png)
@@ -174,16 +174,17 @@
  *  5. Archiving records
  *  ====================
  *
- *  Oldest records can be marked as archived (RECORD+A marker) for example when
- *  the record has been succesfully uploaded to a server. This makes it possible
- *  to find the next (unarchived) record that must be uploaded to the server
- *  after a reset or power interruption.
+ *  Oldest records can be marked as archived (RECORD+A marker = 0xAA) for
+ *  example when the record has been succesfully uploaded to a server. This
+ *  makes it possible to find the next (unarchived) record that must be uploaded
+ *  to the server after a reset or power interruption.
  *
  *  If all the records on a page is marked as archived then the page is marked
- *  as archived too (USED+A marker). This makes it faster to find the first
- *  unarchived record, because each page marker is inspected until the first
- *  unarchived page (USED marker) is found. Then each record on that page is
- *  inspected until the first unarchived record is found (RECORD marker).
+ *  as archived too (PAGE+A marker = 0x55). This makes it faster to find the
+ *  first unarchived record, because each page marker is inspected until the
+ *  first unarchived page (PAGE marker = 0x5F) is found. Then each record on
+ *  that page is inspected until the first unarchived record is found
+ *  (RECORD marker =0xAF).
  *
  */
 /// @{

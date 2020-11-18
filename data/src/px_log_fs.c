@@ -34,8 +34,8 @@ PX_DBG_DECL_NAME("px_log_fs");
 /// @name Marker values
 //@{
 #define PX_LOG_FS_MARKER_FREE       0xff        /* 1111_1111b */
-#define PX_LOG_FS_MARKER_USED       0x5f        /* 0101_1111b */
-#define PX_LOG_FS_MARKER_USED_A     0x55        /* 0101_0101b */
+#define PX_LOG_FS_MARKER_PAGE       0x5f        /* 0101_1111b */
+#define PX_LOG_FS_MARKER_PAGE_A     0x55        /* 0101_0101b */
 #define PX_LOG_FS_MARKER_RECORD     0xaf        /* 1010_1111b */
 #define PX_LOG_FS_MARKER_RECORD_A   0xaa        /* 1010_1010b */
 #define PX_LOG_FS_MARKER_BAD        0x00        /* 0000_0000b */
@@ -44,15 +44,15 @@ PX_DBG_DECL_NAME("px_log_fs");
 /// Definition of header structure that is stored at the start of each page
 typedef struct
 {
-    uint8_t  marker;                            ///< FREE, USED or BAD
-    uint16_t nr;                                ///< Rolling number to find first and last used page
+    uint8_t  marker;                            ///< FREE, PAGE, PAGE_A or BAD
+    uint16_t nr;                                ///< Rolling number to find first and last marked page
     uint8_t  crc;                               ///< Checksum calculated over nr (excludes marker)
 } PX_ATTR_PACKED px_log_fs_header_t;
 
 /// Definition of a record structure
 typedef struct
 {
-    uint8_t marker;                             ///< RECORD marker
+    uint8_t marker;                             ///< RECORD or RECORD_A
     uint8_t data[PX_LOG_FS_CFG_REC_DATA_SIZE];  ///< Record data content
     uint8_t crc;                                ///< Checksum calculated over data (excludes marker)
 } PX_ATTR_PACKED px_log_fs_record_t;
@@ -87,10 +87,10 @@ static inline bool px_log_fs_marker_is_free(uint8_t marker)
     }
 }
 
-static inline bool px_log_fs_marker_is_used(uint8_t marker)
+static inline bool px_log_fs_marker_is_page(uint8_t marker)
 {
-    if(  (marker == PX_LOG_FS_MARKER_USED  )
-       ||(marker == PX_LOG_FS_MARKER_USED_A)  )
+    if(  (marker == PX_LOG_FS_MARKER_PAGE  )
+       ||(marker == PX_LOG_FS_MARKER_PAGE_A)  )
     {
         return true;
     }
@@ -273,7 +273,7 @@ static uint8_t px_log_fs_header_rd(px_log_fs_header_t * header, uint16_t page)
         return header->marker;
     }
     // Invalid marker?
-    if(!px_log_fs_marker_is_used(header->marker))
+    if(!px_log_fs_marker_is_page(header->marker))
     {
         // Mark as BAD
         PX_DBG_ERR("Invalid marker 0x%02X @ page %u", header->marker, page);
@@ -305,11 +305,11 @@ static uint16_t px_log_fs_header_rd_first(const px_log_fs_handle_t * handle,
     page = handle->fs_page_start;
     while(true)
     {
-        // Read page header. Is it USED?
+        // Read page header. Is it marked?
         marker = px_log_fs_header_rd(header, page);
-        if(px_log_fs_marker_is_used(marker))
+        if(px_log_fs_marker_is_page(marker))
         {
-            // USED page found
+            // Marked page found
             return page;
         }
         // Last page read?
@@ -342,11 +342,11 @@ static uint16_t px_log_fs_header_rd_next(const px_log_fs_handle_t * handle,
             // Marker not found
             return PX_LOG_FS_PAGE_INVALID;
         }
-        // Read page header. Is it a USED page?
+        // Read page header. Is it a marked page?
         marker = px_log_fs_header_rd(header, page);
-        if(px_log_fs_marker_is_used(marker))
+        if(px_log_fs_marker_is_page(marker))
         {
-            // USED page found
+            // Marked page found
             return page;
         }
     }
@@ -479,12 +479,12 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
     // Save file system start and end page
     handle->fs_page_start = fs_page_start;
     handle->fs_page_end   = fs_page_end;
-    // Read first USED page
+    // Read first marked page
     page_first = px_log_fs_header_rd_first(handle, &header);
     if(page_first == PX_LOG_FS_PAGE_INVALID)
     {
         // None found. File system is empty
-        PX_DBG_INFO("No USED pages found");
+        PX_DBG_INFO("No marked pages found");
         handle->page_first    = PX_LOG_FS_PAGE_INVALID;
         handle->page_last     = PX_LOG_FS_PAGE_INVALID;
         handle->page_nr_next  = 0;
@@ -492,17 +492,17 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
         handle->adr_wr.offset = PX_LOG_FS_REC_OFFSET_FIRST;
         return PX_LOG_FS_ERR_NONE;
     }
-    // Continue from first USED page...
+    // Continue from first marked page...
     page = page_first;
     do
     {
         // Save page number
         page_nr = header.nr;
-        // Read next USED page
+        // Read next marked page
         page_next = px_log_fs_header_rd_next(handle, &header, page);
         if(page_next == PX_LOG_FS_PAGE_INVALID)
         {
-            // Only one USED page found
+            // Only one marked page found
             handle->page_first   = page;
             handle->page_last    = page;
             handle->page_nr_next = ++page_nr;
@@ -518,7 +518,7 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
                      page_nr_diff, page, page_nr, page_next, page_nr_next);
             // Save largest difference so far
             page_nr_diff_largest = page_nr_diff;
-            // Save candidates for first and last USED page
+            // Save candidates for first and last marked page
             handle->page_first   = page_next;
             handle->page_last    = page;
             handle->page_nr_next = ++page_nr;
@@ -541,9 +541,9 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
     }
 
     // Report first and last page
-    PX_DBG_INFO("First USED page %u", handle->page_first);
-    PX_DBG_INFO("Last USED page %u",  handle->page_last);
-    PX_DBG_INFO("Next page nr %u",    handle->page_nr_next);
+    PX_DBG_INFO("First marked page %u", handle->page_first);
+    PX_DBG_INFO("Last marked page %u",  handle->page_last);
+    PX_DBG_INFO("Next page nr %u",      handle->page_nr_next);
 
     return PX_LOG_FS_ERR_NONE;
 }
@@ -572,11 +572,11 @@ px_log_fs_err_t px_log_fs_reset(px_log_fs_handle_t * handle,
     handle->fs_page_start = fs_page_start;
     handle->fs_page_end   = fs_page_end;
 
-    // Mark all USED pages as BAD
+    // Mark all used pages as BAD
     for(page = fs_page_start; page <= fs_page_end; page++)
     {
         marker = px_log_fs_header_rd(&header, page);
-        if(px_log_fs_marker_is_used(marker))
+        if(px_log_fs_marker_is_page(marker))
         {
             header.marker = PX_LOG_FS_MARKER_BAD;
             px_log_fs_glue_wr(&header.marker, page, 0, 1);
@@ -609,7 +609,7 @@ px_log_fs_err_t px_log_fs_rd_first(px_log_fs_handle_t * handle,
                                    void *               data,
                                    size_t               nr_of_bytes)
 {
-    // No USED pages?
+    // No marked pages?
     if(handle->page_first == PX_LOG_FS_PAGE_INVALID)
     {
         return PX_LOG_FS_ERR_EMPTY;
@@ -629,7 +629,7 @@ px_log_fs_err_t px_log_fs_rd_first_unarchived(px_log_fs_handle_t * handle,
     px_log_fs_header_t header;
     uint8_t            marker;
 
-    // No USED pages?
+    // No marked pages?
     if(handle->page_first == PX_LOG_FS_PAGE_INVALID)
     {
         return PX_LOG_FS_ERR_EMPTY;
@@ -642,7 +642,7 @@ px_log_fs_err_t px_log_fs_rd_first_unarchived(px_log_fs_handle_t * handle,
         // Read page marker
         marker = px_log_fs_header_rd(&header, handle->adr_rd.page);
         // First unarchived page?
-        if(marker == PX_LOG_FS_MARKER_USED)
+        if(marker == PX_LOG_FS_MARKER_PAGE)
         {
             // First unarchived page found. Stop
             break;
@@ -702,8 +702,8 @@ px_log_fs_err_t px_log_fs_rd_next(px_log_fs_handle_t * handle,
         // Next page?
         if(handle->adr_rd.offset == PX_LOG_FS_REC_OFFSET_FIRST)
         {
-            // Find next USED page
-            while(!px_log_fs_marker_is_used(px_log_fs_header_rd(&header, handle->adr_rd.page)))
+            // Find next marked page
+            while(!px_log_fs_marker_is_page(px_log_fs_header_rd(&header, handle->adr_rd.page)))
             {
                 if(handle->adr_rd.page == handle->page_last)
                 {
@@ -738,7 +738,7 @@ px_log_fs_err_t px_log_fs_rd_last(px_log_fs_handle_t * handle,
                                   void *               data,
                                   size_t               nr_of_bytes)
 {
-    // No USED pages?
+    // No marked pages?
     if(handle->page_first == PX_LOG_FS_PAGE_INVALID)
     {
         return PX_LOG_FS_ERR_EMPTY;
@@ -781,8 +781,8 @@ px_log_fs_err_t px_log_fs_rd_previous(px_log_fs_handle_t * handle,
         // Previous page?
         if(handle->adr_rd.offset == PX_LOG_FS_REC_OFFSET_LAST)
         {
-            // Find previous USED page
-            while(!px_log_fs_marker_is_used(px_log_fs_header_rd(&header, handle->adr_rd.page)))
+            // Find previous marked page
+            while(!px_log_fs_marker_is_page(px_log_fs_header_rd(&header, handle->adr_rd.page)))
             {
                 if(handle->adr_rd.page == handle->page_first)
                 {
@@ -863,7 +863,7 @@ px_log_fs_err_t px_log_fs_rd_rec_set_archive(px_log_fs_handle_t * handle)
             // Mark whole page as archived.
             adr.page   = handle->adr_rd.page;
             adr.offset = 0;
-            if(!px_log_fs_marker_wr(PX_LOG_FS_MARKER_USED_A, &adr))
+            if(!px_log_fs_marker_wr(PX_LOG_FS_MARKER_PAGE_A, &adr))
             {
                 PX_DBG_ERR("Failed to mark page as archived. Lost whole page of records!");
                 return PX_LOG_FS_ERR_WRITE_FAIL;
@@ -941,9 +941,9 @@ px_log_fs_err_t px_log_fs_wr(px_log_fs_handle_t * handle,
                     page = handle->adr_wr.page + PX_LOG_FS_CFG_ERASE_BLOCK_SIZE;
                     while(true)
                     {
-                        // Is page USED?
+                        // Is page marked?
                         marker = px_log_fs_header_rd(&header, handle->adr_wr.page);
-                        if(px_log_fs_marker_is_used(marker))
+                        if(px_log_fs_marker_is_page(marker))
                         {
                             // Save new first page
                             handle->page_first = page;
@@ -962,8 +962,8 @@ px_log_fs_err_t px_log_fs_wr(px_log_fs_handle_t * handle,
                 break;
             }
         }
-        // Mark page as USED
-        header.marker = PX_LOG_FS_MARKER_USED;
+        // Mark page
+        header.marker = PX_LOG_FS_MARKER_PAGE;
         header.nr     = handle->page_nr_next++;
         if(!px_log_fs_header_wr(&header, handle->adr_wr.page))
         {
@@ -1001,14 +1001,14 @@ void px_log_fs_dbg_report_info(px_log_fs_handle_t * handle)
     uint16_t           page;
     uint8_t            i;
 
-    printf("Page start: 0x%04X\n",   handle->fs_page_start);
-    printf("Page end: 0x%04X\n",     handle->fs_page_end);
-    printf("Page size: %u\n",        PX_LOG_FS_CFG_PAGE_SIZE);
-    printf("Record size: %u\n",      sizeof(px_log_fs_record_t));
-    printf("Record data size: %u\n", PX_LOG_FS_CFG_REC_DATA_SIZE);
-    printf("Records per page: %u\n", PX_LOG_FS_RECORDS_PER_PAGE);
-    printf("First page: %u\n",       handle->page_first);
-    printf("Last page: %u\n",        handle->page_last);
+    printf("Page start:       0x%04X\n", handle->fs_page_start);
+    printf("Page end:         0x%04X\n", handle->fs_page_end);
+    printf("Page size:        %u\n",     PX_LOG_FS_CFG_PAGE_SIZE);
+    printf("Record size:      %u\n",     sizeof(px_log_fs_record_t));
+    printf("Record data size: %u\n",     PX_LOG_FS_CFG_REC_DATA_SIZE);
+    printf("Records per page: %u\n",     PX_LOG_FS_RECORDS_PER_PAGE);
+    printf("First page:       0x%04X\n", handle->page_first);
+    printf("Last page:        0x%04X\n", handle->page_last);
 
     printf("\n        ");
     for(i = 0; i < 16; i++)
@@ -1030,11 +1030,11 @@ void px_log_fs_dbg_report_info(px_log_fs_handle_t * handle)
         case PX_LOG_FS_MARKER_FREE:
             printf("x      ");
             break;
-        case PX_LOG_FS_MARKER_USED:
-            printf("U %04x ", header.nr);
+        case PX_LOG_FS_MARKER_PAGE:
+            printf("P %04x ", header.nr);
             break;
-        case PX_LOG_FS_MARKER_USED_A:
-            printf("Ua%04x ", header.nr);
+        case PX_LOG_FS_MARKER_PAGE_A:
+            printf("P*%04x ", header.nr);
             break;
         case PX_LOG_FS_MARKER_BAD:
             // Fall through...
