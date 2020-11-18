@@ -124,3 +124,29 @@ void px_max31855_rd(px_max31855_data_t * data)
         data->fault_oc = false;
     }
 }
+
+int16_t px_max31855_util_temp_tc_to_deg_c(int16_t temp)
+{
+    if(temp >= 0)
+    {
+        temp += 2;
+    }
+    else
+    {
+        temp -= 2;
+    }
+    return (temp / 4);
+}
+
+int16_t px_max31855_util_temp_int_to_deg_c(int16_t temp)
+{
+    if(temp >= 0)
+    {
+        temp += 8;
+    }
+    else
+    {
+        temp -= 8;
+    }
+    return (temp / 16);
+}
