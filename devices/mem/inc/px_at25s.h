@@ -8,7 +8,7 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
 
@@ -17,24 +17,24 @@
     Creation Date:  2018-10-12
 
 ============================================================================= */
-/** 
+/**
  *  @ingroup DEVICES_MEM
  *  @defgroup PX_AT25S px_at25s.h : Adesto AT25S Serial Flash Driver
- *  
+ *
  *  Driver that communicates with an Adesto AT25S Serial Flash using SPI.
- *  
+ *
  *  File(s):
  *  - devices/mem/inc/px_at25s.h
  *  - devices/mem/inc/px_at25s_cfg_template.h
  *  - devices/mem/src/px_at25s.c
- *  
+ *
  *  Reference:
  *  - [Adesto AT25S041](https://www.adestotech.com/wp-content/uploads/DS-AT25S041_044.pdf) 4-Mbit SPI Serial Flash Memory datasheet
- *  
+ *
  *  Example:
- *  
+ *
  *  @include devices/mem/test/px_at25s_test.c
- *  
+ *
  */
 /// @{
 
@@ -80,7 +80,7 @@ typedef enum
 #define PX_AT25S_BLOCK_SIZE_32KB    (32 * 1024)
 #define PX_AT25S_BLOCK_SIZE_64KB    (64 * 1024)
 //@}
-    
+
 /// @name Pages per block
 //@{
 #define PX_AT25S_PAGES_PER_BLOCK_4KB    (PX_AT25S_BLOCK_SIZE_4KB / PX_AT25S_PAGE_SIZE)
@@ -135,31 +135,31 @@ typedef enum
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
  *  Initialise driver
- *  
+ *
  *  @param handle    SPI handle to use for SPI slave device
  */
 void px_at25s_init(px_spi_handle_t * handle);
 
-/** 
+/**
  *  Power down device to minimise power consumption.
  */
 void px_at25s_deep_power_down(void);
 
-/** 
+/**
  *  Power up device to resume communication.
  */
 void px_at25s_resume_from_deep_power_down(void);
 
 /**
  *  Read data from Serial Flash.
- *  
+ *
  *  This function reads data from Serial Flash and stores it in the specified
  *  buffer.
- *  
+ *
  *  @param buffer           Buffer to store read data
  *  @param address          0 to PX_AT25S_ADR_MAX
  *  @param nr_of_bytes      Number of bytes to read
- *  
+ *
  */
 void px_at25s_rd(void *   buffer,
                  uint32_t address,
@@ -167,90 +167,90 @@ void px_at25s_rd(void *   buffer,
 
 /**
  *  Read a page from Serial Flash.
- *  
- *  This function reads a page of data from Serial Flash and stores it in the 
+ *
+ *  This function reads a page of data from Serial Flash and stores it in the
  *  specified buffer. The buffer must be at least PX_AT25S_PAGE_SIZE bytes in size
  *  to accomodate a full page.
- *  
+ *
  *  The Serial Flash has PX_AT25S_PAGES pages.
- *  
+ *
  *  @param[out] buffer          Buffer to store read data
  *  @param[in]  page            0 to (PX_AT25S_PAGES-1)
- *  
+ *
  */
 void px_at25s_rd_page(void *   buffer,
                       uint16_t page);
 
 /**
  *  Partial read of data in a page of Serial Flash.
- *  
+ *
  *  This function reads part of a page of data from Serial Flash and stores it in
  *  the specified buffer. The buffer must be at least @b nr_of_bytes in size
  *  to the read data.
- *  
+ *
  *  Only read up to the end of the specified page. If the page boundary is
  *  exceeded, the index will wrap to the start of the page, i.e. only the
  *  content of the specified page will be read.
- *  
+ *
  *  @param[out] buffer              Buffer to store read data
  *  @param[in]  page                0 to (PX_AT25S_PAGES-1)
  *  @param[in]  start_byte_in_page  Index of first byte to read (0 to
  *                                  PX_AT25S_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to read
- *  
+ *
  */
 void px_at25s_rd_page_offset(void *   buffer,
                              uint16_t page,
                              uint8_t  start_byte_in_page,
-                             uint8_t  nr_of_bytes);
+                             uint16_t nr_of_bytes);
 
 /**
  *  Write a page from Serial Flash.
- *  
- *  This function writes a page of data to Serial Flash using the specified 
+ *
+ *  This function writes a page of data to Serial Flash using the specified
  *  buffer as the source. The buffer must contain at least PX_AT25S_PAGE_SIZE bytes
  *  of data.
- *  
+ *
  *  The Serial Flash has PX_AT25S_PAGES pages.
- *  
+ *
  *  @param[in] buffer  Buffer containing data to be written
  *  @param[in]  page   0 to (PX_AT25S_PAGES-1)
- *  
+ *
  */
 void px_at25s_wr_page(const void * buffer,
                       uint16_t     page);
 
 /**
  *  Partial write of data in a page of Serial Flash.
- *  
- *  This function writes a part of a page of data to Serial Flash using the 
+ *
+ *  This function writes a part of a page of data to Serial Flash using the
  *  specified buffer as source. The buffer must contain at least @b nr_of_bytes
  *  of data.
- *  
+ *
  *  @note
- *  
+ *
  *  Only write up to the end of the specified page. If the page boundary is
  *  exceeded, the index will wrap to the start of the page, i.e. only the
  *  content of the specified page will be written.
- *  
+ *
  *  @param[in]  buffer              Buffer containing data to be written
  *  @param[in]  page                0 to (PX_AT25S_PAGES-1)
  *  @param[in]  start_byte_in_page  Index of first byte to write (0 to
  *                                  PX_AT25S_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to write
- *  
+ *
  */
 void px_at25s_wr_page_offset(const void * buffer,
-                             uint16_t     page,   
-                             uint8_t      start_byte_in_page,                                    
-                             uint8_t      nr_of_bytes);
+                             uint16_t     page,
+                             uint8_t      start_byte_in_page,
+                             uint16_t     nr_of_bytes);
 
 /**
  *  Erase a block of Serial Flash.
- *  
+ *
  *  This function erases a block of Serial Flash. The Serial Flash has
  *  PX_AT25S_PAGES pages.
- *  
+ *
  *  @param  block       4KB, 32KB or 64KB
  *  @param  page        0 to (PX_AT25S_PAGES-1); must be an integer multiple of
  *                      block size
@@ -260,12 +260,12 @@ void px_at25s_erase(px_at25s_block_t block,
 
 /**
  *  Check if Serial Flash is ready for the next read or write access.
- *  
+ *
  *  When data is written to Serial Flash, the microcontroller must wait until the
  *  operation is finished, before the next one is attempted. This function
  *  allows the microcontroller to do something else while waiting for the
  *  operation to finish.
- *  
+ *
  * @retval true     Serial Flash is ready for next read or write access.
  * @retval false    Serial Flash is busy writing.
  */
@@ -273,17 +273,17 @@ bool px_at25s_ready(void);
 
 /**
  *  Read status register 1 of the Serial Flash.
- *  
+ *
  *  The status register contains flags, e.g. PX_AT25S_STATUS_REG1_BSY to see
  *  if the device is ready or busy with an internal operation.
- *  
+ *
  *  @return uint8_t Status register 1 value
  */
 uint8_t px_at25s_rd_status_reg1(void);
 
 /**
  *  Read Manufacturer and Device ID.
- *  
+ *
  *  @param buffer   Buffer with a size of 3 bytes to hold manufacturer and
  *                  device ID
  */

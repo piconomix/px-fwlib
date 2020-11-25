@@ -6,7 +6,7 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
 
@@ -28,33 +28,33 @@ PX_DBG_DECL_NAME("px_at25s");
 /// @name Read commands
 //@{
 #define PX_AT25S_CMD_READ_ARRAY                     0x03
-//@}                                                
-                                                    
-/// @name Program and Erase commands                
-//@{                                                
+//@}
+
+/// @name Program and Erase commands
+//@{
 #define PX_AT25S_CMD_BLOCK_ERASE_4KB                0x20
 #define PX_AT25S_CMD_BLOCK_ERASE_32KB               0x52
 #define PX_AT25S_CMD_BLOCK_ERASE_64KB               0xd8
 #define PX_AT25S_CMD_CHIP_ERASE                     0x60
 #define PX_AT25S_CMD_BYTE_PAGE_PROG                 0x02
-//@}                                                
-                                                    
-/// @name Protection commands                  
-//@{                                                
+//@}
+
+/// @name Protection commands
+//@{
 #define PX_AT25S_CMD_WR_ENABLE                      0x06
 #define PX_AT25S_CMD_WR_DISABLE                     0x04
 //@}
 
-/// @name Status Register commands                  
-//@{                                                
+/// @name Status Register commands
+//@{
 #define PX_AT25S_CMD_RD_STATUS_REG_BYTE_1           0x05
 #define PX_AT25S_CMD_RD_STATUS_REG_BYTE_2           0x35
 #define PX_AT25S_CMD_WR_STATUS_REG                  0x01
 #define PX_AT25S_CMD_WR_EN_VOL_STATUS_REG           0x50
-//@}                                                
-                                                    
-/// @name Miscellaneous commands                    
-//@{                                                
+//@}
+
+/// @name Miscellaneous commands
+//@{
 #define PX_AT25S_CMD_RD_MAN_AND_DEVICE_ID           0x9f
 #define PX_AT25S_CMD_RD_ID                          0x90
 #define PX_AT25S_CMD_DEEP_PWR_DN                    0xb9
@@ -140,18 +140,18 @@ void px_at25s_rd(void *   buffer,
 
 void px_at25s_rd_page(void * buffer, uint16_t page)
 {
-    px_at25s_rd(buffer, 
-                page * PX_AT25S_PAGE_SIZE, 
+    px_at25s_rd(buffer,
+                page * PX_AT25S_PAGE_SIZE,
                 PX_AT25S_PAGE_SIZE);
 }
 
 void px_at25s_rd_page_offset(void *   buffer,
                              uint16_t page,
                              uint8_t  start_byte_in_page,
-                             uint8_t  nr_of_bytes)
+                             uint16_t nr_of_bytes)
 {
-    px_at25s_rd(buffer, 
-                page * PX_AT25S_PAGE_SIZE + start_byte_in_page, 
+    px_at25s_rd(buffer,
+                page * PX_AT25S_PAGE_SIZE + start_byte_in_page,
                 nr_of_bytes);
 }
 
@@ -180,7 +180,7 @@ void px_at25s_wr_page(const void * buffer, uint16_t page)
 void px_at25s_wr_page_offset(const void * buffer,
                              uint16_t     page,
                              uint8_t      start_byte_in_page,
-                             uint8_t      nr_of_bytes)
+                             uint16_t     nr_of_bytes)
 {
     uint8_t data[1];
 
@@ -218,21 +218,21 @@ void px_at25s_erase(px_at25s_block_t block,
     // Select command according to specified block size
     switch(block)
     {
-    case PX_AT25S_BLOCK_4KB:   
+    case PX_AT25S_BLOCK_4KB:
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_4KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_4KB != 0)
         {
             PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
         }
         break;
-    case PX_AT25S_BLOCK_32KB:  
-        data[0] = PX_AT25S_CMD_BLOCK_ERASE_32KB; 
+    case PX_AT25S_BLOCK_32KB:
+        data[0] = PX_AT25S_CMD_BLOCK_ERASE_32KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_32KB != 0)
         {
             PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
         }
         break;
-    case PX_AT25S_BLOCK_64KB : 
+    case PX_AT25S_BLOCK_64KB :
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_64KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_64KB != 0)
         {
