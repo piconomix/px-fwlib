@@ -849,13 +849,6 @@ px_log_fs_err_t px_log_fs_rd_rec_set_archive(px_log_fs_handle_t * handle)
     {
         // Next record address
         px_log_fs_record_adr_next(handle, &adr);
-        // Has last record been read?
-        if(  (adr.page   == handle->adr_wr.page  )
-           &&(adr.offset == handle->adr_wr.offset)  )
-        {
-            // Do nothing. There is still an empty space on the current page.
-            return PX_LOG_FS_ERR_NONE;
-        }
         // Next page?
         if(adr.offset == PX_LOG_FS_REC_OFFSET_FIRST)
         {
@@ -869,6 +862,13 @@ px_log_fs_err_t px_log_fs_rd_rec_set_archive(px_log_fs_handle_t * handle)
                 return PX_LOG_FS_ERR_WRITE_FAIL;
             }
             // Success
+            return PX_LOG_FS_ERR_NONE;
+        }
+        // Has last record been checked?
+        if(  (adr.page   == handle->adr_wr.page  )
+           &&(adr.offset == handle->adr_wr.offset)  )
+        {
+            // Do nothing
             return PX_LOG_FS_ERR_NONE;
         }
         // Read record marker
