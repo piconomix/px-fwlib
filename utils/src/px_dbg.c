@@ -310,7 +310,7 @@ void _px_dbg_assert(const char * name,
 #endif
 
      
-#ifdef PX_COMPILER_GCC_ARM
+#if 0
     // Generate debug breakpoint
     __asm__ __volatile__("bkpt #0\n\t"::);
 #endif
