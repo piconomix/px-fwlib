@@ -108,27 +108,6 @@ size_t px_queue_nr_of_items(px_queue_t * queue)
     return (queue->nr_of_items);
 }
 
-void * px_queue_rd(px_queue_t * queue)
-{
-    void * item;
-
-    PX_DBG_ASSERT(queue != NULL);
-
-    // Queue empty?
-    if(px_queue_is_empty(queue))
-    {
-        return NULL;
-    }
-    // Save pointer to item data
-    item = queue->item_rd;
-    // Decrement item count
-    queue->nr_of_items--;
-    // Next pointer (wrap if going past end)
-    queue->item_rd = px_queue_next(queue, queue->item_rd);
-    // Return pointer to item data
-    return item;
-}
-
 bool px_queue_wr(px_queue_t * queue, const void * item)
 {
     PX_DBG_ASSERT(queue != NULL);
@@ -146,6 +125,42 @@ bool px_queue_wr(px_queue_t * queue, const void * item)
     // Next pointer (wrap if going past end)
     queue->item_wr = px_queue_next(queue, queue->item_wr);
 
+    return true;
+}
+
+bool px_queue_rd(px_queue_t * queue, void * item)
+{
+    PX_DBG_ASSERT(queue != NULL);
+
+    // Queue empty?
+    if(px_queue_is_empty(queue))
+    {
+        return NULL;
+    }
+    // Copy item data
+    memcpy(item, queue->item_rd, queue->item_size);
+    // Decrement item count
+    queue->nr_of_items--;
+    // Next pointer (wrap if going past end)
+    queue->item_rd = px_queue_next(queue, queue->item_rd);
+    // Success
+    return true;
+}
+
+bool px_queue_discard_oldest(px_queue_t * queue)
+{
+    PX_DBG_ASSERT(queue != NULL);
+
+    // Queue empty?
+    if(px_queue_is_empty(queue))
+    {
+        return NULL;
+    }
+    // Decrement item count
+    queue->nr_of_items--;
+    // Next pointer (wrap if going past end)
+    queue->item_rd = px_queue_next(queue, queue->item_rd);
+    // Success
     return true;
 }
 

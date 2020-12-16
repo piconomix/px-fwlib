@@ -102,15 +102,6 @@ bool px_queue_is_full(px_queue_t * queue);
 size_t px_queue_nr_of_items(px_queue_t * queue);
 
 /**
- *  Read the oldest item from the queue.
- *  
- *  @param queue    Pointer to a queue object.
- *  
- *  @returns        Pointer to item data; NULL if queue is empty
- */
-void * px_queue_rd(px_queue_t * queue);
-
-/**
  *  Write a new item to the queue.
  *  
  *  The item data is copied into the array.
@@ -119,9 +110,32 @@ void * px_queue_rd(px_queue_t * queue);
  *  @param item     Pointer to item data.
  *  
  *  @retval true    Item added to the queue
- *  @retval false   Queue is full and item was not added.
+ *  @retval false   Queue is full and item was not added
  */
 bool px_queue_wr(px_queue_t * queue, const void * item);
+
+/**
+ *  Read the oldest item from the queue.
+ *
+ *  The item data is copied into the specified buffer
+ *
+ *  @param queue    Pointer to a queue object.
+ *  @param item     Pointer to item data buffer.
+ *
+ *  @retval true    Item copied and removed from queue
+ *  @retval false   Queue is empty
+ */
+bool px_queue_rd(px_queue_t * queue, void * item);
+
+/**
+ *  Remove oldest item from queue.
+ *
+ *  @param queue    Pointer to a queue object.
+ *
+ *  @retval true    Oldest item removed
+ *  @retval false   Queue is empty
+ */
+bool px_queue_discard_oldest(px_queue_t * queue);
 
 /**
  *  Remove all items from queue.
