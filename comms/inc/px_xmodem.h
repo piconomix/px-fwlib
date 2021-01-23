@@ -66,6 +66,7 @@
 // Check that all project specific options have been correctly specified
 #if (   !defined(PX_XMODEM_CFG_MAX_RETRIES      ) \
      || !defined(PX_XMODEM_CFG_MAX_RETRIES_START) \
+     || !defined(PX_XMODEM_CFG_TIMEOUT_MS       ) \
      || !defined(PX_XMODEM_CFG_WR_U8            ) \
      || !defined(PX_XMODEM_CFG_RD_U8            ) \
      || !defined(PX_XMODEM_CFG_TMR_START        ) \

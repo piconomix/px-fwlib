@@ -29,7 +29,6 @@ PX_DBG_DECL_NAME("px_xmodem");
 /// @name XMODEM protocol definitions
 //@{
 #define PX_XMODEM_DATA_SIZE         128
-#define PX_XMODEM_TIMEOUT_MS        1000
 //@}
 
 /// @name XMODEM flow control characters
@@ -151,7 +150,7 @@ static bool px_xmodem_rx_packet(void)
     uint8_t  data;
 
     // Start packet timeout
-    PX_XMODEM_CFG_TMR_START(PX_XMODEM_TIMEOUT_MS);
+    PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
 
     // Repeat until whole packet has been received
     for(i=0; i<sizeof(px_xmodem_packet.data); i++)
@@ -166,7 +165,7 @@ static bool px_xmodem_rx_packet(void)
         // Store received data in buffer
         px_xmodem_packet.data[i] = data;
         // Restart timer
-        PX_XMODEM_CFG_TMR_START(PX_XMODEM_TIMEOUT_MS);
+        PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
         // See if this is the first byte of a packet received (px_xmodem_packet.packet.start)
         if(i == 0)
         {
@@ -358,7 +357,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
             px_xmodem_tx_packet();
 
             // Wait for a response (ACK, NAK or C)
-            PX_XMODEM_CFG_TMR_START(PX_XMODEM_TIMEOUT_MS);
+            PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
             if(px_xmodem_wait_rx_char(&data))
             {
 #if PX_DBG_LEVEL_INFO
@@ -395,7 +394,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
         PX_DBG_INFO("Sending EOT");
         PX_XMODEM_CFG_WR_U8(PX_XMODEM_EOT);        
         // Wait for response
-        PX_XMODEM_CFG_TMR_START(PX_XMODEM_TIMEOUT_MS);
+        PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
         if(px_xmodem_wait_rx_char(&data))
         {
 #if PX_DBG_LEVEL_INFO
