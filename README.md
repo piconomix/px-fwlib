@@ -137,4 +137,4 @@ the shop.
 [![Shop](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/shop.png)](http://piconomix.com/shop/)
 Click [HERE](http://piconomix.com/shop/) to visit the shop
 
-
+[![HitCount](http://hits.dwyl.com/pieterconradie/piconomix/piconomix-fwlib.svg)](http://hits.dwyl.com/pieterconradie/piconomix/piconomix-fwlib)
