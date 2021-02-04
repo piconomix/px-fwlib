@@ -419,16 +419,17 @@ bool px_lis3dh_enable(void)
 {
     uint8_t data;
 
-    // Enable Accelerometer X,Y & Z measurement @ 25Hz (low power enabled)
+    // Enable Accelerometer X,Y & Z measurement @ 1 Hz (normal mode for 10-bit data output)
     if(px_lis3dh_reg_wr_u8(PX_LIS3DH_REG_CTRL_REG1,
-                             PX_LIS3DH_REG_CTRL_REG1_ODR_25HZ
-                           | PX_LIS3DH_REG_CTRL_REG1_LPEN_EN
+                             PX_LIS3DH_REG_CTRL_REG1_ODR_1HZ
+                           | PX_LIS3DH_REG_CTRL_REG1_LPEN_DIS
                            | PX_LIS3DH_REG_CTRL_REG1_ZEN_EN
                            | PX_LIS3DH_REG_CTRL_REG1_YEN_EN
                            | PX_LIS3DH_REG_CTRL_REG1_XEN_EN) == false)
     {
         return false;
     }
+#if 0
     // Enable high-pass filter
     if(px_lis3dh_reg_wr_u8(PX_LIS3DH_REG_CTRL_REG2,
                              (0 << PX_LIS3DH_REG_CTRL_REG2_HPM1)
@@ -442,6 +443,7 @@ bool px_lis3dh_enable(void)
     {
         return false;
     }
+#endif
     // Enable IA1 interrupt on INT1 pin
     if(px_lis3dh_reg_wr_u8(PX_LIS3DH_REG_CTRL_REG3,
                              (0 << PX_LIS3DH_REG_CTRL_REG3_I1_CLICK)
@@ -625,7 +627,7 @@ bool px_lis3dh_test_start(void)
 
     // Enable Accelerometer X,Y & Z measurement @ 10Hz (low power disabled)
     if(px_lis3dh_reg_wr_u8(PX_LIS3DH_REG_CTRL_REG1,
-                            PX_LIS3DH_REG_CTRL_REG1_ODR_10HZ
+                            PX_LIS3DH_REG_CTRL_REG1_ODR_1HZ
                           | PX_LIS3DH_REG_CTRL_REG1_LPEN_DIS
                           | PX_LIS3DH_REG_CTRL_REG1_ZEN_EN
                           | PX_LIS3DH_REG_CTRL_REG1_YEN_EN
