@@ -244,8 +244,8 @@ typedef signed long long   int64_t;
 //@{
 /// Concatenate 8 bits to form 8-bit value
 #define PX_U8_CONCAT_U1(b7, b6, b5, b4, b3, b2, b1, b0) \
-                            (   ((b7 & 0x01) << 7) | ((b6 & 0x01) << 6) | ((b5 & 0x01) << 5) | ((b4 & 0x01) << 4) \
-                              | ((b3 & 0x01) << 3) | ((b2 & 0x01) << 2) | ((b1 & 0x01) << 1) | ((b0 & 0x01) << 0) )
+                            (   (((b7) & 0x01) << 7) | (((b6) & 0x01) << 6) | (((b5) & 0x01) << 5) | (((b4) & 0x01) << 4) \
+                              | (((b3) & 0x01) << 3) | (((b2) & 0x01) << 2) | (((b1) & 0x01) << 1) | (((b0) & 0x01) << 0) )
 
 //@}
 
@@ -258,15 +258,15 @@ typedef signed long long   int64_t;
 
 /// Concatenate 2 x 8 bits to form 16-bit value
 #define PX_U16_CONCAT_U8(hi8, lo8) \
-                            (   (((uint16_t)(hi8 & 0xff)) << 8) \
-                              |  ((uint16_t)(lo8 & 0xff))     )
+                            (   (((uint16_t)((hi8) & 0xff)) << 8) \
+                              |  ((uint16_t)((lo8) & 0xff))     )
 
 /// Concatenate 4 x 8 bits to form 32-bit value
 #define PX_U32_CONCAT_U8(hi8, mh8, ml8, lo8) \
-                            (   (((uint32_t)(hi8 & 0xff)) << 24) \
-                              | (((uint32_t)(mh8 & 0xff)) << 16) \
-                              | (((uint32_t)(ml8 & 0xff)) << 8 ) \
-                              |  ((uint32_t)(lo8 & 0xff))        )
+                            (   (((uint32_t)((hi8) & 0xff)) << 24) \
+                              | (((uint32_t)((mh8) & 0xff)) << 16) \
+                              | (((uint32_t)((ml8) & 0xff)) << 8 ) \
+                              |  ((uint32_t)((lo8) & 0xff))        )
 //@}
 
 /// @name General utility macros
