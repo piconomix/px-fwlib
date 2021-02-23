@@ -1,5 +1,4 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
-[![HitCount](http://hits.dwyl.com/pieterconradie/piconomix/piconomix-fwlib.svg)](http://hits.dwyl.com/pieterconradie/piconomix/piconomix-fwlib)
 
 ![](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/hero_board/hero_board_isometric_top_bot.jpg)
 
