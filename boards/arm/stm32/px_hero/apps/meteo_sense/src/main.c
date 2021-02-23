@@ -249,28 +249,24 @@ int main(void)
         // Update display?
         if(px_systmr_has_expired(&tmr))
         {
-            px_veml6075_data_t veml6075_data;
+            px_bme280_data_t data;            
             
             // Restart update timer
             px_systmr_reset(&tmr);
-            // Get new UVI value
-            obj_label_uvi_val_u16 = 0;
-            if(px_veml6075_meas(&veml6075_data))
+            // Get new BME280 value
+            if(px_bme280_read(&data))
             {
-                float obj_label_uvi_val_float = px_veml6075_uvi(&veml6075_data);
-                obj_label_uvi_val_u16 = (uint16_t)(obj_label_uvi_val_float * 100.0);
-                obj_label_uvi_val_u16 = PX_UDIV_ROUND(obj_label_uvi_val_u16, 10);
+                int32_t  temp  = px_bme280_temperature(&data);
+                uint32_t press = px_bme280_pressure(&data);
+                uint32_t hum   = px_bme280_humidity(&data);
+
+                // Update display
+                px_gfx_buf_clear();
+                px_gfx_printf(0,  0, "T: %lu deg C", temp / 100);
+                px_gfx_printf(0, 10, "P: %lu Pa", press);
+                px_gfx_printf(0, 20, "H: %lu %%", hum / 1024);
+                px_gfx_draw_update();
             }
-            main_gfx_update_uvi_val_str();
-            main_gfx_update_graph_data();
-            // Draw window
-            px_gfx_obj_draw(obj_window);
-            // Update display
-            px_gfx_draw_update();
-            // Flash LED
-            PX_USR_LED_ON();
-            px_board_delay_ms(50);
-            PX_USR_LED_OFF();
         }
         // Put core into SLEEP mode until an interrupt occurs
         __WFI();
