@@ -162,7 +162,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to RED
-        px_dbg_put_str(PX_VT100_SET_FOREGROUND_RED "E");
+        px_dbg_put_str(PX_VT100_SET_FG_RED "E");
 #else
         // Error
         px_dbg_put_char('E');
@@ -172,7 +172,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to YELLOW
-        px_dbg_put_str(PX_VT100_SET_FOREGROUND_YELLOW "W");
+        px_dbg_put_str(PX_VT100_SET_FG_YELLOW "W");
 #else
         // Warning
         px_dbg_put_char('W');
@@ -182,7 +182,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to GREEN
-        px_dbg_put_str(PX_VT100_SET_FOREGROUND_GREEN "I");
+        px_dbg_put_str(PX_VT100_SET_FG_GREEN "I");
 #else
         // Info
         px_dbg_put_char('I');
@@ -203,7 +203,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
 
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to reset all attributes
-        px_dbg_put_str(PX_VT100_RESET_ALL_ATTRS);
+        px_dbg_put_str(PX_VT100_RST_ALL_ATTRS);
 #endif
 
     // Output file and line
