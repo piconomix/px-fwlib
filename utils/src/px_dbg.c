@@ -103,7 +103,7 @@ static void px_dbg_trace_vargs_P(const char * format, va_list args)
     // Populate buffer with debug string
     vsnprintf_P(px_dbg_buf, PX_DBG_CFG_BUF_SIZE, format, args);
     // Append terminating zero in case of buffer overrun
-    px_dbg_buf[PX_DBG_CFG_BUF_SIZE-1] = '\0';
+    px_dbg_buf[PX_DBG_CFG_BUF_SIZE - 1] = '\0';
     // Remove tab character ('\t') at the end of user formatted string
     len = strlen(px_dbg_buf);
     if((len != 0) && (px_dbg_buf[len - 1] == '\t'))
@@ -132,7 +132,7 @@ static void px_dbg_trace_vargs(const char * format, va_list args)
     // Populate buffer with debug string
     vsnprintf(px_dbg_buf, PX_DBG_CFG_BUF_SIZE, format, args);
     // Append terminating zero in case of buffer overrun
-    px_dbg_buf[PX_DBG_CFG_BUF_SIZE-1] = '\0';
+    px_dbg_buf[PX_DBG_CFG_BUF_SIZE - 1] = '\0';
     // Remove tab character ('\t') at the end of user formatted string
     len = strlen(px_dbg_buf);
     if((len != 0) && (px_dbg_buf[len - 1] == '\t'))
@@ -187,6 +187,13 @@ static void px_dbg_report_log_prefix(uint8_t      level,
         // Info
         px_dbg_put_char('I');
 #endif
+#if PX_DBG_CFG_COLOR
+        // Send VT100 sequence to set font color to BLUE
+        px_dbg_put_str(PX_VT100_SET_FG_BLUE "V");
+#else
+        // Verbose
+        px_dbg_put_char('V');
+#endif
     }
     px_dbg_put_char(' ');
 
@@ -195,23 +202,23 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     // Get user supplied timestamp string
     PX_DBG_CFG_TIMESTAMP(px_dbg_buf);
     // Append terminating zero in case of buffer overrun
-    px_dbg_buf[PX_DBG_CFG_BUF_SIZE-1] = '\0';
+    px_dbg_buf[PX_DBG_CFG_BUF_SIZE - 1] = '\0';
     // Output timestamp
     px_dbg_put_str(px_dbg_buf);
     px_dbg_put_char(' ');
 #endif
 
 #if PX_DBG_CFG_COLOR
-        // Send VT100 sequence to reset all attributes
-        px_dbg_put_str(PX_VT100_RST_ALL_ATTRS);
+    // Send VT100 sequence to reset all attributes
+    px_dbg_put_str(PX_VT100_RST_ALL_ATTRS);
 #endif
 
     // Output file and line
 #ifdef PX_COMPILER_GCC_AVR
     px_dbg_put_str_P(name);
-    px_dbg_printf_P(PX_PGM_STR(" %u : "), line);
+    px_dbg_printf_P(PX_PGM_STR(" %04u : "), line);
 #else
-    px_dbg_printf("%s %u : ", name, line);
+    px_dbg_printf("%s %04u : ", name, line);
 #endif
 }
 
@@ -235,22 +242,22 @@ static void _px_dbg_log_terminate(const char * format)
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void _px_dbg_log_info(const char * name, uint16_t line, const char * format, ...)
+void _px_dbg_log_err(const char * name, uint16_t line, const char * format, ...)
 {
     va_list args;
 
     // Output log prefix (level, timestamp, name and line)
-    px_dbg_report_log_prefix(PX_DBG_CFG_MSG_LEVEL_INFO, name, line);
+    px_dbg_report_log_prefix(PX_DBG_CFG_MSG_LEVEL_ERR, name, line);
 
     // Output user formatted string
     va_start(args, format);
 #ifdef PX_COMPILER_GCC_AVR
-    px_dbg_trace_vargs_P(format, args); 
+    px_dbg_trace_vargs_P(format, args);
 #else
-    px_dbg_trace_vargs(format, args); 
+    px_dbg_trace_vargs(format, args);
 #endif
     va_end(args);
-    
+
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
     _px_dbg_log_terminate(format);
 }
@@ -265,32 +272,52 @@ void _px_dbg_log_warn(const char * name, uint16_t line, const char * format, ...
     // Output user formatted string
     va_start(args, format);
 #ifdef PX_COMPILER_GCC_AVR
-    px_dbg_trace_vargs_P(format, args); 
+    px_dbg_trace_vargs_P(format, args);
 #else
-    px_dbg_trace_vargs(format, args); 
+    px_dbg_trace_vargs(format, args);
 #endif
     va_end(args);
-    
+
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
     _px_dbg_log_terminate(format);
 }
 
-void _px_dbg_log_err(const char * name, uint16_t line, const char * format, ...)
+void _px_dbg_log_info(const char * name, uint16_t line, const char * format, ...)
 {
     va_list args;
 
     // Output log prefix (level, timestamp, name and line)
-    px_dbg_report_log_prefix(PX_DBG_CFG_MSG_LEVEL_ERR, name, line);
+    px_dbg_report_log_prefix(PX_DBG_CFG_MSG_LEVEL_INFO, name, line);
 
     // Output user formatted string
     va_start(args, format);
 #ifdef PX_COMPILER_GCC_AVR
-    px_dbg_trace_vargs_P(format, args); 
+    px_dbg_trace_vargs_P(format, args);
 #else
-    px_dbg_trace_vargs(format, args); 
+    px_dbg_trace_vargs(format, args);
 #endif
     va_end(args);
-    
+
+    // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
+    _px_dbg_log_terminate(format);
+}
+
+void _px_dbg_log_verb(const char * name, uint16_t line, const char * format, ...)
+{
+    va_list args;
+
+    // Output log prefix (level, timestamp, name and line)
+    px_dbg_report_log_prefix(PX_DBG_CFG_MSG_LEVEL_VERB, name, line);
+
+    // Output user formatted string
+    va_start(args, format);
+#ifdef PX_COMPILER_GCC_AVR
+    px_dbg_trace_vargs_P(format, args);
+#else
+    px_dbg_trace_vargs(format, args);
+#endif
+    va_end(args);
+
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
     _px_dbg_log_terminate(format);
 }
@@ -307,12 +334,6 @@ void _px_dbg_assert(const char * name,
 #else
     px_dbg_printf("ASSERT: ");
     px_dbg_printf(expression);
-#endif
-
-     
-#if 0
-    // Generate debug breakpoint
-    __asm__ __volatile__("bkpt #0\n\t"::);
 #endif
 
     // Block forever
@@ -341,7 +362,7 @@ void _px_dbg_trace_data(const void * data, size_t nr_of_bytes)
     size_t          i;
     const uint8_t * data_u8 = (const uint8_t *)data;
 
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         px_dbg_put_hex08(*data_u8++);
         px_dbg_put_char(' ');
@@ -354,10 +375,10 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes)
     const uint8_t * row_data;
 
     // Split data up into rows
-    for(i=0; i<nr_of_bytes; i+= PX_DBG_TRACE_DATA_BYTES_PER_ROW)
+    for(i = 0; i < nr_of_bytes; i+= PX_DBG_TRACE_DATA_BYTES_PER_ROW)
     {
         // Insert extra empty row?
-        if(  (i != 0) && ((i%(PX_DBG_TRACE_DATA_BYTES_PER_ROW*4)) == 0)  )
+        if(  (i != 0) && ((i % (PX_DBG_TRACE_DATA_BYTES_PER_ROW * 4)) == 0)  )
         {
             // Yes
             px_dbg_put_char('\n');
@@ -370,13 +391,13 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes)
         for(j=0; j<PX_DBG_TRACE_DATA_BYTES_PER_ROW; j++)
         {
             // Insert extra space?
-            if(  (j != 0) && ((j%4) == 0)  )
+            if((j != 0) && ((j % 4) == 0))
             {
                 // Yes
                 px_dbg_put_char(' ');
             }
             // End of data?
-            if((i+j) < nr_of_bytes)
+            if((i + j) < nr_of_bytes)
             {
                 // No
                 px_dbg_put_hex08(row_data[j]);
@@ -390,14 +411,14 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes)
 #else
                 px_dbg_put_str("   ");
 #endif
-            }            
+            }
         }
 
         // Display ASCII data
-        for(j=0; j<PX_DBG_TRACE_DATA_BYTES_PER_ROW; j++)
+        for(j = 0; j < PX_DBG_TRACE_DATA_BYTES_PER_ROW; j++)
         {
             // End of data?
-            if((i+j) < nr_of_bytes)
+            if((i + j) < nr_of_bytes)
             {
                 // No. Displayable?
                 if( (row_data[j] >= 32) && (row_data[j] <= 127) )
