@@ -2,13 +2,13 @@
 <Project
 	Version="10.0"
 	VendorName="SlickEdit"
-	WorkingDir=".."
+	WorkingDir="."
 	VCSProject="Git:">
 	<Config
 		Name="Debug"
 		Type="cpp"
 		DebugCallbackName="gdb"
-		OutputFile="%bdpx-lib"
+		OutputFile=""
 		CompilerConfigName="None">
 		<Menu>
 			<Target
@@ -68,58 +68,17 @@
 		Name="Release"
 		Type="cpp"
 		DebugCallbackName="gdb"
-		OutputFile="%bdpx-lib"
-		CompilerConfigName="AVR-GCC-ATMEL">
+		OutputFile=""
+		CompilerConfigName="None">
 		<Menu>
-			<Target
-				Name="Compile"
-				MenuCaption="&amp;Compile"
-				CaptureOutputWith="ProcessBuffer"
-				SaveOption="SaveCurrent"
-				OutputExts="*.o"
-				RunFromDir="%rw"
-				ClearProcessBuffer="1">
-				<Exec CmdLine='cc -c -O %i %defd -o "%bd%n.o" "%f"'/>
-			</Target>
-			<Target
-				Name="Link"
-				MenuCaption="&amp;Link">
-				<Exec CmdLine='cc -O -o "%o" %f %libs'/>
-			</Target>
 			<Target
 				Name="Build"
 				MenuCaption="&amp;Build"
 				CaptureOutputWith="ProcessBuffer"
 				SaveOption="SaveWorkspaceFiles"
-				RunFromDir="%rw"
-				ClearProcessBuffer="1">
+				ClearProcessBuffer="1"
+				RunFromDir="%wp/doc">
 				<Exec CmdLine="make"/>
-			</Target>
-			<Target
-				Name="Rebuild"
-				MenuCaption="&amp;Rebuild"
-				CaptureOutputWith="ProcessBuffer"
-				SaveOption="SaveWorkspaceFiles"
-				RunFromDir="%rw">
-				<Exec CmdLine='"%(VSLICKBIN1)vsbuild" rebuild "%w" "%r"'/>
-			</Target>
-			<Target
-				Name="Debug"
-				MenuCaption="&amp;Debug"
-				SaveOption="SaveNone"
-				BuildFirst="1"
-				CaptureOutputWith="ProcessBuffer"
-				RunFromDir="%rw">
-				<Exec CmdLine='vsdebugio -prog "%o"'/>
-			</Target>
-			<Target
-				Name="Execute"
-				MenuCaption="E&amp;xecute"
-				SaveOption="SaveNone"
-				BuildFirst="1"
-				CaptureOutputWith="ProcessBuffer"
-				RunFromDir="%rw">
-				<Exec CmdLine='"%o"'/>
 			</Target>
 		</Menu>
 		<Includes></Includes>
@@ -150,7 +109,7 @@
 			Filters=""></Folder>
 	</CustomFolders>
 	<Macro>
-		<ExecMacro CmdLine="concur_command path=c:\UnixShellUtils\usr\bin;C:\Program Files\Git\bin;c:\Program Files\TortoiseSVN\bin;c:\Python\3.6;c:\Program Files\doxygen\bin;c:\Program Files (x86)\gnu_arm\bin;c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Program Files (x86)\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"/>
+		<ExecMacro CmdLine="concur_command PATH=c:\UnixShellUtils\usr\bin;C:\Program Files\Git\bin;c:\Program Files\TortoiseSVN\bin;c:\Python\3.6;c:\Program Files\doxygen\bin;c:\Program Files (x86)\gnu_arm\bin;c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;c:\Program Files (x86)\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"/>
 	</Macro>
 	<List Name="RTE">
 	</List>
