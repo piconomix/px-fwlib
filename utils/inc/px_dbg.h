@@ -26,6 +26,7 @@
  *  File(s):
  *  - utils/inc/px_dbg.h
  *  - utils/inc/px_dbg_cfg_template.h
+ *  - utils/inc/px_dbg_color.h
  *  - utils/src/px_dbg.c
  *  
  *  An old school debugging technique which still works well is to add debug 
@@ -44,7 +45,7 @@
  *  Set #PX_DBG_CFG_COLOR to 1 to mark debug message level with color on 
  *  an ANSI/VT100 terminal emulator for example 
  *  [Tera Term](http://en.sourceforge.jp/projects/ttssh2).
- *  
+ *
  *  The following macros can be used:
  *  - PX_DBG_ERR() to report an error message (RED)
  *  - PX_DBG_WARN() to report a warning message (YELLOW)
@@ -155,6 +156,9 @@
       || !defined(PX_DBG_CFG_COLOR    )  )
 #error "One or more options not defined in 'px_dbg_cfg.h'"
 #endif
+
+// Include debug color definitions *AFTER* PX_DBG_CFG_COLOR has been defined
+#include "px_dbg_color.h"
 
 #ifdef __cplusplus
 extern "C" {

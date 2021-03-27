@@ -23,9 +23,6 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_dbg.h"
-#if PX_DBG_CFG_COLOR
-#include "px_vt100.h"
-#endif
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// Number of bytes per row for hex dump
@@ -162,7 +159,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to RED
-        px_dbg_put_str(PX_VT100_SET_FG_RED "E");
+        px_dbg_put_str(PX_DBG_CF_RED "E");
 #else
         // Error
         px_dbg_put_char('E');
@@ -172,7 +169,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to YELLOW
-        px_dbg_put_str(PX_VT100_SET_FG_YELLOW "W");
+        px_dbg_put_str(PX_DBG_CF_YELLOW "W");
 #else
         // Warning
         px_dbg_put_char('W');
@@ -182,14 +179,14 @@ static void px_dbg_report_log_prefix(uint8_t      level,
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to GREEN
-        px_dbg_put_str(PX_VT100_SET_FG_GREEN "I");
+        px_dbg_put_str(PX_DBG_CF_GREEN "I");
 #else
         // Info
         px_dbg_put_char('I');
 #endif
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to BLUE
-        px_dbg_put_str(PX_VT100_SET_FG_BLUE "V");
+        px_dbg_put_str(PX_DBG_CF_BLUE "V");
 #else
         // Verbose
         px_dbg_put_char('V');
@@ -210,7 +207,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
 
 #if PX_DBG_CFG_COLOR
     // Send VT100 sequence to reset all attributes
-    px_dbg_put_str(PX_VT100_RST_ALL_ATTRS);
+    px_dbg_put_str(PX_DBG_CR);
 #endif
 
     // Output file and line
