@@ -169,13 +169,13 @@ extern "C" {
 /// None
 #define PX_DBG_CFG_MSG_LEVEL_NONE   0
 /// Errors
-#define PX_DBG_CFG_MSG_LEVEL_ERR    (1<<0)
+#define PX_DBG_CFG_MSG_LEVEL_ERR    (1 << 0)
 /// Warnings
-#define PX_DBG_CFG_MSG_LEVEL_WARN   (1<<1)
+#define PX_DBG_CFG_MSG_LEVEL_WARN   (1 << 1)
 /// Info
-#define PX_DBG_CFG_MSG_LEVEL_INFO   (1<<2)
+#define PX_DBG_CFG_MSG_LEVEL_INFO   (1 << 2)
 /// Verbose
-#define PX_DBG_CFG_MSG_LEVEL_VERB   (1<<3)
+#define PX_DBG_CFG_MSG_LEVEL_VERB   (1 << 3)
 
 /// All (does not include VERBOSE)
 #define PX_DBG_CFG_MSG_LEVEL_ALL    (PX_DBG_CFG_MSG_LEVEL_ERR | PX_DBG_CFG_MSG_LEVEL_WARN | PX_DBG_CFG_MSG_LEVEL_INFO)

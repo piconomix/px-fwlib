@@ -175,7 +175,7 @@ static void px_dbg_report_log_prefix(uint8_t      level,
         px_dbg_put_char('W');
 #endif
     }
-    else
+    else if(level == PX_DBG_CFG_MSG_LEVEL_INFO)
     {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to GREEN
@@ -184,6 +184,9 @@ static void px_dbg_report_log_prefix(uint8_t      level,
         // Info
         px_dbg_put_char('I');
 #endif
+    }
+    else if(level == PX_DBG_CFG_MSG_LEVEL_VERB)
+    {
 #if PX_DBG_CFG_COLOR
         // Send VT100 sequence to set font color to BLUE
         px_dbg_put_str(PX_DBG_CF_BLUE "V");
