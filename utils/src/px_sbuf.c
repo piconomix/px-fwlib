@@ -51,6 +51,30 @@ void px_sbuf_reset(px_sbuf_t * sbuf)
     sbuf->buf[0]   = '\0';
 }
 
+bool px_sbuf_is_empty(const px_sbuf_t * sbuf)
+{
+    if(sbuf->index == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool px_sbuf_is_full(const px_sbuf_t * sbuf)
+{
+    if(sbuf->index >= (sbuf->buf_size - 1))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
 {
     va_list args;
@@ -86,8 +110,6 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
 
 void px_sbuf_putchar(px_sbuf_t * sbuf, char c)
 {
-    size_t  rem_buf_size;
-
     // Buffer full?
     if(sbuf->index >= (sbuf->buf_size - 1))
     {
@@ -127,7 +149,6 @@ void px_sbuf_strcpy(px_sbuf_t * sbuf, const char * str)
         // End of buffer?
         if(sbuf->index == (sbuf->buf_size - 1))
         {
-            PX_DBG_WARN("Buf overflow");
             break;
         }
     }
