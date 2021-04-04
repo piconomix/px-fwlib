@@ -75,6 +75,60 @@ bool px_sbuf_is_full(const px_sbuf_t * sbuf)
     }
 }
 
+void px_sbuf_putchar(px_sbuf_t * sbuf, char c)
+{
+    // Buffer full?
+    if(sbuf->index >= (sbuf->buf_size - 1))
+    {
+        return;
+    }
+    // Append char
+    sbuf->buf[sbuf->index] = c;
+    // Adjust to new position
+    sbuf->index++;
+    // Zero terminate
+    sbuf->buf[sbuf->index] = '\0';
+}
+
+void px_sbuf_print(px_sbuf_t * sbuf, const char * str)
+{
+    char c;
+
+    // Buffer full?
+    if(sbuf->index >= (sbuf->buf_size - 1))
+    {
+        return;
+    }
+    // Append string
+    while(true)
+    {
+        // Read char
+        c = *str++;
+        // End of string?
+        if(c == '\0')
+        {
+            break;
+        }
+        // Write char
+        sbuf->buf[sbuf->index] = c;
+        // Next index
+        sbuf->index++;
+        // End of buffer?
+        if(sbuf->index == (sbuf->buf_size - 1))
+        {
+            break;
+        }
+    }
+    // Zero terminate
+    sbuf->buf[sbuf->index] = '\0';
+}
+
+void px_sbuf_println(px_sbuf_t * sbuf, const char * str)
+{
+    px_sbuf_print(sbuf, str);
+    px_sbuf_putchar(sbuf, '\n');
+}
+
 void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
 {
     va_list args;
@@ -106,53 +160,5 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
     }
     // Adjust to new position
     sbuf->index += i;
-}
-
-void px_sbuf_putchar(px_sbuf_t * sbuf, char c)
-{
-    // Buffer full?
-    if(sbuf->index >= (sbuf->buf_size - 1))
-    {
-        return;
-    }
-    // Append char
-    sbuf->buf[sbuf->index] = c;
-    // Adjust to new position
-    sbuf->index++;
-    // Zero terminate
-    sbuf->buf[sbuf->index] = '\0';
-}
-
-void px_sbuf_strcpy(px_sbuf_t * sbuf, const char * str)
-{
-    char c;
-
-    // Buffer full?
-    if(sbuf->index >= (sbuf->buf_size - 1))
-    {
-        return;
-    }
-    // Append string
-    while(true)
-    {
-        // Read char
-        c = *str++;
-        // End of string?
-        if(c == '\0')
-        {
-            break;
-        }
-        // Write char
-        sbuf->buf[sbuf->index] = c;
-        // Next index
-        sbuf->index++;
-        // End of buffer?
-        if(sbuf->index == (sbuf->buf_size - 1))
-        {
-            break;
-        }
-    }
-    // Zero terminate
-    sbuf->buf[sbuf->index] = '\0';
 }
 

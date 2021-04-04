@@ -12,9 +12,9 @@ int main(void)
     memset(buf, 0xcc, sizeof(buf));
     // Initialise safe buffer
     px_sbuf_init(&sbuf, buf, 8);
-    // Append strings
-    px_sbuf_printf(&sbuf, "01234");
-    px_sbuf_printf(&sbuf, "56789");
+    // Append formatted strings
+    px_sbuf_printf(&sbuf, "%u", 1234);
+    px_sbuf_printf(&sbuf, "%u", 56789);
     // Report result
     printf("%s\n", sbuf.buf);
 
@@ -22,10 +22,10 @@ int main(void)
     memset(buf, 0xcc, sizeof(buf));
     // Reset safe buffer
     px_sbuf_reset(&sbuf);
-    // Append cahracters
+    // Append characters
     for(int i = 0; i < 16; i++)
     {
-        px_sbuf_putchar(&sbuf, i + '0');
+        px_sbuf_putchar(&sbuf, '0' + i);
     }
     // Report result
     printf("%s\n", sbuf.buf);
@@ -35,8 +35,8 @@ int main(void)
     // Reset safe buffer
     px_sbuf_reset(&sbuf);
     // Append strings
-    px_sbuf_strcpy(&sbuf, "01234");
-    px_sbuf_strcpy(&sbuf, "56789");
+    px_sbuf_print(&sbuf, "01234");
+    px_sbuf_print(&sbuf, "56789");
     // Report result
     printf("%s\n", sbuf.buf);
 

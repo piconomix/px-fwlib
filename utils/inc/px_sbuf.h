@@ -95,15 +95,7 @@ bool px_sbuf_is_empty(const px_sbuf_t * sbuf);
 bool px_sbuf_is_full(const px_sbuf_t * sbuf);
 
 /**
- *  Append printf string to safe buffer
- *
- *  @param sbuf     Pointer to safe buffer object
- *  @param format   Printf format string
- */
-void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...);
-
-/**
- *  Append character to safe buffer
+ *  Append a character to safe buffer
  *
  *  @param sbuf     Pointer to safe buffer object
  *  @param c        Character to append
@@ -111,12 +103,32 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...);
 void px_sbuf_putchar(px_sbuf_t * sbuf, char c);
 
 /**
- *  Append string to safe buffer
+ *  Append a string to safe buffer
  *
  *  @param sbuf     Pointer to safe buffer object
  *  @param str      String to append
  */
-void px_sbuf_strcpy(px_sbuf_t * sbuf, const char * str);
+void px_sbuf_print(px_sbuf_t * sbuf, const char * str);
+
+/**
+ *  Append a string and newline character to safe buffer
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *  @param str      String to append
+ */
+void px_sbuf_println(px_sbuf_t * sbuf, const char * str);
+
+/**
+ *  Append a formatted string to safe buffer
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *  @param format   Printf format string
+ */
+void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...);
+
+
+
+
 
 /* _____MACROS_______________________________________________________________ */
 
