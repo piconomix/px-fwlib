@@ -25,8 +25,14 @@
 #include "px_xmodem_glue.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
-#define PX_XMODEM_CFG_MAX_RETRIES       4
-#define PX_XMODEM_CFG_MAX_RETRIES_START 4
+/// Retry timeout in milliseconds
+#define PX_XMODEM_CFG_TIMEOUT_MS            1000
+
+/// Maximum number of retries to start a transfer
+#define PX_XMODEM_CFG_MAX_RETRIES_START     1
+
+/// Maximum nymber of retries during a transfer
+#define PX_XMODEM_CFG_MAX_RETRIES           4
 
 /**
  *  See if a received byte is available and store it in the specified location.

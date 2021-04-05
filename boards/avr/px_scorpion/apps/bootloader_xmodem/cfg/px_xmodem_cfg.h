@@ -22,12 +22,17 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_uart.h"
-#include "px_tmr.h"
+#include "px_xmodem_glue.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
-#define PX_XMODEM_CFG_MAX_RETRIES       4
-#define PX_XMODEM_CFG_MAX_RETRIES_START 1
+/// Retry timeout in milliseconds
+#define PX_XMODEM_CFG_TIMEOUT_MS            1000
+
+/// Maximum number of retries to start a transfer
+#define PX_XMODEM_CFG_MAX_RETRIES_START     1
+
+/// Maximum nymber of retries during a transfer
+#define PX_XMODEM_CFG_MAX_RETRIES           4
 
 /**
  *  See if a received byte is available and store it in the specified location.
@@ -37,7 +42,7 @@
  *  @retval true        Received byte is stored in specified location
  *  @retval false       No received data available (receive buffer empty)
  */
-#define PX_XMODEM_CFG_RD_U8(data)        px_uart_rd_u8(data)
+#define PX_XMODEM_CFG_RD_U8(data)          px_xmodem_rd_u8(data)
 
 /**
  *  Write one byte.
@@ -46,7 +51,7 @@
  *  
  *  @param[in] data   Byte to be written
  */
-#define PX_XMODEM_CFG_WR_U8(data)       px_uart_put_char((char)data)
+#define PX_XMODEM_CFG_WR_U8(data)          px_xmodem_wr_u8(data)
 
 /**
  *  Start timeout timer.
@@ -55,7 +60,8 @@
  *  
  *  @param[in] time_ms   Time in milliseconds to wait before timer has expired
  */
-#define PX_XMODEM_CFG_TMR_START(ms)        px_tmr_start(TMR_MS_TO_TICKS(ms))
+#define PX_XMODEM_CFG_TMR_START(time_ms)   px_xmodem_tmr_start(time_ms)
+
 
 /**
  *  See if timer has expired.
@@ -63,6 +69,8 @@
  *  @retval true    Timer has expired
  *  @retval true    Timer has not expired
  */
-#define PX_XMODEM_CFG_TMR_HAS_EXPIRED()    px_tmr_has_expired()
+#define PX_XMODEM_CFG_TMR_HAS_EXPIRED()    px_xmodem_tmr_has_expired()
 
+
+/// @}
 #endif // #ifndef __PX_XMODEM_CFG_H__
