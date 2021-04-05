@@ -7,7 +7,7 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2021 Pieter Conradie <https://piconomix.com>
  
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
@@ -55,4 +55,4 @@ extern "C" {
 }
 #endif
 
-#endif // #ifndef __PX_TEMPLATE_H__
+#endif
