@@ -103,20 +103,20 @@ bool px_sbuf_is_full(const px_sbuf_t * sbuf);
 void px_sbuf_putchar(px_sbuf_t * sbuf, char c);
 
 /**
+ *  Append a string and newline character to safe buffer
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *  @param str      String to append
+ */
+void px_sbuf_puts(px_sbuf_t * sbuf, const char * str);
+
+/**
  *  Append a string to safe buffer
  *
  *  @param sbuf     Pointer to safe buffer object
  *  @param str      String to append
  */
 void px_sbuf_print(px_sbuf_t * sbuf, const char * str);
-
-/**
- *  Append a string and newline character to safe buffer
- *
- *  @param sbuf     Pointer to safe buffer object
- *  @param str      String to append
- */
-void px_sbuf_println(px_sbuf_t * sbuf, const char * str);
 
 /**
  *  Append a formatted string to safe buffer

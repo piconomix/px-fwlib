@@ -90,6 +90,12 @@ void px_sbuf_putchar(px_sbuf_t * sbuf, char c)
     sbuf->buf[sbuf->index] = '\0';
 }
 
+void px_sbuf_puts(px_sbuf_t * sbuf, const char * str)
+{
+    px_sbuf_print(sbuf, str);
+    px_sbuf_putchar(sbuf, '\n');
+}
+
 void px_sbuf_print(px_sbuf_t * sbuf, const char * str)
 {
     char c;
@@ -121,12 +127,6 @@ void px_sbuf_print(px_sbuf_t * sbuf, const char * str)
     }
     // Zero terminate
     sbuf->buf[sbuf->index] = '\0';
-}
-
-void px_sbuf_println(px_sbuf_t * sbuf, const char * str)
-{
-    px_sbuf_print(sbuf, str);
-    px_sbuf_putchar(sbuf, '\n');
 }
 
 void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
