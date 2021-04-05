@@ -691,7 +691,7 @@ static void px_cli_cmd_exe(void)
 
 #if PX_CLI_CFG_COLOR
     // Set font color to green
-    printf(PX_VT100_SET_FOREGROUND_GREEN);
+    printf(PX_VT100_SET_FG_GREEN);
 #endif
 
     // Execute command with parameters
@@ -741,7 +741,7 @@ void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char* startu
 
 #if PX_CLI_CFG_COLOR
     // Set font color to green
-    printf(PX_VT100_SET_FOREGROUND_GREEN);
+    printf(PX_VT100_SET_FG_GREEN);
 #endif
 
     // Display start up help advice
@@ -760,7 +760,7 @@ void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char* startu
 
 #if PX_CLI_CFG_COLOR
     // Restore font color
-    printf(PX_VT100_RESET_ALL_ATTRS);
+    printf(PX_VT100_RST_ALL_ATTRS);
 #endif
 
     // Display prompt
@@ -791,7 +791,7 @@ void px_cli_on_rx_char(char data)
             px_cli_autocomplete_reset();
 #if PX_CLI_CFG_COLOR
             // Restore font color
-            printf(PX_VT100_RESET_ALL_ATTRS);
+            printf(PX_VT100_RST_ALL_ATTRS);
 #endif
             // Display prompt
             putchar('>');

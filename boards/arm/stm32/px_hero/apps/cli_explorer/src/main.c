@@ -168,12 +168,12 @@ static void main_report_button(uint8_t button)
     putchar('\n');
 #if PX_CLI_CFG_COLOR
     // Set font color to green
-    printf(PX_VT100_SET_FOREGROUND_GREEN);
+    printf(PX_VT100_SET_FG_GREEN);
 #endif
     printf("PB%u\n", button);
 #if PX_CLI_CFG_COLOR
     // Restore font color
-    printf(PX_VT100_RESET_ALL_ATTRS);
+    printf(PX_VT100_RST_ALL_ATTRS);
 #endif
     putchar('>');
 }

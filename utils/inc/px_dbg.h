@@ -26,6 +26,7 @@
  *  File(s):
  *  - utils/inc/px_dbg.h
  *  - utils/inc/px_dbg_cfg_template.h
+ *  - utils/inc/px_dbg_color.h
  *  - utils/src/px_dbg.c
  *  
  *  An old school debugging technique which still works well is to add debug 
@@ -44,19 +45,20 @@
  *  Set #PX_DBG_CFG_COLOR to 1 to mark debug message level with color on 
  *  an ANSI/VT100 terminal emulator for example 
  *  [Tera Term](http://en.sourceforge.jp/projects/ttssh2).
- *  
+ *
  *  The following macros can be used:
- *  - PX_DBG_INFO() to report an informative message (GREEN)
- *  - PX_DBG_WARN() to report a warning message (YELLOW)
  *  - PX_DBG_ERR() to report an error message (RED)
- *  - PX_DBG_ASSERT() to test an expression and halt if it is false, for example 
+ *  - PX_DBG_WARN() to report a warning message (YELLOW)
+ *  - PX_DBG_INFO() to report an info message (GREEN)
+ *  - PX_DBG_VERB() to report an verbose message (BLUE)
+ *  - PX_DBG_ASSERT() to test an expression and halt if it is false, for example
  *    to make sure that a pointer is not NULL before using it.
  *  - PX_DBG_TRACE() to output debug information
  *  
  *  #PX_DBG_CFG_MSG_LEVEL is a bitmask that is used to select which debug 
  *  messages are compiled into the source code: PX_DBG_ERR(), PX_DBG_WARN(), 
- *  PX_DBG_INFO(), or other combinations including NONE or ALL. It does not 
- *  affect PX_DBG_TRACE() or PX_DBG_ASSERT() macros.
+ *  PX_DBG_INFO(), PX_DBG_VERB() or other combinations including NONE or ALL.
+ *  It does not affect PX_DBG_TRACE() or PX_DBG_ASSERT() macros.
  *  
  *  The debug macros will report the file name / module name and line number as
  *  well as the user format string. To save code space, the file name / module 
@@ -90,15 +92,15 @@
  *      #ifdef PX_DBG_CFG_MSG_LEVEL
  *      #undef PX_DBG_CFG_MSG_LEVEL
  *      #endif
- *      // Set output level to ALL (INFO, WARN and ERROR messages)
+ *      // Set output level to ALL (ERROR, WARN and INFO messages)
  *      #define PX_DBG_CFG_MSG_LEVEL PX_DBG_CFG_MSG_LEVEL_ALL
  *      #include "px_dbg.h"
  *      PX_DBG_DECL_NAME("buggy_module");
  *      @endcode
  *  
  *  The #PX_DBG_CFG_MSG_LEVEL can easily be tested with the the 
- *  #PX_DBG_LEVEL_ERR, #PX_DBG_LEVEL_WARN or #PX_DBG_LEVEL_INFO macro to add 
- *  code conditionally, for example:
+ *  #PX_DBG_LEVEL_ERR, #PX_DBG_LEVEL_WARN, #PX_DBG_LEVEL_INFO or
+ *  #PX_DBG_LEVEL_VERB macro to add code conditionally, for example:
  *  
  *      @code{.c}
  *      void tx_data(void * data, size_t nr_of_bytes)
@@ -155,6 +157,9 @@
 #error "One or more options not defined in 'px_dbg_cfg.h'"
 #endif
 
+// Include debug color definitions *AFTER* PX_DBG_CFG_COLOR has been defined
+#include "px_dbg_color.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -163,14 +168,17 @@ extern "C" {
 //@{
 /// None
 #define PX_DBG_CFG_MSG_LEVEL_NONE   0
-/// Info
-#define PX_DBG_CFG_MSG_LEVEL_INFO   (1<<0)
-/// Warnings
-#define PX_DBG_CFG_MSG_LEVEL_WARN   (1<<1)
 /// Errors
-#define PX_DBG_CFG_MSG_LEVEL_ERR    (1<<2)
-/// All
-#define PX_DBG_CFG_MSG_LEVEL_ALL    (PX_DBG_CFG_MSG_LEVEL_INFO | PX_DBG_CFG_MSG_LEVEL_WARN | PX_DBG_CFG_MSG_LEVEL_ERR)
+#define PX_DBG_CFG_MSG_LEVEL_ERR    (1 << 0)
+/// Warnings
+#define PX_DBG_CFG_MSG_LEVEL_WARN   (1 << 1)
+/// Info
+#define PX_DBG_CFG_MSG_LEVEL_INFO   (1 << 2)
+/// Verbose
+#define PX_DBG_CFG_MSG_LEVEL_VERB   (1 << 3)
+
+/// All (does not include VERBOSE)
+#define PX_DBG_CFG_MSG_LEVEL_ALL    (PX_DBG_CFG_MSG_LEVEL_ERR | PX_DBG_CFG_MSG_LEVEL_WARN | PX_DBG_CFG_MSG_LEVEL_INFO)
 //@}
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
@@ -179,56 +187,74 @@ extern "C" {
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
- *  Output info debug information: module name, line and variable argument 
+ *  Output error debug information: module name, line and variable argument
  *  user format string.
- *  
- *  The line is automatically appended with a new line character ('\\n'), except 
- *  if the format string ends with a tab character ('\\t'). The tab character at 
+ *
+ *  The line is automatically appended with a new line character ('\\n'), except
+ *  if the format string ends with a tab character ('\\t'). The tab character at
  *  the end of the string is discarded.
- *   
- *  
+ *
  *  @param name     Module / file name
- *  @param line     Line number 
- *  @param format   User format string 
- *  @param ...      Variable number of arguments 
+ *  @param line     Line number
+ *  @param format   User format string
+ *  @param ...      Variable number of arguments
  */
-void _px_dbg_log_info(const char * name, 
-                      uint16_t     line, 
-                      const char * format, ...);
-
-/**
- *  Output warning debug information: module name, line and variable argument 
- *  user format string.
- *  
- *  The line is automatically appended with a new line character ('\\n'), except 
- *  if the format string ends with a tab character ('\\t'). The tab character at 
- *  the end of the string is discarded.
- *  
- *  @param name     Module / file name
- *  @param line     Line number 
- *  @param format   User format string 
- *  @param ...      Variable number of arguments 
- */
-void _px_dbg_log_warn(const char * name, 
-                      uint16_t     line, 
-                      const char * format, ...);
-
-/**
- *  Output error debug information: module name, line and variable argument 
- *  user format string.
- *  
- *  The line is automatically appended with a new line character ('\\n'), except 
- *  if the format string ends with a tab character ('\\t'). The tab character at 
- *  the end of the string is discarded.
- *  
- *  @param name     Module / file name
- *  @param line     Line number 
- *  @param format   User format string 
- *  @param ...      Variable number of arguments 
- */
-void _px_dbg_log_err(const char * name, 
-                     uint16_t     line, 
+void _px_dbg_log_err(const char * name,
+                     uint16_t     line,
                      const char * format, ...);
+
+/**
+ *  Output warning debug information: module name, line and variable argument
+ *  user format string.
+ *
+ *  The line is automatically appended with a new line character ('\\n'), except
+ *  if the format string ends with a tab character ('\\t'). The tab character at
+ *  the end of the string is discarded.
+ *
+ *  @param name     Module / file name
+ *  @param line     Line number
+ *  @param format   User format string
+ *  @param ...      Variable number of arguments
+ */
+void _px_dbg_log_warn(const char * name,
+                      uint16_t     line,
+                      const char * format, ...);
+
+/**
+ *  Output info debug information: module name, line and variable argument
+ *  user format string.
+ *
+ *  The line is automatically appended with a new line character ('\\n'), except
+ *  if the format string ends with a tab character ('\\t'). The tab character at
+ *  the end of the string is discarded.
+ *
+ *
+ *  @param name     Module / file name
+ *  @param line     Line number
+ *  @param format   User format string
+ *  @param ...      Variable number of arguments
+ */
+void _px_dbg_log_info(const char * name,
+                      uint16_t     line,
+                      const char * format, ...);
+
+/**
+ *  Output info debug information: module name, line and variable argument
+ *  user format string.
+ *
+ *  The line is automatically appended with a new line character ('\\n'), except
+ *  if the format string ends with a tab character ('\\t'). The tab character at
+ *  the end of the string is discarded.
+ *
+ *
+ *  @param name     Module / file name
+ *  @param line     Line number
+ *  @param format   User format string
+ *  @param ...      Variable number of arguments
+ */
+void _px_dbg_log_verb(const char * name,
+                      uint16_t     line,
+                      const char * format, ...);
 
 /**
  *  Report that an assertion has failed and block indefinitely.
@@ -272,21 +298,23 @@ void _px_dbg_trace_data(const void * data, size_t nr_of_bytes);
 void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
-/// Debug message level INFO enabled?
-#define PX_DBG_LEVEL_INFO (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_INFO))
-/// Debug message level WARN enabled?
-#define PX_DBG_LEVEL_WARN (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_WARN))
 /// Debug message level ERROR enabled?
 #define PX_DBG_LEVEL_ERR  (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_ERR))
+/// Debug message level WARN enabled?
+#define PX_DBG_LEVEL_WARN (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_WARN))
+/// Debug message level INFO enabled?
+#define PX_DBG_LEVEL_INFO (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_INFO))
+/// Debug message level VERBOSE enabled?
+#define PX_DBG_LEVEL_VERB (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_VERB))
 
 // PX_DBG enabled?
 #if PX_DBG
 
-#if PX_DBG_LEVEL_INFO
-/// Macro to display a formatted INFO message
-#define PX_DBG_INFO(format, ...)   _px_dbg_log_info(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#if PX_DBG_LEVEL_ERR
+/// Macro to display a formatted ERROR message
+#define PX_DBG_ERR(format, ...)    _px_dbg_log_err(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
-#define PX_DBG_INFO(format, ...)   ((void)0)
+#define PX_DBG_ERR(format, ...)    ((void)0)
 #endif
 
 #if PX_DBG_LEVEL_WARN
@@ -296,14 +324,21 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
 #define PX_DBG_WARN(format, ...)   ((void)0)
 #endif
 
-#if PX_DBG_LEVEL_ERR
-/// Macro to display a formatted ERROR message
-#define PX_DBG_ERR(format, ...)    _px_dbg_log_err(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#if PX_DBG_LEVEL_INFO
+/// Macro to display a formatted INFO message
+#define PX_DBG_INFO(format, ...)   _px_dbg_log_info(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
-#define PX_DBG_ERR(format, ...)    ((void)0)
+#define PX_DBG_INFO(format, ...)   ((void)0)
 #endif
 
-// Must module name be declared for use in info, warning or error messages?
+#if PX_DBG_LEVEL_VERB
+/// Macro to display a formatted INFO message
+#define PX_DBG_VERB(format, ...)   _px_dbg_log_verb(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#else
+#define PX_DBG_VERB(format, ...)   ((void)0)
+#endif
+
+// Must module name be declared?
 #if (PX_DBG_CFG_MSG_LEVEL != PX_DBG_CFG_MSG_LEVEL_NONE)
 /**
  *  Macro to declare a debug module name string once for each file to reduce 
@@ -370,9 +405,10 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
 #else
 
 // PX_DBG = 0; Remove debug reporting code
-#define PX_DBG_INFO(format, ...)                   ((void)0)
-#define PX_DBG_WARN(format, ...)                   ((void)0)
 #define PX_DBG_ERR(format, ...)                    ((void)0)
+#define PX_DBG_WARN(format, ...)                   ((void)0)
+#define PX_DBG_INFO(format, ...)                   ((void)0)
+#define PX_DBG_VERB(format, ...)                   ((void)0)
 #define PX_DBG_DECL_NAME(name)
 #define PX_DBG_TRACE(format, ...)                  ((void)0)
 #define PX_DBG_TRACE_DATA(data, nr_of_bytes)       ((void)0)
