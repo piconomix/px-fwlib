@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_gfx_display.h : Glue layer to physical display
+    Title:          px_gfx_disp.h : Glue layer to physical display
     Author(s):      Pieter Conradie
     Creation Date:  2019-05-28
 
@@ -19,11 +19,11 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_gfx_display.h"
+#include "px_gfx_disp.h"
 #include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx_display_sim");
+PX_DBG_DECL_NAME("px_gfx_disp_sim");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -31,7 +31,7 @@ PX_DBG_DECL_NAME("px_gfx_display_sim");
 /// Allocate space for frame buffer [row(y)][col(x)]
 uint8_t px_gfx_frame_buf[PX_GFX_DISP_SIZE_Y][PX_GFX_DISP_SIZE_X];
 
-extern void px_gfx_display_sim_draw(const px_gfx_area_t * area);
+extern void px_gfx_disp_sim_draw(const px_gfx_area_t * area);
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 
@@ -40,13 +40,13 @@ extern void px_gfx_display_sim_draw(const px_gfx_area_t * area);
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_gfx_display_buf_clear(void)
+void px_gfx_disp_buf_clear(void)
 {
     // Clear display buffer
     memset(px_gfx_frame_buf, 0, sizeof(px_gfx_frame_buf));
 }
 
-void px_gfx_display_buf_pixel(px_gfx_xy_t    x,
+void px_gfx_disp_buf_pixel(px_gfx_xy_t    x,
                                px_gfx_xy_t    y,
                                px_gfx_color_t color)
 {
@@ -71,12 +71,12 @@ void px_gfx_display_buf_pixel(px_gfx_xy_t    x,
     }
 }
 
-void px_gfx_display_update(const px_gfx_area_t * area)
+void px_gfx_disp_update(const px_gfx_area_t * area)
 {
-    px_gfx_display_sim_draw(area);
+    px_gfx_disp_sim_draw(area);
 }
 
-void px_gfx_display_dbg_report_buf(void)
+void px_gfx_disp_dbg_report_buf(void)
 {
     px_gfx_xy_t x, y;
 

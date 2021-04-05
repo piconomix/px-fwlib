@@ -28,8 +28,8 @@
  *  - gfx/inc/px_gfx.h 
  *  - gfx/inc/px_gfx_cfg_template.h
  *  - gfx/src/px_gfx.c 
- *  - gfx/inc/px_gfx_display.h 
- *  - gfx/src/px_gfx_display_st7567_jhd12864.c 
+ *  - gfx/inc/px_gfx_disp.h 
+ *  - gfx/src/px_gfx_disp_st7567_jhd12864.c 
  *  
  *  Tool to convert images and fonts:
  *  [Ruison.com LCD Image Converter](https://github.com/riuson/lcd-image-converter) 

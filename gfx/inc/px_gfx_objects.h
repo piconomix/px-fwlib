@@ -34,7 +34,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx_obj_graph.h"
 #include "px_gfx_obj_label.h"
-#include "px_gfx_obj_window.h"
+#include "px_gfx_obj_win.h"
 
 #ifdef __cplusplus
 extern "C"

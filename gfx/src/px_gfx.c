@@ -22,7 +22,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx.h"
-#include "px_gfx_display.h"
+#include "px_gfx_disp.h"
 #include "px_gfx_fonts.h"
 #include "px_dbg.h"
 
@@ -172,7 +172,7 @@ static void px_gfx_vp_draw_pixel(px_gfx_xy_t    x,
         return;
     }
     // Draw pixel
-    px_gfx_display_buf_pixel(x, y, color);
+    px_gfx_disp_buf_pixel(x, y, color);
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -186,13 +186,13 @@ void px_gfx_buf_clear(void)
 {
     px_gfx_update_area_reset();
     px_gfx_update_area(0, 0, PX_GFX_X_MAX, PX_GFX_DISP_SIZE_Y);
-    px_gfx_display_buf_clear();
+    px_gfx_disp_buf_clear();
 }
 
 void px_gfx_draw(void)
 {
     px_gfx_update_area(0, 0, PX_GFX_X_MAX, PX_GFX_DISP_SIZE_Y);
-    px_gfx_display_update(&px_gfx.update_area);
+    px_gfx_disp_update(&px_gfx.update_area);
     px_gfx_update_area_reset();
 }
 
@@ -200,7 +200,7 @@ void px_gfx_draw_update(void)
 {
     if(px_gfx_update_area_is_set())
     {
-        px_gfx_display_update(&px_gfx.update_area);
+        px_gfx_disp_update(&px_gfx.update_area);
         px_gfx_update_area_reset();
     }
 }

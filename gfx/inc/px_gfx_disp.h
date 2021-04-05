@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_gfx_display.h : Glue layer to physical display
+    Title:          px_gfx_disp.h : Glue layer to physical display
     Author(s):      Pieter Conradie
     Creation Date:  2019-05-28
 
@@ -40,12 +40,12 @@ extern "C"
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void px_gfx_display_buf_clear     (void);
-void px_gfx_display_buf_pixel     (px_gfx_xy_t    x,
+void px_gfx_disp_buf_clear     (void);
+void px_gfx_disp_buf_pixel     (px_gfx_xy_t    x,
                                    px_gfx_xy_t    y,
                                    px_gfx_color_t color);
-void px_gfx_display_update        (const px_gfx_area_t * area);
-void px_gfx_display_dbg_report_buf(void);
+void px_gfx_disp_update        (const px_gfx_area_t * area);
+void px_gfx_disp_dbg_report_buf(void);
 
 /* _____MACROS_______________________________________________________________ */
 

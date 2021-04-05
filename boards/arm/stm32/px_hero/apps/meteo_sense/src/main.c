@@ -68,7 +68,7 @@ static px_debounce_t px_debounce_pb6;
 
 static px_systmr_t tmr;
 
-px_gfx_obj_handle_t obj_window;
+px_gfx_obj_handle_t obj_win;
 px_gfx_obj_handle_t obj_graph;
 px_gfx_xy_t         obj_graph_data_y[128];
 px_gfx_obj_handle_t obj_label_uvi;
@@ -204,16 +204,16 @@ static void main_gfx_start(void)
     px_gfx_init();
     PX_LCD_BACKLIGHT_ON();
     // Create full display window
-    obj_window = px_gfx_obj_window_create(&px_gfx_obj_window_prop_full_disp);
+    obj_win = px_gfx_obj_win_create(&px_gfx_obj_win_prop_full_disp);
     // Create objects
     obj_graph         = px_gfx_obj_graph_create(&obj_graph_prop);
     memset(obj_graph_data_y, 0, sizeof(obj_graph_data_y));
     obj_label_uvi     = px_gfx_obj_label_create(&obj_label_prop_uvi);
     obj_label_uvi_val = px_gfx_obj_label_create(&obj_label_prop_val);
     // Add objects to window
-    px_gfx_obj_window_add_child(obj_window, obj_graph);
-    px_gfx_obj_window_add_child(obj_window, obj_label_uvi);
-    px_gfx_obj_window_add_child(obj_window, obj_label_uvi_val);
+    px_gfx_obj_win_add_child(obj_win, obj_graph);
+    px_gfx_obj_win_add_child(obj_win, obj_label_uvi);
+    px_gfx_obj_win_add_child(obj_win, obj_label_uvi_val);
 }
 
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */

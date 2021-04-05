@@ -92,7 +92,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\common;..\..\gfx;..\..\gfx\fonts;..\..\gfx\images;..\..\utils;resources</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\common\inc;..\..\gfx\inc;..\..\gfx\fonts\inc;..\..\gfx\images\inc;..\..\utils\inc;resources</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
@@ -117,7 +117,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\common;..\..\gfx;..\..\gfx\fonts;..\..\gfx\images;..\..\utils;resources</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\common\inc;..\..\gfx\inc;..\..\gfx\fonts\inc;..\..\gfx\images\inc;..\..\utils\inc;resources</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
@@ -144,7 +144,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\common;..\..\gfx;..\..\gfx\fonts;..\..\gfx\images;..\..\utils;resources</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\common\inc;..\..\gfx\inc;..\..\gfx\fonts\inc;..\..\gfx\images\inc;..\..\utils\inc;resources</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
@@ -173,7 +173,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\common;..\..\gfx;..\..\gfx\fonts;..\..\gfx\images;..\..\utils;resources</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\common\inc;..\..\gfx\inc;..\..\gfx\fonts\inc;..\..\gfx\images\inc;..\..\utils\inc;resources</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
@@ -195,24 +195,26 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\common\px_compiler.h" />
-    <ClInclude Include="..\..\common\px_defines.h" />
-    <ClInclude Include="..\..\common\px_pgm_P.h" />
-    <ClInclude Include="..\..\gfx\fonts\px_gfx_fonts.h" />
-    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_11x14.h" />
-    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_3x5.h" />
-    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_5x7.h" />
-    <ClInclude Include="..\..\gfx\images\px_gfx_img_hero_logo.h" />
-    <ClInclude Include="..\..\gfx\px_gfx.h" />
-    <ClInclude Include="..\..\gfx\px_gfx_lcd.h" />
-    <ClInclude Include="..\..\gfx\px_gfx_obj.h" />
-    <ClInclude Include="..\..\gfx\px_gfx_obj_label.h" />
-    <ClInclude Include="..\..\gfx\px_gfx_obj_window.h" />
-    <ClInclude Include="..\..\utils\px_dbg.h" />
+    <ClInclude Include="..\..\common\inc\px_compiler.h" />
+    <ClInclude Include="..\..\common\inc\px_defines.h" />
+    <ClInclude Include="..\..\common\inc\px_pgm_P.h" />
+    <ClInclude Include="..\..\gfx\fonts\inc\px_gfx_fonts.h" />
+    <ClInclude Include="..\..\gfx\fonts\inc\px_gfx_font_11x14.h" />
+    <ClInclude Include="..\..\gfx\fonts\inc\px_gfx_font_3x5.h" />
+    <ClInclude Include="..\..\gfx\fonts\inc\px_gfx_font_5x7.h" />
+    <ClInclude Include="..\..\gfx\images\inc\px_gfx_img_hero_logo.h" />
+    <ClInclude Include="..\..\gfx\inc\px_gfx.h" />
+    <ClInclude Include="..\..\gfx\inc\px_gfx_cfg_template.h" />
+    <ClInclude Include="..\..\gfx\inc\px_gfx_disp.h" />
+    <ClInclude Include="..\..\gfx\inc\px_gfx_obj.h" />
+    <ClInclude Include="..\..\gfx\inc\px_gfx_objects.h" />
+    <ClInclude Include="..\..\gfx\inc\px_gfx_obj_graph.h" />
+    <ClInclude Include="..\..\gfx\inc\px_gfx_obj_label.h" />
+    <ClInclude Include="..\..\gfx\inc\px_gfx_obj_win.h" />
     <ClInclude Include="pxGfxSim.h" />
     <ClInclude Include="pxGfxSimDlg.h" />
     <ClInclude Include="px_gfx_cfg.h" />
-    <ClInclude Include="px_gfx_display_sim.h" />
+    <ClInclude Include="px_gfx_disp_sim.h" />
     <ClInclude Include="px_gfx_test.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="resources\px_gfx_img_dino.h" />
@@ -221,53 +223,55 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_11x14.c">
+    <ClCompile Include="..\..\gfx\fonts\src\px_gfx_font_11x14.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_3x5.c">
+    <ClCompile Include="..\..\gfx\fonts\src\px_gfx_font_3x5.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_5x7.c">
+    <ClCompile Include="..\..\gfx\fonts\src\px_gfx_font_5x7.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\images\px_gfx_img_hero_logo.c">
+    <ClCompile Include="..\..\gfx\images\src\px_gfx_img_hero_logo.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx.c">
+    <ClCompile Include="..\..\gfx\src\px_gfx.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    <ClCompile Include="..\..\gfx\src\px_gfx_obj.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj_graph.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj_label.c">
+    <ClCompile Include="..\..\gfx\src\px_gfx_obj_graph.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj_window.c">
+    <ClCompile Include="..\..\gfx\src\px_gfx_obj_label.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\utils\px_dbg.c">
+    <ClCompile Include="..\..\gfx\src\px_gfx_obj_win.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -275,9 +279,11 @@
     </ClCompile>
     <ClCompile Include="pxGfxSim.cpp" />
     <ClCompile Include="pxGfxSimDlg.cpp" />
-    <ClCompile Include="px_gfx_display_sim.c">
+    <ClCompile Include="px_gfx_disp_sim.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="px_gfx_test.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>

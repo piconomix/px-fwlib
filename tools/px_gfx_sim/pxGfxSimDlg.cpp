@@ -7,7 +7,7 @@
 #include "pxGfxSimDlg.h"
 #include "afxdialogex.h"
 #include "px_gfx_test.h"
-#include "px_gfx_display_sim.h"
+#include "px_gfx_disp_sim.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,9 +17,9 @@
 // CpxGfxSimDlg dialog
 CpxGfxSimDlg * dlg;
 
-extern "C" void px_gfx_display_sim_draw(const px_gfx_area_t * area);
+extern "C" void px_gfx_disp_sim_draw(const px_gfx_area_t * area);
 
-void px_gfx_display_sim_draw(const px_gfx_area_t * area)
+void px_gfx_disp_sim_draw(const px_gfx_area_t * area)
 {
     TRACE("Updating area [%d, %d, %d, %d]\n",
           area->x1, area->y1, area->x2, area->y2);
@@ -197,5 +197,5 @@ void CpxGfxSimDlg::SetZoom(int zoom)
 	area.x2 = PX_GFX_X_MAX;
     area.y1 = PX_GFX_Y_MIN;
     area.y2 = PX_GFX_Y_MAX;
-    px_gfx_display_sim_draw(&area);
+    px_gfx_disp_sim_draw(&area);
 }

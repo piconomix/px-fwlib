@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_gfx_display.h : Glue layer to physical display
+    Title:          px_gfx_disp.h : Glue layer to physical display
     Author(s):      Pieter Conradie
     Creation Date:  2019-05-28
 
@@ -19,12 +19,12 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_gfx_display.h"
+#include "px_gfx_disp.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_dbg.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx_display_st7567_jhd12864");
+PX_DBG_DECL_NAME("px_gfx_disp_st7567_jhd12864");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -39,15 +39,15 @@ static uint8_t px_gfx_frame_buf[PX_GFX_DISP_SIZE_Y / 8][PX_GFX_DISP_SIZE_X];
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_gfx_display_buf_clear(void)
+void px_gfx_disp_buf_clear(void)
 {
     // Clear frame buffer
     memset(px_gfx_frame_buf, 0, sizeof(px_gfx_frame_buf));
 }
 
-void px_gfx_display_buf_pixel(px_gfx_xy_t    x,
-                               px_gfx_xy_t    y,
-                               px_gfx_color_t color)
+void px_gfx_disp_buf_pixel(px_gfx_xy_t    x,
+                           px_gfx_xy_t    y,
+                           px_gfx_color_t color)
 {
     uint8_t * data;
 
@@ -70,7 +70,7 @@ void px_gfx_display_buf_pixel(px_gfx_xy_t    x,
     }
 }
 
-void px_gfx_display_update(const px_gfx_area_t * area)
+void px_gfx_disp_update(const px_gfx_area_t * area)
 {
     uint8_t page;
 
@@ -83,13 +83,13 @@ void px_gfx_display_update(const px_gfx_area_t * area)
     }
 }
 
-void px_gfx_display_dbg_report_buf(void)
+void px_gfx_disp_dbg_report_buf(void)
 {
     px_gfx_xy_t x, y;
 
-    for(y=0; y<PX_GFX_DISP_SIZE_Y; y++)
+    for(y = 0; y < PX_GFX_DISP_SIZE_Y; y++)
     {
-        for(x=0; x<PX_GFX_DISP_SIZE_X; x++)
+        for(x = 0; x < PX_GFX_DISP_SIZE_X; x++)
         {
             if(((px_gfx_frame_buf[y / 8][x]) & (1 << (y % 8))) != 0)
             {
@@ -103,5 +103,3 @@ void px_gfx_display_dbg_report_buf(void)
         PX_DBG_TRACE("\n");
     }
 }
-
-

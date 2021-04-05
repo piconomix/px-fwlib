@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_gfx_obj_window.h : Graphical window object
+    Title:          px_gfx_obj_win.h : Graphical window object
     Author(s):      Pieter Conradie
     Creation Date:  2019-11-24
 
@@ -20,11 +20,11 @@
 
 /** 
  *  @ingroup GFX
- *  @defgroup PX_GFX_OBJ_WINDOW px_gfx_obj_window.h : Graphical window object
+ *  @defgroup PX_GFX_OBJ_WINDOW px_gfx_obj_win.h : Graphical window object
  *  
  *  File(s):
- *  - gfx/inc/px_gfx_obj_window.h 
- *  - gfx/src/px_gfx_obj_window.c
+ *  - gfx/inc/px_gfx_obj_win.h 
+ *  - gfx/src/px_gfx_obj_win.c
  */
 /// @{
 
@@ -50,27 +50,27 @@ typedef struct
     px_gfx_xy_t    width;           ///< Right
     px_gfx_xy_t    height;          ///< Bottom
     px_gfx_color_t color_bg;        ///< Background color
-} px_gfx_obj_window_prop_t;
+} px_gfx_obj_win_prop_t;
 
 /// Window object data structure
 typedef struct
 {
-    px_gfx_obj_t                     obj;
-    const px_gfx_obj_window_prop_t * prop;
-    px_gfx_obj_t *                   obj_first;
-} px_gfx_obj_window_t;
+    px_gfx_obj_t                  obj;
+    const px_gfx_obj_win_prop_t * prop;
+    px_gfx_obj_t *                obj_first;
+} px_gfx_obj_win_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 /// Properties for a full screen window
-const px_gfx_obj_window_prop_t px_gfx_obj_window_prop_full_disp;
+const px_gfx_obj_win_prop_t px_gfx_obj_win_prop_full_disp;
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-px_gfx_obj_handle_t              px_gfx_obj_window_create   (const px_gfx_obj_window_prop_t * prop);
-const px_gfx_obj_window_prop_t * px_gfx_obj_window_prop_get (const px_gfx_obj_handle_t        obj);
-void                             px_gfx_obj_window_prop_set (px_gfx_obj_handle_t              obj,
-                                                             const px_gfx_obj_window_prop_t * prop);
-void                             px_gfx_obj_window_add_child(px_gfx_obj_handle_t              obj_window,
-                                                             px_gfx_obj_handle_t              obj_child);
+px_gfx_obj_handle_t           px_gfx_obj_win_create   (const px_gfx_obj_win_prop_t * prop);
+const px_gfx_obj_win_prop_t * px_gfx_obj_win_prop_get (const px_gfx_obj_handle_t     obj);
+void                          px_gfx_obj_win_prop_set (px_gfx_obj_handle_t           obj,
+                                                       const px_gfx_obj_win_prop_t * prop);
+void                          px_gfx_obj_win_add_child(px_gfx_obj_handle_t           obj_win,
+                                                       px_gfx_obj_handle_t           obj_child);
 
 /* _____MACROS_______________________________________________________________ */
 
