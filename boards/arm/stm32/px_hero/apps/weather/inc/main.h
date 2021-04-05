@@ -39,7 +39,6 @@ extern px_uart_handle_t px_uart1_handle;
 extern px_spi_handle_t  px_spi_sf_handle;
 extern px_spi_handle_t  px_spi_sd_handle;
 extern px_spi_handle_t  px_spi_lcd_handle;
-extern px_i2c_handle_t  px_i2c_veml6075_handle;
 extern px_i2c_handle_t  px_i2c_bme280_handle;
 
 extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];

@@ -3,6 +3,6 @@
 
 - @subpage HERO_BOARD_APP_CLI
   ![](hero_board_cli.gif)
-- @subpage HERO_BOARD_APP_METEO_SENSE
 - @subpage HERO_BOARD_APP_USB_MSD_SD
+- @subpage HERO_BOARD_APP_WEATHER
 

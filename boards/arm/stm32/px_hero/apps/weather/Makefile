@@ -39,7 +39,7 @@
 # ------------------------------------------------------------------------------
 
 # (1a) Project name
-PROJECT = meteo_sense
+PROJECT = weather
 
 # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
 BOOTLOADER_SIZE = 0x4000
@@ -86,12 +86,10 @@ SRC += $(PX_LIB)/data/src/px_log_fs.c
 SRC += $(PX_LIB)/devices/display/src/px_lcd_st7567_jhd12864.c
 SRC += $(PX_LIB)/devices/mem/src/px_at25s.c
 SRC += $(PX_LIB)/devices/mem/src/px_sd.c
-SRC += $(PX_LIB)/devices/sensor/src/px_ds18b20.c
-SRC += $(PX_LIB)/devices/sensor/src/px_veml6075.c
 SRC += $(PX_LIB)/devices/sensor/src/px_bme280.c
 SRC += $(PX_LIB)/gfx/src/px_gfx.c
 SRC += $(PX_LIB)/gfx/src/px_gfx_obj.c
-SRC += $(PX_LIB)/gfx/src/px_gfx_obj_window.c
+SRC += $(PX_LIB)/gfx/src/px_gfx_obj_win.c
 SRC += $(PX_LIB)/gfx/src/px_gfx_obj_label.c
 SRC += $(PX_LIB)/gfx/src/px_gfx_obj_graph.c
 SRC += $(PX_LIB)/gfx/src/px_gfx_disp_st7567_jhd12864.c
@@ -243,7 +241,7 @@ PRINTF_LIB_FLOAT = -Wl,-u,_printf_float
 
 # If this is left blank, then it will use the Standard printf version.
 PRINTF_LIB = 
-#PRINTF_LIB = $(PRINTF_LIB_FLOAT)
+PRINTF_LIB = $(PRINTF_LIB_FLOAT)
 
 # Floating point + %[ scanf version (requires MATH_LIB = -lm below)
 SCANF_LIB_FLOAT = -Wl,-u,_scanf_float
