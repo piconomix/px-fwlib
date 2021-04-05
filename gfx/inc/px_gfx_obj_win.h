@@ -62,7 +62,7 @@ typedef struct
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 /// Properties for a full screen window
-const px_gfx_obj_win_prop_t px_gfx_obj_win_prop_full_disp;
+extern const px_gfx_obj_win_prop_t px_gfx_obj_win_prop_full_disp;
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 px_gfx_obj_handle_t           px_gfx_obj_win_create   (const px_gfx_obj_win_prop_t * prop);

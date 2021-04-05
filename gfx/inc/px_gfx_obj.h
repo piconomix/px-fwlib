@@ -49,7 +49,7 @@ extern "C"
 typedef enum
 {
     PX_GFX_OBJ_TYPE_UNKNOWN = 0,
-    PX_GFX_OBJ_TYPE_WINDOW  = 1,
+    PX_GFX_OBJ_TYPE_WIN     = 1,
     PX_GFX_OBJ_TYPE_LABEL   = 2,
     PX_GFX_OBJ_TYPE_GRAPH   = 3,
 } px_gfx_obj_type_t;

@@ -52,7 +52,7 @@ static void px_gfx_obj_win_event_handler(px_gfx_obj_handle_t obj,
 
     // Sanity checks
     PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_WINDOW);
+    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_WIN);
     // Get pointer to properties
     prop = obj_win->prop;
     PX_DBG_ASSERT(prop != NULL);
@@ -114,7 +114,7 @@ px_gfx_obj_handle_t px_gfx_obj_win_create(const px_gfx_obj_win_prop_t * prop)
     px_gfx_obj_win_t * obj_win;
 
     // Create window object
-    obj_win = (px_gfx_obj_win_t *)_px_gfx_obj_create(PX_GFX_OBJ_TYPE_WINDOW,
+    obj_win = (px_gfx_obj_win_t *)_px_gfx_obj_create(PX_GFX_OBJ_TYPE_WIN,
                                                      sizeof(*obj_win), 
                                                      &px_gfx_obj_win_event_handler);
     // Sanity checks
@@ -132,7 +132,7 @@ const px_gfx_obj_win_prop_t * px_gfx_obj_win_prop_get(const px_gfx_obj_handle_t 
 
     // Sanity checks
     PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_WINDOW);
+    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_WIN);
     
     return obj_win->prop;
 }
@@ -157,7 +157,7 @@ void px_gfx_obj_win_add_child(px_gfx_obj_handle_t obj_win,
 
     // Sanity checks
     PX_DBG_ASSERT(obj_win           != NULL);
-    PX_DBG_ASSERT(obj_win->obj_type == PX_GFX_OBJ_TYPE_WINDOW);
+    PX_DBG_ASSERT(obj_win->obj_type == PX_GFX_OBJ_TYPE_WIN);
     // List empty?
     if(obj_parent->obj_first == NULL)
     {
