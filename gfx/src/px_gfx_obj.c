@@ -66,18 +66,11 @@ bool px_gfx_obj_visible_get(px_gfx_obj_handle_t obj)
     return obj->visible;
 }
 
-void px_gfx_obj_visible_set(px_gfx_obj_handle_t obj)
+void px_gfx_obj_visible_set(px_gfx_obj_handle_t obj,  bool flag)
 {
     PX_DBG_ASSERT(obj != NULL);
 
-    obj->visible = true;
-}
-
-void px_gfx_obj_visible_clr(px_gfx_obj_handle_t obj)
-{
-    PX_DBG_ASSERT(obj != NULL);
-
-    obj->visible = false;
+    obj->visible = flag;
 }
 
 bool px_gfx_obj_update_get(px_gfx_obj_handle_t obj)
@@ -87,18 +80,11 @@ bool px_gfx_obj_update_get(px_gfx_obj_handle_t obj)
     return obj->update;
 }
 
-void px_gfx_obj_update_set(px_gfx_obj_handle_t obj)
+void px_gfx_obj_update_set(px_gfx_obj_handle_t obj,  bool flag)
 {
     PX_DBG_ASSERT(obj != NULL);
 
     obj->update = true;
-}
-
-void px_gfx_obj_update_clr(px_gfx_obj_handle_t obj)
-{
-    PX_DBG_ASSERT(obj != NULL);
-
-    obj->update = false;
 }
 
 void px_gfx_obj_draw(px_gfx_obj_handle_t obj)

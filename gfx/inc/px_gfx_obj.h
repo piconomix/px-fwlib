@@ -84,7 +84,7 @@ typedef struct px_gfx_obj_s
     px_gfx_obj_type_t          obj_type;        ///< Object type
     bool                       visible;         ///< Flag to indicate if object is visible
     bool                       update;          ///< Flag to indicate if object has been updated and must be drawn
-    px_gfx_obj_event_handler_t event_handler;   ///< Object event function handler
+    px_gfx_obj_event_handler_t event_handler;   ///< Object event handler function
     struct px_gfx_obj_s *      obj_next;        ///< Pointer to next object in linked list
 } px_gfx_obj_t;
 
@@ -96,12 +96,10 @@ px_gfx_obj_handle_t _px_gfx_obj_create(px_gfx_obj_type_t          obj_type,
                                        px_gfx_obj_event_handler_t event_handler);
 
 bool           px_gfx_obj_visible_get (px_gfx_obj_handle_t  obj);
-void           px_gfx_obj_visible_set (px_gfx_obj_handle_t  obj);
-void           px_gfx_obj_visible_clr (px_gfx_obj_handle_t  obj);
+void           px_gfx_obj_visible_set (px_gfx_obj_handle_t  obj, bool flag);
 
 bool           px_gfx_obj_update_get  (px_gfx_obj_handle_t  obj);
-void           px_gfx_obj_update_set  (px_gfx_obj_handle_t  obj);
-void           px_gfx_obj_update_clr  (px_gfx_obj_handle_t  obj);
+void           px_gfx_obj_update_set  (px_gfx_obj_handle_t  obj,  bool flag);
 
 void           px_gfx_obj_draw        (px_gfx_obj_handle_t  obj);
 

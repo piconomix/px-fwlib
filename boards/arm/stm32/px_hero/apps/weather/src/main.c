@@ -228,19 +228,19 @@ static void main_gfx_start(void)
 static void main_gfx_update_temp(int32_t temp)
 {
     sprintf(obj_label_temp_val_str, "%2.2f C", (float)temp / 100.0f);
-    px_gfx_obj_update_set(obj_label_temp_val);
+    px_gfx_obj_update_set(obj_label_temp_val, true);
 }
 
 static void main_gfx_update_press(uint32_t press)
 {
     sprintf(obj_label_press_val_str, "%lu Pa", press);
-    px_gfx_obj_update_set(obj_label_press_val);
+    px_gfx_obj_update_set(obj_label_press_val, true);
 }
 
 static void main_gfx_update_hum(uint32_t hum)
 {
     sprintf(obj_label_hum_val_str, "%lu %%", hum / 1024);
-    px_gfx_obj_update_set(obj_label_hum_val);
+    px_gfx_obj_update_set(obj_label_hum_val, true);
 }
 
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
