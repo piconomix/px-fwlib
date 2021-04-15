@@ -177,7 +177,7 @@ static bool px_cli_cmd_item_get_parent(void)
     // Already in root list?
     if(px_cli_tree_path_depth == 0)
     {
-        PX_DBG_ERR("Already in root");
+        PX_DBG_E("Already in root");
         return false;
     }
 
@@ -194,14 +194,14 @@ static bool px_cli_cmd_item_get_child(void)
     if(  (px_cli_cmd_list_item.cmd     == NULL)
        ||(px_cli_cmd_list_item.handler != NULL)  )
     {
-        PX_DBG_ERR("Not a group item");
+        PX_DBG_E("Not a group item");
         return false;
     }
 
     // Maximum depth reached?
     if(px_cli_tree_path_depth >= (PX_CLI_CFG_TREE_DEPTH_MAX-1))
     {
-        PX_DBG_ERR("Maximum command depth exceeded");
+        PX_DBG_E("Maximum command depth exceeded");
         return false;
     }
 
@@ -238,7 +238,7 @@ static bool px_cli_cmd_item_get_next(void)
     // End of list reached?
     if(px_cli_cmd_list_item.cmd == NULL)
     {
-        PX_DBG_ERR("End of list already reached");
+        PX_DBG_E("End of list already reached");
         return false;
     }
 
@@ -943,8 +943,8 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
             px_cli_cmd_item_get_child();
         }
     }
-    PX_DBG_INFO("Max command chars = %d", name_char_cnt);
-    PX_DBG_INFO("Max param chars = %d", param_char_cnt);
+    PX_DBG_I("Max command chars = %d", name_char_cnt);
+    PX_DBG_I("Max param chars = %d", param_char_cnt);
 #endif
 
     // Display help for each command in list

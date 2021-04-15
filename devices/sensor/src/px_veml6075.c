@@ -88,7 +88,7 @@ static bool px_veml6075_reg_wr(uint8_t cmd, const px_veml6075_reg_data * data)
 
     if(!px_i2c_wr(px_veml6075_i2c_handle, buf, 3, PX_I2C_FLAG_START_AND_STOP))
     {
-        PX_DBG_ERR("Write failed");
+        PX_DBG_E("Write failed");
         return false;
     }
 
@@ -103,13 +103,13 @@ static bool px_veml6075_reg_rd(uint8_t cmd, px_veml6075_reg_data * data)
 
     if(!px_i2c_wr(px_veml6075_i2c_handle, buf, 1, PX_I2C_FLAG_START_AND_END))
     {
-        PX_DBG_ERR("Write failed");
+        PX_DBG_E("Write failed");
         return false;
     }
 
     if(!px_i2c_rd(px_veml6075_i2c_handle, buf, 2, PX_I2C_FLAG_REP_START_AND_STOP))
     {
-        PX_DBG_ERR("Read failed");
+        PX_DBG_E("Read failed");
         return false;
     }
 
@@ -131,17 +131,17 @@ bool px_veml6075_init(px_i2c_handle_t * handle)
     if(!px_veml6075_reg_rd(PX_VEML6075_REG_ID, &reg_data))
     {
         // Error
-        PX_DBG_ERR("Unable to read Chip ID");
+        PX_DBG_E("Unable to read Chip ID");
         return false;
     }
     if(reg_data.lsb != PX_VEML6075_REG_ID_VAL)
     {
         // Error
-        PX_DBG_ERR("Chip ID does not match. Received %02X, but expected %02X",
+        PX_DBG_E("Chip ID does not match. Received %02X, but expected %02X",
                    reg_data.lsb, PX_VEML6075_REG_ID_VAL);
         return false;
     }
-    PX_DBG_INFO("UV sensor detected");
+    PX_DBG_I("UV sensor detected");
     // Configure sensor
     reg_data.lsb =   PX_VEML6075_REG_CFG_UV_IT_100MS 
                    | PX_VEML6075_REG_CFG_UV_TRIG_NO
@@ -150,16 +150,16 @@ bool px_veml6075_init(px_i2c_handle_t * handle)
     if(!px_veml6075_reg_wr(PX_VEML6075_REG_UV_CFG, &reg_data))
     {
         // Error
-        PX_DBG_ERR("Unable to configure sensor");
+        PX_DBG_E("Unable to configure sensor");
         return false;
     }
     if(!px_veml6075_reg_rd(PX_VEML6075_REG_UV_CFG, &reg_data))
     {
         // Error
-        PX_DBG_ERR("Unable to read config");
+        PX_DBG_E("Unable to read config");
         return false;
     }
-    PX_DBG_INFO("Cfg = 0x%02X, 0x%02X", reg_data.lsb, reg_data.msb);
+    PX_DBG_I("Cfg = 0x%02X, 0x%02X", reg_data.lsb, reg_data.msb);
 
     // Success
     return true;
@@ -173,7 +173,7 @@ bool px_veml6075_meas(px_veml6075_data_t * data)
     if(!px_veml6075_reg_rd(PX_VEML6075_REG_UVA_DATA, &reg_data))
     {
         // Error
-        PX_DBG_ERR("Unable to read UVA");
+        PX_DBG_E("Unable to read UVA");
         return false;
     }
     data->uva = PX_U16_CONCAT_U8(reg_data.msb, reg_data.lsb);
@@ -181,7 +181,7 @@ bool px_veml6075_meas(px_veml6075_data_t * data)
     if(!px_veml6075_reg_rd(PX_VEML6075_REG_UVB_DATA, &reg_data))
     {
         // Error
-        PX_DBG_ERR("Unable to read UVB");
+        PX_DBG_E("Unable to read UVB");
         return false;
     }
     data->uvb = PX_U16_CONCAT_U8(reg_data.msb, reg_data.lsb);
@@ -189,7 +189,7 @@ bool px_veml6075_meas(px_veml6075_data_t * data)
     if(!px_veml6075_reg_rd(PX_VEML6075_REG_UVCOMP1_DATA, &reg_data))
     {
         // Error
-        PX_DBG_ERR("Unable to read UVCOMP1");
+        PX_DBG_E("Unable to read UVCOMP1");
         return false;
     }
     data->uvcomp1 = PX_U16_CONCAT_U8(reg_data.msb, reg_data.lsb);
@@ -197,12 +197,12 @@ bool px_veml6075_meas(px_veml6075_data_t * data)
     if(!px_veml6075_reg_rd(PX_VEML6075_REG_UVCOMP2_DATA, &reg_data))
     {
         // Error
-        PX_DBG_ERR("Unable to read UVCOMP2");
+        PX_DBG_E("Unable to read UVCOMP2");
         return false;
     }
     data->uvcomp2 = PX_U16_CONCAT_U8(reg_data.msb, reg_data.lsb);
     // Success
-    PX_DBG_INFO("UVA=0x%04X, UVB=%04X, UVCOMP1=0x%04X, UVCOMP2=0x%04X",
+    PX_DBG_I("UVA=0x%04X, UVB=%04X, UVCOMP1=0x%04X, UVCOMP2=0x%04X",
                 data->uva, data->uvb, data->uvcomp1, data->uvcomp2);
     return true;
 }

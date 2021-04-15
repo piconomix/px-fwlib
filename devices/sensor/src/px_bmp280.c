@@ -139,7 +139,7 @@ static bool px_bmp280_reg_wr(uint8_t adr, uint8_t data)
     if(!px_i2c_wr(px_bmp280_i2c_handle, i2c_data, 2, PX_I2C_FLAG_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to write register value");
+        PX_DBG_E("Unable to write register value");
         return false;
     }
     // Success
@@ -156,7 +156,7 @@ static bool px_bmp280_reg_rd(uint8_t adr, uint8_t * data)
     if(!px_i2c_wr(px_bmp280_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_END))
     {
         // Error
-        PX_DBG_ERR("Unable to write register address");
+        PX_DBG_E("Unable to write register address");
         return false;
     }
     // Read data
@@ -166,7 +166,7 @@ static bool px_bmp280_reg_rd(uint8_t adr, uint8_t * data)
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to read register value");
+        PX_DBG_E("Unable to read register value");
         return false;
     }
     // Success
@@ -183,7 +183,7 @@ static bool px_bmp280_reg_rd_data(uint8_t adr, void * data, uint8_t nr_of_bytes)
     if(!px_i2c_wr(px_bmp280_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_END))
     {
         // Error
-        PX_DBG_ERR("Unable to write register address");
+        PX_DBG_E("Unable to write register address");
         return false;
     }
     // Read data
@@ -193,7 +193,7 @@ static bool px_bmp280_reg_rd_data(uint8_t adr, void * data, uint8_t nr_of_bytes)
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to read register data");
+        PX_DBG_E("Unable to read register data");
         return false;
     }
     // Success
@@ -216,10 +216,10 @@ static bool px_bmp280_cal_rd(void)
         if(!px_bmp280_reg_rd_data(adr, i2c_data, 2))
         {
             // Error
-            PX_DBG_ERR("Unable to read calibration value");
+            PX_DBG_E("Unable to read calibration value");
             return false;
         }
-        PX_DBG_INFO("Adr %02X: %02X %02X", adr, i2c_data[0], i2c_data[1]);
+        PX_DBG_I("Adr %02X: %02X %02X", adr, i2c_data[0], i2c_data[1]);
         // Assemble value
         val = PX_U16_CONCAT_U8(i2c_data[1], i2c_data[0]);
         // Store value
@@ -244,7 +244,7 @@ static bool px_bmp280_cal_rd(void)
     px_bmp280_cal.dig.p9 = 6000;
 #endif
 
-#if PX_DBG_LEVEL_INFO
+#if PX_DBG_LEVEL_I
     // Report calibration values
     PX_DBG_TRACE("BMP280 Cal:\n");
     PX_DBG_TRACE("T1 = %d\n", px_bmp280_cal.dig.t1);
@@ -271,10 +271,10 @@ static bool px_bmp280_temp_raw_rd(int32_t * data)
     if(!px_bmp280_reg_rd_data(PX_BMP280_REG_TEMP_MSB, i2c_data, 3))
     {
         // Error
-        PX_DBG_ERR("Unable to read temp");
+        PX_DBG_E("Unable to read temp");
         return false;
     }
-    PX_DBG_INFO("Temp data: %02X %02X %02X", 
+    PX_DBG_I("Temp data: %02X %02X %02X",
                 i2c_data[0], i2c_data[1], i2c_data[2]);
 
     // Assemble value
@@ -286,7 +286,7 @@ static bool px_bmp280_temp_raw_rd(int32_t * data)
     *data = 519888;
 #endif
 
-    PX_DBG_INFO("Raw Temp = %ld", *data);
+    PX_DBG_I("Raw Temp = %ld", *data);
 
     return true;
 }
@@ -298,10 +298,10 @@ static bool px_bmp280_press_raw_rd(int32_t * data)
     if(!px_bmp280_reg_rd_data(PX_BMP280_REG_PRESS_MSB, i2c_data, 3))
     {
         // Error
-        PX_DBG_ERR("Unable to read temp");
+        PX_DBG_E("Unable to read temp");
         return false;
     }
-    PX_DBG_INFO("Press data: %02X %02X %02X", 
+    PX_DBG_I("Press data: %02X %02X %02X",
                 i2c_data[0], i2c_data[1], i2c_data[2]);
 
     // Assemble value
@@ -313,7 +313,7 @@ static bool px_bmp280_press_raw_rd(int32_t * data)
     *data = 415148;
 #endif
 
-    PX_DBG_INFO("Raw Press = %ld", *data);
+    PX_DBG_I("Raw Press = %ld", *data);
 
     return true;
 }
@@ -342,7 +342,7 @@ int32_t px_bmp280_comp_temp(int32_t ut, int32_t * t_fine)
     *t_fine = var1 + var2;
     temp    = (*t_fine * 5 + 128) >> 8;
 
-    PX_DBG_INFO("Compensated Temp = %ld", temp);
+    PX_DBG_I("Compensated Temp = %ld", temp);
 
     return temp;
 }
@@ -393,7 +393,7 @@ uint32_t px_bmp280_comp_press(int32_t up, int32_t t_fine)
     var2  = (((int32_t)(press >> 2)) * ((int32_t)px_bmp280_cal.dig.p8)) >> 13;
     press = (uint32_t)((int32_t)press + ((var1 + var2 + px_bmp280_cal.dig.p7) >> 4));
 
-    PX_DBG_INFO("Compensated Press = %ld", press);
+    PX_DBG_I("Compensated Press = %ld", press);
 
     return press;
 }
@@ -410,13 +410,13 @@ bool px_bmp280_init(px_i2c_handle_t * handle)
     if(!px_bmp280_reg_rd(PX_BMP280_REG_ID, &data))
     {
         // Error
-        PX_DBG_ERR("Unable to read Chip ID");
+        PX_DBG_E("Unable to read Chip ID");
         return false;
     }
     if(data != PX_BMP280_REG_ID_VAL)
     {
         // Error
-        PX_DBG_ERR("Chip ID does not match. Received %02X, but expected %02X",
+        PX_DBG_E("Chip ID does not match. Received %02X, but expected %02X",
                    data, PX_BMP280_REG_ID_VAL);
         return false;
     }
@@ -427,7 +427,7 @@ bool px_bmp280_init(px_i2c_handle_t * handle)
         if(!px_bmp280_reg_rd(PX_BMP280_REG_STATUS, &data))
         {
             // Error
-            PX_DBG_ERR("Unable to read status");
+            PX_DBG_E("Unable to read status");
             return false;
         }
     }
@@ -463,7 +463,7 @@ bool px_bmp280_read(int32_t * temperature, int32_t * pressure)
     if(!px_bmp280_reg_wr(PX_BMP280_REG_CTRL_MEAS, data))
     {
         // Error
-        PX_DBG_ERR("Unable to start measurement");
+        PX_DBG_E("Unable to start measurement");
         return false;
     }
 
@@ -473,7 +473,7 @@ bool px_bmp280_read(int32_t * temperature, int32_t * pressure)
         if(!px_bmp280_reg_rd(PX_BMP280_REG_STATUS, &data))
         {
             // Error
-            PX_DBG_ERR("Unable to read status");
+            PX_DBG_E("Unable to read status");
             return false;
         }
     }

@@ -257,7 +257,7 @@ int main(void)
         // USB connected event?
         if(main_usb_connected_event_flag)
         {
-            PX_DBG_INFO("USB Connect event. (Re)initialising CLI");
+            PX_DBG_I("USB Connect event. (Re)initialising CLI");
             main_usb_connected_event_flag = false;
             // (Re)initialise CLI
             px_cli_init(px_cli_cmd_list, main_cli_init_str);

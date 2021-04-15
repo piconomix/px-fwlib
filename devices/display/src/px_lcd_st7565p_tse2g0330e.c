@@ -65,7 +65,7 @@ static px_spi_handle_t * px_lcd_spi_handle;
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_lcd_wr_control_data(uint8_t data)
 {
-    PX_DBG_INFO("LCD Cmd 0x%02X", data);
+    PX_DBG_I("LCD Cmd 0x%02X", data);
 
     PX_LCD_CFG_RS_LO();
     px_spi_wr(px_lcd_spi_handle, &data, 1, PX_SPI_FLAG_START_AND_STOP);

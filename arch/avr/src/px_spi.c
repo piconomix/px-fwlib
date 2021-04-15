@@ -72,7 +72,7 @@ static void px_spi_init_peripheral(px_spi_nr_t spi_nr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return;
     }
 }
@@ -122,7 +122,7 @@ bool px_spi_open(px_spi_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
 
@@ -172,7 +172,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
 

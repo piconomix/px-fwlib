@@ -14,12 +14,12 @@ uint8_t calc(uint8_t val)
     uint8_t answer;
 
     // Report function call with parameter value
-    PX_DBG_INFO("calc(val = %u)", val);
+    PX_DBG_I("calc(val = %u)", val);
 
     // Is val equal to zero?
     if(val == 0)
     {
-        PX_DBG_ERR("val may not be equal to zero");
+        PX_DBG_E("val may not be equal to zero");
         return 0;
     }
 
@@ -27,7 +27,7 @@ uint8_t calc(uint8_t val)
     answer = 100 / val;
 
     // Report answer
-    PX_DBG_INFO("answer = %u", answer);
+    PX_DBG_I("answer = %u", answer);
 
     return answer;
 }
@@ -55,7 +55,7 @@ int main(void)
     // Enable interrupts
     px_interrupts_enable();
    
-    PX_DBG_WARN("Calculation started");
+    PX_DBG_W("Calculation started");
     for(val = 0; val < 3; val++)
     {
         // Calculate answer

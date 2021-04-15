@@ -215,7 +215,7 @@ px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom)
     // Reset device(s)
     if(!px_one_wire_reset())
     {
-        PX_DBG_WARN("No devices found");
+        PX_DBG_W("No devices found");
         return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
     }
 
@@ -227,15 +227,15 @@ px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom)
     {
         *data_u8++ = px_one_wire_rd_u8();
     }
-    PX_DBG_INFO("Family code = 0x%02X", rom->content.family_code);
-    PX_DBG_INFO("Serial      = %02X:%02X:%02X:%02X:%02X:%02X",
+    PX_DBG_I("Family code = 0x%02X", rom->content.family_code);
+    PX_DBG_I("Serial      = %02X:%02X:%02X:%02X:%02X:%02X",
                 rom->content.serial[0],
                 rom->content.serial[1],
                 rom->content.serial[2],
                 rom->content.serial[3],
                 rom->content.serial[4],
                 rom->content.serial[5]);
-    PX_DBG_INFO("CRC         = 0x%02X", rom->content.crc);
+    PX_DBG_I("CRC         = 0x%02X", rom->content.crc);
 
     // Calculate CRC
     crc = px_one_wire_calc_crc8(rom->data, offsetof(px_one_wire_rom_content_t, crc));
@@ -243,7 +243,7 @@ px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom)
     // Check CRC
     if(rom->content.crc != crc)
     {
-        PX_DBG_ERR("CRC check failed. Read 0x%02X, calculated 0x%02X",
+        PX_DBG_E("CRC check failed. Read 0x%02X, calculated 0x%02X",
                 rom->content.crc, crc);
         return PX_ONE_WIRE_ERR_CRC_CHECK_FAILED;
     }
@@ -257,7 +257,7 @@ px_one_wire_error_t px_one_wire_skip_rom(void)
     // Reset device(s)
     if(!px_one_wire_reset())
     {
-        PX_DBG_ERR("No devices found");
+        PX_DBG_E("No devices found");
         return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
     }
 
@@ -276,7 +276,7 @@ px_one_wire_error_t px_one_wire_match_rom(px_one_wire_rom_t * rom)
     // Reset device(s)
     if(!px_one_wire_reset())
     {
-        PX_DBG_ERR("No devices found");
+        PX_DBG_E("No devices found");
         return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
     }
 
@@ -322,7 +322,7 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
     // Perform 1-Wire reset
     if(!px_one_wire_reset())
     {
-        PX_DBG_ERR("No devices present");
+        PX_DBG_E("No devices present");
         return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
     }
 
@@ -344,7 +344,7 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
         // No devices participating in search?
         if((rom_bit == 1) && (rom_compliment_bit == 1))
         {
-            PX_DBG_ERR("No devices participating in search");
+            PX_DBG_E("No devices participating in search");
             return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
         }
 
@@ -414,13 +414,13 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
     // CRC OK?
     if(crc != 0)
     {
-        PX_DBG_ERR("CRC check failed");
+        PX_DBG_E("CRC check failed");
         return PX_ONE_WIRE_ERR_CRC_CHECK_FAILED;
     }
     // Family code OK?
     if(one_wire_search->rom.content.family_code == 0)
     {
-        PX_DBG_ERR("Family code is zero");
+        PX_DBG_E("Family code is zero");
         return PX_ONE_WIRE_ERR_FAMILY_CODE_IS_ZERO;
     }
     // Save last discrepancy
@@ -428,7 +428,7 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
     // Is this the last device?
     if(one_wire_search->last_discrepancy == 0)
     {
-        PX_DBG_INFO("Last device found");
+        PX_DBG_I("Last device found");
         one_wire_search->last_device_flag = true;
     }
     // Success

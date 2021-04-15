@@ -329,7 +329,7 @@ static bool px_lis3dh_reg_wr_u8(uint8_t adr, uint8_t data)
     if(!px_i2c_wr(px_lis3dh_i2c_handle, i2c_data, 2, PX_I2C_FLAG_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to write register value");
+        PX_DBG_E("Unable to write register value");
         return false;
     }
     // Success
@@ -346,7 +346,7 @@ static bool px_lis3dh_reg_rd_u8(uint8_t adr, uint8_t * data)
     if(!px_i2c_wr(px_lis3dh_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_END))
     {
         // Error
-        PX_DBG_ERR("Unable to write register address");
+        PX_DBG_E("Unable to write register address");
         return false;
     }
     // Read data
@@ -356,7 +356,7 @@ static bool px_lis3dh_reg_rd_u8(uint8_t adr, uint8_t * data)
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to read register value");
+        PX_DBG_E("Unable to read register value");
         return false;
     }
     // Success
@@ -373,7 +373,7 @@ static bool px_lis3dh_reg_rd_data(uint8_t adr, uint8_t * data, size_t nr_of_byte
     if(!px_i2c_wr(px_lis3dh_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_END))
     {
         // Error
-        PX_DBG_ERR("Unable to write register address");
+        PX_DBG_E("Unable to write register address");
         return false;
     }
     // Read data
@@ -383,7 +383,7 @@ static bool px_lis3dh_reg_rd_data(uint8_t adr, uint8_t * data, size_t nr_of_byte
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to read register data");
+        PX_DBG_E("Unable to read register data");
         return false;
     }
     // Success
@@ -550,7 +550,7 @@ bool px_lis3dh_xyz_data_ready(void)
     if(data & (1 << PX_LIS3DH_REG_CTRL_STATUS_REG_ZYXDA))
     {
         // X,Y & Z data is ready
-        PX_DBG_INFO("Data ready. StatusReg = 0x%02X", (unsigned int)data);
+        PX_DBG_I("Data ready. StatusReg = 0x%02X", (unsigned int)data);
         return true;
     }
     else
@@ -595,12 +595,12 @@ bool px_lis3dh_rd_who_am_i(uint8_t * data)
 {
     if(px_lis3dh_reg_rd_u8(PX_LIS3DH_REG_WHO_AM_I, data))
     {
-        PX_DBG_INFO("WHO_AM_I = 0x%02X", (unsigned int)*data);
+        PX_DBG_I("WHO_AM_I = 0x%02X", (unsigned int)*data);
         return true;
     }
     else
     {
-        PX_DBG_ERR("PX_LIS3DH_REG_WHO_AM_I rd failed");
+        PX_DBG_E("PX_LIS3DH_REG_WHO_AM_I rd failed");
         return false;
     }
 }

@@ -199,9 +199,9 @@ extern "C" {
  *  @param format   User format string
  *  @param ...      Variable number of arguments
  */
-void _px_dbg_log_err(const char * name,
-                     uint16_t     line,
-                     const char * format, ...);
+void _px_dbg_log_error(const char * name,
+                       uint16_t     line,
+                       const char * format, ...);
 
 /**
  *  Output warning debug information: module name, line and variable argument
@@ -216,9 +216,9 @@ void _px_dbg_log_err(const char * name,
  *  @param format   User format string
  *  @param ...      Variable number of arguments
  */
-void _px_dbg_log_warn(const char * name,
-                      uint16_t     line,
-                      const char * format, ...);
+void _px_dbg_log_warning(const char * name,
+                         uint16_t     line,
+                         const char * format, ...);
 
 /**
  *  Output info debug information: module name, line and variable argument
@@ -239,7 +239,7 @@ void _px_dbg_log_info(const char * name,
                       const char * format, ...);
 
 /**
- *  Output info debug information: module name, line and variable argument
+ *  Output verbose debug information: module name, line and variable argument
  *  user format string.
  *
  *  The line is automatically appended with a new line character ('\\n'), except
@@ -252,9 +252,9 @@ void _px_dbg_log_info(const char * name,
  *  @param format   User format string
  *  @param ...      Variable number of arguments
  */
-void _px_dbg_log_verb(const char * name,
-                      uint16_t     line,
-                      const char * format, ...);
+void _px_dbg_log_verbose(const char * name,
+                         uint16_t     line,
+                         const char * format, ...);
 
 /**
  *  Report that an assertion has failed and block indefinitely.
@@ -299,43 +299,43 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
 /// Debug message level ERROR enabled?
-#define PX_DBG_LEVEL_ERR  (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_ERR))
+#define PX_DBG_LEVEL_E  (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_ERR))
 /// Debug message level WARN enabled?
-#define PX_DBG_LEVEL_WARN (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_WARN))
+#define PX_DBG_LEVEL_W (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_WARN))
 /// Debug message level INFO enabled?
-#define PX_DBG_LEVEL_INFO (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_INFO))
+#define PX_DBG_LEVEL_I (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_INFO))
 /// Debug message level VERBOSE enabled?
-#define PX_DBG_LEVEL_VERB (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_VERB))
+#define PX_DBG_LEVEL_V (PX_DBG && ((PX_DBG_CFG_MSG_LEVEL) & PX_DBG_CFG_MSG_LEVEL_VERB))
 
 // PX_DBG enabled?
 #if PX_DBG
 
-#if PX_DBG_LEVEL_ERR
+#if PX_DBG_LEVEL_E
 /// Macro to display a formatted ERROR message
-#define PX_DBG_ERR(format, ...)    _px_dbg_log_err(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#define PX_DBG_E(format, ...)    _px_dbg_log_error(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
-#define PX_DBG_ERR(format, ...)    ((void)0)
+#define PX_DBG_E(format, ...)    ((void)0)
 #endif
 
-#if PX_DBG_LEVEL_WARN
+#if PX_DBG_LEVEL_W
 /// Macro to display a formatted WARNING message
-#define PX_DBG_WARN(format, ...)   _px_dbg_log_warn(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#define PX_DBG_W(format, ...)   _px_dbg_log_warning(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
-#define PX_DBG_WARN(format, ...)   ((void)0)
+#define PX_DBG_W(format, ...)   ((void)0)
 #endif
 
-#if PX_DBG_LEVEL_INFO
+#if PX_DBG_LEVEL_I
 /// Macro to display a formatted INFO message
-#define PX_DBG_INFO(format, ...)   _px_dbg_log_info(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#define PX_DBG_I(format, ...)   _px_dbg_log_info(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
-#define PX_DBG_INFO(format, ...)   ((void)0)
+#define PX_DBG_I(format, ...)   ((void)0)
 #endif
 
-#if PX_DBG_LEVEL_VERB
+#if PX_DBG_LEVEL_V
 /// Macro to display a formatted INFO message
-#define PX_DBG_VERB(format, ...)   _px_dbg_log_verb(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
+#define PX_DBG_V(format, ...)   _px_dbg_log_verbose(_px_dbg_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
 #else
-#define PX_DBG_VERB(format, ...)   ((void)0)
+#define PX_DBG_V(format, ...)   ((void)0)
 #endif
 
 // Must module name be declared?
@@ -405,16 +405,15 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
 #else
 
 // PX_DBG = 0; Remove debug reporting code
-#define PX_DBG_ERR(format, ...)                    ((void)0)
-#define PX_DBG_WARN(format, ...)                   ((void)0)
-#define PX_DBG_INFO(format, ...)                   ((void)0)
-#define PX_DBG_VERB(format, ...)                   ((void)0)
+#define PX_DBG_E(format, ...)                      ((void)0)
+#define PX_DBG_W(format, ...)                      ((void)0)
+#define PX_DBG_I(format, ...)                      ((void)0)
+#define PX_DBG_V(format, ...)                      ((void)0)
 #define PX_DBG_DECL_NAME(name)
 #define PX_DBG_TRACE(format, ...)                  ((void)0)
 #define PX_DBG_TRACE_DATA(data, nr_of_bytes)       ((void)0)
 #define PX_DBG_TRACE_HEXDUMP(data, nr_of_bytes)    ((void)0)
 #define PX_DBG_ASSERT(expression)                  ((void)0)
-#define PX_DBG_LOG(level, format, ...)             ((void)0)
 
 #endif
 
@@ -423,4 +422,4 @@ void _px_dbg_trace_hexdump(const void * data, size_t nr_of_bytes);
 }
 #endif
 
-#endif // #ifndef __PX_DBG_H__
+#endif

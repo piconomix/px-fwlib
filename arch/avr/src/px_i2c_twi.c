@@ -95,7 +95,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
     // Check TWI Status
     if((TW_STATUS & 0xf8) != TW_START)
     {
-        PX_DBG_ERR("TWI_STATUS != TW_START");
+        PX_DBG_E("TWI_STATUS != TW_START");
         return false;
     }
     // Add R/W bit
@@ -111,7 +111,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
         // Check TWI Status
         if((TW_STATUS&0xf8) != TW_MR_SLA_ACK)
         {
-            PX_DBG_WARN("TWI_STATUS != TW_MR_SLA_ACK");
+            PX_DBG_W("TWI_STATUS != TW_MR_SLA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -122,7 +122,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
         // Check TWI Status
         if((TW_STATUS&0xf8) != TW_MT_SLA_ACK)
         {
-            PX_DBG_WARN("TWI_STATUS != TW_MT_SLA_ACK");
+            PX_DBG_W("TWI_STATUS != TW_MT_SLA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -141,7 +141,7 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
     // Check TWI Status
     if((TW_STATUS & 0xf8) != TW_REP_START)
     {
-        PX_DBG_ERR("TWI_STATUS != TW_REP_START");
+        PX_DBG_E("TWI_STATUS != TW_REP_START");
         return false;
     }
     // Add R/W bit
@@ -157,7 +157,7 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
         // Check TWI Status
         if((TW_STATUS & 0xf8) != TW_MR_SLA_ACK)
         {
-            PX_DBG_WARN("TWI_STATUS != TW_MR_SLA_ACK");
+            PX_DBG_W("TWI_STATUS != TW_MR_SLA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -168,7 +168,7 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
         // Check TWI Status
         if((TW_STATUS&0xf8) != TW_MT_SLA_ACK)
         {
-            PX_DBG_WARN("TWI_STATUS != TW_MT_SLA_ACK");
+            PX_DBG_W("TWI_STATUS != TW_MT_SLA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -179,10 +179,10 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
 
 static bool px_i2c_stop(void)
 {
-#if PX_DBG_LEVEL_ERR
+#if PX_DBG_LEVEL_E
     if((TW_STATUS & 0xf8) == TW_BUS_ERROR)
     {
-        PX_DBG_ERR("TW_STATUS = TW_BUS_ERROR");
+        PX_DBG_E("TW_STATUS = TW_BUS_ERROR");
     }
 #endif
 
@@ -205,7 +205,7 @@ static bool px_i2c_wr_u8(uint8_t data)
     // Check TWI Status
     if((TW_STATUS&0xf8) != TW_MT_DATA_ACK)
     {
-        PX_DBG_ERR("TWI_STATUS != TW_MT_DATA_ACK");
+        PX_DBG_E("TWI_STATUS != TW_MT_DATA_ACK");
         // Error
         px_i2c_stop();
         return false;
@@ -231,7 +231,7 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     {
         if((TW_STATUS&0xf8) != TW_MR_DATA_NACK)
         {
-            PX_DBG_ERR("TWI_STATUS != TW_MR_DATA_NACK");
+            PX_DBG_E("TWI_STATUS != TW_MR_DATA_NACK");
             // Error
             px_i2c_stop();
             return false;
@@ -241,7 +241,7 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     {
         if((TW_STATUS&0xf8) != TW_MR_DATA_ACK)
         {
-            PX_DBG_ERR("TWI_STATUS != TW_MR_DATA_ACK");
+            PX_DBG_E("TWI_STATUS != TW_MR_DATA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -271,7 +271,7 @@ static bool px_i2c_init_peripheral(px_i2c_nr_t i2c_nr)
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return false;
     }
 
@@ -318,7 +318,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
 

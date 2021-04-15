@@ -310,7 +310,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
 

@@ -59,8 +59,8 @@ typedef struct
 /// Label object data structure
 typedef struct
 {
-    px_gfx_obj_t                    obj;
-    const px_gfx_obj_label_prop_t * prop;    
+    px_gfx_obj_t                    obj;          ///< Common object properties
+    const px_gfx_obj_label_prop_t * prop;         ///< Additional label properties
 } px_gfx_obj_label_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */

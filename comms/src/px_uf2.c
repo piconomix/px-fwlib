@@ -333,11 +333,11 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf)
     {
         // this happens when we're trying to re-flash "current.uf2" file previously
         // copied from a device; we still want to count these blocks to reset properly
-        PX_DBG_ERR("Invalid target address 0x%08X", bl->target_addr);
+        PX_DBG_E("Invalid target address 0x%08X", bl->target_addr);
     }
     else
     {
-        PX_DBG_INFO("Write 0x%08X %u bytes", bl->target_addr, bl->payload_size);
+        PX_DBG_I("Write 0x%08X %u bytes", bl->target_addr, bl->payload_size);
         (*px_uf2_on_wr_flash_block)(bl->data, bl->target_addr, bl->payload_size);
     }
 
@@ -378,7 +378,7 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf)
             if(px_uf2_write_state.num_written >= px_uf2_write_state.nr_of_blocks)
             {
                 // Signal that las block has been written
-                PX_DBG_INFO("Write done");
+                PX_DBG_I("Write done");
                 (*px_uf2_on_wr_flash_done)();
             }
         }        

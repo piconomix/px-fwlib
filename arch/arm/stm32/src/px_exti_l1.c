@@ -394,7 +394,7 @@ void px_exti_open(px_exti_port_t    exti_port,
 #endif
 
     default:
-        PX_DBG_ERR("Invalid EXTI line specified");
+        PX_DBG_E("Invalid EXTI line specified");
     }
 }
 
@@ -421,7 +421,7 @@ void px_exti_type_set(px_exti_line_t    exti_line,
         break;
 
     default:
-        PX_DBG_ERR("Invalid EXTI type specified");
+        PX_DBG_E("Invalid EXTI type specified");
         break;
     }
 }

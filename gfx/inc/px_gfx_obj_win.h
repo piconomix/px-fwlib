@@ -45,19 +45,19 @@ extern "C"
 /// Window object properties
 typedef struct
 {
-    px_gfx_xy_t    x;               ///< X coordinate
-    px_gfx_xy_t    y;               ///< Y coordinate
-    px_gfx_xy_t    width;           ///< Right
-    px_gfx_xy_t    height;          ///< Bottom
+    px_gfx_xy_t    x;               ///< Left
+    px_gfx_xy_t    y;               ///< Top
+    px_gfx_xy_t    width;           ///< Width
+    px_gfx_xy_t    height;          ///< Height
     px_gfx_color_t color_bg;        ///< Background color
 } px_gfx_obj_win_prop_t;
 
 /// Window object data structure
 typedef struct
 {
-    px_gfx_obj_t                  obj;
-    const px_gfx_obj_win_prop_t * prop;
-    px_gfx_obj_t *                obj_first;
+    px_gfx_obj_t                  obj;          ///< Common object properties
+    const px_gfx_obj_win_prop_t * prop;         ///< Additional window properties
+    px_gfx_obj_t *                obj_first;    ///< Pointer to first object in child linked list
 } px_gfx_obj_win_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */

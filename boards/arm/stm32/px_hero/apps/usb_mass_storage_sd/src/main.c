@@ -88,13 +88,13 @@ bool main_sd_reset(void)
 
     if(!px_sd_reset())
     {
-        PX_DBG_ERR("Failed to reset SD card");
+        PX_DBG_E("Failed to reset SD card");
         return false;
     }
 
     if(!px_sd_read_csd(&main_sd_csd))
     {
-        PX_DBG_ERR("Failed to read CSD");
+        PX_DBG_E("Failed to read CSD");
         return false;
     }
 
@@ -123,7 +123,7 @@ int main(void)
         // USB connected event?
         if(main_usb_connected_event_flag)
         {
-            PX_DBG_INFO("USB Connect event");
+            PX_DBG_I("USB Connect event");
             main_usb_connected_event_flag = false;            
         }        
 

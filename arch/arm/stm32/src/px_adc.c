@@ -60,7 +60,7 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return;
     }
 
@@ -77,7 +77,7 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
         LL_ADC_SetClock(adc_base_adr, LL_ADC_CLOCK_SYNC_PCLK_DIV4);
         break;
     default:
-        PX_DBG_ERR("Unsupported ADC clock");
+        PX_DBG_E("Unsupported ADC clock");
         break;
     }
 
@@ -125,7 +125,7 @@ static void px_adc_init_peripheral_data(px_adc_nr_t    adc_nr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return;
     }
     // Clear reference counter
@@ -165,7 +165,7 @@ bool px_adc_open(px_adc_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
 #if PX_DBG

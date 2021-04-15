@@ -535,37 +535,37 @@ bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time)
     // Year?
     if(date_time->year > 99)
     {
-        PX_DBG_INFO("Year %u is invalid", date_time->year);
+        PX_DBG_I("Year %u is invalid", date_time->year);
         return false;
     }
     // Month?
     if((date_time->month <  1) || (date_time->month > 12))
     {
-        PX_DBG_INFO("Month %u is invalid", date_time->month);
+        PX_DBG_I("Month %u is invalid", date_time->month);
         return false;
     }
     // Day?
     if((date_time->day < 1) || (date_time->day > px_rtc_util_days_in_month(date_time->year, date_time->month)))
     {
-        PX_DBG_INFO("Day %u is invalid", date_time->day);
+        PX_DBG_I("Day %u is invalid", date_time->day);
         return false;
     }
     // Hour?
     if(date_time->hour > 23)
     {
-        PX_DBG_INFO("Hour %u is invalid", date_time->hour);
+        PX_DBG_I("Hour %u is invalid", date_time->hour);
         return false;
     }
     // Minute?
     if(date_time->min > 59)
     {
-        PX_DBG_INFO("Minute %u is invalid", date_time->min);
+        PX_DBG_I("Minute %u is invalid", date_time->min);
         return false;
     }
     // Second?
     if(date_time->sec > 59)
     {
-        PX_DBG_INFO("Second %u is invalid", date_time->sec);
+        PX_DBG_I("Second %u is invalid", date_time->sec);
         return false;
     }
 
@@ -833,7 +833,7 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
             if(date_time->year > 99)
             {
                 // Reset
-                PX_DBG_ERR("Overflow occured");
+                PX_DBG_E("Overflow occured");
                 px_rtc_util_date_time_reset(date_time);
                 return;
             }
@@ -853,7 +853,7 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
     if(date_time->year > 99)
     {
         // Reset
-        PX_DBG_ERR("Overflow occured");
+        PX_DBG_E("Overflow occured");
         px_rtc_util_date_time_reset(date_time);
         return;
     }
@@ -909,7 +909,7 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
             if(date_time->year > 99)
             {
                 // Reset
-                PX_DBG_ERR("Underflow occured");
+                PX_DBG_E("Underflow occured");
                 px_rtc_util_date_time_reset(date_time);
                 return;
             }
@@ -930,7 +930,7 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
     if(date_time->year > 99)
     {
         // Reset
-        PX_DBG_ERR("Underflow occured");
+        PX_DBG_E("Underflow occured");
         px_rtc_util_date_time_reset(date_time);
         return;
     }

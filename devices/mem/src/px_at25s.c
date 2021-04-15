@@ -222,25 +222,25 @@ void px_at25s_erase(px_at25s_block_t block,
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_4KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_4KB != 0)
         {
-            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+            PX_DBG_E("page nr %u is not on a erase block boundary", page);
         }
         break;
     case PX_AT25S_BLOCK_32KB:
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_32KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_32KB != 0)
         {
-            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+            PX_DBG_E("page nr %u is not on a erase block boundary", page);
         }
         break;
     case PX_AT25S_BLOCK_64KB :
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_64KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_64KB != 0)
         {
-            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+            PX_DBG_E("page nr %u is not on a erase block boundary", page);
         }
         break;
     default:
-        PX_DBG_ERR("Invalid block size specified");
+        PX_DBG_E("Invalid block size specified");
         return;
     }
     // Calculate address

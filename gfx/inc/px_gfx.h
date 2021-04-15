@@ -148,8 +148,8 @@ typedef struct
 {
     px_gfx_xy_t     x;          ///< Left
     px_gfx_xy_t     y;          ///< Top
-    px_gfx_xy_t     width;      ///< Right
-    px_gfx_xy_t     height;     ///< Bottom
+    px_gfx_xy_t     width;      ///< Width
+    px_gfx_xy_t     height;     ///< Height
     px_gfx_xy_ref_t xy_ref;     ///< Coordinate reference
 } px_gfx_view_port_t;
 

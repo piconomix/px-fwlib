@@ -130,7 +130,7 @@ static void px_c1098_tx_cmd(uint8_t id,
     px_c1098_tx_cmd_packet.param3 = param3;
     px_c1098_tx_cmd_packet.param4 = param4;
 
-    PX_DBG_INFO("TX %02X %02X %02X %02X %02X %02X", px_c1098_tx_cmd_packet.start
+    PX_DBG_I("TX %02X %02X %02X %02X %02X %02X", px_c1098_tx_cmd_packet.start
                                                   , px_c1098_tx_cmd_packet.id
                                                   , px_c1098_tx_cmd_packet.param1
                                                   , px_c1098_tx_cmd_packet.param2
@@ -147,9 +147,9 @@ static void px_c1098_change_state(px_c1098_state_t new_state)
     // Reset receiver
     px_c1098_rx_data_index = 0;
 
-#if PX_DBG_LEVEL_INFO
+#if PX_DBG_LEVEL_I
     // Report new state
-    PX_DBG_INFO("%010ul - PX_C1098_STATE_", (unsigned long)px_sysclk_get_tick_count());
+    PX_DBG_I("%010ul - PX_C1098_STATE_", (unsigned long)px_sysclk_get_tick_count());
     switch(px_c1098_state)
     {
     case PX_C1098_STATE_DONE:              PX_DBG_TRACE("DONE");              break;
@@ -202,10 +202,10 @@ static void px_c1098_on_rx_byte(uint8_t data)
 {
     uint16_t data_size;
 
-#if PX_DBG_LEVEL_INFO
+#if PX_DBG_LEVEL_I
     if(px_c1098_rx_data_index == 0)
     {
-        PX_DBG_INFO("RX %02X", data);
+        PX_DBG_I("RX %02X", data);
     }
     else
     {
@@ -300,7 +300,7 @@ static void px_c1098_on_rx_byte(uint8_t data)
                                                         px_c1098_rx_packet.cmd.param4,
                                                         px_c1098_rx_packet.cmd.param3,
                                                         px_c1098_rx_packet.cmd.param2);
-                PX_DBG_INFO("Data Length = %u bytes", px_c1098_data_length);
+                PX_DBG_I("Data Length = %u bytes", px_c1098_data_length);
                 px_c1098_ack_data_package();
             }
             break;
@@ -349,7 +349,7 @@ static void px_c1098_on_rx_byte(uint8_t data)
     // Checksum correct?
     if(!px_c1098_package_data_checksum_ok(data_size))
     {
-        PX_DBG_ERR("Checksum incorrect");
+        PX_DBG_E("Checksum incorrect");
         return;
     }
 
@@ -366,7 +366,7 @@ static void px_c1098_on_rx_byte(uint8_t data)
     else
     {
         px_c1098_data_length -= data_size;
-        PX_DBG_INFO("Data Length = %u", px_c1098_data_length);
+        PX_DBG_I("Data Length = %u", px_c1098_data_length);
         // Next package ID
         px_c1098_package_id++;
         // Reset retry counter
@@ -510,7 +510,7 @@ bool px_c1098_task_execute(void)
 
 void px_c1098_initial(uint8_t if_speed, uint8_t jpeg_res)
 {
-    PX_DBG_INFO("INITIAL");
+    PX_DBG_I("INITIAL");
     // Send INITIAL command
     px_c1098_tx_cmd(PX_C1098_ID_INITIAL, if_speed, 0x07, 0x00, jpeg_res);
     // Start timeout
@@ -523,7 +523,7 @@ void px_c1098_initial(uint8_t if_speed, uint8_t jpeg_res)
 
 void px_c1098_set_package_size(void)
 {
-    PX_DBG_INFO("SET_PACKAGE_SIZE");
+    PX_DBG_I("SET_PACKAGE_SIZE");
     // Send PACKAGE_SIZE command
     px_c1098_tx_cmd(PX_C1098_ID_SET_PACKAGE_SIZE, 0x08, PX_U16_LO8(PX_C1098_DATA_BLOCK_SIZE+6), PX_U16_HI8(PX_C1098_DATA_BLOCK_SIZE+6), 0x00);
     // Start timeout
@@ -536,7 +536,7 @@ void px_c1098_set_package_size(void)
 
 void px_c1098_reset(uint8_t rst_priority)
 {
-    PX_DBG_INFO("RESET");
+    PX_DBG_I("RESET");
     // Send RESET command
     px_c1098_tx_cmd(PX_C1098_ID_RESET, 0x00, 0x00, 0x00, rst_priority);
     // Start timeout
@@ -549,14 +549,14 @@ void px_c1098_reset(uint8_t rst_priority)
 
 void px_c1098_sync(void)
 {
-    PX_DBG_INFO("SYNC");
+    PX_DBG_I("SYNC");
     px_c1098_retry_cntr = 10;
     px_c1098_change_state(PX_C1098_STATE_SYNC);
 }
 
 void px_c1098_snapshot(void)
 {
-    PX_DBG_INFO("SNAPSHOT");
+    PX_DBG_I("SNAPSHOT");
     // Send SNAPSHOT command
     px_c1098_tx_cmd(PX_C1098_ID_SNAPSHOT, 0x00, 0x00, 0x00, 0x00);
 
@@ -581,7 +581,7 @@ void px_c1098_get_picture(px_c1098_on_rx_data_t on_rx_data)
     // Reset retry counter
     px_c1098_retry_cntr = 3;
 
-    PX_DBG_INFO("GET_PICTURE");
+    PX_DBG_I("GET_PICTURE");
     // Send GET_PICTURE command
     px_c1098_tx_cmd(PX_C1098_ID_GET_PICTURE, 0x01, 0x00, 0x00, 0x00);
 

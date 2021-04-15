@@ -229,7 +229,7 @@ int main(void)
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
-    PX_DBG_INFO("Starting USB mass storage bootloader");
+    PX_DBG_I("Starting USB mass storage bootloader");
 #endif
 
     // Start timer for LED flashing

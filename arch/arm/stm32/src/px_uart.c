@@ -242,7 +242,7 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return false;
     }
 
@@ -275,7 +275,7 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
         }
         else
         {
-            PX_DBG_ERR("Parity option invalid");
+            PX_DBG_E("Parity option invalid");
         }
     }
 #ifdef STM32L1
@@ -288,7 +288,7 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
         usart_cr1_val |= USART_CR1_M;
         break;
     default:
-        PX_DBG_ERR("Invalid number of data bits");
+        PX_DBG_E("Invalid number of data bits");
         return false;
     }
 #else
@@ -304,7 +304,7 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
         usart_cr1_val |= USART_CR1_M0;
         break;
     default:
-        PX_DBG_ERR("Invalid number of data bits");
+        PX_DBG_E("Invalid number of data bits");
         return false;
     }
 #endif
@@ -320,7 +320,7 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
         usart_cr1_val |= USART_CR1_PCE;
         break;
     default:
-        PX_DBG_ERR("Invalid parity specified");
+        PX_DBG_E("Invalid parity specified");
         return false;
     }
     // Set stop bits
@@ -333,7 +333,7 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
         LL_USART_SetStopBitsLength(usart_base_adr, LL_USART_STOPBITS_2);
         break;
     default:
-        PX_DBG_ERR("Invalid number of stop bits specified");
+        PX_DBG_E("Invalid number of stop bits specified");
         return false;
     }
     // Set Control register 1
@@ -522,13 +522,13 @@ bool px_uart_open2(px_uart_handle_t *  handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
     // Already open?
     if(uart_per->open_counter != 0)
     {
-        PX_DBG_ERR("Only one handle per UART peripheral can be opened");
+        PX_DBG_E("Only one handle per UART peripheral can be opened");
         return false;
     }
     // Set transmit done flag
@@ -565,7 +565,7 @@ bool px_uart_close(px_uart_handle_t * handle)
     // Already closed?
     if(uart_per->open_counter == 0)
     {
-        PX_DBG_ERR("Peripheral already closed");
+        PX_DBG_E("Peripheral already closed");
         return false;
     }
 
@@ -648,7 +648,7 @@ bool px_uart_close(px_uart_handle_t * handle)
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return false;
     }
 

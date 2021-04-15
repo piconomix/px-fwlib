@@ -51,8 +51,8 @@ px_gfx_obj_handle_t _px_gfx_obj_create(px_gfx_obj_type_t          obj_type,
     // Set object type
     obj->obj_type = obj_type;
     // Set defaults
-    obj->visible  = true;
-    obj->update     = true;        
+    obj->visible = true;
+    obj->update  = true;
     // Set pointer to object event handler function
     obj->event_handler = event_handler;
 

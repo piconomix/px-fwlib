@@ -260,7 +260,7 @@ static bool px_uart_init_peripheral(px_uart_nr_t uart_nr,
 
     default:
         // Invalid peripheral
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return false;
     }
 
@@ -319,13 +319,13 @@ bool px_uart_open(px_uart_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
     // Already open?
     if(uart_per->open_counter != 0)
     {
-        PX_DBG_ERR("Only one handle per UART peripheral can be opened");
+        PX_DBG_E("Only one handle per UART peripheral can be opened");
         return false;
     }    
     // Initialise peripheral
@@ -373,14 +373,14 @@ bool px_uart_open2(px_uart_handle_t *  handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
 
     // Already open?
     if(uart_per->open_counter != 0)
     {
-        PX_DBG_ERR("Only one handle per UART peripheral can be opened");
+        PX_DBG_E("Only one handle per UART peripheral can be opened");
         return false;
     }
     // Calculate new 16-bit UBRR register value
@@ -398,7 +398,7 @@ bool px_uart_open2(px_uart_handle_t *  handle,
         ucsrc |= (0<<UPM01) | (0<<UPM00);
         break;
     default:
-        PX_DBG_ERR("Invalid parity specified");
+        PX_DBG_E("Invalid parity specified");
         handle->uart_per = NULL;
         return false;
     }
@@ -418,7 +418,7 @@ bool px_uart_open2(px_uart_handle_t *  handle,
         ucsrc |= (1<<UCSZ01) | (1<<UCSZ00);
         break;
     default:
-        PX_DBG_ERR("Invalid number of data bits");
+        PX_DBG_E("Invalid number of data bits");
         handle->uart_per = NULL;
         return false;
     }
@@ -432,7 +432,7 @@ bool px_uart_open2(px_uart_handle_t *  handle,
         ucsrc |= (1<<USBS0);
         break;
     default:
-        PX_DBG_ERR("Invalid number of stop bits specified");
+        PX_DBG_E("Invalid number of stop bits specified");
         handle->uart_per = NULL;
         return false;
     }
@@ -465,7 +465,7 @@ bool px_uart_close(px_uart_handle_t * handle)
     // Already closed?
     if(uart_per->open_counter == 0)
     {
-        PX_DBG_ERR("Peripheral already closed");
+        PX_DBG_E("Peripheral already closed");
         return false;
     }
 
@@ -484,7 +484,7 @@ bool px_uart_close(px_uart_handle_t * handle)
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return false;
     }
     // Close handle
@@ -773,7 +773,7 @@ void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return;
     }
 

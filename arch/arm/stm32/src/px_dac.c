@@ -62,7 +62,7 @@ static void px_dac_init_peripheral(DAC_TypeDef * dac_base_adr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return;
     }
 
@@ -91,7 +91,7 @@ static void px_dac_init_peripheral_data(px_dac_nr_t    dac_nr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_DBG_E("Invalid peripheral");
         return;
     }
     // Clear reference counter
@@ -131,7 +131,7 @@ bool px_dac_open(px_dac_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_DBG_E("Invalid peripheral specified");
         return false;
     }
 #if PX_DBG
@@ -240,7 +240,7 @@ void px_dac_wr(px_dac_handle_t * handle,
         dac_base_adr->DHR12R2 = data;
         break;
     default:
-        PX_DBG_ERR("Invalid DAC channel specified");
+        PX_DBG_E("Invalid DAC channel specified");
         break;
     }
 }

@@ -242,7 +242,7 @@ static void _px_dbg_log_terminate(const char * format)
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void _px_dbg_log_err(const char * name, uint16_t line, const char * format, ...)
+void _px_dbg_log_error(const char * name, uint16_t line, const char * format, ...)
 {
     va_list args;
 
@@ -262,7 +262,7 @@ void _px_dbg_log_err(const char * name, uint16_t line, const char * format, ...)
     _px_dbg_log_terminate(format);
 }
 
-void _px_dbg_log_warn(const char * name, uint16_t line, const char * format, ...)
+void _px_dbg_log_warning(const char * name, uint16_t line, const char * format, ...)
 {
     va_list args;
 
@@ -302,7 +302,7 @@ void _px_dbg_log_info(const char * name, uint16_t line, const char * format, ...
     _px_dbg_log_terminate(format);
 }
 
-void _px_dbg_log_verb(const char * name, uint16_t line, const char * format, ...)
+void _px_dbg_log_verbose(const char * name, uint16_t line, const char * format, ...)
 {
     va_list args;
 
