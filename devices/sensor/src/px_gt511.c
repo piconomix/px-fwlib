@@ -309,17 +309,17 @@ static bool px_gt511_rx_resp_packet(px_systmr_ticks_t timeout_ticks)
     }
 
     // Success
-#if PX_LOG_LEVEL_I
-    if(px_gt511_resp_packet.resp == PX_GT511_CMD_ACK)
+    if(PX_LOG_LEVEL_I())
     {
-        PX_LOG_I("RX Resp ACK");
+        if(px_gt511_resp_packet.resp == PX_GT511_CMD_ACK)
+        {
+            PX_LOG_I("RX Resp ACK");
+        }
+        else
+        {
+            PX_LOG_I("RX Resp NACK (Error Code %04X)", px_gt511_resp_packet.param);
+        }
     }
-    else
-    {
-        PX_LOG_I("RX Resp NACK (Error Code %04X)", px_gt511_resp_packet.param);
-    }
-#endif
-    return true;
 }
 
 static bool px_gt511_rx_data_packet(void *            data,

@@ -108,12 +108,13 @@
  *      @code{.c}
  *      void tx_data(void * data, size_t nr_of_bytes)
  *      {
- *      // PX_LOG=1 and PX_LOG_CFG_LEVEL includes VERBOSE messages?
- *      #if PX_LOG_LEVEL_V
- *          // Report content of buffer
- *          PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes);
- *      #endif
- *  
+ *          // PX_LOG=1 and PX_LOG_CFG_LEVEL includes VERBOSE messages?
+ *          if(PX_LOG_LEVEL_V())
+ *          {
+ *              // Report content of buffer
+ *              PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes);
+ *          }
+ *
  *          // Rest of function...
  *      }
  *      @endcode
@@ -167,7 +168,7 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS _________________________________________________________ */
-/// Log message level in increasing verbosity
+/// Log message level numbered in increasing verbosity
 typedef enum
 {
     PX_LOG_LEVEL_NONE    = 0,   ///< No log output
@@ -183,6 +184,23 @@ typedef enum
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
+/**
+ *  Run time log filter.
+ *
+ *  An optional customised version of this function can be declared to filter
+ *  log output based on the level and / or name.
+ *
+ *  A weak version is declared in px_log.c that always returns false meaning
+ *  that no log outputs are filtered.
+ *
+ *  @param level    Log level
+ *  @param name     Module / file name
+ *
+ *  @retval true    Log must be filtered
+ *  @retval false   Log must be outputted
+ */
+bool px_log_filter(px_log_level_t level, const char * name);
+
 /**
  *  Output error info: module name, line and variable argument user format string.
  *
@@ -306,57 +324,95 @@ void _px_log_trace_data(const void * data, size_t nr_of_bytes);
 void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
-/// Error level enabled?
-#define PX_LOG_LEVEL_E  ((PX_LOG) && ((PX_LOG_CFG_LEVEL) > PX_LOG_LEVEL_NONE) && ((PX_LOG_CFG_LEVEL) <= PX_LOG_LEVEL_ERROR))
-/// Warning level enabled?
-#define PX_LOG_LEVEL_W  ((PX_LOG) && ((PX_LOG_CFG_LEVEL) > PX_LOG_LEVEL_NONE) && ((PX_LOG_CFG_LEVEL) <= PX_LOG_LEVEL_WARNING))
-/// Info level enabled?
-#define PX_LOG_LEVEL_I  ((PX_LOG) && ((PX_LOG_CFG_LEVEL) > PX_LOG_LEVEL_NONE) && ((PX_LOG_CFG_LEVEL) <= PX_LOG_LEVEL_INFO))
-/// Verbose level enabled?
-#define PX_LOG_LEVEL_V  ((PX_LOG) && ((PX_LOG_CFG_LEVEL) > PX_LOG_LEVEL_NONE) && ((PX_LOG_CFG_LEVEL) <= PX_LOG_LEVEL_VERBOSE))
-/// Debug level enabled?
-#define PX_LOG_LEVEL_D  ((PX_LOG) && ((PX_LOG_CFG_LEVEL) > PX_LOG_LEVEL_NONE) && ((PX_LOG_CFG_LEVEL) <= PX_LOG_LEVEL_DEBUG))
-
 // PX_LOG enabled?
 #if PX_LOG
 
-#if PX_LOG_LEVEL_E
-/// Macro to display a formatted ERROR message
-#define PX_LOG_E(format, ...)    _px_log_log_error(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
-#else
-#define PX_LOG_E(format, ...)    ((void)0)
-#endif
-
-#if PX_LOG_LEVEL_W
-/// Macro to display a formatted WARNING message
-#define PX_LOG_W(format, ...)   _px_log_log_warning(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
-#else
-#define PX_LOG_W(format, ...)   ((void)0)
-#endif
-
-#if PX_LOG_LEVEL_I
-/// Macro to display a formatted INFO message
-#define PX_LOG_I(format, ...)   _px_log_log_info(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
-#else
-#define PX_LOG_I(format, ...)   ((void)0)
-#endif
-
-#if PX_LOG_LEVEL_V
-/// Macro to display a formatted VERBOSE message
-#define PX_LOG_V(format, ...)   _px_log_log_verbose(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
-#else
-#define PX_LOG_V(format, ...)   ((void)0)
-#endif
-
-#if PX_LOG_LEVEL_D
-/// Macro to display a formatted VERBOSE message
-#define PX_LOG_D(format, ...)   _px_log_log_debug(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__)
-#else
-#define PX_LOG_D(format, ...)   ((void)0)
-#endif
-
 /// Macro to declare a log name string once for each file to reduce code size.
-#define PX_LOG_NAME(name)       PX_ATTR_UNUSED static const char _px_log_name[] PX_ATTR_PGM = name;
+#define PX_LOG_NAME(name)   PX_ATTR_UNUSED static const char _px_log_name[] PX_ATTR_PGM = name;
+
+/// Error level enabled?
+#define PX_LOG_LEVEL_E()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_ERROR)   && !px_log_filter(PX_LOG_LEVEL_ERROR,   _px_log_name))
+/// Warning level enabled?
+#define PX_LOG_LEVEL_W()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_WARNING) && !px_log_filter(PX_LOG_LEVEL_WARNING, _px_log_name))
+/// Info level enabled?
+#define PX_LOG_LEVEL_I()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_INFO)    && !px_log_filter(PX_LOG_LEVEL_INFO,    _px_log_name))
+/// Debug level enabled?
+#define PX_LOG_LEVEL_D()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_DEBUG)   && !px_log_filter(PX_LOG_LEVEL_DEBUG,   _px_log_name))
+/// Verbose level enabled?
+#define PX_LOG_LEVEL_V()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_VERBOSE) && !px_log_filter(PX_LOG_LEVEL_VERBOSE, _px_log_name))
+
+/// Macro to display a formatted ERROR message
+#define PX_LOG_E(format, ...) \
+    do \
+    { \
+        if(PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_ERROR) \
+        { \
+            _px_log_log_error(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__); \
+        } \
+    } \
+    while(0)
+
+/// Macro to display a formatted WARNING message
+#define PX_LOG_W(format, ...) \
+    do \
+    { \
+        if(PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_WARNING) \
+        { \
+            _px_log_log_warning(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__); \
+        } \
+    } \
+    while(0)
+
+/// Macro to display a formatted INFO message
+#define PX_LOG_I(format, ...) \
+    do \
+    { \
+        if(PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_INFO) \
+        { \
+            _px_log_log_info(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__); \
+        } \
+    } \
+    while(0)
+
+/// Macro to display a formatted DEBUG message
+#define PX_LOG_D(format, ...) \
+    do \
+    { \
+        if(PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_DEBUG) \
+        { \
+            _px_log_log_debug(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__); \
+        } \
+    } \
+    while(0)
+
+/// Macro to display a formatted VERBOSE message
+#define PX_LOG_V(format, ...) \
+    do \
+    { \
+        if(PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_VERBOSE) \
+        { \
+            _px_log_log_verbose(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(format), ## __VA_ARGS__); \
+        } \
+    } \
+    while(0)
+
+/**
+ *  Macro that will test an expression, and block indefinitely if false.
+ *
+ *  This macro will perform the test and if false, will output the filename and
+ *  line number with the test appended. The macro will then block indefinitely.
+ *
+ *  @param[in] expression   Expression that evaluates to a boolean value
+ *                          (true or false)
+ */
+#define PX_LOG_ASSERT(expression) \
+            do \
+            { \
+                if(!(expression)) \
+                { \
+                    _px_log_assert(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(#expression)); \
+                } \
+            } while(0)
 
 /**
  *  Macro to output a user format string if #PX_LOG=1
@@ -391,36 +447,24 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
  */
 #define PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes) _px_log_trace_hexdump(data, nr_of_bytes)
 
-/**
- *  Macro that will test an expression, and block indefinitely if false.
- *  
- *  This macro will perform the test and if false, will output the filename and
- *  line number with the test appended. The macro will then block indefinitely.
- *  
- *  @param[in] expression   Expression that evaluates to a boolean value
- *                          (true or false)
- */
-#define PX_LOG_ASSERT(expression) \
-            do \
-            { \
-                if(!(expression)) \
-                { \
-                    _px_log_assert(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(#expression)); \
-                } \
-            } while(0)
 #else
 
 // PX_LOG = 0; Remove log code
-#define PX_LOG_E(format, ...)                      ((void)0)
-#define PX_LOG_W(format, ...)                      ((void)0)
-#define PX_LOG_I(format, ...)                      ((void)0)
-#define PX_LOG_V(format, ...)                      ((void)0)
-#define PX_LOG_D(format, ...)                      ((void)0)
 #define PX_LOG_NAME(name)
-#define PX_LOG_TRACE(format, ...)                  ((void)0)
-#define PX_LOG_TRACE_DATA(data, nr_of_bytes)       ((void)0)
-#define PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes)    ((void)0)
-#define PX_LOG_ASSERT(expression)                  ((void)0)
+#define PX_LOG_LEVEL_E()                        0
+#define PX_LOG_LEVEL_W()                        0
+#define PX_LOG_LEVEL_I()                        0
+#define PX_LOG_LEVEL_D()                        0
+#define PX_LOG_LEVEL_V()                        0
+#define PX_LOG_E(format, ...)                   ((void)0)
+#define PX_LOG_W(format, ...)                   ((void)0)
+#define PX_LOG_I(format, ...)                   ((void)0)
+#define PX_LOG_D(format, ...)                   ((void)0)
+#define PX_LOG_V(format, ...)                   ((void)0)
+#define PX_LOG_ASSERT(expression)               ((void)0)
+#define PX_LOG_TRACE(format, ...)               ((void)0)
+#define PX_LOG_TRACE_DATA(data, nr_of_bytes)    ((void)0)
+#define PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes) ((void)0)
 
 #endif
 

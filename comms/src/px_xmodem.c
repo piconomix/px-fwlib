@@ -63,20 +63,18 @@ static union
 } px_xmodem_packet;
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-#if PX_LOG_LEVEL_I
-static void px_modem_dbg_info_flow(uint8_t data)
+void px_modem_flow_char_to_str(uint8_t data)
 {
     switch(data)
     {
-    case PX_XMODEM_SOH : PX_LOG_I("Received SOH");          break;
-    case PX_XMODEM_EOT : PX_LOG_I("Received EOT");          break;
-    case PX_XMODEM_ACK : PX_LOG_I("Received ACK");          break;
-    case PX_XMODEM_NAK : PX_LOG_I("Received NAK");          break;
-    case PX_XMODEM_C :   PX_LOG_I("Received 'C'");          break;
-    default:             PX_LOG_I("Received 0x%02X", data); break;
+    case PX_XMODEM_SOH : return "SOH";
+    case PX_XMODEM_EOT : return "EOT";
+    case PX_XMODEM_ACK : return "ACK";
+    case PX_XMODEM_NAK : return "NAK";
+    case PX_XMODEM_C :   return "C";
+    default:             return "???";
     }
 }
-#endif
 
 static bool px_xmodem_wait_rx_char(uint8_t * data)
 {
@@ -360,9 +358,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
             PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
             if(px_xmodem_wait_rx_char(&data))
             {
-#if PX_LOG_LEVEL_I
-                px_modem_dbg_info_flow(data);
-#endif
+                PX_LOG_D("Received %s", px_modem_flow_char_to_str(data))
                 // Received an ACK?
                 if(data == PX_XMODEM_ACK)
                 {
@@ -397,9 +393,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
         PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
         if(px_xmodem_wait_rx_char(&data))
         {
-#if PX_LOG_LEVEL_I
-            px_modem_dbg_info_flow(data);
-#endif
+            PX_LOG_D("Received %s", px_modem_flow_char_to_str(data))
             if(data == PX_XMODEM_ACK)
             {
                 // File successfully transferred

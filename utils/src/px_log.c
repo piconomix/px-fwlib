@@ -150,7 +150,7 @@ static void px_log_printf(const char * format, ...)
 }
 #endif
 
-static void px_log_report_log_prefix(px_log_level_t level,
+static void px_log_report_log_prefix(uint8_t        level,
                                      const char *   name,
                                      uint16_t       line)
 {
@@ -247,13 +247,24 @@ static void _px_log_log_terminate(const char * format)
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
+__weak bool px_log_filter(px_log_level_t level, const char * name)
+{
+    // Allow all log output
+    return false;
+}
+
 void _px_log_log_error(const char * name, uint16_t line, const char * format, ...)
 {
     va_list args;
 
+    // Must log be filtered?
+    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    {
+        // Yes
+        return;
+    }
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_ERROR, name, line);
-
     // Output user formatted string
     va_start(args, format);
 #ifdef PX_COMPILER_GCC_AVR
@@ -262,7 +273,6 @@ void _px_log_log_error(const char * name, uint16_t line, const char * format, ..
     px_log_printf_vargs(format, args);
 #endif
     va_end(args);
-
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
     _px_log_log_terminate(format);
 }
@@ -271,9 +281,14 @@ void _px_log_log_warning(const char * name, uint16_t line, const char * format, 
 {
     va_list args;
 
+    // Must log be filtered?
+    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    {
+        // Yes
+        return;
+    }
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_WARNING, name, line);
-
     // Output user formatted string
     va_start(args, format);
 #ifdef PX_COMPILER_GCC_AVR
@@ -282,7 +297,6 @@ void _px_log_log_warning(const char * name, uint16_t line, const char * format, 
     px_log_printf_vargs(format, args);
 #endif
     va_end(args);
-
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
     _px_log_log_terminate(format);
 }
@@ -291,9 +305,14 @@ void _px_log_log_info(const char * name, uint16_t line, const char * format, ...
 {
     va_list args;
 
+    // Must log be filtered?
+    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    {
+        // Yes
+        return;
+    }
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_INFO, name, line);
-
     // Output user formatted string
     va_start(args, format);
 #ifdef PX_COMPILER_GCC_AVR
@@ -302,7 +321,6 @@ void _px_log_log_info(const char * name, uint16_t line, const char * format, ...
     px_log_printf_vargs(format, args);
 #endif
     va_end(args);
-
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
     _px_log_log_terminate(format);
 }
@@ -311,9 +329,14 @@ void _px_log_log_debug(const char * name, uint16_t line, const char * format, ..
 {
     va_list args;
 
+    // Must log be filtered?
+    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    {
+        // Yes
+        return;
+    }
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_DEBUG, name, line);
-
     // Output user formatted string
     va_start(args, format);
 #ifdef PX_COMPILER_GCC_AVR
@@ -322,7 +345,6 @@ void _px_log_log_debug(const char * name, uint16_t line, const char * format, ..
     px_log_printf_vargs(format, args);
 #endif
     va_end(args);
-
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
     _px_log_log_terminate(format);
 }
@@ -331,9 +353,14 @@ void _px_log_log_verbose(const char * name, uint16_t line, const char * format, 
 {
     va_list args;
 
+    // Must log be filtered?
+    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    {
+        // Yes
+        return;
+    }
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_VERBOSE, name, line);
-
     // Output user formatted string
     va_start(args, format);
 #ifdef PX_COMPILER_GCC_AVR
@@ -342,7 +369,6 @@ void _px_log_log_verbose(const char * name, uint16_t line, const char * format, 
     px_log_printf_vargs(format, args);
 #endif
     va_end(args);
-
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
     _px_log_log_terminate(format);
 }
@@ -360,7 +386,6 @@ void _px_log_assert(const char * name,
     px_log_printf("ASSERT: ");
     px_log_printf(expression);
 #endif
-
     // Block forever
     for(;;)
     {

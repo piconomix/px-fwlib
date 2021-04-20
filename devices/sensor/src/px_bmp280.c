@@ -244,22 +244,23 @@ static bool px_bmp280_cal_rd(void)
     px_bmp280_cal.dig.p9 = 6000;
 #endif
 
-#if PX_LOG_LEVEL_I
-    // Report calibration values
-    PX_LOG_TRACE("BMP280 Cal:\n");
-    PX_LOG_TRACE("T1 = %d\n", px_bmp280_cal.dig.t1);
-    PX_LOG_TRACE("T2 = %d\n", px_bmp280_cal.dig.t2);
-    PX_LOG_TRACE("T3 = %u\n", px_bmp280_cal.dig.t3);
-    PX_LOG_TRACE("P1 = %d\n", px_bmp280_cal.dig.p1);
-    PX_LOG_TRACE("P2 = %d\n", px_bmp280_cal.dig.p2);
-    PX_LOG_TRACE("P3 = %d\n", px_bmp280_cal.dig.p3);
-    PX_LOG_TRACE("P4 = %d\n", px_bmp280_cal.dig.p4);
-    PX_LOG_TRACE("P5 = %d\n", px_bmp280_cal.dig.p5);
-    PX_LOG_TRACE("P6 = %d\n", px_bmp280_cal.dig.p6);
-    PX_LOG_TRACE("P7 = %d\n", px_bmp280_cal.dig.p7);
-    PX_LOG_TRACE("P8 = %d\n", px_bmp280_cal.dig.p8);
-    PX_LOG_TRACE("P9 = %d\n", px_bmp280_cal.dig.p9);
-#endif
+    if(PX_LOG_LEVEL_D())
+    {
+        // Report calibration values
+        PX_LOG_TRACE("BMP280 Cal:\n");
+        PX_LOG_TRACE("T1 = %d\n", px_bmp280_cal.dig.t1);
+        PX_LOG_TRACE("T2 = %d\n", px_bmp280_cal.dig.t2);
+        PX_LOG_TRACE("T3 = %u\n", px_bmp280_cal.dig.t3);
+        PX_LOG_TRACE("P1 = %d\n", px_bmp280_cal.dig.p1);
+        PX_LOG_TRACE("P2 = %d\n", px_bmp280_cal.dig.p2);
+        PX_LOG_TRACE("P3 = %d\n", px_bmp280_cal.dig.p3);
+        PX_LOG_TRACE("P4 = %d\n", px_bmp280_cal.dig.p4);
+        PX_LOG_TRACE("P5 = %d\n", px_bmp280_cal.dig.p5);
+        PX_LOG_TRACE("P6 = %d\n", px_bmp280_cal.dig.p6);
+        PX_LOG_TRACE("P7 = %d\n", px_bmp280_cal.dig.p7);
+        PX_LOG_TRACE("P8 = %d\n", px_bmp280_cal.dig.p8);
+        PX_LOG_TRACE("P9 = %d\n", px_bmp280_cal.dig.p9);
+    }
 
     return true;
 }

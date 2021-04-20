@@ -108,6 +108,23 @@ static uint16_t              px_c1098_package_id;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
+const char * px_c1098_state_to_str(px_c1098_state_t state)
+{
+    switch(state)
+    {
+    case PX_C1098_STATE_DONE:              return "DONE");
+    case PX_C1098_STATE_ERROR:             return "ERROR");
+    case PX_C1098_STATE_WAIT_ACK:          return "WAIT_ACK");
+    case PX_C1098_STATE_WAIT_AFTER_ACK:    return "WAIT_AFTER_ACK");
+    case PX_C1098_STATE_SYNC:              return "SYNC");
+    case PX_C1098_STATE_SYNC_WAIT_ACK:     return "SYNC_WAIT_ACK");
+    case PX_C1098_STATE_SYNC_WAIT_SYNC:    return "SYNC_WAIT_SYNC");
+    case PX_C1098_STATE_GET_PIC_WAIT_ACK:  return "GET_PIC_WAIT_ACK");
+    case PX_C1098_STATE_WAIT_DATA_LENGTH:  return "WAIT_DATA_LENGTH");
+    case PX_C1098_STATE_WAIT_DATA_PACKAGE: return "WAIT_DATA_PACKAGE");
+    default:                               return "???");
+    }
+}
 static void px_c1098_tx_data(uint8_t * data, uint8_t nr_of_bytes)
 {
     while(nr_of_bytes != 0)
@@ -147,25 +164,11 @@ static void px_c1098_change_state(px_c1098_state_t new_state)
     // Reset receiver
     px_c1098_rx_data_index = 0;
 
-#if PX_LOG_LEVEL_I
-    // Report new state
-    PX_LOG_I("%010ul - PX_C1098_STATE_", (unsigned long)px_sysclk_get_tick_count());
-    switch(px_c1098_state)
+    if(PX_LOG_LEVEL_D())
     {
-    case PX_C1098_STATE_DONE:              PX_LOG_TRACE("DONE");              break;
-    case PX_C1098_STATE_ERROR:             PX_LOG_TRACE("ERROR");             break;
-    case PX_C1098_STATE_WAIT_ACK:          PX_LOG_TRACE("WAIT_ACK");          break;
-    case PX_C1098_STATE_WAIT_AFTER_ACK:    PX_LOG_TRACE("WAIT_AFTER_ACK");    break;
-    case PX_C1098_STATE_SYNC:              PX_LOG_TRACE("SYNC");              break;
-    case PX_C1098_STATE_SYNC_WAIT_ACK:     PX_LOG_TRACE("SYNC_WAIT_ACK");     break;
-    case PX_C1098_STATE_SYNC_WAIT_SYNC:    PX_LOG_TRACE("SYNC_WAIT_SYNC");    break;
-    case PX_C1098_STATE_GET_PIC_WAIT_ACK:  PX_LOG_TRACE("GET_PIC_WAIT_ACK");  break;
-    case PX_C1098_STATE_WAIT_DATA_LENGTH:  PX_LOG_TRACE("WAIT_DATA_LENGTH");  break;
-    case PX_C1098_STATE_WAIT_DATA_PACKAGE: PX_LOG_TRACE("WAIT_DATA_PACKAGE"); break;
-    default:                               PX_LOG_TRACE("UNKNOWN");           break;
+        // Report new state
+        PX_LOG_D("%010ul - state %s", (unsigned long)px_sysclk_get_tick_count(), px_c1098_state_to_str(px_c1098_state));
     }
-    PX_LOG_TRACE("\n");
-#endif
 }
 
 static void px_c1098_ack_data_package(void)
@@ -202,16 +205,17 @@ static void px_c1098_on_rx_byte(uint8_t data)
 {
     uint16_t data_size;
 
-#if PX_LOG_LEVEL_I
-    if(px_c1098_rx_data_index == 0)
+    if(PX_LOG_LEVEL_D())
     {
-        PX_LOG_I("RX %02X", data);
+        if(px_c1098_rx_data_index == 0)
+        {
+            PX_LOG_D("RX %02X", data);
+        }
+        else
+        {
+            PX_LOG_TRACE(" %02X", data);
+        }
     }
-    else
-    {
-        PX_LOG_TRACE(" %02X", data);
-    }
-#endif
 
     // Buffer full?
     if(px_c1098_rx_data_index >= sizeof(px_c1098_rx_packet))

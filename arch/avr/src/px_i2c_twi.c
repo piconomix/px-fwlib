@@ -179,16 +179,12 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
 
 static bool px_i2c_stop(void)
 {
-#if PX_LOG_LEVEL_E
     if((TW_STATUS & 0xf8) == TW_BUS_ERROR)
     {
         PX_LOG_E("TW_STATUS = TW_BUS_ERROR");
     }
-#endif
-
     // Send STOP condition
     TWCR = (1<<TWINT) | (1<<TWSTO) | (1<<TWEN);
-
     // Wait for TWSTO flag to be cleared
     PX_WAIT_UNTIL_BIT_IS_LO(TWCR, TWSTO);
 

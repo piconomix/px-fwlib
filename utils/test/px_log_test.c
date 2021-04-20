@@ -9,6 +9,22 @@ PX_LOG_NAME("px_log_test")
 // Declare UART handle structure
 px_uart_handle_t px_uart_handle;
 
+bool px_log_filter(px_log_level_t level, const char * name)
+{
+    // Filter all logs with a higher verbosity than DEBUG level
+    if(level > PX_LOG_LEVEL_DEBUG)
+    {
+        return true;
+    }
+    // Does name start with "px"?
+    if(strncmp(name, "px", 2) != 0)
+    {
+        return true;
+    }
+    // Allow log
+    return false;
+}
+
 uint8_t calc(uint8_t val)
 {
     uint8_t answer;

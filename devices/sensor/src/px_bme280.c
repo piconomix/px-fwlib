@@ -258,28 +258,29 @@ static bool px_bme280_cal_rd(void)
     px_bme280_cal.h5 = ((int16_t)(int8_t)data[5] * 16) | ((int16_t)(data[4] >> 4));
     px_bme280_cal.h6 = (int8_t)data[6];
 
-#if PX_LOG_LEVEL_I
-    // Report calibration values
-    PX_LOG_TRACE("BME280 Cal:\n");
-    PX_LOG_TRACE("T1 = %d\n",   px_bme280_cal.t1);
-    PX_LOG_TRACE("T2 = %d\n",   px_bme280_cal.t2);
-    PX_LOG_TRACE("T3 = %u\n",   px_bme280_cal.t3);
-    PX_LOG_TRACE("P1 = %d\n",   px_bme280_cal.p1);
-    PX_LOG_TRACE("P2 = %d\n",   px_bme280_cal.p2);
-    PX_LOG_TRACE("P3 = %d\n",   px_bme280_cal.p3);
-    PX_LOG_TRACE("P4 = %d\n",   px_bme280_cal.p4);
-    PX_LOG_TRACE("P5 = %d\n",   px_bme280_cal.p5);
-    PX_LOG_TRACE("P6 = %d\n",   px_bme280_cal.p6);
-    PX_LOG_TRACE("P7 = %d\n",   px_bme280_cal.p7);
-    PX_LOG_TRACE("P8 = %d\n",   px_bme280_cal.p8);
-    PX_LOG_TRACE("P9 = %d\n",   px_bme280_cal.p9);
-    PX_LOG_TRACE("H1 = %hhu\n", px_bme280_cal.h1);
-    PX_LOG_TRACE("H2 = %hd\n",  px_bme280_cal.h2);
-    PX_LOG_TRACE("H3 = %hhu\n", px_bme280_cal.h3);
-    PX_LOG_TRACE("H4 = %hd\n",  px_bme280_cal.h4);
-    PX_LOG_TRACE("H5 = %hd\n",  px_bme280_cal.h5);
-    PX_LOG_TRACE("H6 = %hhd\n", px_bme280_cal.h6);
-#endif
+    if(PX_LOG_LEVEL_D())
+    {
+        // Report calibration values
+        PX_LOG_TRACE("BME280 Cal:\n");
+        PX_LOG_TRACE("T1 = %d\n",   px_bme280_cal.t1);
+        PX_LOG_TRACE("T2 = %d\n",   px_bme280_cal.t2);
+        PX_LOG_TRACE("T3 = %u\n",   px_bme280_cal.t3);
+        PX_LOG_TRACE("P1 = %d\n",   px_bme280_cal.p1);
+        PX_LOG_TRACE("P2 = %d\n",   px_bme280_cal.p2);
+        PX_LOG_TRACE("P3 = %d\n",   px_bme280_cal.p3);
+        PX_LOG_TRACE("P4 = %d\n",   px_bme280_cal.p4);
+        PX_LOG_TRACE("P5 = %d\n",   px_bme280_cal.p5);
+        PX_LOG_TRACE("P6 = %d\n",   px_bme280_cal.p6);
+        PX_LOG_TRACE("P7 = %d\n",   px_bme280_cal.p7);
+        PX_LOG_TRACE("P8 = %d\n",   px_bme280_cal.p8);
+        PX_LOG_TRACE("P9 = %d\n",   px_bme280_cal.p9);
+        PX_LOG_TRACE("H1 = %hhu\n", px_bme280_cal.h1);
+        PX_LOG_TRACE("H2 = %hd\n",  px_bme280_cal.h2);
+        PX_LOG_TRACE("H3 = %hhu\n", px_bme280_cal.h3);
+        PX_LOG_TRACE("H4 = %hd\n",  px_bme280_cal.h4);
+        PX_LOG_TRACE("H5 = %hd\n",  px_bme280_cal.h5);
+        PX_LOG_TRACE("H6 = %hhd\n", px_bme280_cal.h6);
+    }
 
     return true;
 }
