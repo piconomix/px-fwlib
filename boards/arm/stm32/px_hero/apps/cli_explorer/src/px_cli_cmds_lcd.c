@@ -24,10 +24,10 @@
 #include "px_board.h"
 #include "px_gfx.h"
 #include "px_gfx_res.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_lcd");
+PX_LOG_NAME("cli_cmds_lcd");
 
 /* _____MACROS_______________________________________________________________ */
 

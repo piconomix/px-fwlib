@@ -72,7 +72,7 @@ SRC += $(PX_LIB)/$(ARCH)/src/px_i2c_twi.c
 #SRC += $(PX_LIB)/$(ARCH)/src/px_i2c_gpio.c
 SRC += $(PX_LIB)/comms/src/px_vt100.c
 SRC += $(PX_LIB)/comms/src/px_cli_P.c
-SRC += $(PX_LIB)/utils/src/px_dbg.c
+SRC += $(PX_LIB)/utils/src/px_log.c
 SRC += $(PX_LIB)/utils/src/px_rtc_util.c
 SRC += $(PX_LIB)/utils/src/px_systmr.c
 SRC += $(BSP)/src/px_board.c
@@ -111,7 +111,7 @@ INCDIRS += $(PX_LIB)/utils/inc
 INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-CDEFS += PX_DBG=0
+CDEFS += PX_LOG=0
 CDEFS += 
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)

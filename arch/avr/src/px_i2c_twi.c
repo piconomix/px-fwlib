@@ -23,10 +23,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_i2c.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_i2c_twi");
+PX_LOG_NAME("px_i2c_twi");
 
 /// Definition of data for each I2C peripheral
 typedef struct px_i2c_per_s
@@ -95,7 +95,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
     // Check TWI Status
     if((TW_STATUS & 0xf8) != TW_START)
     {
-        PX_DBG_E("TWI_STATUS != TW_START");
+        PX_LOG_E("TWI_STATUS != TW_START");
         return false;
     }
     // Add R/W bit
@@ -111,7 +111,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
         // Check TWI Status
         if((TW_STATUS&0xf8) != TW_MR_SLA_ACK)
         {
-            PX_DBG_W("TWI_STATUS != TW_MR_SLA_ACK");
+            PX_LOG_W("TWI_STATUS != TW_MR_SLA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -122,7 +122,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
         // Check TWI Status
         if((TW_STATUS&0xf8) != TW_MT_SLA_ACK)
         {
-            PX_DBG_W("TWI_STATUS != TW_MT_SLA_ACK");
+            PX_LOG_W("TWI_STATUS != TW_MT_SLA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -141,7 +141,7 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
     // Check TWI Status
     if((TW_STATUS & 0xf8) != TW_REP_START)
     {
-        PX_DBG_E("TWI_STATUS != TW_REP_START");
+        PX_LOG_E("TWI_STATUS != TW_REP_START");
         return false;
     }
     // Add R/W bit
@@ -157,7 +157,7 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
         // Check TWI Status
         if((TW_STATUS & 0xf8) != TW_MR_SLA_ACK)
         {
-            PX_DBG_W("TWI_STATUS != TW_MR_SLA_ACK");
+            PX_LOG_W("TWI_STATUS != TW_MR_SLA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -168,7 +168,7 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
         // Check TWI Status
         if((TW_STATUS&0xf8) != TW_MT_SLA_ACK)
         {
-            PX_DBG_W("TWI_STATUS != TW_MT_SLA_ACK");
+            PX_LOG_W("TWI_STATUS != TW_MT_SLA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -179,10 +179,10 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
 
 static bool px_i2c_stop(void)
 {
-#if PX_DBG_LEVEL_E
+#if PX_LOG_LEVEL_E
     if((TW_STATUS & 0xf8) == TW_BUS_ERROR)
     {
-        PX_DBG_E("TW_STATUS = TW_BUS_ERROR");
+        PX_LOG_E("TW_STATUS = TW_BUS_ERROR");
     }
 #endif
 
@@ -205,7 +205,7 @@ static bool px_i2c_wr_u8(uint8_t data)
     // Check TWI Status
     if((TW_STATUS&0xf8) != TW_MT_DATA_ACK)
     {
-        PX_DBG_E("TWI_STATUS != TW_MT_DATA_ACK");
+        PX_LOG_E("TWI_STATUS != TW_MT_DATA_ACK");
         // Error
         px_i2c_stop();
         return false;
@@ -231,7 +231,7 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     {
         if((TW_STATUS&0xf8) != TW_MR_DATA_NACK)
         {
-            PX_DBG_E("TWI_STATUS != TW_MR_DATA_NACK");
+            PX_LOG_E("TWI_STATUS != TW_MR_DATA_NACK");
             // Error
             px_i2c_stop();
             return false;
@@ -241,7 +241,7 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     {
         if((TW_STATUS&0xf8) != TW_MR_DATA_ACK)
         {
-            PX_DBG_E("TWI_STATUS != TW_MR_DATA_ACK");
+            PX_LOG_E("TWI_STATUS != TW_MR_DATA_ACK");
             // Error
             px_i2c_stop();
             return false;
@@ -271,7 +271,7 @@ static bool px_i2c_init_peripheral(px_i2c_nr_t i2c_nr)
         break;
 #endif
     default:
-        PX_DBG_E("Invalid peripheral");
+        PX_LOG_E("Invalid peripheral");
         return false;
     }
 
@@ -304,7 +304,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
     px_i2c_per_t * i2c_per;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
 
     // Handle not initialised
     handle->i2c_per = NULL;
@@ -318,7 +318,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_E("Invalid peripheral specified");
+        PX_LOG_E("Invalid peripheral specified");
         return false;
     }
 
@@ -349,12 +349,12 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     px_i2c_per_t * i2c_per;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
+    PX_LOG_ASSERT(i2c_per != NULL);
+    PX_LOG_ASSERT(i2c_per->open_counter != 0);
 
     // Decrement open count
     i2c_per->open_counter--;
@@ -396,14 +396,14 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
     const uint8_t * data_u8 = (const uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
+    PX_LOG_ASSERT(i2c_per != NULL);
+    PX_LOG_ASSERT(i2c_per->open_counter != 0);
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(handle->slave_adr < 0x80);
+    PX_LOG_ASSERT(handle->slave_adr < 0x80);
 #if !DBG
     // Supress compiler warning about unused variable
     (void)i2c_per;
@@ -463,14 +463,14 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
     uint8_t *       data_u8 = (uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
+    PX_LOG_ASSERT(i2c_per != NULL);
+    PX_LOG_ASSERT(i2c_per->open_counter != 0);
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(handle->slave_adr < 0x80);
+    PX_LOG_ASSERT(handle->slave_adr < 0x80);
 #if !DBG
     // Supress compiler warning about unused variable
     (void)i2c_per;
@@ -537,9 +537,9 @@ void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
                                    uint8_t           slave_adr)
 {
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(slave_adr < 0x80);
+    PX_LOG_ASSERT(slave_adr < 0x80);
 
     handle->slave_adr = slave_adr;
 }

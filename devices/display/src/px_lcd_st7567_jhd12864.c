@@ -21,10 +21,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_lcd_st7567_jhd12864.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("lcd");
+PX_LOG_NAME("lcd");
 
 /// @name ST7567 commands (Table 8, page 21)
 //@{
@@ -61,7 +61,7 @@ static px_spi_handle_t * px_lcd_spi_handle;
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_lcd_wr_control_data(uint8_t data)
 {
-    //PX_DBG_INFO("LCD Cmd 0x%02X", data);
+    //PX_LOG_INFO("LCD Cmd 0x%02X", data);
     PX_LCD_CFG_RS_LO();
     px_spi_wr(px_lcd_spi_handle, &data, 1, PX_SPI_FLAG_START_AND_STOP);
     PX_LCD_CFG_RS_HI();

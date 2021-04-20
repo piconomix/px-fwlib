@@ -2112,10 +2112,10 @@ INCLUDE_FILE_PATTERNS  =
 PREDEFINED             = __DOX__=1 \
                          PX_ATTR_PACKED= \
                          PX_ATTR_CONST= \
-                         PX_DBG=1 \
-                         PX_DBG_LEVEL_INFO=1 \
-                         PX_DBG_LEVEL_WARN=1 \
-                         PX_DBG_LEVEL_ERR=1
+                         PX_LOG=1 \
+                         PX_LOG_LEVEL_INFO=1 \
+                         PX_LOG_LEVEL_WARN=1 \
+                         PX_LOG_LEVEL_ERR=1
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

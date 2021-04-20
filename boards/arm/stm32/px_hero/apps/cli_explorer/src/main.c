@@ -42,10 +42,10 @@
 #include "px_gfx.h"
 #include "px_gfx_res.h"
 #include "usb_device.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("main");
+PX_LOG_NAME("main");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -226,7 +226,7 @@ int main(void)
     PX_USR_LED_ON();
 
     // Report debug output
-    PX_DBG_TRACE("Debug enabled\n");
+    PX_LOG_TRACE("Debug enabled\n");
 
     // Initialize debounced buttons
     px_debounce_init(&px_debounce_pb1, px_gpio_pin_is_hi(&px_gpio_lcd_btn_1_lt));
@@ -257,7 +257,7 @@ int main(void)
         // USB connected event?
         if(main_usb_connected_event_flag)
         {
-            PX_DBG_I("USB Connect event. (Re)initialising CLI");
+            PX_LOG_I("USB Connect event. (Re)initialising CLI");
             main_usb_connected_event_flag = false;
             // (Re)initialise CLI
             px_cli_init(px_cli_cmd_list, main_cli_init_str);
@@ -293,19 +293,19 @@ void main_usb_event_connected(void)
     main_usb_connected_event_flag = true;
 }
 
-void main_dbg_put_char(char data)
+void main_log_putchar(char data)
 {
     // New line character?
     if(data == '\n')
     {
         // Prepend a carriage return
-        main_dbg_put_char('\r');
+        main_log_putchar('\r');
     }
 
     px_uart_put_char(&px_uart1_handle, data);
 }
 
-void main_dbg_timestamp(char * str)
+void main_log_timestamp(char * str)
 {
     px_rtc_date_time_t date_time;
 

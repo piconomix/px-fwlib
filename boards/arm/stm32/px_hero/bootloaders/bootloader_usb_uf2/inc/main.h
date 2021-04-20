@@ -35,8 +35,8 @@ extern "C" {
 extern px_uart_handle_t px_uart_handle;
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void main_dbg_put_char(char data);
-void main_dbg_timestamp(char * str);
+void main_log_putchar(char data);
+void main_log_timestamp(char * str);
 
 /* _____MACROS_______________________________________________________________ */
 

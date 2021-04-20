@@ -128,7 +128,7 @@ INCDIRS += $(STMCUBE_USB)/Class/CDC/Inc
 INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-#CDEFS += PX_DBG=1
+#CDEFS += PX_LOG=1
 CDEFS += STM32L0
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER

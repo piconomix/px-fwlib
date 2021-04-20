@@ -24,10 +24,10 @@
 #include "px_gfx.h"
 #include "px_gfx_disp.h"
 #include "px_gfx_fonts.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx");
+PX_LOG_NAME("px_gfx");
 
 /// Graphic drawing properties
 typedef struct

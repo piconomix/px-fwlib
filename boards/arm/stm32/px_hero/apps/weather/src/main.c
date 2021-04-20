@@ -39,10 +39,10 @@
 #include "px_bme280.h"
 #include "px_gfx.h"
 #include "px_gfx_objects.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("main");
+PX_LOG_NAME("main");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -249,7 +249,7 @@ int main(void)
     // Initialize board and peripheral drivers
     main_init();
     // Report debug output
-    PX_DBG_TRACE("Debug enabled\n");
+    PX_LOG_TRACE("Debug enabled\n");
     // Initialize debounced buttons
     px_debounce_init(&px_debounce_pb1, px_gpio_pin_is_hi(&px_gpio_lcd_btn_1_lt));
     px_debounce_init(&px_debounce_pb2, px_gpio_pin_is_hi(&px_gpio_lcd_btn_2_rt));
@@ -300,19 +300,19 @@ int main(void)
     }
 }
 
-void main_dbg_put_char(char data)
+void main_log_putchar(char data)
 {
     // New line character?
     if(data == '\n')
     {
         // Prepend a carriage return
-        main_dbg_put_char('\r');
+        main_log_putchar('\r');
     }
 
     px_uart_put_char(&px_uart1_handle, data);
 }
 
-void main_dbg_timestamp(char * str)
+void main_log_timestamp(char * str)
 {
     px_rtc_date_time_t date_time;
 

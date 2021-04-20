@@ -22,10 +22,10 @@
 #include "px_cli.h"
 #include "px_cli_cmds_mem.h"
 #include "main.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_mem");
+PX_LOG_NAME("cli_cmds_mem");
 
 /* _____MACROS_______________________________________________________________ */
 

@@ -23,10 +23,10 @@
 #include "px_cli.h"
 #include "px_i2c.h"
 #include "main.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_i2c");
+PX_LOG_NAME("cli_cmds_i2c");
 
 /* _____MACROS_______________________________________________________________ */
 

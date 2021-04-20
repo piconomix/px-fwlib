@@ -266,33 +266,33 @@ the code portable. See @ref PX_DEFINES. Example:
 9. Debug Output {#STYLE_DEBUG}
 ==============================
 
-A convenient debug module (@ref PX_DBG) has been created to report the flow of 
+A convenient debug module (@ref PX_LOG) has been created to report the flow of
 an embedded program as well as warnings and errors. The debug output can easily 
-be removed for the final release (define #PX_DBG=0) with no impact on the 
+be removed for the final release (define #PX_LOG=0) with no impact on the
 execution or code size.
 
 To conserve space, the module name string is declared once at the top of the C 
 file. Example:
 
     @code{.c}
-    #include "px_dbg.h"    
-    PX_DBG_DECL_NAME("px_uart");
+    #include "px_log.h"
+    PX_LOG_NAME("px_uart");
     @endcode
 
-Function parameters can be checked with a PX_DBG_ASSERT() macro. Example:
+Function parameters can be checked with a PX_LOG_ASSERT() macro. Example:
 
     @code{.c}
     bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
     {
         // Verify that pointer to handle is not NULL
-        PX_DBG_ASSERT(handle != NULL);
+        PX_LOG_ASSERT(handle != NULL);
 
         ...
     }
     @endcode
 
-Info, warnings and errors can be reported with PX_DBG_INFO(), PX_DBG_WARN() and
-PX_DBG_ERR() macros. Example:
+Info, warnings and errors can be reported with PX_LOG_INFO(), PX_LOG_WARN() and
+PX_LOG_ERR() macros. Example:
 
     @code{.c}
     bool px_uart_open(px_uart_handle_t * handle, 
@@ -312,7 +312,7 @@ PX_DBG_ERR() macros. Example:
             break;
 
         default:
-            PX_DBG_ERR("Invalid peripheral specified");
+            PX_LOG_ERR("Invalid peripheral specified");
             return false;
         }
 

@@ -24,10 +24,10 @@
 #include "px_gpio_init_port_b.h"
 #include "px_gpio_init_port_c.h"
 #include "px_gpio_init_port_d.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("board");
+PX_LOG_NAME("board");
 
 // Check that correct 'px_board.h' has been included
 #ifndef BOARD_AVR_PICONOMIX_SCORPION
@@ -85,7 +85,7 @@ void px_board_spi_cs_lo(uint8_t cs_id)
         break;
 
     default:
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         break;
     }
 }
@@ -106,7 +106,7 @@ void px_board_spi_cs_hi(uint8_t cs_id)
         break;
 
     default:
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         break;
     }
 }

@@ -23,10 +23,10 @@
 #include "px_uart.h"
 #include "px_systmr.h"
 #include "px_sysclk.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_c1098");
+PX_LOG_NAME("px_c1098");
 
 typedef enum
 {
@@ -130,7 +130,7 @@ static void px_c1098_tx_cmd(uint8_t id,
     px_c1098_tx_cmd_packet.param3 = param3;
     px_c1098_tx_cmd_packet.param4 = param4;
 
-    PX_DBG_I("TX %02X %02X %02X %02X %02X %02X", px_c1098_tx_cmd_packet.start
+    PX_LOG_I("TX %02X %02X %02X %02X %02X %02X", px_c1098_tx_cmd_packet.start
                                                   , px_c1098_tx_cmd_packet.id
                                                   , px_c1098_tx_cmd_packet.param1
                                                   , px_c1098_tx_cmd_packet.param2
@@ -147,24 +147,24 @@ static void px_c1098_change_state(px_c1098_state_t new_state)
     // Reset receiver
     px_c1098_rx_data_index = 0;
 
-#if PX_DBG_LEVEL_I
+#if PX_LOG_LEVEL_I
     // Report new state
-    PX_DBG_I("%010ul - PX_C1098_STATE_", (unsigned long)px_sysclk_get_tick_count());
+    PX_LOG_I("%010ul - PX_C1098_STATE_", (unsigned long)px_sysclk_get_tick_count());
     switch(px_c1098_state)
     {
-    case PX_C1098_STATE_DONE:              PX_DBG_TRACE("DONE");              break;
-    case PX_C1098_STATE_ERROR:             PX_DBG_TRACE("ERROR");             break;
-    case PX_C1098_STATE_WAIT_ACK:          PX_DBG_TRACE("WAIT_ACK");          break;
-    case PX_C1098_STATE_WAIT_AFTER_ACK:    PX_DBG_TRACE("WAIT_AFTER_ACK");    break;
-    case PX_C1098_STATE_SYNC:              PX_DBG_TRACE("SYNC");              break;
-    case PX_C1098_STATE_SYNC_WAIT_ACK:     PX_DBG_TRACE("SYNC_WAIT_ACK");     break;
-    case PX_C1098_STATE_SYNC_WAIT_SYNC:    PX_DBG_TRACE("SYNC_WAIT_SYNC");    break;
-    case PX_C1098_STATE_GET_PIC_WAIT_ACK:  PX_DBG_TRACE("GET_PIC_WAIT_ACK");  break;
-    case PX_C1098_STATE_WAIT_DATA_LENGTH:  PX_DBG_TRACE("WAIT_DATA_LENGTH");  break;
-    case PX_C1098_STATE_WAIT_DATA_PACKAGE: PX_DBG_TRACE("WAIT_DATA_PACKAGE"); break;
-    default:                               PX_DBG_TRACE("UNKNOWN");           break;
+    case PX_C1098_STATE_DONE:              PX_LOG_TRACE("DONE");              break;
+    case PX_C1098_STATE_ERROR:             PX_LOG_TRACE("ERROR");             break;
+    case PX_C1098_STATE_WAIT_ACK:          PX_LOG_TRACE("WAIT_ACK");          break;
+    case PX_C1098_STATE_WAIT_AFTER_ACK:    PX_LOG_TRACE("WAIT_AFTER_ACK");    break;
+    case PX_C1098_STATE_SYNC:              PX_LOG_TRACE("SYNC");              break;
+    case PX_C1098_STATE_SYNC_WAIT_ACK:     PX_LOG_TRACE("SYNC_WAIT_ACK");     break;
+    case PX_C1098_STATE_SYNC_WAIT_SYNC:    PX_LOG_TRACE("SYNC_WAIT_SYNC");    break;
+    case PX_C1098_STATE_GET_PIC_WAIT_ACK:  PX_LOG_TRACE("GET_PIC_WAIT_ACK");  break;
+    case PX_C1098_STATE_WAIT_DATA_LENGTH:  PX_LOG_TRACE("WAIT_DATA_LENGTH");  break;
+    case PX_C1098_STATE_WAIT_DATA_PACKAGE: PX_LOG_TRACE("WAIT_DATA_PACKAGE"); break;
+    default:                               PX_LOG_TRACE("UNKNOWN");           break;
     }
-    PX_DBG_TRACE("\n");
+    PX_LOG_TRACE("\n");
 #endif
 }
 
@@ -202,14 +202,14 @@ static void px_c1098_on_rx_byte(uint8_t data)
 {
     uint16_t data_size;
 
-#if PX_DBG_LEVEL_I
+#if PX_LOG_LEVEL_I
     if(px_c1098_rx_data_index == 0)
     {
-        PX_DBG_I("RX %02X", data);
+        PX_LOG_I("RX %02X", data);
     }
     else
     {
-        PX_DBG_TRACE(" %02X", data);
+        PX_LOG_TRACE(" %02X", data);
     }
 #endif
 
@@ -300,7 +300,7 @@ static void px_c1098_on_rx_byte(uint8_t data)
                                                         px_c1098_rx_packet.cmd.param4,
                                                         px_c1098_rx_packet.cmd.param3,
                                                         px_c1098_rx_packet.cmd.param2);
-                PX_DBG_I("Data Length = %u bytes", px_c1098_data_length);
+                PX_LOG_I("Data Length = %u bytes", px_c1098_data_length);
                 px_c1098_ack_data_package();
             }
             break;
@@ -349,7 +349,7 @@ static void px_c1098_on_rx_byte(uint8_t data)
     // Checksum correct?
     if(!px_c1098_package_data_checksum_ok(data_size))
     {
-        PX_DBG_E("Checksum incorrect");
+        PX_LOG_E("Checksum incorrect");
         return;
     }
 
@@ -366,7 +366,7 @@ static void px_c1098_on_rx_byte(uint8_t data)
     else
     {
         px_c1098_data_length -= data_size;
-        PX_DBG_I("Data Length = %u", px_c1098_data_length);
+        PX_LOG_I("Data Length = %u", px_c1098_data_length);
         // Next package ID
         px_c1098_package_id++;
         // Reset retry counter
@@ -510,7 +510,7 @@ bool px_c1098_task_execute(void)
 
 void px_c1098_initial(uint8_t if_speed, uint8_t jpeg_res)
 {
-    PX_DBG_I("INITIAL");
+    PX_LOG_I("INITIAL");
     // Send INITIAL command
     px_c1098_tx_cmd(PX_C1098_ID_INITIAL, if_speed, 0x07, 0x00, jpeg_res);
     // Start timeout
@@ -523,7 +523,7 @@ void px_c1098_initial(uint8_t if_speed, uint8_t jpeg_res)
 
 void px_c1098_set_package_size(void)
 {
-    PX_DBG_I("SET_PACKAGE_SIZE");
+    PX_LOG_I("SET_PACKAGE_SIZE");
     // Send PACKAGE_SIZE command
     px_c1098_tx_cmd(PX_C1098_ID_SET_PACKAGE_SIZE, 0x08, PX_U16_LO8(PX_C1098_DATA_BLOCK_SIZE+6), PX_U16_HI8(PX_C1098_DATA_BLOCK_SIZE+6), 0x00);
     // Start timeout
@@ -536,7 +536,7 @@ void px_c1098_set_package_size(void)
 
 void px_c1098_reset(uint8_t rst_priority)
 {
-    PX_DBG_I("RESET");
+    PX_LOG_I("RESET");
     // Send RESET command
     px_c1098_tx_cmd(PX_C1098_ID_RESET, 0x00, 0x00, 0x00, rst_priority);
     // Start timeout
@@ -549,14 +549,14 @@ void px_c1098_reset(uint8_t rst_priority)
 
 void px_c1098_sync(void)
 {
-    PX_DBG_I("SYNC");
+    PX_LOG_I("SYNC");
     px_c1098_retry_cntr = 10;
     px_c1098_change_state(PX_C1098_STATE_SYNC);
 }
 
 void px_c1098_snapshot(void)
 {
-    PX_DBG_I("SNAPSHOT");
+    PX_LOG_I("SNAPSHOT");
     // Send SNAPSHOT command
     px_c1098_tx_cmd(PX_C1098_ID_SNAPSHOT, 0x00, 0x00, 0x00, 0x00);
 
@@ -581,7 +581,7 @@ void px_c1098_get_picture(px_c1098_on_rx_data_t on_rx_data)
     // Reset retry counter
     px_c1098_retry_cntr = 3;
 
-    PX_DBG_I("GET_PICTURE");
+    PX_LOG_I("GET_PICTURE");
     // Send GET_PICTURE command
     px_c1098_tx_cmd(PX_C1098_ID_GET_PICTURE, 0x01, 0x00, 0x00, 0x00);
 

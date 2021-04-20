@@ -21,10 +21,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx_obj_graph.h"
 #include "px_gfx_fonts.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx_obj_graph");
+PX_LOG_NAME("px_gfx_obj_graph");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -51,12 +51,12 @@ static void px_gfx_obj_graph_event_handler(px_gfx_obj_handle_t obj,
     const px_gfx_xy_t *             data_y;    
 
     // Sanity checks
-    PX_DBG_ASSERT(obj             != NULL);
-    PX_DBG_ASSERT(obj->obj_type   == PX_GFX_OBJ_TYPE_GRAPH);
+    PX_LOG_ASSERT(obj             != NULL);
+    PX_LOG_ASSERT(obj->obj_type   == PX_GFX_OBJ_TYPE_GRAPH);
 
     // Get pointer to properties
     prop = obj_graph->prop;
-    PX_DBG_ASSERT(prop != NULL);
+    PX_LOG_ASSERT(prop != NULL);
     // Get pointer to Y data
     data_y = obj_graph->prop->data_y;
     // Handle event
@@ -106,8 +106,8 @@ px_gfx_obj_handle_t px_gfx_obj_graph_create(const px_gfx_obj_graph_prop_t * prop
     obj_graph = (px_gfx_obj_graph_t *)_px_gfx_obj_create(PX_GFX_OBJ_TYPE_GRAPH,
                                                          sizeof(*obj_graph), 
                                                          &px_gfx_obj_graph_event_handler);
-    PX_DBG_ASSERT(obj_graph != NULL);
-    PX_DBG_ASSERT(prop      != NULL);
+    PX_LOG_ASSERT(obj_graph != NULL);
+    PX_LOG_ASSERT(prop      != NULL);
 
     // Set pointer to properties
     obj_graph->prop = prop;
@@ -120,8 +120,8 @@ const px_gfx_obj_graph_prop_t * px_gfx_obj_graph_prop_get(const px_gfx_obj_handl
     px_gfx_obj_graph_t * obj_graph = (px_gfx_obj_graph_t *)obj;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_GRAPH);
+    PX_LOG_ASSERT(obj           != NULL);
+    PX_LOG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_GRAPH);
     
     return obj_graph->prop;
 }
@@ -132,8 +132,8 @@ void px_gfx_obj_graph_prop_set(px_gfx_obj_handle_t             obj,
     px_gfx_obj_graph_t * obj_graph = (px_gfx_obj_graph_t *)obj;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_GRAPH);
+    PX_LOG_ASSERT(obj           != NULL);
+    PX_LOG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_GRAPH);
 
     obj_graph->prop = prop;
 }

@@ -23,10 +23,10 @@
 #include "px_cli_cmds_ow.h"
 #include "px_one_wire.h"
 #include "px_ds18b20.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_ow");
+PX_LOG_NAME("cli_cmds_ow");
 
 /* _____MACROS_______________________________________________________________ */
 

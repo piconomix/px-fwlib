@@ -20,10 +20,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx_disp.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx_disp_sim");
+PX_LOG_NAME("px_gfx_disp_sim");
 
 /* _____MACROS_______________________________________________________________ */
 

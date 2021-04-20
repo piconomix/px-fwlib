@@ -24,10 +24,10 @@
 #include "px_dac.h"
 #include "px_board.h"
 #include "main.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_dac");
+PX_LOG_NAME("cli_cmds_dac");
 
 /* _____MACROS_______________________________________________________________ */
 

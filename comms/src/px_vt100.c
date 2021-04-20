@@ -22,10 +22,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_vt100.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_vt100");
+PX_LOG_NAME("px_vt100");
 
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */

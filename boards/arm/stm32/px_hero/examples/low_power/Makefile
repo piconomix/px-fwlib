@@ -82,7 +82,7 @@ SRC += $(PX_LIB)/devices/mem/src/px_sd.c
 SRC += $(PX_LIB)/gfx/src/px_gfx.c
 SRC += $(PX_LIB)/gfx/src/px_gfx_disp_st7567_jhd12864.c
 SRC += $(PX_LIB)/gfx/fonts/src/px_gfx_font_5x7.c
-SRC += $(PX_LIB)/utils/src/px_dbg.c
+SRC += $(PX_LIB)/utils/src/px_log.c
 SRC += $(PX_LIB)/utils/src/px_ring_buf.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
@@ -139,7 +139,7 @@ INCDIRS += $(STMCUBE_USB)/Class/CDC/Inc
 INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-CDEFS += PX_DBG=0
+CDEFS += PX_LOG=0
 CDEFS += CFG_LCD_STAY_ON=0
 CDEFS += STM32L0
 CDEFS += STM32L072xx

@@ -21,10 +21,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_flash.h"
 #include "px_lib_stm32cube.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_flash");
+PX_LOG_NAME("px_flash");
 
 /* _____MACROS_______________________________________________________________ */
 

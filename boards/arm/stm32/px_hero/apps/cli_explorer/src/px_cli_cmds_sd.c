@@ -25,10 +25,10 @@
 #include "main.h"
 #include "px_at25s.h"
 #include "ff.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_sd");
+PX_LOG_NAME("cli_cmds_sd");
 
 // Make sure buffer is big enough to hold a block of data
 #if (MAIN_BUFFER_SIZE < (PX_SD_BLOCK_SIZE-1))

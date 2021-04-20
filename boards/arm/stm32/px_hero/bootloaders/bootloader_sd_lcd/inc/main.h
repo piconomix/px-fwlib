@@ -39,8 +39,8 @@ void main_wr_flash_block(const uint8_t * data,
                          uint32_t        adr, 
                          size_t          nr_of_bytes);
 void main_wr_flash_done(void);
-void main_dbg_put_char(char data);
-void main_dbg_timestamp(char * str);
+void main_log_putchar(char data);
+void main_log_timestamp(char * str);
 
 /* _____MACROS_______________________________________________________________ */
 

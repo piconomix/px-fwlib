@@ -286,7 +286,7 @@ this part can be skipped.
 The Deluxe Edition has an [FTDI 230XS](https://www.ftdichip.com/Products/ICs/FT230X.html)
 USB-UART Bridge (USB2 connector) connected to UART1 of the STM32 
 microcontroller. It avoids USB driver complexity and provides an easy method of 
-communication. This makes debug output (see @ref PX_DBG) as well as firmware 
+communication. This makes debug output (see @ref PX_LOG) as well as firmware
 upgrades (see @ref HERO_BOARD_BOOTLOADER_UART_XMODEM) easy.
 
 The Lite Edition does not have a USB-UART Bridge (USB2 connector), but if you 

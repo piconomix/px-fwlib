@@ -20,10 +20,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx_obj_win.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx_obj_win");
+PX_LOG_NAME("px_gfx_obj_win");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -51,11 +51,11 @@ static void px_gfx_obj_win_event_handler(px_gfx_obj_handle_t obj,
     px_gfx_obj_t *                obj_child;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_WIN);
+    PX_LOG_ASSERT(obj           != NULL);
+    PX_LOG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_WIN);
     // Get pointer to properties
     prop = obj_win->prop;
-    PX_DBG_ASSERT(prop != NULL);
+    PX_LOG_ASSERT(prop != NULL);
     // Handle event
     switch(event)
     {
@@ -118,8 +118,8 @@ px_gfx_obj_handle_t px_gfx_obj_win_create(const px_gfx_obj_win_prop_t * prop)
                                                      sizeof(*obj_win), 
                                                      &px_gfx_obj_win_event_handler);
     // Sanity checks
-    PX_DBG_ASSERT(obj_win != NULL);
-    PX_DBG_ASSERT(prop    != NULL);
+    PX_LOG_ASSERT(obj_win != NULL);
+    PX_LOG_ASSERT(prop    != NULL);
     // Set pointer to properties
     obj_win->prop = prop;
 
@@ -131,8 +131,8 @@ const px_gfx_obj_win_prop_t * px_gfx_obj_win_prop_get(const px_gfx_obj_handle_t 
     const px_gfx_obj_win_t * obj_win = (px_gfx_obj_win_t *)obj;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_WIN);
+    PX_LOG_ASSERT(obj           != NULL);
+    PX_LOG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_WIN);
     
     return obj_win->prop;
 }
@@ -143,8 +143,8 @@ void px_gfx_obj_win_prop_set(px_gfx_obj_handle_t           obj,
     px_gfx_obj_win_t * obj_win = (px_gfx_obj_win_t *)obj;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_LABEL);
+    PX_LOG_ASSERT(obj           != NULL);
+    PX_LOG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_LABEL);
 
     obj_win->prop = prop;
 }
@@ -156,8 +156,8 @@ void px_gfx_obj_win_add_child(px_gfx_obj_handle_t obj_win,
     px_gfx_obj_t *     obj_next;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj_win           != NULL);
-    PX_DBG_ASSERT(obj_win->obj_type == PX_GFX_OBJ_TYPE_WIN);
+    PX_LOG_ASSERT(obj_win           != NULL);
+    PX_LOG_ASSERT(obj_win->obj_type == PX_GFX_OBJ_TYPE_WIN);
     // List empty?
     if(obj_parent->obj_first == NULL)
     {

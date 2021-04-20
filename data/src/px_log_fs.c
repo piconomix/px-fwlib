@@ -23,10 +23,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_log_fs.h"
 #include "px_log_fs_glue.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_log_fs");
+PX_LOG_NAME("px_log_fs");
 
 /// Invalid page value
 #define PX_LOG_FS_PAGE_INVALID      0xffff
@@ -276,7 +276,7 @@ static uint8_t px_log_fs_header_rd(px_log_fs_header_t * header, uint16_t page)
     if(!px_log_fs_marker_is_page(header->marker))
     {
         // Mark as BAD
-        PX_DBG_E("Invalid marker 0x%02X @ page %u", header->marker, page);
+        PX_LOG_E("Invalid marker 0x%02X @ page %u", header->marker, page);
         header->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&header->marker, page, 0, 1);
         return header->marker;
@@ -286,7 +286,7 @@ static uint8_t px_log_fs_header_rd(px_log_fs_header_t * header, uint16_t page)
     if(crc != header->crc)
     {
         // Mark as BAD
-        PX_DBG_E("Header CRC check failed @ page %u (0x%02X != 0x%02X)",
+        PX_LOG_E("Header CRC check failed @ page %u (0x%02X != 0x%02X)",
                    page, header->crc, crc);
         header->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&header->marker, page, 0, 1);
@@ -366,7 +366,7 @@ static bool px_log_fs_header_wr(px_log_fs_header_t * header, uint16_t page)
     if(memcmp(header, &header_rd, sizeof(*header)) != 0)
     {
         // Mark header as BAD
-        PX_DBG_E("Header write failed @ page %u", page);
+        PX_LOG_E("Header write failed @ page %u", page);
         header->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&header->marker, page, 0, 1);
         // Failure
@@ -393,7 +393,7 @@ static uint8_t px_log_fs_record_rd(px_log_fs_record_t *    record,
     if(!px_log_fs_marker_is_record(record->marker))
     {
         // No. Mark as BAD
-        PX_DBG_W("Invalid record marker %02X @ page %u offset %u",
+        PX_LOG_W("Invalid record marker %02X @ page %u offset %u",
                     record->marker, adr->page, adr->offset);
         record->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&record->marker, adr->page, adr->offset, 1);
@@ -404,7 +404,7 @@ static uint8_t px_log_fs_record_rd(px_log_fs_record_t *    record,
     if(crc != record->crc)
     {
         // Mark record as BAD
-        PX_DBG_E("Record CRC check failed @ page %u offset %u (0x%02X != 0x%02X)",
+        PX_LOG_E("Record CRC check failed @ page %u offset %u (0x%02X != 0x%02X)",
                    adr->page, adr->offset, record->crc != crc);
         record->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&record->marker, adr->page, adr->offset, 1);
@@ -422,7 +422,7 @@ static bool px_log_fs_record_wr(px_log_fs_record_t *    record,
     // Sanity check
     if(adr->offset + sizeof(px_log_fs_record_t) > PX_LOG_FS_CFG_PAGE_SIZE)
     {
-        PX_DBG_E("Record will overflow the page");
+        PX_LOG_E("Record will overflow the page");
         return false;
     }
 
@@ -438,7 +438,7 @@ static bool px_log_fs_record_wr(px_log_fs_record_t *    record,
     if(memcmp(record, &record_rd, sizeof(*record)) != 0)
     {
         // Mark record as BAD
-        PX_DBG_E("Record write failed @ page %u offset %u",
+        PX_LOG_E("Record write failed @ page %u offset %u",
                    adr->page, adr->offset);
         record->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&record->marker, adr->page, adr->offset, 1);
@@ -465,15 +465,15 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
     uint16_t           page_nr_diff_largest = 0;
 
     // Sanity checks
-    PX_DBG_ASSERT(fs_page_start != PX_LOG_FS_PAGE_INVALID);                                     // Must not be reserved invalid value
-    PX_DBG_ASSERT(fs_page_end   != PX_LOG_FS_PAGE_INVALID);                                     // Must not be reserved invalid value
-    PX_DBG_ASSERT((fs_page_start % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE)  == 0);                      // Must be at the start of an erase block
-    PX_DBG_ASSERT(((fs_page_end + 1) % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE)  == 0);                  // Must be at the end of an erase block
-    PX_DBG_ASSERT(((fs_page_end + 1 - fs_page_start) / PX_LOG_FS_CFG_ERASE_BLOCK_SIZE) >= 2);   // Must be at least 2 erase blocks in size (more is better)
-    PX_DBG_ASSERT(sizeof(px_log_fs_record_t) <= PX_LOG_FS_PAGE_DATA_SIZE);                      // A record must fit in a page
+    PX_LOG_ASSERT(fs_page_start != PX_LOG_FS_PAGE_INVALID);                                     // Must not be reserved invalid value
+    PX_LOG_ASSERT(fs_page_end   != PX_LOG_FS_PAGE_INVALID);                                     // Must not be reserved invalid value
+    PX_LOG_ASSERT((fs_page_start % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE)  == 0);                      // Must be at the start of an erase block
+    PX_LOG_ASSERT(((fs_page_end + 1) % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE)  == 0);                  // Must be at the end of an erase block
+    PX_LOG_ASSERT(((fs_page_end + 1 - fs_page_start) / PX_LOG_FS_CFG_ERASE_BLOCK_SIZE) >= 2);   // Must be at least 2 erase blocks in size (more is better)
+    PX_LOG_ASSERT(sizeof(px_log_fs_record_t) <= PX_LOG_FS_PAGE_DATA_SIZE);                      // A record must fit in a page
     if(PX_LOG_FS_PAGE_DATA_SIZE % sizeof(px_log_fs_record_t) != 0)
     {
-        PX_DBG_W("%u bytes will be wasted per page", PX_LOG_FS_PAGE_DATA_SIZE % sizeof(px_log_fs_record_t));
+        PX_LOG_W("%u bytes will be wasted per page", PX_LOG_FS_PAGE_DATA_SIZE % sizeof(px_log_fs_record_t));
     }
 
     // Save file system start and end page
@@ -484,7 +484,7 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
     if(page_first == PX_LOG_FS_PAGE_INVALID)
     {
         // None found. File system is empty
-        PX_DBG_I("No marked pages found");
+        PX_LOG_I("No marked pages found");
         handle->page_first    = PX_LOG_FS_PAGE_INVALID;
         handle->page_last     = PX_LOG_FS_PAGE_INVALID;
         handle->page_nr_next  = 0;
@@ -514,7 +514,7 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
         // Largest difference so far?
         if(page_nr_diff_largest < page_nr_diff)
         {
-            PX_DBG_I("Diff=%u, page %u (nr %u) , page_next %u (nr %u)",
+            PX_LOG_I("Diff=%u, page %u (nr %u) , page_next %u (nr %u)",
                      page_nr_diff, page, page_nr, page_next, page_nr_next);
             // Save largest difference so far
             page_nr_diff_largest = page_nr_diff;
@@ -541,9 +541,9 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
     }
 
     // Report first and last page
-    PX_DBG_I("First marked page %u", handle->page_first);
-    PX_DBG_I("Last marked page %u",  handle->page_last);
-    PX_DBG_I("Next page nr %u",      handle->page_nr_next);
+    PX_LOG_I("First marked page %u", handle->page_first);
+    PX_LOG_I("Last marked page %u",  handle->page_last);
+    PX_LOG_I("Next page nr %u",      handle->page_nr_next);
 
     return PX_LOG_FS_ERR_NONE;
 }
@@ -557,15 +557,15 @@ px_log_fs_err_t px_log_fs_reset(px_log_fs_handle_t * handle,
     uint8_t            marker;
 
     // Sanity checks
-    PX_DBG_ASSERT(fs_page_start != PX_LOG_FS_PAGE_INVALID);                                     // Must not be reserved invalid value
-    PX_DBG_ASSERT(fs_page_end   != PX_LOG_FS_PAGE_INVALID);                                     // Must not be reserved invalid value
-    PX_DBG_ASSERT((fs_page_start % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE)  == 0);                      // Must be at the start of an erase block
-    PX_DBG_ASSERT(((fs_page_end + 1) % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE)  == 0);                  // Must be at the end of an erase block
-    PX_DBG_ASSERT(((fs_page_end + 1 - fs_page_start) / PX_LOG_FS_CFG_ERASE_BLOCK_SIZE) >= 2);   // Must be at least 2 erase blocks in size (more is better)
-    PX_DBG_ASSERT(sizeof(px_log_fs_record_t) <= PX_LOG_FS_PAGE_DATA_SIZE);                      // A record must fit in a page
+    PX_LOG_ASSERT(fs_page_start != PX_LOG_FS_PAGE_INVALID);                                     // Must not be reserved invalid value
+    PX_LOG_ASSERT(fs_page_end   != PX_LOG_FS_PAGE_INVALID);                                     // Must not be reserved invalid value
+    PX_LOG_ASSERT((fs_page_start % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE)  == 0);                      // Must be at the start of an erase block
+    PX_LOG_ASSERT(((fs_page_end + 1) % PX_LOG_FS_CFG_ERASE_BLOCK_SIZE)  == 0);                  // Must be at the end of an erase block
+    PX_LOG_ASSERT(((fs_page_end + 1 - fs_page_start) / PX_LOG_FS_CFG_ERASE_BLOCK_SIZE) >= 2);   // Must be at least 2 erase blocks in size (more is better)
+    PX_LOG_ASSERT(sizeof(px_log_fs_record_t) <= PX_LOG_FS_PAGE_DATA_SIZE);                      // A record must fit in a page
     if(PX_LOG_FS_PAGE_DATA_SIZE % sizeof(px_log_fs_record_t) != 0)
     {
-        PX_DBG_W("%u bytes will be wasted per page", PX_LOG_FS_PAGE_DATA_SIZE % sizeof(px_log_fs_record_t));
+        PX_LOG_W("%u bytes will be wasted per page", PX_LOG_FS_PAGE_DATA_SIZE % sizeof(px_log_fs_record_t));
     }
 
     // Save file system start and end page
@@ -649,7 +649,7 @@ px_log_fs_err_t px_log_fs_rd_first_unarchived(px_log_fs_handle_t * handle,
         }
         else if(marker == PX_LOG_FS_MARKER_FREE)
         {
-            PX_DBG_E("Unexpected free page found");
+            PX_LOG_E("Unexpected free page found");
             return PX_LOG_FS_ERR_FATAL;
         }
         // Next page
@@ -681,7 +681,7 @@ px_log_fs_err_t px_log_fs_rd_next(px_log_fs_handle_t * handle,
     // More bytes requested than can be stored in record?
     if(nr_of_bytes > PX_LOG_FS_CFG_REC_DATA_SIZE)
     {
-        PX_DBG_E("More bytes requested than can be stored in a record");
+        PX_LOG_E("More bytes requested than can be stored in a record");
         // Clip number of bytes that will be copied
         nr_of_bytes = PX_LOG_FS_CFG_REC_DATA_SIZE;
     }
@@ -707,7 +707,7 @@ px_log_fs_err_t px_log_fs_rd_next(px_log_fs_handle_t * handle,
             {
                 if(handle->adr_rd.page == handle->page_last)
                 {
-                    PX_DBG_E("File system must be corrupt");
+                    PX_LOG_E("File system must be corrupt");
                     return PX_LOG_FS_ERR_FATAL;
                 }
                 handle->adr_rd.page = px_log_fs_page_next(handle, handle->adr_rd.page);
@@ -761,7 +761,7 @@ px_log_fs_err_t px_log_fs_rd_previous(px_log_fs_handle_t * handle,
     // More bytes requested than can be stored in record?
     if(nr_of_bytes > PX_LOG_FS_CFG_REC_DATA_SIZE)
     {
-        PX_DBG_E("More bytes requested than can be stored in a record");
+        PX_LOG_E("More bytes requested than can be stored in a record");
         // Clip number of bytes that will be copied
         nr_of_bytes = PX_LOG_FS_CFG_REC_DATA_SIZE;
     }
@@ -786,7 +786,7 @@ px_log_fs_err_t px_log_fs_rd_previous(px_log_fs_handle_t * handle,
             {
                 if(handle->adr_rd.page == handle->page_first)
                 {
-                    PX_DBG_E("File system must be corrupt");
+                    PX_LOG_E("File system must be corrupt");
                     return PX_LOG_FS_ERR_FATAL;
                 }
                 handle->adr_rd.page = px_log_fs_page_previous(handle, handle->adr_rd.page);
@@ -821,25 +821,25 @@ px_log_fs_err_t px_log_fs_rd_rec_set_archive(px_log_fs_handle_t * handle)
     // Sanity check
     if(handle->archive_flag)
     {
-        PX_DBG_W("Record is already archived");
+        PX_LOG_W("Record is already archived");
         return PX_LOG_FS_ERR_NONE;
     }
     // Read record marker first (sanity check)
     marker = px_log_fs_marker_rd(&handle->adr_rd);
     if(marker == PX_LOG_FS_MARKER_RECORD_A)
     {
-        PX_DBG_E("Record is already archived but archive flag was not set");
+        PX_LOG_E("Record is already archived but archive flag was not set");
         return PX_LOG_FS_ERR_NONE;
     }
     else if(marker != PX_LOG_FS_MARKER_RECORD)
     {
-        PX_DBG_E("Invalid marker");
+        PX_LOG_E("Invalid marker");
         return PX_LOG_FS_ERR_WRITE_FAIL;
     }
     // Write record marker
     if(!px_log_fs_marker_wr(PX_LOG_FS_MARKER_RECORD_A, &handle->adr_rd))
     {
-        PX_DBG_E("Failed to write archive marker");
+        PX_LOG_E("Failed to write archive marker");
         return PX_LOG_FS_ERR_WRITE_FAIL;
     }
     // Is this the last record in the page?
@@ -858,7 +858,7 @@ px_log_fs_err_t px_log_fs_rd_rec_set_archive(px_log_fs_handle_t * handle)
             adr.offset = 0;
             if(!px_log_fs_marker_wr(PX_LOG_FS_MARKER_PAGE_A, &adr))
             {
-                PX_DBG_E("Failed to mark page as archived. Lost whole page of records!");
+                PX_LOG_E("Failed to mark page as archived. Lost whole page of records!");
                 return PX_LOG_FS_ERR_WRITE_FAIL;
             }
             // Success
@@ -881,7 +881,7 @@ px_log_fs_err_t px_log_fs_rd_rec_set_archive(px_log_fs_handle_t * handle)
         else if(marker == PX_LOG_FS_MARKER_RECORD_A)
         {
             // Error! Records must be archived from oldest to newest
-            PX_DBG_E("Out of sequence archived record detected");
+            PX_LOG_E("Out of sequence archived record detected");
             return PX_LOG_FS_ERR_NONE;
         }
         else if(marker == PX_LOG_FS_MARKER_FREE)
@@ -904,7 +904,7 @@ px_log_fs_err_t px_log_fs_wr(px_log_fs_handle_t * handle,
     // Record too small?
     if(nr_of_bytes > PX_LOG_FS_CFG_REC_DATA_SIZE)
     {
-        PX_DBG_E("Record size too small and %u bytes will be discarded",
+        PX_LOG_E("Record size too small and %u bytes will be discarded",
                 (nr_of_bytes - PX_LOG_FS_CFG_REC_DATA_SIZE));
         // Clip number of bytes that will be copied
         nr_of_bytes = PX_LOG_FS_CFG_REC_DATA_SIZE;
@@ -947,12 +947,12 @@ px_log_fs_err_t px_log_fs_wr(px_log_fs_handle_t * handle,
                         {
                             // Save new first page
                             handle->page_first = page;
-                            PX_DBG_I("New first page is %u", handle->page_first);
+                            PX_LOG_I("New first page is %u", handle->page_first);
                             break;
                         }
                         if(page == handle->page_last)
                         {
-                            PX_DBG_E("File system must be corrupt");
+                            PX_LOG_E("File system must be corrupt");
                             return PX_LOG_FS_ERR_FATAL;
                         }
                         // Next page

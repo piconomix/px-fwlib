@@ -49,8 +49,8 @@ extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 void main_usb_event_connected   (void);
-void main_dbg_put_char          (char data);
-void main_dbg_timestamp         (char * str);
+void main_log_putchar          (char data);
+void main_log_timestamp         (char * str);
 
 /* _____MACROS_______________________________________________________________ */
 

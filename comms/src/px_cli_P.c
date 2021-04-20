@@ -24,10 +24,10 @@
 #include "px_cli.h"
 #include "px_vt100.h"
 #include "px_pgm_P.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_cli_P");
+PX_LOG_NAME("px_cli_P");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -177,7 +177,7 @@ static bool px_cli_cmd_item_get_parent(void)
     // Already in root list?
     if(px_cli_tree_path_depth == 0)
     {
-        PX_DBG_E("Already in root");
+        PX_LOG_E("Already in root");
         return false;
     }
 
@@ -194,14 +194,14 @@ static bool px_cli_cmd_item_get_child(void)
     if(  (px_cli_cmd_list_item.cmd     == NULL)
        ||(px_cli_cmd_list_item.handler != NULL)  )
     {
-        PX_DBG_E("Not a group item");
+        PX_LOG_E("Not a group item");
         return false;
     }
 
     // Maximum depth reached?
     if(px_cli_tree_path_depth >= (PX_CLI_CFG_TREE_DEPTH_MAX-1))
     {
-        PX_DBG_E("Maximum command depth exceeded");
+        PX_LOG_E("Maximum command depth exceeded");
         return false;
     }
 
@@ -238,7 +238,7 @@ static bool px_cli_cmd_item_get_next(void)
     // End of list reached?
     if(px_cli_cmd_list_item.cmd == NULL)
     {
-        PX_DBG_E("End of list already reached");
+        PX_LOG_E("End of list already reached");
         return false;
     }
 
@@ -723,7 +723,7 @@ void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char* startu
 #endif
 
     // Save pointer to root of command list
-    PX_DBG_ASSERT(cli_cmd_list != NULL);
+    PX_LOG_ASSERT(cli_cmd_list != NULL);
     px_cli_cmd_list = cli_cmd_list;
 
     // Reset
@@ -943,8 +943,8 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
             px_cli_cmd_item_get_child();
         }
     }
-    PX_DBG_I("Max command chars = %d", name_char_cnt);
-    PX_DBG_I("Max param chars = %d", param_char_cnt);
+    PX_LOG_I("Max command chars = %d", name_char_cnt);
+    PX_LOG_I("Max param chars = %d", param_char_cnt);
 #endif
 
     // Display help for each command in list
@@ -1044,7 +1044,7 @@ uint8_t px_cli_util_argv_to_option(uint8_t argv_index, const char* options)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     while(strlen_P(options) != 0)
     {
@@ -1066,7 +1066,7 @@ bool px_cli_util_argv_to_u8(uint8_t argv_index, uint8_t min, uint8_t max)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtoul(px_cli_argv[argv_index], &end, 0);
 
@@ -1089,7 +1089,7 @@ bool px_cli_util_argv_to_u16(uint8_t argv_index, uint16_t min, uint16_t max)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtoul(px_cli_argv[argv_index], &end, 0);
 
@@ -1112,7 +1112,7 @@ bool px_cli_util_argv_to_u32(uint8_t argv_index, uint32_t min, uint32_t max)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtoul(px_cli_argv[argv_index], &end, 0);
 
@@ -1135,7 +1135,7 @@ bool px_cli_util_argv_to_s8(uint8_t argv_index, int8_t min, int8_t max)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtol(px_cli_argv[argv_index], &end, 0);
 
@@ -1158,7 +1158,7 @@ bool px_cli_util_argv_to_s16(uint8_t argv_index, int16_t min, int16_t max)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtol(px_cli_argv[argv_index], &end, 0);
 
@@ -1181,7 +1181,7 @@ bool px_cli_util_argv_to_s32(uint8_t argv_index, int32_t min, int32_t max)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtol(px_cli_argv[argv_index], &end, 0);
 
@@ -1204,7 +1204,7 @@ bool px_cli_util_argv_to_float(uint8_t argv_index)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtod(px_cli_argv[argv_index], &end);
 
@@ -1223,7 +1223,7 @@ bool px_cli_util_argv_to_double(uint8_t argv_index)
 
     // Adjust index
     argv_index += px_cli_tree_path_depth+1;
-    PX_DBG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
+    PX_LOG_ASSERT(argv_index < PX_CLI_CFG_ARGV_MAX);
 
     i = strtod(px_cli_argv[argv_index], &end);
 

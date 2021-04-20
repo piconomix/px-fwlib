@@ -85,7 +85,7 @@ INCDIRS += $(PX_LIB)/$(ARCH)/inc
 INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-#CDEFS += PX_DBG=1
+#CDEFS += PX_LOG=1
 CDEFS += 
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)

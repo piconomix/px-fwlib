@@ -24,10 +24,10 @@
 #include "px_xmodem.h"
 #include "px_board.h"
 #include "main.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_sf");
+PX_LOG_NAME("cli_cmds_sf");
 
 // Make sure buffer is big enough to hold a page of data
 #if (MAIN_BUFFER_SIZE < (PX_AT45D_PAGE_SIZE-1))

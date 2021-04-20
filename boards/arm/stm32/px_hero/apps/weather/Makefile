@@ -98,7 +98,7 @@ SRC += $(PX_LIB)/gfx/fonts/src/px_gfx_font_5x7.c
 SRC += $(PX_LIB)/gfx/fonts/src/px_gfx_font_11x14.c
 SRC += $(PX_LIB)/gfx/images/src/px_gfx_img_hero_logo.c
 SRC += $(PX_LIB)/utils/src/px_ring_buf.c
-SRC += $(PX_LIB)/utils/src/px_dbg.c
+SRC += $(PX_LIB)/utils/src/px_log.c
 SRC += $(PX_LIB)/utils/src/px_debounce.c
 SRC += $(PX_LIB)/utils/src/px_rtc_util.c
 SRC += $(PX_LIB)/utils/src/px_systmr.c
@@ -167,7 +167,7 @@ INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Legacy
 #INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-CDEFS += PX_DBG=1
+CDEFS += PX_LOG=1
 CDEFS += STM32L0
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER

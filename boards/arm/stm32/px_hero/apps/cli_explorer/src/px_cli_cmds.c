@@ -38,10 +38,10 @@
 #include "px_cli_cmds_uart.h"
 #include "px_cli_cmds_sd.h"
 #include "px_cli_cmds_sf.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli");
+PX_LOG_NAME("cli");
 
 /* _____MACROS_______________________________________________________________ */
 

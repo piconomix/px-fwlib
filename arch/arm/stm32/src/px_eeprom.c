@@ -21,10 +21,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_eeprom.h"
 #include "px_lib_stm32cube.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_eeprom");
+PX_LOG_NAME("px_eeprom");
 
 /* _____MACROS_______________________________________________________________ */
 

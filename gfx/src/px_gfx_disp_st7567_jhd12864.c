@@ -21,10 +21,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx_disp.h"
 #include "px_lcd_st7567_jhd12864.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx_disp_st7567_jhd12864");
+PX_LOG_NAME("px_gfx_disp_st7567_jhd12864");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -93,13 +93,13 @@ void px_gfx_disp_dbg_report_buf(void)
         {
             if(((px_gfx_frame_buf[y / 8][x]) & (1 << (y % 8))) != 0)
             {
-                PX_DBG_TRACE("1");
+                PX_LOG_TRACE("1");
             }
             else
             {
-                PX_DBG_TRACE("0");
+                PX_LOG_TRACE("0");
             }
         }
-        PX_DBG_TRACE("\n");
+        PX_LOG_TRACE("\n");
     }
 }

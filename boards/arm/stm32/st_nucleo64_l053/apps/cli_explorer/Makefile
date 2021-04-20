@@ -79,7 +79,7 @@ SRC += $(PX_LIB)/$(ARCH)/src/px_uart_stdio.c
 SRC += $(PX_LIB)/comms/src/px_cli.c
 SRC += $(PX_LIB)/comms/src/px_vt100.c
 SRC += $(PX_LIB)/utils/src/px_ring_buf.c
-SRC += $(PX_LIB)/utils/src/px_dbg.c
+SRC += $(PX_LIB)/utils/src/px_log.c
 SRC += $(PX_LIB)/utils/src/px_rtc_util.c
 SRC += $(PX_LIB)/utils/src/px_systmr.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
@@ -124,7 +124,7 @@ INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Legacy
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-CDEFS += PX_DBG=1
+CDEFS += PX_LOG=1
 CDEFS += STM32L0
 CDEFS += STM32L053xx
 CDEFS += USE_FULL_LL_DRIVER

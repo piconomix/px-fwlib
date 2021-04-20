@@ -21,10 +21,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_nrf905.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_nrf905");
+PX_LOG_NAME("px_nrf905");
 
 #define PX_NRF905_INSTR_W_CONFIG       0x00    ///< Write Configuration register
 #define PX_NRF905_INSTR_R_CONFIG       0x10    ///< Read Configuration register
@@ -56,7 +56,7 @@ uint8_t px_nrf905_config_write(const px_nrf905_cfg_reg_t * cfg, uint8_t start_by
 {
     uint8_t spi_data[1];
 
-    PX_DBG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t)-1));
+    PX_LOG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t)-1));
 
     // Send instruction
     spi_data[0] = PX_NRF905_INSTR_W_CONFIG | start_byte;
@@ -76,7 +76,7 @@ uint8_t px_nrf905_config_read(px_nrf905_cfg_reg_t * cfg, uint8_t start_byte)
 {
     uint8_t spi_data[1];
 
-    PX_DBG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t)-1));
+    PX_LOG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t)-1));
 
     // Send instruction
     spi_data[0] = PX_NRF905_INSTR_R_CONFIG | start_byte;
@@ -96,7 +96,7 @@ uint8_t px_nrf905_tx_payload_write(const void * data, uint8_t nr_of_bytes)
 {
     uint8_t spi_data[1];
 
-    PX_DBG_ASSERT( ((nr_of_bytes >= 1) && (nr_of_bytes <= 32)) );
+    PX_LOG_ASSERT( ((nr_of_bytes >= 1) && (nr_of_bytes <= 32)) );
 
     // Send instruction
     spi_data[0] = PX_NRF905_INSTR_W_TX_PAYLOAD;
@@ -116,7 +116,7 @@ uint8_t px_nrf905_tx_payload_read(void * data, uint8_t nr_of_bytes)
 {
     uint8_t spi_data[1];
 
-    PX_DBG_ASSERT( ((nr_of_bytes >= 1) && (nr_of_bytes <= 32)) );
+    PX_LOG_ASSERT( ((nr_of_bytes >= 1) && (nr_of_bytes <= 32)) );
 
     // Send instruction
     spi_data[0] = PX_NRF905_INSTR_R_TX_PAYLOAD;
@@ -136,7 +136,7 @@ uint8_t px_nrf905_rx_payload_read(void * data, uint8_t nr_of_bytes)
 {
     uint8_t spi_data[1];
 
-    PX_DBG_ASSERT( ((nr_of_bytes >= 1) && (nr_of_bytes <= 32)) );
+    PX_LOG_ASSERT( ((nr_of_bytes >= 1) && (nr_of_bytes <= 32)) );
 
     // Send instruction
     spi_data[0] = PX_NRF905_INSTR_R_RX_PAYLOAD;
@@ -156,7 +156,7 @@ uint8_t px_nrf905_channel_config(uint16_t channel_no, uint8_t hfreq_pll, uint8_t
 {
     uint8_t spi_data[2];
 
-    PX_DBG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t)-1));
+    PX_LOG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t)-1));
 
     // Send instruction
     spi_data[0] =   PX_NRF905_INSTR_CHANNEL_CONFIG

@@ -19,10 +19,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_hdlc.h"
 #include "px_crc16.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_hdlc");
+PX_LOG_NAME("px_hdlc");
 
 // Significant octet values
 #define PX_HDLC_FLAG_SEQUENCE  0x7e   // Flag Sequence

@@ -22,14 +22,14 @@
 #include "px_bme280.h"
 #include "px_i2c.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 #ifdef PX_BME280_DBG
 #warning "Debugging of BME280 enabled. Using constants to verify formula"
 #endif
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("bme280");
+PX_LOG_NAME("bme280");
 
 /// @name Memory Map (table 18, p. 25)
 //@{
@@ -158,7 +158,7 @@ static bool px_bme280_reg_wr(uint8_t adr, uint8_t data)
     if(!px_i2c_wr(px_bme280_i2c_handle, i2c_data, 2, PX_I2C_FLAG_START_AND_STOP))
     {
         // Error
-        PX_DBG_E("Unable to write register value");
+        PX_LOG_E("Unable to write register value");
         return false;
     }
     // Success
@@ -175,7 +175,7 @@ static bool px_bme280_reg_rd(uint8_t adr, uint8_t * data)
     if(!px_i2c_wr(px_bme280_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_END))
     {
         // Error
-        PX_DBG_E("Unable to write register address");
+        PX_LOG_E("Unable to write register address");
         return false;
     }
     // Read data
@@ -185,7 +185,7 @@ static bool px_bme280_reg_rd(uint8_t adr, uint8_t * data)
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
-        PX_DBG_E("Unable to read register value");
+        PX_LOG_E("Unable to read register value");
         return false;
     }
     // Success
@@ -202,7 +202,7 @@ static bool px_bme280_reg_rd_data(uint8_t adr, void * data, uint8_t nr_of_bytes)
     if(!px_i2c_wr(px_bme280_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_END))
     {
         // Error
-        PX_DBG_E("Unable to write register address");
+        PX_LOG_E("Unable to write register address");
         return false;
     }
     // Read data
@@ -212,7 +212,7 @@ static bool px_bme280_reg_rd_data(uint8_t adr, void * data, uint8_t nr_of_bytes)
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
-        PX_DBG_E("Unable to read register data");
+        PX_LOG_E("Unable to read register data");
         return false;
     }
     // Success
@@ -227,7 +227,7 @@ static bool px_bme280_cal_rd(void)
     if(!px_bme280_reg_rd_data(PX_BME280_REG_CALIB00, &data[0], PX_BME280_REG_CALIB25 - PX_BME280_REG_CALIB00 + 1))
     {
         // Error
-        PX_DBG_E("Unable to read CALIB00 to CALIB25");
+        PX_LOG_E("Unable to read CALIB00 to CALIB25");
         return false;
     }
     // Assemble calibration values
@@ -248,7 +248,7 @@ static bool px_bme280_cal_rd(void)
     if(!px_bme280_reg_rd_data(PX_BME280_REG_CALIB26, &data[0], PX_BME280_REG_CALIB32 - PX_BME280_REG_CALIB26 + 1))
     {
         // Error
-        PX_DBG_E("Unable to read CALIB26 to CALIB32");
+        PX_LOG_E("Unable to read CALIB26 to CALIB32");
         return false;
     }
     // Assemble calibration values
@@ -258,27 +258,27 @@ static bool px_bme280_cal_rd(void)
     px_bme280_cal.h5 = ((int16_t)(int8_t)data[5] * 16) | ((int16_t)(data[4] >> 4));
     px_bme280_cal.h6 = (int8_t)data[6];
 
-#if PX_DBG_LEVEL_I
+#if PX_LOG_LEVEL_I
     // Report calibration values
-    PX_DBG_TRACE("BME280 Cal:\n");
-    PX_DBG_TRACE("T1 = %d\n",   px_bme280_cal.t1);
-    PX_DBG_TRACE("T2 = %d\n",   px_bme280_cal.t2);
-    PX_DBG_TRACE("T3 = %u\n",   px_bme280_cal.t3);
-    PX_DBG_TRACE("P1 = %d\n",   px_bme280_cal.p1);
-    PX_DBG_TRACE("P2 = %d\n",   px_bme280_cal.p2);
-    PX_DBG_TRACE("P3 = %d\n",   px_bme280_cal.p3);
-    PX_DBG_TRACE("P4 = %d\n",   px_bme280_cal.p4);
-    PX_DBG_TRACE("P5 = %d\n",   px_bme280_cal.p5);
-    PX_DBG_TRACE("P6 = %d\n",   px_bme280_cal.p6);
-    PX_DBG_TRACE("P7 = %d\n",   px_bme280_cal.p7);
-    PX_DBG_TRACE("P8 = %d\n",   px_bme280_cal.p8);
-    PX_DBG_TRACE("P9 = %d\n",   px_bme280_cal.p9);
-    PX_DBG_TRACE("H1 = %hhu\n", px_bme280_cal.h1);
-    PX_DBG_TRACE("H2 = %hd\n",  px_bme280_cal.h2);
-    PX_DBG_TRACE("H3 = %hhu\n", px_bme280_cal.h3);
-    PX_DBG_TRACE("H4 = %hd\n",  px_bme280_cal.h4);
-    PX_DBG_TRACE("H5 = %hd\n",  px_bme280_cal.h5);
-    PX_DBG_TRACE("H6 = %hhd\n", px_bme280_cal.h6);
+    PX_LOG_TRACE("BME280 Cal:\n");
+    PX_LOG_TRACE("T1 = %d\n",   px_bme280_cal.t1);
+    PX_LOG_TRACE("T2 = %d\n",   px_bme280_cal.t2);
+    PX_LOG_TRACE("T3 = %u\n",   px_bme280_cal.t3);
+    PX_LOG_TRACE("P1 = %d\n",   px_bme280_cal.p1);
+    PX_LOG_TRACE("P2 = %d\n",   px_bme280_cal.p2);
+    PX_LOG_TRACE("P3 = %d\n",   px_bme280_cal.p3);
+    PX_LOG_TRACE("P4 = %d\n",   px_bme280_cal.p4);
+    PX_LOG_TRACE("P5 = %d\n",   px_bme280_cal.p5);
+    PX_LOG_TRACE("P6 = %d\n",   px_bme280_cal.p6);
+    PX_LOG_TRACE("P7 = %d\n",   px_bme280_cal.p7);
+    PX_LOG_TRACE("P8 = %d\n",   px_bme280_cal.p8);
+    PX_LOG_TRACE("P9 = %d\n",   px_bme280_cal.p9);
+    PX_LOG_TRACE("H1 = %hhu\n", px_bme280_cal.h1);
+    PX_LOG_TRACE("H2 = %hd\n",  px_bme280_cal.h2);
+    PX_LOG_TRACE("H3 = %hhu\n", px_bme280_cal.h3);
+    PX_LOG_TRACE("H4 = %hd\n",  px_bme280_cal.h4);
+    PX_LOG_TRACE("H5 = %hd\n",  px_bme280_cal.h5);
+    PX_LOG_TRACE("H6 = %hhd\n", px_bme280_cal.h6);
 #endif
 
     return true;
@@ -291,10 +291,10 @@ static bool px_bme280_temp_raw_rd(int32_t * data)
     if(!px_bme280_reg_rd_data(PX_BME280_REG_TEMP_MSB, i2c_data, 3))
     {
         // Error
-        PX_DBG_E("Unable to read temperature");
+        PX_LOG_E("Unable to read temperature");
         return false;
     }
-    PX_DBG_I("Temp data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
+    PX_LOG_I("Temp data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
     // Assemble value
     *data = (int32_t)(   (((uint32_t)i2c_data[0]) << 12)
                        | (((uint32_t)i2c_data[1]) <<  4)
@@ -310,10 +310,10 @@ static bool px_bme280_press_raw_rd(int32_t * data)
     if(!px_bme280_reg_rd_data(PX_BME280_REG_PRESS_MSB, i2c_data, 3))
     {
         // Error
-        PX_DBG_E("Unable to read pressure");
+        PX_LOG_E("Unable to read pressure");
         return false;
     }
-    PX_DBG_I("Press data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
+    PX_LOG_I("Press data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
     // Assemble value
     *data = (int32_t)(   (((uint32_t)i2c_data[0]) << 12)
                        | (((uint32_t)i2c_data[1]) <<  4)
@@ -329,10 +329,10 @@ static bool px_bme280_hum_raw_rd(int32_t * data)
     if(!px_bme280_reg_rd_data(PX_BME280_REG_HUM_MSB, i2c_data, 2))
     {
         // Error
-        PX_DBG_E("Unable to read humidity");
+        PX_LOG_E("Unable to read humidity");
         return false;
     }
-    PX_DBG_I("Hum data: %02X %02X", i2c_data[0], i2c_data[1]);
+    PX_LOG_I("Hum data: %02X %02X", i2c_data[0], i2c_data[1]);
     // Assemble value
     *data = (int32_t)(   (((uint32_t)i2c_data[0]) << 8)
                        | (((uint32_t)i2c_data[1]) << 0) );
@@ -351,13 +351,13 @@ bool px_bme280_init(px_i2c_handle_t * handle)
     if(!px_bme280_reg_rd(PX_BME280_REG_ID, &data))
     {
         // Error
-        PX_DBG_E("Unable to read Chip ID");
+        PX_LOG_E("Unable to read Chip ID");
         return false;
     }
     if(data != PX_BME280_REG_ID_VAL)
     {
         // Error
-        PX_DBG_E("Chip ID does not match. Received %02X, but expected %02X",
+        PX_LOG_E("Chip ID does not match. Received %02X, but expected %02X",
                    data, PX_BME280_REG_ID_VAL);
         return false;
     }
@@ -367,7 +367,7 @@ bool px_bme280_init(px_i2c_handle_t * handle)
         if(!px_bme280_reg_rd(PX_BME280_REG_STATUS, &data))
         {
             // Error
-            PX_DBG_E("Unable to read status");
+            PX_LOG_E("Unable to read status");
             return false;
         }
     }
@@ -391,7 +391,7 @@ bool px_bme280_read(px_bme280_data_t * data)
     if(!px_bme280_reg_wr(PX_BME280_REG_CTRL_HUM, PX_BME280_REG_CTRL_HUM_OVERS_1))
     {
         // Error
-        PX_DBG_E("Unable to set humidity oversampling");
+        PX_LOG_E("Unable to set humidity oversampling");
         return false;
     }
 
@@ -402,7 +402,7 @@ bool px_bme280_read(px_bme280_data_t * data)
     if(!px_bme280_reg_wr(PX_BME280_REG_CTRL_MEAS, ctrl))
     {
         // Error
-        PX_DBG_E("Unable to start measurement");
+        PX_LOG_E("Unable to start measurement");
         return false;
     }
     // Wait until conversion is finished
@@ -411,7 +411,7 @@ bool px_bme280_read(px_bme280_data_t * data)
         if(!px_bme280_reg_rd(PX_BME280_REG_STATUS, &status))
         {
             // Error
-            PX_DBG_E("Unable to read status");
+            PX_LOG_E("Unable to read status");
             return false;
         }
     }

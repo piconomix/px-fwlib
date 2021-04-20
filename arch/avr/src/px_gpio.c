@@ -20,10 +20,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gpio.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("gpio");
+PX_LOG_NAME("gpio");
 
 /* _____MACROS_______________________________________________________________ */
 

@@ -23,10 +23,10 @@
 #include "main.h"
 #include "px_systmr.h"
 #include "px_uart.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_xmodem_glue");
+PX_LOG_NAME("px_xmodem_glue");
 
 /* _____MACROS_______________________________________________________________ */
 

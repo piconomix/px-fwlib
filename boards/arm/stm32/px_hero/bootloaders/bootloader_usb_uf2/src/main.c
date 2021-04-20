@@ -29,10 +29,10 @@
 #include "px_flash.h"
 #include "usb_device.h"
 #include "px_uf2.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("main");
+PX_LOG_NAME("main");
 
 //! [Address mapping of App]
 /// Start address of app in FLASH
@@ -52,7 +52,7 @@ PX_DBG_DECL_NAME("main");
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-#if PX_DBG
+#if PX_LOG
 /// UART handle
 px_uart_handle_t px_uart_handle;
 #endif
@@ -220,7 +220,7 @@ int main(void)
     px_sysclk_init();
     px_uf2_init(&main_wr_flash_block, &main_wr_flash_done);
     
-#if PX_DBG
+#if PX_LOG
     // Open UART1
     px_uart_init();
     px_uart_open2(&px_uart_handle,
@@ -229,7 +229,7 @@ int main(void)
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
-    PX_DBG_I("Starting USB mass storage bootloader");
+    PX_LOG_I("Starting USB mass storage bootloader");
 #endif
 
     // Start timer for LED flashing
@@ -288,20 +288,20 @@ int main(void)
     NVIC_SystemReset();
 }
 
-#if PX_DBG
-void main_dbg_put_char(char data)
+#if PX_LOG
+void main_log_putchar(char data)
 {
     // New line character?
     if(data == '\n')
     {
         // Prepend a carriage return
-        main_dbg_put_char('\r');
+        main_log_putchar('\r');
     }
 
     px_uart_put_char(&px_uart_handle, data);
 }
 
-void main_dbg_timestamp(char * str)
+void main_log_timestamp(char * str)
 {
     sprintf(str, "%08lu", (uint32_t)px_sysclk_get_tick_count());
 }

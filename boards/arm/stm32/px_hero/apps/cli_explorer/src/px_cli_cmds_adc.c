@@ -25,10 +25,10 @@
 #include "px_board.h"
 #include "main.h"
 #include "px_systmr.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_adc");
+PX_LOG_NAME("cli_cmds_adc");
 
 /* _____MACROS_______________________________________________________________ */
 

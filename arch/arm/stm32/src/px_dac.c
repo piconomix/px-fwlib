@@ -22,10 +22,10 @@
 #include "px_dac.h"
 #include "px_board.h"
 #include "px_lib_stm32cube.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_dac");
+PX_LOG_NAME("px_dac");
 
 /// Internal data for each DAC handle
 typedef struct px_dac_per_s
@@ -62,7 +62,7 @@ static void px_dac_init_peripheral(DAC_TypeDef * dac_base_adr,
         break;
 #endif
     default:
-        PX_DBG_E("Invalid peripheral");
+        PX_LOG_E("Invalid peripheral");
         return;
     }
 
@@ -91,7 +91,7 @@ static void px_dac_init_peripheral_data(px_dac_nr_t    dac_nr,
         break;
 #endif
     default:
-        PX_DBG_E("Invalid peripheral");
+        PX_LOG_E("Invalid peripheral");
         return;
     }
     // Clear reference counter
@@ -112,11 +112,11 @@ bool px_dac_open(px_dac_handle_t * handle,
 {
     px_dac_per_t * dac_per;
 
-#if PX_DBG
+#if PX_LOG
     // Verify that pointer to handle is not NULL
     if(handle == NULL)
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -131,14 +131,14 @@ bool px_dac_open(px_dac_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_E("Invalid peripheral specified");
+        PX_LOG_E("Invalid peripheral specified");
         return false;
     }
-#if PX_DBG
+#if PX_LOG
     // Check that px_adc_init() has been called
     if(dac_per->dac_base_adr == NULL)
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -158,14 +158,14 @@ bool px_dac_close(px_dac_handle_t * handle)
     DAC_TypeDef *  dac_base_adr;
     uint32_t       dac_channel = 0;
 
-#if PX_DBG
+#if PX_LOG
     // Check handle
     if(  (handle                        == NULL)
        ||(handle->dac_per               == NULL)
        ||(handle->dac_per->dac_base_adr == NULL)
        ||(handle->dac_per->open_counter == 0   )  )
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -215,14 +215,14 @@ void px_dac_wr(px_dac_handle_t * handle,
     px_dac_per_t * dac_per;
     DAC_TypeDef *  dac_base_adr;
 
-#if PX_DBG
+#if PX_LOG
     // Check handle
     if(  (handle                        == NULL)
        ||(handle->dac_per               == NULL)
        ||(handle->dac_per->dac_base_adr == NULL)
        ||(handle->dac_per->open_counter == 0   )  )
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return;
     }
 #endif
@@ -240,7 +240,7 @@ void px_dac_wr(px_dac_handle_t * handle,
         dac_base_adr->DHR12R2 = data;
         break;
     default:
-        PX_DBG_E("Invalid DAC channel specified");
+        PX_LOG_E("Invalid DAC channel specified");
         break;
     }
 }

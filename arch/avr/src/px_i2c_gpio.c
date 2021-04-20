@@ -296,7 +296,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
     px_i2c_per_t * i2c_per;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
 
     // Handle not initialised
     handle->i2c_per = NULL;
@@ -310,7 +310,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_E("Invalid peripheral specified");
+        PX_LOG_E("Invalid peripheral specified");
         return false;
     }
 
@@ -330,12 +330,12 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     px_i2c_per_t * i2c_per;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
+    PX_LOG_ASSERT(i2c_per != NULL);
+    PX_LOG_ASSERT(i2c_per->open_counter != 0);
 
     // Decrement open count
     i2c_per->open_counter--;
@@ -365,14 +365,14 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
     const uint8_t * data_u8 = (const uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
+    PX_LOG_ASSERT(i2c_per != NULL);
+    PX_LOG_ASSERT(i2c_per->open_counter != 0);
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(handle->slave_adr < 0x80);
+    PX_LOG_ASSERT(handle->slave_adr < 0x80);
 #if !DBG
     // Supress compiler warning about unused variable
     (void)i2c_per;
@@ -432,14 +432,14 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
     uint8_t *       data_u8 = (uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Check that handle is open
-    PX_DBG_ASSERT(i2c_per != NULL);
-    PX_DBG_ASSERT(i2c_per->open_counter != 0);
+    PX_LOG_ASSERT(i2c_per != NULL);
+    PX_LOG_ASSERT(i2c_per->open_counter != 0);
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(handle->slave_adr < 0x80);
+    PX_LOG_ASSERT(handle->slave_adr < 0x80);
 #if !DBG
     // Supress compiler warning about unused variable
     (void)i2c_per;
@@ -505,9 +505,9 @@ void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
                                    uint8_t           slave_adr)
 {
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(slave_adr < 0x80);
+    PX_LOG_ASSERT(slave_adr < 0x80);
 
     handle->slave_adr = slave_adr;
 }

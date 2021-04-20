@@ -20,10 +20,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_template.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME(__FILE__);
+PX_LOG_NAME(__FILE__);
 
 /* _____MACROS_______________________________________________________________ */
 

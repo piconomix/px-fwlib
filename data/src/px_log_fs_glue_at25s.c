@@ -22,10 +22,10 @@
 #include "px_log_fs_glue.h"
 #include "px_log_fs_cfg.h"
 #include "px_at25s.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_log_fs_glue");
+PX_LOG_NAME("px_log_fs_glue");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -44,8 +44,8 @@ void px_log_fs_glue_rd(void *   buffer,
                        uint16_t nr_of_bytes)
 {
     // Sanity checks
-    PX_DBG_ASSERT(start_byte_in_page < PX_LOG_FS_CFG_PAGE_SIZE);
-    PX_DBG_ASSERT(nr_of_bytes <= (PX_LOG_FS_CFG_PAGE_SIZE - start_byte_in_page));    
+    PX_LOG_ASSERT(start_byte_in_page < PX_LOG_FS_CFG_PAGE_SIZE);
+    PX_LOG_ASSERT(nr_of_bytes <= (PX_LOG_FS_CFG_PAGE_SIZE - start_byte_in_page));
 
     // Read data from Serial Flash
     px_at25s_rd_page_offset(buffer, page, start_byte_in_page, nr_of_bytes);
@@ -57,8 +57,8 @@ void px_log_fs_glue_wr(const void * buffer,
                        uint16_t     nr_of_bytes)
 {
     // Sanity checks
-    PX_DBG_ASSERT(start_byte_in_page < PX_LOG_FS_CFG_PAGE_SIZE);
-    PX_DBG_ASSERT(nr_of_bytes <= (PX_LOG_FS_CFG_PAGE_SIZE - start_byte_in_page));
+    PX_LOG_ASSERT(start_byte_in_page < PX_LOG_FS_CFG_PAGE_SIZE);
+    PX_LOG_ASSERT(nr_of_bytes <= (PX_LOG_FS_CFG_PAGE_SIZE - start_byte_in_page));
 
     // Write data to Serial Flash
     px_at25s_wr_page_offset(buffer, page, start_byte_in_page, nr_of_bytes);
@@ -67,7 +67,7 @@ void px_log_fs_glue_wr(const void * buffer,
 void px_log_fs_glue_erase_block(uint16_t page)
 {
     // Sanity checks
-    PX_DBG_ASSERT((page & (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1)) == 0);
+    PX_LOG_ASSERT((page & (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE - 1)) == 0);
     
 #if   (PX_LOG_FS_CFG_ERASE_BLOCK_SIZE == PX_AT25S_PAGES_PER_BLOCK_4KB)
 

@@ -23,10 +23,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_adc.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("adc");
+PX_LOG_NAME("adc");
 
 /* _____MACROS_______________________________________________________________ */
 

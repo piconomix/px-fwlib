@@ -23,10 +23,10 @@
 #include "px_cli.h"
 #include "px_board.h"
 #include "px_gpio.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_gpio");
+PX_LOG_NAME("cli_cmds_gpio");
 
 /* _____MACROS_______________________________________________________________ */
 

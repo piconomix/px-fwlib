@@ -21,10 +21,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_sbuf.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_sbuf");
+PX_LOG_NAME("px_sbuf");
 
 /* _____MACROS_______________________________________________________________ */
 
