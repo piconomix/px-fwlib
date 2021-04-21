@@ -63,7 +63,7 @@ static union
 } px_xmodem_packet;
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-void px_modem_flow_char_to_str(uint8_t data)
+const char * px_modem_flow_char_to_str(uint8_t data)
 {
     switch(data)
     {
@@ -121,7 +121,7 @@ static uint16_t px_xmodem_calc_checksum(void)
             }
         }
     }
-	return crc;
+    return crc;
 }
 
 static bool px_xmodem_verify_checksum(uint16_t crc)
@@ -200,7 +200,7 @@ static bool px_xmodem_rx_packet(void)
 static void px_xmodem_tx_packet(void)
 {
     uint8_t  i; 
-	uint16_t crc;
+    uint16_t crc;
 
     // Start Of Header
     px_xmodem_packet.packet.start = PX_XMODEM_SOH;
@@ -358,7 +358,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
             PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
             if(px_xmodem_wait_rx_char(&data))
             {
-                PX_LOG_D("Received %s", px_modem_flow_char_to_str(data))
+                PX_LOG_D("Received %s", px_modem_flow_char_to_str(data));
                 // Received an ACK?
                 if(data == PX_XMODEM_ACK)
                 {
@@ -393,7 +393,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
         PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
         if(px_xmodem_wait_rx_char(&data))
         {
-            PX_LOG_D("Received %s", px_modem_flow_char_to_str(data))
+            PX_LOG_D("Received %s", px_modem_flow_char_to_str(data));
             if(data == PX_XMODEM_ACK)
             {
                 // File successfully transferred
