@@ -88,7 +88,7 @@ void px_crc32_init(void);
  *  @param crc          The initial CRC to start the calculation with
  *  @param data         The value to calculate the CRC over
  *
- *  @return uint16_t    The resultant CRC
+ *  @return uint32_t    The resultant CRC
  */
 uint32_t px_crc32_update_u8(uint32_t crc, uint8_t data);
 
@@ -99,7 +99,7 @@ uint32_t px_crc32_update_u8(uint32_t crc, uint8_t data);
  *  @param data         Pointer to the data to calculate the CRC over
  *  @param nr_of_bytes  The amount of bytes to calculate the CRC over
  *
- *  @return uint16_t    The resultant CRC over the group of bytes
+ *  @return uint32_t    The resultant CRC over the group of bytes
  */
 uint32_t px_crc32_update_data(uint32_t crc, const void * data, size_t nr_of_bytes);
 
