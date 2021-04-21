@@ -121,6 +121,7 @@
 #define PX_ATTR_FORMAT_ARG(str_index)       __attribute__ ((format_arg(str_index)))
 #define PX_ATTR_PACKED                      __attribute__ ((packed))
 #define PX_ATTR_ALIGNED(a)                  __attribute__((__aligned__(a)))
+#define PX_ATTR_WEAK                        __attribute__((weak))
 
 #else
 
@@ -133,6 +134,7 @@
 #define PX_ATTR_FORMAT_ARG(str_index)
 #define PX_ATTR_PACKED
 #define PX_ATTR_ALIGNED(a)
+#define PX_ATTR_WEAK
 
 #endif
 
