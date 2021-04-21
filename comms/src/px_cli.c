@@ -926,8 +926,8 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
             px_cli_cmd_item_get_child();
         }
     }
-    PX_LOG_I("Max command chars = %d", name_char_cnt);
-    PX_LOG_I("Max param chars = %d", param_char_cnt);
+    PX_LOG_D("Max command chars = %d", name_char_cnt);
+    PX_LOG_D("Max param chars = %d", param_char_cnt);
 #endif
 
     // Display help for each command in list

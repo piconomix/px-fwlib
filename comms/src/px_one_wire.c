@@ -227,15 +227,15 @@ px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom)
     {
         *data_u8++ = px_one_wire_rd_u8();
     }
-    PX_LOG_I("Family code = 0x%02X", rom->content.family_code);
-    PX_LOG_I("Serial      = %02X:%02X:%02X:%02X:%02X:%02X",
+    PX_LOG_D("Family code = 0x%02X", rom->content.family_code);
+    PX_LOG_D("Serial      = %02X:%02X:%02X:%02X:%02X:%02X",
                 rom->content.serial[0],
                 rom->content.serial[1],
                 rom->content.serial[2],
                 rom->content.serial[3],
                 rom->content.serial[4],
                 rom->content.serial[5]);
-    PX_LOG_I("CRC         = 0x%02X", rom->content.crc);
+    PX_LOG_D("CRC         = 0x%02X", rom->content.crc);
 
     // Calculate CRC
     crc = px_one_wire_calc_crc8(rom->data, offsetof(px_one_wire_rom_content_t, crc));
@@ -428,7 +428,7 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
     // Is this the last device?
     if(one_wire_search->last_discrepancy == 0)
     {
-        PX_LOG_I("Last device found");
+        PX_LOG_D("Last device found");
         one_wire_search->last_device_flag = true;
     }
     // Success
