@@ -52,24 +52,34 @@
  *    to make sure that a pointer is not NULL before using it.
  *  - PX_LOG_TRACE() to output a formatted string
  *  
- *  #PX_LOG_CFG_LEVEL is used to select which log messages are compiled into the
- *  source code. For example if PX_LOG_CFG_LEVEL is set to PX_LOG_LEVEL_INFO
+ *  #PX_LOG_CFG_LEVEL is used to specify which log messages are compiled into
+ *  the source code. For example if #PX_LOG_CFG_LEVEL is set to PX_LOG_LEVEL_INFO
  *  then all ERROR, WARNING and INFO messages will be included in the code but
  *  VERBOSE and DEBUG message will not. It does not affect PX_LOG_TRACE() or
  *  PX_LOG_ASSERT() macros.
  *
  *  Set #PX_LOG_CFG_COLOR to 1 to indicate log message level with color on
- *  an ANSI/VT100 terminal emulator for example
- *  [Tera Term](http://en.sourceforge.jp/projects/ttssh2).
+ *  an ANSI/VT100 terminal emulator (for example
+ *  [Tera Term](http://en.sourceforge.jp/projects/ttssh2)).
+ *
+ *  Example usage:
+ *
+ *      @code{.c}
+ *      PX_LOG_I("This word is " PX_LOG_CF_GREEN "green" PX_LOG_CR);
+ *      @endcode
+ *
+ *  @tip_s
+ *  Observe that the compiler will automatically concatenate adjacent strings.
+ *  @tip_e
  *  
- *  The log messages will report the file name / module name and line number as
- *  well as the user format string. To save code space, the file name / module 
- *  name must be declared at the top of the C file using PX_LOG_NAME().
- *  This is the correct way to declare the file name / module name:
+ *  The log messages will report the file / module name and line number as
+ *  well as the user format string. To save code space, the name must be
+ *  declared at the top of the C file using PX_LOG_NAME(). This is the correct
+ *  way to declare the name:
  *  
  *      @code{.c}
  *      #include "px_log.h"
- *      PX_LOG_NAME("module name / file name"); // Or PX_LOG_NAME(__FILE__);
+ *      PX_LOG_NAME("module / file name"); // Or PX_LOG_NAME(__FILE__);
  *      @endcode
  *  
  *  @warn_s
@@ -79,7 +89,7 @@
  *  
  *      error: '_px_log_name' undeclared (first use in this function)
  *   
- *  The log output can be redirected by using the PX_LOG_CFG_PUTCHAR macro,
+ *  The log output can be redirected by using the #PX_LOG_CFG_PUTCHAR macro,
  *  for example to stderr stream, a different uart or to a log file on an SD
  *  card.
  *  
@@ -95,15 +105,15 @@
  *      #ifdef PX_LOG_CFG_LEVEL
  *      #undef PX_LOG_CFG_LEVEL
  *      #endif
- *      // Set output level to VERBOSE (ERROR, WARN, INFO and VERBOSE messages)
- *      #define PX_LOG_CFG_LEVEL PX_LOG_LEVEL_VERBOSE
+ *      // Set output level to DEBUG (ERROR, WARN, INFO and DEBUG messages)
+ *      #define PX_LOG_CFG_LEVEL PX_LOG_LEVEL_DEBUG
  *      #include "px_log.h"
  *      PX_LOG_NAME("buggy_module");
  *      @endcode
  *  
  *  The #PX_LOG_CFG_LEVEL can easily be tested with the the
  *  #PX_LOG_LEVEL_E, #PX_LOG_LEVEL_W, #PX_LOG_LEVEL_I or #PX_LOG_LEVEL_V or
- *  #PX_LOG_LEVEL_D macro to add code conditionally, for example:
+ *  #PX_LOG_LEVEL_D macro to conditionally add code, for example:
  *  
  *      @code{.c}
  *      void tx_data(void * data, size_t nr_of_bytes)
@@ -114,7 +124,6 @@
  *              // Report content of buffer
  *              PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes);
  *          }
- *
  *          // Rest of function...
  *      }
  *      @endcode
@@ -168,7 +177,7 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS _________________________________________________________ */
-/// Log message level numbered in increasing verbosity
+/// Log message level ordered in increasing verbosity
 typedef enum
 {
     PX_LOG_LEVEL_NONE    = 0,   ///< No log output
@@ -190,8 +199,8 @@ typedef enum
  *  An optional customised version of this function can be declared to filter
  *  log output based on the level and / or name.
  *
- *  A weak version is declared in px_log.c that always returns false meaning
- *  that no log outputs are filtered.
+ *  A weak version is declared in px_log.c that always returns `false` meaning
+ *  that no log output is filtered.
  *
  *  @param level    Log level
  *  @param name     Module / file name
@@ -310,7 +319,7 @@ void _px_log_trace(const char * format, ...);
  *  Output the content of a buffer as an array of HEX values.
  *  
  *  @param data         Pointer to buffer containing data to display
- *  @param nr_of_bytes  Size of buffer (in bytes)
+ *  @param nr_of_bytes  Number of bytes in buffer to display
  */
 void _px_log_trace_data(const void * data, size_t nr_of_bytes);
 
@@ -319,7 +328,7 @@ void _px_log_trace_data(const void * data, size_t nr_of_bytes);
  *  characters.
  *  
  *  @param data         Pointer to buffer containing data to display
- *  @param nr_of_bytes  Size of buffer (in bytes)
+ *  @param nr_of_bytes  Number of bytes in buffer to display
  */
 void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
 

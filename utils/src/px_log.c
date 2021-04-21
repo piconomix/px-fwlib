@@ -26,7 +26,7 @@
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// Number of bytes per row for hex dump
-#define PX_LOG_TRACE_DATA_BYTES_PER_ROW    16
+#define PX_LOG_CFG_TRACE_DATA_BYTES_PER_ROW    16
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -50,7 +50,7 @@ static void inline px_log_putchar(char data)
 #endif
 }
 
-static void px_log_print_str(const char  * data)
+static void px_log_print_str(const char * data)
 {
     while(*data != '\0')
     {
@@ -150,7 +150,7 @@ static void px_log_printf(const char * format, ...)
 }
 #endif
 
-static void px_log_report_log_prefix(uint8_t        level,
+static void px_log_report_log_prefix(px_log_level_t level,
                                      const char *   name,
                                      uint16_t       line)
 {
@@ -227,7 +227,7 @@ static void px_log_report_log_prefix(uint8_t        level,
 #endif
 }
 
-static void _px_log_log_terminate(const char * format)
+static void px_log_log_terminate(const char * format)
 {
 #ifdef PX_COMPILER_GCC_AVR
     size_t len = strlen_P(format);
@@ -247,7 +247,7 @@ static void _px_log_log_terminate(const char * format)
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-__weak bool px_log_filter(px_log_level_t level, const char * name)
+PX_ATTR_WEAK bool px_log_filter(px_log_level_t level, const char * name)
 {
     // Allow all log output
     return false;
@@ -274,7 +274,7 @@ void _px_log_log_error(const char * name, uint16_t line, const char * format, ..
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    _px_log_log_terminate(format);
+    px_log_log_terminate(format);
 }
 
 void _px_log_log_warning(const char * name, uint16_t line, const char * format, ...)
@@ -282,7 +282,7 @@ void _px_log_log_warning(const char * name, uint16_t line, const char * format, 
     va_list args;
 
     // Must log be filtered?
-    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    if(px_log_filter(PX_LOG_LEVEL_WARNING, name))
     {
         // Yes
         return;
@@ -298,7 +298,7 @@ void _px_log_log_warning(const char * name, uint16_t line, const char * format, 
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    _px_log_log_terminate(format);
+    px_log_log_terminate(format);
 }
 
 void _px_log_log_info(const char * name, uint16_t line, const char * format, ...)
@@ -306,7 +306,7 @@ void _px_log_log_info(const char * name, uint16_t line, const char * format, ...
     va_list args;
 
     // Must log be filtered?
-    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    if(px_log_filter(PX_LOG_LEVEL_INFO, name))
     {
         // Yes
         return;
@@ -322,7 +322,7 @@ void _px_log_log_info(const char * name, uint16_t line, const char * format, ...
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    _px_log_log_terminate(format);
+    px_log_log_terminate(format);
 }
 
 void _px_log_log_debug(const char * name, uint16_t line, const char * format, ...)
@@ -330,7 +330,7 @@ void _px_log_log_debug(const char * name, uint16_t line, const char * format, ..
     va_list args;
 
     // Must log be filtered?
-    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    if(px_log_filter(PX_LOG_LEVEL_DEBUG, name))
     {
         // Yes
         return;
@@ -346,7 +346,7 @@ void _px_log_log_debug(const char * name, uint16_t line, const char * format, ..
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    _px_log_log_terminate(format);
+    px_log_log_terminate(format);
 }
 
 void _px_log_log_verbose(const char * name, uint16_t line, const char * format, ...)
@@ -354,7 +354,7 @@ void _px_log_log_verbose(const char * name, uint16_t line, const char * format, 
     va_list args;
 
     // Must log be filtered?
-    if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
+    if(px_log_filter(PX_LOG_LEVEL_VERBOSE, name))
     {
         // Yes
         return;
@@ -370,7 +370,7 @@ void _px_log_log_verbose(const char * name, uint16_t line, const char * format, 
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    _px_log_log_terminate(format);
+    px_log_log_terminate(format);
 }
 
 void _px_log_assert(const char * name,
@@ -425,20 +425,18 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes)
     const uint8_t * row_data;
 
     // Split data up into rows
-    for(i = 0; i < nr_of_bytes; i+= PX_LOG_TRACE_DATA_BYTES_PER_ROW)
+    for(i = 0; i < nr_of_bytes; i+= PX_LOG_CFG_TRACE_DATA_BYTES_PER_ROW)
     {
         // Insert extra empty row?
-        if(  (i != 0) && ((i % (PX_LOG_TRACE_DATA_BYTES_PER_ROW * 4)) == 0)  )
+        if(  (i != 0) && ((i % (PX_LOG_CFG_TRACE_DATA_BYTES_PER_ROW * 4)) == 0)  )
         {
             // Yes
             px_log_putchar('\n');
         }
-
         // Select row data
         row_data = &((const uint8_t *)data)[i];
-
         // Display Hexidecimal data
-        for(j=0; j<PX_LOG_TRACE_DATA_BYTES_PER_ROW; j++)
+        for(j = 0; j < PX_LOG_CFG_TRACE_DATA_BYTES_PER_ROW; j++)
         {
             // Insert extra space?
             if((j != 0) && ((j % 4) == 0))
@@ -457,15 +455,14 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes)
             {
                 // No more data
 #ifdef PX_COMPILER_GCC_AVR
-                px_log_printf_P(PX_PGM_STR("   "));
+                px_log_print_str_P(PX_PGM_STR("   "));
 #else
                 px_log_print_str("   ");
 #endif
             }
         }
-
         // Display ASCII data
-        for(j = 0; j < PX_LOG_TRACE_DATA_BYTES_PER_ROW; j++)
+        for(j = 0; j < PX_LOG_CFG_TRACE_DATA_BYTES_PER_ROW; j++)
         {
             // End of data?
             if((i + j) < nr_of_bytes)

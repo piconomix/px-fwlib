@@ -12,24 +12,14 @@
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
  
-    Title:          px_log_color.h : Color definitions for debug module
+    Title:          px_log_color.h : Color definitions for debug logging module
     Author(s):      Pieter Conradie
-    Creation Date:  2008-11-01
+    Creation Date:  2021-04-20
 
 ============================================================================= */
 
 /**
  *  @addtogroup PX_LOG
- *
- *  Example usage:
- *
- *      @code{.c}
- *      PX_LOG_INFO("This " PX_LOG_CF_GREEN "word" PX_LOG_CR " is green");
- *      @endcode
- *
- *  @tip_s
- *  Observe that the compiler will automatically concatenate strings.
- *  @tip_e
  */
 /// @{
 
