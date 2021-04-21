@@ -9,7 +9,7 @@
 		Type="cpp"
 		DebugCallbackName="gdb"
 		OutputFile=""
-		CompilerConfigName="None">
+		CompilerConfigName="GCC-ARM">
 		<Menu>
 			<Target
 				Name="Compile"
@@ -69,7 +69,7 @@
 		Type="cpp"
 		DebugCallbackName="gdb"
 		OutputFile=""
-		CompilerConfigName="None">
+		CompilerConfigName="GCC-ARM">
 		<Menu>
 			<Target
 				Name="Build"
