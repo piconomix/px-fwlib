@@ -226,7 +226,7 @@ static void px_gt511_rx_flush(void)
 
 static void px_gt511_tx_cmd_packet(uint16_t cmd, uint32_t param)
 {
-    PX_LOG_I("TX Cmd %04X Param %08X", cmd, param);
+    PX_LOG_D("TX Cmd %04X Param %08X", cmd, param);
 
     // Fill fields
     px_gt511_cmd_packet.start_code1 = 0x55;
@@ -281,9 +281,9 @@ static bool px_gt511_rx_resp_packet(px_systmr_ticks_t timeout_ticks)
        ||(px_gt511_resp_packet.device_id   != 0x001)  )
     {
         PX_LOG_E("RX Header incorrect (%02X %02X %04X)",
-                   px_gt511_resp_packet.start_code1,
-                   px_gt511_resp_packet.start_code2,
-                   px_gt511_resp_packet.device_id);
+                 px_gt511_resp_packet.start_code1,
+                 px_gt511_resp_packet.start_code2,
+                 px_gt511_resp_packet.device_id);
         // Flush remainder of packet
         px_gt511_rx_flush();
         return false;
@@ -295,7 +295,7 @@ static bool px_gt511_rx_resp_packet(px_systmr_ticks_t timeout_ticks)
     if(checksum != px_gt511_resp_packet.checksum)
     {
         PX_LOG_E("RX Checksum does not match (%04X != %04X)",
-                   px_gt511_resp_packet.checksum, checksum);
+                 px_gt511_resp_packet.checksum, checksum);
         // Flush remainder of packet
         px_gt511_rx_flush();
         return false;
@@ -309,15 +309,15 @@ static bool px_gt511_rx_resp_packet(px_systmr_ticks_t timeout_ticks)
     }
 
     // Success
-    if(PX_LOG_LEVEL_I())
+    if(PX_LOG_LEVEL_D())
     {
         if(px_gt511_resp_packet.resp == PX_GT511_CMD_ACK)
         {
-            PX_LOG_I("RX Resp ACK");
+            PX_LOG_D("RX Resp ACK");
         }
         else
         {
-            PX_LOG_I("RX Resp NACK (Error Code %04X)", px_gt511_resp_packet.param);
+            PX_LOG_D("RX Resp NACK (Error Code %04X)", px_gt511_resp_packet.param);
         }
     }
 }
@@ -341,9 +341,9 @@ static bool px_gt511_rx_data_packet(void *            data,
        ||(px_gt511_data_packet.device_id   != 0x001)  )
     {
         PX_LOG_E("RX Header incorrect (%02X %02X %04X)",
-                   px_gt511_data_packet.start_code1,
-                   px_gt511_data_packet.start_code2,
-                   px_gt511_data_packet.device_id);
+                 px_gt511_data_packet.start_code1,
+                 px_gt511_data_packet.start_code2,
+                 px_gt511_data_packet.device_id);
         // Flush remainder of packet
         px_gt511_rx_flush();
         return false;
@@ -369,15 +369,14 @@ static bool px_gt511_rx_data_packet(void *            data,
                                       nr_of_bytes);
     if(checksum != checksum_data)
     {
-        PX_LOG_E("RX Checksum does not match (%04X != %04X)",
-                   checksum_data, checksum);
+        PX_LOG_E("RX Checksum does not match (%04X != %04X)", checksum_data, checksum);
         // Flush remainder of packet
         px_gt511_rx_flush();
         return false;
     }
 
     // Success
-    PX_LOG_I("RX Data (%u bytes)", nr_of_bytes);
+    PX_LOG_D("RX Data (%u bytes)", nr_of_bytes);
     return true;
 }
 
@@ -401,7 +400,7 @@ px_gt511_err_t px_gt511_auto_baud(void)
 
     for(i=0; i < PX_SIZEOF_ARRAY(baud); i++)
     {
-        PX_LOG_I("Baud = %lu", baud[i]);
+        PX_LOG_D("Baud = %lu", baud[i]);
         px_uart_ioctl_change_baud(px_gt511_uart_handle, baud[i]);
         if(px_gt511_open(false, NULL) == PX_GT511_ERR_NONE)
         {
@@ -420,7 +419,7 @@ px_gt511_err_t px_gt511_auto_baud(void)
 px_gt511_err_t px_gt511_open(bool get_device_info, px_gt511_dev_info_t * dev_info)
 {
     // Send command
-    PX_LOG_I("OPEN");
+    PX_LOG_D("OPEN");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_OPEN, (get_device_info == false)? 0 : 1);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -449,7 +448,7 @@ px_gt511_err_t px_gt511_open(bool get_device_info, px_gt511_dev_info_t * dev_inf
 px_gt511_err_t px_gt511_close(void)
 {
     // Send command
-    PX_LOG_I("CLOSE");
+    PX_LOG_D("CLOSE");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_CLOSE, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -469,7 +468,7 @@ px_gt511_err_t px_gt511_close(void)
 px_gt511_err_t px_gt511_cmos_led_control(bool on)
 {
     // Send command
-    PX_LOG_I("CMOS_LED");
+    PX_LOG_D("CMOS_LED");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_CMOS_LED, (on == false)? 0 : 1);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -489,7 +488,7 @@ px_gt511_err_t px_gt511_cmos_led_control(bool on)
 px_gt511_err_t px_gt511_change_baud_rate(uint32_t baud)
 {
     // Send command
-    PX_LOG_I("CHANGE_BAUD");
+    PX_LOG_D("CHANGE_BAUD");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_CHANGE_BAUD, baud);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -509,7 +508,7 @@ px_gt511_err_t px_gt511_change_baud_rate(uint32_t baud)
 px_gt511_err_t px_gt511_get_enroll_count(px_gt511_id_t * enroll_count)
 {
     // Send command
-    PX_LOG_I("ENROLL_COUNT");
+    PX_LOG_D("ENROLL_COUNT");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_GET_ENROLL_COUNT, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -550,7 +549,7 @@ px_gt511_err_t px_gt511_check_enrolled(px_gt511_id_t id)
 px_gt511_err_t px_gt511_enroll_start(px_gt511_id_t id)
 {
     // Send command
-    PX_LOG_I("ENROLL_START");
+    PX_LOG_D("ENROLL_START");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_ENROLL_START, id);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -570,7 +569,7 @@ px_gt511_err_t px_gt511_enroll_start(px_gt511_id_t id)
 px_gt511_err_t px_gt511_enroll_1(void)
 {
     // Send command
-    PX_LOG_I("ENROLL_1");
+    PX_LOG_D("ENROLL_1");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_ENROLL_1, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_ENROLL_TIMEOUT_MS)))
@@ -590,7 +589,7 @@ px_gt511_err_t px_gt511_enroll_1(void)
 px_gt511_err_t px_gt511_enroll_2(void)
 {
     // Send command
-    PX_LOG_I("ENROLL_2");
+    PX_LOG_D("ENROLL_2");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_ENROLL_2, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_ENROLL_TIMEOUT_MS)))
@@ -610,7 +609,7 @@ px_gt511_err_t px_gt511_enroll_2(void)
 px_gt511_err_t px_gt511_enroll_3(void)
 {
     // Send command
-    PX_LOG_I("ENROLL_3");
+    PX_LOG_D("ENROLL_3");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_ENROLL_3, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_ENROLL_TIMEOUT_MS)))
@@ -630,7 +629,7 @@ px_gt511_err_t px_gt511_enroll_3(void)
 px_gt511_err_t px_gt511_is_finger_pressed(bool * is_pressed)
 {
     // Send command
-    PX_LOG_I("IS_PRESS_FINGER");
+    PX_LOG_D("IS_PRESS_FINGER");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_IS_PRESS_FINGER, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -711,7 +710,7 @@ px_gt511_err_t px_gt511_wait_until_finger_released(px_systmr_ticks_t timeout_tic
 px_gt511_err_t px_gt511_delete_id(px_gt511_id_t id)
 {
     // Send command
-    PX_LOG_I("DELETE_ID");
+    PX_LOG_D("DELETE_ID");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_DELETE_ID, id);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_DELETE_TIMEOUT_MS)))
@@ -731,7 +730,7 @@ px_gt511_err_t px_gt511_delete_id(px_gt511_id_t id)
 px_gt511_err_t px_gt511_delete_all(void)
 {
     // Send command
-    PX_LOG_I("DELETE_ALL");
+    PX_LOG_D("DELETE_ALL");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_DELETE_ALL, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_DELETE_TIMEOUT_MS)))
@@ -751,7 +750,7 @@ px_gt511_err_t px_gt511_delete_all(void)
 px_gt511_err_t px_gt511_verify(px_gt511_id_t id)
 {
     // Send command
-    PX_LOG_I("VERIFY");
+    PX_LOG_D("VERIFY");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_VERIFY, id);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_ID_TIMEOUT_MS)))
@@ -771,7 +770,7 @@ px_gt511_err_t px_gt511_verify(px_gt511_id_t id)
 px_gt511_err_t px_gt511_identify(px_gt511_id_t * id)
 {
     // Send command
-    PX_LOG_I("IDENTIFY");
+    PX_LOG_D("IDENTIFY");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_IDENTIFY, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_ID_TIMEOUT_MS)))
@@ -793,7 +792,7 @@ px_gt511_err_t px_gt511_identify(px_gt511_id_t * id)
 px_gt511_err_t px_gt511_verify_template(px_gt511_id_t id, uint8_t * template_buf)
 {
     // Send command
-    PX_LOG_I("VERIFY_TEMPLATE");
+    PX_LOG_D("VERIFY_TEMPLATE");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_VERIFY_TEMPLATE, id);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -826,7 +825,7 @@ px_gt511_err_t px_gt511_verify_template(px_gt511_id_t id, uint8_t * template_buf
 px_gt511_err_t px_gt511_identify_template(px_gt511_id_t * id, uint8_t * template_buf)
 {
     // Send command
-    PX_LOG_I("IDENTIFY_TEMPLATE");
+    PX_LOG_D("IDENTIFY_TEMPLATE");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_IDENTIFY_TEMPLATE, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -861,7 +860,7 @@ px_gt511_err_t px_gt511_identify_template(px_gt511_id_t * id, uint8_t * template
 px_gt511_err_t px_gt511_capture_finger(bool best_image)
 {
     // Send command
-    PX_LOG_I("CAPTURE_FINGER");
+    PX_LOG_D("CAPTURE_FINGER");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_CAPTURE_FINGER, (best_image == false)? 0 : 1);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_IMAGE_TIMEOUT_MS)))
@@ -881,7 +880,7 @@ px_gt511_err_t px_gt511_capture_finger(bool best_image)
 px_gt511_err_t px_gt511_make_template(uint8_t * template_buf)
 {
     // Send command
-    PX_LOG_I("MAKE_TEMPLATE");
+    PX_LOG_D("MAKE_TEMPLATE");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_MAKE_TEMPLATE, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -906,7 +905,7 @@ px_gt511_err_t px_gt511_make_template(uint8_t * template_buf)
 px_gt511_err_t px_gt511_get_image(uint8_t * image_buf)
 {
     // Send command
-    PX_LOG_I("GET_IMAGE");
+    PX_LOG_D("GET_IMAGE");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_GET_IMAGE, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -931,7 +930,7 @@ px_gt511_err_t px_gt511_get_image(uint8_t * image_buf)
 px_gt511_err_t px_gt511_get_raw_image(uint8_t * image_buf)
 {
     // Send command
-    PX_LOG_I("GET_RAW_IMAGE");
+    PX_LOG_D("GET_RAW_IMAGE");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_GET_RAW_IMAGE, 0);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -956,7 +955,7 @@ px_gt511_err_t px_gt511_get_raw_image(uint8_t * image_buf)
 px_gt511_err_t px_gt511_get_template(px_gt511_id_t id, uint8_t * template_buf)
 {
     // Send command
-    PX_LOG_I("GET_TEMPLATE");
+    PX_LOG_D("GET_TEMPLATE");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_GET_TEMPLATE, id);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))
@@ -981,7 +980,7 @@ px_gt511_err_t px_gt511_get_template(px_gt511_id_t id, uint8_t * template_buf)
 px_gt511_err_t px_gt511_set_template(px_gt511_id_t id, uint8_t * template_buf)
 {
     // Send command
-    PX_LOG_I("SET_TEMPLATE");
+    PX_LOG_D("SET_TEMPLATE");
     px_gt511_tx_cmd_packet(PX_GT511_CMD_SET_TEMPLATE, id);
     // Receive response
     if(!px_gt511_rx_resp_packet(PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_TIMEOUT_MS)))

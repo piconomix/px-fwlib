@@ -337,7 +337,7 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf)
     }
     else
     {
-        PX_LOG_I("Write 0x%08X %u bytes", bl->target_addr, bl->payload_size);
+        PX_LOG_D("Write 0x%08X %u bytes", bl->target_addr, bl->payload_size);
         (*px_uf2_on_wr_flash_block)(bl->data, bl->target_addr, bl->payload_size);
     }
 
@@ -378,7 +378,7 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf)
             if(px_uf2_write_state.num_written >= px_uf2_write_state.nr_of_blocks)
             {
                 // Signal that las block has been written
-                PX_LOG_I("Write done");
+                PX_LOG_D("Write done");
                 (*px_uf2_on_wr_flash_done)();
             }
         }        

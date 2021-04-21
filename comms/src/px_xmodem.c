@@ -170,7 +170,7 @@ static bool px_xmodem_rx_packet(void)
             // See if End Of Transmission has been received
             if(data == PX_XMODEM_EOT)
             {
-                PX_LOG_I("EOT");
+                PX_LOG_D("EOT");
                 return true;
             }
         }
@@ -240,7 +240,7 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
         {
             // Send initial start character to start transfer (with CRC checking)
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_C);
-            PX_LOG_I("Sending 'C'");
+            PX_LOG_D("Sending 'C'");
         }
 
         // Try to receive a packet
@@ -249,7 +249,7 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
             if(first_ack_sent)
             {
                 PX_XMODEM_CFG_WR_U8(PX_XMODEM_NAK);
-                PX_LOG_I("Sending NAK");
+                PX_LOG_D("Sending NAK");
             }
             continue;
         }
@@ -257,9 +257,9 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
         if(px_xmodem_packet.packet.start == PX_XMODEM_EOT)
         {
             // Acknowledge EOT
-            PX_LOG_I("Received EOT");
+            PX_LOG_D("Received EOT");
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_ACK);
-            PX_LOG_I("Sending ACK");
+            PX_LOG_D("Sending ACK");
             break;
         }
         // Duplicate packet received?
@@ -268,7 +268,7 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
             // Acknowledge packet
             PX_LOG_W("Duplicate packet received");
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_ACK);
-            PX_LOG_I("Sending ACK");
+            PX_LOG_D("Sending ACK");
             continue;
         }
         // Expected packet received?
@@ -277,10 +277,10 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
             // NAK packet
             PX_LOG_E("Packet number not expected");
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_NAK);
-            PX_LOG_I("Sending NAK");
+            PX_LOG_D("Sending NAK");
             continue;
         }
-        PX_LOG_I("Received packet %u", px_xmodem_packet_nr);
+        PX_LOG_D("Received packet %u", px_xmodem_packet_nr);
         // Pass received data on to handler
         (*on_rx_data)(&px_xmodem_packet.packet.data[0], 
                       sizeof(px_xmodem_packet.packet.data));
@@ -313,9 +313,9 @@ bool px_xmodem_receive_file(px_xmodem_on_rx_data_t on_rx_data)
         if(px_xmodem_packet.packet.start == PX_XMODEM_EOT)
         {
             // Acknowledge EOT
-            PX_LOG_I("Received EOT");
+            PX_LOG_D("Received EOT");
             PX_XMODEM_CFG_WR_U8(PX_XMODEM_ACK);
-            PX_LOG_I("Sending ACK");
+            PX_LOG_D("Sending ACK");
         }
     }
 
@@ -351,7 +351,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
         while(retry != 0)
         {
             // Send packet
-            PX_LOG_I("Sending packet %u", px_xmodem_packet_nr);
+            PX_LOG_D("Sending packet %u", px_xmodem_packet_nr);
             px_xmodem_tx_packet();
 
             // Wait for a response (ACK, NAK or C)
@@ -387,7 +387,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
     while(retry != 0)
     {
         // Send "End Of Transfer"
-        PX_LOG_I("Sending EOT");
+        PX_LOG_D("Sending EOT");
         PX_XMODEM_CFG_WR_U8(PX_XMODEM_EOT);        
         // Wait for response
         PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
@@ -397,7 +397,7 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data)
             if(data == PX_XMODEM_ACK)
             {
                 // File successfully transferred
-                PX_LOG_I("Received ACK. Success");
+                PX_LOG_D("Received ACK. Success");
                 return true;
             }
         }

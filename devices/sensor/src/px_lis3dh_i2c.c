@@ -550,7 +550,7 @@ bool px_lis3dh_xyz_data_ready(void)
     if(data & (1 << PX_LIS3DH_REG_CTRL_STATUS_REG_ZYXDA))
     {
         // X,Y & Z data is ready
-        PX_LOG_I("Data ready. StatusReg = 0x%02X", (unsigned int)data);
+        PX_LOG_D("Data ready. StatusReg = 0x%02X", (unsigned int)data);
         return true;
     }
     else
@@ -595,7 +595,7 @@ bool px_lis3dh_rd_who_am_i(uint8_t * data)
 {
     if(px_lis3dh_reg_rd_u8(PX_LIS3DH_REG_WHO_AM_I, data))
     {
-        PX_LOG_I("WHO_AM_I = 0x%02X", (unsigned int)*data);
+        PX_LOG_D("WHO_AM_I = 0x%02X", (unsigned int)*data);
         return true;
     }
     else

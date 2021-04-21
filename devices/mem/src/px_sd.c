@@ -200,7 +200,7 @@ static uint8_t px_sd_tx_cmd_rx_resp_r1(uint8_t cmd, uint32_t arg)
     // End previous transaction
     px_sd_spi_cs_end();
 
-    PX_LOG_I("CMD%d(%08lX)", cmd, arg);
+    PX_LOG_D("CMD%d(%08lX)", cmd, arg);
 
     // Select SD card to start next transaction
     px_sd_spi_cs_lo();
@@ -255,7 +255,7 @@ static uint8_t px_sd_tx_cmd_rx_resp_r1(uint8_t cmd, uint32_t arg)
     }
     else
     {
-        PX_LOG_I("R1 = 0x%02X", r1);
+        PX_LOG_D("R1 = 0x%02X", r1);
     }
 
     // Return response
@@ -274,7 +274,7 @@ static uint8_t px_sd_rx_data_block(uint8_t * data, size_t nr_of_bytes)
         data_token = px_sd_spi_rd_u8();
         if(data_token != 0xff)
         {
-            PX_LOG_I("Data token = %02hX", data_token);
+            PX_LOG_D("Data token = %02hX", data_token);
             break;
         }
         // Wait 100 us
@@ -295,7 +295,7 @@ static uint8_t px_sd_rx_data_block(uint8_t * data, size_t nr_of_bytes)
     px_crc_lo = px_sd_spi_rd_u8();
     if(PX_LOG_LEVEL_I())
     {
-        PX_LOG_I("CRC = %02hX %02hX", px_crc_hi, px_crc_lo);
+        PX_LOG_D("CRC = %02hX %02hX", px_crc_hi, px_crc_lo);
     }
     else
     {
@@ -331,7 +331,7 @@ static uint8_t px_sd_tx_data_block(const uint8_t * data,
     
     // Return data response token
     data_token = px_sd_spi_rd_u8();
-    PX_LOG_I("Data response token = 0x%02X", data_token);
+    PX_LOG_D("Data response token = 0x%02X", data_token);
     return data_token;
 }
 
@@ -359,7 +359,7 @@ bool px_sd_reset(void)
     px_board_delay_us(1000);
     
     // Card requires at least 74 clocks to start up
-    PX_LOG_I("80 Clocks");
+    PX_LOG_D("80 Clocks");
     for(retry=10; retry!=0 ; retry--)
     {
         px_sd_spi_rd_u8();
@@ -396,7 +396,7 @@ bool px_sd_reset(void)
     if(r1 == (1<<PX_SD_RESP_R1_IDLE_STATE))
     {
         // Ver 2.00 or later SD Card
-        PX_LOG_I("Ver 2.00 or later SD Card");
+        PX_LOG_D("Ver 2.00 or later SD Card");
         // Receive rest of R7 response
         px_sd_spi_rd_data(px_sd_rx_data, 4);        
         if(  (px_sd_rx_data[2] != 0x01)    // Voltage accepted 2.7-3.6V
@@ -441,18 +441,18 @@ bool px_sd_reset(void)
                 {
                     // Receive rest of R3 response
                     px_sd_spi_rd_data(px_sd_rx_data, 4); 
-                    PX_LOG_I("OCR = 0x%02x%02x%02x%02x",
-                               px_sd_rx_data[0], px_sd_rx_data[1], 
-                               px_sd_rx_data[2], px_sd_rx_data[3]);
+                    PX_LOG_D("OCR = 0x%02x%02x%02x%02x",
+                             px_sd_rx_data[0], px_sd_rx_data[1],
+                             px_sd_rx_data[2], px_sd_rx_data[3]);
                     // Is Card Capacity Status (CCS) bit 30 set?
                     if(px_sd_rx_data[0] & (1<<6))
                     {
-                        PX_LOG_I("Ver 2.00 HCSD or XCSD Card");
+                        PX_LOG_D("Ver 2.00 HCSD or XCSD Card");
                         px_sd_card_type = PX_SD_CARD_TYPE_VER_2_HCSD_XCSD;
                     }
                     else
                     {
-                        PX_LOG_I("Ver 2.00 SCSD Card");
+                        PX_LOG_D("Ver 2.00 SCSD Card");
                         px_sd_card_type = PX_SD_CARD_TYPE_VER_2_SCSD;
                     }
                 }
@@ -478,7 +478,7 @@ bool px_sd_reset(void)
     else
     {
         // Ver 1.xx SD Card (or not?)
-        PX_LOG_I("Ver 1.xx SD Card (or not?)");
+        PX_LOG_D("Ver 1.xx SD Card (or not?)");
 
         // Explicitely disable CRC, even though spec says that it is disabled by default
         r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD59_CRC_ON_OFF, 0);
@@ -522,7 +522,7 @@ bool px_sd_reset(void)
             px_sd_spi_cs_end();
             return false;
         }
-        PX_LOG_I("Ver 1.xx SD Card");
+        PX_LOG_D("Ver 1.xx SD Card");
         px_sd_card_type = PX_SD_CARD_TYPE_VER_1_SD;
     }
 
@@ -589,9 +589,9 @@ bool px_sd_read_csd(px_sd_csd_t * csd)
 
     px_sd_spi_cs_end();
 
-    if(PX_LOG_LEVEL_I())
+    if(PX_LOG_LEVEL_D())
     {
-        PX_LOG_I("CSD:");
+        PX_LOG_D("CSD:");
         PX_LOG_TRACE_DATA(csd, sizeof(px_sd_csd_t));
         PX_LOG_TRACE("\n");
     }
@@ -630,23 +630,23 @@ uint32_t px_sd_get_capacity_in_blocks(const px_sd_csd_t * csd)
     uint32_t capacity = 0;
     uint8_t  n;
 
-    PX_LOG_I("csd_structure = %02X", csd->csd_structure);
+    PX_LOG_D("csd_structure = %02X", csd->csd_structure);
     if(csd->csd_structure == 0) // CSD Structure version 1.0?
     {
-        PX_LOG_I("read_bl_len    = %02hX", csd->read_bl_len);
-        PX_LOG_I("c_size_mult_hi = %02hX", csd->ver.csd_1_0.c_size_mult_hi);
-        PX_LOG_I("c_size_mult_lo = %02hX", csd->ver.csd_1_0.c_size_mult_lo);
+        PX_LOG_D("read_bl_len    = %02hX", csd->read_bl_len);
+        PX_LOG_D("c_size_mult_hi = %02hX", csd->ver.csd_1_0.c_size_mult_hi);
+        PX_LOG_D("c_size_mult_lo = %02hX", csd->ver.csd_1_0.c_size_mult_lo);
 
         // READ_BL_LEN + C_SIZE_MULT + 2
         n =   csd->read_bl_len 
             + (csd->ver.csd_1_0.c_size_mult_hi << 1)
             + csd->ver.csd_1_0.c_size_mult_lo + 2;
 
-        PX_LOG_I("n = %02hX", n);
+        PX_LOG_D("n = %02hX", n);
 
-        PX_LOG_I("c_size_hi  = %02hX", csd->ver.csd_1_0.c_size_hi);
-        PX_LOG_I("c_size_mid = %02hX", csd->ver.csd_1_0.c_size_mid);
-        PX_LOG_I("c_size_lo  = %02hX", csd->ver.csd_1_0.c_size_lo);
+        PX_LOG_D("c_size_hi  = %02hX", csd->ver.csd_1_0.c_size_hi);
+        PX_LOG_D("c_size_mid = %02hX", csd->ver.csd_1_0.c_size_mid);
+        PX_LOG_D("c_size_lo  = %02hX", csd->ver.csd_1_0.c_size_lo);
 
         // C_SIZE + 1
         capacity = (   ((uint16_t)csd->ver.csd_1_0.c_size_hi << 10)
@@ -654,31 +654,31 @@ uint32_t px_sd_get_capacity_in_blocks(const px_sd_csd_t * csd)
                      | (csd->ver.csd_1_0.c_size_lo                )  )
                    + 1;
 
-        PX_LOG_I("capacity = %08lX", capacity);
+        PX_LOG_D("capacity = %08lX", capacity);
 
         // (C_SIZE + 1) * 2^(READ_BL_LEN + C_SIZE_MULT + 2) / 512
         capacity = capacity << (n - 9);
 
-        PX_LOG_I("capacity = %08lX", capacity);
+        PX_LOG_D("capacity = %08lX", capacity);
     }
     else if(csd->csd_structure == 1) // CSD Structure version 2.0?
     {
-        PX_LOG_I("c_size_hi  = %02hX", csd->ver.csd_2_0.c_size_hi);
-        PX_LOG_I("c_size_mid = %02hX", csd->ver.csd_2_0.c_size_mid);
-        PX_LOG_I("c_size_lo  = %02hX", csd->ver.csd_2_0.c_size_lo);
+        PX_LOG_D("c_size_hi  = %02hX", csd->ver.csd_2_0.c_size_hi);
+        PX_LOG_D("c_size_mid = %02hX", csd->ver.csd_2_0.c_size_mid);
+        PX_LOG_D("c_size_lo  = %02hX", csd->ver.csd_2_0.c_size_lo);
 
         // C_SIZE + 1
         capacity =   ((uint32_t)csd->ver.csd_2_0.c_size_hi << 16)
                     | ((uint16_t)csd->ver.csd_2_0.c_size_mid << 8)
                     | (csd->ver.csd_2_0.c_size_lo + 1);
 
-        PX_LOG_I("capacity = %08lX", capacity);
+        PX_LOG_D("capacity = %08lX", capacity);
 
         // Memory capacity = (C_SIZE + 1) * 512 KByte
         // Size in blocks  = (C_SIZE + 1) * 512 KByte / 0.5 KByte
         capacity <<= 10;
 
-        PX_LOG_I("capacity = %08lX", capacity);
+        PX_LOG_D("capacity = %08lX", capacity);
     }
 
     return capacity;
@@ -830,7 +830,7 @@ uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_
     uint8_t data_resp_token;
     uint8_t blocks_written;
 
-    PX_LOG_I("px_sd_write_blocks(%04X, %08lX, %hd)", data, block_adr, nr_of_blocks);
+    PX_LOG_D("px_sd_write_blocks(%04X, %08lX, %hd)", data, block_adr, nr_of_blocks);
     PX_LOG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
 
 
@@ -906,7 +906,7 @@ uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_
     px_sd_spi_exchange_u8(PX_SD_TOKEN_DATA_BLOCK_STOP_MULT_WR);
     px_sd_spi_cs_end();
 
-    PX_LOG_I("%hd block(s) written", blocks_written);
+    PX_LOG_D("%hd block(s) written", blocks_written);
     return blocks_written;
 }
 

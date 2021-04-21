@@ -287,7 +287,7 @@ static uint8_t px_log_fs_header_rd(px_log_fs_header_t * header, uint16_t page)
     {
         // Mark as BAD
         PX_LOG_E("Header CRC check failed @ page %u (0x%02X != 0x%02X)",
-                   page, header->crc, crc);
+                 page, header->crc, crc);
         header->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&header->marker, page, 0, 1);
         return header->marker;
@@ -394,7 +394,7 @@ static uint8_t px_log_fs_record_rd(px_log_fs_record_t *    record,
     {
         // No. Mark as BAD
         PX_LOG_W("Invalid record marker %02X @ page %u offset %u",
-                    record->marker, adr->page, adr->offset);
+                 record->marker, adr->page, adr->offset);
         record->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&record->marker, adr->page, adr->offset, 1);
         return record->marker;
@@ -405,7 +405,7 @@ static uint8_t px_log_fs_record_rd(px_log_fs_record_t *    record,
     {
         // Mark record as BAD
         PX_LOG_E("Record CRC check failed @ page %u offset %u (0x%02X != 0x%02X)",
-                   adr->page, adr->offset, record->crc != crc);
+                 adr->page, adr->offset, record->crc != crc);
         record->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&record->marker, adr->page, adr->offset, 1);
         return record->marker;
@@ -439,7 +439,7 @@ static bool px_log_fs_record_wr(px_log_fs_record_t *    record,
     {
         // Mark record as BAD
         PX_LOG_E("Record write failed @ page %u offset %u",
-                   adr->page, adr->offset);
+                 adr->page, adr->offset);
         record->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&record->marker, adr->page, adr->offset, 1);
         // Failure
@@ -484,7 +484,7 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
     if(page_first == PX_LOG_FS_PAGE_INVALID)
     {
         // None found. File system is empty
-        PX_LOG_I("No marked pages found");
+        PX_LOG_D("No marked pages found");
         handle->page_first    = PX_LOG_FS_PAGE_INVALID;
         handle->page_last     = PX_LOG_FS_PAGE_INVALID;
         handle->page_nr_next  = 0;
@@ -514,7 +514,7 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
         // Largest difference so far?
         if(page_nr_diff_largest < page_nr_diff)
         {
-            PX_LOG_I("Diff=%u, page %u (nr %u) , page_next %u (nr %u)",
+            PX_LOG_D("Diff=%u, page %u (nr %u) , page_next %u (nr %u)",
                      page_nr_diff, page, page_nr, page_next, page_nr_next);
             // Save largest difference so far
             page_nr_diff_largest = page_nr_diff;
@@ -541,9 +541,9 @@ px_log_fs_err_t px_log_fs_init(px_log_fs_handle_t * handle,
     }
 
     // Report first and last page
-    PX_LOG_I("First marked page %u", handle->page_first);
-    PX_LOG_I("Last marked page %u",  handle->page_last);
-    PX_LOG_I("Next page nr %u",      handle->page_nr_next);
+    PX_LOG_D("First marked page %u", handle->page_first);
+    PX_LOG_D("Last marked page %u",  handle->page_last);
+    PX_LOG_D("Next page nr %u",      handle->page_nr_next);
 
     return PX_LOG_FS_ERR_NONE;
 }
@@ -947,7 +947,7 @@ px_log_fs_err_t px_log_fs_wr(px_log_fs_handle_t * handle,
                         {
                             // Save new first page
                             handle->page_first = page;
-                            PX_LOG_I("New first page is %u", handle->page_first);
+                            PX_LOG_D("New first page is %u", handle->page_first);
                             break;
                         }
                         if(page == handle->page_last)

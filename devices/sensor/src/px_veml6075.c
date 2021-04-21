@@ -141,7 +141,7 @@ bool px_veml6075_init(px_i2c_handle_t * handle)
                    reg_data.lsb, PX_VEML6075_REG_ID_VAL);
         return false;
     }
-    PX_LOG_I("UV sensor detected");
+    PX_LOG_D("UV sensor detected");
     // Configure sensor
     reg_data.lsb =   PX_VEML6075_REG_CFG_UV_IT_100MS 
                    | PX_VEML6075_REG_CFG_UV_TRIG_NO
@@ -159,7 +159,7 @@ bool px_veml6075_init(px_i2c_handle_t * handle)
         PX_LOG_E("Unable to read config");
         return false;
     }
-    PX_LOG_I("Cfg = 0x%02X, 0x%02X", reg_data.lsb, reg_data.msb);
+    PX_LOG_D("Cfg = 0x%02X, 0x%02X", reg_data.lsb, reg_data.msb);
 
     // Success
     return true;
@@ -202,8 +202,8 @@ bool px_veml6075_meas(px_veml6075_data_t * data)
     }
     data->uvcomp2 = PX_U16_CONCAT_U8(reg_data.msb, reg_data.lsb);
     // Success
-    PX_LOG_I("UVA=0x%04X, UVB=%04X, UVCOMP1=0x%04X, UVCOMP2=0x%04X",
-                data->uva, data->uvb, data->uvcomp1, data->uvcomp2);
+    PX_LOG_D("UVA=0x%04X, UVB=%04X, UVCOMP1=0x%04X, UVCOMP2=0x%04X",
+             data->uva, data->uvb, data->uvcomp1, data->uvcomp2);
     return true;
 }
 

@@ -535,37 +535,37 @@ bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time)
     // Year?
     if(date_time->year > 99)
     {
-        PX_LOG_I("Year %u is invalid", date_time->year);
+        PX_LOG_D("Year %u is invalid", date_time->year);
         return false;
     }
     // Month?
     if((date_time->month <  1) || (date_time->month > 12))
     {
-        PX_LOG_I("Month %u is invalid", date_time->month);
+        PX_LOG_D("Month %u is invalid", date_time->month);
         return false;
     }
     // Day?
     if((date_time->day < 1) || (date_time->day > px_rtc_util_days_in_month(date_time->year, date_time->month)))
     {
-        PX_LOG_I("Day %u is invalid", date_time->day);
+        PX_LOG_D("Day %u is invalid", date_time->day);
         return false;
     }
     // Hour?
     if(date_time->hour > 23)
     {
-        PX_LOG_I("Hour %u is invalid", date_time->hour);
+        PX_LOG_D("Hour %u is invalid", date_time->hour);
         return false;
     }
     // Minute?
     if(date_time->min > 59)
     {
-        PX_LOG_I("Minute %u is invalid", date_time->min);
+        PX_LOG_D("Minute %u is invalid", date_time->min);
         return false;
     }
     // Second?
     if(date_time->sec > 59)
     {
-        PX_LOG_I("Second %u is invalid", date_time->sec);
+        PX_LOG_D("Second %u is invalid", date_time->sec);
         return false;
     }
 

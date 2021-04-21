@@ -243,8 +243,7 @@ px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom)
     // Check CRC
     if(rom->content.crc != crc)
     {
-        PX_LOG_E("CRC check failed. Read 0x%02X, calculated 0x%02X",
-                rom->content.crc, crc);
+        PX_LOG_E("CRC check failed. Read 0x%02X, calculated 0x%02X", rom->content.crc, crc);
         return PX_ONE_WIRE_ERR_CRC_CHECK_FAILED;
     }
 

@@ -295,7 +295,7 @@ static bool px_bme280_temp_raw_rd(int32_t * data)
         PX_LOG_E("Unable to read temperature");
         return false;
     }
-    PX_LOG_I("Temp data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
+    PX_LOG_D("Temp data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
     // Assemble value
     *data = (int32_t)(   (((uint32_t)i2c_data[0]) << 12)
                        | (((uint32_t)i2c_data[1]) <<  4)
@@ -314,7 +314,7 @@ static bool px_bme280_press_raw_rd(int32_t * data)
         PX_LOG_E("Unable to read pressure");
         return false;
     }
-    PX_LOG_I("Press data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
+    PX_LOG_D("Press data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
     // Assemble value
     *data = (int32_t)(   (((uint32_t)i2c_data[0]) << 12)
                        | (((uint32_t)i2c_data[1]) <<  4)
@@ -333,7 +333,7 @@ static bool px_bme280_hum_raw_rd(int32_t * data)
         PX_LOG_E("Unable to read humidity");
         return false;
     }
-    PX_LOG_I("Hum data: %02X %02X", i2c_data[0], i2c_data[1]);
+    PX_LOG_D("Hum data: %02X %02X", i2c_data[0], i2c_data[1]);
     // Assemble value
     *data = (int32_t)(   (((uint32_t)i2c_data[0]) << 8)
                        | (((uint32_t)i2c_data[1]) << 0) );

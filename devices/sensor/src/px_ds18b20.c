@@ -135,8 +135,7 @@ px_ds18b20_error_t px_ds18b20_rd_scratchpad(px_one_wire_rom_t *       rom,
     // Check CRC
     if(scratchpad->crc != crc)
     {
-        PX_LOG_E("CRC check failed. Read 0x%02X, calculated 0x%02X",
-                scratchpad->crc, crc);
+        PX_LOG_E("CRC check failed. Read 0x%02X, calculated 0x%02X", scratchpad->crc, crc);
         return PX_DS18B20_ERR_CRC_CHECK_FAILED;
     }
 

@@ -168,7 +168,7 @@ bool px_m41t00_get_time(px_m41t00_time_t * px_rtc_time)
     // See if timer has been stopped
     if(((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_ST_ADR]  & PX_M41T00_ST_BIT)
     {
-        PX_LOG_I("RTC has been stopped!");
+        PX_LOG_E("RTC has been stopped!");
         return false;
     }
 

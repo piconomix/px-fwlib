@@ -219,7 +219,7 @@ static bool px_bmp280_cal_rd(void)
             PX_LOG_E("Unable to read calibration value");
             return false;
         }
-        PX_LOG_I("Adr %02X: %02X %02X", adr, i2c_data[0], i2c_data[1]);
+        PX_LOG_D("Adr %02X: %02X %02X", adr, i2c_data[0], i2c_data[1]);
         // Assemble value
         val = PX_U16_CONCAT_U8(i2c_data[1], i2c_data[0]);
         // Store value
@@ -275,8 +275,7 @@ static bool px_bmp280_temp_raw_rd(int32_t * data)
         PX_LOG_E("Unable to read temp");
         return false;
     }
-    PX_LOG_I("Temp data: %02X %02X %02X",
-                i2c_data[0], i2c_data[1], i2c_data[2]);
+    PX_LOG_D("Temp data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
 
     // Assemble value
     *data = (int32_t)(   (((uint32_t)i2c_data[0]) << 12)
@@ -287,7 +286,7 @@ static bool px_bmp280_temp_raw_rd(int32_t * data)
     *data = 519888;
 #endif
 
-    PX_LOG_I("Raw Temp = %ld", *data);
+    PX_LOG_D("Raw Temp = %ld", *data);
 
     return true;
 }
@@ -302,8 +301,7 @@ static bool px_bmp280_press_raw_rd(int32_t * data)
         PX_LOG_E("Unable to read temp");
         return false;
     }
-    PX_LOG_I("Press data: %02X %02X %02X",
-                i2c_data[0], i2c_data[1], i2c_data[2]);
+    PX_LOG_D("Press data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
 
     // Assemble value
     *data = (int32_t)(   (((uint32_t)i2c_data[0]) << 12)
@@ -314,7 +312,7 @@ static bool px_bmp280_press_raw_rd(int32_t * data)
     *data = 415148;
 #endif
 
-    PX_LOG_I("Raw Press = %ld", *data);
+    PX_LOG_D("Raw Press = %ld", *data);
 
     return true;
 }
@@ -343,7 +341,7 @@ int32_t px_bmp280_comp_temp(int32_t ut, int32_t * t_fine)
     *t_fine = var1 + var2;
     temp    = (*t_fine * 5 + 128) >> 8;
 
-    PX_LOG_I("Compensated Temp = %ld", temp);
+    PX_LOG_D("Compensated Temp = %ld", temp);
 
     return temp;
 }
@@ -394,7 +392,7 @@ uint32_t px_bmp280_comp_press(int32_t up, int32_t t_fine)
     var2  = (((int32_t)(press >> 2)) * ((int32_t)px_bmp280_cal.dig.p8)) >> 13;
     press = (uint32_t)((int32_t)press + ((var1 + var2 + px_bmp280_cal.dig.p7) >> 4));
 
-    PX_LOG_I("Compensated Press = %ld", press);
+    PX_LOG_D("Compensated Press = %ld", press);
 
     return press;
 }
@@ -418,7 +416,7 @@ bool px_bmp280_init(px_i2c_handle_t * handle)
     {
         // Error
         PX_LOG_E("Chip ID does not match. Received %02X, but expected %02X",
-                   data, PX_BMP280_REG_ID_VAL);
+                 data, PX_BMP280_REG_ID_VAL);
         return false;
     }
 
