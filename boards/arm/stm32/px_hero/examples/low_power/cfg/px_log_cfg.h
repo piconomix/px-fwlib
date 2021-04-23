@@ -8,10 +8,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_log_cfg.h : Debug module configuration
     Author(s):      Pieter Conradie
     Creation Date:  2014-01-17
@@ -26,8 +26,8 @@
 /* _____DEFINITIONS__________________________________________________________ */
 // PX_LOG symbol not defined in Makefile?
 #ifndef PX_LOG
-/// Set flag to disable (PX_LOG=0) or enable (PX_LOG=1) debug.
-#define PX_LOG 1
+/// Disable (0) or Enable (1) debug log output
+#define PX_LOG 0
 #endif
 
 // PX_LOG_CFG_LEVEL symbol not defined in Makefile?
@@ -42,6 +42,9 @@
  */
 #define PX_LOG_CFG_LEVEL PX_LOG_LEVEL_INFO
 #endif
+
+/// Disable (0) or Enable (1) run time log filter
+#define PX_LOG_CFG_FILTER 0
 
 /// Disable (0) or Enable (1) VT100 terminal color output
 #define PX_LOG_CFG_COLOR 1
@@ -79,4 +82,4 @@
 #define PX_LOG_CFG_PUTCHAR(data) main_log_putchar(data)
 #endif
 
-#endif // #ifndef __PX_LOG_CFG_H__
+#endif

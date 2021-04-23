@@ -257,12 +257,14 @@ void _px_log_log_error(const char * name, uint16_t line, const char * format, ..
 {
     va_list args;
 
+#if PX_LOG_CFG_FILTER
     // Must log be filtered?
     if(px_log_filter(PX_LOG_LEVEL_ERROR, name))
     {
         // Yes
         return;
     }
+#endif
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_ERROR, name, line);
     // Output user formatted string
@@ -280,13 +282,14 @@ void _px_log_log_error(const char * name, uint16_t line, const char * format, ..
 void _px_log_log_warning(const char * name, uint16_t line, const char * format, ...)
 {
     va_list args;
-
+#if PX_LOG_CFG_FILTER
     // Must log be filtered?
     if(px_log_filter(PX_LOG_LEVEL_WARNING, name))
     {
         // Yes
         return;
     }
+#endif
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_WARNING, name, line);
     // Output user formatted string
@@ -305,12 +308,14 @@ void _px_log_log_info(const char * name, uint16_t line, const char * format, ...
 {
     va_list args;
 
+#if PX_LOG_CFG_FILTER
     // Must log be filtered?
     if(px_log_filter(PX_LOG_LEVEL_INFO, name))
     {
         // Yes
         return;
     }
+#endif
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_INFO, name, line);
     // Output user formatted string
@@ -329,12 +334,14 @@ void _px_log_log_debug(const char * name, uint16_t line, const char * format, ..
 {
     va_list args;
 
+#if PX_LOG_CFG_FILTER
     // Must log be filtered?
     if(px_log_filter(PX_LOG_LEVEL_DEBUG, name))
     {
         // Yes
         return;
     }
+#endif
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_DEBUG, name, line);
     // Output user formatted string
@@ -353,12 +360,14 @@ void _px_log_log_verbose(const char * name, uint16_t line, const char * format, 
 {
     va_list args;
 
+#if PX_LOG_CFG_FILTER
     // Must log be filtered?
     if(px_log_filter(PX_LOG_LEVEL_VERBOSE, name))
     {
         // Yes
         return;
     }
+#endif
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_VERBOSE, name, line);
     // Output user formatted string
