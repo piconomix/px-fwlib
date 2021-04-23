@@ -708,7 +708,7 @@ static void px_cli_cmd_exe(void)
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char* startup_str)
+void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char * startup_str)
 {
 #if PX_CLI_CFG_HISTORY_SIZE
     px_cli_hist_size_t i;
@@ -876,7 +876,7 @@ void px_cli_on_rx_char(char data)
     }
 }
 
-const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
+const char * px_cli_cmd_help_fn(uint8_t argc, char * argv[])
 {
     uint8_t i;
     uint8_t len;
@@ -1038,7 +1038,7 @@ const char* px_cli_cmd_help_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-uint8_t px_cli_util_argv_to_option(uint8_t argv_index, const char* options)
+uint8_t px_cli_util_argv_to_option(uint8_t argv_index, const char * options)
 {
     uint8_t index = 0;
 
