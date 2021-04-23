@@ -40,8 +40,11 @@
  *  INFO messages will be included in the code but DEBUG and VERBOSE messages
  *  will not.
  */
-#define PX_LOG_CFG_LEVEL PX_LOG_LEVEL_INFO
+#define PX_LOG_CFG_LEVEL PX_LOG_LEVEL_WARNING
 #endif
+
+/// Disable (0) or Enable (1) run time log filter
+#define PX_LOG_CFG_FILTER 0
 
 /// Disable (0) or Enable (1) VT100 terminal color output
 #define PX_LOG_CFG_COLOR 1
