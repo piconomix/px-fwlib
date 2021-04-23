@@ -42,4 +42,4 @@
 #define PX_RTC_UTIL_CFG_DAY_OF_WEEK         0
 
 /// @}
-#endif // #ifndef __PX_RTC_UTIL_CFG_H__
+#endif

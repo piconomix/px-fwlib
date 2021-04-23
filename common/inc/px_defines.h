@@ -303,4 +303,4 @@ typedef signed long long   int64_t;
 }
 #endif
 
-#endif // #ifndef __PX_DEFINES_H__
+#endif

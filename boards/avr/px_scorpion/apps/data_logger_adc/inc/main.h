@@ -50,4 +50,4 @@ extern uint8_t            main_buffer[MAIN_BUFFER_SIZE];
 }
 #endif
 
-#endif // #ifndef __MAIN_H__
+#endif

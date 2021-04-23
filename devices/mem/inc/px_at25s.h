@@ -296,4 +296,4 @@ void px_at25s_rd_man_and_dev_id(uint8_t * buffer);
 }
 #endif
 
-#endif // #ifndef __PX_AT25S_H__
+#endif

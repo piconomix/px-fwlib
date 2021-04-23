@@ -122,4 +122,4 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
 }
 #endif
 
-#endif // #ifndef __PX_ONE_WIRE_H__
+#endif

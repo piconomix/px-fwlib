@@ -41,4 +41,4 @@ extern const px_cli_group_t px_cli_group_uart;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_UART_H__
+#endif

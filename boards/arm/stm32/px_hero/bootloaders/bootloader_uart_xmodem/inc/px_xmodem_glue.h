@@ -45,4 +45,4 @@ bool px_xmodem_tmr_has_expired(void);
 }
 #endif
 
-#endif // #ifndef __PX_XMODEM_GLUE_H__
+#endif

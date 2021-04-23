@@ -149,4 +149,4 @@
 
 /// @}
 
-#endif // #ifndef __PX_COMPILER_H__
+#endif

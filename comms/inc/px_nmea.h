@@ -134,4 +134,4 @@ void px_nmea_tx_frame(char* frame);
 }
 #endif
 
-#endif // #ifndef __PX_NMEA_H__
+#endif

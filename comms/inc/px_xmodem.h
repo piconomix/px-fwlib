@@ -124,4 +124,4 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data);
 }
 #endif
 
-#endif // #ifndef __PX_XMODEM_H__
+#endif

@@ -41,4 +41,4 @@ extern const px_cli_group_t px_cli_group_dac;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_DAC_H__
+#endif

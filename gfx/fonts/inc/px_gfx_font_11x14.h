@@ -42,4 +42,4 @@ extern const px_gfx_font_t px_gfx_font_11x14;
 }
 #endif
 
-#endif // #ifndef __PX_GFX_FONT_11X14_H__
+#endif

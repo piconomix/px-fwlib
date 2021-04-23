@@ -42,4 +42,4 @@ extern const px_gfx_font_t px_gfx_font_3x5;
 }
 #endif
 
-#endif // #ifndef __PX_GFX_FONT_3X5_H__
+#endif

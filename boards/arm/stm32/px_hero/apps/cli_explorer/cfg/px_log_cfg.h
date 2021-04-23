@@ -79,4 +79,4 @@
 #define PX_LOG_CFG_PUTCHAR(data) main_log_putchar(data)
 #endif
 
-#endif // #ifndef __PX_LOG_CFG_H__
+#endif

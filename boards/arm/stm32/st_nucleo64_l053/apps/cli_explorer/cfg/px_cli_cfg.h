@@ -62,4 +62,4 @@
 #define PX_CLI_CFG_CHAR_ENTER          PX_VT100_CHAR_CR
 //#define PX_CLI_CFG_CHAR_ENTER          PX_VT100_CHAR_LF
 
-#endif // #ifndef __PX_CLI_CFG_H__
+#endif

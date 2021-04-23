@@ -79,4 +79,4 @@ void                          px_gfx_obj_win_add_child(px_gfx_obj_handle_t      
 }
 #endif
 
-#endif // #ifndef __PX_GFX_OBJ_WINDOW_H__
+#endif

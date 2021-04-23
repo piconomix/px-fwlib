@@ -79,4 +79,4 @@ void                            px_gfx_obj_label_prop_set(px_gfx_obj_handle_t   
 }
 #endif
 
-#endif // #ifndef __PX_GFX_OBJ_LABEL_H__
+#endif

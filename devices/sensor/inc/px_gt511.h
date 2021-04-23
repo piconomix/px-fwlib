@@ -138,4 +138,4 @@ px_gt511_err_t px_gt511_set_template              (px_gt511_id_t id, uint8_t * t
 }
 #endif
 
-#endif // #ifndef __PX_GT511_H__
+#endif

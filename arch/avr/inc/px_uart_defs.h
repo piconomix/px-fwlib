@@ -33,4 +33,4 @@
 #endif
 
 
-#endif // #ifndef __PX_UART_DEFS_H__
+#endif

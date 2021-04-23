@@ -44,4 +44,4 @@
 #define PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE    0
 
 /// @}
-#endif // #ifndef __PX_AT45D_CFG_H__
+#endif

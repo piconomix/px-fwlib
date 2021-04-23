@@ -42,4 +42,4 @@ extern px_gfx_img_t px_gfx_img_dino;
 }
 #endif
 
-#endif // #ifndef __PX_GFX_IMG_DINO_H__
+#endif

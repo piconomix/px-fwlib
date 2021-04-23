@@ -36,4 +36,4 @@
 /// Specify periodic timeout (in sysclk ticks)
 #define PX_SYSCLK_CFG_TIMEOUT_PERIOD_TICKS     PX_SYSCLK_CFG_TICKS_PER_SEC 
 
-#endif // #ifndef __PX_SYSCLK_CFG_H__
+#endif

@@ -74,4 +74,4 @@ void px_eeprom_erase_word(const uint32_t address);
 }
 #endif
 
-#endif // #ifndef __PX_EEPROM_H__
+#endif

@@ -55,4 +55,4 @@ extern "C"
 }
 #endif
 
-#endif // #ifndef __PX_GFX_OBJECTS_H__
+#endif

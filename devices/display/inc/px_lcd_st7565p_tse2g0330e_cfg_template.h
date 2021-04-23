@@ -47,4 +47,4 @@
 #define PX_LCD_CFG_ROT_180_DEG  1
 
 /// @}
-#endif // #ifndef __PX_LCD_ST7565P_TSE2G0330E_CFG_H__
+#endif

@@ -81,4 +81,4 @@ bool px_buzzer_task     (void);
 }
 #endif
 
-#endif // #ifndef __PX_BUZZER_H__
+#endif

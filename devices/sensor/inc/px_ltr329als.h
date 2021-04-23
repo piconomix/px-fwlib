@@ -109,4 +109,4 @@ uint16_t px_ltr329als_meas_convert_to_lux(px_ltr329als_gain_t      gain,
 }
 #endif
 
-#endif // #ifndef __PX_LTR329ALS_H__
+#endif

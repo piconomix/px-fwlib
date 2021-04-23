@@ -40,4 +40,4 @@
 #define SPDR  SPDR0
 #endif
 
-#endif // #ifndef __PX_SPI_DEFS_H__
+#endif

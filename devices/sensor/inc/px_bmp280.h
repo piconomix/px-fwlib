@@ -59,4 +59,4 @@ extern bool px_bmp280_read(int32_t * temperature, int32_t * pressure);
 }
 #endif
 
-#endif // #ifndef __PX_BMP280_H__
+#endif

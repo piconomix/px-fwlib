@@ -130,4 +130,4 @@ extern uint32_t px_bme280_humidity(px_bme280_data_t * data);
 }
 #endif
 
-#endif // #ifndef __PX_BME280_H__
+#endif

@@ -45,4 +45,4 @@
  */
 #define PX_I2C_CFG_TIMINGR 0x20302e37
 
-#endif // #ifndef __PX_I2C_CFG_H__
+#endif

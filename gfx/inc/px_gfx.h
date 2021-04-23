@@ -400,4 +400,4 @@ void px_gfx_printf(px_gfx_xy_t  x,
 }
 #endif
 
-#endif // #ifndef __PX_GFX_H__
+#endif

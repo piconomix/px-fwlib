@@ -42,4 +42,4 @@ extern px_uart_handle_t px_uart_handle;
 }
 #endif
 
-#endif // #ifndef __MAIN_H__
+#endif

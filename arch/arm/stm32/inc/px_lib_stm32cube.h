@@ -115,4 +115,4 @@
 
 /// @}
 
-#endif // #ifndef __PX_LIB_STM32CUBE_H__
+#endif

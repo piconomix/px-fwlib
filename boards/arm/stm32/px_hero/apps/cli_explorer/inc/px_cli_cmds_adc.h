@@ -41,4 +41,4 @@ extern const px_cli_group_t px_cli_group_adc;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_ADC_H__
+#endif

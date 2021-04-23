@@ -148,4 +148,4 @@ uint16_t _px_usb_cdc_stdio_get_tx_data(uint8_t * data, uint16_t nr_of_bytes);
 }
 #endif
 
-#endif // #ifndef __PX_USB_CDC_STDIO_H__
+#endif

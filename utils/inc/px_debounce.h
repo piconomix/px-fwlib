@@ -199,4 +199,4 @@ bool px_debounce_long_lo_detected(px_debounce_t * debounce);
 }
 #endif
 
-#endif // #ifndef __PX_DEBOUNCE_H__
+#endif

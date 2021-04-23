@@ -33,4 +33,4 @@
 #define PX_CAT25M_CFG_DEVICE    PX_CAT25M01
 
 /// @}
-#endif // #ifndef __PX_CAT25M_CFG_H__
+#endif

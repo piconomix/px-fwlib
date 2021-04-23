@@ -106,4 +106,4 @@ void px_flash_wr_row(const uint32_t address, const  uint32_t * data);
 }
 #endif
 
-#endif // #ifndef __PX_FLASH_H__
+#endif

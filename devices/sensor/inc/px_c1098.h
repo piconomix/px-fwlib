@@ -98,4 +98,4 @@ void     px_c1098_get_picture     (px_c1098_on_rx_data_t on_rx_data);
 }
 #endif
 
-#endif // #ifndef __PX_C1098_H__
+#endif

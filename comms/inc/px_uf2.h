@@ -160,4 +160,4 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf);
     information only.
  */
 
-#endif // #ifndef __PX_UF2_H__
+#endif

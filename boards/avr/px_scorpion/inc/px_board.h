@@ -120,4 +120,4 @@ void px_board_delay_ms(uint16_t delay_ms);
 }
 #endif
 
-#endif // #ifndef __PX_BOARD_H__
+#endif

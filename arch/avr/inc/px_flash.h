@@ -80,4 +80,4 @@ void px_flash_wr_page(const uint16_t page, const  uint8_t * data);
 }
 #endif
 
-#endif // #ifndef __PX_FLASH_H__
+#endif

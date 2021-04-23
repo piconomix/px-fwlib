@@ -84,4 +84,4 @@ bool px_async_tmr_int_disable(void);
 }
 #endif
 
-#endif // #ifndef __PX_ASYNC_TMR_H__
+#endif

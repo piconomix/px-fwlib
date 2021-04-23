@@ -210,4 +210,4 @@ static const px_gpio_port_init_t px_gpio_port_h_init =
 }
 #endif
 
-#endif // #ifndef __PX_GPIO_INIT_PORT_H_H__
+#endif

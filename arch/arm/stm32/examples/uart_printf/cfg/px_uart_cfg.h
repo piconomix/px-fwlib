@@ -67,4 +67,4 @@
 #define PX_UART_CFG_UART5_RX_BUF_SIZE   PX_UART_CFG_UART_RX_BUF_SIZE
 
 /// @}
-#endif // #ifndef __PX_UART_CFG_H__
+#endif

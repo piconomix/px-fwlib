@@ -36,4 +36,4 @@
 #define PX_CRC8_ROM_TABLE  0
 
 /// @}
-#endif // #ifndef __PX_CRC8_CFG_H__
+#endif

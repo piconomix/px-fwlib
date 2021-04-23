@@ -41,4 +41,4 @@ extern const px_cli_group_t px_cli_group_sf;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_SF_H__
+#endif

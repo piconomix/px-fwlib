@@ -108,4 +108,4 @@ px_sysclk_ticks_t px_sysclk_get_tick_count(void);
 }
 #endif
 
-#endif // #ifndef __PX_SYSCLK_H__
+#endif

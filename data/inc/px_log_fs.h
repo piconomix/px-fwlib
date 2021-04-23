@@ -437,4 +437,4 @@ void px_log_fs_dbg_report_info(px_log_fs_handle_t * handle);
 }
 #endif
 
-#endif // #ifndef __PX_LOG_FS_H__
+#endif

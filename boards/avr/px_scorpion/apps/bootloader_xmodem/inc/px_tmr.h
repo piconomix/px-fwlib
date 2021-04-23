@@ -75,4 +75,4 @@ void px_tmr_wait(uint16_t ticks);
 }
 #endif
 
-#endif // #ifndef __PX_TMR_H__
+#endif

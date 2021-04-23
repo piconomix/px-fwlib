@@ -294,4 +294,4 @@ void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
 }
 #endif
 
-#endif // #ifndef __PX_UART_H__
+#endif

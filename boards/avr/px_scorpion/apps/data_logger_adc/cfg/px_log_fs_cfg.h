@@ -50,4 +50,4 @@ typedef struct
 #define PX_LOG_FS_CFG_STOP_WR_WHEN_FULL 1
 
 /// @}
-#endif // #ifndef __PX_LOG_FS_CFG_H__
+#endif

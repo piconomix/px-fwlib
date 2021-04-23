@@ -151,4 +151,4 @@ uint8_t px_nrf905_channel_config  (uint16_t channel_no, uint8_t hfreq_pll, uint8
 }
 #endif
 
-#endif // #ifndef __NRF905_H__
+#endif

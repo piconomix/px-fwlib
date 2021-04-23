@@ -56,4 +56,4 @@ extern void cfg_init(void);
 }
 #endif
 
-#endif // #ifndef __PX_CFG_H__
+#endif

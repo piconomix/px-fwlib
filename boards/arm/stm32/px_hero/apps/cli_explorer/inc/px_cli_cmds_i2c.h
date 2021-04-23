@@ -41,4 +41,4 @@ extern const px_cli_group_t px_cli_group_i2c;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_I2C_H__
+#endif

@@ -97,4 +97,4 @@ int px_uart_stdio_get_char(FILE * stream);
 }
 #endif
 
-#endif // #ifndef __PX_UART_STDIO_H__
+#endif

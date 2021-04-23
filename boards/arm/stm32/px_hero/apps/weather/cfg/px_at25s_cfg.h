@@ -33,4 +33,4 @@
 #define PX_AT25S_CFG_DEVICE    PX_CFG_DEV_AT25SF041
 
 /// @}
-#endif // #ifndef __PX_AT25S_CFG_H__
+#endif

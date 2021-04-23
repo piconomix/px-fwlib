@@ -54,4 +54,4 @@ void px_gfx_disp_dbg_report_buf(void);
 }
 #endif
 
-#endif // #ifndef __PX_GFX_H__
+#endif

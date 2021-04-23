@@ -142,4 +142,4 @@ void px_hdlc_tx_frame(const uint8_t * data, size_t nr_of_bytes);
 #endif
 /// @}
 
-#endif // #ifndef __PX_HDLC_H__
+#endif

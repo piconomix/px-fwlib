@@ -39,4 +39,4 @@
 #define PX_DAC_CFG_DAC1_CH2_EN  0
 
 /// @}
-#endif // #ifndef __PX_DAC_CFG_H__
+#endif

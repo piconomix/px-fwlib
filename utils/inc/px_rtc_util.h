@@ -370,4 +370,4 @@ void px_rtc_util_report_time(const px_rtc_date_time_t * date_time);
 }
 #endif
 
-#endif // #ifndef __PX_RTC_UTIL_H__
+#endif

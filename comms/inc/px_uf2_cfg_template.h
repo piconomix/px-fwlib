@@ -52,4 +52,4 @@
 /// Family ID
 #define PX_UF2_CFG_FAMILY_ID        0xe892273c
 /// @}
-#endif // #ifndef __PX_UF2_CFG_H__
+#endif

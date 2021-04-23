@@ -51,4 +51,4 @@
 #define PX_I2C_CFG_SDA_IS_LO()     PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SDA)
 //@}
 
-#endif // #ifndef __PX_I2C_CFG_H__
+#endif

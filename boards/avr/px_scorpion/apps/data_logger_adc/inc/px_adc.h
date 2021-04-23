@@ -60,4 +60,4 @@ const px_adc_data_t * px_adc_get_data           (uint8_t channel);
 }
 #endif
 
-#endif // #ifndef __PX_ADC_H__
+#endif

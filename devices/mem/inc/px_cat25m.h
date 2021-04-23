@@ -248,4 +248,4 @@ void px_cat25m_wr_dis(void);
 }
 #endif
 
-#endif // #ifndef __PX_CAT25M_H__
+#endif

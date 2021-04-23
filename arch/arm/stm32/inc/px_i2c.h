@@ -235,4 +235,4 @@ void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
 }
 #endif
 
-#endif // #ifndef __PX_I2C_H__
+#endif

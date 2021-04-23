@@ -73,4 +73,4 @@ static const px_gpio_handle_t px_gpio_btn_blue       = {PX_GPIO_BTN_BLUE};
 }
 #endif
 
-#endif // #ifndef __PX_BOARD_GPIO_H__
+#endif

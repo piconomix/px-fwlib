@@ -555,4 +555,4 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
 }
 #endif
 
-#endif // #ifndef __PX_CLI_H__
+#endif

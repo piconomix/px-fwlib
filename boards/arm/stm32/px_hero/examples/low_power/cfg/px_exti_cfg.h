@@ -50,4 +50,4 @@
 //@}
 
 /// @}
-#endif // #ifndef __PX_EXTI_CFG_H__
+#endif

@@ -46,4 +46,4 @@
 #define PX_SYSCLK_CFG_ON_PERIODIC_TIMEOUT()    px_rtc_on_tick()
 
 /// @}
-#endif // #ifndef __PX_SYSCLK_CFG_H__
+#endif

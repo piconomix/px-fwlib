@@ -25,4 +25,4 @@
 #include "px_gfx.h"
 #include "px_gfx_img_clown.h"
 
-#endif // #ifndef __PX_GFX_RESOURCES_H__
+#endif

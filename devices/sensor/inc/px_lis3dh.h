@@ -84,4 +84,4 @@ bool px_lis3dh_test_active          (void);
 }
 #endif
 
-#endif // #ifndef __PX_LIS3DH_H__
+#endif

@@ -90,4 +90,4 @@ void px_log_fs_glue_erase_block(uint16_t page);
 }
 #endif
 
-#endif // #ifndef __PX_LOG_FS_GLUE_H__
+#endif

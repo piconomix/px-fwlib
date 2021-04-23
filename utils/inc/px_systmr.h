@@ -180,4 +180,4 @@ px_systmr_ticks_t px_systmr_ticks_elapsed(px_systmr_t * systmr);
 }
 #endif
 
-#endif // #ifndef __PX_SYSTMR_H__
+#endif

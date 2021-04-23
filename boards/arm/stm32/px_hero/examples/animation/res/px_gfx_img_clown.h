@@ -49,4 +49,4 @@ extern px_gfx_img_t px_gfx_img_clown8;
 }
 #endif
 
-#endif // #ifndef __PX_GFX_IMG_CLOWN_H__
+#endif

@@ -486,4 +486,4 @@ inline void px_gpio_pullup_disable(const px_gpio_handle_t * gpio)
 }
 #endif
 
-#endif // #ifndef __PX_GPIO_H__
+#endif

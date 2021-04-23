@@ -49,4 +49,4 @@ extern uint8_t px_gfx_frame_buf[PX_GFX_DISP_SIZE_Y][PX_GFX_DISP_SIZE_X];
 }
 #endif
 
-#endif // #ifndef __PX_GFX_DISPLAY_SIM_H__
+#endif

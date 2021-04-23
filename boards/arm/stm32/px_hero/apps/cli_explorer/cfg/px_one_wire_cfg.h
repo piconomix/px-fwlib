@@ -78,4 +78,4 @@
 #define PX_ONE_WIRE_CFG_INTS_ENABLE()       px_interrupts_enable()
 
 /// @}
-#endif // #ifndef __PX_ONE_WIRE_CFG_H__
+#endif

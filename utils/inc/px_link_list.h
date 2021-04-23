@@ -252,4 +252,4 @@ bool px_link_list_item_in_list(px_link_list_t *      list,
 }
 #endif
 
-#endif // #ifndef __PX_LINK_LIST_H__
+#endif

@@ -251,4 +251,4 @@ px_ring_buf_idx_t px_ring_buf_full(px_ring_buf_t * px_ring_buf);
 }
 #endif
 
-#endif // #ifndef __PX_RING_BUFFER_H__
+#endif

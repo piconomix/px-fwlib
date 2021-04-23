@@ -324,4 +324,4 @@ bool px_at45d_set_page_size_to_pwr_of_two(void);
 }
 #endif
 
-#endif // #ifndef __PX_AT45D_H__
+#endif

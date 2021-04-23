@@ -171,4 +171,4 @@ struct \
 }
 #endif
 
-#endif // #ifndef __PX_RING_BUFFER_MACROS_H__
+#endif

@@ -570,4 +570,4 @@ static inline uint32_t px_gpio_reg_afrh_init(const px_gpio_handle_t * gpio)
 }
 #endif
 
-#endif // #ifndef __PX_GPIO_H__
+#endif

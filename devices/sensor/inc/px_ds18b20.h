@@ -119,4 +119,4 @@ uint16_t          px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg);
 }
 #endif
 
-#endif // #ifndef __PX_DS18B20_H__
+#endif

@@ -165,4 +165,4 @@ void px_rtc_wakeup_tmr_flag_clear(void);
 }
 #endif
 
-#endif // #ifndef __PX_RTC_H__
+#endif

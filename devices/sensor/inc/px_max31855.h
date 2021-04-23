@@ -68,4 +68,4 @@ int16_t px_max31855_util_temp_int_to_deg_c  (int16_t temp);
 }
 #endif
 
-#endif // #ifndef __PX_MAX31855_H__
+#endif

@@ -215,4 +215,4 @@ uint16_t px_adc_sample(px_adc_handle_t * handle,
 }
 #endif
 
-#endif // #ifndef __PX_ADC_H__
+#endif

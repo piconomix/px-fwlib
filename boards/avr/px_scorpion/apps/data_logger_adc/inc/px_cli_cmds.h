@@ -41,4 +41,4 @@ extern const px_cli_cmd_list_item_t px_cli_cmd_list[] PX_ATTR_PGM;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_H__
+#endif

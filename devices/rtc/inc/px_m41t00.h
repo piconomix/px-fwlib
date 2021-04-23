@@ -100,4 +100,4 @@ bool px_m41t00_set_time(const px_m41t00_time_t * px_rtc_time);
 }
 #endif
 
-#endif // #ifndef __PX_RTC_M41T00_H__
+#endif

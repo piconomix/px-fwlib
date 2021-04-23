@@ -107,4 +107,4 @@ static const px_gpio_handle_t px_gpio_pb            = {PX_GPIO_PB};
 }
 #endif
 
-#endif // #ifndef __PX_BOARD_GPIO_H__
+#endif

@@ -113,4 +113,4 @@ float px_veml6075_uvi(const px_veml6075_data_t * data);
 }
 #endif
 
-#endif // #ifndef __PX_VEML6075_H__
+#endif

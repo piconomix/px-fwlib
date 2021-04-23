@@ -110,4 +110,4 @@ void           px_gfx_obj_draw        (px_gfx_obj_handle_t  obj);
 }
 #endif
 
-#endif // #ifndef __PX_GFX_OBJ_H__
+#endif

@@ -136,4 +136,4 @@ void px_lcd_wr_disp_data(uint8_t * data, size_t nr_of_bytes);
 /* _____MACROS_______________________________________________________________ */
 
 /// @}
-#endif // #ifndef __PX_LCD_ST7567_JHD12864_H__
+#endif

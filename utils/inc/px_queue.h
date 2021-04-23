@@ -151,4 +151,4 @@ void px_queue_flush(px_queue_t * queue);
 }
 #endif
 
-#endif // #ifndef __PX_QUEUE_H__
+#endif

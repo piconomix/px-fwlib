@@ -52,4 +52,4 @@
  */
 #define PX_UART_CFG_USE_2X_BAUD_RATE 1
 
-#endif // #ifndef __PX_UART_CFG_H__
+#endif

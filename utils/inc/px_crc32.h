@@ -110,4 +110,4 @@ uint32_t px_crc32_update_data(uint32_t crc, const void * data, size_t nr_of_byte
 }
 #endif
 
-#endif // #ifndef __PX_CRC32_H__
+#endif

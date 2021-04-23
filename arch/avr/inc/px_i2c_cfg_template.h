@@ -57,4 +57,4 @@
 //@}
 
 /// @}
-#endif // #ifndef __PX_I2C_CFG_H__
+#endif

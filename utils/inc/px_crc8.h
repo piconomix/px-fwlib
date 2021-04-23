@@ -107,4 +107,4 @@ uint8_t px_crc8_update_data(uint8_t crc, const void * data, size_t nr_of_bytes);
 }
 #endif
 
-#endif // #ifndef __PX_CRC8_H__
+#endif

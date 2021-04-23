@@ -101,4 +101,4 @@ void px_sysclk_reset_tick_count(void);
 }
 #endif
 
-#endif // #ifndef __PX_SYSCLK_H__
+#endif

@@ -80,4 +80,4 @@ extern "C" {
 }
 #endif
 
-#endif // #ifndef __PX_GPIO_INIT_PORT_B_H___
+#endif

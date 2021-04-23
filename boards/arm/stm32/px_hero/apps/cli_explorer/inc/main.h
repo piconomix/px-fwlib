@@ -58,4 +58,4 @@ void main_log_timestamp         (char * str);
 }
 #endif
 
-#endif // #ifndef __MAIN_H__
+#endif

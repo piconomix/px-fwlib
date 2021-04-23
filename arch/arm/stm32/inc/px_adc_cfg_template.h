@@ -48,4 +48,4 @@
 #define PX_ADC_CFG_OVERSAMPLING_SHIFT   PX_ADC_CFG_OVERSAMPLING_SHIFT_NONE
 
 /// @}
-#endif // #ifndef __PX_ADC_CFG_H__
+#endif

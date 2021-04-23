@@ -38,4 +38,4 @@
 #define ASYNC_TMR_CFG_ON_TICK()     px_rtc_on_tick()
 
 /// @}
-#endif // #ifndef __PX_ASYNC_TMR_CFG_H__
+#endif

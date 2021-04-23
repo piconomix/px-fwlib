@@ -79,4 +79,4 @@ bool px_uart_rd_u8(uint8_t * data);
 }
 #endif
 
-#endif // #ifndef __PX_UART_H__
+#endif

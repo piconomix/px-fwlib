@@ -111,4 +111,4 @@ uint16_t px_crc16_update_data(uint16_t crc, const void * data, size_t nr_of_byte
 }
 #endif
 
-#endif // #ifndef __PX_CRC16_H__
+#endif

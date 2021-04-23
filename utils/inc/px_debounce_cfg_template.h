@@ -42,4 +42,4 @@
 #define PX_DEBOUNCE_CFG_LONG_COUNT 20
 
 /// @}
-#endif // #ifndef __PX_DEBOUNCE_CFG_H__
+#endif

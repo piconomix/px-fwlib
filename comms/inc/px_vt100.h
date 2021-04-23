@@ -177,4 +177,4 @@ extern void px_vt100_del_chars(uint8_t nr_of_chars);
 }
 #endif
 
-#endif // #ifndef __PX_VT100_H__
+#endif

@@ -312,4 +312,4 @@ uint32_t px_spi_util_clk_div_to_baud_hz(px_spi_baud_t baud);
 }
 #endif
 
-#endif // #ifndef __PX_SPI_H__
+#endif

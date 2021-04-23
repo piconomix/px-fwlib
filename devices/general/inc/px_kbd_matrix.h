@@ -239,4 +239,4 @@ void px_kbd_matrix_scan(px_kbd_matrix_t * matrix);
 }
 #endif
 
-#endif // #ifndef __PX_KBD_MATRIX_H__
+#endif

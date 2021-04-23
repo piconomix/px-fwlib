@@ -26,4 +26,4 @@
 #include "px_gfx_fonts.h"
 #include "px_gfx_img_hero_logo.h"
 
-#endif // #ifndef __PX_GFX_RESOURCES_H__
+#endif

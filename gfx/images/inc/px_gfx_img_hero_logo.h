@@ -42,4 +42,4 @@ extern const px_gfx_img_t px_gfx_img_hero_logo;
 }
 #endif
 
-#endif // #ifndef __PX_GFX_IMG_HERO_LOGO_H__
+#endif

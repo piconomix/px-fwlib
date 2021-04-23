@@ -41,4 +41,4 @@ extern const px_cli_group_t px_cli_group_log_fs;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_LOG_FS_H__
+#endif

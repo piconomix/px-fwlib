@@ -44,4 +44,4 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_GPIO_H__
+#endif

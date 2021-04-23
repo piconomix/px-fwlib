@@ -83,4 +83,4 @@
  */
 #define PX_SPI_CFG_CS_HI(cs_id) px_board_spi_cs_hi(cs_id)
 
-#endif // #ifndef __PX_SPI_CFG_H__
+#endif

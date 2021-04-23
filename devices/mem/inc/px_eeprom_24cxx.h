@@ -112,4 +112,4 @@ extern bool px_eeprom_24cxx_wr_u8(uint16_t adr, uint8_t data);
 }
 #endif
 
-#endif // #ifndef __PX_EEPROM_24CXX_H__
+#endif

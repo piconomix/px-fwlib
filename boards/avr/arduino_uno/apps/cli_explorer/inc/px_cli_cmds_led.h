@@ -41,4 +41,4 @@ extern const px_cli_group_t px_cli_group_led;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_LED_H__
+#endif

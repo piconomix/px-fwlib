@@ -190,4 +190,4 @@ void px_exti_disable(px_exti_line_t exti_line);
 }
 #endif
 
-#endif // #ifndef __PX_EXTI_H__
+#endif
