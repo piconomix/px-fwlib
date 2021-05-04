@@ -32,8 +32,8 @@
  *  - comms/src/px_cli_P.c (minimise RAM usage by using command list stored in Program Memory. See @ref PX_PGM_P)
  *
  *  References:
- *  - http://en.wikipedia.org/wiki/PX_VT100_escape_code
- *  - http://www.termsys.demon.co.uk/vtansi.htm
+ *  - https://en.wikipedia.org/wiki/ANSI_escape_code
+ *  - https://www2.ccs.neu.edu/research/gpc/MSim/vona/terminal/vtansi.htm
  *
  *  1. Introduction
  *  ===============
@@ -55,44 +55,49 @@
  *  3. Implementation details
  *  =========================
  *
- *  The CLI command tree is declared statically using three structures
- *  (#px_cli_cmd_t, #px_cli_group_t and #px_cli_cmd_list_item_t).
+ *  The CLI command tree is declared statically using three structures:
+ *  - #px_cli_cmd_t
+ *  - #px_cli_group_t
+ *  - #px_cli_cmd_list_item_t
  *
  *  3.1 CMD
  *  -------
  *
  *  ![](cli/cli_struct_cmd.png)
  *
- *  Each command is declared with a #px_cli_cmd_t structure. The "name" field
- *  contains the address of the command name string. The "argc_min" and
- *  "argc_max" indicates respectively the minimum and maximum number of command
- *  arguments. The "param" field contains the address of the command parameter
- *  string and the "help" field contains the address of the command help string
- *  that is displayed when the "help" command is executed.
+ *  Each command is declared with a #px_cli_cmd_t structure:
+ *  - The "name" field contains the address of the command name string.
+ *  - The "argc_min" and "argc_max" indicates respectively the minimum and
+ *    maximum number of command arguments.
+ *  - The "param" field contains the address of the command parameter string.
+ *  - The "help" field contains the address of the command help string that is
+ *    displayed when the "help" command is executed.
  *
  *  3.2 GROUP
  *  ---------
  *
  *  ![](cli/cli_struct_group.png)
  *
- *  Each group is declared with a #px_cli_group_t structure. The "name" field
- *  contains the address of the group name string. The "list" field points to
- *  a static array of px_cli_cmd_list_item_t structures. This array will contain
- *  the sub commands for that group.
+ *  Each group is declared with a #px_cli_group_t structure:
+ *  - The "name" field contains the address of the group name string.
+ *  - The "list" field points to a static array of px_cli_cmd_list_item_t
+ *    structures. This array will contain the sub commands for that group.
  *
  *  3.3 CMD LIST ITEM
  *  -----------------
  *
  *  ![](cli/cli_struct_cmd_list_item.png)
  *
- *  A static array of #px_cli_cmd_list_item_t structures are declared. The
- *  "handler" field is the address of the function to call when that command is
- *  executed. The second field either points to a group structure
- *  (if "handler" == NULL) or a command structure (if "handler" != NULL).
+ *  A static array of #px_cli_cmd_list_item_t structures are declared:
+ *  - The "handler" field is the address of the function to call when that
+ *    command is executed.
+ *  - The second field either points to a group structure (if "handler" == NULL)
+ *    or a command structure (if "handler" != NULL).
  *
- *  The end of the array is terminated with an extra item with the "handler"
- *  field set to NULL and the "cmd/group" field also NULL. This marks the end of
- *  the array.
+ *  The end of the array is terminated with an extra item where the "handler"
+ *  field is set to NULL and the "cmd/group" field is also NULL. This marks the
+ *  end of the array. It is similar to a NULL ('\0') terminator at the end of a
+ *  character string.
  *
  *  3.4 Example
  *  -----------
@@ -101,7 +106,7 @@
  *
  *  @snippet comms/test/px_cli_test.c CLI cmd tree declaration
  *
- *  The declaration is simplified by using the following boiler-plate macros:
+ *  The declaration is simplified by using the following boilerplate macros:
  *  - PX_CLI_CMD_CREATE()
  *  - PX_CLI_GROUP_CREATE()
  *  - PX_CLI_GROUP_END()
