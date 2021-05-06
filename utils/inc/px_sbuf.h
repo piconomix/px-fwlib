@@ -126,10 +126,6 @@ void px_sbuf_print(px_sbuf_t * sbuf, const char * str);
  */
 void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...);
 
-
-
-
-
 /* _____MACROS_______________________________________________________________ */
 
 /// @}
