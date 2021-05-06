@@ -261,7 +261,7 @@ static bool px_bme280_cal_rd(void)
     if(PX_LOG_LEVEL_D())
     {
         // Report calibration values
-        PX_LOG_TRACE("BME280 Cal:\n");
+        PX_LOG_D("BME280 Cal:");
         PX_LOG_TRACE("T1 = %d\n",   px_bme280_cal.t1);
         PX_LOG_TRACE("T2 = %d\n",   px_bme280_cal.t2);
         PX_LOG_TRACE("T3 = %u\n",   px_bme280_cal.t3);

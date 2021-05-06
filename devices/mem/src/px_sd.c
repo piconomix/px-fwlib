@@ -293,13 +293,13 @@ static uint8_t px_sd_rx_data_block(uint8_t * data, size_t nr_of_bytes)
     // Receive CRC
     px_crc_hi = px_sd_spi_rd_u8();
     px_crc_lo = px_sd_spi_rd_u8();
-    if(PX_LOG_LEVEL_I())
+    if(PX_LOG_LEVEL_D())
     {
         PX_LOG_D("CRC = %02hX %02hX", px_crc_hi, px_crc_lo);
     }
     else
     {
-		// Eliminate compiler about unused variables
+		// Eliminate compiler warning about unused variables
         (void)px_crc_hi;
         (void)px_crc_lo;
     }
@@ -591,7 +591,7 @@ bool px_sd_read_csd(px_sd_csd_t * csd)
 
     if(PX_LOG_LEVEL_D())
     {
-        PX_LOG_D("CSD:");
+        PX_LOG_D("CSD: \t");
         PX_LOG_TRACE_DATA(csd, sizeof(px_sd_csd_t));
         PX_LOG_TRACE("\n");
     }
