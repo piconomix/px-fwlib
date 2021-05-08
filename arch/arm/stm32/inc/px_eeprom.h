@@ -20,7 +20,7 @@
 
 /** 
  *  @ingroup STM32
- *  @defgroup AVR_EEPROM px_eeprom.h : Internal EEPROM write routines
+ *  @defgroup STM32_EEPROM px_eeprom.h : Internal EEPROM write routines
  *  
  *  This module can erase a page and write a half page of internal EEPROM.
  *  

@@ -20,7 +20,7 @@
 
 /** 
  *  @ingroup STM32
- *  @defgroup AVR_FLASH px_flash.h : Internal FLASH write routines
+ *  @defgroup STM32_FLASH px_flash.h : Internal FLASH write routines
  *  
  *  This module can erase a page and write a half page of internal FLASH.
  *  
