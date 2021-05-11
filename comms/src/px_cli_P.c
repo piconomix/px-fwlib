@@ -566,6 +566,8 @@ static bool px_cli_autocomplete(void)
                 {
                     // Go back to start of list
                     px_cli_cmd_item_get_first();
+                    // No match
+                    return false;
                 }
                 // Reset to start of word
                 i = px_cli_autocomplete_start_index;
