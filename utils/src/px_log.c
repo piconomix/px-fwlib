@@ -227,7 +227,7 @@ static void px_log_report_log_prefix(px_log_level_t level,
 #endif
 }
 
-static void px_log_log_terminate(const char * format)
+static void px_log_terminate(const char * format)
 {
 #ifdef PX_COMPILER_GCC_AVR
     size_t len = strlen_P(format);
@@ -276,7 +276,7 @@ void _px_log_log_error(const char * name, uint16_t line, const char * format, ..
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    px_log_log_terminate(format);
+    px_log_terminate(format);
 }
 
 void _px_log_log_warning(const char * name, uint16_t line, const char * format, ...)
@@ -301,7 +301,7 @@ void _px_log_log_warning(const char * name, uint16_t line, const char * format, 
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    px_log_log_terminate(format);
+    px_log_terminate(format);
 }
 
 void _px_log_log_info(const char * name, uint16_t line, const char * format, ...)
@@ -327,7 +327,7 @@ void _px_log_log_info(const char * name, uint16_t line, const char * format, ...
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    px_log_log_terminate(format);
+    px_log_terminate(format);
 }
 
 void _px_log_log_debug(const char * name, uint16_t line, const char * format, ...)
@@ -353,7 +353,7 @@ void _px_log_log_debug(const char * name, uint16_t line, const char * format, ..
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    px_log_log_terminate(format);
+    px_log_terminate(format);
 }
 
 void _px_log_log_verbose(const char * name, uint16_t line, const char * format, ...)
@@ -379,7 +379,7 @@ void _px_log_log_verbose(const char * name, uint16_t line, const char * format, 
 #endif
     va_end(args);
     // Append End Of Line ('\n') if format string does not end with a TAB character ('\t')
-    px_log_log_terminate(format);
+    px_log_terminate(format);
 }
 
 void _px_log_assert(const char * name,
