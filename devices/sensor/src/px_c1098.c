@@ -203,7 +203,7 @@ static void px_c1098_on_rx_byte(uint8_t data)
 {
     uint16_t data_size;
 
-    if(PX_LOG_LEVEL_D())
+    if(PX_LOG_LEVEL_IS_D())
     {
         if(px_c1098_rx_data_index == 0)
         {

@@ -258,7 +258,7 @@ static bool px_bme280_cal_rd(void)
     px_bme280_cal.h5 = ((int16_t)(int8_t)data[5] * 16) | ((int16_t)(data[4] >> 4));
     px_bme280_cal.h6 = (int8_t)data[6];
 
-    if(PX_LOG_LEVEL_D())
+    if(PX_LOG_LEVEL_IS_D())
     {
         // Report calibration values
         PX_LOG_D("BME280 Cal:");

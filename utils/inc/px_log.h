@@ -344,26 +344,26 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
 // Run time filter enabled?
 #if PX_LOG_CFG_FILTER
     /// Error level enabled?
-    #define PX_LOG_LEVEL_E()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_ERROR)   && !px_log_filter(PX_LOG_LEVEL_ERROR,   _px_log_name))
+    #define PX_LOG_LEVEL_IS_E() ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_ERROR)   && !px_log_filter(PX_LOG_LEVEL_ERROR,   _px_log_name))
     /// Warning level enabled?
-    #define PX_LOG_LEVEL_W()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_WARNING) && !px_log_filter(PX_LOG_LEVEL_WARNING, _px_log_name))
+    #define PX_LOG_LEVEL_IS_W() ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_WARNING) && !px_log_filter(PX_LOG_LEVEL_WARNING, _px_log_name))
     /// Info level enabled?
-    #define PX_LOG_LEVEL_I()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_INFO)    && !px_log_filter(PX_LOG_LEVEL_INFO,    _px_log_name))
+    #define PX_LOG_LEVEL_IS_I() ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_INFO)    && !px_log_filter(PX_LOG_LEVEL_INFO,    _px_log_name))
     /// Debug level enabled?
-    #define PX_LOG_LEVEL_D()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_DEBUG)   && !px_log_filter(PX_LOG_LEVEL_DEBUG,   _px_log_name))
+    #define PX_LOG_LEVEL_IS_D() ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_DEBUG)   && !px_log_filter(PX_LOG_LEVEL_DEBUG,   _px_log_name))
     /// Verbose level enabled?
-    #define PX_LOG_LEVEL_V()    ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_VERBOSE) && !px_log_filter(PX_LOG_LEVEL_VERBOSE, _px_log_name))
+    #define PX_LOG_LEVEL_IS_V() ((PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_VERBOSE) && !px_log_filter(PX_LOG_LEVEL_VERBOSE, _px_log_name))
 #else
     /// Error level enabled?
-    #define PX_LOG_LEVEL_E()    (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_ERROR)
+    #define PX_LOG_LEVEL_IS_E() (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_ERROR)
     /// Warning level enabled?
-    #define PX_LOG_LEVEL_W()    (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_WARNING)
+    #define PX_LOG_LEVEL_IS_W() (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_WARNING)
     /// Info level enabled?
-    #define PX_LOG_LEVEL_I()    (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_INFO)
+    #define PX_LOG_LEVEL_IS_I() (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_INFO)
     /// Debug level enabled?
-    #define PX_LOG_LEVEL_D()    (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_DEBUG)
+    #define PX_LOG_LEVEL_IS_D() (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_DEBUG)
     /// Verbose level enabled?
-    #define PX_LOG_LEVEL_V()    (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_VERBOSE)
+    #define PX_LOG_LEVEL_IS_V() (PX_LOG_CFG_LEVEL >= PX_LOG_LEVEL_VERBOSE)
 #endif
 
 /// Macro to display a formatted ERROR message
@@ -475,11 +475,11 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
 #else
     // PX_LOG = 0; Remove log code
     #define PX_LOG_NAME(name)
-    #define PX_LOG_LEVEL_E()                        0
-    #define PX_LOG_LEVEL_W()                        0
-    #define PX_LOG_LEVEL_I()                        0
-    #define PX_LOG_LEVEL_D()                        0
-    #define PX_LOG_LEVEL_V()                        0
+    #define PX_LOG_LEVEL_IS_E()                     0
+    #define PX_LOG_LEVEL_IS_W()                     0
+    #define PX_LOG_LEVEL_IS_I()                     0
+    #define PX_LOG_LEVEL_IS_D()                     0
+    #define PX_LOG_LEVEL_IS_V()                     0
     #define PX_LOG_E(format, ...)                   ((void)0)
     #define PX_LOG_W(format, ...)                   ((void)0)
     #define PX_LOG_I(format, ...)                   ((void)0)

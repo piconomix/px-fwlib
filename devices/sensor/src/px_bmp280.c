@@ -244,7 +244,7 @@ static bool px_bmp280_cal_rd(void)
     px_bmp280_cal.dig.p9 = 6000;
 #endif
 
-    if(PX_LOG_LEVEL_D())
+    if(PX_LOG_LEVEL_IS_D())
     {
         // Report calibration values
         PX_LOG_D("BMP280 Cal:");
