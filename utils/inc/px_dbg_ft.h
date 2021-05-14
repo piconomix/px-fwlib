@@ -70,6 +70,11 @@ extern "C" {
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
+/// Index of next empty position; Placed in .noinit section so that it is not set to zero by C initialization code before it can be inspected
+extern uint8_t px_dbg_ft_buf_index;
+
+/// Buffer for log output; Placed in .noinit section so that it is not set to zero by C initialization code before it can be inspected
+extern uint32_t px_dbg_ft_buf[PX_DBG_FT_CFG_BUF_SIZE];
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**

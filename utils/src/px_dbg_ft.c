@@ -27,13 +27,13 @@
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-
-/* _____LOCAL VARIABLES______________________________________________________ */
 /// Index of next empty position; Placed in .noinit section so that it is not set to zero by C initialization code before it can be inspected
-PX_ATTR_SECTION(".noinit") static uint8_t px_dbg_ft_buf_index;
+PX_ATTR_SECTION(".noinit") uint8_t px_dbg_ft_buf_index;
 
 /// Buffer for log output; Placed in .noinit section so that it is not set to zero by C initialization code before it can be inspected
-PX_ATTR_SECTION(".noinit") static uint32_t px_dbg_ft_buf[PX_DBG_FT_CFG_BUF_SIZE];
+PX_ATTR_SECTION(".noinit") uint32_t px_dbg_ft_buf[PX_DBG_FT_CFG_BUF_SIZE];
+
+/* _____LOCAL VARIABLES______________________________________________________ */
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
