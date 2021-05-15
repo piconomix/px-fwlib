@@ -34,10 +34,25 @@ PX_ATTR_SECTION(".noinit") uint8_t px_dbg_ft_buf_index;
 PX_ATTR_SECTION(".noinit") uint32_t px_dbg_ft_buf[PX_DBG_FT_CFG_BUF_SIZE];
 
 /* _____LOCAL VARIABLES______________________________________________________ */
+// Name strings defined?
+#ifdef PX_LOG_CFG_NAMES
+// Define array of name strings for each name value
+PX_LOG_CFG_NAMES()
+#endif
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
+#ifdef PX_LOG_CFG_NAMES
+const char * px_dbg_ft_name_val_to_str(px_dbg_ft_name_t name)
+{
+    if(name >= PX_SIZEOF_ARRAY(px_dbg_ft_name_str))
+    {
+        return "";
+    }
+    return px_dbg_ft_name_str[name];
+}
+#endif
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void _px_dbg_ft_init(void)
@@ -93,7 +108,11 @@ void px_dbg_ft_report(void)
         param = (px_dbg_ft_buf[index] >> 24) & 0xff;
         name  = (px_dbg_ft_buf[index] >> 16) & 0xff;
         line  = (px_dbg_ft_buf[index] >>  0) & 0xffff;
-        printf("%u line %u : param %u\n", name, line, param);
+#ifdef PX_LOG_CFG_NAMES
+        printf("%u %s # %u (%u)\n", name, px_dbg_ft_name_val_to_str(name), line, param);
+#else
+        printf("%u # %u (%u)\n", name, line, param);
+#endif
     }
     while(index != px_dbg_ft_buf_index);
 }

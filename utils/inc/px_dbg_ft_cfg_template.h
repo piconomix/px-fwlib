@@ -38,12 +38,22 @@
 /// Debug output string buffer size
 #define PX_DBG_FT_CFG_BUF_SIZE 16
 
-/// Customized name values
+/// Customized name values (must be sequential starting at 0, e.g. 0, 1, 2, 3, ...)
 typedef enum
 {
     PX_DBG_FT_NAME_NONE     = 0,
     PX_DBG_FT_NAME_MAIN     = 1,
 } px_dbg_ft_name_t;
+
+/// Optional: provide name strings for each value (must be sequential starting at 0, e.g. 0, 1, 2, 3, ...)
+#if 0
+#define PX_LOG_CFG_NAMES() \
+static const char * px_dbg_ft_name_str[] = \
+{ \
+    "", \
+    "MAIN", \
+};
+#endif
 
 /// @}
 #endif
