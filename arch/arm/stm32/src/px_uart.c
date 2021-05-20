@@ -109,8 +109,25 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
         }
         else
         {
-            // Add received byte to circular buffer
-            // (byte is discarded if buffer is full)
+            uint32_t usart_cr1_val = usart_base_adr->CR1;
+
+            // Parity enabled?
+            if(usart_cr1_val & USART_CR1_PCE)
+            {
+                // 8 data bits?
+                if(  ((usart_cr1_val & USART_CR1_M1) == 0) && ((usart_cr1_val & USART_CR1_M0) == 0)  )
+                {
+                    // Clear parity bit
+                    data &= ~(1 << 7);
+                }
+                // 7 data bits?
+                else if(  ((usart_cr1_val & USART_CR1_M1) != 0) && ((usart_cr1_val & USART_CR1_M0) == 0)  )
+                {
+                    // Clear parity bit
+                    data &= ~(1 << 6);
+                }
+            }
+            // Add received byte to circular buffer (byte is discarded if buffer is full)
             px_ring_buf_wr_u8(&uart_per->rx_circ_buf, data);
         }
     }
