@@ -40,6 +40,23 @@ typedef struct px_uart_per_s
     uint8_t         open_counter;       /// Number of open handles referencing peripheral
 } px_uart_per_t;
 
+// Default peripheral clocks in Hz
+#ifndef PX_UART_CFG_UART1_CLK_HZ
+    #define PX_UART_CFG_UART1_CLK_HZ    PX_BOARD_PER_CLK_HZ
+#endif
+#ifndef PX_UART_CFG_UART2_CLK_HZ
+    #define PX_UART_CFG_UART2_CLK_HZ    PX_BOARD_PER_CLK_HZ
+#endif
+#ifndef PX_UART_CFG_UART3_CLK_HZ
+    #define PX_UART_CFG_UART3_CLK_HZ    PX_BOARD_PER_CLK_HZ
+#endif
+#ifndef PX_UART_CFG_UART4_CLK_HZ
+    #define PX_UART_CFG_UART4_CLK_HZ    PX_BOARD_PER_CLK_HZ
+#endif
+#ifndef PX_UART_CFG_UART5_CLK_HZ
+    #define PX_UART_CFG_UART5_CLK_HZ    PX_BOARD_PER_CLK_HZ
+#endif
+
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -230,47 +247,73 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
     // USART_CR1 register calculated value
     uint32_t usart_cr1_val;
 
-    // Enable peripheral clock
+    // Enable peripheral clock and set baud rate
     switch(uart_nr)
     {
 #if PX_UART_CFG_UART1_EN
     case PX_UART_NR_1:
         LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_USART1);
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART1_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
         break;
 #endif
 #if PX_UART_CFG_UART2_EN
     case PX_UART_NR_2:
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART2);
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART2_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
         break;
 #endif
 #if PX_UART_CFG_UART3_EN
     case PX_UART_NR_3:
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART3);
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART3_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
         break;
 #endif
 #if PX_UART_CFG_UART4_EN
     case PX_UART_NR_4:
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART4);
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART4_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
         break;
 #endif
 #if PX_UART_CFG_UART5_EN
     case PX_UART_NR_5:
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART5);
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART5_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
         break;
 #endif
     default:
         PX_LOG_E("Invalid peripheral");
         return false;
     }
-
-    // Set baud rate
-    LL_USART_SetBaudRate(usart_base_adr,
-                         PX_BOARD_PER_CLK_HZ,
-#if STM32G0
-                         LL_USART_PRESCALER_DIV1,
-#endif
-                         LL_USART_OVERSAMPLING_16,
-                         baud);
 
     // Set transmitter and receiver and receive interrupt
 #if STM32G0
