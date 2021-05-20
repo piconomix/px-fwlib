@@ -96,7 +96,7 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
             LL_USART_ClearFlag_ORE(usart_base_adr);
         }
         // Parity Error?
-        if(LL_USART_IsActiveFlag_PE(usart_base_adr))
+        else if(LL_USART_IsActiveFlag_PE(usart_base_adr))
         {
             // Clear error flag
             LL_USART_ClearFlag_PE(usart_base_adr);
