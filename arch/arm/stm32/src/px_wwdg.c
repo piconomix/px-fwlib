@@ -119,13 +119,11 @@ void WWDG_IRQHandler(void)
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_wwdg_init(px_wwdg_prescaler_t prescaler, uint8_t counter, uint8_t window)
 {
-    PX_LOG_ASSERT(window  < 0x80);
-    PX_LOG_ASSERT(counter < 0x80);
+    PX_LOG_ASSERT((window  > 0x40) && (window  < 0x80));
+    PX_LOG_ASSERT((counter > 0x40) && (counter < 0x80));
 
     // Enable peripheral clock
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_WWDG);
-    // Enable peripheral
-    LL_WWDG_Enable(WWDG);
     // Set clock (PCLK / 4096) prescaler
     LL_WWDG_SetPrescaler(WWDG, ((uint32_t)prescaler) << WWDG_CFR_WDGTB_Pos);
     // Set watchdog counter window
@@ -140,6 +138,8 @@ void px_wwdg_init(px_wwdg_prescaler_t prescaler, uint8_t counter, uint8_t window
 #ifdef PX_WWDG_CFG_EARLY_WARNING_FLAG
     // Reset early warning flag
     px_wwdg_ew_flag = 0;
+    // Clear interrupt flag
+    LL_WWDG_ClearFlag_EWKUP(WWDG);
     // Enable early wake up interrupt
     NVIC_SetPriority(WWDG_IRQn, 0);
     NVIC_EnableIRQ(WWDG_IRQn);
@@ -156,6 +156,8 @@ void px_wwdg_init(px_wwdg_prescaler_t prescaler, uint8_t counter, uint8_t window
     px_wwdg_lr  = 0;
     px_wwdg_pc  = 0;
     px_wwdg_psr = 0;
+    // Clear interrupt flag
+    LL_WWDG_ClearFlag_EWKUP(WWDG);
     // Enable early wake up interrupt
     NVIC_SetPriority(WWDG_IRQn, 0);
     NVIC_EnableIRQ(WWDG_IRQn);
@@ -166,10 +168,21 @@ void px_wwdg_init(px_wwdg_prescaler_t prescaler, uint8_t counter, uint8_t window
     // Freeze watchdog when processor is halted by debugger
     LL_DBGMCU_APB1_GRP1_FreezePeriph(LL_DBGMCU_APB1_GRP1_WWDG_STOP);
 #endif
+
+    // Enable peripheral
+    LL_WWDG_Enable(WWDG);
 }
 
 void px_wwdg_reload_counter(void)
 {
+    if(!LL_WWDG_IsEnabled(WWDG))
+    {
+        return;
+    }
+    if(px_wwdg_counter_reload <= 0x40)
+    {
+        return;
+    }
     LL_WWDG_SetCounter(WWDG, px_wwdg_counter_reload);
 }
 
