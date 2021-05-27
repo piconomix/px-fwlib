@@ -29,7 +29,7 @@
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 // Check that correct 'board.h' has been included
-#ifndef PX_BOARD_PICONOMIX_HERO_BOARD
+#ifndef PX_BOARD_PX_HERO
 #warning "Wrong 'board.h' has been included. Check that include path is correct."
 #endif
 
