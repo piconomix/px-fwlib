@@ -936,6 +936,7 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle)
 void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
 {
     px_uart_per_t * uart_per;
+    USART_TypeDef * usart_base_adr;
 
     // Verify that pointer to handle is not NULL
     PX_LOG_ASSERT(handle != NULL);
@@ -945,13 +946,69 @@ void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
+    // Set pointer to peripheral base address
+    usart_base_adr = uart_per->usart_base_adr;
 
     // Set baud rate
-    LL_USART_SetBaudRate(uart_per->usart_base_adr,
-                         PX_BOARD_PER_CLK_HZ,
+    switch(uart_per->uart_nr)
+    {
+#if PX_UART_CFG_UART1_EN
+    case PX_UART_NR_1:
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART1_CLK_HZ,
 #if STM32G0
-                         LL_USART_PRESCALER_DIV1,
+                             LL_USART_PRESCALER_DIV1,
 #endif
-                         LL_USART_OVERSAMPLING_16,
-                         baud);
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
+        break;
+#endif
+#if PX_UART_CFG_UART2_EN
+    case PX_UART_NR_2:
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART2_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
+        break;
+#endif
+#if PX_UART_CFG_UART3_EN
+    case PX_UART_NR_3:
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART3_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
+        break;
+#endif
+#if PX_UART_CFG_UART4_EN
+    case PX_UART_NR_4:
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART4_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
+        break;
+#endif
+#if PX_UART_CFG_UART5_EN
+    case PX_UART_NR_5:
+        LL_USART_SetBaudRate(usart_base_adr,
+                             PX_UART_CFG_UART5_CLK_HZ,
+#if STM32G0
+                             LL_USART_PRESCALER_DIV1,
+#endif
+                             LL_USART_OVERSAMPLING_16,
+                             baud);
+        break;
+#endif
+    default:
+        PX_LOG_E("Invalid peripheral");
+        break;
+    }
 }
