@@ -147,7 +147,7 @@ typedef struct
 /** 
  *  Initialise UART driver.
  */
-void  px_uart_init(void);
+void px_uart_init(void);
 
 /** 
  *  Open UART peripheral using predefined (default) parameters
@@ -316,8 +316,27 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle);
  *  @param handle        Pointer to handle data structure
  *  
  *  @param baud          Baud rate in bits/s
+ *
+ *  @retval true         Success. Baud was changed
+ *  @retval false        Error. Requested baud invalid
  */
-void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
+bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
+
+/**
+ *  Change UART peripheral data format.
+ *
+ *  @param handle        Pointer to handle data structure
+ *  @param data_bits     Data bits (7,8 or 9)
+ *  @param parity        Parity(NONE, ODD or EVEN)
+ *  @param stop_bits     Stop bits (1 or 2)
+ *
+ *  @retval true         Success. data format was changed
+ *  @retval false        Error. Requested data format invalid
+ */
+bool px_uart_ioctl_change_data_format(px_uart_handle_t *  handle,
+                                      px_uart_data_bits_t data_bits,
+                                      px_uart_parity_t    parity,
+                                      px_uart_stop_bits_t stop_bits);
 
 /* _____MACROS_______________________________________________________________ */
 
