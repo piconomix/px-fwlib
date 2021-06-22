@@ -74,7 +74,7 @@ static const char px_ascii_strings[][4] =
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 const char * px_ascii_char_to_name_str(char c)
 {
-    if(c == PX_ASCII_DEL)
+    if(c == PX_ASCII_CHAR_DEL)
     {
         return "DEL";
     }
