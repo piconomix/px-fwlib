@@ -88,3 +88,19 @@ const char * px_ascii_char_to_name_str(char c)
     }
 }
 
+void px_ascii_log_report_str(const char * str)
+{
+    while(*str != 0)
+    {
+        if((*str <= 31) || (*str == PX_ASCII_CHAR_DEL))
+        {
+            PX_LOG_TRACE("<%s>", px_ascii_char_to_name_str(*str));
+        }
+        else
+        {
+            PX_LOG_TRACE("%c", *str);
+        }
+        str++;
+    }
+}
+

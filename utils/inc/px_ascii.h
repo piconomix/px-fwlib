@@ -131,6 +131,13 @@ extern "C"
  */
 const char * px_ascii_char_to_name_str(char c);
 
+/**
+ *  Log trace string and indicate control characters with a <> escape sequence
+ *
+ *  @param str
+ */
+void px_ascii_log_report_str(const char * str);
+
 /* _____MACROS_______________________________________________________________ */
 
 /// @}
