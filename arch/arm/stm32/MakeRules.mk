@@ -318,6 +318,10 @@ mostlyclean_list :
 program:  $(BUILD_DIR)/$(PROJECT).hex
 	STM32_Programmer_CLI -c port=SWD freq=4000 reset=HWrst -w $< -v -g 0x00000000
 
+# Reset target using STM32CubeProgrammer CLI utility
+reset:
+	STM32_Programmer_CLI -c port=SWD freq=4000 reset=HWrst -rst
+
 # Generate OpenOCD config file
 .PHONY : $(OPENOCD_SCRIPT)
 $(OPENOCD_SCRIPT):
