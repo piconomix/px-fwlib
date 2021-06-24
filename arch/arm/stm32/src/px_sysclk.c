@@ -81,8 +81,8 @@ void px_sysclk_init(void)
 
    uint32_t ticks_per_period;
 
-   // Calculate number of ticks per SysTick period
-   ticks_per_period = PX_UDIV_ROUND(PX_BOARD_PER_CLK_HZ, PX_SYSCLK_CFG_TICKS_PER_SEC);
+   // Calculate number of ticks per SysTick period (SysTick is fed from AHB clock by default)
+   ticks_per_period = PX_UDIV_ROUND(PX_BOARD_SYS_CLK_HZ, PX_SYSCLK_CFG_TICKS_PER_SEC);
 
    // Configure SysTick peripheral
    SysTick_Config(ticks_per_period);
