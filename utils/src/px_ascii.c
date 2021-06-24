@@ -96,6 +96,10 @@ void px_ascii_log_report_str(const char * str)
         {
             PX_LOG_TRACE("<%s>", px_ascii_char_to_name_str(*str));
         }
+        else if(*str > 127)
+        {
+            PX_LOG_TRACE("<%02X>", *str);
+        }
         else
         {
             PX_LOG_TRACE("%c", *str);
