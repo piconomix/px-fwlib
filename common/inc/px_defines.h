@@ -171,19 +171,19 @@ typedef signed long long   int64_t;
 /// @name Bit manipulation macros useful for example to manipulate GPIO pins
 //@{
 /// Set a bit (1)
-#define PX_BIT_SET_HI(var, bit)             do { (var) |=  (1 << (bit)); } while(0)
+#define PX_BIT_SET_HI(var, bit)             do { (var) |=  (1ul << (bit)); } while(0)
 
 /// Clear a bit (0)
-#define PX_BIT_SET_LO(var, bit)             do { (var) &= ~(1 << (bit)); } while(0)
+#define PX_BIT_SET_LO(var, bit)             do { (var) &= ~(1ul << (bit)); } while(0)
 
 /// Toggle a bit
-#define PX_BIT_TOGGLE(var, bit)             do { (var) ^=  (1 << (bit)); } while(0)
+#define PX_BIT_TOGGLE(var, bit)             do { (var) ^=  (1ul << (bit)); } while(0)
 
 /// Test if a bit is set (1?)
-#define PX_BIT_IS_HI(var, bit)              (((var) & (1 << (bit))) != 0)
+#define PX_BIT_IS_HI(var, bit)              (((var) & (1ul << (bit))) != 0)
 
 /// Test if a bit is cleared (0?)
-#define PX_BIT_IS_LO(var, bit)              (((var) & (1 << (bit))) == 0)
+#define PX_BIT_IS_LO(var, bit)              (((var) & (1ul << (bit))) == 0)
 
 /// Wait until a bit is set
 #define PX_WAIT_UNTIL_BIT_IS_HI(var, bit)   do { ; } while(PX_BIT_IS_LO((var), (bit)))
