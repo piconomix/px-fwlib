@@ -3,20 +3,23 @@
 #
 # Based on:
 # - WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
-# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany 
-# - LUFA Makefiles by Dean Camera [www.lufa-lib.org]
+# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany
+# - DMBS - Dean's Makefile Build System by Dean Camera [https://github.com/abcminiuser/dmbs]
 # - http://stackoverflow.com Q&A research
+# - Automatically generate makefile dependencies (http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
+# - GNU make manual (https://www.gnu.org/software/make/manual/make.html)
 #
 # On command line:
 #
-# make                    = Build project (release version)
+# make                    = Build project (debug version)
 # make build=debug        = Build project (debug version)
+# make build=debug-boot   = Build project (debug version for bootloader)
 # make build=release      = Build project (release version)
-# make build=release-boot = Build project (release for bootloader version)
-# make check              = Check that source files exist
-# make clean              = Delete intermediate output files and final binaries
-# make mostlyclean        = Delete intermediate output files, but preserve final 
-#                           binaries
+# make build=release-boot = Build project (release version for bootloader)
+# make clean              = Delete build and final output files
+# make mostlyclean        = Delete build files, but preserve final output files
+# make program            = Program target using command line utility
+# make reset              = Reset target using command line utility
 # make openocd            = Create script and launch OpenOCD GDB and Telnet server
 # make gdb                = Create script and launch GDB
 #
@@ -31,8 +34,9 @@
 #
 # Makefile script special requirements:
 # - make 3.81 or greater (requires working eval function)
-# - sh (sh.exe on MS-Windows platform; required for 'make check')
+# - sh (sh.exe on MS-Windows platform)
 # - rm (to delete files and directories)
+# - mkdir (to create directories)
 #
 # ------------------------------------------------------------------------------
 # Creation Date:  2018-03-17
@@ -151,7 +155,6 @@ ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startu
 INCDIRS += cfg
 INCDIRS += inc
 INCDIRS += res
-INCDIRS += src
 INCDIRS += $(BSP)/inc
 INCDIRS += $(PX_LIB)
 INCDIRS += $(PX_LIB)/$(ARCH)/inc
@@ -168,7 +171,7 @@ INCDIRS += $(PX_LIB)/gfx/inc
 INCDIRS += $(PX_LIB)/gfx/fonts/inc
 INCDIRS += $(PX_LIB)/gfx/images/inc
 INCDIRS += $(PX_LIB)/utils/inc
-INCDIRS += $(CHAN_FATFS)
+INCDIRS += $(BSP)/inc
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
