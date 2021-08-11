@@ -37,7 +37,7 @@ See [2] "2.3.4 Vector table" on page 29 for more info.
 
 In the STM32Cube library, the vector table is defined here (line 132 or search for "g_pfnVectors"):
 
-    px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
+    px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
 
 @tip_s
 In case you were wondering, the prefix "g_pfn" is short for "Global Pointer to 

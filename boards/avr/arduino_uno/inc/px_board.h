@@ -10,7 +10,7 @@
     Copyright (c) 2015 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
     Title:          px_board.h : Arduino UNO R3 Board
     Author(s):      Pieter Conradie

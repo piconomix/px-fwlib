@@ -10,7 +10,7 @@
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_vt100.h : VT100/ANSI Terminal module
     Author(s):      Pieter Conradie

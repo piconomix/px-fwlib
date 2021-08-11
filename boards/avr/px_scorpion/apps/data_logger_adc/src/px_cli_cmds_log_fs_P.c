@@ -8,7 +8,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_cli_cmds_log_fs.h : CLI commands for log_fs
     Author(s):      Pieter Conradie

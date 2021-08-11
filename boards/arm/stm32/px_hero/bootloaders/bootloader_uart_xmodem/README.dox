@@ -99,7 +99,7 @@ The application's Makefile and linker script has been set up to create a BIN
 file for upload to the bootloader when the 'make build=release-boot' command is 
 executed:
 
-    px-lib\boards\arm\stm32\px_hero\examples\gpio>make build=release-boot
+    px-fwlib\boards\arm\stm32\px_hero\examples\gpio>make build=release-boot
 
     -------- begin (RELEASE FOR BOOT) --------
     arm-none-eabi-gcc.exe (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM/embedded-7-branch revision 255204]
@@ -147,7 +147,7 @@ BOOTLOADER_SIZE symbol:
     # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
     BOOTLOADER_SIZE = 0x4000
 
-The template px-lib/arch/arm/stm32/MakeRules.mk uses this symbol to set the 
+The template px-fwlib/arch/arm/stm32/MakeRules.mk uses this symbol to set the
 Vector Table Offset Register to the correct value in system_stm32l0xx.c and also
 to specify the offset for the linker script:
 
@@ -177,9 +177,9 @@ VECT_TAB_OFFSET to be overriden externally:
 
 Location:
 
-    px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
+    px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 
-The linker script px-lib/boards/arm/stm32/px_hero/stm32l072xb.ld allows 
+The linker script px-fwlib/boards/arm/stm32/px_hero/stm32l072xb.ld allows
 the start address to be changed with the FLASH_OFFSET symbol:
 
     /*
@@ -190,7 +190,7 @@ the start address to be changed with the FLASH_OFFSET symbol:
     FLASH_LENGTH = 128k - FLASH_OFFSET;
 
 The generated LSS file, for example
-px-lib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss,
+px-fwlib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss,
 can be inspected to verify that the application has been moved to the right 
 address:
 

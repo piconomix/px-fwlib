@@ -8,7 +8,7 @@
     Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
     Title:          board.h : Piconomix STM32 Hero Board
     Author(s):      Pieter Conradie

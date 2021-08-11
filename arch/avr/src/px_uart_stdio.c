@@ -8,7 +8,7 @@
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_uart_stdio.h : Module to redirect stdio output (e.g. printf) to a UART
     Author(s):      Pieter Conradie

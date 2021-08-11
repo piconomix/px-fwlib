@@ -8,7 +8,7 @@
     Copyright (c) 2021 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_sbuf.h : Safe buffer string appending functions that avoid overflow
     Author(s):      Pieter Conradie

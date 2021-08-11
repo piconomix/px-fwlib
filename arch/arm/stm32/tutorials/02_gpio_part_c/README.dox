@@ -24,8 +24,8 @@ ST provides the STM32Cube library which includes the Arm
 Microcontroller Software Interface Standard) library. It defines consistent 
 access to the peripheral registers. See:
 
-    px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include/stm32l0xx.h
-    px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include/stm32l072xx.h
+    px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include/stm32l0xx.h
+    px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Include/stm32l072xx.h
 
 @tip_s
 Part A and B was created as an introduction to understand how to use the 
@@ -71,7 +71,7 @@ Inspect "stm32l072xx.h" and you will find the relevant definitions:
     #define GPIO_MODER_MODE1_Pos    (2U)
     @endcode
 
-In "px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Include/core_cm0plus.h" you will find
+In "px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Include/core_cm0plus.h" you will find
 the definition of '__IO':
 
     @code{.c}

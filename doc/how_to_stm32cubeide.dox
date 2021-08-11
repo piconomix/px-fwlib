@@ -76,7 +76,7 @@ The following steps show how to create a new Makefile managed C project
 for an existing project in the library. The following example project will be 
 used:
 
-    px-lib/boards/arm/stm32/px_hero/examples/gpio
+    px-fwlib/boards/arm/stm32/px_hero/examples/gpio
 
 @tip_s
 If the project already contains STM32CubeIDE project files, they can be deleted 

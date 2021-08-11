@@ -8,7 +8,7 @@
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_i2c.h : Interrupt-driven TWI (I2C) Master
     Author(s):      Pieter Conradie

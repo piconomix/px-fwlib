@@ -10,7 +10,7 @@
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_defines.h : Common definitions
     Author(s):      Pieter Conradie

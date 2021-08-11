@@ -64,7 +64,7 @@ The LED will blink continuously to indicate that it is in UF2 boot mode.
 
 1. Locate the UF2 application file, for example:
 
-    px-lib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.uf2
+    px-fwlib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.uf2
 
 2. With the left mouse button, click on the file and (keeping the button pressed)
    drag the file to the drive.
@@ -124,7 +124,7 @@ BOOTLOADER_SIZE symbol:
     # (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
     BOOTLOADER_SIZE = 0x4000
 
-The template px-lib/arch/arm/stm32/MakeRules.mk uses this symbol to set the 
+The template px-fwlib/arch/arm/stm32/MakeRules.mk uses this symbol to set the
 Vector Table Offset Register to the correct value in system_stm32l0xx.c and also
 to specify the offset for the linker script:
 
@@ -144,7 +144,7 @@ to specify the offset for the linker script:
 
 The startup file system_stm32l0xx.c is located here:
 
-    px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
+    px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 
 It has been modified to allow VECT_TAB_OFFSET to be overriden externally:
 
@@ -158,7 +158,7 @@ It has been modified to allow VECT_TAB_OFFSET to be overriden externally:
 
 The linker script is located here:
 
-    px-lib/boards/arm/stm32/px_hero/stm32l072xb.ld
+    px-fwlib/boards/arm/stm32/px_hero/stm32l072xb.ld
 
 It allows the start address to be changed with the FLASH_OFFSET symbol:
 
@@ -171,7 +171,7 @@ It allows the start address to be changed with the FLASH_OFFSET symbol:
 
 The generated LSS file is located here:
 
-    px-lib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss
+    px-fwlib/boards/arm/stm32/px_hero/examples/gpio/BUILD_RELEASE_BOOT/gpio.lss
 
 It can be inspected to verify that the application has been moved to the right 
 address:

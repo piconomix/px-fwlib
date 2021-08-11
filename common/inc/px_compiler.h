@@ -10,7 +10,7 @@
     Copyright (c) 2011 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_compiler.h : Compiler detection and compiler specific definitions
     Author(s):      Pieter Conradie

@@ -25,9 +25,9 @@ References:
 The reference documents can also be found here for off-line viewing:
 @tip_e
 
-    px-lib/boards/arm/stm32/px_hero/docs/stm32l072_manual.pdf
-    px-lib/boards/arm/stm32/px_hero/docs/stm32l0_cortex-m0p_programming_manual.pdf
-    px-lib/boards/arm/stm32/px_hero/docs/stm32l0_errata.pdf
+    px-fwlib/boards/arm/stm32/px_hero/docs/stm32l072_manual.pdf
+    px-fwlib/boards/arm/stm32/px_hero/docs/stm32l0_cortex-m0p_programming_manual.pdf
+    px-fwlib/boards/arm/stm32/px_hero/docs/stm32l0_errata.pdf
 
 For more information, see:
 - Digi-Key [Low-Power Modes on the STM32L0 Series](https://www.digikey.com/eewiki/display/microcontroller/Low-Power+Modes+on+the+STM32L0+Series)

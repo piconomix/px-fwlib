@@ -1,7 +1,7 @@
 7.2 UART printf ("hello world") example {#STM32_EX_UART_PRINTF}
 ===============================================================
 
-This is a printf over UART example using **px-lib**. It is the embedded 
+This is a printf over UART example using **px-fwlib**. It is the embedded
 equivalent of a "hello world" program on a PC to kick the tires and know that 
 your development setup works.
 

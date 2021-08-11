@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          Piconomix STM32 Hero Board CLI application
     Author(s):      Pieter Conradie

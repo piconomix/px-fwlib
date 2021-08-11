@@ -10,7 +10,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_ltr329als.h : Lite-On LTR329ALS light sensor sensor driver
     Author(s):      Pieter Conradie

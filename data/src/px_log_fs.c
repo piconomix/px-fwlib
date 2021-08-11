@@ -8,7 +8,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_log_fs.h : Record-based file system for Serial Flash
     Author(s):      Pieter Conradie

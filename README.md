@@ -1,15 +1,27 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
-![](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/hero_board/hero_board_isometric_top_bot.jpg)
+> :warning: **Project name change notice**
+
+Apologies for any inconvenience caused. The Git project name has been shortened
+from "piconomix-fwlib" to "px-fwlib". Here is the Git command to change your
+cloned repo's URL:
+
+    git remote set-url origin https://github.com/piconomix/px-fwlib.git
+
+The online documentation URL has changed to:
+
+    https://piconomix.com/px-fwlib/index.html
+
+![](https://github.com/piconomix/px-fwlib/blob/master/doc/images/hero_board/hero_board_isometric_top_bot.jpg)
 
 STM32L072 PX-HER0 Board now in stock at Crowd Supply! Click [HERE](https://www.crowdsupply.com/piconomix/px-her0-board)
 
 Introduction
 ============
 
-![https://piconomix.com](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/piconomix_banner_300x70.png)
+![https://piconomix.com](https://github.com/piconomix/px-fwlib/blob/master/doc/images/piconomix_banner_300x70.png)
 
-**px-lib** is a collection of open source C firmware and documentation
+**px-fwlib** is a collection of open source C firmware and documentation
 for microcontrollers to develop portable bare-metal code that is vendor and
 architecture neutral (or easier to reuse).
 
@@ -18,10 +30,10 @@ middle-of-the-road 16-bit targets, and resource rich 32-bit targets, but this
 cross-platform library aims to provide a good foundation before you are forced
 to add target specific code and getting locked in.
 
-Click [HERE](https://piconomix.com/fwlib/index.html) to view the complete online
+Click [HERE](https://piconomix.com/px-fwlib/index.html) to view the complete online
 documentation.
 
-Click [HERE](https://github.com/piconomix/piconomix-fwlib/releases) to download
+Click [HERE](https://github.com/piconomix/px-fwlib/releases) to download
 releases of the open source library (source code and offline documentation).
 
 Goals
@@ -49,11 +61,11 @@ Arduino Uno R3 that creates a "Un*x Shell"-like environment so that you can
 experiment with GPIO, ADC, I2C and SPI using only an ANSI/VT100 terminal
 emulator (for example [Tera Term](http://en.sourceforge.jp/projects/ttssh2)).
 
-![Electrodragon BMP280 breakout board connected to I2C](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/arduino_uno_board/arduino_uno_i2c_slave_bmp280.jpg)
+![Electrodragon BMP280 breakout board connected to I2C](https://github.com/piconomix/px-fwlib/blob/master/doc/images/arduino_uno_board/arduino_uno_i2c_slave_bmp280.jpg)
 
 Connect your board, fire up the CLI and verify that it works:
 
-![CLI Exlorer executing on an Arduino Uno R3](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/arduino_uno_board/arduino_uno_cli_animated.gif)
+![CLI Exlorer executing on an Arduino Uno R3](https://github.com/piconomix/px-fwlib/blob/master/doc/images/arduino_uno_board/arduino_uno_cli_animated.gif)
 
 The BMP280 is found at 7-bit slave address 0x76. The chip identification
 register value for the BMP280 is 0x58. This confirms that you are able to write
@@ -105,13 +117,13 @@ License
 The [MIT license](https://en.wikipedia.org/wiki/MIT_License)
 has been selected to grant freedom for both open source and commercial
 (closed source) projects and to nurture future growth of the library. Please see
-the [LICENSE](https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md).
+the [LICENSE](https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md).
 
 Important Links
 ===============
 
-- [Piconomix FW Library home page](https://piconomix.com/fwlib/index.html)
-- [GitHub repository](https://github.com/piconomix/piconomix-fwlib)
+- [Piconomix FW Library home page](https://piconomix.com/px-fwlib/index.html)
+- [GitHub repository](https://github.com/piconomix/px-fwlib)
 - [Download page](https://sourceforge.net/projects/piconomic-fwlib/files) for file releases of the library (source code and offline documentation)
 
 Questions or Feedback?
@@ -120,7 +132,7 @@ Questions or Feedback?
 Questions or feedback (positive and negative) is great and will help to improve
 the library:
 
-![Feedback](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/feedback_animated.gif)
+![Feedback](https://github.com/piconomix/px-fwlib/blob/master/doc/images/feedback_animated.gif)
 
 Methods of communication:
 - [Forum](https://piconomix.com/forum)
@@ -134,5 +146,5 @@ open source library. If you saved development time, acquired a new skill, or
 advanced your career, you are welcome to support this project with a visit to
 the shop.
 
-[![Shop](https://github.com/piconomix/piconomix-fwlib/blob/master/doc/images/shop.png)](http://piconomix.com/shop/)
+[![Shop](https://github.com/piconomix/px-fwlib/blob/master/doc/images/shop.png)](http://piconomix.com/shop/)
 Click [HERE](http://piconomix.com/shop/) to visit the shop

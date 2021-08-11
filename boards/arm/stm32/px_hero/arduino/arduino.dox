@@ -76,7 +76,7 @@ program the STM32 too.
 
 Open the "serial_hello_world" sketch. It is located here:
 
-    px-lib/boards/arm/stm32/px_hero/arduino/examples/serial_hello_world/serial_hello_world.ino
+    px-fwlib/boards/arm/stm32/px_hero/arduino/examples/serial_hello_world/serial_hello_world.ino
 
 Build the sketch:
 
@@ -121,7 +121,7 @@ remove the BOOT jumper when you are finished. Otherwise, the STM32 will appear
 The PX-HER0 board pins are mapped in [THIS](https://github.com/stm32duino/Arduino_Core_STM32/blob/master/variants/PX_HER0/variant.h)
 file. It is duplicated here for easy offline viewing:
 
-    px-lib/boards/arm/stm32/px_hero/arduino/variants/PX_HERO/variant.h
+    px-fwlib/boards/arm/stm32/px_hero/arduino/variants/PX_HERO/variant.h
 
 Here is the map table:
 

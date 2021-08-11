@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSC (Mass Storage Class) configuration
     Author(s):      Pieter Conradie
@@ -44,7 +44,7 @@
 #define PX_UF2_CFG_INFO_BOARD_ID    "STM32L072RB"
 
 /// index.htm file URL
-#define PX_UF2_CFG_INDEX_URL        "https://piconomix.com/fwlib/index.html"
+#define PX_UF2_CFG_INDEX_URL        "https://piconomix.com/px-fwlib/index.html"
 
 /// FAT16 volume label
 #define PX_UF2_CFG_VOLUME_LABEL     "HERO-BOOT "

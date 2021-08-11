@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_gfx_font_3x5.h : 3x5 Font
     Author(s):      Pieter Conradie

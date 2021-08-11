@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          stm32.ld : STM32 Linker Script for GNU ld
     Author(s):      Pieter Conradie
@@ -19,7 +19,7 @@
 /*
  *  This linker script is for the STM32cubeL0 library and in particular the 
  *  following C startup code:
- *  px-lib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
+ *  px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
  *
  *  The default linker script for normal executables packaged with the GNU ARM 
  *  toolchain was consulted:
