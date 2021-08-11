@@ -45,13 +45,13 @@ PROJECT = interrupt
 MCU = atmega328p
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PX_LIB = ../../../..
+PX_FWLIB = ../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/avr
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PX_LIB)/boards/avr/px_scorpion
+BSP = $(PX_FWLIB)/boards/avr/px_scorpion
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += $(PROJECT).c
@@ -80,8 +80,8 @@ ASRC +=
 #
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
-INCDIRS += $(PX_LIB)
-INCDIRS += $(PX_LIB)/$(ARCH)/inc
+INCDIRS += $(PX_FWLIB)
+INCDIRS += $(PX_FWLIB)/$(ARCH)/inc
 INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
@@ -198,4 +198,4 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 
 #===============================================================================
 
-include $(PX_LIB)/$(ARCH)/MakeRules.mk
+include $(PX_FWLIB)/$(ARCH)/MakeRules.mk

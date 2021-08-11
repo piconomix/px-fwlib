@@ -391,7 +391,7 @@ Example location of library:
 
     P:\libs\px-fwlib\trunk
 
-Open Makefile and modify the PX_LIB variable to set the relative path to 
+Open Makefile and modify the PX_FWLIB variable to set the relative path to
 the library:
 
 ![Modify path(s) in Makefile](as_ext_makefile_modify.png)

@@ -52,16 +52,16 @@ STACK_SIZE = 512
 HEAP_SIZE  = 512
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PX_LIB = ../../../../../..
+PX_FWLIB = ../../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/arm/stm32
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PX_LIB)/boards/arm/stm32/st_nucleo64_l053
+BSP = $(PX_FWLIB)/boards/arm/stm32/st_nucleo64_l053
 
 # (3d) Path to ST STMCube library (relative to Makefile)
-STMCUBE = $(PX_LIB)/libs/STM32Cube/L0
+STMCUBE = $(PX_FWLIB)/libs/STM32Cube/L0
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
@@ -71,17 +71,17 @@ SRC += src/px_cli_cmds_mem.c
 SRC += src/px_cli_cmds_rtc.c
 SRC += src/px_cli_cmds_uart.c
 SRC += $(BSP)/src/px_board.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_gpio.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_rtc.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_sysclk.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_uart.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_uart_stdio.c
-SRC += $(PX_LIB)/comms/src/px_cli.c
-SRC += $(PX_LIB)/comms/src/px_vt100.c
-SRC += $(PX_LIB)/utils/src/px_ring_buf.c
-SRC += $(PX_LIB)/utils/src/px_log.c
-SRC += $(PX_LIB)/utils/src/px_rtc_util.c
-SRC += $(PX_LIB)/utils/src/px_systmr.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_gpio.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_rtc.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_sysclk.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_uart.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_uart_stdio.c
+SRC += $(PX_FWLIB)/comms/src/px_cli.c
+SRC += $(PX_FWLIB)/comms/src/px_vt100.c
+SRC += $(PX_FWLIB)/utils/src/px_ring_buf.c
+SRC += $(PX_FWLIB)/utils/src/px_log.c
+SRC += $(PX_FWLIB)/utils/src/px_rtc_util.c
+SRC += $(PX_FWLIB)/utils/src/px_systmr.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.c
@@ -113,11 +113,11 @@ ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startu
 INCDIRS += cfg
 INCDIRS += inc
 INCDIRS += $(BSP)/inc
-INCDIRS += $(PX_LIB)
-INCDIRS += $(PX_LIB)/$(ARCH)/inc
-INCDIRS += $(PX_LIB)/common/inc
-INCDIRS += $(PX_LIB)/comms/inc
-INCDIRS += $(PX_LIB)/utils/inc
+INCDIRS += $(PX_FWLIB)
+INCDIRS += $(PX_FWLIB)/$(ARCH)/inc
+INCDIRS += $(PX_FWLIB)/common/inc
+INCDIRS += $(PX_FWLIB)/comms/inc
+INCDIRS += $(PX_FWLIB)/utils/inc
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
@@ -219,7 +219,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(PX_LIB)/$(ARCH)/px_stm32_flash.ld
+LDFLAGS += -T $(PX_FWLIB)/$(ARCH)/px_stm32_flash.ld
 
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
@@ -240,4 +240,4 @@ GDB_SCRIPT ?= init.gdb
 
 #===============================================================================
 
-include $(PX_LIB)/$(ARCH)/MakeRules.mk
+include $(PX_FWLIB)/$(ARCH)/MakeRules.mk
