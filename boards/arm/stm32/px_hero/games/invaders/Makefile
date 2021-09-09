@@ -3,20 +3,23 @@
 #
 # Based on:
 # - WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
-# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany 
-# - LUFA Makefiles by Dean Camera [www.lufa-lib.org]
+# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany
+# - DMBS - Dean's Makefile Build System by Dean Camera [https://github.com/abcminiuser/dmbs]
 # - http://stackoverflow.com Q&A research
+# - Automatically generate makefile dependencies (http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
+# - GNU make manual (https://www.gnu.org/software/make/manual/make.html)
 #
 # On command line:
 #
-# make                    = Build project (release version)
+# make                    = Build project (debug version)
 # make build=debug        = Build project (debug version)
+# make build=debug-boot   = Build project (debug version for bootloader)
 # make build=release      = Build project (release version)
-# make build=release-boot = Build project (release for bootloader version)
-# make check              = Check that source files exist
-# make clean              = Delete intermediate output files and final binaries
-# make mostlyclean        = Delete intermediate output files, but preserve final 
-#                           binaries
+# make build=release-boot = Build project (release version for bootloader)
+# make clean              = Delete build and final output files
+# make mostlyclean        = Delete build files, but preserve final output files
+# make program            = Program target using command line utility
+# make reset              = Reset target using command line utility
 # make openocd            = Create script and launch OpenOCD GDB and Telnet server
 # make gdb                = Create script and launch GDB
 #
@@ -31,8 +34,9 @@
 #
 # Makefile script special requirements:
 # - make 3.81 or greater (requires working eval function)
-# - sh (sh.exe on MS-Windows platform; required for 'make check')
+# - sh (sh.exe on MS-Windows platform)
 # - rm (to delete files and directories)
+# - mkdir (to create directories)
 #
 # ------------------------------------------------------------------------------
 # Creation Date:  2018-03-17
@@ -52,22 +56,22 @@ STACK_SIZE = 1024
 HEAP_SIZE  = 1024
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PX_LIB = ../../../../../..
+PX_FWLIB = ../../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/arm/stm32
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PX_LIB)/boards/arm/stm32/px_hero
+BSP = $(PX_FWLIB)/boards/arm/stm32/px_hero
 
 # (3d) Path to ST STMCube library (relative to Makefile)
-STMCUBE = $(PX_LIB)/libs/STM32Cube/L0
+STMCUBE = $(PX_FWLIB)/libs/STM32Cube/L0
 
 # (3e) Path to ST STMCube USB library (relative to Makefile)
-STMCUBE_USB = $(PX_LIB)/libs/STM32Cube_USB
+STMCUBE_USB = $(PX_FWLIB)/libs/STM32Cube_USB
 
 # (3f) Path to ChaN's FatFs library (relative to Makefile)
-CHAN_FATFS = $(PX_LIB)/libs/ChaN_FatFs
+CHAN_FATFS = $(PX_FWLIB)/libs/ChaN_FatFs
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
@@ -77,19 +81,19 @@ SRC += res/px_gfx_img_alien2.c
 SRC += res/px_gfx_img_alien3.c
 SRC += res/px_gfx_img_base.c
 SRC += res/px_gfx_img_ship.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_gpio.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_spi.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_sysclk.c
-SRC += $(PX_LIB)/devices/display/src/px_lcd_st7567_jhd12864.c
-SRC += $(PX_LIB)/gfx/src/px_gfx.c
-SRC += $(PX_LIB)/gfx/src/px_gfx_display_st7567_jhd12864.c
-SRC += $(PX_LIB)/gfx/fonts/src/px_gfx_font_5x7.c
-SRC += $(PX_LIB)/utils/src/px_systmr.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_gpio.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_spi.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_sysclk.c
+SRC += $(PX_FWLIB)/devices/display/src/px_lcd_st7567_jhd12864.c
+SRC += $(PX_FWLIB)/gfx/src/px_gfx.c
+SRC += $(PX_FWLIB)/gfx/src/px_gfx_disp_st7567_jhd12864.c
+SRC += $(PX_FWLIB)/gfx/fonts/src/px_gfx_font_5x7.c
+SRC += $(PX_FWLIB)/utils/src/px_systmr.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 
 # (4b) List C++ source files WITH PATHS (relative to Makefile) here
-CPPSRC += 
+CXXSRC += 
 
 # (4c) List Assembler source files WITH PATHS (relative to Makefile) here
 #
@@ -116,21 +120,21 @@ INCDIRS += inc
 INCDIRS += res
 INCDIRS += src
 INCDIRS += $(BSP)/inc
-INCDIRS += $(PX_LIB)
-INCDIRS += $(PX_LIB)/$(ARCH)/inc
-INCDIRS += $(PX_LIB)/common/inc
-INCDIRS += $(PX_LIB)/comms/inc
-INCDIRS += $(PX_LIB)/data/inc
-INCDIRS += $(PX_LIB)/devices/comms/inc
-INCDIRS += $(PX_LIB)/devices/display/inc
-INCDIRS += $(PX_LIB)/devices/general/inc
-INCDIRS += $(PX_LIB)/devices/mem/inc
-INCDIRS += $(PX_LIB)/devices/rtc/inc
-INCDIRS += $(PX_LIB)/devices/sensor/inc
-INCDIRS += $(PX_LIB)/gfx/inc
-INCDIRS += $(PX_LIB)/gfx/fonts/inc
-INCDIRS += $(PX_LIB)/gfx/images/inc
-INCDIRS += $(PX_LIB)/utils/inc
+INCDIRS += $(PX_FWLIB)
+INCDIRS += $(PX_FWLIB)/$(ARCH)/inc
+INCDIRS += $(PX_FWLIB)/common/inc
+INCDIRS += $(PX_FWLIB)/comms/inc
+INCDIRS += $(PX_FWLIB)/data/inc
+INCDIRS += $(PX_FWLIB)/devices/comms/inc
+INCDIRS += $(PX_FWLIB)/devices/display/inc
+INCDIRS += $(PX_FWLIB)/devices/general/inc
+INCDIRS += $(PX_FWLIB)/devices/mem/inc
+INCDIRS += $(PX_FWLIB)/devices/rtc/inc
+INCDIRS += $(PX_FWLIB)/devices/sensor/inc
+INCDIRS += $(PX_FWLIB)/gfx/inc
+INCDIRS += $(PX_FWLIB)/gfx/fonts/inc
+INCDIRS += $(PX_FWLIB)/gfx/images/inc
+INCDIRS += $(PX_FWLIB)/utils/inc
 INCDIRS += $(CHAN_FATFS)
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
@@ -140,17 +144,17 @@ INCDIRS += $(STMCUBE_USB)/Class/CDC/Inc
 INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-#CDEFS += PX_DBG=1
+#CDEFS += PX_LOG=0
 CDEFS += STM32L0
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER
 #CDEFS += USE_HAL_DRIVER
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
-#CPPDEFS += __STDC_LIMIT_MACROS
-#CPPDEFS += __STDC_CONSTANT_MACROS
-CPPDEFS += STM32L0
-CPPDEFS += STM32L072xx
+#CXXDEFS += __STDC_LIMIT_MACROS
+#CXXDEFS += __STDC_CONSTANT_MACROS
+CXXDEFS += STM32L0
+CXXDEFS += STM32L072xx
 
 # (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
 ADEFS += 
@@ -184,25 +188,25 @@ CFLAGS_RELEASE += -Os
 #  -O*:          optimization level (0,1,2,3 or s)
 #  -f...:        tuning, see GCC manual and avr-libc documentation
 #  -Wall...:     warning level
-CPPFLAGS += -gdwarf-2
-CPPFLAGS += -funsigned-char
-CPPFLAGS += -funsigned-bitfields
-CPPFLAGS += -fshort-enums
-CPPFLAGS += -fno-exceptions
-CPPFLAGS += -Wall
-#CPPFLAGS += -Wundef
-#CPPFLAGS += -mshort-calls
-#CPPFLAGS += -fno-unit-at-a-time
-#CPPFLAGS += -Wstrict-prototypes
-#CPPFLAGS += -Wunreachable-code
-#CPPFLAGS += -Wsign-compare
-CPPFLAGS += -std=gnu99
-CPPFLAGS += -ffunction-sections
-CPPFLAGS += -fdata-sections
-CPPFLAGS += --specs=nano.specs
+CXXFLAGS += -gdwarf-2
+CXXFLAGS += -funsigned-char
+CXXFLAGS += -funsigned-bitfields
+CXXFLAGS += -fshort-enums
+CXXFLAGS += -fno-exceptions
+CXXFLAGS += -Wall
+#CXXFLAGS += -Wundef
+#CXXFLAGS += -mshort-calls
+#CXXFLAGS += -fno-unit-at-a-time
+#CXXFLAGS += -Wstrict-prototypes
+#CXXFLAGS += -Wunreachable-code
+#CXXFLAGS += -Wsign-compare
+CXXFLAGS += -std=gnu++11
+CXXFLAGS += -ffunction-sections
+CXXFLAGS += -fdata-sections
+CXXFLAGS += --specs=nano.specs
 
-CPPFLAGS_DEBUG   += -Og
-CPPFLAGS_RELEASE += -Os
+CXXFLAGS_DEBUG   += -Og
+CXXFLAGS_RELEASE += -Os
 
 #---------------- Assembler Options --------------------------------------------
 #  -Wa,...:   tell GCC to pass this to the assembler.
@@ -224,10 +228,15 @@ SCANF_LIB =
 #SCANF_LIB = $(SCANF_LIB_FLOAT)
 
 # List any extra directories to look for libraries here.
-#     Each directory must be seperated by a space.
+#     Each directory must be separated by a space.
 #     Use forward slashes for directory separators.
 #     For a directory that has spaces, enclose it in quotes.
 EXTRALIBDIRS = 
+
+# List any extra libraries here.
+#     Each library must be separated by a space.
+#     The "lib" prefix and ".a" suffix must be removed.
+EXTRALIBS = 
 
 #---------------- Linker Options -----------------------------------------------
 #  -Wl,...:     tell GCC to pass this to linker.
@@ -235,7 +244,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(PX_LIB)/$(ARCH)/px_stm32_flash.ld
+LDFLAGS += -T $(PX_FWLIB)/$(ARCH)/px_stm32_flash.ld
 
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
@@ -256,4 +265,4 @@ GDB_SCRIPT ?= init.gdb
 
 #===============================================================================
 
-include $(PX_LIB)/$(ARCH)/MakeRules.mk
+include $(PX_FWLIB)/$(ARCH)/MakeRules.mk
