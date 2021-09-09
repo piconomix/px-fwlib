@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_cli_cmds_lcd.h : CLI commands for LCD
     Author(s):      Pieter Conradie
@@ -24,10 +24,10 @@
 #include "px_board.h"
 #include "px_gfx.h"
 #include "px_gfx_res.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_lcd");
+PX_LOG_NAME("cli_cmds_lcd");
 
 /* _____MACROS_______________________________________________________________ */
 

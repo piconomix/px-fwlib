@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_i2c_cfg.h : I2C Peripheral Driver configuration
     Author(s):      Pieter Conradie
@@ -48,4 +48,4 @@
 #define PX_I2C_CFG_TIMINGR 0x20302e37
 
 /// @}
-#endif // #ifndef __PX_I2C_CFG_H__
+#endif

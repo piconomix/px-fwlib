@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_crc32.h : 32-bit CRC calculator
     Author(s):      Pieter Conradie
@@ -88,7 +88,7 @@ void px_crc32_init(void);
  *  @param crc          The initial CRC to start the calculation with
  *  @param data         The value to calculate the CRC over
  *
- *  @return uint16_t    The resultant CRC
+ *  @return uint32_t    The resultant CRC
  */
 uint32_t px_crc32_update_u8(uint32_t crc, uint8_t data);
 
@@ -99,7 +99,7 @@ uint32_t px_crc32_update_u8(uint32_t crc, uint8_t data);
  *  @param data         Pointer to the data to calculate the CRC over
  *  @param nr_of_bytes  The amount of bytes to calculate the CRC over
  *
- *  @return uint16_t    The resultant CRC over the group of bytes
+ *  @return uint32_t    The resultant CRC over the group of bytes
  */
 uint32_t px_crc32_update_data(uint32_t crc, const void * data, size_t nr_of_bytes);
 
@@ -110,4 +110,4 @@ uint32_t px_crc32_update_data(uint32_t crc, const void * data, size_t nr_of_byte
 }
 #endif
 
-#endif // #ifndef __PX_CRC32_H__
+#endif

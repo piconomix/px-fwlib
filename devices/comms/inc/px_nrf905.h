@@ -10,7 +10,7 @@
     Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_nrf905.h : Nordic Semiconductor nRF905 Transceiver driver
     Author(s):      Pieter Conradie
@@ -151,4 +151,4 @@ uint8_t px_nrf905_channel_config  (uint16_t channel_no, uint8_t hfreq_pll, uint8
 }
 #endif
 
-#endif // #ifndef __NRF905_H__
+#endif

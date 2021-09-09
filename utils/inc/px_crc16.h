@@ -10,7 +10,7 @@
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_crc16.h : 16-bit CRC calculator
     Author(s):      Pieter Conradie
@@ -111,4 +111,4 @@ uint16_t px_crc16_update_data(uint16_t crc, const void * data, size_t nr_of_byte
 }
 #endif
 
-#endif // #ifndef __PX_CRC16_H__
+#endif

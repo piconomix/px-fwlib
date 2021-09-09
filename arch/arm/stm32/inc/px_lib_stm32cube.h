@@ -1,5 +1,5 @@
-#ifndef __PX_LIB_STM32CUBE_H__
-#define __PX_LIB_STM32CUBE_H__
+#ifndef __PX_FWLIB_STM32CUBE_H__
+#define __PX_FWLIB_STM32CUBE_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_lib_stm32cube.h : Include file for STM32Cube library
     Author(s):      Pieter Conradie
@@ -115,4 +115,4 @@
 
 /// @}
 
-#endif // #ifndef __PX_LIB_STM32CUBE_H__
+#endif

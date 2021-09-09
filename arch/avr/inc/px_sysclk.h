@@ -10,7 +10,7 @@
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_sysclk.h : System Clock using a TMRx peripheral
     Author(s):      Pieter Conradie
@@ -108,4 +108,4 @@ px_sysclk_ticks_t px_sysclk_get_tick_count(void);
 }
 #endif
 
-#endif // #ifndef __PX_SYSCLK_H__
+#endif

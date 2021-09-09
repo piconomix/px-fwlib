@@ -10,7 +10,7 @@
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_systmr.h : Polled software timers
     Author(s):      Pieter Conradie
@@ -180,4 +180,4 @@ px_systmr_ticks_t px_systmr_ticks_elapsed(px_systmr_t * systmr);
 }
 #endif
 
-#endif // #ifndef __PX_SYSTMR_H__
+#endif

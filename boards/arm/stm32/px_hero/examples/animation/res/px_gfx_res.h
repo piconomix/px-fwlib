@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_gfx_res.h : Collection of resources for Graphics library
     Author(s):      Pieter Conradie
@@ -25,4 +25,4 @@
 #include "px_gfx.h"
 #include "px_gfx_img_clown.h"
 
-#endif // #ifndef __PX_GFX_RESOURCES_H__
+#endif

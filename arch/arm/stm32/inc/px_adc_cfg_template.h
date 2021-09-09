@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_adc_cfg.h : ADC Peripheral Driver configuration
     Author(s):      Pieter Conradie
@@ -48,4 +48,4 @@
 #define PX_ADC_CFG_OVERSAMPLING_SHIFT   PX_ADC_CFG_OVERSAMPLING_SHIFT_NONE
 
 /// @}
-#endif // #ifndef __PX_ADC_CFG_H__
+#endif

@@ -34,6 +34,33 @@
     <Filter Include="resources">
       <UniqueIdentifier>{2250709e-d3b6-4a37-91c8-f9f11c275ce0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="px-lib\gfx\fonts\inc">
+      <UniqueIdentifier>{31b2cfac-72ab-47f3-b22b-6fe7f8064e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\gfx\fonts\src">
+      <UniqueIdentifier>{80e77a47-0ff8-4e55-bdac-d2eef2566eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\gfx\images\inc">
+      <UniqueIdentifier>{7bba5ca0-211f-4ab1-99c5-977ff055ee9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\gfx\images\src">
+      <UniqueIdentifier>{9f41f058-a942-4621-b455-654a64f3065b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\gfx\inc">
+      <UniqueIdentifier>{e3055292-9ab9-47d5-81ed-1d4ece505cde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\gfx\src">
+      <UniqueIdentifier>{6115ff2d-5b0d-494b-9567-9fa60e750120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\utils\inc">
+      <UniqueIdentifier>{ebc1c055-c7ec-4365-9176-a31897d6c894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\utils\src">
+      <UniqueIdentifier>{c6afddf3-57ad-4e1e-8231-dbb812fd491d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="px-lib\common\inc">
+      <UniqueIdentifier>{4d988ce9-50f5-4042-b764-7dcda3253564}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pxGfxSim.h">
@@ -51,62 +78,68 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gfx\px_gfx.h">
-      <Filter>px-lib\gfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gfx\px_gfx_lcd.h">
-      <Filter>px-lib\gfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_3x5.h">
-      <Filter>px-lib\gfx\fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_5x7.h">
-      <Filter>px-lib\gfx\fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gfx\fonts\px_gfx_font_11x14.h">
-      <Filter>px-lib\gfx\fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gfx\fonts\px_gfx_fonts.h">
-      <Filter>px-lib\gfx\fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gfx\images\px_gfx_img_hero_logo.h">
-      <Filter>px-lib\gfx\images</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\common\px_compiler.h">
-      <Filter>px-lib\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\common\px_defines.h">
-      <Filter>px-lib\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\common\px_pgm_P.h">
-      <Filter>px-lib\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\px_dbg.h">
-      <Filter>px-lib\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="px_gfx_cfg.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="px_gfx_test.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="resources\px_gfx_img_dino.h">
       <Filter>resources</Filter>
     </ClInclude>
     <ClInclude Include="resources\px_gfx_resources.h">
       <Filter>resources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gfx\px_gfx_obj.h">
-      <Filter>px-lib\gfx</Filter>
+    <ClInclude Include="px_gfx_cfg.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gfx\px_gfx_obj_label.h">
-      <Filter>px-lib\gfx</Filter>
+    <ClInclude Include="px_gfx_disp_sim.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gfx\px_gfx_obj_window.h">
-      <Filter>px-lib\gfx</Filter>
+    <ClInclude Include="px_gfx_test.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="px_gfx_display_sim.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\gfx\fonts\inc\px_gfx_font_3x5.h">
+      <Filter>px-lib\gfx\fonts\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\fonts\inc\px_gfx_font_5x7.h">
+      <Filter>px-lib\gfx\fonts\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\fonts\inc\px_gfx_font_11x14.h">
+      <Filter>px-lib\gfx\fonts\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\fonts\inc\px_gfx_fonts.h">
+      <Filter>px-lib\gfx\fonts\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\images\inc\px_gfx_img_hero_logo.h">
+      <Filter>px-lib\gfx\images\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\inc\px_gfx.h">
+      <Filter>px-lib\gfx\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\inc\px_gfx_cfg_template.h">
+      <Filter>px-lib\gfx\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\inc\px_gfx_disp.h">
+      <Filter>px-lib\gfx\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\inc\px_gfx_obj.h">
+      <Filter>px-lib\gfx\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\inc\px_gfx_obj_graph.h">
+      <Filter>px-lib\gfx\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\inc\px_gfx_obj_label.h">
+      <Filter>px-lib\gfx\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\inc\px_gfx_obj_win.h">
+      <Filter>px-lib\gfx\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx\inc\px_gfx_objects.h">
+      <Filter>px-lib\gfx\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\inc\px_compiler.h">
+      <Filter>px-lib\common\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\inc\px_defines.h">
+      <Filter>px-lib\common\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\inc\px_pgm_P.h">
+      <Filter>px-lib\common\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,44 +152,41 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx.c">
-      <Filter>px-lib\gfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_3x5.c">
-      <Filter>px-lib\gfx\fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_5x7.c">
-      <Filter>px-lib\gfx\fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gfx\fonts\px_gfx_font_11x14.c">
-      <Filter>px-lib\gfx\fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gfx\images\px_gfx_img_hero_logo.c">
-      <Filter>px-lib\gfx\images</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\px_dbg.c">
-      <Filter>px-lib\utils</Filter>
-    </ClCompile>
     <ClCompile Include="px_gfx_test.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="resources\px_gfx_img_dino.c">
       <Filter>resources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj.c">
-      <Filter>px-lib\gfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj_label.c">
-      <Filter>px-lib\gfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj_window.c">
-      <Filter>px-lib\gfx</Filter>
-    </ClCompile>
-    <ClCompile Include="px_gfx_display_sim.c">
+    <ClCompile Include="px_gfx_disp_sim.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gfx\px_gfx_obj_graph.c">
-      <Filter>px-lib\gfx</Filter>
+    <ClCompile Include="..\..\gfx\fonts\src\px_gfx_font_3x5.c">
+      <Filter>px-lib\gfx\fonts\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\fonts\src\px_gfx_font_5x7.c">
+      <Filter>px-lib\gfx\fonts\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\fonts\src\px_gfx_font_11x14.c">
+      <Filter>px-lib\gfx\fonts\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\images\src\px_gfx_img_hero_logo.c">
+      <Filter>px-lib\gfx\images\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\src\px_gfx.c">
+      <Filter>px-lib\gfx\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\src\px_gfx_obj.c">
+      <Filter>px-lib\gfx\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\src\px_gfx_obj_graph.c">
+      <Filter>px-lib\gfx\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\src\px_gfx_obj_label.c">
+      <Filter>px-lib\gfx\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx\src\px_gfx_obj_win.c">
+      <Filter>px-lib\gfx\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

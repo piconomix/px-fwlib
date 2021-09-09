@@ -10,7 +10,7 @@
     Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
     Title:          board.h : Piconomix STM32 Hero Board GPIO pin definitions
     Author(s):      Pieter Conradie
@@ -206,4 +206,4 @@ static const px_gpio_handle_t px_gpio_lcd_btn_2_rt =    {PX_GPIO_LCD_BTN_2_RT};
 }
 #endif
 
-#endif // #ifndef __PX_BOARD_GPIO_H__
+#endif

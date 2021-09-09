@@ -10,7 +10,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_max31855.h : Maxim MAX31855 thermocouple driver
     Author(s):      Pieter Conradie
@@ -68,4 +68,4 @@ int16_t px_max31855_util_temp_int_to_deg_c  (int16_t temp);
 }
 #endif
 
-#endif // #ifndef __PX_MAX31855_H__
+#endif

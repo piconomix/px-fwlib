@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_at25s.h : Adesto AT25S Serial Flash Driver
     Author(s):      Pieter Conradie
@@ -296,4 +296,4 @@ void px_at25s_rd_man_and_dev_id(uint8_t * buffer);
 }
 #endif
 
-#endif // #ifndef __PX_AT25S_H__
+#endif

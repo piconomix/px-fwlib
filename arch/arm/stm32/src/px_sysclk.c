@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_sysclk.h : System Clock using the SysTick peripheral
     Author(s):      Pieter Conradie
@@ -81,8 +81,8 @@ void px_sysclk_init(void)
 
    uint32_t ticks_per_period;
 
-   // Calculate number of ticks per SysTick period
-   ticks_per_period = PX_UDIV_ROUND(PX_BOARD_PER_CLK_HZ, PX_SYSCLK_CFG_TICKS_PER_SEC);
+   // Calculate number of ticks per SysTick period (SysTick is fed from AHB clock by default)
+   ticks_per_period = PX_UDIV_ROUND(PX_BOARD_SYS_CLK_HZ, PX_SYSCLK_CFG_TICKS_PER_SEC);
 
    // Configure SysTick peripheral
    SysTick_Config(ticks_per_period);

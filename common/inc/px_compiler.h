@@ -10,7 +10,7 @@
     Copyright (c) 2011 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_compiler.h : Compiler detection and compiler specific definitions
     Author(s):      Pieter Conradie
@@ -121,6 +121,7 @@
 #define PX_ATTR_FORMAT_ARG(str_index)       __attribute__ ((format_arg(str_index)))
 #define PX_ATTR_PACKED                      __attribute__ ((packed))
 #define PX_ATTR_ALIGNED(a)                  __attribute__((__aligned__(a)))
+#define PX_ATTR_WEAK                        __attribute__((weak))
 
 #else
 
@@ -133,6 +134,7 @@
 #define PX_ATTR_FORMAT_ARG(str_index)
 #define PX_ATTR_PACKED
 #define PX_ATTR_ALIGNED(a)
+#define PX_ATTR_WEAK
 
 #endif
 
@@ -147,4 +149,4 @@
 
 /// @}
 
-#endif // #ifndef __PX_COMPILER_H__
+#endif

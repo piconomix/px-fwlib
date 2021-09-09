@@ -8,7 +8,7 @@
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_vt100.h : VT100/VT100 Terminal module
     Author(s):      Pieter Conradie
@@ -22,10 +22,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_vt100.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_vt100");
+PX_LOG_NAME("px_vt100");
 
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */

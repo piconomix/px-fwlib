@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_dac.h : DAC peripheral driver
     Author(s):      Pieter Conradie
@@ -138,4 +138,4 @@ void px_dac_wr(px_dac_handle_t * handle,
 }
 #endif
 
-#endif // #ifndef __PX_DAC_H__
+#endif

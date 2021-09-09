@@ -8,7 +8,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_rtc.h : Real Time Clock module
     Author(s):      Pieter Conradie
@@ -23,10 +23,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_rtc_util.h"
 #include "px_pgm_P.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("rtc_util");
+PX_LOG_NAME("rtc_util");
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// Structure to keep track of time & date
@@ -89,7 +89,7 @@ static bool     px_rtc_util_date_time_match      (const px_rtc_date_time_t * dat
 static bool px_rtc_util_is_leap_year(uint8_t year)
 {
     // Sanity checks
-    PX_DBG_ASSERT(year <= 99);
+    PX_LOG_ASSERT(year <= 99);
 
     //  Apply simplified (2000 to 2099) Gregorian calender rules:
     //  Every 4 years is a leap year, e.g. [2000, 2004, 2008, ..., 2096]
@@ -106,7 +106,7 @@ static bool px_rtc_util_is_leap_year(uint8_t year)
 static uint16_t px_rtc_util_days_in_year(uint8_t year)
 {
     // Sanity checks
-    PX_DBG_ASSERT(year <= 99);
+    PX_LOG_ASSERT(year <= 99);
 
     //  Apply simplified (2000 to 2099) Gregorian calender rules:
     //  Every 4 years is a leap year, e.g. [2000, 2004, 2008, ..., 2096]
@@ -125,8 +125,8 @@ static int8_t px_rtc_util_days_in_month(uint8_t year, uint8_t month)
     uint8_t days;
 
     // Sanity checks
-    PX_DBG_ASSERT(year <= 99);
-    PX_DBG_ASSERT((month >= 1) && (month <= 12));
+    PX_LOG_ASSERT(year <= 99);
+    PX_LOG_ASSERT((month >= 1) && (month <= 12));
 
     // Fetch number of days in month from table
     days = px_pgm_rd_u8(&px_rtc_util_month_day_table[month]);
@@ -373,7 +373,7 @@ void px_rtc_util_date_time_wr(px_rtc_date_time_t * date_time)
 #endif
 
     // Sanity checks
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
 
 #if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
     // Convert date-time to seconds since Y2K
@@ -444,12 +444,12 @@ void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm,
                           px_rtc_alarm_mask_t        alarm_mask)
 {
     // Sanity checks
-    PX_DBG_ASSERT(alarm->year  <= 99);
-    PX_DBG_ASSERT(alarm->month <= 12);
-    PX_DBG_ASSERT(alarm->day   <= 31);
-    PX_DBG_ASSERT(alarm->hour  <= 23);
-    PX_DBG_ASSERT(alarm->min   <= 59);
-    PX_DBG_ASSERT(alarm->sec   <= 59);
+    PX_LOG_ASSERT(alarm->year  <= 99);
+    PX_LOG_ASSERT(alarm->month <= 12);
+    PX_LOG_ASSERT(alarm->day   <= 31);
+    PX_LOG_ASSERT(alarm->hour  <= 23);
+    PX_LOG_ASSERT(alarm->min   <= 59);
+    PX_LOG_ASSERT(alarm->sec   <= 59);
 
     // Disable alarm first
     px_rtc_util_alarm_mask = PX_RTC_UTIL_ALARM_MASK_DIS;
@@ -535,37 +535,37 @@ bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time)
     // Year?
     if(date_time->year > 99)
     {
-        PX_DBG_INFO("Year %u is invalid", date_time->year);
+        PX_LOG_D("Year %u is invalid", date_time->year);
         return false;
     }
     // Month?
     if((date_time->month <  1) || (date_time->month > 12))
     {
-        PX_DBG_INFO("Month %u is invalid", date_time->month);
+        PX_LOG_D("Month %u is invalid", date_time->month);
         return false;
     }
     // Day?
     if((date_time->day < 1) || (date_time->day > px_rtc_util_days_in_month(date_time->year, date_time->month)))
     {
-        PX_DBG_INFO("Day %u is invalid", date_time->day);
+        PX_LOG_D("Day %u is invalid", date_time->day);
         return false;
     }
     // Hour?
     if(date_time->hour > 23)
     {
-        PX_DBG_INFO("Hour %u is invalid", date_time->hour);
+        PX_LOG_D("Hour %u is invalid", date_time->hour);
         return false;
     }
     // Minute?
     if(date_time->min > 59)
     {
-        PX_DBG_INFO("Minute %u is invalid", date_time->min);
+        PX_LOG_D("Minute %u is invalid", date_time->min);
         return false;
     }
     // Second?
     if(date_time->sec > 59)
     {
-        PX_DBG_INFO("Second %u is invalid", date_time->sec);
+        PX_LOG_D("Second %u is invalid", date_time->sec);
         return false;
     }
 
@@ -576,8 +576,8 @@ px_rtc_time_compare_t px_rtc_util_cmp_date_time(const px_rtc_date_time_t * date_
                                                 const px_rtc_date_time_t * date_time2)
 {
     // Sanity checks
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
 
     // Year?
     if(date_time1->year > date_time2->year)
@@ -641,8 +641,8 @@ px_rtc_time_compare_t px_rtc_util_cmp_date(const px_rtc_date_time_t * date_time1
                                            const px_rtc_date_time_t * date_time2)
 {
     // Sanity checks
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
 
     // Year?
     if(date_time1->year > date_time2->year)
@@ -679,8 +679,8 @@ bool px_rtc_util_date_is_equal(const px_rtc_date_time_t * date_time1,
                                const px_rtc_date_time_t * date_time2)
 {
     // Sanity checks
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
 
     // Year?
     if(date_time1->year != date_time2->year)
@@ -708,7 +708,7 @@ px_rtc_sec_since_y2k_t px_rtc_util_date_time_to_sec_since_y2k(const px_rtc_date_
     px_rtc_sec_since_y2k_t sec_since_y2k;
 
     // Sanity checks
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
 
     // Years (ignoring extra day for each leap year)
     sec_since_y2k = date_time->year * PX_RTC_SEC_PER_DAY * 365ul;
@@ -791,13 +791,13 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
                                const px_rtc_date_time_t * date_time_inc)
 {
     // Sanity checks
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
-    PX_DBG_ASSERT(date_time_inc->year  <= 99);
-    PX_DBG_ASSERT(date_time_inc->month <= 12);
-    PX_DBG_ASSERT(date_time_inc->day   <= 31);
-    PX_DBG_ASSERT(date_time_inc->hour  <= 23);
-    PX_DBG_ASSERT(date_time_inc->min   <= 59);
-    PX_DBG_ASSERT(date_time_inc->sec   <= 59);
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+    PX_LOG_ASSERT(date_time_inc->year  <= 99);
+    PX_LOG_ASSERT(date_time_inc->month <= 12);
+    PX_LOG_ASSERT(date_time_inc->day   <= 31);
+    PX_LOG_ASSERT(date_time_inc->hour  <= 23);
+    PX_LOG_ASSERT(date_time_inc->min   <= 59);
+    PX_LOG_ASSERT(date_time_inc->sec   <= 59);
 
     // Seconds
     date_time->sec += date_time_inc->sec;
@@ -833,7 +833,7 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
             if(date_time->year > 99)
             {
                 // Reset
-                PX_DBG_ERR("Overflow occured");
+                PX_LOG_E("Overflow occured");
                 px_rtc_util_date_time_reset(date_time);
                 return;
             }
@@ -853,7 +853,7 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
     if(date_time->year > 99)
     {
         // Reset
-        PX_DBG_ERR("Overflow occured");
+        PX_LOG_E("Overflow occured");
         px_rtc_util_date_time_reset(date_time);
         return;
     }
@@ -868,13 +868,13 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
                                const px_rtc_date_time_t * date_time_dec)
 {
     // Sanity checks
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
-    PX_DBG_ASSERT(date_time_dec->year  <= 99);
-    PX_DBG_ASSERT(date_time_dec->month <= 12);
-    PX_DBG_ASSERT(date_time_dec->day   <= 31);
-    PX_DBG_ASSERT(date_time_dec->hour  <= 23);
-    PX_DBG_ASSERT(date_time_dec->min   <= 59);
-    PX_DBG_ASSERT(date_time_dec->sec   <= 59);
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+    PX_LOG_ASSERT(date_time_dec->year  <= 99);
+    PX_LOG_ASSERT(date_time_dec->month <= 12);
+    PX_LOG_ASSERT(date_time_dec->day   <= 31);
+    PX_LOG_ASSERT(date_time_dec->hour  <= 23);
+    PX_LOG_ASSERT(date_time_dec->min   <= 59);
+    PX_LOG_ASSERT(date_time_dec->sec   <= 59);
 
     // Seconds
     date_time->sec -= date_time_dec->sec;
@@ -909,7 +909,7 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
             if(date_time->year > 99)
             {
                 // Reset
-                PX_DBG_ERR("Underflow occured");
+                PX_LOG_E("Underflow occured");
                 px_rtc_util_date_time_reset(date_time);
                 return;
             }
@@ -930,7 +930,7 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
     if(date_time->year > 99)
     {
         // Reset
-        PX_DBG_ERR("Underflow occured");
+        PX_LOG_E("Underflow occured");
         px_rtc_util_date_time_reset(date_time);
         return;
     }
@@ -948,7 +948,7 @@ px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * dat
     uint8_t     day;
 
     // Sanity checks
-    PX_DBG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
 
     // Years (ignoring extra day for each leap year)
     days = date_time->year * 365ul;

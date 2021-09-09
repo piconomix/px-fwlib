@@ -10,7 +10,7 @@
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_spi.h : SPI Peripheral Driver
     Author(s):      Pieter Conradie
@@ -312,4 +312,4 @@ uint32_t px_spi_util_clk_div_to_baud_hz(px_spi_baud_t baud);
 }
 #endif
 
-#endif // #ifndef __PX_SPI_H__
+#endif

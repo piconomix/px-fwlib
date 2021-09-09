@@ -52,28 +52,28 @@ STACK_SIZE = 1024
 HEAP_SIZE  = 1024
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PX_LIB = ../../../../../..
+PX_FWLIB = ../../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/arm/stm32
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PX_LIB)/boards/arm/stm32/px_hero
+BSP = $(PX_FWLIB)/boards/arm/stm32/px_hero
 
 # (3d) Path to ST STMCube library (relative to Makefile)
-STMCUBE = $(PX_LIB)/libs/STM32Cube/L0
+STMCUBE = $(PX_FWLIB)/libs/STM32Cube/L0
 
 # (3e) Path to FreeRTOS library (relative to Makefile)
-FREERTOS = $(PX_LIB)/libs/FreeRTOS/Source
+FREERTOS = $(PX_FWLIB)/libs/FreeRTOS/Source
 
 # (3e) Path to Segger SysView library (relative to Makefile)
-SYSVIEW = $(PX_LIB)/libs/segger_sysview
+SYSVIEW = $(PX_FWLIB)/libs/segger_sysview
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += src/main.c
 SRC += $(BSP)/src/px_board.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_exti.c
-SRC += $(PX_LIB)/$(ARCH)/src/px_gpio.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_exti.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_gpio.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 SRC += $(FREERTOS)/croutine.c
@@ -126,10 +126,10 @@ INCDIRS += cfg
 INCDIRS += inc
 INCDIRS += src
 INCDIRS += $(BSP)/inc
-INCDIRS += $(PX_LIB)
-INCDIRS += $(PX_LIB)/$(ARCH)/inc
-INCDIRS += $(PX_LIB)/common/inc
-INCDIRS += $(PX_LIB)/utils/inc
+INCDIRS += $(PX_FWLIB)
+INCDIRS += $(PX_FWLIB)/$(ARCH)/inc
+INCDIRS += $(PX_FWLIB)/common/inc
+INCDIRS += $(PX_FWLIB)/utils/inc
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
 INCDIRS += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Inc
@@ -142,7 +142,7 @@ endif
 
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-#CDEFS += PX_DBG=1
+#CDEFS += PX_LOG=1
 CDEFS += STM32L0
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER
@@ -240,7 +240,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(PX_LIB)/$(ARCH)/px_stm32_flash.ld
+LDFLAGS += -T $(PX_FWLIB)/$(ARCH)/px_stm32_flash.ld
 
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
@@ -261,4 +261,4 @@ GDB_SCRIPT ?= init.gdb
 
 #===============================================================================
 
-include $(PX_LIB)/$(ARCH)/MakeRules.mk
+include $(PX_FWLIB)/$(ARCH)/MakeRules.mk

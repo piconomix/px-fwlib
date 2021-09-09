@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_gfx_obj_graph.h : Graphical graph object
     Author(s):      Pieter Conradie
@@ -59,8 +59,8 @@ typedef struct
 /// Label object data structure
 typedef struct
 {
-    px_gfx_obj_t                    obj;
-    const px_gfx_obj_graph_prop_t * prop;    
+    px_gfx_obj_t                    obj;        ///< Common object properties
+    const px_gfx_obj_graph_prop_t * prop;       ///< Additional graph properties
 } px_gfx_obj_graph_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -79,4 +79,4 @@ void                            px_gfx_obj_graph_prop_set(px_gfx_obj_handle_t   
 }
 #endif
 
-#endif // #ifndef __PX_GFX_OBJ_GRAPH_H__
+#endif

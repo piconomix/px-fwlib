@@ -10,9 +10,9 @@
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
-    Title:          px_cli.h : Command Line Interpreter and command dispatcher
+    Title:          px_cli.h : Command Line Interpreter
     Author(s):      Pieter Conradie
     Creation Date:  2008-08-01
 
@@ -22,7 +22,7 @@
  *  @ingroup COMMS
  *  @defgroup PX_CLI px_cli.h : Command Line Interpreter
  *
- *  Implements a command line interpreter interfacing with an ANSI/VT100
+ *  Implements a Command Line Interpreter interfacing with an ANSI/VT100
  *  terminal emulator.
  *
  *  File(s):
@@ -32,53 +32,81 @@
  *  - comms/src/px_cli_P.c (minimise RAM usage by using command list stored in Program Memory. See @ref PX_PGM_P)
  *
  *  References:
- *  - http://en.wikipedia.org/wiki/PX_VT100_escape_code
- *  - http://www.termsys.demon.co.uk/vtansi.htm
+ *  - https://en.wikipedia.org/wiki/ANSI_escape_code
+ *  - https://www2.ccs.neu.edu/research/gpc/MSim/vona/terminal/vtansi.htm
+ *
+ *  1. Introduction
+ *  ===============
  *
  *  This CLI supports autocomplete using TAB and recalling old commands
- *  using UP/DOWN (command history). Commands starting with a hash (#) is
- *  regarded as comments and ignored.
+ *  using UP/DOWN (command history).
  *
  *  ![CLI using Tera Term terminal emulator](arduino_uno_cli.png)
  *
- *  Code example:
+ *  @tip_s
+ *  Commands starting with a hash (#) are regarded as comments and ignored.
+ *  @tip_e
+ *
+ *  2. Code example
+ *  ===============
  *
  *  @include comms/test/px_cli_test.c
  *
+ *  3. Implementation details
+ *  =========================
+ *
  *  The CLI command tree is declared statically using three structures:
+ *  - #px_cli_cmd_t
+ *  - #px_cli_group_t
+ *  - #px_cli_cmd_list_item_t
  *
- *  ![](cli/cli_struct_cmd_list_item.png)
- *
- *  A static ARRAY of px_cli_cmd_list_item_t structures are declared. The
- *  "handler" field is the address of the function to call when that command is
- *  executed. The second field either points to a command structure
- *  (if "handler" != NULL) or to a group structure (if "handler" == NULL).
- *
- *  The end of the array is terminated with an extra item with the "handler"
- *  field being NULL and the "cmd/group" field also NULL. This marks the end of
- *  the array.
+ *  3.1 CMD
+ *  -------
  *
  *  ![](cli/cli_struct_cmd.png)
  *
- *  Each command is declared with a px_cli_cmd_t structure. The "name" field
- *  contains the address of the command name string. The "argc_min" and
- *  "argc_max" indicates respectively the minimum and maximum number of command
- *  arguments. The "param" field contains the address of the command parameter
- *  string and the "help" field contains the address of the command help string
- *  that is displayed when the "help" command is executed.
+ *  Each command is declared with a #px_cli_cmd_t structure:
+ *  - The "name" field contains the address of the command name string.
+ *  - The "argc_min" and "argc_max" indicates respectively the minimum and
+ *    maximum number of command arguments.
+ *  - The "param" field contains the address of the command parameter string.
+ *  - The "help" field contains the address of the command help string that is
+ *    displayed when the "help" command is executed.
+ *
+ *  3.2 GROUP
+ *  ---------
  *
  *  ![](cli/cli_struct_group.png)
  *
- *  Each group is declared with a px_cli_group_t structure. The "name" field
- *  contains the address of the group name string. The "list" field points to
- *  a static ARRAY of px_cli_cmd_list_item_t structures. This array will contain
- *  the sub commands for that group.
+ *  Each group is declared with a #px_cli_group_t structure:
+ *  - The "name" field contains the address of the group name string.
+ *  - The "list" field points to a static array of px_cli_cmd_list_item_t
+ *    structures. This array will contain the sub commands for that group.
+ *
+ *  3.3 CMD LIST ITEM
+ *  -----------------
+ *
+ *  ![](cli/cli_struct_cmd_list_item.png)
+ *
+ *  A static array of #px_cli_cmd_list_item_t structures are declared:
+ *  - The "handler" field is the address of the function to call when that
+ *    command is executed.
+ *  - The second field either points to a group structure (if "handler" == NULL)
+ *    or a command structure (if "handler" != NULL).
+ *
+ *  The end of the array is terminated with an extra item where the "handler"
+ *  field is set to NULL and the "cmd/group" field is also NULL. This marks the
+ *  end of the array. It is similar to a NULL ('\0') terminator at the end of a
+ *  character string.
+ *
+ *  3.4 Example
+ *  -----------
  *
  *  Let's look again at the declaration of the command tree in the example:
  *
  *  @snippet comms/test/px_cli_test.c CLI cmd tree declaration
  *
- *  The declaration is simplified by using the following boiler-plate macros:
+ *  The declaration is simplified by using the following boilerplate macros:
  *  - PX_CLI_CMD_CREATE()
  *  - PX_CLI_GROUP_CREATE()
  *  - PX_CLI_GROUP_END()
@@ -152,7 +180,7 @@ extern "C" {
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /**
- *  Pointer to a function that will be called to handle a command
+ *  Pointer to a function that will be called to execute a command
  *
  *  @param argc          Number of argument strings
  *  @param argv          Array of pointers to zero terminated argument strings
@@ -161,7 +189,7 @@ extern "C" {
  */
 typedef const char * (*px_cli_handler_t)(uint8_t argc, char * argv[]);
 
-/// Command structure
+/// Command
 typedef struct
 {
     const char *  name;        ///< Command name
@@ -173,21 +201,21 @@ typedef struct
 #endif
 } px_cli_cmd_t;
 
-/// Command group structure
+/// Group
 typedef struct
 {
-    const char *                          name;     ///< Command name
-    const struct px_cli_cmd_list_item_s * list;     ///< Pointer to command list array
+    const char *                          name;     ///< Group name
+    const struct px_cli_cmd_list_item_s * list;     ///< Pointer to start of command list array
 } px_cli_group_t;
 
-/// Command list item declaration
+/// Command list item
 typedef struct px_cli_cmd_list_item_s
 {
     px_cli_handler_t   handler;         ///< Function to be called when command is executed
     union
     {
-        const px_cli_cmd_t *   cmd;     ///< pointer to command (if handler != NULL)
         const px_cli_group_t * group;   ///< pointer to group   (if handler == NULL)
+        const px_cli_cmd_t *   cmd;     ///< pointer to command (if handler != NULL)
     };
 } px_cli_cmd_list_item_t;
 
@@ -231,7 +259,7 @@ extern px_cli_argv_val_t    px_cli_argv_val;
  *  Initialise command line module.
  *
  *  @param cli_cmd_list  Pointer to list of commands created with PX_CLI_CMD_LIST_CREATE() macro
- *  @param startup_str   Start up string to display.
+ *  @param startup_str   Startup string to display
  *
  */
 extern void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char * startup_str);
@@ -239,10 +267,10 @@ extern void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char 
 /**
  *  Function called to handle a received character.
  *
- *  This function drives the command line interpreter. All actions are taken in
+ *  This function drives the Command Line Interpreter. All actions are taken in
  *  response to a received character.
  *
- *  @param data      The received character.
+ *  @param data      The received character
  */
 extern void px_cli_on_rx_char(char data);
 
@@ -254,7 +282,7 @@ extern void px_cli_on_rx_char(char data);
  *
  *  @return const char * Response string to display; return NULL to display nothing
  */
-extern const char* px_cli_cmd_help_fn(uint8_t argc, char * argv[]);
+extern const char * px_cli_cmd_help_fn(uint8_t argc, char * argv[]);
 
 /**
  *  Utility function to convert an ARGV string to an option.
@@ -433,12 +461,12 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
 /**
- *  Macro to create a new CLI command structure.
+ *  Macro to create a new CLI command.
  *
  *  Example:
  *
  *      @code{.c}
- *      PX_CLI_CMD_CREATE(px_cli_cmd_help, "help", "Display list of commands", 0, 0)
+ *      PX_CLI_CMD_CREATE(px_cli_cmd_led, "led", 1, 1, "<on|off>>", "Switch the LED on or off")
  *      @endcode
  *
  *  @param cli_cmd          Prefix used to name command structures
@@ -465,19 +493,19 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
     };
 #else
 #define PX_CLI_CMD_CREATE(cli_cmd, name_str, nr_arg_min, nr_arg_max, param_str, help_str) \
-    static const char cli_cmd ## _name[]  PX_ATTR_PGM = name_str; \
-    static const char cli_cmd ## _param[] PX_ATTR_PGM = param_str; \
+    static const char cli_cmd ## _cmd_name[]  PX_ATTR_PGM = name_str; \
+    static const char cli_cmd ## _cmd_param[] PX_ATTR_PGM = param_str; \
     const px_cli_cmd_t cli_cmd PX_ATTR_PGM = \
     { \
-        .name     = cli_cmd ## _name, \
+        .name     = cli_cmd ## _cmd_name, \
         .argc_min = nr_arg_min, \
         .argc_max = nr_arg_max, \
-        .param    = cli_cmd ## _param, \
+        .param    = cli_cmd ## _cmd_param, \
     };
 #endif
 
 /**
- *  Macro to create a new CLI command group structure.
+ *  Macro to create a new CLI group.
  *
  *  Example:
  *
@@ -485,21 +513,21 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
  *      PX_CLI_GROUP_CREATE(px_cli_group_i2c, "i2c")
  *      @endcode
  *
- *  @param cli_group    Prefix name of command group structures
- *  @param name_str     String name of command
+ *  @param cli_group    Prefix used to name group structures
+ *  @param name_str     String name of group
  */
 #define PX_CLI_GROUP_CREATE(cli_group, name_str) \
-    static const char                   cli_group ## _str[] PX_ATTR_PGM = name_str; \
-    static const px_cli_cmd_list_item_t cli_group ## _list[] PX_ATTR_PGM; \
+    static const char                   cli_group ## _group_name[] PX_ATTR_PGM = name_str; \
+    static const px_cli_cmd_list_item_t cli_group ## _group_list[] PX_ATTR_PGM; \
     const px_cli_group_t cli_group PX_ATTR_PGM = \
     { \
-        .name = cli_group ## _str, \
-        .list = cli_group ## _list, \
+        .name = cli_group ## _group_name, \
+        .list = cli_group ## _group_list, \
     }; \
-    static const px_cli_cmd_list_item_t cli_group ## _list[] PX_ATTR_PGM = \
+    static const px_cli_cmd_list_item_t cli_group ## _group_list[] PX_ATTR_PGM = \
     {
 
-/// Macro to end a command list declaration
+/// Macro to end a group list array
 #define PX_CLI_GROUP_END() \
         { \
             .handler = NULL, \
@@ -518,11 +546,11 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
     {
 
 /**
- *  Macro to add a created command structure to the list
+ *  Macro to add a created command to the list
  *
  *  @param cli_cmd          Name of command structure
  *  @param handler_fn       Function (of type px_cli_handler_t) to be called
- *                          when command is executed
+ *                          to execute command
  *
  */
 #define PX_CLI_CMD_ADD(cli_cmd, handler_fn) \
@@ -532,7 +560,7 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
         },
 
 /**
- *  Macro to add a created command group structure to the list
+ *  Macro to add a created group to the list
  *
  *  @param cli_group    Name of command group structure
  */
@@ -555,4 +583,4 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
 }
 #endif
 
-#endif // #ifndef __PX_CLI_H__
+#endif

@@ -8,13 +8,13 @@
 #include "px_cli.h"
 
 // LED command handlers
-static const char* px_cli_cmd_led_on_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_led_on_fn(uint8_t argc, char * argv[])
 {
     PX_LED_ON();
 
     return NULL;
 }
-static const char* px_cli_cmd_led_off_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_led_off_fn(uint8_t argc, char * argv[])
 {
     PX_LED_OFF();
 
@@ -22,7 +22,7 @@ static const char* px_cli_cmd_led_off_fn(uint8_t argc, char* argv[])
 }
 
 // Buzzer command handler
-static const char* px_cli_cmd_buzzer_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_buzzer_fn(uint8_t argc, char * argv[])
 {
     uint16_t delay_ms;
 
@@ -66,7 +66,7 @@ PX_CLI_CMD_LIST_CREATE(px_cli_cmd_list)
 PX_CLI_CMD_LIST_END()
 /// [CLI cmd tree declaration]
 
-// Declare UART handle structure
+// UART handle
 static px_uart_handle_t px_uart_handle;
 
 int main(void)
@@ -75,8 +75,7 @@ int main(void)
  
     // Initialise modules
     px_board_init();
-    px_uart_init();    
-
+    px_uart_init();
     // Open UART0 @ 115200 BAUD, 8 data bits, no parity, 1 stop bit
     px_uart_open2(&px_uart_handle,
                   PX_UART_NR_0, 
@@ -84,16 +83,12 @@ int main(void)
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
-
     // Direct stdio to UART0
     px_uart_stdio_init(&px_uart_handle);
-
     // Enable interrupts
     px_interrupts_enable();
-
     // Initialise CLI (after STDIO is ready)
     px_cli_init(px_cli_cmd_list, PX_PGM_STR("CLI Example\n\n"));
-
     // Repeat forever
     for(;;)
     {

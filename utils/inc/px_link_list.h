@@ -10,7 +10,7 @@
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_link_list.h : Linked List
     Author(s):      Pieter Conradie
@@ -252,4 +252,4 @@ bool px_link_list_item_in_list(px_link_list_t *      list,
 }
 #endif
 
-#endif // #ifndef __PX_LINK_LIST_H__
+#endif

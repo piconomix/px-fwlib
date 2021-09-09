@@ -11,28 +11,29 @@
 #
 # Makefile script special requirements:
 # - make 3.81 or greater (requires working eval function)
+# - sh (sh.exe on MS-Windows platform)
 # - rm (to delete files and directories)
+# - mkdir (to create directories)
 #
 # ------------------------------------------------------------------------------
 # Creation Date:  2018-03-17
 # ------------------------------------------------------------------------------
 
 # Define programs and commands
-CPREFIX   ?= arm-none-eabi
-CC         = $(CPREFIX)-gcc
-CXX        = $(CPREFIX)-g++
-OBJCOPY    = $(CPREFIX)-objcopy
-OBJDUMP    = $(CPREFIX)-objdump
-SIZE       = $(CPREFIX)-size
-NM         = $(CPREFIX)-nm
-DEBUGGER   = $(CPREFIX)-gdb
-AR         = $(CPREFIX)-ar
-RM         = rm -f
-RMDIR      = rm -rf
-MKDIR      = mkdir -p
-COPY       = cp
+CPREFIX  ?= arm-none-eabi
+CC        = $(CPREFIX)-gcc
+CXX       = $(CPREFIX)-g++
+OBJCOPY   = $(CPREFIX)-objcopy
+OBJDUMP   = $(CPREFIX)-objdump
+SIZE      = $(CPREFIX)-size
+NM        = $(CPREFIX)-nm
+DEBUGGER  = $(CPREFIX)-gdb
+AR        = $(CPREFIX)-ar
+RM        = rm -f
+RMDIR     = rm -rf
+MKDIR     = mkdir -p
 
-# Determine build (debug, release or release for boot)
+# Determine build (debug, release, etc.)
 # Set build directory and add build specific flags
 ifdef build
     BUILD = $(build)
@@ -40,37 +41,40 @@ else
     BUILD = debug
 endif
 ifeq ($(BUILD), debug)
-    BUILD_DIR = BUILD_DEBUG
-    CDEFS    += $(CDEFS_DEBUG)
-    CFLAGS   += $(CFLAGS_DEBUG)
-    CXXFLAGS += $(CXXFLAGS_DEBUG)
-    AFLAGS   += $(AFLAGS_DEBUG)
-    LDFLAGS  += $(LDFLAGS_DEBUG)
+    BUILD_DIR ?= BUILD_DEBUG
+    CDEFS     += $(CDEFS_DEBUG)
+    CFLAGS    += $(CFLAGS_DEBUG)
+    CXXFLAGS  += $(CXXFLAGS_DEBUG)
+    AFLAGS    += $(AFLAGS_DEBUG)
+    LDFLAGS   += $(LDFLAGS_DEBUG)
 else ifeq ($(BUILD), debug-boot)
-    BUILD_DIR = BUILD_DEBUG_BOOT
-    CDEFS    += $(CDEFS_DEBUG)
-    CFLAGS   += $(CFLAGS_DEBUG)
-    CXXFLAGS += $(CXXFLAGS_DEBUG)
-    AFLAGS   += $(AFLAGS_DEBUG)
-    LDFLAGS  += $(LDFLAGS_DEBUG)
+    BUILD_DIR ?= BUILD_DEBUG_BOOT
+    CDEFS     += $(CDEFS_DEBUG)
+    CFLAGS    += $(CFLAGS_DEBUG)
+    CXXFLAGS  += $(CXXFLAGS_DEBUG)
+    AFLAGS    += $(AFLAGS_DEBUG)
+    LDFLAGS   += $(LDFLAGS_DEBUG)
 else ifeq ($(BUILD), release)
-    BUILD_DIR = BUILD_RELEASE
-    CDEFS    += $(CDEFS_RELEASE)
-    CFLAGS   += $(CFLAGS_RELEASE)
-    CXXFLAGS += $(CXXFLAGS_RELEASE)
-    AFLAGS   += $(AFLAGS_RELEASE)
-    LDFLAGS  += $(LDFLAGS_RELEASE)
+    BUILD_DIR ?= BUILD_RELEASE
+    CDEFS     += $(CDEFS_RELEASE)
+    CFLAGS    += $(CFLAGS_RELEASE)
+    CXXFLAGS  += $(CXXFLAGS_RELEASE)
+    AFLAGS    += $(AFLAGS_RELEASE)
+    LDFLAGS   += $(LDFLAGS_RELEASE)
 else ifeq ($(BUILD), release-boot)
-    BUILD_DIR = BUILD_RELEASE_BOOT
-    CDEFS    += $(CDEFS_RELEASE)
-    CFLAGS   += $(CFLAGS_RELEASE)
-    CXXFLAGS += $(CXXFLAGS_RELEASE)
-    AFLAGS   += $(AFLAGS_RELEASE)
-    LDFLAGS  += $(LDFLAGS_RELEASE)
+    BUILD_DIR ?= BUILD_RELEASE_BOOT
+    CDEFS     += $(CDEFS_RELEASE)
+    CFLAGS    += $(CFLAGS_RELEASE)
+    CXXFLAGS  += $(CXXFLAGS_RELEASE)
+    AFLAGS    += $(AFLAGS_RELEASE)
+    LDFLAGS   += $(LDFLAGS_RELEASE)
 else
     $(error "Unsupported build specified. Use 'make build=debug', 'make build=debug-boot', 'make build=release' or 'make build=release-boot'")
 endif
 
+# Set output directory
+OUT_DIR ?= $(BUILD_DIR)
+#OUT_DIR ?= .
 
 # Specify Flash, SRAM, Stack and heap size to linker script
 LDFLAGS += -Wl,--defsym,FLASH_SIZE=$(FLASH_SIZE),--defsym,SRAM_SIZE=$(SRAM_SIZE),--defsym,STACK_SIZE=$(STACK_SIZE),--defsym,HEAP_SIZE=$(HEAP_SIZE)
@@ -96,19 +100,8 @@ else ifeq ($(BUILD), release-boot)
 endif
 
 # Define Messages
-ifeq ($(BUILD), debug)
-MSG_BEGIN               = '------------ begin (DEBUG) ---------------'
-MSG_END                 = '-------------  end (DEBUG) ---------------'
-else ifeq ($(BUILD), debug-boot)
-MSG_BEGIN               = '-------- begin (DEBUG FOR BOOT) --------'
-MSG_END                 = '--------  end (DEBUG FOR BOOT) ---------'
-else ifeq ($(BUILD), release)
-MSG_BEGIN               = '------------- begin (RELEASE) ------------'
-MSG_END                 = '-------------  end (RELEASE) -------------'
-else ifeq ($(BUILD), release-boot)
-MSG_BEGIN               = '-------- begin (RELEASE FOR BOOT) --------'
-MSG_END                 = '--------  end (RELEASE FOR BOOT) ---------'
-endif
+MSG_BEGIN               = '------------ begin (build=$(BUILD)) ---------------'
+MSG_END                 = '-------------- end (build=$(BUILD)) ---------------'
 MSG_SIZE                = 'Size:'
 MSG_FLASH_HEX           = 'Creating HEX load file for Flash:'
 MSG_FLASH_BIN           = 'Creating BIN load file for Flash:'
@@ -120,7 +113,7 @@ MSG_SYMBOL_TABLE        = 'Creating Symbol Table:'
 MSG_LINKING             = 'Linking:'
 MSG_ARCHIVING           = 'Creating static library:'
 MSG_COMPILING           = 'Compiling C:'
-MSG_COMPILING_CPP       = 'Compiling C++:'
+MSG_COMPILING_CXX       = 'Compiling C++:'
 MSG_ASSEMBLING          = 'Assembling:'
 MSG_CLEANING            = 'Cleaning project:'
 MSG_OPENOCD_GDB_SERVER  = 'Launching OpenOCD GDB server:'
@@ -159,13 +152,13 @@ else
 build: elf hex bin lss sym
 endif
 
-elf: $(BUILD_DIR)/$(PROJECT).elf
-hex: $(BUILD_DIR)/$(PROJECT).hex
-bin: $(BUILD_DIR)/$(PROJECT).bin
-uf2: $(BUILD_DIR)/$(PROJECT).uf2
+elf: $(OUT_DIR)/$(PROJECT).elf
+hex: $(OUT_DIR)/$(PROJECT).hex
+bin: $(OUT_DIR)/$(PROJECT).bin
+uf2: $(OUT_DIR)/$(PROJECT).uf2
 lss: $(BUILD_DIR)/$(PROJECT).lss
 sym: $(BUILD_DIR)/$(PROJECT).sym
-lib: $(BUILD_DIR)/$(PROJECT).a
+lib: $(OUT_DIR)/$(PROJECT).a
 
 # Default target to create specified source files.
 # If this rule is executed then the input source file does not exist.
@@ -182,7 +175,7 @@ end:
 	@echo
 
 # Display size of file
-size: $(BUILD_DIR)/$(PROJECT).elf
+size: $(OUT_DIR)/$(PROJECT).elf
 	@echo
 	@echo $(MSG_SIZE)
 	$(SIZE) $<
@@ -192,37 +185,37 @@ gccversion :
 	@$(CC) --version
 
 # Create final output file (*.hex) from ELF output file
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf
+$(OUT_DIR)/%.hex: $(OUT_DIR)/%.elf
 	@echo
 	@echo $(MSG_FLASH_HEX) $@
 	$(OBJCOPY) -O ihex $< $@
 
 # Create final output file (*.bin) from ELF output file
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
+$(OUT_DIR)/%.bin: $(OUT_DIR)/%.elf
 	@echo
 	@echo $(MSG_FLASH_BIN) $@
 	$(OBJCOPY) -O binary $< $@
 
 # Create UF2 bootloader format file (*.uf2) from BIN output file
-$(BUILD_DIR)/%.uf2: $(BUILD_DIR)/%.bin
+$(OUT_DIR)/%.uf2: $(OUT_DIR)/%.bin
 	@echo
 	@echo $(MSG_FLASH_UF2) $@
-	python $(PX_LIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c -o $@
+	python $(PX_FWLIB)/tools/uf2conv.py $< -c -b $(BOOTLOADER_SIZE) -f 0xe892273c -o $@
 
 # Write UF2 bootloader format file (*.uf2) to target
-prog_uf2: $(BUILD_DIR)/$(PROJECT).bin
+prog_uf2: $(OUT_DIR)/$(PROJECT).bin
 	@echo
 	@echo $(MSG_PROG_UF2) $@
-	python $(PX_LIB)/tools/uf2conv.py $< -b $(BOOTLOADER_SIZE) -f 0xe892273c -d $(drive)
+	python $(PX_FWLIB)/tools/uf2conv.py $< -b $(BOOTLOADER_SIZE) -f 0xe892273c -d $(drive)
 
 # Create extended listing file (*.lss) from ELF output file
-$(BUILD_DIR)/%.lss: $(BUILD_DIR)/%.elf
+$(BUILD_DIR)/%.lss: $(OUT_DIR)/%.elf
 	@echo
 	@echo $(MSG_EXTENDED_LISTING) $@
 	$(OBJDUMP) -h -S -z $< > $@
 
 # Create a symbol table (*.sym) from ELF output file
-$(BUILD_DIR)/%.sym: $(BUILD_DIR)/%.elf
+$(BUILD_DIR)/%.sym: $(OUT_DIR)/%.elf
 	@echo
 	@echo $(MSG_SYMBOL_TABLE) $@
 	$(NM) -n $< > $@
@@ -230,18 +223,18 @@ $(BUILD_DIR)/%.sym: $(BUILD_DIR)/%.elf
 
 ifeq ($(CXXSRC),)
 # Link: create ELF output file (*.elf) from C object files
-.SECONDARY : $(BUILD_DIR)/$(PROJECT).elf
+.SECONDARY : $(OUT_DIR)/$(PROJECT).elf
 .PRECIOUS : $(OBJECTS)
-$(BUILD_DIR)/%.elf: $(OBJECTS)
+$(OUT_DIR)/%.elf: $(OBJECTS)
 	@echo
 	@echo $(MSG_LINKING) $@
 	@$(MKDIR) $(@D)
 	$(CC) $(ALL_LDFLAGS) $^ $(addprefix -l,$(EXTRALIBS)) -o $@
 else
 # Link: create ELF output file (*.elf) from C++ and C object files
-.SECONDARY : $(BUILD_DIR)/$(PROJECT).elf
+.SECONDARY : $(OUT_DIR)/$(PROJECT).elf
 .PRECIOUS : $(OBJECTS)
-$(BUILD_DIR)/%.elf: $(OBJECTS)
+$(OUT_DIR)/%.elf: $(OBJECTS)
 	@echo
 	@echo $(MSG_LINKING) $@
 	@$(MKDIR) $(@D)
@@ -249,7 +242,7 @@ $(BUILD_DIR)/%.elf: $(OBJECTS)
 endif
 
 # Archive: create static library (*.a) from object files
-$(BUILD_DIR)/%.a: $(OBJECTS)
+$(OUT_DIR)/%.a: $(OBJECTS)
 	@echo
 	@echo $(MSG_ARCHIVING) $@
 	@$(MKDIR) $(@D)
@@ -270,14 +263,14 @@ $(foreach file,$(SRC),$(eval $(call create_c_obj_rule,$(file))))
 # Compile: create object files from C++ source files
 #   A separate rule is created for each CXXSRC file to ensure that the correct
 #   file is used to create the object file (in the BUILD_DIR directory).
-define create_cpp_obj_rule
+define create_cxx_obj_rule
 $(BUILD_DIR)/$(basename $(notdir $(1))).o: $(1)
 	@echo
-	@echo $(MSG_COMPILING_CPP) $$<
+	@echo $(MSG_COMPILING_CXX) $$<
 	@$(MKDIR) $$(@D)
 	$(CXX) -c $(ALL_CXXFLAGS) $$< -o $$@
 endef
-$(foreach file,$(CXXSRC),$(eval $(call create_cpp_obj_rule,$(file))))
+$(foreach file,$(CXXSRC),$(eval $(call create_cxx_obj_rule,$(file))))
 
 # Assemble: create object files from assembler source files
 #   A separate rule is created for each ASRC file to ensure that the correct
@@ -297,9 +290,13 @@ clean: begin clean_list end
 clean_list :
 	@echo
 	@echo $(MSG_CLEANING)
+	$(RM) $(OUT_DIR)/$(PROJECT).elf
+	$(RM) $(OUT_DIR)/$(PROJECT).hex
+	$(RM) $(OUT_DIR)/$(PROJECT).bin
+	$(RM) $(OUT_DIR)/$(PROJECT).uf2
+	$(RMDIR) $(BUILD_DIR)
 	$(RM) $(OPENOCD_SCRIPT)
 	$(RM) $(GDB_SCRIPT)
-	$(RMDIR) $(BUILD_DIR)
 
 # Target: mostly clean project (remove all temporary building files, but leave final executables)
 mostlyclean: begin mostlyclean_list end
@@ -314,9 +311,13 @@ mostlyclean_list :
 	$(RM) $(BUILD_DIR)/$(PROJECT).map
 	$(RM) $(BUILD_DIR)/$(PROJECT).sym
 
-# Program target using STM32CubeProgrammer CLI utility
-program:  $(BUILD_DIR)/$(PROJECT).hex
+# Program target using command line utility
+program:  $(OUT_DIR)/$(PROJECT).hex
 	STM32_Programmer_CLI -c port=SWD freq=4000 reset=HWrst -w $< -v -g 0x00000000
+
+# Reset target using command line utility
+reset:
+	STM32_Programmer_CLI -c port=SWD freq=4000 reset=HWrst -rst
 
 # Generate OpenOCD config file
 .PHONY : $(OPENOCD_SCRIPT)
@@ -341,10 +342,11 @@ openocd: $(OPENOCD_SCRIPT)
 	openocd --file $(OPENOCD_SCRIPT)
 
 # Generate GDB config/init file
+.PHONY : $(GDB_SCRIPT)
 $(GDB_SCRIPT) :
 	$(RM) $(GDB_SCRIPT)
 	@echo '# Load program to debug' >> $(GDB_SCRIPT)
-	@echo 'file $(BUILD_DIR)/$(PROJECT).elf' >> $(GDB_SCRIPT)
+	@echo 'file $(OUT_DIR)/$(PROJECT).elf' >> $(GDB_SCRIPT)
 	@echo '# Connect to GDB server' >> $(GDB_SCRIPT)
 	@echo 'target extended-remote localhost:$(GDB_PORT)' >> $(GDB_SCRIPT)
 	@echo '# Execute a reset and halt of the target' >> $(GDB_SCRIPT)

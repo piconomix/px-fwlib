@@ -8,7 +8,7 @@
     Copyright (c) 2015 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_debounce.h : Digital debounce module
     Author(s):      Pieter Conradie
@@ -22,10 +22,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
 #include "px_debounce.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("debounce");
+PX_LOG_NAME("debounce");
 
 /* _____MACROS_______________________________________________________________ */
 

@@ -8,7 +8,7 @@
     Copyright (c) 2010 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_nmea.h : NMEA parser
     Author(s):      Pieter Conradie
@@ -21,10 +21,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_nmea.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_nmea");
+PX_LOG_NAME("px_nmea");
 
 // Receive and transmit buffer size
 #define PX_NMEA_BUFFER_SIZE    128

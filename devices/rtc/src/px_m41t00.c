@@ -8,7 +8,7 @@
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_m41t00.h : Driver for an ST M41T00 Real Time Clock
     Author(s):      Pieter Conradie
@@ -20,10 +20,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_rtc_m41t00.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("m41t00");
+PX_LOG_NAME("m41t00");
 
 /// BCD Date/Time
 typedef struct
@@ -103,7 +103,7 @@ static bool px_m41t00_rd_data(void)
                   1, 
                   PX_I2C_FLAG_START_AND_END))
     {
-        PX_DBG_ERR("Unable to write address");
+        PX_LOG_E("Unable to write address");
         return false;
     }
 
@@ -113,7 +113,7 @@ static bool px_m41t00_rd_data(void)
                   sizeof(px_m41t00_data.bcd_time) + sizeof(px_m41t00_data.control), 
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
-        PX_DBG_ERR("Unable to read data");
+        PX_LOG_E("Unable to read data");
         return false;
     }
 
@@ -132,7 +132,7 @@ static bool px_m41t00_wr_data(void)
                   sizeof(px_m41t00_data), 
                   PX_I2C_FLAG_START_AND_STOP))
     {
-        PX_DBG_ERR("Unable to write data");
+        PX_LOG_E("Unable to write data");
         return false;
     }
 
@@ -168,7 +168,7 @@ bool px_m41t00_get_time(px_m41t00_time_t * px_rtc_time)
     // See if timer has been stopped
     if(((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_ST_ADR]  & PX_M41T00_ST_BIT)
     {
-        PX_DBG_INFO("RTC has been stopped!");
+        PX_LOG_E("RTC has been stopped!");
         return false;
     }
 

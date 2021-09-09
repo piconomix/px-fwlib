@@ -8,7 +8,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          ST Nucleo64 L053 CLI application
     Author(s):      Pieter Conradie
@@ -31,10 +31,10 @@
 #include "px_uart.h"
 #include "px_uart_stdio.h"
 #include "px_sysclk.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("main");
+PX_LOG_NAME("main");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -88,7 +88,7 @@ int main(void)
     // Enable LED
     PX_USR_LED_ON();
     // Report debug output
-    PX_DBG_TRACE("Debug enabled\n");
+    PX_LOG_TRACE("Debug enabled\n");
     // Initialize CLI
     px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
@@ -105,19 +105,19 @@ int main(void)
     }
 }
 
-void main_dbg_put_char(char data)
+void main_log_putchar(char data)
 {
     // New line character?
     if(data == '\n')
     {
         // Prepend a carriage return
-        main_dbg_put_char('\r');
+        main_log_putchar('\r');
     }
 
     px_uart_put_char(&px_uart2_handle, data);
 }
 
-void main_dbg_timestamp(char * str)
+void main_log_timestamp(char * str)
 {
     px_rtc_date_time_t date_time;
 

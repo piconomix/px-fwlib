@@ -10,7 +10,7 @@
     Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_ds18b20.h : Maxim 1-Wire digital thermometer driver
     Author(s):      Pieter Conradie
@@ -119,4 +119,4 @@ uint16_t          px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg);
 }
 #endif
 
-#endif // #ifndef __PX_DS18B20_H__
+#endif

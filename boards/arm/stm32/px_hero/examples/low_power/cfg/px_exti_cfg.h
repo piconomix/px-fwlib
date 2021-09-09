@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_exti_cfg.h : EXTI Peripheral Driver configuration
     Author(s):      Pieter Conradie
@@ -50,4 +50,4 @@
 //@}
 
 /// @}
-#endif // #ifndef __PX_EXTI_CFG_H__
+#endif

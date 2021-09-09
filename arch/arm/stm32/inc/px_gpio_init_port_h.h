@@ -10,7 +10,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_gpio_init_port_h.h : Macros to auto calculate init values for GPIO port H
     Author(s):      Pieter Conradie
@@ -210,4 +210,4 @@ static const px_gpio_port_init_t px_gpio_port_h_init =
 }
 #endif
 
-#endif // #ifndef __PX_GPIO_INIT_PORT_H_H__
+#endif

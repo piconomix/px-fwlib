@@ -8,7 +8,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_exti.h : External interrupt driver
     Author(s):      Pieter Conradie
@@ -22,8 +22,8 @@
 #include "px_exti.h"
 #include "px_lib_stm32cube.h"
 
-#include "px_dbg.h"
-PX_DBG_DECL_NAME("px_exti")
+#include "px_log.h"
+PX_LOG_NAME("px_exti")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 
@@ -371,7 +371,7 @@ void px_exti_open(px_exti_port_t    exti_port,
 #endif
 
     default:
-        PX_DBG_ERR("Invalid EXTI line specified");
+        PX_LOG_E("Invalid EXTI line specified");
     }
 }
 
@@ -398,7 +398,7 @@ void px_exti_type_set(px_exti_line_t    exti_line,
         break;
 
     default:
-        PX_DBG_ERR("Invalid EXTI type specified");
+        PX_LOG_E("Invalid EXTI type specified");
         break;
     }
 }

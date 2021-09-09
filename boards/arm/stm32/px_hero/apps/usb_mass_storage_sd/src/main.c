@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          Piconomix STM32 Hero Board USB Mass Storage Device example
     Author(s):      Pieter Conradie
@@ -28,10 +28,10 @@
 #include "px_sysclk.h"
 #include "px_sd.h"
 #include "usb_device.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("main");
+PX_LOG_NAME("main");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -88,13 +88,13 @@ bool main_sd_reset(void)
 
     if(!px_sd_reset())
     {
-        PX_DBG_ERR("Failed to reset SD card");
+        PX_LOG_E("Failed to reset SD card");
         return false;
     }
 
     if(!px_sd_read_csd(&main_sd_csd))
     {
-        PX_DBG_ERR("Failed to read CSD");
+        PX_LOG_E("Failed to read CSD");
         return false;
     }
 
@@ -123,7 +123,7 @@ int main(void)
         // USB connected event?
         if(main_usb_connected_event_flag)
         {
-            PX_DBG_INFO("USB Connect event");
+            PX_LOG_I("USB Connect event");
             main_usb_connected_event_flag = false;            
         }        
 
@@ -137,19 +137,19 @@ void main_usb_event_connected(void)
     main_usb_connected_event_flag = true;
 }
 
-void main_dbg_put_char(char data)
+void main_log_putchar(char data)
 {
     // New line character?
     if(data == '\n')
     {
         // Prepend a carriage return
-        main_dbg_put_char('\r');
+        main_log_putchar('\r');
     }
 
     px_uart_put_char(&px_uart1_handle, data);
 }
 
-void main_dbg_timestamp(char * str)
+void main_log_timestamp(char * str)
 {
     sprintf(str, "%08lu", (uint32_t)px_sysclk_get_tick_count());
 }

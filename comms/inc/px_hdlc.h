@@ -10,7 +10,7 @@
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_hdlc.h : HDLC encapsulation layer
     Author(s):      Pieter Conradie
@@ -142,4 +142,4 @@ void px_hdlc_tx_frame(const uint8_t * data, size_t nr_of_bytes);
 #endif
 /// @}
 
-#endif // #ifndef __PX_HDLC_H__
+#endif

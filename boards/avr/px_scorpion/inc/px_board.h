@@ -10,7 +10,7 @@
     Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
     Title:          px_board.h : Piconomix ATmega328P Scorpion Board
     Author(s):      Pieter Conradie
@@ -120,4 +120,4 @@ void px_board_delay_ms(uint16_t delay_ms);
 }
 #endif
 
-#endif // #ifndef __PX_BOARD_H__
+#endif

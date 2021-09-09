@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          Piconomix STM32 Hero Board USB Mass Storage Device example
     Author(s):      Pieter Conradie
@@ -37,8 +37,8 @@ extern uint32_t         main_sd_capacity_blocks;
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 void main_usb_event_connected   (void);
-void main_dbg_put_char          (char data);
-void main_dbg_timestamp         (char * str);
+void main_log_putchar          (char data);
+void main_log_timestamp         (char * str);
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -46,4 +46,4 @@ void main_dbg_timestamp         (char * str);
 }
 #endif
 
-#endif // #ifndef __MAIN_H__
+#endif

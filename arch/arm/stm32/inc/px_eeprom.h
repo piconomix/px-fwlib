@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_eeprom.h : Internal EEPROM write routines
     Author(s):      Pieter Conradie
@@ -20,7 +20,7 @@
 
 /** 
  *  @ingroup STM32
- *  @defgroup AVR_EEPROM px_eeprom.h : Internal EEPROM write routines
+ *  @defgroup STM32_EEPROM px_eeprom.h : Internal EEPROM write routines
  *  
  *  This module can erase a page and write a half page of internal EEPROM.
  *  
@@ -74,4 +74,4 @@ void px_eeprom_erase_word(const uint32_t address);
 }
 #endif
 
-#endif // #ifndef __PX_EEPROM_H__
+#endif

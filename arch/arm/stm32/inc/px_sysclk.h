@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_sysclk.h : System Clock using the SysTick peripheral
     Author(s):      Pieter Conradie
@@ -101,4 +101,4 @@ void px_sysclk_reset_tick_count(void);
 }
 #endif
 
-#endif // #ifndef __PX_SYSCLK_H__
+#endif

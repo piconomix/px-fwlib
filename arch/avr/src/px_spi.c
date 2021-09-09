@@ -8,7 +8,7 @@
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_spi.h : SPI Peripheral Driver
     Author(s):      Pieter Conradie
@@ -22,13 +22,13 @@
 #include "px_spi.h"
 #include "px_spi_defs.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 // Issue warning that SS pin must be an output or input with a pull-up
 #warning "There is a caveat with the SS pin when using the SPI in master mode! See documentation in 'px_spi.h'"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("spi");
+PX_LOG_NAME("spi");
 
 /// Internal data for each SPI handle
 typedef struct px_spi_per_s
@@ -72,7 +72,7 @@ static void px_spi_init_peripheral(px_spi_nr_t spi_nr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_LOG_E("Invalid peripheral");
         return;
     }
 }
@@ -109,7 +109,7 @@ bool px_spi_open(px_spi_handle_t * handle,
     px_spi_per_t * spi_per;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
 
     // Handle not initialised
     handle->spi_per = NULL;
@@ -122,7 +122,7 @@ bool px_spi_open(px_spi_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_LOG_E("Invalid peripheral specified");
         return false;
     }
 
@@ -159,7 +159,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
     bool            use_spi2x;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
 
     // Handle not initialised
     handle->spi_per = NULL;
@@ -172,7 +172,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_LOG_E("Invalid peripheral specified");
         return false;
     }
 
@@ -232,12 +232,12 @@ bool px_spi_close(px_spi_handle_t * handle)
     px_spi_per_t * spi_per;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
+    PX_LOG_ASSERT(spi_per != NULL);
+    PX_LOG_ASSERT(spi_per->open_counter != 0);
 
     // Decrement open count
     spi_per->open_counter--;
@@ -280,12 +280,12 @@ void px_spi_wr(px_spi_handle_t * handle,
     uint8_t         data_rx;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
+    PX_LOG_ASSERT(spi_per != NULL);
+    PX_LOG_ASSERT(spi_per->open_counter != 0);
 
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_per->spi_nr,
@@ -328,12 +328,12 @@ void px_spi_rd(px_spi_handle_t * handle,
     uint8_t *      data_u8 = (uint8_t *)data;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
+    PX_LOG_ASSERT(spi_per != NULL);
+    PX_LOG_ASSERT(spi_per->open_counter != 0);
 
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_per->spi_nr,
@@ -377,12 +377,12 @@ void px_spi_xc(px_spi_handle_t * handle,
     uint8_t *       data_rd_u8 = (uint8_t *)data_rd;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
+    PX_LOG_ASSERT(spi_per != NULL);
+    PX_LOG_ASSERT(spi_per->open_counter != 0);
 
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_per->spi_nr,
@@ -423,12 +423,12 @@ void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
     bool           use_spi2x;
 
     // Verify that pointer to handle is not NULL
-    PX_DBG_ASSERT(handle != NULL);
+    PX_LOG_ASSERT(handle != NULL);
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Check that handle is open
-    PX_DBG_ASSERT(spi_per != NULL);
-    PX_DBG_ASSERT(spi_per->open_counter != 0);
+    PX_LOG_ASSERT(spi_per != NULL);
+    PX_LOG_ASSERT(spi_per->open_counter != 0);
 
     // Clear SPI Clock divisor bits
     spcr = handle->spcr & (~((1<<SPR1) | (1<<SPR0)));

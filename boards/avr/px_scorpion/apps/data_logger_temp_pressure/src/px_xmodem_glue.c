@@ -8,7 +8,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_xmodem_glue.h : Glue functions for XMODEM module
     Author(s):      Pieter Conradie
@@ -23,10 +23,10 @@
 #include "main.h"
 #include "px_systmr.h"
 #include "px_uart.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_xmodem_glue");
+PX_LOG_NAME("px_xmodem_glue");
 
 /* _____MACROS_______________________________________________________________ */
 

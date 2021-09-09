@@ -10,7 +10,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          CLI Commands
     Author(s):      Pieter Conradie
@@ -41,4 +41,4 @@ extern const px_cli_cmd_list_item_t px_cli_cmd_list[] PX_ATTR_PGM;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_H__
+#endif

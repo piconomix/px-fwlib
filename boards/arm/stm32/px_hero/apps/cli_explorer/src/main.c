@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          Piconomix STM32 Hero Board CLI application
     Author(s):      Pieter Conradie
@@ -42,10 +42,10 @@
 #include "px_gfx.h"
 #include "px_gfx_res.h"
 #include "usb_device.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("main");
+PX_LOG_NAME("main");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -168,12 +168,12 @@ static void main_report_button(uint8_t button)
     putchar('\n');
 #if PX_CLI_CFG_COLOR
     // Set font color to green
-    printf(PX_VT100_SET_FOREGROUND_GREEN);
+    printf(PX_VT100_SET_FG_GREEN);
 #endif
     printf("PB%u\n", button);
 #if PX_CLI_CFG_COLOR
     // Restore font color
-    printf(PX_VT100_RESET_ALL_ATTRS);
+    printf(PX_VT100_RST_ALL_ATTRS);
 #endif
     putchar('>');
 }
@@ -226,7 +226,7 @@ int main(void)
     PX_USR_LED_ON();
 
     // Report debug output
-    PX_DBG_TRACE("Debug enabled\n");
+    PX_LOG_TRACE("Debug enabled\n");
 
     // Initialize debounced buttons
     px_debounce_init(&px_debounce_pb1, px_gpio_pin_is_hi(&px_gpio_lcd_btn_1_lt));
@@ -257,7 +257,7 @@ int main(void)
         // USB connected event?
         if(main_usb_connected_event_flag)
         {
-            PX_DBG_INFO("USB Connect event. (Re)initialising CLI");
+            PX_LOG_I("USB Connect event. (Re)initialising CLI");
             main_usb_connected_event_flag = false;
             // (Re)initialise CLI
             px_cli_init(px_cli_cmd_list, main_cli_init_str);
@@ -293,19 +293,19 @@ void main_usb_event_connected(void)
     main_usb_connected_event_flag = true;
 }
 
-void main_dbg_put_char(char data)
+void main_log_putchar(char data)
 {
     // New line character?
     if(data == '\n')
     {
         // Prepend a carriage return
-        main_dbg_put_char('\r');
+        main_log_putchar('\r');
     }
 
     px_uart_put_char(&px_uart1_handle, data);
 }
 
-void main_dbg_timestamp(char * str)
+void main_log_timestamp(char * str)
 {
     px_rtc_date_time_t date_time;
 

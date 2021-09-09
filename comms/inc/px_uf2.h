@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSC (Mass Storage Class)
     Author(s):      Pieter Conradie
@@ -160,4 +160,4 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf);
     information only.
  */
 
-#endif // #ifndef __PX_UF2_H__
+#endif

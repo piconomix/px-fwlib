@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_i2c.h : I2C peripheral driver
     Author(s):      Pieter Conradie
@@ -22,10 +22,10 @@
 #include "px_i2c.h"
 #include "px_board.h"
 #include "px_lib_stm32cube.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_i2c");
+PX_LOG_NAME("px_i2c");
 
 /// Definition of data for each I2C peripheral
 typedef struct px_i2c_per_s
@@ -63,7 +63,7 @@ static bool px_i2c_init_peripheral(I2C_TypeDef * i2c_base_adr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_LOG_E("Invalid peripheral");
         return false;
     }
 
@@ -100,7 +100,7 @@ static void px_i2c_init_peripheral_data(px_i2c_nr_t    i2c_nr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_LOG_E("Invalid peripheral");
         return;
     }
     // Clear open counter
@@ -125,11 +125,11 @@ bool px_i2c_open(px_i2c_handle_t * handle,
 {
     px_i2c_per_t * i2c_per;
 
-#if PX_DBG
+#if PX_LOG
     // Verify that pointer to handle is not NULL
     if(handle == NULL)
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -150,14 +150,14 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_LOG_E("Invalid peripheral specified");
         return false;
     }
-#if PX_DBG
+#if PX_LOG
     // Check that px_i2c_init() has been called
     if(i2c_per->i2c_base_adr == NULL)
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -186,14 +186,14 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     px_i2c_per_t * i2c_per;
     I2C_TypeDef *  i2c_base_adr;    
 
-#if PX_DBG
+#if PX_LOG
     // Check handle
     if(  (handle                        == NULL)
        ||(handle->i2c_per               == NULL)
        ||(handle->i2c_per->i2c_base_adr == NULL)
        ||(handle->i2c_per->open_counter == 0   )  )
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -246,19 +246,19 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
     const uint8_t * data_u8 = (const uint8_t *)data;
     uint32_t        i2c_isr;
 
-#if PX_DBG
+#if PX_LOG
     // Check handle
     if(  (handle                        == NULL)
        ||(handle->i2c_per               == NULL)
        ||(handle->i2c_per->i2c_base_adr == NULL)
        ||(handle->i2c_per->open_counter == 0   )  )
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(handle->slave_adr < 0x80);
+    PX_LOG_ASSERT(handle->slave_adr < 0x80);
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Get I2C peripheral base register address
@@ -290,7 +290,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             // I2C bus must be idle for a START condition
             if(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
-                PX_DBG_ERR("I2C bus is busy with a previous transaction");
+                PX_LOG_E("I2C bus is busy with a previous transaction");
                 return false;
             }
         }
@@ -299,7 +299,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             // I2C bus must be busy for a REPEATED START condition
             if(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
-                PX_DBG_ERR("I2C bus is idle");
+                PX_LOG_E("I2C bus is idle");
                 return false;
             }
         }
@@ -328,7 +328,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             // Clear flag
             LL_I2C_ClearFlag_NACK(i2c_base_adr);
             // I2C slave not present. STOP condition automatically generated
-            PX_DBG_WARN("I2C Slave did not ACK SLA+W");
+            PX_LOG_W("I2C Slave did not ACK SLA+W");
             // Wait until bus is free
             while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
@@ -343,7 +343,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
         // I2C Bus must be busy
         if(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
         {
-            PX_DBG_ERR("I2C bus is idle");
+            PX_LOG_E("I2C bus is idle");
             return false;
         }
         // Wait for a flag to be set
@@ -359,7 +359,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             // Clear flag
             LL_I2C_ClearFlag_BERR(i2c_base_adr);
             // I2C Bus Error
-            PX_DBG_ERR("I2C Bus Error");
+            PX_LOG_E("I2C Bus Error");
             // Wait until bus is free
             while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
@@ -373,7 +373,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             // Clear flag
             LL_I2C_ClearFlag_NACK(i2c_base_adr);
             // I2C slave NACKed byte. STOP condition automatically generated
-            PX_DBG_ERR("I2C Slave did not ACK byte");
+            PX_LOG_E("I2C Slave did not ACK byte");
             // Wait until bus is free
             while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
@@ -421,7 +421,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
         // I2C Bus must be busy
         if(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
         {
-            PX_DBG_ERR("I2C bus is idle");
+            PX_LOG_E("I2C bus is idle");
             return false;
         }
         // Generate STOP condition
@@ -453,19 +453,19 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
     uint8_t *      data_u8 = (uint8_t *)data;
     uint32_t       i2c_isr;
 
-#if PX_DBG
+#if PX_LOG
     // Check handle
     if(  (handle                        == NULL)
        ||(handle->i2c_per               == NULL)
        ||(handle->i2c_per->i2c_base_adr == NULL)
        ||(handle->i2c_per->open_counter == 0   )  )
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(handle->slave_adr < 0x80);
+    PX_LOG_ASSERT(handle->slave_adr < 0x80);
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Get I2C peripheral base register address
@@ -498,7 +498,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             // I2C bus must be idle for a START condition
             if(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
-                PX_DBG_ERR("I2C bus is busy with a previous transaction");
+                PX_LOG_E("I2C bus is busy with a previous transaction");
                 return false;
             }
         }
@@ -507,7 +507,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             // I2C bus must be busy for a REPEATED START condition
             if(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
-                PX_DBG_ERR("I2C bus is idle");
+                PX_LOG_E("I2C bus is idle");
                 return false;
             }
         }
@@ -535,7 +535,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             // Clear flag
             LL_I2C_ClearFlag_NACK(i2c_base_adr);
             // I2C slave not present. STOP condition automatically generated
-            PX_DBG_WARN("I2C Slave did not ACK SLA+R");
+            PX_LOG_W("I2C Slave did not ACK SLA+R");
             // Wait until bus is free
             while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
@@ -551,7 +551,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
         // I2C Bus must be busy
         if(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
         {
-            PX_DBG_ERR("I2C bus is idle");
+            PX_LOG_E("I2C bus is idle");
             return false;
         }
         // Wait for a flag to be set
@@ -578,7 +578,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             // Clear flag
             LL_I2C_ClearFlag_NACK(i2c_base_adr);
             // Received NACKF, but dit not expect it
-            PX_DBG_ERR("Received NACKF");
+            PX_LOG_E("Received NACKF");
             // Wait until bus is free
             while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
             {
@@ -623,7 +623,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
         // I2C Bus must be busy
         if(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
         {
-            PX_DBG_ERR("I2C bus is idle");
+            PX_LOG_E("I2C bus is idle");
             return false;
         }
         // Generate STOP condition
@@ -649,19 +649,19 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
 void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
                                    uint8_t           slave_adr)
 {
-#if PX_DBG
+#if PX_LOG
     // Check handle
     if(  (handle                        == NULL)
        ||(handle->i2c_per               == NULL)
        ||(handle->i2c_per->i2c_base_adr == NULL)
        ||(handle->i2c_per->open_counter == 0   )  )
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return;
     }
 #endif
     // Check that slave address is 7 bits
-    PX_DBG_ASSERT(slave_adr < 0x80);
+    PX_LOG_ASSERT(slave_adr < 0x80);
     // Set new slave address
     handle->slave_adr = slave_adr;
 }

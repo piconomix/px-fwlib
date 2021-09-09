@@ -11,7 +11,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_lcd_st7565p_tse2g0330e.h : Truly TSE2G0330-E 128x64 monochrome LCD wtih Sitronix ST7565P driver configuration
     Author(s):      Pieter Conradie
@@ -47,4 +47,4 @@
 #define PX_LCD_CFG_ROT_180_DEG  1
 
 /// @}
-#endif // #ifndef __PX_LCD_ST7565P_TSE2G0330E_CFG_H__
+#endif

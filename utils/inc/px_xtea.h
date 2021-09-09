@@ -10,7 +10,7 @@
     Copyright (c) 2010 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_xtea.h : XTEA (eXtended Tiny Encryption Algorithm)
     Author(s):      Pieter Conradie
@@ -119,4 +119,4 @@ size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in,
 }
 #endif
 
-#endif // #ifndef __PX_XTEA_H__
+#endif

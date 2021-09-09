@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_cli_cmds_gpio.h : CLI Commands for GPIO
     Author(s):      Pieter Conradie
@@ -23,10 +23,10 @@
 #include "px_cli.h"
 #include "px_board.h"
 #include "px_gpio.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("cli_cmds_gpio");
+PX_LOG_NAME("cli_cmds_gpio");
 
 /* _____MACROS_______________________________________________________________ */
 

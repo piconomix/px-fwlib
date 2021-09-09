@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_gt511.h : ADH Tech GT-511 Fingerprint sensor driver
     Author(s):      Pieter Conradie
@@ -138,4 +138,4 @@ px_gt511_err_t px_gt511_set_template              (px_gt511_id_t id, uint8_t * t
 }
 #endif
 
-#endif // #ifndef __PX_GT511_H__
+#endif

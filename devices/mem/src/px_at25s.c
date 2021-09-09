@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_at25s.h : Adesto AT25S Serial Flash Driver
     Author(s):      Pieter Conradie
@@ -20,10 +20,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_at25s.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_at25s");
+PX_LOG_NAME("px_at25s");
 
 /// @name Read commands
 //@{
@@ -123,7 +123,7 @@ void px_at25s_rd(void *   buffer,
     uint8_t data[1];
 
     // See if specified address is out of bounds
-    PX_DBG_ASSERT(address <= PX_AT25S_ADR_MAX);
+    PX_LOG_ASSERT(address <= PX_AT25S_ADR_MAX);
     // Wait until Serial Flash is not busy
     while(!px_at25s_ready())
     {
@@ -222,25 +222,25 @@ void px_at25s_erase(px_at25s_block_t block,
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_4KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_4KB != 0)
         {
-            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+            PX_LOG_E("page nr %u is not on a erase block boundary", page);
         }
         break;
     case PX_AT25S_BLOCK_32KB:
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_32KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_32KB != 0)
         {
-            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+            PX_LOG_E("page nr %u is not on a erase block boundary", page);
         }
         break;
     case PX_AT25S_BLOCK_64KB :
         data[0] = PX_AT25S_CMD_BLOCK_ERASE_64KB;
         if(page % PX_AT25S_PAGES_PER_BLOCK_64KB != 0)
         {
-            PX_DBG_ERR("page nr %u is not on a erase block boundary", page);
+            PX_LOG_E("page nr %u is not on a erase block boundary", page);
         }
         break;
     default:
-        PX_DBG_ERR("Invalid block size specified");
+        PX_LOG_E("Invalid block size specified");
         return;
     }
     // Calculate address

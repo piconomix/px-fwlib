@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_gfx_cfg.h : Simple monochrome graphics library config
     Author(s):      Pieter Conradie
@@ -37,4 +37,4 @@
 
 /* _____DEFINITIONS__________________________________________________________ */
 
-#endif // #ifndef __PX_GFX_CFG_H__
+#endif

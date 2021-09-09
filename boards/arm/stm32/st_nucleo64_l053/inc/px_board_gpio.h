@@ -10,7 +10,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
     Title:          board.h : Nucleo-L053 board GPIO pin definitions
     Author(s):      Pieter Conradie
@@ -73,4 +73,4 @@ static const px_gpio_handle_t px_gpio_btn_blue       = {PX_GPIO_BTN_BLUE};
 }
 #endif
 
-#endif // #ifndef __PX_BOARD_GPIO_H__
+#endif

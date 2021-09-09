@@ -10,7 +10,7 @@
     Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_pgm_P.h : Support for constant data stored in program memory
     Author(s):      Pieter Conradie
@@ -216,4 +216,4 @@ extern "C" {
 }
 #endif
 
-#endif // #ifndef __PX_PGM_P_H__
+#endif

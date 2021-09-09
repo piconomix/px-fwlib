@@ -10,7 +10,7 @@
     Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_one_wire.h : Dallas/Maxim 1-Wire bit-bang driver
     Author(s):      Pieter Conradie
@@ -122,4 +122,4 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
 }
 #endif
 
-#endif // #ifndef __PX_ONE_WIRE_H__
+#endif

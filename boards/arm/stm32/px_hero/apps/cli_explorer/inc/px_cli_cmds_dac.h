@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_cli_cmds_dac.h : CLI commands for DAC
     Author(s):      Pieter Conradie
@@ -41,4 +41,4 @@ extern const px_cli_group_t px_cli_group_dac;
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_DAC_H__
+#endif

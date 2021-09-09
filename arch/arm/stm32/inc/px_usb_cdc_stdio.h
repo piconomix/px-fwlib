@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_usb_cdc_stdio.h : Module to redirect stdio output (e.g. printf) to a USB CDC port
     Author(s):      Pieter Conradie
@@ -148,4 +148,4 @@ uint16_t _px_usb_cdc_stdio_get_tx_data(uint8_t * data, uint16_t nr_of_bytes);
 }
 #endif
 
-#endif // #ifndef __PX_USB_CDC_STDIO_H__
+#endif

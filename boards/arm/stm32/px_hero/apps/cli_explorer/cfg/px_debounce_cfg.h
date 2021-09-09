@@ -10,7 +10,7 @@
     Copyright (c) 2015 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_debounce_cfg.h : Digital debounce module configuration
     Author(s):      Pieter Conradie
@@ -42,4 +42,4 @@
 #define PX_DEBOUNCE_CFG_LONG_COUNT 0
 
 /// @}
-#endif // #ifndef __PX_DEBOUNCE_CFG_H__
+#endif

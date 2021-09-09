@@ -10,7 +10,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_crc8.h : 8-bit CRC calculator
     Author(s):      Pieter Conradie
@@ -107,4 +107,4 @@ uint8_t px_crc8_update_data(uint8_t crc, const void * data, size_t nr_of_bytes);
 }
 #endif
 
-#endif // #ifndef __PX_CRC8_H__
+#endif

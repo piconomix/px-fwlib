@@ -10,7 +10,7 @@
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          Piconomix STM32 Hero Board basic GPIO example
     Author(s):      Pieter Conradie
@@ -40,4 +40,4 @@ extern "C" {
 }
 #endif
 
-#endif // #ifndef __MAIN_H__
+#endif

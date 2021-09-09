@@ -52,22 +52,22 @@ STACK_SIZE = 1024
 HEAP_SIZE  = 1024
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
-PX_LIB = ../../../../..
+PX_FWLIB = ../../../../..
 
 # (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
 ARCH = arch/arm/stm32
 
 # (3c) Path to board support package (relative to Makefile)
-BSP = $(PX_LIB)/boards/arm/stm32/px_hero
+BSP = $(PX_FWLIB)/boards/arm/stm32/px_hero
 
 # (3d) Path to ST STMCube library (relative to Makefile)
-STMCUBE = $(PX_LIB)/libs/STM32Cube/L0
+STMCUBE = $(PX_FWLIB)/libs/STM32Cube/L0
 
 # (3e) Path to ST STMCube USB library (relative to Makefile)
-STMCUBE_USB = $(PX_LIB)/libs/STM32Cube_USB
+STMCUBE_USB = $(PX_FWLIB)/libs/STM32Cube_USB
 
 # (3f) Path to ChaN's FatFs library (relative to Makefile)
-CHAN_FATFS = $(PX_LIB)/libs/ChaN_FatFs
+CHAN_FATFS = $(PX_FWLIB)/libs/ChaN_FatFs
 
 # (4a) List C source files WITH PATHS (relative to Makefile) here
 SRC += gpio_ext_int.c
@@ -101,21 +101,21 @@ INCDIRS += inc
 INCDIRS += res
 INCDIRS += src
 INCDIRS += $(BSP)/inc
-INCDIRS += $(PX_LIB)
-INCDIRS += $(PX_LIB)/$(ARCH)/inc
-INCDIRS += $(PX_LIB)/common/inc
-INCDIRS += $(PX_LIB)/comms/inc
-INCDIRS += $(PX_LIB)/data/inc
-INCDIRS += $(PX_LIB)/devices/comms/inc
-INCDIRS += $(PX_LIB)/devices/display/inc
-INCDIRS += $(PX_LIB)/devices/general/inc
-INCDIRS += $(PX_LIB)/devices/mem/inc
-INCDIRS += $(PX_LIB)/devices/rtc/inc
-INCDIRS += $(PX_LIB)/devices/sensor/inc
-INCDIRS += $(PX_LIB)/gfx/inc
-INCDIRS += $(PX_LIB)/gfx/fonts/inc
-INCDIRS += $(PX_LIB)/gfx/images/inc
-INCDIRS += $(PX_LIB)/utils/inc
+INCDIRS += $(PX_FWLIB)
+INCDIRS += $(PX_FWLIB)/$(ARCH)/inc
+INCDIRS += $(PX_FWLIB)/common/inc
+INCDIRS += $(PX_FWLIB)/comms/inc
+INCDIRS += $(PX_FWLIB)/data/inc
+INCDIRS += $(PX_FWLIB)/devices/comms/inc
+INCDIRS += $(PX_FWLIB)/devices/display/inc
+INCDIRS += $(PX_FWLIB)/devices/general/inc
+INCDIRS += $(PX_FWLIB)/devices/mem/inc
+INCDIRS += $(PX_FWLIB)/devices/rtc/inc
+INCDIRS += $(PX_FWLIB)/devices/sensor/inc
+INCDIRS += $(PX_FWLIB)/gfx/inc
+INCDIRS += $(PX_FWLIB)/gfx/fonts/inc
+INCDIRS += $(PX_FWLIB)/gfx/images/inc
+INCDIRS += $(PX_FWLIB)/utils/inc
 INCDIRS += $(CHAN_FATFS)
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
@@ -125,7 +125,7 @@ INCDIRS += $(STMCUBE_USB)/Class/CDC/Inc
 INCDIRS += $(STMCUBE_USB)/Core/Inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-#CDEFS += PX_DBG=0
+#CDEFS += PX_LOG=0
 CDEFS += STM32L0
 CDEFS += STM32L072xx
 #CDEFS += USE_FULL_LL_DRIVER
@@ -220,7 +220,7 @@ LDFLAGS += -Wl,-gc-sections,--relax
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
-LDFLAGS += -T $(PX_LIB)/$(ARCH)/px_stm32_flash.ld
+LDFLAGS += -T $(PX_FWLIB)/$(ARCH)/px_stm32_flash.ld
 
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
@@ -241,4 +241,4 @@ GDB_SCRIPT ?= init.gdb
 
 #===============================================================================
 
-include $(PX_LIB)/$(ARCH)/MakeRules.mk
+include $(PX_FWLIB)/$(ARCH)/MakeRules.mk

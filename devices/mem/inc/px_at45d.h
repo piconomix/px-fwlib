@@ -10,7 +10,7 @@
     Copyright (c) 2010 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_at45d.h : Adesto AT45D Serial DataFlash Driver
     Author(s):      Pieter Conradie
@@ -324,4 +324,4 @@ bool px_at45d_set_page_size_to_pwr_of_two(void);
 }
 #endif
 
-#endif // #ifndef __PX_AT45D_H__
+#endif

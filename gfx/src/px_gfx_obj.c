@@ -8,7 +8,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_gfx_obj.h : Graphical object layer on drawing layer
     Author(s):      Pieter Conradie
@@ -21,10 +21,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx_obj.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx_obj");
+PX_LOG_NAME("px_gfx_obj");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -43,16 +43,16 @@ px_gfx_obj_handle_t _px_gfx_obj_create(px_gfx_obj_type_t          obj_type,
 {
     px_gfx_obj_handle_t obj;
 
-    PX_DBG_ASSERT(size >= sizeof(*obj));
+    PX_LOG_ASSERT(size >= sizeof(*obj));
 
     // Allocate memory for object and set fields to zero
     obj = calloc(1, size);
-    PX_DBG_ASSERT(obj != NULL);
+    PX_LOG_ASSERT(obj != NULL);
     // Set object type
     obj->obj_type = obj_type;
     // Set defaults
-    obj->visible  = true;
-    obj->update     = true;        
+    obj->visible = true;
+    obj->update  = true;
     // Set pointer to object event handler function
     obj->event_handler = event_handler;
 
@@ -61,49 +61,35 @@ px_gfx_obj_handle_t _px_gfx_obj_create(px_gfx_obj_type_t          obj_type,
 
 bool px_gfx_obj_visible_get(px_gfx_obj_handle_t obj)
 {
-    PX_DBG_ASSERT(obj != NULL);
+    PX_LOG_ASSERT(obj != NULL);
 
     return obj->visible;
 }
 
-void px_gfx_obj_visible_set(px_gfx_obj_handle_t obj)
+void px_gfx_obj_visible_set(px_gfx_obj_handle_t obj,  bool flag)
 {
-    PX_DBG_ASSERT(obj != NULL);
+    PX_LOG_ASSERT(obj != NULL);
 
-    obj->visible = true;
-}
-
-void px_gfx_obj_visible_clr(px_gfx_obj_handle_t obj)
-{
-    PX_DBG_ASSERT(obj != NULL);
-
-    obj->visible = false;
+    obj->visible = flag;
 }
 
 bool px_gfx_obj_update_get(px_gfx_obj_handle_t obj)
 {
-    PX_DBG_ASSERT(obj != NULL);
+    PX_LOG_ASSERT(obj != NULL);
 
     return obj->update;
 }
 
-void px_gfx_obj_update_set(px_gfx_obj_handle_t obj)
+void px_gfx_obj_update_set(px_gfx_obj_handle_t obj,  bool flag)
 {
-    PX_DBG_ASSERT(obj != NULL);
+    PX_LOG_ASSERT(obj != NULL);
 
     obj->update = true;
 }
 
-void px_gfx_obj_update_clr(px_gfx_obj_handle_t obj)
-{
-    PX_DBG_ASSERT(obj != NULL);
-
-    obj->update = false;
-}
-
 void px_gfx_obj_draw(px_gfx_obj_handle_t obj)
 {
-    PX_DBG_ASSERT(obj != NULL);
+    PX_LOG_ASSERT(obj != NULL);
 
     if(obj->visible && obj->event_handler)
     {

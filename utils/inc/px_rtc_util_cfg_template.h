@@ -10,7 +10,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_rtc.h : Software Real Time Clock module
     Author(s):      Pieter Conradie
@@ -42,4 +42,4 @@
 #define PX_RTC_UTIL_CFG_DAY_OF_WEEK         0
 
 /// @}
-#endif // #ifndef __PX_RTC_UTIL_CFG_H__
+#endif

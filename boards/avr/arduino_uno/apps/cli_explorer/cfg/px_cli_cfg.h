@@ -10,7 +10,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_cli_cfg.h : CLI Peripheral Driver configuration
     Author(s):      Pieter Conradie
@@ -62,4 +62,4 @@
 #define PX_CLI_CFG_CHAR_ENTER          PX_VT100_CHAR_CR
 //#define PX_CLI_CFG_CHAR_ENTER          PX_VT100_CHAR_LF
 
-#endif // #ifndef __PX_CLI_CFG_H__
+#endif

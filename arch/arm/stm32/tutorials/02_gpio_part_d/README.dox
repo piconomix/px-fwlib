@@ -22,8 +22,8 @@ and set PH0 low to disable the LED.
 ST provides the STM32Cube library that defines a HAL (Hardware Abstraction
 Layer) and LL (Low Level) API to access the peripherals. See:
 
-    px-lib/libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_ll_bus.h
-    px-lib/libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_ll_gpio.h
+    px-fwlib/libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_ll_bus.h
+    px-fwlib/libs/STM32Cube/L0/Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_ll_gpio.h
 
 @tip_s
 Part A, B and C was created as an introduction to understand how to use the 

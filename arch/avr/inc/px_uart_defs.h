@@ -10,7 +10,7 @@
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
     Title:          px_uart.h : UART peripheral compatibility definitions
     Author(s):      Pieter Conradie
@@ -33,4 +33,4 @@
 #endif
 
 
-#endif // #ifndef __PX_UART_DEFS_H__
+#endif

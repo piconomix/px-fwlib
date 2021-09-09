@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_gfx.h : Basic monochrome graphics library
     Author(s):      Pieter Conradie
@@ -28,8 +28,8 @@
  *  - gfx/inc/px_gfx.h 
  *  - gfx/inc/px_gfx_cfg_template.h
  *  - gfx/src/px_gfx.c 
- *  - gfx/inc/px_gfx_display.h 
- *  - gfx/src/px_gfx_display_st7567_jhd12864.c 
+ *  - gfx/inc/px_gfx_disp.h 
+ *  - gfx/src/px_gfx_disp_st7567_jhd12864.c 
  *  
  *  Tool to convert images and fonts:
  *  [Ruison.com LCD Image Converter](https://github.com/riuson/lcd-image-converter) 
@@ -148,8 +148,8 @@ typedef struct
 {
     px_gfx_xy_t     x;          ///< Left
     px_gfx_xy_t     y;          ///< Top
-    px_gfx_xy_t     width;      ///< Right
-    px_gfx_xy_t     height;     ///< Bottom
+    px_gfx_xy_t     width;      ///< Width
+    px_gfx_xy_t     height;     ///< Height
     px_gfx_xy_ref_t xy_ref;     ///< Coordinate reference
 } px_gfx_view_port_t;
 
@@ -400,4 +400,4 @@ void px_gfx_printf(px_gfx_xy_t  x,
 }
 #endif
 
-#endif // #ifndef __PX_GFX_H__
+#endif

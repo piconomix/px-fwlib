@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_at25s_cfg.h : AT25S Peripheral Driver configuration
     Author(s):      Pieter Conradie
@@ -33,4 +33,4 @@
 #define PX_AT25S_CFG_DEVICE    PX_CFG_DEV_AT25SF041
 
 /// @}
-#endif // #ifndef __PX_AT25S_CFG_H__
+#endif

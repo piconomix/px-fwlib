@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_dac_cfg.h : DAC Peripheral Driver configuration
     Author(s):      Pieter Conradie
@@ -39,4 +39,4 @@
 #define PX_DAC_CFG_DAC1_CH2_EN  0
 
 /// @}
-#endif // #ifndef __PX_DAC_CFG_H__
+#endif

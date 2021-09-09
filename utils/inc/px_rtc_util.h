@@ -10,7 +10,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_rtc_util.h : Software RTC and utility functions
     Author(s):      Pieter Conradie
@@ -314,6 +314,18 @@ void px_rtc_util_sec_since_y2k_to_date_time(px_rtc_sec_since_y2k_t sec_since_y2k
                                             px_rtc_date_time_t *   date_time);
 
 /**
+ *  Convert seconds since Y2K to Unix epoch
+ *
+ *  @param sec_since_y2k Seconds since Y2K (2000-01-01 00:00:00)
+ *
+ *  @return uint32_t     Seconds Unix epoch (1970-01-01 00:00:00)
+ */
+static inline uint32_t px_rtc_util_sec_since_y2k_to_unix_epoch(px_rtc_sec_since_y2k_t sec_since_y2k)
+{
+    return sec_since_y2k + 946684800;
+}
+
+/**
  *  Increment a date-time structure with a specified number of years, months,
  *  days, hours, minutes and seconds.
  *
@@ -370,4 +382,4 @@ void px_rtc_util_report_time(const px_rtc_date_time_t * date_time);
 }
 #endif
 
-#endif // #ifndef __PX_RTC_UTIL_H__
+#endif

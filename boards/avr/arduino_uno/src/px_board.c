@@ -8,7 +8,7 @@
     Copyright (c) 2015 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_board.h : Arduino UNO R3 Board
     Author(s):      Pieter Conradie
@@ -24,10 +24,10 @@
 #include "px_gpio_init_port_b.h"
 #include "px_gpio_init_port_c.h"
 #include "px_gpio_init_port_d.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("board");
+PX_LOG_NAME("board");
 
 // Check that correct 'px_board.h' has been included
 #ifndef BOARD_AVR_ARDUINO_UNO
@@ -90,7 +90,7 @@ void px_board_spi_cs_lo(uint8_t cs_id)
     case PX_BOARD_SPI_D9:
         PX_GPIO_PIN_SET_LO(PX_GPIO_D9);      break;
     default:
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         break;
     }
 }
@@ -119,7 +119,7 @@ void px_board_spi_cs_hi(uint8_t cs_id)
     case PX_BOARD_SPI_D9:
         PX_GPIO_PIN_SET_HI(PX_GPIO_D9);      break;
     default:
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         break;
     }
 }

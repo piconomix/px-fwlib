@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_log_fs_cfg.h : Log file system configuration
     Author(s):      Pieter Conradie
@@ -46,4 +46,4 @@
 #define PX_LOG_FS_CFG_STOP_WR_WHEN_FULL 0
 
 /// @}
-#endif // #ifndef __PX_LOG_FS_CFG_H__
+#endif

@@ -10,7 +10,7 @@
     Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_gpio.h : ST STM32 GPIO driver
     Author(s):      Pieter Conradie
@@ -570,4 +570,4 @@ static inline uint32_t px_gpio_reg_afrh_init(const px_gpio_handle_t * gpio)
 }
 #endif
 
-#endif // #ifndef __PX_GPIO_H__
+#endif

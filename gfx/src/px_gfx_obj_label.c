@@ -8,7 +8,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_gfx_obj_label.h : Graphical text label object
     Author(s):      Pieter Conradie
@@ -21,10 +21,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_gfx_obj_label.h"
 #include "px_gfx_fonts.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_gfx_obj_label");
+PX_LOG_NAME("px_gfx_obj_label");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -43,12 +43,12 @@ static void px_gfx_obj_label_event_handler(px_gfx_obj_handle_t obj,
     const px_gfx_obj_label_prop_t * prop;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj             != NULL);
-    PX_DBG_ASSERT(obj->obj_type   == PX_GFX_OBJ_TYPE_LABEL);
+    PX_LOG_ASSERT(obj             != NULL);
+    PX_LOG_ASSERT(obj->obj_type   == PX_GFX_OBJ_TYPE_LABEL);
 
     // Get pointer to properties
     prop = obj_label->prop;
-    PX_DBG_ASSERT(prop != NULL);
+    PX_LOG_ASSERT(prop != NULL);
 
     // Handle event
     switch(event)
@@ -79,8 +79,8 @@ px_gfx_obj_handle_t px_gfx_obj_label_create(const px_gfx_obj_label_prop_t * prop
     obj_label = (px_gfx_obj_label_t *)_px_gfx_obj_create(PX_GFX_OBJ_TYPE_LABEL,
                                                          sizeof(*obj_label), 
                                                          &px_gfx_obj_label_event_handler);
-    PX_DBG_ASSERT(obj_label != NULL);
-    PX_DBG_ASSERT(prop      != NULL);
+    PX_LOG_ASSERT(obj_label != NULL);
+    PX_LOG_ASSERT(prop      != NULL);
 
     // Set pointer to properties
     obj_label->prop = prop;
@@ -93,8 +93,8 @@ const px_gfx_obj_label_prop_t * px_gfx_obj_label_prop_get(const px_gfx_obj_handl
     px_gfx_obj_label_t * obj_label = (px_gfx_obj_label_t *)obj;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_LABEL);
+    PX_LOG_ASSERT(obj           != NULL);
+    PX_LOG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_LABEL);
     
     return obj_label->prop;
 }
@@ -105,8 +105,8 @@ void px_gfx_obj_label_prop_set(px_gfx_obj_handle_t             obj,
     px_gfx_obj_label_t * obj_label = (px_gfx_obj_label_t *)obj;
 
     // Sanity checks
-    PX_DBG_ASSERT(obj           != NULL);
-    PX_DBG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_LABEL);
+    PX_LOG_ASSERT(obj           != NULL);
+    PX_LOG_ASSERT(obj->obj_type == PX_GFX_OBJ_TYPE_LABEL);
 
     obj_label->prop = prop;
 }

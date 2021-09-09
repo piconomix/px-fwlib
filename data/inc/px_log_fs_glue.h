@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_log_fs_glue.h : Physical device glue layer for Log FS
     Author(s):      Pieter Conradie
@@ -90,4 +90,4 @@ void px_log_fs_glue_erase_block(uint16_t page);
 }
 #endif
 
-#endif // #ifndef __PX_LOG_FS_GLUE_H__
+#endif

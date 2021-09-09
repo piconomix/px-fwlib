@@ -10,7 +10,7 @@
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_ring_buf_macros.h : Tiny, macro based, circular buffer implementation
     Author(s):      Pieter Conradie
@@ -171,4 +171,4 @@ struct \
 }
 #endif
 
-#endif // #ifndef __PX_RING_BUFFER_MACROS_H__
+#endif

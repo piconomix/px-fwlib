@@ -10,7 +10,7 @@
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          24Cxx I2C EEPROM Driver
     Author(s):      pconradi
@@ -112,4 +112,4 @@ extern bool px_eeprom_24cxx_wr_u8(uint16_t adr, uint8_t data);
 }
 #endif
 
-#endif // #ifndef __PX_EEPROM_24CXX_H__
+#endif

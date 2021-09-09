@@ -8,7 +8,7 @@
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
     Title:          px_uart.h : UART peripheral driver
     Author(s):      Pieter Conradie
@@ -22,10 +22,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_uart.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_uart_polled");
+PX_LOG_NAME("px_uart_polled");
 
 #ifndef PX_UART_DEFAULT_BAUD
 #define PX_UART_DEFAULT_BAUD   115200ul

@@ -8,7 +8,7 @@
     Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_sd.h : SD Card Driver
     Author(s):      Pieter Conradie
@@ -22,10 +22,10 @@
 #include "px_sd.h"
 #include "px_spi.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_sd");
+PX_LOG_NAME("px_sd");
 
 // SD SPI commands
 #define PX_SD_CMD0_GO_IDLE_STATE           0   // Reset all cards to idle state
@@ -170,7 +170,7 @@ static bool px_sd_wait_ready(void)
         px_board_delay_us(100);
     }
     // Timed-out
-    PX_DBG_ERR("Timed-out waiting for SD card to be ready");
+    PX_LOG_E("Timed-out waiting for SD card to be ready");
     return false;
 }
 
@@ -189,7 +189,7 @@ static uint8_t px_sd_tx_cmd_rx_resp_r1(uint8_t cmd, uint32_t arg)
         // start bit = 1 or any error bit set? (ignore idle state bit)
         if((r1 & ~(1<<PX_SD_RESP_R1_IDLE_STATE)) != 0)
         {
-            PX_DBG_ERR("CMD55 received R1 = 0x%02x", r1);
+            PX_LOG_E("CMD55 received R1 = 0x%02x", r1);
             return r1;
         }
     
@@ -200,7 +200,7 @@ static uint8_t px_sd_tx_cmd_rx_resp_r1(uint8_t cmd, uint32_t arg)
     // End previous transaction
     px_sd_spi_cs_end();
 
-    PX_DBG_INFO("CMD%d(%08lX)", cmd, arg);
+    PX_LOG_D("CMD%d(%08lX)", cmd, arg);
 
     // Select SD card to start next transaction
     px_sd_spi_cs_lo();
@@ -251,11 +251,11 @@ static uint8_t px_sd_tx_cmd_rx_resp_r1(uint8_t cmd, uint32_t arg)
     // Timeout?
     if(retry == 0)
     {
-        PX_DBG_ERR("Timed out waiting for R1 response (received 0x%02x)", r1);
+        PX_LOG_E("Timed out waiting for R1 response (received 0x%02x)", r1);
     }
     else
     {
-        PX_DBG_INFO("R1 = 0x%02X", r1);
+        PX_LOG_D("R1 = 0x%02X", r1);
     }
 
     // Return response
@@ -274,7 +274,7 @@ static uint8_t px_sd_rx_data_block(uint8_t * data, size_t nr_of_bytes)
         data_token = px_sd_spi_rd_u8();
         if(data_token != 0xff)
         {
-            PX_DBG_INFO("Data token = %02hX", data_token);
+            PX_LOG_D("Data token = %02hX", data_token);
             break;
         }
         // Wait 100 us
@@ -283,7 +283,7 @@ static uint8_t px_sd_rx_data_block(uint8_t * data, size_t nr_of_bytes)
     // Timeout?
     if(retry == 0)
     {
-        PX_DBG_ERR("Timed-out waiting for data token");
+        PX_LOG_E("Timed-out waiting for data token");
         return 0xff;
     }
 
@@ -293,13 +293,16 @@ static uint8_t px_sd_rx_data_block(uint8_t * data, size_t nr_of_bytes)
     // Receive CRC
     px_crc_hi = px_sd_spi_rd_u8();
     px_crc_lo = px_sd_spi_rd_u8();
-#if PX_DBG_LEVEL_INFO		
-    PX_DBG_INFO("CRC = %02hX %02hX", px_crc_hi, px_crc_lo);
-#else
-		// Eliminate compiler about unused variables
-		(void)px_crc_hi;
-		(void)px_crc_lo;
-#endif		
+    if(PX_LOG_LEVEL_IS_D())
+    {
+        PX_LOG_D("CRC = %02hX %02hX", px_crc_hi, px_crc_lo);
+    }
+    else
+    {
+		// Eliminate compiler warning about unused variables
+        (void)px_crc_hi;
+        (void)px_crc_lo;
+    }
 
     return data_token;
 }
@@ -328,7 +331,7 @@ static uint8_t px_sd_tx_data_block(const uint8_t * data,
     
     // Return data response token
     data_token = px_sd_spi_rd_u8();
-    PX_DBG_INFO("Data response token = 0x%02X", data_token);
+    PX_LOG_D("Data response token = 0x%02X", data_token);
     return data_token;
 }
 
@@ -356,7 +359,7 @@ bool px_sd_reset(void)
     px_board_delay_us(1000);
     
     // Card requires at least 74 clocks to start up
-    PX_DBG_INFO("80 Clocks");
+    PX_LOG_D("80 Clocks");
     for(retry=10; retry!=0 ; retry--)
     {
         px_sd_spi_rd_u8();
@@ -376,7 +379,7 @@ bool px_sd_reset(void)
     // Timeout?
     if(retry == 0)
     {
-        PX_DBG_ERR("Unable to put SD Card in idle state (R1 = 0x%02X)", r1);
+        PX_LOG_E("Unable to put SD Card in idle state (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return false;
     }
@@ -393,7 +396,7 @@ bool px_sd_reset(void)
     if(r1 == (1<<PX_SD_RESP_R1_IDLE_STATE))
     {
         // Ver 2.00 or later SD Card
-        PX_DBG_INFO("Ver 2.00 or later SD Card");
+        PX_LOG_D("Ver 2.00 or later SD Card");
         // Receive rest of R7 response
         px_sd_spi_rd_data(px_sd_rx_data, 4);        
         if(  (px_sd_rx_data[2] != 0x01)    // Voltage accepted 2.7-3.6V
@@ -402,11 +405,11 @@ bool px_sd_reset(void)
             // Report error
             if(px_sd_rx_data[2] != 0x01)
             {
-                PX_DBG_ERR("Voltage not accepted (received 0x%02X)", px_sd_rx_data[2]);
+                PX_LOG_E("Voltage not accepted (received 0x%02X)", px_sd_rx_data[2]);
             }
             if(px_sd_rx_data[3] != 0xaa)
             {
-                PX_DBG_ERR("Expected 0xaa, but received 0x%02X echo", px_sd_rx_data[3]);
+                PX_LOG_E("Expected 0xaa, but received 0x%02X echo", px_sd_rx_data[3]);
             }
             px_sd_spi_cs_end();
             return false;
@@ -416,7 +419,7 @@ bool px_sd_reset(void)
         r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD59_CRC_ON_OFF, 0);
         if(r1 != (1<<PX_SD_RESP_R1_IDLE_STATE))
         {
-            PX_DBG_ERR("Incorrect response to CMD59 (R1 = 0x%02X)", r1);
+            PX_LOG_E("Incorrect response to CMD59 (R1 = 0x%02X)", r1);
             px_sd_spi_cs_end();
             return false;
         }
@@ -438,24 +441,24 @@ bool px_sd_reset(void)
                 {
                     // Receive rest of R3 response
                     px_sd_spi_rd_data(px_sd_rx_data, 4); 
-                    PX_DBG_INFO("OCR = 0x%02x%02x%02x%02x", 
-                               px_sd_rx_data[0], px_sd_rx_data[1], 
-                               px_sd_rx_data[2], px_sd_rx_data[3]);
+                    PX_LOG_D("OCR = 0x%02x%02x%02x%02x",
+                             px_sd_rx_data[0], px_sd_rx_data[1],
+                             px_sd_rx_data[2], px_sd_rx_data[3]);
                     // Is Card Capacity Status (CCS) bit 30 set?
                     if(px_sd_rx_data[0] & (1<<6))
                     {
-                        PX_DBG_INFO("Ver 2.00 HCSD or XCSD Card");
+                        PX_LOG_D("Ver 2.00 HCSD or XCSD Card");
                         px_sd_card_type = PX_SD_CARD_TYPE_VER_2_HCSD_XCSD;
                     }
                     else
                     {
-                        PX_DBG_INFO("Ver 2.00 SCSD Card");
+                        PX_LOG_D("Ver 2.00 SCSD Card");
                         px_sd_card_type = PX_SD_CARD_TYPE_VER_2_SCSD;
                     }
                 }
                 else
                 {
-                    PX_DBG_ERR("Incorrect response to CMD58 (R1 = 0x%02X)", r1);
+                    PX_LOG_E("Incorrect response to CMD58 (R1 = 0x%02X)", r1);
                     px_sd_spi_cs_end();
                     return false;
                 }
@@ -467,7 +470,7 @@ bool px_sd_reset(void)
         // Timed-out?
         if(wait == 0)
         {
-            PX_DBG_ERR("Timed out waiting for ACMD41 init to finish");
+            PX_LOG_E("Timed out waiting for ACMD41 init to finish");
             px_sd_spi_cs_end();
             return false;
         }
@@ -475,13 +478,13 @@ bool px_sd_reset(void)
     else
     {
         // Ver 1.xx SD Card (or not?)
-        PX_DBG_INFO("Ver 1.xx SD Card (or not?)");
+        PX_LOG_D("Ver 1.xx SD Card (or not?)");
 
         // Explicitely disable CRC, even though spec says that it is disabled by default
         r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD59_CRC_ON_OFF, 0);
         if(r1 != (1<<PX_SD_RESP_R1_IDLE_STATE))
         {
-            PX_DBG_ERR("Incorrect response to CMD59 (R1 = 0x%02X)", r1);
+            PX_LOG_E("Incorrect response to CMD59 (R1 = 0x%02X)", r1);
             px_sd_spi_cs_end();
             return false;
         }
@@ -506,7 +509,7 @@ bool px_sd_reset(void)
         // Timed-out?
         if(wait == 0)
         {
-            PX_DBG_ERR("Timed out waiting for ACMD41 init to finish (R1 = 0x%02X)", r1);
+            PX_LOG_E("Timed out waiting for ACMD41 init to finish (R1 = 0x%02X)", r1);
             px_sd_spi_cs_end();
             return false;
         }
@@ -515,11 +518,11 @@ bool px_sd_reset(void)
         r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD16_SET_BLOCKLEN, PX_SD_BLOCK_SIZE);
         if (r1 != 0)
         {
-            PX_DBG_ERR("Incorrect response to CMD16 (R1 = 0x%02X)", r1);
+            PX_LOG_E("Incorrect response to CMD16 (R1 = 0x%02X)", r1);
             px_sd_spi_cs_end();
             return false;
         }
-        PX_DBG_INFO("Ver 1.xx SD Card");
+        PX_LOG_D("Ver 1.xx SD Card");
         px_sd_card_type = PX_SD_CARD_TYPE_VER_1_SD;
     }
 
@@ -542,7 +545,7 @@ bool px_sd_read_cid(px_sd_cid_t * cid)
     // any error bit set?
     if(r1 != 0)
     {
-        PX_DBG_ERR("Incorrect response to CMD10 (R1 = 0x%02X)", r1);
+        PX_LOG_E("Incorrect response to CMD10 (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return false;
     }
@@ -570,7 +573,7 @@ bool px_sd_read_csd(px_sd_csd_t * csd)
     // any error bit set?
     if(r1 != 0)
     {
-        PX_DBG_ERR("Incorrect response to CMD9 (R1 = 0x%02X)", r1);
+        PX_LOG_E("Incorrect response to CMD9 (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return false;
     }
@@ -579,18 +582,19 @@ bool px_sd_read_csd(px_sd_csd_t * csd)
     data_token = px_sd_rx_data_block((uint8_t *) csd, sizeof(*csd));
     if(data_token != PX_SD_TOKEN_DATA_BLOCK_START)
     {
-        PX_DBG_ERR("Incorrect data token (received 0x%02X)", data_token);
+        PX_LOG_E("Incorrect data token (received 0x%02X)", data_token);
         px_sd_spi_cs_end();
         return false;
     }
 
     px_sd_spi_cs_end();
 
-#if PX_DBG_LEVEL_INFO
-    PX_DBG_INFO("CSD:");
-    PX_DBG_TRACE_DATA(csd, sizeof(px_sd_csd_t));
-    PX_DBG_TRACE("\n");
-#endif
+    if(PX_LOG_LEVEL_IS_D())
+    {
+        PX_LOG_D("CSD: \t");
+        PX_LOG_TRACE_DATA(csd, sizeof(px_sd_csd_t));
+        PX_LOG_TRACE("\n");
+    }
     return true;
 }
 
@@ -605,7 +609,7 @@ bool px_sd_get_status(uint16_t * status)
     // any error bit set?
     if(PX_BIT_IS_HI(r1, PX_SD_RESP_R1_START_BIT))
     {
-        PX_DBG_ERR("Incorrect response to CMD13 (R1 = 0x%02X)", r1);
+        PX_LOG_E("Incorrect response to CMD13 (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return false;
     }
@@ -626,23 +630,23 @@ uint32_t px_sd_get_capacity_in_blocks(const px_sd_csd_t * csd)
     uint32_t capacity = 0;
     uint8_t  n;
 
-    PX_DBG_INFO("csd_structure = %02X", csd->csd_structure);
+    PX_LOG_D("csd_structure = %02X", csd->csd_structure);
     if(csd->csd_structure == 0) // CSD Structure version 1.0?
     {
-        PX_DBG_INFO("read_bl_len    = %02hX", csd->read_bl_len);
-        PX_DBG_INFO("c_size_mult_hi = %02hX", csd->ver.csd_1_0.c_size_mult_hi);
-        PX_DBG_INFO("c_size_mult_lo = %02hX", csd->ver.csd_1_0.c_size_mult_lo);
+        PX_LOG_D("read_bl_len    = %02hX", csd->read_bl_len);
+        PX_LOG_D("c_size_mult_hi = %02hX", csd->ver.csd_1_0.c_size_mult_hi);
+        PX_LOG_D("c_size_mult_lo = %02hX", csd->ver.csd_1_0.c_size_mult_lo);
 
         // READ_BL_LEN + C_SIZE_MULT + 2
         n =   csd->read_bl_len 
             + (csd->ver.csd_1_0.c_size_mult_hi << 1)
             + csd->ver.csd_1_0.c_size_mult_lo + 2;
 
-        PX_DBG_INFO("n = %02hX", n);
+        PX_LOG_D("n = %02hX", n);
 
-        PX_DBG_INFO("c_size_hi  = %02hX", csd->ver.csd_1_0.c_size_hi);
-        PX_DBG_INFO("c_size_mid = %02hX", csd->ver.csd_1_0.c_size_mid);
-        PX_DBG_INFO("c_size_lo  = %02hX", csd->ver.csd_1_0.c_size_lo);
+        PX_LOG_D("c_size_hi  = %02hX", csd->ver.csd_1_0.c_size_hi);
+        PX_LOG_D("c_size_mid = %02hX", csd->ver.csd_1_0.c_size_mid);
+        PX_LOG_D("c_size_lo  = %02hX", csd->ver.csd_1_0.c_size_lo);
 
         // C_SIZE + 1
         capacity = (   ((uint16_t)csd->ver.csd_1_0.c_size_hi << 10)
@@ -650,31 +654,31 @@ uint32_t px_sd_get_capacity_in_blocks(const px_sd_csd_t * csd)
                      | (csd->ver.csd_1_0.c_size_lo                )  )
                    + 1;
 
-        PX_DBG_INFO("capacity = %08lX", capacity);
+        PX_LOG_D("capacity = %08lX", capacity);
 
         // (C_SIZE + 1) * 2^(READ_BL_LEN + C_SIZE_MULT + 2) / 512
         capacity = capacity << (n - 9);
 
-        PX_DBG_INFO("capacity = %08lX", capacity);
+        PX_LOG_D("capacity = %08lX", capacity);
     }
     else if(csd->csd_structure == 1) // CSD Structure version 2.0?
     {
-        PX_DBG_INFO("c_size_hi  = %02hX", csd->ver.csd_2_0.c_size_hi);
-        PX_DBG_INFO("c_size_mid = %02hX", csd->ver.csd_2_0.c_size_mid);
-        PX_DBG_INFO("c_size_lo  = %02hX", csd->ver.csd_2_0.c_size_lo);
+        PX_LOG_D("c_size_hi  = %02hX", csd->ver.csd_2_0.c_size_hi);
+        PX_LOG_D("c_size_mid = %02hX", csd->ver.csd_2_0.c_size_mid);
+        PX_LOG_D("c_size_lo  = %02hX", csd->ver.csd_2_0.c_size_lo);
 
         // C_SIZE + 1
         capacity =   ((uint32_t)csd->ver.csd_2_0.c_size_hi << 16)
                     | ((uint16_t)csd->ver.csd_2_0.c_size_mid << 8)
                     | (csd->ver.csd_2_0.c_size_lo + 1);
 
-        PX_DBG_INFO("capacity = %08lX", capacity);
+        PX_LOG_D("capacity = %08lX", capacity);
 
         // Memory capacity = (C_SIZE + 1) * 512 KByte
         // Size in blocks  = (C_SIZE + 1) * 512 KByte / 0.5 KByte
         capacity <<= 10;
 
-        PX_DBG_INFO("capacity = %08lX", capacity);
+        PX_LOG_D("capacity = %08lX", capacity);
     }
 
     return capacity;
@@ -685,7 +689,7 @@ bool px_sd_read_block(uint8_t * data, uint32_t block_adr)
     uint8_t r1;
     uint8_t data_token;
 
-    PX_DBG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
+    PX_LOG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
 
     // Standard Capacity card?
     if(px_sd_card_type != PX_SD_CARD_TYPE_VER_2_HCSD_XCSD)
@@ -700,7 +704,7 @@ bool px_sd_read_block(uint8_t * data, uint32_t block_adr)
     // any error bit set?
     if(r1 != 0)
     {
-        PX_DBG_ERR("Incorrect response to CMD17 (R1 = 0x%02X)", r1);
+        PX_LOG_E("Incorrect response to CMD17 (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return false;
     }
@@ -724,7 +728,7 @@ uint8_t px_sd_read_blocks(uint8_t * data, uint32_t block_adr, uint8_t nr_of_bloc
     uint8_t data_token;
     uint8_t blocks_read;
 
-    PX_DBG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
+    PX_LOG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
 
     if(nr_of_blocks == 0)
     {
@@ -755,7 +759,7 @@ uint8_t px_sd_read_blocks(uint8_t * data, uint32_t block_adr, uint8_t nr_of_bloc
     // any error bit set?
     if(r1 != 0)
     {
-        PX_DBG_ERR("Incorrect response to CMD18 (R1 = 0x%02X)", r1);
+        PX_LOG_E("Incorrect response to CMD18 (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return 0;
     }
@@ -784,7 +788,7 @@ bool px_sd_write_block(const uint8_t * data, uint32_t block_adr)
     uint8_t r1;
     uint8_t data_resp_token;
 
-    PX_DBG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
+    PX_LOG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
 
     // Standard Capacity card?
     if(px_sd_card_type != PX_SD_CARD_TYPE_VER_2_HCSD_XCSD)
@@ -799,7 +803,7 @@ bool px_sd_write_block(const uint8_t * data, uint32_t block_adr)
     // any error bit set?
     if(r1 != 0)
     {
-        PX_DBG_ERR("Incorrect response to CMD24 (R1 = 0x%02X)", r1);
+        PX_LOG_E("Incorrect response to CMD24 (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return false;
     }
@@ -810,7 +814,7 @@ bool px_sd_write_block(const uint8_t * data, uint32_t block_adr)
     // data token correct?
     if((data_resp_token & PX_SD_TOKEN_DATA_RESP_MASK) != PX_SD_TOKEN_DATA_RESP_DATA_OK)
     {
-        PX_DBG_ERR("Data response token = 0x%02X", data_resp_token);
+        PX_LOG_E("Data response token = 0x%02X", data_resp_token);
         px_sd_spi_cs_end();
         return false;
     }    
@@ -826,8 +830,8 @@ uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_
     uint8_t data_resp_token;
     uint8_t blocks_written;
 
-    PX_DBG_INFO("px_sd_write_blocks(%04X, %08lX, %hd)", data, block_adr, nr_of_blocks);
-    PX_DBG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
+    PX_LOG_D("px_sd_write_blocks(%04X, %08lX, %hd)", data, block_adr, nr_of_blocks);
+    PX_LOG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
 
 
     if(nr_of_blocks == 0)
@@ -858,7 +862,7 @@ uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_
     // any error bit set?
     if(r1 != 0)
     {
-        PX_DBG_ERR("Incorrect response to CMD25 (R1 = 0x%02X)", r1);
+        PX_LOG_E("Incorrect response to CMD25 (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return 0;
     }
@@ -869,7 +873,7 @@ uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_
     // any error bit set?
     if(r1 != 0)
     {
-        PX_DBG_ERR("Incorrect response to ACMD23 (R1 = 0x%02X)", r1);
+        PX_LOG_E("Incorrect response to ACMD23 (R1 = 0x%02X)", r1);
         px_sd_spi_cs_end();
         return 0;
     }
@@ -882,7 +886,7 @@ uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_
         // data token correct?
         if((data_resp_token & PX_SD_TOKEN_DATA_RESP_MASK) != PX_SD_TOKEN_DATA_RESP_DATA_OK)
         {
-            PX_DBG_ERR("Data response token = 0x%02X", data_resp_token);
+            PX_LOG_E("Data response token = 0x%02X", data_resp_token);
 
             // Send CMD12 to stop multiple block write operation
             px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD12_STOP_TRANSMISSION, 0);
@@ -902,7 +906,7 @@ uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_
     px_sd_spi_exchange_u8(PX_SD_TOKEN_DATA_BLOCK_STOP_MULT_WR);
     px_sd_spi_cs_end();
 
-    PX_DBG_INFO("%hd block(s) written", blocks_written);
+    PX_LOG_D("%hd block(s) written", blocks_written);
     return blocks_written;
 }
 

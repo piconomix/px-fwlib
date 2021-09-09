@@ -10,7 +10,7 @@
     Copyright (c) 2007 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_m41t00.h : Driver for an ST M41T00 Real Time Clock
     Author(s):      Pieter Conradie
@@ -100,4 +100,4 @@ bool px_m41t00_set_time(const px_m41t00_time_t * px_rtc_time);
 }
 #endif
 
-#endif // #ifndef __PX_RTC_M41T00_H__
+#endif

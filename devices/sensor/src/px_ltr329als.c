@@ -8,7 +8,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          Bosch LTR329ALS Barometric pressure sensor driver
     Author(s):      Pieter Conradie
@@ -22,10 +22,10 @@
 #include "px_ltr329als.h"
 #include "px_i2c.h"
 #include "px_board.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("ltr329als");
+PX_LOG_NAME("ltr329als");
 
 /// @name Register Set (p. 12)
 //@{
@@ -103,7 +103,7 @@ static bool px_ltr329als_reg_wr(uint8_t adr, uint8_t data)
     if(!px_i2c_wr(px_ltr329als_i2c_handle, i2c_data, 2, PX_I2C_FLAG_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to write register value");
+        PX_LOG_E("Unable to write register value");
         return false;
     }
     // Success
@@ -120,7 +120,7 @@ static bool px_ltr329als_reg_rd(uint8_t adr, uint8_t * data)
     if(!px_i2c_wr(px_ltr329als_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_END))
     {
         // Error
-        PX_DBG_ERR("Unable to write register address");
+        PX_LOG_E("Unable to write register address");
         return false;
     }
     // Read data
@@ -130,7 +130,7 @@ static bool px_ltr329als_reg_rd(uint8_t adr, uint8_t * data)
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to read register value");
+        PX_LOG_E("Unable to read register value");
         return false;
     }
     // Success
@@ -147,7 +147,7 @@ static bool px_ltr329als_reg_rd_data(uint8_t adr, void * data, uint8_t nr_of_byt
     if(!px_i2c_wr(px_ltr329als_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_END))
     {
         // Error
-        PX_DBG_ERR("Unable to write register address");
+        PX_LOG_E("Unable to write register address");
         return false;
     }
     // Read data
@@ -157,7 +157,7 @@ static bool px_ltr329als_reg_rd_data(uint8_t adr, void * data, uint8_t nr_of_byt
                   PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
-        PX_DBG_ERR("Unable to read register data");
+        PX_LOG_E("Unable to read register data");
         return false;
     }
     // Success
@@ -271,7 +271,7 @@ uint16_t px_ltr329als_meas_convert_to_lux(px_ltr329als_gain_t     gain,
     case PX_LTR329ALS_GAIN_48X: gain_factor = 48; break;
     case PX_LTR329ALS_GAIN_96X: gain_factor = 96; break;
     default:
-        PX_DBG_ERR("Invalid gain");
+        PX_LOG_E("Invalid gain");
         return 0;
     }
 
@@ -287,7 +287,7 @@ uint16_t px_ltr329als_meas_convert_to_lux(px_ltr329als_gain_t     gain,
     case PX_LTR329ALS_INT_TIME_300MS: int_factor = 30; break;
     case PX_LTR329ALS_INT_TIME_350MS: int_factor = 35; break;
     default:
-        PX_DBG_ERR("Invalid integration time");
+        PX_LOG_E("Invalid integration time");
         return 0;
     }
 

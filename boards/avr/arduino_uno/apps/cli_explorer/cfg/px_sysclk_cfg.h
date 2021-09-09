@@ -10,7 +10,7 @@
     Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_sysclk_cfg.h : System Clock using a TMRx peripheral configuration
     Author(s):      Pieter Conradie
@@ -41,4 +41,4 @@
 #define PX_SYSCLK_CFG_ON_PERIODIC_TIMEOUT()    px_rtc_util_on_tick()
 
 /// @}
-#endif // #ifndef __PX_SYSCLK_CFG_H__
+#endif

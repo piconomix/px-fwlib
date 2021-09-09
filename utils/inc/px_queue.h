@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_queue.h : A FIFO data queue
     Author(s):      Pieter Conradie
@@ -151,4 +151,4 @@ void px_queue_flush(px_queue_t * queue);
 }
 #endif
 
-#endif // #ifndef __PX_QUEUE_H__
+#endif

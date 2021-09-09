@@ -10,7 +10,7 @@
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_ring_buf.h : FIFO circular buffer
     Author(s):      Pieter Conradie
@@ -251,4 +251,4 @@ px_ring_buf_idx_t px_ring_buf_full(px_ring_buf_t * px_ring_buf);
 }
 #endif
 
-#endif // #ifndef __PX_RING_BUFFER_H__
+#endif

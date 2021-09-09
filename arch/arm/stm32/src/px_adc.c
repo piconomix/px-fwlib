@@ -8,7 +8,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_adc.h : ADC peripheral driver
     Author(s):      Pieter Conradie
@@ -22,10 +22,10 @@
 #include "px_adc.h"
 #include "px_board.h"
 #include "px_lib_stm32cube.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_adc");
+PX_LOG_NAME("px_adc");
 
 /// Internal data for each ADC handle
 typedef struct px_adc_per_s
@@ -60,7 +60,7 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_LOG_E("Invalid peripheral");
         return;
     }
 
@@ -77,7 +77,7 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
         LL_ADC_SetClock(adc_base_adr, LL_ADC_CLOCK_SYNC_PCLK_DIV4);
         break;
     default:
-        PX_DBG_ERR("Unsupported ADC clock");
+        PX_LOG_E("Unsupported ADC clock");
         break;
     }
 
@@ -125,7 +125,7 @@ static void px_adc_init_peripheral_data(px_adc_nr_t    adc_nr,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral");
+        PX_LOG_E("Invalid peripheral");
         return;
     }
     // Clear reference counter
@@ -146,11 +146,11 @@ bool px_adc_open(px_adc_handle_t * handle,
 {
     px_adc_per_t * adc_per;
 
-#if PX_DBG
+#if PX_LOG
     // Verify that pointer to handle is not NULL
     if(handle == NULL)
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -165,14 +165,14 @@ bool px_adc_open(px_adc_handle_t * handle,
         break;
 #endif
     default:
-        PX_DBG_ERR("Invalid peripheral specified");
+        PX_LOG_E("Invalid peripheral specified");
         return false;
     }
-#if PX_DBG
+#if PX_LOG
     // Check that px_adc_init() has been called
     if(adc_per->adc_base_adr == NULL)
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -191,14 +191,14 @@ bool px_adc_close(px_adc_handle_t * handle)
     px_adc_per_t * adc_per;
     ADC_TypeDef *  adc_base_adr;
 
-#if PX_DBG
+#if PX_LOG
     // Check handle
     if(  (handle                        == NULL)
        ||(handle->adc_per               == NULL)
        ||(handle->adc_per->adc_base_adr == NULL)
        ||(handle->adc_per->open_counter == 0   )  )
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif
@@ -252,14 +252,14 @@ uint16_t px_adc_sample(px_adc_handle_t * handle, px_adc_ch_t ch)
     ADC_TypeDef *  adc_base_adr;
     uint16_t       data;
 
-#if PX_DBG
+#if PX_LOG
     // Check handle
     if(  (handle                        == NULL)
        ||(handle->adc_per               == NULL)
        ||(handle->adc_per->adc_base_adr == NULL)
        ||(handle->adc_per->open_counter == 0   )  )
     {
-        PX_DBG_ASSERT(false);
+        PX_LOG_ASSERT(false);
         return false;
     }
 #endif

@@ -8,7 +8,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_uf2.h : Microsoft UF2 bootloader over USB MSC (Mass Storage Class)
     Author(s):      Pieter Conradie
@@ -21,10 +21,10 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_uf2.h"
 #include "px_uf2_defs.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_uf2");
+PX_LOG_NAME("px_uf2");
 
 /// Content of "info_uf2.txt"
 static const char px_uf2_file_content_info[] =
@@ -333,11 +333,11 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf)
     {
         // this happens when we're trying to re-flash "current.uf2" file previously
         // copied from a device; we still want to count these blocks to reset properly
-        PX_DBG_ERR("Invalid target address 0x%08X", bl->target_addr);
+        PX_LOG_E("Invalid target address 0x%08X", bl->target_addr);
     }
     else
     {
-        PX_DBG_INFO("Write 0x%08X %u bytes", bl->target_addr, bl->payload_size);
+        PX_LOG_D("Write 0x%08X %u bytes", bl->target_addr, bl->payload_size);
         (*px_uf2_on_wr_flash_block)(bl->data, bl->target_addr, bl->payload_size);
     }
 
@@ -378,7 +378,7 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf)
             if(px_uf2_write_state.num_written >= px_uf2_write_state.nr_of_blocks)
             {
                 // Signal that las block has been written
-                PX_DBG_INFO("Write done");
+                PX_LOG_D("Write done");
                 (*px_uf2_on_wr_flash_done)();
             }
         }        

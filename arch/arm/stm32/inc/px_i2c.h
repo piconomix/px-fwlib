@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_i2c.h : I2C peripheral driver
     Author(s):      Pieter Conradie
@@ -235,4 +235,4 @@ void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
 }
 #endif
 
-#endif // #ifndef __PX_I2C_H__
+#endif

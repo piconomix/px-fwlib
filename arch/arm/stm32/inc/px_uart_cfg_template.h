@@ -10,7 +10,7 @@
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_uart_cfg.h : UART Peripheral Driver configuration
     Author(s):      Pieter Conradie
@@ -27,6 +27,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
+#include "px_board.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// Enable/disable support for UART1 peripheral
@@ -69,5 +70,16 @@
 /// Size of UART5 receive buffer
 #define PX_UART_CFG_UART5_RX_BUF_SIZE   PX_UART_CFG_UART_RX_BUF_SIZE
 
+/// UART1 peripheral clock in Hz
+#define PX_UART_CFG_UART1_CLK_HZ        PX_BOARD_PER_CLK_HZ
+/// UART2 peripheral clock in Hz
+#define PX_UART_CFG_UART2_CLK_HZ        PX_BOARD_PER_CLK_HZ
+/// UART3 peripheral clock in Hz
+#define PX_UART_CFG_UART3_CLK_HZ        PX_BOARD_PER_CLK_HZ
+/// UART4 peripheral clock in Hz
+#define PX_UART_CFG_UART4_CLK_HZ        PX_BOARD_PER_CLK_HZ
+/// UART5 peripheral clock in Hz
+#define PX_UART_CFG_UART5_CLK_HZ        PX_BOARD_PER_CLK_HZ
+
 /// @}
-#endif // #ifndef __PX_UART_CFG_H__
+#endif

@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          Piconomix STM32 Hero Board Bootloader application
     Author(s):      Pieter Conradie
@@ -35,8 +35,8 @@ extern "C" {
 extern px_uart_handle_t px_uart_handle;
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void main_dbg_put_char(char data);
-void main_dbg_timestamp(char * str);
+void main_log_putchar(char data);
+void main_log_timestamp(char * str);
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -44,4 +44,4 @@ void main_dbg_timestamp(char * str);
 }
 #endif
 
-#endif // #ifndef __MAIN_H__
+#endif

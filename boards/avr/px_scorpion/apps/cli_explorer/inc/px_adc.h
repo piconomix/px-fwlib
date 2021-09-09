@@ -10,7 +10,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_adc.h : ADC Driver
     Author(s):      Pieter Conradie
@@ -58,4 +58,4 @@ const px_adc_data_t * px_adc_get_data           (uint8_t channel);
 }
 #endif
 
-#endif // #ifndef __PX_ADC_H__
+#endif

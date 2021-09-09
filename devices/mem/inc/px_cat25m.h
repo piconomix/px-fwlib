@@ -10,7 +10,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_cat25m.h : On Semiconductor CAT25M SPI EEPROM Driver
     Author(s):      Pieter Conradie
@@ -248,4 +248,4 @@ void px_cat25m_wr_dis(void);
 }
 #endif
 
-#endif // #ifndef __PX_CAT25M_H__
+#endif

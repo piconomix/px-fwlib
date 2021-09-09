@@ -10,7 +10,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_at45d_cfg.h : AT45D Peripheral Driver configuration
     Author(s):      Pieter Conradie
@@ -44,4 +44,4 @@
 #define PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE    0
 
 /// @}
-#endif // #ifndef __PX_AT45D_CFG_H__
+#endif

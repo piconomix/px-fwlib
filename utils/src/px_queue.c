@@ -8,7 +8,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_queue.h : A FIFO data queue
     Author(s):      Pieter Conradie
@@ -21,10 +21,10 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_queue.h"
-#include "px_dbg.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_DBG_DECL_NAME("px_queue");
+PX_LOG_NAME("px_queue");
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -58,10 +58,10 @@ void px_queue_init(px_queue_t * queue,
                    size_t       max_nr_of_items)
 {
     // Sanity checks
-    PX_DBG_ASSERT(queue           != NULL);
-    PX_DBG_ASSERT(item_array      != NULL);
-    PX_DBG_ASSERT(item_size       != 0);
-    PX_DBG_ASSERT(max_nr_of_items != 0);
+    PX_LOG_ASSERT(queue           != NULL);
+    PX_LOG_ASSERT(item_array      != NULL);
+    PX_LOG_ASSERT(item_size       != 0);
+    PX_LOG_ASSERT(max_nr_of_items != 0);
     // Initialise queue
     queue->item_first      = item_array;
     queue->item_last       = item_array + item_size * (max_nr_of_items - 1);
@@ -74,7 +74,7 @@ void px_queue_init(px_queue_t * queue,
 
 bool px_queue_is_empty(px_queue_t * queue)
 {
-    PX_DBG_ASSERT(queue != NULL);
+    PX_LOG_ASSERT(queue != NULL);
 
     if(queue->nr_of_items == 0)
     {
@@ -88,7 +88,7 @@ bool px_queue_is_empty(px_queue_t * queue)
 
 bool px_queue_is_full(px_queue_t * queue)
 {
-    PX_DBG_ASSERT(queue != NULL);
+    PX_LOG_ASSERT(queue != NULL);
 
     if(queue->nr_of_items == queue->max_nr_of_items)
     {
@@ -102,7 +102,7 @@ bool px_queue_is_full(px_queue_t * queue)
 
 size_t px_queue_nr_of_items(px_queue_t * queue)
 {
-    PX_DBG_ASSERT(queue != NULL);
+    PX_LOG_ASSERT(queue != NULL);
 
     // Return item count
     return (queue->nr_of_items);
@@ -110,8 +110,8 @@ size_t px_queue_nr_of_items(px_queue_t * queue)
 
 bool px_queue_wr(px_queue_t * queue, const void * item)
 {
-    PX_DBG_ASSERT(queue != NULL);
-    PX_DBG_ASSERT(item  != NULL);
+    PX_LOG_ASSERT(queue != NULL);
+    PX_LOG_ASSERT(item  != NULL);
 
     // Queue full?
     if(px_queue_is_full(queue))
@@ -130,7 +130,7 @@ bool px_queue_wr(px_queue_t * queue, const void * item)
 
 bool px_queue_rd(px_queue_t * queue, void * item)
 {
-    PX_DBG_ASSERT(queue != NULL);
+    PX_LOG_ASSERT(queue != NULL);
 
     // Queue empty?
     if(px_queue_is_empty(queue))
@@ -149,7 +149,7 @@ bool px_queue_rd(px_queue_t * queue, void * item)
 
 bool px_queue_discard_oldest(px_queue_t * queue)
 {
-    PX_DBG_ASSERT(queue != NULL);
+    PX_LOG_ASSERT(queue != NULL);
 
     // Queue empty?
     if(px_queue_is_empty(queue))

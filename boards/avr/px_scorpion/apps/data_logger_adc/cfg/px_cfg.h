@@ -10,7 +10,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_cfg.h : Persistent config settings for application
     Author(s):      Pieter Conradie
@@ -56,4 +56,4 @@ extern void cfg_init(void);
 }
 #endif
 
-#endif // #ifndef __PX_CFG_H__
+#endif

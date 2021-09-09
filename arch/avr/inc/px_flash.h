@@ -10,7 +10,7 @@
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_flash.h : Internal FLASH write routines
     Author(s):      Pieter Conradie
@@ -80,4 +80,4 @@ void px_flash_wr_page(const uint16_t page, const  uint8_t * data);
 }
 #endif
 
-#endif // #ifndef __PX_FLASH_H__
+#endif

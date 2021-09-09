@@ -10,7 +10,7 @@
     Copyright (c) 2008 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_kbd_matrix.h : Matrix Keyboard module
     Author(s):      Pieter Conradie
@@ -239,4 +239,4 @@ void px_kbd_matrix_scan(px_kbd_matrix_t * matrix);
 }
 #endif
 
-#endif // #ifndef __PX_KBD_MATRIX_H__
+#endif

@@ -13,7 +13,7 @@ Reference(s):
 1. Introduction {#HERO_BOARD_EXAMPLE_FREERTOS_INTRO}
 ====================================================
 
-**px-lib** is a *bare metal* embedded C library and does not have the RTOS
+**px-fwlib** is a *bare metal* embedded C library and does not have the RTOS
 mechanisms to manage access to a shared resource like a UART or signal a task
 when an event has occurred, for example when a character has been received, but
 that does not prevent us from trying a basic example to get a taste of what
@@ -56,7 +56,7 @@ firmware to upgrade the on-board ST-LINK on Nucleo and Discovery boards
 
 @tip_s
 If you don't have a J-Link probe then you can still examine the saved log file
-in the SystemView GUI. Click [HERE](https://github.com/piconomix/piconomix-fwlib/raw/master/boards/arm/stm32/px_hero/examples/freertos_blinking_led/segger_sysview_freertos_blinking_led.SVDat)
+in the SystemView GUI. Click [HERE](https://github.com/piconomix/px-fwlib/raw/master/boards/arm/stm32/px_hero/examples/freertos_blinking_led/segger_sysview_freertos_blinking_led.SVDat)
 to download the *.SVDat file saved from this session.
 @tip_e
 
@@ -77,7 +77,7 @@ Unfortunately the patch does not always keep up with the latest release of
 FreeRTOS (currently 10.3.1) and I had to examine the patch and apply it manually.
 @warn_e
 
-[FreeRTOSConfig.h](https://github.com/piconomix/piconomix-fwlib/blob/master/boards/arm/stm32/px_hero/examples/freertos_blinking_led/cfg/FreeRTOSConfig.h)
+[FreeRTOSConfig.h](https://github.com/piconomix/px-fwlib/blob/master/boards/arm/stm32/px_hero/examples/freertos_blinking_led/cfg/FreeRTOSConfig.h)
 must be edited and the following line must be added at the end:
 
 	@code{.c}
@@ -105,7 +105,7 @@ divided by 32 to provide 1 us resolution. The 16-bit counter overflows every
 65.536 ms and results in a low overhead interrupt rate of only 15.259 Hz. It is
 also much easier to combine the two 16-bit values to provide a 32-bit timestamp
 compared to the example 1 ms SysTick implementation. The custom implementation
-is in [SEGGER_SYSVIEW_Config_FreeRTOS.c](https://github.com/piconomix/piconomix-fwlib/blob/master/libs/segger_sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c):
+is in [SEGGER_SYSVIEW_Config_FreeRTOS.c](https://github.com/piconomix/px-fwlib/blob/master/libs/segger_sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c):
 
 @snippet libs/segger_sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c SYSVIEW_TIMESTAMP
 

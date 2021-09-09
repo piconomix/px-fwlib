@@ -10,7 +10,7 @@
     Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_cli_cmds_gpio.h : CLI Commands for GPIO
     Author(s):      Pieter Conradie
@@ -44,4 +44,4 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
 }
 #endif
 
-#endif // #ifndef __PX_CLI_CMDS_GPIO_H__
+#endif

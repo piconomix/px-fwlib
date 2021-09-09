@@ -5,7 +5,7 @@
 #include "px_gfx_objects.h"
 #include "px_gfx_resources.h"
 
-px_gfx_obj_handle_t obj_window;
+px_gfx_obj_handle_t obj_win;
 px_gfx_obj_handle_t obj_graph;
 px_gfx_xy_t         obj_graph_data_y[128];
 px_gfx_obj_handle_t obj_label_val;
@@ -51,7 +51,7 @@ void px_gfx_test_start(void)
     // Initialise graphics
     px_gfx_init();
     // Create full display window
-    obj_window = px_gfx_obj_window_create(&px_gfx_obj_window_prop_full_disp);
+    obj_win = px_gfx_obj_win_create(&px_gfx_obj_win_prop_full_disp);
     // Create objects
     obj_graph = px_gfx_obj_graph_create(&obj_graph_prop);
     memset(obj_graph_data_y, 0, sizeof(obj_graph_data_y));
@@ -62,19 +62,19 @@ void px_gfx_test_start(void)
     obj_label_val  = px_gfx_obj_label_create(&obj_label_prop_val);
     obj_label_unit = px_gfx_obj_label_create(&obj_label_prop_unit);
     // Add objects to window
-    px_gfx_obj_window_add_child(obj_window, obj_graph);
-    px_gfx_obj_window_add_child(obj_window, obj_label_val);
-    px_gfx_obj_window_add_child(obj_window, obj_label_unit);
+    px_gfx_obj_win_add_child(obj_win, obj_graph);
+    px_gfx_obj_win_add_child(obj_win, obj_label_val);
+    px_gfx_obj_win_add_child(obj_win, obj_label_unit);
 }
 
 void px_gfx_test_update(void)
 {
     // Update value label
-    temp_deg += 0.1;
+    temp_deg += 0.1f;
     sprintf(obj_label_val_str, "%2.1f", temp_deg);
     px_gfx_obj_update_set(obj_label_val);
     // Draw window
-    px_gfx_obj_draw(obj_window);
+    px_gfx_obj_draw(obj_win);
     // Update display
     px_gfx_draw_update();
 }

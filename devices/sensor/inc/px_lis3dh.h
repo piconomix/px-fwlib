@@ -10,7 +10,7 @@
     Copyright (c) 2020 Pieter Conradie <https://piconomix.com>
 
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
     Title:          px_lis3dh.h : ST LIS3DH accelerometer driver
     Author(s):      Pieter Conradie
@@ -84,4 +84,4 @@ bool px_lis3dh_test_active          (void);
 }
 #endif
 
-#endif // #ifndef __PX_LIS3DH_H__
+#endif

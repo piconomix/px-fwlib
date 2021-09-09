@@ -10,7 +10,7 @@
     Copyright (c) 2017 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
     Title:          board.h : STM32L072RB PX-HER0 Board
     Author(s):      Pieter Conradie
@@ -19,7 +19,7 @@
 ============================================================================= */
 /** 
  *  @ingroup BOARDS_STM32
- *  @defgroup BOARDS_STM32_PICONOMIX_HERO px_board.h : STM32L072RB PX-HER0 Board
+ *  @defgroup BOARDS_STM32_PX_HERO px_board.h : STM32L072RB PX-HER0 Board
  *  
  *  File(s):
  *  - boards/arm/stm32/px_hero/inc/px_board.h 
@@ -39,7 +39,7 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 /// Board name
-#define PX_BOARD_PICONOMIX_HERO_BOARD
+#define PX_BOARD_PX_HERO
 
 /// System clock frequency in Hz
 #define PX_BOARD_SYS_CLK_HZ     32000000ul
@@ -175,4 +175,4 @@ void px_board_stop_mode(void);
 }
 #endif
 
-#endif // #ifndef __PX_BOARD_H__
+#endif

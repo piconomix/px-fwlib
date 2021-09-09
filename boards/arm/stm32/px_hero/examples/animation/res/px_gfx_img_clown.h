@@ -10,7 +10,7 @@
     Copyright (c) 2019 Pieter Conradie <https://piconomix.com>
  
     License: MIT
-    https://github.com/piconomix/piconomix-fwlib/blob/master/LICENSE.md
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
     Title:          px_gfx_img_clown.h : Clown animation images
     Author(s):      Pieter Conradie
@@ -49,4 +49,4 @@ extern px_gfx_img_t px_gfx_img_clown8;
 }
 #endif
 
-#endif // #ifndef __PX_GFX_IMG_CLOWN_H__
+#endif
