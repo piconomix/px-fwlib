@@ -6,11 +6,11 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2006 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
-    
-    Title:          px_sysclk.h : System Clock using a TMRx peripheral 
+
+    Title:          px_sysclk.h : System Clock using a TMRx peripheral
     Author(s):      Pieter Conradie
     Creation Date:  2007-03-31
 
@@ -68,7 +68,7 @@
 
 #elif (PX_SYSCLK_CFG_USE_TMRX == 2)
 
-#define TMR_VECT                TIM2_COMPA_vect
+#define TMR_VECT                TIMER2_COMPA_vect
 #define TMR_INT_ENABLE()        PX_BIT_SET_HI(TIMSK2, OCIE2A)
 #define TMR_INT_DISABLE()       PX_BIT_SET_LO(TIMSK2, OCIE2A)
 #define TMR_INT_IS_ENABLED()    PX_BIT_IS_HI(TIMSK2, OCIE2A)
@@ -139,35 +139,35 @@ void px_sysclk_init(void)
 #if (PX_SYSCLK_CFG_USE_TMRX == 0)
 
     // Initialise timer interrupt @ CLK/PX_SYSCLK_TMR_PRESCALER in CTC mode ("Clear Timer on Compare")
-    TCCR0A =  (1<<WGM01) | (0<<WGM00);
-    TCCR0B =  (0<<WGM02) | (PX_SYSCLK_CS<<CS00);
+    TCCR0A =  (1 << WGM01) | (0 << WGM00);
+    TCCR0B =  (0 << WGM02) | (PX_SYSCLK_CS << CS00);
     // Reset TMR counter
     TCNT0  = 0;
-    // Calculate and set maximum TMR counter value. When TCNT reaches this 
+    // Calculate and set maximum TMR counter value. When TCNT reaches this
     // value, an interrupt is generated and TCNT is reset to 0.
-    OCR0A  = PX_UDIV_ROUND(F_CPU, PX_SYSCLK_CFG_TMR_PRESCALER*PX_SYSCLK_CFG_TICKS_PER_SEC) - 1;
+    OCR0A  = PX_UDIV_ROUND(F_CPU, PX_SYSCLK_CFG_TMR_PRESCALER * PX_SYSCLK_CFG_TICKS_PER_SEC) - 1;
 
 #elif (PX_SYSCLK_CFG_USE_TMRX == 1)
 
     // Initialise timer interrupt @ CLK/PX_SYSCLK_TMR_PRESCALER in CTC mode ("Clear Timer on Compare")
-    TCCR1A =  (0<<WGM11) | (0<<WGM10);
-    TCCR1B =  (0<<WGM13) | (1<<WGM12) | (PX_SYSCLK_CS<<CS10);
+    TCCR1A =  (0 << WGM11) | (0 << WGM10);
+    TCCR1B =  (0 << WGM13) | (1 << WGM12) | (PX_SYSCLK_CS << CS10);
     // Reset TMR counter
     TCNT1  = 0;
-    // Calculate and set maximum TMR counter value. When TCNT reaches this 
+    // Calculate and set maximum TMR counter value. When TCNT reaches this
     // value, an interrupt is generated and TCNT is reset to 0.
-    OCR1A  = PX_UDIV_ROUND(F_CPU, PX_SYSCLK_CFG_TMR_PRESCALER*PX_SYSCLK_CFG_TICKS_PER_SEC) - 1;
+    OCR1A  = PX_UDIV_ROUND(F_CPU, PX_SYSCLK_CFG_TMR_PRESCALER * PX_SYSCLK_CFG_TICKS_PER_SEC) - 1;
 
 #elif (PX_SYSCLK_CFG_USE_TMRX == 2)
 
     // Initialise timer interrupt @ CLK/PX_SYSCLK_TMR_PRESCALER in CTC mode ("Clear Timer on Compare")
-    TCCR2A =  (1<<WGM21) | (0<<WGM20);
-    TCCR2B =  (0<<WGM22) | (PX_SYSCLK_CS<<CS20);
+    TCCR2A =  (1 << WGM21) | (0 << WGM20);
+    TCCR2B =  (0 << WGM22) | (PX_SYSCLK_CS << CS20);
     // Reset TMR counter
     TCNT2  = 0;
-    // Calculate and set maximum TMR counter value. When TCNT reaches this 
+    // Calculate and set maximum TMR counter value. When TCNT reaches this
     // value, an interrupt is generated and TCNT is reset to 0.
-    OCR2A  = PX_UDIV_ROUND(F_CPU, PX_SYSCLK_CFG_TMR_PRESCALER*PX_SYSCLK_CFG_TICKS_PER_SEC) - 1;
+    OCR2A  = PX_UDIV_ROUND(F_CPU, PX_SYSCLK_CFG_TMR_PRESCALER * PX_SYSCLK_CFG_TICKS_PER_SEC) - 1;
 
 #else
     #error "Specified TMR not supported!"
