@@ -7,7 +7,7 @@ File(s):
 - boards/arm/stm32/px_hero/examples/low_power/src/main.c
 
 The following modules are used:
-- @ref BOARDS_STM32_PICONOMIX_HERO
+- @ref BOARDS_STM32_PX_HERO
 - @ref STM32_GPIO
 
 The STM32 is woken up from low power STOP mode while the 6/NO button is pressed.

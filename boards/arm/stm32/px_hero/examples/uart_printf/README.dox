@@ -17,7 +17,7 @@ File(s):
 - boards/arm/stm32/px_hero/examples/uart_printf/src/main.c
 
 The following modules are used:
-- @ref BOARDS_STM32_PICONOMIX_HERO
+- @ref BOARDS_STM32_PX_HERO
 - @ref STM32_UART
 - @ref STM32_UART_STDIO
 
