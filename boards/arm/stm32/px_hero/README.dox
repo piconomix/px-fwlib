@@ -1,5 +1,5 @@
-3.3 Piconomix STM32L072RB PX-HER0 Board {#PICONOMIX_STM32_HERO_BOARD}
-=====================================================================
+3.2.1 Piconomix STM32L072RB PX-HER0 Board {#PICONOMIX_STM32_HERO_BOARD}
+=======================================================================
 
 [TOC]
 
@@ -204,7 +204,7 @@ The reference documents can also be found here for off-line viewing:
 9. Board Support Package {#HERO_BOARD_BSP}
 ==========================================
 
-A Board Support Package (@ref BOARDS_STM32_PICONOMIX_HERO) is provided that:
+A Board Support Package (@ref BOARDS_STM32_PX_HERO) is provided that:
 - defines the function of each GPIO pin
 - defines convenience macros to manipulate GPIO functions
 - initializes the clock system and GPIO pins

@@ -1,0 +1,7 @@
+3.2 STM32 companion boards {#COMPANION_BOARDS_STM32}
+====================================================
+
+|Microcontroller | Documentation                      |
+|----------------|------------------------------------|
+|STM32L072RB     | @subpage PICONOMIX_STM32_HERO_BOARD|
+|STM32L053R8T6   | @subpage NUCLEO64_L053_BOARD       |

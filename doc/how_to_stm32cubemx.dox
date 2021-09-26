@@ -233,7 +233,7 @@ Abstraction Layer) or LL (Low Level) code for each peripheral.
 @tip_s
 I use the tool to generate lean LL code for the RCC (Reset and Clock Control) 
 peripheral and use it to enable the clocks for the PX-HER0 board in 
-@ref BOARDS_STM32_PICONOMIX_HERO.
+@ref BOARDS_STM32_PX_HERO.
 @tip_e
 
 7. Generate Code {#STM32CUBEMX_GENERATE}

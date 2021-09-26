@@ -1,12 +1,7 @@
 3. Companion Boards {#COMPANION_BOARDS}
 =======================================
 
-Here is the collection of boards that are supported with Board Support Packages
+Here is a collection of boards that are supported with Board Support Packages
 (BSP), documentation and complete examples:
-
-|Microcontroller          | Documentation                      |
-|-------------------------|------------------------------------|
-|Microchip ATmega328P-AU  | @subpage ARDUINO_UNO_BOARD         |
-|Microchip ATmega328P-AU  | @subpage PICONOMIX_SCORPION_BOARD  |
-|ST STM32L072RB           | @subpage PICONOMIX_STM32_HERO_BOARD|
-|ST STM32L053R8T6         | @subpage NUCLEO64_L053_BOARD       |
+- @subpage COMPANION_BOARDS_AVR
+- @subpage COMPANION_BOARDS_STM32

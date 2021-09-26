@@ -1,0 +1,10 @@
+3.1 Microchip AVR companion boards {#COMPANION_BOARDS_AVR}
+==========================================================
+
+|Microcontroller | Documentation                     |
+|----------------|-----------------------------------|
+|ATmega328P-AU   | @subpage ARDUINO_UNO_BOARD        |
+|ATmega328P-AU   | @subpage ATMEGA328P_XMINI_BOARD   |
+|ATmega328PB-AU  | @subpage ATMEGA328PB_XMINI_BOARD  |
+|ATmega328P-AU   | @subpage PICONOMIX_SCORPION_BOARD |
+
