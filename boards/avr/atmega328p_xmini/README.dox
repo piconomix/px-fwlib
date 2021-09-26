@@ -1,0 +1,39 @@
+3.1.2 Microchip ATmega328P-XMINI Board {#ATMEGA328P_XMINI_BOARD}
+================================================================
+  
+[TOC]
+
+1. About {#ATMEGA328P_XMINI_BOARD_ABOUT}
+=============================================
+
+![ATmega328P-XMINI](atmega328p_xmini.jpg)
+Image Copyright (c) [Microchip Technology Inc](https://www.microchip.com).
+
+* A [Microchip AVR quick start guide](@ref AVR_QUICK_START_GUIDE) with
+  distilled [tutorials](@ref AVR_TUTORIALS) and [examples](@ref AVR_EXAMPLES)
+* [Recommended best practices](@ref BEST_PRACTICES)
+* [Board Support Package](@ref BOARDS_AVR_ATMEGA328P_XMINI_BSP)
+* @subpage ATMEGA328P_XMINI_BOARD_EXAMPLES "Examples"
+
+2. Board Support Package {#ATMEGA328P_XMINI_BOARD_BSP}
+======================================================
+
+A Board Support Package (@ref BOARDS_AVR_ATMEGA328P_XMINI) is provided that:
+- define the CPU frequency
+- define the GPIO pins
+- provide a function to initialise the board
+- provide delay functions
+
+Files:
+- boards/avr/atmega328p_xmini/inc/px_board.h
+- boards/avr/atmega328p_xmini/inc/px_board_gpio.h
+- boards/avr/atmega328p_xmini/src/px_board.c
+
+3. Reference documents {#ATMEGA328P_XMINI_BOARD_DOCS}
+=====================================================
+
+- [ATmega328P Xplained Mini User Guide](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328P-Xplained-Mini-UG-DS50002659B.pdf)
+- [ATmega328P Xplained Mini Design Documentation](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328P-Xplained-Mini_Design-Documentation.zip)
+- [Microchip ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328P)
+- [AVR Instruction Set Manual](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
+- [AVR Libc Reference Manual](http://www.nongnu.org/avr-libc/user-manual/index.html)
