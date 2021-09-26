@@ -1,0 +1,4 @@
+Atmel ATmega Series Device Support (1.7.374)
+http://packs.download.atmel.com/
+http://packs.download.atmel.com/#collapse-Atmel-ATmega-DFP-pdsc
+
