@@ -10,12 +10,8 @@ This is a serial port example for the ATmega328PB-XMINI board. It is the embedde
 equivalent of a "hello world" program on a PC to kick the tires and know that 
 your development setup works.
 
-The UART is configured to 9600 BAUD, 8 Data Bits, No Parity and 1 Stop Bit.
+The UART is configured to 115200 BAUD, 8 Data Bits, No Parity and 1 Stop Bit.
 The string "Hello World!" is sent and then any bytes received is echoed back.
-
-By default the microcontroller is fed an external clock of 16 MHz by the
-embedded debugger (mEDBG) and a BAUD rate of 115200 can not be accurately
-generated.
 
 The LED is flashed at a slow rate of 1 Hz and while the button is pressed, it
 is flashed at a fast rate of 10 Hz.

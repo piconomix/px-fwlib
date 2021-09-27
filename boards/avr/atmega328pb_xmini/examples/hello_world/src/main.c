@@ -46,7 +46,8 @@ static void main_init(void)
     px_board_init();
     px_sysclk_init();
     px_uart_init();
-    px_uart_open2(&px_uart_handle, PX_UART_NR_0, 9600,
+    /* Supposed to be 115200 but compensating for imprecise BAUD rate of mEDBG debugger */
+    px_uart_open2(&px_uart_handle, PX_UART_NR_0, 111111,
                   PX_UART_DATA_BITS_8, PX_UART_PARITY_NONE, PX_UART_STOP_BITS_1);
     px_uart_stdio_init(&px_uart_handle);
     // Enable interrupts
