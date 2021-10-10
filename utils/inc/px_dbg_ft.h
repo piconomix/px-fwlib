@@ -83,7 +83,7 @@ extern uint32_t px_dbg_ft_buf[PX_DBG_FT_CFG_BUF_SIZE];
 void _px_dbg_ft_init(void);
 
 /**
- *  Internal function to log a name and file line.
+ *  Internal function to log a name and file line number.
  *
  *  @param name     Custom name value as defined in 'px_dbg_ft_cfg.h'
  *  @param line     File line number
@@ -91,7 +91,7 @@ void _px_dbg_ft_init(void);
 void _px_dbg_ft_log(const px_dbg_ft_name_t name, uint16_t line);
 
 /**
- *  Internal function to log a name, file line and parameter.
+ *  Internal function to log a name, file line number and parameter.
  *
  *  @param name     Custom name value as defined in 'px_dbg_ft_cfg.h'
  *  @param line     File line number
@@ -119,7 +119,7 @@ void px_dbg_ft_report(void);
     } \
     while(0)
 
-/// Macro to log a name and file line
+/// Macro to log a name and file line number
 #define PX_DBG_FT_LOG() \
     do \
     { \
@@ -127,11 +127,27 @@ void px_dbg_ft_report(void);
     } \
     while(0)
 
-/// Macro to log a name and file line
+/// Macro to log a name and a specified file line number
+#define PX_DBG_FT_LOG_LINE(line) \
+    do \
+    { \
+        _px_dbg_ft_log(px_dbg_ft_name, line); \
+    } \
+    while(0)
+
+/// Macro to log a name, file line number and parameter
 #define PX_DBG_FT_LOG_PARAM(param) \
     do \
     { \
         _px_dbg_ft_log_param(px_dbg_ft_name, (uint16_t)__LINE__, param); \
+    } \
+    while(0)
+
+/// Macro to log a name, specified file line number and parameter
+#define PX_DBG_FT_LOG_LINE_PARAM(line, param) \
+    do \
+    { \
+        _px_dbg_ft_log_param(px_dbg_ft_name, line, param); \
     } \
     while(0)
 
@@ -140,7 +156,9 @@ void px_dbg_ft_report(void);
     #define PX_DBG_FT_NAME(name)
     #define PX_DBG_FT_INIT()
     #define PX_DBG_FT_LOG()
+    #define PX_DBG_FT_LOG_LINE()
     #define PX_DBG_FT_LOG_PARAM(param)
+    #define PX_DBG_FT_LOG_LINE_PARAM(line, param)
 #endif
 
 /// @}
