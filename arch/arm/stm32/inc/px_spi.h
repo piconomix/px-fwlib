@@ -122,7 +122,7 @@ typedef enum
 /// Define SPI handle
 typedef struct
 {
-    struct px_spi_per_s * spi_per;              ///< SPI peripheral
+    struct px_spi_per_s * spi_per;          ///< SPI peripheral
     uint8_t               cs_id;            ///< Chip Select GPIO ID
     uint32_t              spi_cr1_val;      ///< SPI Control Register 1 value (SPI_CR1)
     uint8_t               mo_dummy_byte;    ///< Master Out dummy byte when data is read from Master In

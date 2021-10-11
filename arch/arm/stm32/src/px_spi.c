@@ -169,8 +169,8 @@ void px_spi_init(void)
 }
 
 bool px_spi_open(px_spi_handle_t * handle,
-                   px_spi_nr_t     spi_nr,
-                   uint8_t         cs_id)
+                 px_spi_nr_t       spi_nr,
+                 uint8_t           cs_id)
 {
     px_spi_per_t * spi_per;
     uint32_t       spi_cr1_val = 0;
@@ -181,6 +181,10 @@ bool px_spi_open(px_spi_handle_t * handle,
     {
         PX_LOG_ASSERT(false);
         return false;
+    }
+    if(handle->spi_per != NULL)
+    {
+        PX_LOG_W("Handle already open?");
     }
 #endif
     // Handle not initialised
@@ -240,6 +244,7 @@ bool px_spi_open(px_spi_handle_t * handle,
     handle->spi_per = spi_per;
 
     // Success
+    PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
     return true;
 }
@@ -261,6 +266,10 @@ bool px_spi_open2(px_spi_handle_t * handle,
     {
         PX_LOG_ASSERT(false);
         return false;
+    }
+    if(handle->spi_per != NULL)
+    {
+        PX_LOG_W("Handle already open?");
     }
 #endif
 
@@ -325,6 +334,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
     handle->spi_per = spi_per;
 
     // Success
+    PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
     return true;
 }
@@ -350,6 +360,7 @@ bool px_spi_close(px_spi_handle_t * handle)
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
     // Decrement open count
+    PX_LOG_ASSERT(spi_per->open_counter > 0);
     spi_per->open_counter--;
     // More open handles referencing peripheral?
     if(spi_per->open_counter != 0)
