@@ -295,12 +295,20 @@ bool px_i2c_open(px_i2c_handle_t * handle,
 {
     px_i2c_per_t * i2c_per;
 
+#if PX_LOG
     // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
-
+    if(handle == NULL)
+    {
+        PX_LOG_ASSERT(false);
+        return false;
+    }
+    if(handle->i2c_per != NULL)
+    {
+        PX_LOG_W("Handle already open?");
+    }
+#endif
     // Handle not initialised
     handle->i2c_per = NULL;
-
     // Set pointer to peripheral data
     switch(i2c_nr)
     {
@@ -316,11 +324,10 @@ bool px_i2c_open(px_i2c_handle_t * handle,
 
     // Save 7-bit slave address
     handle->slave_adr = slave_adr;
-
     // Point handle to peripheral
     handle->i2c_per = i2c_per;
-
     // Success
+    PX_LOG_ASSERT(i2c_per->open_counter < 255);
     i2c_per->open_counter++;
     return true;
 }
@@ -335,11 +342,9 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     i2c_per = handle->i2c_per;
     // Check that handle is open
     PX_LOG_ASSERT(i2c_per != NULL);
-    PX_LOG_ASSERT(i2c_per->open_counter != 0);
-
     // Decrement open count
+    PX_LOG_ASSERT(i2c_per->open_counter > 0);
     i2c_per->open_counter--;
-
     // More open handles referencing peripheral?
     if(i2c_per->open_counter != 0)
     {
@@ -348,12 +353,10 @@ bool px_i2c_close(px_i2c_handle_t * handle)
         // Success
         return true;
     }
-
    // Close handle
    handle->i2c_per = NULL;
-
-    // Success
-    return true;
+   // Success
+   return true;
 }
 
 bool px_i2c_wr(px_i2c_handle_t * handle,

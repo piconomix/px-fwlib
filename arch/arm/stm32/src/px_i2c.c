@@ -132,6 +132,10 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         PX_LOG_ASSERT(false);
         return false;
     }
+    if(handle->i2c_per != NULL)
+    {
+        PX_LOG_W("Handle already open?");
+    }
 #endif
 
     // Handle not initialised
@@ -177,6 +181,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
     // Point handle to peripheral
     handle->i2c_per = i2c_per;
     // Success
+    PX_LOG_ASSERT(i2c_per->open_counter < 255);
     i2c_per->open_counter++;
     return true;
 }
@@ -203,6 +208,7 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     // Get I2C peripheral base register address
     i2c_base_adr = i2c_per->i2c_base_adr;
     // Decrement open count
+    PX_LOG_ASSERT(i2c_per->open_counter > 0);
     i2c_per->open_counter--;
     // More open handles referencing peripheral?
     if(i2c_per->open_counter != 0)

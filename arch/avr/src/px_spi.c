@@ -33,8 +33,8 @@ PX_LOG_NAME("spi");
 /// Internal data for each SPI handle
 typedef struct px_spi_per_s
 {
-    px_spi_nr_t spi_nr;     ///< SPI peripheral number
-    uint8_t open_counter;   /// Number of open handles referencing peripheral    
+    px_spi_nr_t spi_nr;         ///< SPI peripheral number
+    uint8_t     open_counter;   /// Number of open handles referencing peripheral
 } px_spi_per_t;
 
 /* _____MACROS_______________________________________________________________ */
@@ -108,9 +108,18 @@ bool px_spi_open(px_spi_handle_t * handle,
 {
     px_spi_per_t * spi_per;
 
+#if PX_LOG
     // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
-
+    if(handle == NULL)
+    {
+        PX_LOG_ASSERT(false);
+        return false;
+    }
+    if(handle->spi_per != NULL)
+    {
+        PX_LOG_W("Handle already open?");
+    }
+#endif
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -125,7 +134,6 @@ bool px_spi_open(px_spi_handle_t * handle,
         PX_LOG_E("Invalid peripheral specified");
         return false;
     }
-
     // Save Chip Select GPIO ID
     handle->cs_id = cs_id;
     // Use default value for SPI Control Register
@@ -134,7 +142,6 @@ bool px_spi_open(px_spi_handle_t * handle,
     handle->use_spi2x = PX_SPI_CFG_USE_SPI2X;
     // Set default value for "Master Out dummy byte"
     handle->mo_dummy_byte = 0x00;
-
     // Initialise peripheral
     px_spi_init_peripheral(spi_nr,
                            handle->spcr,
@@ -142,6 +149,7 @@ bool px_spi_open(px_spi_handle_t * handle,
     // Point handle to peripheral
     handle->spi_per = spi_per;
     // Success
+    PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
     return true;
 }
@@ -158,9 +166,18 @@ bool px_spi_open2(px_spi_handle_t * handle,
     uint8_t         spcr = 0;
     bool            use_spi2x;
 
+#if PX_LOG
     // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
-
+    if(handle == NULL)
+    {
+        PX_LOG_ASSERT(false);
+        return false;
+    }
+    if(handle->spi_per != NULL)
+    {
+        PX_LOG_W("Handle already open?");
+    }
+#endif
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -175,7 +192,6 @@ bool px_spi_open2(px_spi_handle_t * handle,
         PX_LOG_E("Invalid peripheral specified");
         return false;
     }
-
     // Save Chip Select GPIO ID
     handle->cs_id = cs_id;
     // Initial value for SPCR
@@ -185,22 +201,14 @@ bool px_spi_open2(px_spi_handle_t * handle,
     use_spi2x = false;
     switch(baud)
     {
-    case PX_SPI_BAUD_CLK_DIV_2:     spcr |= (0<<SPR1) | (0<<SPR0); use_spi2x = true;
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_4:     spcr |= (0<<SPR1) | (0<<SPR0);
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_8:     spcr |= (0<<SPR1) | (1<<SPR0); use_spi2x = true;
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_16:    spcr |= (0<<SPR1) | (1<<SPR0);
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_32:    spcr |= (1<<SPR1) | (0<<SPR0); use_spi2x = true;
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_64:    spcr |= (1<<SPR1) | (0<<SPR0);
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_128:   spcr |= (1<<SPR1) | (1<<SPR0);
-                                    break;
-    default:
-        break;
+    case PX_SPI_BAUD_CLK_DIV_2:     spcr |= (0<<SPR1) | (0<<SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_4:     spcr |= (0<<SPR1) | (0<<SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_8:     spcr |= (0<<SPR1) | (1<<SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_16:    spcr |= (0<<SPR1) | (1<<SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_32:    spcr |= (1<<SPR1) | (0<<SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_64:    spcr |= (1<<SPR1) | (0<<SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_128:   spcr |= (1<<SPR1) | (1<<SPR0); break;
+    default: break;
     }
     // Set SPI Mode (0,1,2 or 3)
     spcr |= (((uint8_t)mode)&3) << CPHA;
@@ -215,7 +223,6 @@ bool px_spi_open2(px_spi_handle_t * handle,
     handle->use_spi2x = use_spi2x;
     // Set value for "Master Out dummy byte"
     handle->mo_dummy_byte = mo_dummy_byte;
-
     // Initialise peripheral
     px_spi_init_peripheral(spi_nr,
                            handle->spcr,
@@ -223,6 +230,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
     // Point handle to peripheral
     handle->spi_per = spi_per;
     // Success
+    PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
     return true;
 }
@@ -237,11 +245,9 @@ bool px_spi_close(px_spi_handle_t * handle)
     spi_per = handle->spi_per;
     // Check that handle is open
     PX_LOG_ASSERT(spi_per != NULL);
-    PX_LOG_ASSERT(spi_per->open_counter != 0);
-
     // Decrement open count
+    PX_LOG_ASSERT(spi_per->open_counter > 0);
     spi_per->open_counter--;
-
     // More open handles referencing peripheral?
     if(spi_per->open_counter != 0)
     {
@@ -250,7 +256,6 @@ bool px_spi_close(px_spi_handle_t * handle)
         // Success
         return true;
     }
-
     // Disable peripheral
     switch(spi_per->spi_nr)
     {
@@ -262,10 +267,8 @@ bool px_spi_close(px_spi_handle_t * handle)
     default:
         break;
     }
-
     // Close handle
     handle->spi_per = NULL;
-
     // Success
     return true;
 }
@@ -286,7 +289,6 @@ void px_spi_wr(px_spi_handle_t * handle,
     // Check that handle is open
     PX_LOG_ASSERT(spi_per != NULL);
     PX_LOG_ASSERT(spi_per->open_counter != 0);
-
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_per->spi_nr,
                       handle->spcr,
