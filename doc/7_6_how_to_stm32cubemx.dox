@@ -4,10 +4,8 @@
 [stm32cubemx]: https://www.st.com/en/development-tools/stm32cubemx.html
 [cmsis]: https://developer.arm.com/tools-and-software/embedded/cmsis
 
-[TOC]
-
-1. Introduction {#STM32CUBEMX_INTRO}
-====================================
+1. Introduction
+===============
 
 STM32CubeMX is a free cross-platform graphical tool to generate code for STM32 
 microcontrollers. It's the easiest way to generate test / demo code for a new
@@ -19,13 +17,13 @@ STm32CubeMX is now integrated into STM32CudeIDE, but my personal preference is
 to use it as a standalone tool.
 @tip_e
 
-2. Download and Install {#STM32CUBEMX_INSTALL}
-==============================================
+2. Download and Install
+=======================
 
 [HERE][stm32cubemx] is the download page.
 
-2.1 Install required packages {#STM32CUBEMX_PACKAGES}
------------------------------------------------------
+2.1 Install required packages
+-----------------------------
 
 Open the Embedded Software Packages Manager dialog:
 
@@ -41,8 +39,8 @@ Expand the STM32L0 series by clicking on the black triangle and tick the latest
 "STM32Cube MCU Package for STM32L0 Series". Press the "Install Now" button" to 
 download and install the support package.
 
-3. Create a new project {#STM32CUBEMX_NEW_PROJECT}
-==================================================
+3. Create a new project
+=======================
 
 Open the New Project dialog:
 
@@ -69,8 +67,8 @@ Be sure to save your project early and often as the software does crash
 sometimes.
 @warn_e
 
-4. Assign a function to each pin {#STM32CUBEMX_PIN}
-===================================================
+4. Assign a function to each pin
+================================
 
 ![](cmx_pin_function.png)
 
@@ -128,8 +126,8 @@ from "Low" to "High". The GPIO mode can be changed from "Output Push Pull" to
 enabled. The maximum output speed can be changed from "Low" to "Medium", "High" 
 or "Very High". It is also an opportunity to change the user label.
 
-5. Assign a peripheral function {#STM32CUBEMX_PERIPHERAL}
-=========================================================
+5. Assign a peripheral function
+===============================
 
 ![](cmx_peripheral_disabled.png)
 
@@ -166,8 +164,8 @@ provides an alternative way to enable the pull-up resistor of PA3. You can also
 change the pin from "Alternate Function Push Pull" to "Alternate Function Open 
 Drain". Very versatile!
 
-5. Clock configuration {#STM32CUBEMX_CLOCKS}
-============================================
+5. Clock configuration
+======================
 
     Timers > RTC
 
@@ -198,13 +196,13 @@ RC oscillator. The accuracy of the clock can be improved by using the USB SOF
 ([Start Of Frame](https://www.beyondlogic.org/usbnutshell/usb3.shtml)) packet 
 that is received every 1 ms.
 
-6. Project Manager {#STM32CUBEMX_PROJECT_MANAGER}
-=================================================
+6. Project Manager
+==================
 
 Select the Project Manager tab.
 
-6.1 Project {#STM32CUBEMX_PROJECT}
-----------------------------------
+6.1 Project
+-----------
 
 ![](cmx_project.png)
 
@@ -212,8 +210,8 @@ The Project tab will be selected by default. The Toolchain / IDE can be changed
 to STM32CubeIDE. The location of the complete STM32Cube library is displayed 
 (grayed out) at the bottom.
 
-6.2 Code Generator {#STM32CUBEMX_CODE_GENERATOR}
-------------------------------------------------
+6.2 Code Generator
+------------------
 
 ![](cmx_code_generator.png)
 
@@ -222,8 +220,8 @@ Tick "Generate peripheral initialization as a pair of '.c/.h' files per
 peripheral" and "Set all free pins as analog (to optimize the power 
 consumption)".
 
-6.3 Advanced Settings {#STM32CUBEMX_ADV_SETTINGS}
--------------------------------------------------
+6.3 Advanced Settings
+---------------------
 
 ![](cmx_advanced_settings.png)
 
@@ -236,16 +234,16 @@ peripheral and use it to enable the clocks for the PX-HER0 board in
 @ref BOARDS_STM32_PX_HERO.
 @tip_e
 
-7. Generate Code {#STM32CUBEMX_GENERATE}
-========================================
+7. Generate Code
+================
 
 ![](cmx_generate_code.png)
 
 Click on the "Generate Code" button. After the tool has finished, you can open
 the folder to view the files or open the project in STM32CubeIDE. Great!
 
-8. Help {#STM32CUBEMX_HELP}
-===========================
+8. Help
+=======
 
     Help > Docs & Resources Alt-D
 
@@ -255,8 +253,8 @@ The relevant documents for the selected microcontroller is neatly collected in
 the "Docs & Resources" window. Once downloaded it's just a few mouse clicks 
 away.
 
-9. Example {#STM32CUBEMX_EXAMPLE}
-=================================
+9. Example
+==========
 
 A complete STM32CubeMX HAL project has been configured for the PX-HER0 board and 
 can be found @ref HERO_BOARD_EXAMPLE_CUBEMX_HAL "HERE".

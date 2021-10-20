@@ -73,8 +73,9 @@
  *  Example:
  *  
  *  @include comms/test/px_hdlc_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stddef.h>
@@ -140,6 +141,6 @@ void px_hdlc_tx_frame(const uint8_t * data, size_t nr_of_bytes);
 #ifdef __cplusplus
 }
 #endif
-/// @}
 
+/// @}
 #endif

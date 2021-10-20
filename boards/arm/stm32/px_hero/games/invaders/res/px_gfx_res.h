@@ -47,4 +47,4 @@ extern px_gfx_img_t px_gfx_img_ship;
 }
 #endif
 
-#endif // #ifndef __PX_GFX_RESOURCES_H__
+#endif

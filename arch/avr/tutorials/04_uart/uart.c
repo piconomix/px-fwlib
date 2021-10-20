@@ -30,15 +30,15 @@
  *  time, instead of using "magic values". For example,  the value to use for 
  *  the UBBR register is calculated with the following macro: 
  *  
- *      @code{.c}
+ *  @code{.c}
  *      #define UART0_UBBR_VAL  ((F_CPU / (UART0_BAUD * 16)) - 1)
- *      @endcode
+ *  @endcode
  *  
  *  instead of using a hard coded value:
  *  
- *      @code{.c}
- *      #define UART0_UBBR_VAL   3 // Magic Value for 115200 Baud at a clock rate of 7.3728 MHz 
- *      @endcode
+ *  @code{.c}
+ *      #define UART0_UBBR_VAL   3 // Magic Value for 115200 Baud at a clock rate of 7.3728 MHz
+ *  @endcode
  */
 
 #include <stdint.h>

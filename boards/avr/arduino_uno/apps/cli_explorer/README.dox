@@ -1,10 +1,8 @@
 CLI Explorer (Command Line Interpreter) {#ARDUINO_UNO_BOARD_APP_CLI}
 ====================================================================
   
-[TOC]
-
-1. Introduction {#ARDUINO_UNO_CLI_INTRO}
-========================================
+1. Introduction
+===============
 
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 [xloader]:           http://xloader.russemotto.com/
@@ -26,8 +24,8 @@ With this application you will be able to:
 - Communicate with SPI devices
 - Set and read a software RTC (Real Time Clock) 
 
-2. Upload "cli_explorer.hex" file to Arduino Uno board {#ARDUINO_UNO_CLI_UPLOAD}
-================================================================================
+2. Upload "cli_explorer.hex" file to Arduino Uno board
+======================================================
 
 You will need [XLoader] [xloader] to upload the "cli_explorer.hex" file to the Arduino
 Uno board via the [Optiboot bootloader] [optiboot]. The file is located here:
@@ -48,8 +46,8 @@ like this:
     that you specify the correct communication port (in the correct format).
 @warn_e
 
-3. Open Terminal software to interact with application {#ARDUINO_UNO_CLI_TERM}
-==============================================================================
+3. Open Terminal software to interact with application
+======================================================
 
 You will also need [Tera Term] [tera_term] to interact with the application. 
 Configure Tera Term to connect to the correct COM port at 115200 BAUD, 8 Data 
@@ -66,11 +64,11 @@ should appear:
 
 ![CLI Application on Tera Term (Terminal Emulator)](arduino_uno_cli.png)
 
-4. CLI features {#ARDUINO_UNO_CLI_FEATURES}
-===========================================
+4. CLI features
+===============
 
-4.1 Autocomplete (TAB) {#ARDUINO_UNO_CLI_AUTOCOMPLETE}
-------------------------------------------------------
+4.1 Autocomplete (TAB)
+----------------------
 
 Type the start of a command:
 
@@ -107,8 +105,8 @@ Press ENTER to execute command:
     >led off
     >
 
-4.2 Command History (UP/DN arrow) {#ARDUINO_UNO_CLI_HISTORY}
-------------------------------------------------------------
+4.2 Command History (UP/DN arrow)
+---------------------------------
 
 Type 'gpio info' command and ENTER:
 
@@ -155,8 +153,8 @@ Press UP arrow again to recall command before that:
 Press ENTER to execute command or BACKSPACE to edit command. You can also press
 DOWN arrow to recall newer command in history list if you went too far back.
 
-4.3 Help {#ARDUINO_UNO_CLI_HELP}
---------------------------------
+4.3 Help
+--------
 
 Type 'help' and press ENTER to list all the commands with parameters and 
 descriptions. Parameters indicated with angle brackets <> are required and 
@@ -173,11 +171,11 @@ output:
     i2c w           <adr> <d0> .. [d7]         : Write up to 8 bytes of data to an I2C slave
     i2c r           <adr> <nr of bytes>        : Read up to 16 bytes of data from an I2C slave
 
-5. CLI commands {#ARDUINO_UNO_CLI_COMMANDS}
-===========================================
+5. CLI commands
+===============
 
-5.1 LED {#ARDUINO_UNO_CLI_LED}
-------------------------------
+5.1 LED
+-------
 
 To switch the LED on:
 
@@ -187,8 +185,8 @@ To switch the LED off:
 
     >led off
 
-5.2 GPIO {#ARDUINO_UNO_CLI_GPIO}
---------------------------------
+5.2 GPIO
+--------
 
 GPIO pins can be specified as @<port>@<pin>, for example 'b5' refers to Port B 
 pin 5, or a GPIO pin can also be specified by Arduino Digital pin number 
@@ -250,8 +248,8 @@ To disable LED on Port B, Pin 5:
 
     >gpio o b5 0
 
-5.3 ADC {#ARDUINO_UNO_CLI_ADC}
-------------------------------
+5.3 ADC
+-------
 
 This application uses 4 ADC channels (A0 to A3). *A4 and A5 are allocated for I2C 
 use (A4 = Port C pin 4 = SDA; A5 = Port C pin 5 = SCL).* The input voltage range 
@@ -304,8 +302,8 @@ or slower. For example, to make the report rate 500 ms (0.5 s):
 
     >adc cfg_samples 500
 
-5.4 I2C {#ARDUINO_UNO_CLI_I2C}
-------------------------------
+5.4 I2C
+-------
 
 An I2C slave can be connected to the breakout header and verified that it works
 before creating a device driver for it. *Pin A4 = Port C pin 4 = SDA; Pin 
@@ -353,8 +351,8 @@ Read register value:
 The chip identification register value for the BMP280 is 0x58. This confirms 
 that you are able to write and read from the I2C slave.
 
-5.5 SPI {#ARDUINO_UNO_CLI_SPI}
-------------------------------
+5.5 SPI
+-------
 
 An SPI slave device can also be connected to the breakout header. For this 
 example, let's experiment with an external AT45D DataFlash.
@@ -382,8 +380,8 @@ Take Chip Select high to end transaction:
 
     >spi cs hi
 
-5.6 RTC {#ARDUINO_UNO_CLI_RTC}
-------------------------------
+5.6 RTC
+-------
 
 A software RTC has been implemented using the system clock. This means that the
 board will not remember its time and date when the board is reset or power 

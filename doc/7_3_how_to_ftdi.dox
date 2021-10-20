@@ -1,10 +1,8 @@
 7.3 How to install and configure FTDI USB-UART Bridge driver {#HOWTO_FTDI}
 ==========================================================================
 
-[TOC]
-
-1. Introduction {#FTDI_INTRO}
-=============================
+1. Introduction
+===============
 
 [ftdi]:             http://www.ftdichip.com
 [ftdi_ft230x]:      https://www.ftdichip.com/Products/ICs/FT230X.html
@@ -24,8 +22,8 @@ so that any FTDI device connected to the same USB port is assigned the same COM
 port number, but this must be done **before** the USB device driver is 
 installed for the connected FTDI device.
 
-2. Steps {#FTDI_STEPS}
-======================
+2. Steps
+========
 
 Here are the steps in the correct order.
 
@@ -34,8 +32,8 @@ First make sure that all boards with FTDI devices are disconnected from the PC
 before starting this procedure.
 @warn_e
 
-2.1 Remove old driver(s) {#FTDI_REMOVE_OLD_DRIVER}
---------------------------------------------------
+2.1 Remove old driver(s)
+------------------------
 
 Download and run the [CDM Uninstaller][ftdi_uninstaller].
 
@@ -50,8 +48,8 @@ The FTDI series has a USB Vendor ID of 0403.
 2. Click the "Add" button.
 3. Click the "Remove Devices" button.
 
-2.2 Add registry setting to ignore FTDI device serial number {#FTDI_REGISTRY}
------------------------------------------------------------------------------
+2.2 Add registry setting to ignore FTDI device serial number
+------------------------------------------------------------
 
 Download and run [FTDI Ignore Hardware Serial Number Registry Editor Utility][ftdi_ignore_ser].
 
@@ -70,13 +68,13 @@ executable and select "Run as administrator").
 You can also remove the registry setting with the "ERASE" button.
 @tip_e
 
-2.3 Install new driver {#FTDI_INSTALL_DRIVER}
----------------------------------------------
+2.3 Install new driver
+----------------------
 
 Download and install the FTDI USB-UART Bridge [Virtual Com Port (VCP) driver][ftdi_vcp_driver].
 
-2.4 Connect board to PC with USB cable {#FTDI_BOARD_CONNECT}
-------------------------------------------------------------
+2.4 Connect board to PC with USB cable
+--------------------------------------
 
 The operating system will detect that a new USB device has been plugged in and 
 automatically install the correct driver for it. Take note which COM port has 

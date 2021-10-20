@@ -39,9 +39,9 @@
  *   
  *  When an external interrupt is disabled, it will not detect an interrupt 
  *  condition and will not set the interrupt pending flag.
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -185,9 +185,9 @@ void px_exti_disable(px_exti_line_t exti_line);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

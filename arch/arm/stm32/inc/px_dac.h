@@ -35,8 +35,9 @@
  *  
  *  @par Example:
  *  @include arch/arm/stm32/test/px_dac_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -133,9 +134,9 @@ void px_dac_wr(px_dac_handle_t * handle,
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

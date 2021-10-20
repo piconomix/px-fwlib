@@ -28,8 +28,9 @@
  *
  *  Reference:
  *  - [Lite-On LTR329ALS datasheet](https://optoelectronics.liteon.com/upload/download/DS86-2014-0006/LTR-329ALS-01_DS_V1.5.PDF)
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -104,9 +105,9 @@ uint16_t px_ltr329als_meas_convert_to_lux(px_ltr329als_gain_t      gain,
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

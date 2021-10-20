@@ -21,8 +21,8 @@
 /** 
  *  @addtogroup PX_LOG_FS 
  *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -85,9 +85,9 @@ void px_log_fs_glue_erase_block(uint16_t page);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

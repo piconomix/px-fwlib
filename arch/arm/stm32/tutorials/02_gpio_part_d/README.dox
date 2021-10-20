@@ -1,10 +1,8 @@
 02 GPIO part D {#STM32_TUT02_GPIO_PART_D}
 =========================================
 
-[TOC]
-
-1. Introduction {#STM32_TUT02_GPIO_PART_D_INTRO}
-================================================
+1. Introduction
+===============
 
 *How to configure and use General Purpose (digital) I/O pins - part D*
 
@@ -12,12 +10,12 @@ File(s):
 - arch/arm/stm32/tutorials/02_gpio_part_d/src/gpio.c
 
 This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the 
-[PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD), the LED is wired to Port H pin 0.
+[PX-HER0 Board](@ref STM32_PX_HERO_BOARD), the LED is wired to Port H pin 0.
 PH0 must be configured as a digital output pin. Set PH0 high to enable the LED 
 and set PH0 low to disable the LED.
 
-2. STM32Cube LL (Low Level) API {#STM32_TUT02_GPIO_PART_D_STM32CUBE_LL}
-=======================================================================
+2. STM32Cube LL (Low Level) API
+===============================
 
 ST provides the STM32Cube library that defines a HAL (Hardware Abstraction
 Layer) and LL (Low Level) API to access the peripherals. See:
@@ -51,18 +49,18 @@ example, if I want to change the mode of a GPIO pin, I will search for
 
 Line 272 looks promising and there I find the following function:
 
-    @code{.c}
+@code{.c}
     __STATIC_INLINE void LL_GPIO_SetPinMode(GPIO_TypeDef *GPIOx, uint32_t Pin, uint32_t Mode)
     {
-      MODIFY_REG(GPIOx->MODER, ((Pin * Pin) * GPIO_MODER_MODE0), ((Pin * Pin) * Mode));
+    MODIFY_REG(GPIOx->MODER, ((Pin * Pin) * GPIO_MODER_MODE0), ((Pin * Pin) * Mode));
     }
-    @endcode
+@endcode
 
 The function has a Doxygen comment header (not reproduced here) that shows
 what parameter names to use.
 
 @tip_s
-On the [PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD), the 6/NO button is 
+On the [PX-HER0 Board](@ref STM32_PX_HERO_BOARD), the 6/NO button is
 wired to PC9. Now that you have mastered the GPIO peripheral, create a project 
 that configures PC9 as a digital input with pull-up resistor enabled. If the 
 button is pressed, PC9 goes low. Enable the LED while the button is being 

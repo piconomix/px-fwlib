@@ -1,10 +1,8 @@
 3.1.3 Piconomix ATmega328P Scorpion Board {#PICONOMIX_SCORPION_BOARD}
 =====================================================================
   
-[TOC]
-
-1. Introduction {#SCORPION_BOARD_INTRO}
-=======================================
+1. Introduction
+===============
 
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
@@ -33,8 +31,8 @@ There is:
   environment running on the Scorpion Board so that you can experiment with 
   GPIO, ADC, I2C and SPI using an ANSI/VT100 Terminal (for example [Tera Term] [tera_term])
 
-2. Hardware Features {#SCORPION_BOARD_FEATURES}
-===============================================
+2. Hardware Features
+====================
 
 - [Microchip ATmega328P](https://www.microchip.com/wwwproducts/en/ATmega328P)
   microcontroller with 32 kB FLASH and 2kB SRAM
@@ -63,16 +61,16 @@ There is:
 - 2 x 3.4 mm mounting holes; ideal for 
   [M3 threaded hexagonal spacers](http://www.digikey.com/catalog/en/partgroup/hexagonal-metric-spacers/12921)
 
-3. Design Documents and Files {#SCORPION_BOARD_DESIGN}
-======================================================
+3. Design Documents and Files
+=============================
 
 - [Schematic](https://piconomix.com/download/px_scorpion_sch.pdf)
 - [Bill Of Materials](https://piconomix.com/download/px_scorpion_bom.pdf)
 - [Board Layout](https://piconomix.com/download/px_scorpion_layout.pdf)
 - [Gerber Files](https://piconomix.com/download/px_scorpion_gerbers.7z)
 
-4. Disclaimer {#SCORPION_BOARD_DISCLAIMER}
-==========================================
+4. Disclaimer
+=============
 
     This development/evaluation tool is suitable for research and development in
     a controlled laboratory environment and not designed or tested as a finished
@@ -92,8 +90,8 @@ There is:
     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS HARDWARE, EVEN
     IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-5. Reference documents {#SCORPION_BOARD_REFS}
-=============================================
+5. Reference documents
+======================
 
 - [Microchip ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328P)
 - [AVR Instruction Set Manual](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
@@ -115,8 +113,8 @@ Files:
 - boards/avr/px_scorpion/inc/px_board_gpio.h
 - boards/avr/px_scorpion/src/px_board.c
 
-7. Getting started {#SCORPION_BOARD_START}
-==========================================
+7. Getting started
+==================
 
 The following free software tools are needed:
 - FTDI FT230XS USB-UART Bridge [Virtual Com Port (VCP) driver] [ftdi_vcp_driver]
@@ -137,8 +135,8 @@ The following free software tools are needed:
 (from the [CoreUtils] [core_utils] package) but lacks* **sh** *that is required 
 for advanced Makefiles.*
 
-7.1 Install USB-UART Bridge Virtual Com Port (VCP) USB driver {#SCORPION_BOARD_INSTALL_USB}
--------------------------------------------------------------------------------------------
+7.1 Install USB-UART Bridge Virtual Com Port (VCP) USB driver
+-------------------------------------------------------------
 
 @tip_s
 If you already have the latest driver installed, then these steps can be 
@@ -175,8 +173,8 @@ The utility should be run **before** the first device installation.
 
 Download and install the FTDI FT230XS USB-UART Bridge [Virtual Com Port (VCP) driver] [ftdi_vcp_driver].
 
-7.2 Connect board to PC with Mini-B USB Cable {#SCORPION_BOARD_CONNECT}
------------------------------------------------------------------------
+7.2 Connect board to PC with Mini-B USB Cable
+---------------------------------------------
 
 +5V will be supplied to the board via USB and the microcontroller will start 
 executing code. The firmware shipped with the board enables the user LED and 
@@ -190,8 +188,8 @@ Start > Device Manager
 
 ![Windows Device Manager - COM port assignment](scorpion_board_device_manager.png)
 
-7.3 Install Tera Term - Terminal Emulator {#SCORPION_BOARD_INSTALL_TERATERM}
-----------------------------------------------------------------------------
+7.3 Install Tera Term - Terminal Emulator
+-----------------------------------------
 
 Download and install [Tera Term - Terminal Emulator] [tera_term].
 
@@ -227,13 +225,13 @@ This command will drive the piezo buzzer for 100 ms at a frequency of 4 kHz.
 Simply put, the buzzer will give a short beep.
 @tip_e
 
-7.4 Install Atmel Studio 7 {#SCORPION_BOARD_INSTALL_ATMEL_STUDIO}
------------------------------------------------------------------
+7.4 Install Atmel Studio 7
+--------------------------
 
 Download and install [Atmel Studio 7] [atmel_studio].
 
-7.5 Install UnixShellUtils {#SCORPION_BOARD_INSTALL_UNIX_SHELL_UTILS}
----------------------------------------------------------------------
+7.5 Install UnixShellUtils
+--------------------------
 
 Download [UnixShellUtils] [unix_shell_utils] and extract downloaded package 
 to root of drive, e.g.
@@ -260,8 +258,8 @@ Studio will remember the custom settings, so it is quick to switch between
 Custom and Default.
 @warn_e
 
-7.7 Build example in Atmel Studio {#SCORPION_BOARD_BUILD_EXAMPLE}
------------------------------------------------------------------
+7.7 Build example in Atmel Studio
+---------------------------------
 
 All of the tutorials and examples are provided with pre-configured Atmel 
 Studio projects. External Makefiles are referenced, instead of using Atmel
@@ -290,8 +288,8 @@ If this step was not succesfull, it probably means that the custom build tools
 was not correctly set up. Go back to @ref SCORPION_BOARD_CUSTOM_BUILD_TOOLS
 @tip_e
 
-7.8 Upload example to Scorpion Board {#SCORPION_BOARD_UPLOAD_EXAMPLE}
----------------------------------------------------------------------
+7.8 Upload example to Scorpion Board
+------------------------------------
 
 After building @ref SCORPION_BOARD_EXAMPLE_GPIO succesfully, you will 
 have a binary file called "gpio.bin". The new application is sent to the 
@@ -326,8 +324,8 @@ restarted.
 Press the user button. The user LED will turn on while the button is being 
 pressed and turn off when the button is released. **Success!**
 
-8. AVR quick start guide {#SCORPION_BOARD_AVR_QUICK_START_GUIDE}
-================================================================
+8. AVR quick start guide
+========================
 
 You now have a working development environment and I really hope it was quick 
 and straight forward to set up. You should be able to compile an application in 
@@ -342,8 +340,8 @@ quick start guide with tutorials and examples have been created as an
 introduction. Click [HERE](@ref AVR_QUICK_START_GUIDE) to proceed to the AVR 
 quick start guide.
 
-9. Arduino development on Scorpion Board {#SCORPION_BOARD_ARDUINO}
-===================================================================
+9. Arduino development on Scorpion Board
+========================================
 
 You can also use the Arduino environment to develop code for the Scorpion 
 Board. Click [HERE](@ref SCORPION_BOARD_ARDUINO_DEV) to proceed to Arduino 

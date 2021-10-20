@@ -33,12 +33,12 @@
  *  Example:
  *  @tip_e    
  *  
- *      @code{.c}
- *      #include <avr/sleep.h> 
- *  
- *      set_sleep_mode(SLEEP_MODE_IDLE); 
- *      sleep_mode(); 
- *      @endcode 
+ *  @code{.c}
+ *      #include <avr/sleep.h>
+ *
+ *      set_sleep_mode(SLEEP_MODE_IDLE);
+ *      sleep_mode();
+ *  @endcode
  */
 
 #include <stdint.h>

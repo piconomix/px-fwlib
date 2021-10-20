@@ -25,9 +25,10 @@
  *  Graphical objects.
  *  
  *  File(s):
- *  - gfx/inc/px_gfx_objects.h 
+ *  - gfx/inc/px_gfx_objects.h
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -50,9 +51,9 @@ extern "C"
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

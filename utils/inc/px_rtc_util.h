@@ -28,8 +28,8 @@
  *  - utils/inc/px_rtc_util_cfg_template.h
  *  - utils/src/px_rtc_util.c
  *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -55,7 +55,7 @@ extern "C" {
 #define PX_RTC_SEC_PER_DAY  (24*PX_RTC_SEC_PER_HOUR)
 
 /// @name Alarm bit mask
-//@{
+/// @{
 #define PX_RTC_UTIL_ALARM_MASK_DIS      0       ///< Disable alarm
 #define PX_RTC_UTIL_ALARM_MASK_SEC      (1<<0)  ///< Alarm match on second
 #define PX_RTC_UTIL_ALARM_MASK_MIN      (1<<1)  ///< Alarm match on minute
@@ -63,7 +63,7 @@ extern "C" {
 #define PX_RTC_UTIL_ALARM_MASK_DAY      (1<<3)  ///< Alarm match on day
 #define PX_RTC_UTIL_ALARM_MASK_MONTH    (1<<4)  ///< Alarm match on month
 #define PX_RTC_UTIL_ALARM_MASK_YEAR     (1<<5)  ///< Alarm match on year
-//@}
+/// @}
 
 /// Day of week
 typedef enum
@@ -377,9 +377,9 @@ void px_rtc_util_report_time(const px_rtc_date_time_t * date_time);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

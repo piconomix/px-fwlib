@@ -31,8 +31,9 @@
  *  - boards/avr/atmega328pb_xmini/src/px_board.c
  *
  *  https://www.microchip.com/en-us/development-tool/ATMEGA328PB-XMINI
- */   
-/// @{
+ *
+ *  @{
+ */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -93,9 +94,9 @@ void px_board_delay_ms(uint16_t delay_ms);
 /// User button
 #define PX_BTN_IS_PRESSED()     PX_GPIO_PIN_IS_LO(PX_GPIO_BTN)
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

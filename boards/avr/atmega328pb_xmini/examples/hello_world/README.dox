@@ -1,10 +1,8 @@
 Serial ("hello world") example {#ATMEGA328PB_XMINI_BOARD_EXAMPLE_HELLO_WORLD}
 =================================================================================
   
-[TOC]
-
-Introduction {#ATMEGA328PB_XMINI_BOARD_EXAMPLE_HELLO_WORLD_INTRO}
-================================================================
+Introduction
+============
 
 This is a serial port example for the ATmega328PB-XMINI board. It is the embedded
 equivalent of a "hello world" program on a PC to kick the tires and know that 

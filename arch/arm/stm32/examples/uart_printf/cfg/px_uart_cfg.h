@@ -66,5 +66,4 @@
 /// Size of UART5 receive buffer
 #define PX_UART_CFG_UART5_RX_BUF_SIZE   PX_UART_CFG_UART_RX_BUF_SIZE
 
-/// @}
 #endif

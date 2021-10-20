@@ -24,9 +24,9 @@
  *  File(s):
  *  - arch/arm/stm32/inc/px_rtc.h
  *  - arch/arm/stm32/src/px_rtc.c
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -160,9 +160,9 @@ void px_rtc_wakeup_tmr_flag_clear(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

@@ -43,49 +43,50 @@
  *  
  *  Example:
  *  
- *      @code
+ *  @code
  *      Buffer is empty:
- *  
- *                   wr        
- *                   |         
+ *
+ *                   wr
+ *                   |
  *      [x][x][x][x][x][x][x][x]
  *                   |
  *                  rd
- *  
+ *
  *      One byte is written to the buffer ('1'):
- *  
- *                      wr   
+ *
+ *                      wr
  *                      |
  *      [x][x][x][x][1][x][x][x]
  *                   |
  *                  rd
- *  
+ *
  *      One byte is read ('1'); buffer is empty again:
- *  
+ *
  *                      wr
  *                      |
  *      [x][x][x][x][x][x][x][x]
  *                      |
  *                     rd
- *  
+ *
  *      5 bytes are written ('2','3','4','5','6'); buffer wraps:
- *  
+ *
  *             wr
  *             |
  *      [5][6][x][x][x][2][3][4]
  *                      |
  *                     rd
- *  
+ *
  *      2 more bytes are written ('7','8'); buffer is full:
- *  
+ *
  *                   wr
  *                   |
  *      [5][6][7][8][x][2][3][4]
  *                      |
  *                     rd
- *      @endcode
+ *  @endcode
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stdlib.h>
@@ -246,9 +247,9 @@ px_ring_buf_idx_t px_ring_buf_full(px_ring_buf_t * px_ring_buf);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

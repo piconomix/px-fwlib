@@ -30,13 +30,17 @@
  *  This component initialises the @b stdout stream to output over UART.
  *  
  *  px_uart_stdio_put_char() will intercept all line feed characters (@b \\n) 
- *  and replace it with a carriage return, line feed sequence (@b \\r\\n).
+ *  and replace it with a carriage return, line feed sequence (@b \\r\\n). 
+ *   
+ *  References: 
+ *  1. newlib-2.5.0/newlib/libc/sys/arm/syscalls.c
  *  
  *  Example:
  *  
  *  @include arch/avr/test/px_uart_stdio_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stdio.h>
@@ -92,9 +96,9 @@ int px_uart_stdio_get_char(FILE * stream);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

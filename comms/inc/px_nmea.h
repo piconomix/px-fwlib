@@ -29,8 +29,9 @@
  *  - comms/src/px_nmea.c
  *  
  *  @see http://en.wikipedia.org/wiki/NMEA_0183
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -129,9 +130,9 @@ void px_nmea_tx_frame(char* frame);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

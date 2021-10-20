@@ -28,7 +28,7 @@
 PX_LOG_NAME("ltr329als");
 
 /// @name Register Set (p. 12)
-//@{
+/// @{
 #define PX_LTR329ALS_REG_ALS_CONTR                 0x80
 #define PX_LTR329ALS_REG_ALS_MEAS_RATE             0x85
 #define PX_LTR329ALS_REG_PART_ID                   0x86
@@ -39,7 +39,7 @@ PX_LOG_NAME("ltr329als");
 #define PX_LTR329ALS_REG_ALS_DATA_CH0_1            0x8b
 #define PX_LTR329ALS_REG_ALS_STATUS                0x8c
 
-//@}
+/// @}
 
 // ALS_CONTR Register (0x80)
 #define PX_LTR329ALS_REG_ALS_CONTR_ALS_GAIN_1X     (0 << 2)

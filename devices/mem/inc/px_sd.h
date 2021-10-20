@@ -31,9 +31,9 @@
  *  - 1. [SD Specifications Part 1 Physical Layer Simplified Specification 4.10](https://www.sdcard.org/downloads/pls/simplified_specs)
  *  - 2. [ChaN's How to Use MMC/SDC](http://elm-chan.org/docs/mmc/mmc_e.html)
  *  - 3. [Maxim - SD Media Format Expands the MAXQ2000's Space for Nonvolatile Data Storage](http://www.maximintegrated.com/app-notes/index.mvp/id/3969)
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -312,9 +312,9 @@ bool px_sd_wait_write_finished(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

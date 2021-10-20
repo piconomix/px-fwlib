@@ -30,9 +30,9 @@
  *  
  *  Reference:
  *  - [On Semiconductor CAT25M01](http://www.onsemi.com/pub/Collateral/CAT25M01-D.PDF) 1 Mbit SPI Serial CMOS EEPROM datasheet
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -51,10 +51,10 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 /// @name List CAT25M devices
-//@{
+/// @{
 #define PX_CAT25M01 0 /// 1 Mbit SPI Serial CMOS EEPROM
 #define PX_CAT25M02 1 /// 2 Mbit SPI Serial CMOS EEPROM
-//@}
+/// @}
 
 // Determine number of pages and page size according to device specified
 #if   (PX_CAT25M_CFG_DEVICE == PX_CAT25M01)
@@ -74,7 +74,7 @@ extern "C" {
 #define PX_CAT25M_ADR_MAX              (PX_CAT25M_EEPROM_SIZE_BYTES-1)
 
 /// @name Status register
-//@{
+/// @{
 #define PX_CAT25M_STATUS_WPEN  7   ///< Write Protect Enable
 #define PX_CAT25M_STATUS_IPL   6   ///< Identification Page Latch
 #define PX_CAT25M_STATUS_LIP   4   ///< Lock Identification Page
@@ -82,7 +82,7 @@ extern "C" {
 #define PX_CAT25M_STATUS_BP0   2   ///< Block Protect bit 0
 #define PX_CAT25M_STATUS_WEL   1   ///< Write Enable Latch
 #define PX_CAT25M_STATUS_RDY   0   ///< Ready (inverted)
-//@}
+/// @}
 
 /// Maximum SPI Clock rate
 #define PX_CAT25M_MAX_SPI_CLOCK_HZ  10000000
@@ -243,9 +243,9 @@ void px_cat25m_wr_dis(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

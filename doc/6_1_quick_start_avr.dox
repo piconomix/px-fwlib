@@ -1,10 +1,8 @@
 6.1 AVR quick start guide {#AVR_QUICK_START_GUIDE}
 ==================================================
 
-[TOC]
-
-1. Introduction {#AVR_QS_INTRO}
-===============================
+1. Introduction
+===============
 
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [make]:              http://gnuwin32.sourceforge.net/packages/make.htm
@@ -36,15 +34,15 @@ for advanced Makefiles.*
 For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
 @tip_e
 
-1.1 Reference documents {#AVR_QS_REF}
--------------------------------------
+1.1 Reference documents
+-----------------------
 
 - [Microchip ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328P)
 - [AVR Instruction Set Manual](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
 - [AVR Libc Reference Manual](http://www.nongnu.org/avr-libc/user-manual/index.html)
 
-2. Tutorials {#AVR_QS_TUTORIALS}
-================================
+2. Tutorials
+============
 
 These tutorials demonstrate how to use a peripheral by offering a distilled 
 example. The tutorials build on each other, so it is recommended to work through
@@ -66,8 +64,8 @@ them in the order presented.
 The tutorials may need to be modified for your specific target board.
 @warn_e
 
-3. Examples {#AVR_QS_EXAMPLES}
-==============================
+3. Examples
+===========
 
 These examples show how the Piconomix FW library can be used to achieve two
 embedded equivalents of the "hello world" program on a PC.
@@ -81,8 +79,8 @@ embedded equivalents of the "hello world" program on a PC.
 The examples may need to be modified for your specific target board.
 @warn_e
 
-4. Brief introduction to AVR instruction set {#AVR_QS_INSTRUCTION_SET}
-======================================================================
+4. Brief introduction to AVR instruction set
+============================================
 
 The AVR core has an advanced reduced instruction set (RISC) architecture with 
 most of the instructions being executed in a single clock cycle. The AVR uses a 
@@ -134,16 +132,16 @@ is the flag that enables/disables interrupts globally:
 - Bit 1 @b Z: Zero Flag
 - Bit 0 @b C: Carry Flag
 
-5. Install software {#AVR_QS_INSTALL}
-=====================================
+5. Install software
+===================
 
-5.1 Install Atmel Studio 7 {#AVR_QS_INSTALL_AS}
------------------------------------------------
+5.1 Install Atmel Studio 7
+--------------------------
 
 Download and install [Atmel Studio 7] [atmel_studio].
 
-5.2 Install UnixShellUtils {#AVR_QS_INSTALL_UNIX_SHELL_UTILS}
--------------------------------------------------------------
+5.2 Install UnixShellUtils
+--------------------------
 
 Download [UnixShellUtils] [unix_shell_utils] and extract downloaded package 
 to root of drive, e.g.
@@ -170,8 +168,8 @@ Studio will remember the custom settings, so it is quick to switch between
 Custom and Default.
 @warn_e
 
-6. Open and build an existing project in Atmel Studio {#AVR_QS_BUILD_PROJECT}
-=============================================================================
+6. Open and build an existing project in Atmel Studio
+=====================================================
 
 All of the tutorials and examples are provided with pre-configured Atmel 
 Studio projects. External Makefiles are referenced, instead of using Atmel
@@ -200,8 +198,8 @@ If this step was not succesfull, it probably means that the custom build tools
 was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
 @tip_e
 
-7. Simulate the project {#AVR_QS_SIM}
-=====================================
+7. Simulate the project
+=======================
 
 7.1 Open the project properties
 -------------------------------
@@ -239,8 +237,8 @@ You are now able to single step, set break points, run the code and inspect the
 peripheral status using the I/O view.
 @tip_e
 
-8. How to create a new project {#AVR_STUDIO_NEW_PROJECT}
-========================================================
+8. How to create a new project
+==============================
 
 Atmel Studio insists on creating a whole directory structure for a new project
 and refuses to create **just** the project files (*.atsln and *.cproj). Here 
@@ -396,8 +394,8 @@ the library:
 
 ![Modify path(s) in Makefile](as_ext_makefile_modify.png)
 
-9. Clean Solution {#AVR_QS_CLEAN}
-=================================
+9. Clean Solution
+=================
 
 Delete any previously build files. *This is the same as executing a 'make clean'
 on the command line.*
@@ -411,8 +409,8 @@ If this step was not successful, it probably means that the custom build tools
 was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
 @tip_e
 
-10. Build Solution {#AVR_QS_BUILD}
-==================================
+10. Build Solution
+==================
 
 Build the project. *This is the same as executing a 'make' on the command line.*
 
@@ -420,8 +418,8 @@ Build > build Solution **F7**
 
 ![](as_build_project.png)
 
-11. How to build a project from the command line {#AVR_QS_BUILD_CMD_LINE}
-=========================================================================
+11. How to build a project from the command line
+================================================
 
 Open a command prompt in the root of the project where the Makefile is located:
 
@@ -439,7 +437,7 @@ You can verify that the path is correct by executing 'avr-gcc --version' and
 You can now delete any previously built files by executing 'make clean' on the 
 command line (see picture above). This is the output:
 
-    @verbatim
+@verbatim
     P:\libs\px-fwlib\trunk\arch\avr\examples\flashing_led>make clean
 
     -------- begin --------
@@ -451,12 +449,12 @@ command line (see picture above). This is the output:
     rm -f flashing_led.elf
     rm -rf OBJ
     --------  end  --------
-    @endverbatim
+@endverbatim
 
 The project can be built again by executing 'make' on the command line. This is
 the output:
 
-    @verbatim
+@verbatim
     P:\libs\px-fwlib\trunk\arch\avr\examples\flashing_led>make
 
     -------- begin --------
@@ -514,7 +512,7 @@ the output:
 
 
     --------  end  --------
-    @endverbatim
+@endverbatim
 
 @tip_s
 For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.

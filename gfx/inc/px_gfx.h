@@ -39,9 +39,10 @@
  *  - gfx/px_gfx_image.tmpl 
  *   
  *  Tool preset file: 
- *  - px_gfx_preset.xml 
+ *  - px_gfx_preset.xml
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -71,14 +72,14 @@ extern "C"
 typedef int16_t px_gfx_xy_t;
 
 /// @name Convenience coordinate definitions
-//@{
+/// @{
 #define PX_GFX_X_MIN    0
 #define PX_GFX_X_MID    (PX_GFX_DISP_SIZE_X / 2)
 #define PX_GFX_X_MAX    (PX_GFX_DISP_SIZE_X - 1)
 #define PX_GFX_Y_MIN    0
 #define PX_GFX_Y_MID    (PX_GFX_DISP_SIZE_Y / 2)
 #define PX_GFX_Y_MAX    (PX_GFX_DISP_SIZE_Y - 1)
-//@}
+/// @}
 
 /// Foreground and background color definitions
 typedef enum
@@ -101,7 +102,7 @@ typedef enum
 } px_gfx_align_t;
 
 /// @name Convenience alignment combination definitions
-//@{
+/// @{
 #define PX_GFX_ALIGN_TOP_LEFT   (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_LEFT )
 #define PX_GFX_ALIGN_TOP_MID    (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_MID  )
 #define PX_GFX_ALIGN_TOP_RIGHT  (px_gfx_align_t)(PX_GFX_ALIGN_V_TOP | PX_GFX_ALIGN_H_RIGHT)
@@ -109,7 +110,7 @@ typedef enum
 #define PX_GFX_ALIGN_BOT_LEFT   (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_LEFT )
 #define PX_GFX_ALIGN_BOT_MID    (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_MID  )
 #define PX_GFX_ALIGN_BOT_RIGHT  (px_gfx_align_t)(PX_GFX_ALIGN_V_BOT | PX_GFX_ALIGN_H_RIGHT)
-//@}
+/// @}
 
 /// Image definition
 typedef struct
@@ -395,9 +396,9 @@ void px_gfx_printf(px_gfx_xy_t  x,
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

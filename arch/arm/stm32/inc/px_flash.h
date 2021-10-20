@@ -30,9 +30,9 @@
  *   
  *  @note 
  *  The flash erase and program functions must be executed from SRAM, not FLASH.
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -101,9 +101,9 @@ void px_flash_wr_row(const uint32_t address, const  uint32_t * data);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

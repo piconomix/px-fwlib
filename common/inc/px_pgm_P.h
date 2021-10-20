@@ -52,25 +52,25 @@
  *  For extra convenience, all-capital macros have been provided to call a
  *  program memory function AND inline declare a string in program memory:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      // Call progmem version of 'printf' and declare string in program memory
  *      printf_P(PSTR("Hello world!\n"));
- *  
+ *
  *      // Use variable argument convenience macro
  *      PX_PRINTF_P("Hello world!\n");
- *      @endcode
+ *  @endcode
  *  
  *  This module also has the ability to revert to normal RAM storage for
  *  architectures that do not require it, or if PX_PGM_P_USE_RAM is defined.
  *  
  *  Example:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      #include "px_pgm_P.h"
- *  
+ *
  *      // Program memory table for the number of days in each month (non leap year)
- *      const uint8_t px_rtc_month_day_table[] PX_ATTR_PGM = 
- *      {  
+ *      const uint8_t px_rtc_month_day_table[] PX_ATTR_PGM =
+ *      {
  *          0,  // Invalid month
  *         31,  // January
  *         28,  // February
@@ -85,21 +85,21 @@
  *         30,  // November
  *         31   // December
  *      };
- *  
+ *
  *      // String stored in program memory
  *      const char calender_str[] PX_ATTR_PGM = "Gregorian Calender\n";
- *  
+ *
  *      void report_days(uint8_t month)
  *      {
  *          uint8_t days_in_month = px_pgm_rd_u8(&px_rtc_month_day_table[month]);
- *  
+ *
  *          printf_P(calender_str);
  *          PX_PRINTF_P("Days in month = %d\n", days_in_month);
  *      }
- *      @endcode
- *  
+ *  @endcode
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stdio.h>
@@ -211,9 +211,9 @@ extern "C" {
 
 #endif
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

@@ -1,10 +1,8 @@
 XMODEM-CRC Bootloader {#SCORPION_BOARD_BOOTLOADER_XMODEM}
 =========================================================
   
-[TOC]
-
-1. Introduction {#SCORPION_BOARD_BOOTLOADER_XMODEM_INTRO}
-=========================================================
+1. Introduction
+===============
 
 [tera_term]: http://en.sourceforge.jp/projects/ttssh2
 
@@ -35,18 +33,18 @@ In addition the following flags were passed to the linker:
 - "LDFLAGS += -Wl,--defsym,reset=0x0000" to define the address where
  the bootloader will jump to after it has finished execution.
 
-2. How to use the XMODEM-CRC bootloader {#SCORPION_BOARD_BOOTLOADER_XMODEM_HOW_TO}
-==================================================================================
+2. How to use the XMODEM-CRC bootloader
+=======================================
 
-2.1 Build the application and create a BIN file from the ELF file {#SCORPION_BOARD_BOOTLOADER_XMODEM_BUILD}
------------------------------------------------------------------------------------------------------------
+2.1 Build the application and create a BIN file from the ELF file
+-----------------------------------------------------------------
 
 Here is the part of the Makefile build that creates a BIN file from an ELF file:
 
     avr-objcopy -O binary -R .eeprom -R .fuse -R .lock gpio.elf gpio.bin
 
-2.2 Run and configure Tera Term - Terminal Emulator {#SCORPION_BOARD_BOOTLOADER_XMODEM_TERA_TERM}
--------------------------------------------------------------------------------------------------
+2.2 Run and configure Tera Term - Terminal Emulator
+---------------------------------------------------
 
 Select the correct COM port and configure port for 115200 BAUD, 8 data bits, 
 no parity, 1 stop bit and no flow control.
@@ -61,8 +59,8 @@ board is OK, by resetting the board and verifying that Tera Term displays at
 least one received 'C' character sent by the bootloader.
 @tip_e
 
-2.3 Send the BIN file using the XMODEM-CRC protocol {#SCORPION_BOARD_BOOTLOADER_XMODEM_XMODEM_SEND}
----------------------------------------------------------------------------------------------------
+2.3 Send the BIN file using the XMODEM-CRC protocol
+---------------------------------------------------
 
 File > Transfer > XMODEM > Send...
 
@@ -80,8 +78,8 @@ Tera Term will now wait for a 'C' character from the board to start the
 transfer...
 @tip_e
  
-2.4 Reset the board to start the transfer {#SCORPION_BOARD_BOOTLOADER_XMODEM_START_TRANSFER}
---------------------------------------------------------------------------------------------
+2.4 Reset the board to start the transfer
+-----------------------------------------
 
 Press the reset button (**RST**) to reset the microcontroller and jump to the
 bootloader.
@@ -97,8 +95,8 @@ interrupted, the bootloader will time out and execute the broken, incomplete
 application. Normally this is not a big issue as the process can be repeated.
 @warn_e
 
-3. ATmega328p Fuse Bits {#SCORPION_BOARD_BOOTLOADER_XMODEM_FUSE_BITS}
-=====================================================================
+3. ATmega328p Fuse Bits
+=======================
 
 The AVR fuse bits must be set so that execution starts from the boot vector
 address. This means that the bootloader will always be executed first. 

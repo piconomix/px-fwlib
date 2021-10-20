@@ -166,9 +166,9 @@ struct \
       (px_ring_buf).write_index = index; \
    } while(0)
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

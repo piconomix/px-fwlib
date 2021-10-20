@@ -48,8 +48,9 @@
  *  @tip_e
  *  
  *  @include utils/test/px_systmr_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -96,9 +97,9 @@ void px_sysclk_reset_tick_count(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

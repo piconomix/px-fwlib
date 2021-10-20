@@ -1,10 +1,8 @@
 CLI Explorer (Command Line Interpreter) {#NUCLEO64_L053_APP_CLI}
 ================================================================
   
-[TOC]
-
-Introduction {#NUCLEO64_L053_APP_CLI_INTRO}
-===========================================
+Introduction
+============
 
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 

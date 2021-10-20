@@ -37,17 +37,17 @@
  *  
  *  A GPIO pin is defined using the #PX_GPIO utility macro, e.g.
  *  
- *      @code{.c}
+ *  @code{.c}
  *      // LED is an output pin on PORTB, bit 2, initially off
  *      #define PX_GPIO_LED PX_GPIO(B, 2, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO)
- *      @endcode
+ *  @endcode
  *  
  *  Now wherever PX_GPIO_LED is found, the C preprocessor will substitute it 
  *  with the following sequence:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      &PORTB, &DDRB, &PINB, 2, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO
- *      @endcode
+ *  @endcode
  *  
  *  There are 3 ways to use this GPIO driver:
  *  
@@ -59,34 +59,34 @@
  *  
  *  The following code:
  *  
- *      @code{.c}        
+ *  @code{.c}
  *      // Enable LED
  *      PX_GPIO_PIN_SET_HI(PX_GPIO_LED);
- *      @endcode
+ *  @endcode
  *  
  *  Expands to:
  *  
- *      @code{.c}        
+ *  @code{.c}
  *      _PX_GPIO_PIN_SET_HI(&PORTB, &DDRB, &PINB, 2, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO);
- *      @endcode
+ *  @endcode
  *  
  *  Which reduces to:
  *  
- *      @code{.c}        
+ *  @code{.c}
  *      PX_BIT_SET_HI(*(&PORTB), 2);
- *      @endcode
+ *  @endcode
  *  
  *  Which reduces even further to:
  *  
- *      @code{.c}
- *      do {PORTB |= (1<<2);} while(0);
- *      @endcode
+ *  @code{.c}
+ *      do {PORTB |= (1 << 2);} while(0);
+ *  @endcode
  *  
  *  Which the optimizing compiler replaces with a single assembly statement:
  *  
- *      @code
+ *  @code
  *      sbi 0x05, 2;
- *      @endcode
+ *  @endcode
  *  
  *  Which enables the LED :)
  *  
@@ -96,7 +96,7 @@
  *  Even though it *appears* that functions calls are used, the lines reduce to 
  *  single assembly statements for maximum efficiency and minimum code size:
  *  
- *      @code
+ *  @code
  *      // Initialise pins
  *      PX_GPIO_PIN_INIT(PX_GPIO_LED);
  *      7a: 28 98           cbi 0x05, 0 ; 5
@@ -104,7 +104,7 @@
  *      PX_GPIO_PIN_INIT(PX_GPIO_PB);
  *      7e: 5f 9a           sbi 0x0b, 7 ; 11
  *      80: 57 98           cbi 0x0a, 7 ; 10
- *  
+ *
  *      // Repeat forever
  *      for(;;)
  *      {
@@ -124,7 +124,7 @@
  *              PX_GPIO_PIN_SET_LO(PX_GPIO_LED);
  *      8a: 28 98           cbi 0x05, 0 ; 5
  *      8c: fa cf           rjmp    .-12        ; 0x82 <main+0x8>
- *      @endcode
+ *  @endcode
  *  
  *  The second method is to declare the GPIO pin info as a 'static const'
  *  structure in an H file and use inline C functions. If the compiler
@@ -138,17 +138,17 @@
  *  @warn_e
  *  
  *  Example (in an H file):
- *      @code{.c}
+ *  @code{.c}
  *      // LED is an output pin on PORTB, bit 2, initially off
  *      #define PX_GPIO_LED PX_GPIO(B, 2, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO)
  *      static const px_gpio_t px_gpio_led = {PX_GPIO_LED};
- *  
+ *
  *      // Inline function to enable the LED
  *      static inline void led_enable(void)
  *      {
  *          px_gpio_pin_set_hi(&px_gpio_led);
  *      }
- *      @endcode
+ *  @endcode
  *  
  *  Example:
  *  @include arch/avr/test/px_gpio_test2.c
@@ -159,13 +159,13 @@
  *  
  *  Example (in a C file): 
  *   
- *      @code{.c}
+ *  @code{.c}
  *      // LED is an output pin on PORTB, bit 2, initially off
  *      #define PX_GPIO_LED PX_GPIO(B, 2, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO)
- *  
+ *
  *      // Declare LED gpio structure
  *      px_gpio_t px_gpio_led;
- *  
+ *
  *      void led_init(bool led_on)
  *      {
  *          // LED is an output pin on PORTB, bit 2, initially off
@@ -178,9 +178,10 @@
  *              px_gpio_pin_set_hi(&px_gpio_led);
  *          }
  *      }
- *      @endcode
-*/ 
-/// @{
+ *  @endcode
+ *
+ *  @{
+ */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <avr/io.h>
@@ -232,14 +233,14 @@ typedef struct
  *  
  *  Usage example:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      // LED is an output pin on PORTD, bit 7, initially off
  *      #define PX_GPIO_LED    GPIO(D, 7, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO)
- *  
+ *
  *      // PX_GPIO_LED will be replaced by the C preprocessor with the following
  *      // sequence:
  *      // &PORTD, &DDRD, &PIND, 7, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO
- *      @endcode
+ *  @endcode
  *  
  *  @param port      A, B, C, ...
  *  @param bit       0, 1, 2, 3, 4, 5, 6 or 7
@@ -337,21 +338,21 @@ while(0)
 /**
  *  Initialise a GPIO structure.
  *  
- * @param [out] gpio    px_gpio_t structure
- * @param [in] port     PORTx register address, e.g. &PORTB
- * @param [in] ddr      DDRx register address, e.g. &DDRB
- * @param [in] pin      PINx register address, e.g. &PINB
- * @param [in] bit      Bit: 0, 1, 2, 3, 4, 5, 6 or 7
- * @param [in] dir      Direction: PX_GPIO_DIR_OUT or PX_GPIO_DIR_IN
- * @param [in] init     Initial value: PX_GPIO_INIT_HI, PX_GPIO_INIT_LO, PX_GPIO_INIT_HIZ or PX_GPIO_INIT_PULLUP
+ *  @param [out] gpio   px_gpio_t structure
+ *  @param [in] port    PORTx register address, e.g. &PORTB
+ *  @param [in] ddr     DDRx register address, e.g. &DDRB
+ *  @param [in] pin     PINx register address, e.g. &PINB
+ *  @param [in] bit     Bit: 0, 1, 2, 3, 4, 5, 6 or 7
+ *  @param [in] dir     Direction: PX_GPIO_DIR_OUT or PX_GPIO_DIR_IN
+ *  @param [in] init    Initial value: PX_GPIO_INIT_HI, PX_GPIO_INIT_LO, PX_GPIO_INIT_HIZ or PX_GPIO_INIT_PULLUP
  *  
- * Example:
+ *  Example:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      px_gpio_t px_gpio_led;
- *  
+ *
  *      px_gpio_init(&px_gpio_led, &PORTD, &DDRD, &PIND, 7, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO);
- *      @endcode
+ *  @endcode
  *  
  */
 inline void px_gpio_open(px_gpio_handle_t * gpio, 
@@ -481,9 +482,9 @@ inline void px_gpio_pullup_disable(const px_gpio_handle_t * gpio)
     PX_BIT_SET_LO(*(gpio->port), gpio->bit);
 }
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

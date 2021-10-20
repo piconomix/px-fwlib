@@ -1,10 +1,8 @@
 STM32CubeMX HAL example {#HERO_BOARD_EXAMPLE_CUBEMX_HAL}
 ========================================================
   
-[TOC]
-
-1. Introduction {#HERO_BOARD_EXAMPLE_CUBEMX_HAL_INTRO}
-======================================================
+1. Introduction
+===============
 
 This is a [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
 HAL project configured for the Hero Board.
@@ -13,14 +11,14 @@ HAL project configured for the Hero Board.
 For an introduction to the STM32CubeMX tool, click @ref HOWTO_STM32CUBEMX "HERE".
 @tip_e
 
-2. Pin configuration {#HERO_BOARD_EXAMPLE_CUBEMX_PINS}
-======================================================
+2. Pin configuration
+====================
 
 ![](hero_board_cubemx_pinout.png)
 
 
-3. Clock configuration {#HERO_BOARD_EXAMPLE_CUBEMX_CLOCKS}
-==========================================================
+3. Clock configuration
+======================
 
 ![](hero_board_cubemx_clk_setup.png)
 

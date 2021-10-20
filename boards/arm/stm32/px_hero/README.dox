@@ -1,12 +1,10 @@
-3.2.1 Piconomix STM32L072RB PX-HER0 Board {#PICONOMIX_STM32_HERO_BOARD}
-=======================================================================
-
-[TOC]
+3.2.1 Piconomix STM32L072RB PX-HER0 Board {#STM32_PX_HERO_BOARD}
+================================================================
 
 <center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
 
-1. Introduction {#PICONOMIX_STM32_HERO_BOARD_INTRO}
-===================================================
+1. Introduction
+===============
 
 [stm32cubeide]:       https://www.st.com/en/development-tools/stm32cubeide.html
 [python]:             https://www.python.org/downloads
@@ -29,7 +27,7 @@ Extensive ecosystem included:
 * [PX-HER0 Board User Manual](https://github.com/piconomix/px-fwlib/raw/master/boards/arm/stm32/px_hero/docs/px_hero_board_manual.pdf)
 * An [STM32 quick start guide](@ref STM32_QUICK_START_GUIDE) with 
   distilled [tutorials](@ref STM32_TUTORIALS) and [examples](@ref STM32_EXAMPLES)
-* A [Board Support Package](@ref HERO_BOARD_BSP)
+* A [Board Support Package](@ref STM32_PX_HERO_BOARD_BSP)
 * @subpage HERO_BOARD_BOOTLOADERS "Bootloaders"
 * @subpage HERO_BOARD_APPS "Applications"
 * @subpage HERO_BOARD_EXAMPLES "Examples"
@@ -47,8 +45,8 @@ The Hero Board is shipped preprogrammed with a @ref HERO_BOARD_BOOTLOADER_USB_UF
 and @ref HERO_BOARD_APP_CLI.
 @tip_e
 
-2. Board layout - top view {#HERO_BOARD_TOP_VIEW}
-=================================================
+2. Board layout - top view
+==========================
 
 ![](hero_board_top_annotated.png)
 \n
@@ -61,8 +59,8 @@ and @ref HERO_BOARD_APP_CLI.
 | **E.** USB1: STM32                         |                                       |
 
 
-3. Board layout - bottom view {#HERO_BOARD_BOT_VIEW}
-====================================================
+3. Board layout - bottom view
+=============================
 
 ![](hero_board_bot_annotated.png)
 \n
@@ -76,8 +74,8 @@ and @ref HERO_BOARD_APP_CLI.
 | **F.** ARM Cortex Debug Connector          | **M.** USB2: USB-Serial Bridge        |
 | **G.** Peripheral Connector                | **N.** Li-Po Battery Connector        |
 
-4. Features & Specifications {#HERO_BOARD_FEATURES}
-===================================================
+4. Features & Specifications
+============================
 
 - **Microcontroller**: [STM32L072RB](https://www.st.com/en/microcontrollers/stm32l072rb.html) ultra low-power ARM Cortex-M0+
     - 128k FLASH
@@ -113,8 +111,8 @@ and @ref HERO_BOARD_APP_CLI.
     - Board: 100 x 80 mm (3.94 x 3.15\")
     - Display active pixel area: 48.6 x 24.9 mm (1.91 x 0.98") / 54.6 mm (2.15") diagonal
 
-5. Comparision between Deluxe and Lite Edition {#HERO_BOARD_EDITIONS}
-=====================================================================
+5. Comparision between Deluxe and Lite Edition
+==============================================
 
 @tip_s
 In the future a Lite Edition may also be available.
@@ -148,8 +146,8 @@ Here is a table highlighting the differences:
 | Sparkfun Qwiic / STEMMA QT Connector                                             | YES            | YES          |
 | Seeed GROVE I2C Connector                                                        | YES            | YES          |
 
-6. Design Documents{#HERO_BOARD_DESIGN}
-=======================================
+6. Design Documents
+===================
 
 Most OSHW designs hide some of the "magic sauce". The schematics are hard to 
 follow and complete manufacturer part numbers are not disclosed. The Hero Board
@@ -168,8 +166,8 @@ The design documents can also be found here for off-line viewing:
 
     px-fwlib/boards/arm/stm32/px_hero/docs
 
-7. Reference documents {#HERO_BOARD_REFS}
-=========================================
+7. Reference documents
+======================
 
 - [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf)
 - [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
@@ -180,8 +178,8 @@ The reference documents can also be found here for off-line viewing:
 
     px-fwlib/boards/arm/stm32/px_hero/docs
 
-8. Disclaimer {#HERO_BOARD_DISCLAIMER}
-======================================
+8. Disclaimer
+=============
 
     This development/evaluation tool is suitable for research and development in
     a controlled laboratory environment and not designed or tested as a finished
@@ -201,8 +199,8 @@ The reference documents can also be found here for off-line viewing:
     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS HARDWARE, EVEN
     IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-9. Board Support Package {#HERO_BOARD_BSP}
-==========================================
+9. Board Support Package {#STM32_PX_HERO_BOARD_BSP}
+===================================================
 
 A Board Support Package (@ref BOARDS_STM32_PX_HERO) is provided that:
 - defines the function of each GPIO pin
@@ -216,8 +214,8 @@ Files:
 - boards/arm/stm32/px_hero/inc/px_board_gpio.h
 - boards/arm/stm32/px_hero/src/px_board.c
 
-10. Getting started {#HERO_BOARD_START}
-=======================================
+10. Getting started
+===================
 
 The following free software tools are needed:
 - [STM32CubeIDE][stm32cubeide] : 
@@ -485,8 +483,8 @@ Execute `make' to build the whole project:
 
 **Congratulations Hero!!**
 
-11. The next step {#HERO_BOARD_NEXT_STEP}
-=========================================
+11. The next step
+=================
 
 You now have a working development environment and I really hope it was quick 
 and straight forward to set up (if not, please use @ref FEEDBACK). You should be 

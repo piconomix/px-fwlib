@@ -41,8 +41,9 @@
  *  Example:
  *  
  *  @include utils/test/px_systmr_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -132,7 +133,7 @@ void px_systmr_restart(px_systmr_t * systmr);
  *  there is a delay between px_systmr_has_expired() and px_systmr_restart().
  *  Thus the prefered usage for a periodic timer is:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      for(;;)
  *      {
  *          // Wait until timer has expired
@@ -144,7 +145,7 @@ void px_systmr_restart(px_systmr_t * systmr);
  *          px_systmr_reset(&systmr);
  *          // Do something...
  *      }
- *      @endcode
+ *  @endcode
  *  
  *  @param[in,out]  systmr   Pointer to a timer object
  */    
@@ -175,9 +176,9 @@ px_systmr_ticks_t px_systmr_ticks_elapsed(px_systmr_t * systmr);
 #define PX_SYSTMR_MS_TO_TICKS(delay_in_ms)    \
      PX_UDIV_ROUND((delay_in_ms) * PX_SYSTMR_TICKS_PER_SEC, 1000ul)
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

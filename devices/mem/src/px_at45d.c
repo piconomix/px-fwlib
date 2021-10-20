@@ -23,14 +23,14 @@
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// @name Read commands
-//@{
+/// @{
 #define PX_AT45D_CMD_CONTINUOUS_ARRAY_READ             0xe8
 #define PX_AT45D_CMD_MAIN_MEMORY_PAGE_READ             0xd2
 #define PX_AT45D_CMD_STATUS_REGISTER_READ              0xd7
-//@}
+/// @}
 
 /// @name Program and Erase commands
-//@{
+/// @{
 #define PX_AT45D_CMD_BUFFER1_WRITE                     0x84
 #define PX_AT45D_CMD_BUFFER2_WRITE                     0x87
 
@@ -44,13 +44,13 @@
 #define PX_AT45D_CMD_MAIN_MEM_PROG_THROUGH_BUF2        0x85
 
 #define PX_AT45D_CMD_PAGE_ERASE                        0x81
-//@}
+/// @}
 
 /// @name Additional commands
-//@{
+/// @{
 #define PX_AT45D_CMD_MAIN_MEM_PAGE_TO_BUF1             0x53
 #define PX_AT45D_CMD_MAIN_MEM_PAGE_TO_BUF2             0x55
-//@}
+/// @}
 
 #define PX_AT45D_CMD_MAIN_DEEP_PWR_DN                  0xb9
 #define PX_AT45D_CMD_MAIN_RESUME_FROM_DEEP_PWR_DN      0xab

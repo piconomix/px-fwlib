@@ -43,8 +43,9 @@
  *  
  *  @par Example:
  *  @include arch/avr/test/px_spi_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -118,14 +119,15 @@ typedef enum
 } px_spi_baud_t;
 
 /// @name SPI bit flags to demarcate the start and end of a transaction
-//@{
+/// @{
+
 /// Begin SPI transaction (take SPI slave's Chip Select line low)
 #define PX_SPI_FLAG_START           (1<<0)
 /// Finish SPI transaction (take SPI slave's Chip Select line high)
 #define PX_SPI_FLAG_STOP            (1<<1)
 /// Begin and finish SPI transaction
 #define PX_SPI_FLAG_START_AND_STOP  (PX_SPI_FLAG_START + PX_SPI_FLAG_STOP)
-//@}
+/// @}
 
 /// Define SPI handle
 typedef struct
@@ -307,9 +309,9 @@ uint32_t px_spi_util_clk_div_to_baud_hz(px_spi_baud_t baud);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

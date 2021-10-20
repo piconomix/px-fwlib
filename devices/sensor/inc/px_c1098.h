@@ -28,8 +28,9 @@
  *  
  *  Reference:
  *  - [COMedia C1098](http://www.comedia.com.hk/FP13/Spec_PDF/PX_C1098_UM.pdf) CMOS Camera module
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -93,9 +94,9 @@ void     px_c1098_get_picture     (px_c1098_on_rx_data_t on_rx_data);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

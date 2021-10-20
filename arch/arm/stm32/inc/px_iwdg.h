@@ -28,6 +28,7 @@
  *  - arch/arm/stm32/inc/px_iwdg.h
  *  - arch/arm/stm32/src/px_iwdg.c
  *
+ *  @{
  */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
@@ -72,9 +73,9 @@ void px_iwdg_reload_counter(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

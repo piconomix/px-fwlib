@@ -20,8 +20,9 @@
 
 /** 
  *  @addtogroup AVR_I2C
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -41,20 +42,20 @@
 #define PX_I2C_CFG_TWI_PRESCALER_VAL   1
 
 /// @name I2C Clock GPIO pin manipulation macros
-//@{
+/// @{
 #define PX_I2C_CFG_SCL_SET_HIZ()   PX_GPIO_DIR_SET_IN(PX_GPIO_I2C_SCL)
 #define PX_I2C_CFG_SCL_SET_LO()    PX_GPIO_DIR_SET_OUT(PX_GPIO_I2C_SCL)
 #define PX_I2C_CFG_SCL_IS_HI()     PX_GPIO_PIN_IS_HI(PX_GPIO_I2C_SCL)
 #define PX_I2C_CFG_SCL_IS_LO()     PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SCL)
-//@}
+/// @}
 
 /// @name I2C Data GPIO pin manipulation macros
-//@{
+/// @{
 #define PX_I2C_CFG_SDA_SET_HIZ()   PX_GPIO_DIR_SET_IN(PX_GPIO_I2C_SDA)
 #define PX_I2C_CFG_SDA_SET_LO()    PX_GPIO_DIR_SET_OUT(PX_GPIO_I2C_SDA)
 #define PX_I2C_CFG_SDA_IS_HI()     PX_GPIO_PIN_IS_HI(PX_GPIO_I2C_SDA)
 #define PX_I2C_CFG_SDA_IS_LO()     PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SDA)
-//@}
+/// @}
 
 /// @}
 #endif

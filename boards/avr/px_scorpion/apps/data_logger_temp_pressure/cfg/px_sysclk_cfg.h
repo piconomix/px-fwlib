@@ -40,5 +40,4 @@
 /// Specify function to call on periodic timeout
 #define PX_SYSCLK_CFG_ON_PERIODIC_TIMEOUT()    px_rtc_util_on_tick()
 
-/// @}
 #endif

@@ -1,10 +1,8 @@
 02 GPIO part A {#STM32_TUT02_GPIO_PART_A}
 =========================================
 
-[TOC]
-
-1. Introduction {#STM32_TUT02_GPIO_PART_A_INTRO}
-================================================
+1. Introduction
+===============
 
 *How to configure and use General Purpose (digital) I/O pins - part A*
 
@@ -15,12 +13,12 @@ Reference(s):
 - *[1]* [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
 
 This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the 
-[PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD), the LED is wired to Port H 
+[PX-HER0 Board](@ref STM32_PX_HERO_BOARD), the LED is wired to Port H
 pin 0. PH0 must be configured as a digital output pin. Set PH0 high to enable 
 the LED and set PH0 low to disable the LED.
 
-2. Peripheral access {#STM32_TUT02_GPIO_PART_A_PERIPHERALS}
-===========================================================
+2. Peripheral access
+====================
 
 All peripherals are memory mapped. The processor core communicates with a
 peripheral by writing to or reading from specific memory addresses. To

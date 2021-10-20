@@ -34,8 +34,9 @@
  *  modified to supply compile time options.
  *  
  *  @include arch/arm/stm32/test/px_uart_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -314,7 +315,6 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle);
  *  Change UART peripheral baud rate. 
  *  
  *  @param handle        Pointer to handle data structure
- *  
  *  @param baud          Baud rate in bits/s
  *
  *  @retval true         Success. Baud was changed
@@ -340,9 +340,9 @@ bool px_uart_ioctl_change_data_format(px_uart_handle_t *  handle,
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

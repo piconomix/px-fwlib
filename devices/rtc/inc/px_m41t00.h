@@ -33,8 +33,9 @@
  *  Example:
  *  
  *  @include devices/rtc/test/px_m41t00_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -95,9 +96,9 @@ bool px_m41t00_set_time(const px_m41t00_time_t * px_rtc_time);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

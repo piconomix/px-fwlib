@@ -39,9 +39,10 @@
  *  USB MSD (Mass Storage Device). It emulates (fakes) a USB storage device with 
  *  a FAT16 file system to provide info when reading files and writes a new 
  *  app to FLASH if it is formatted using the UF2 tool. 
- *  
+ *
+ *  @{
  */
-/// @{
+
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
@@ -76,7 +77,6 @@ extern "C"
  *  @param data         Pointer to buffer containing data to write
  *  @param adr          Start address to write to
  *  @param nr_of_bytes  Number of bytes to write
- *  @param last_block   Set to true if this is the last block
  */
 typedef void (*px_uf2_on_wr_flash_block_t)(const uint8_t * data, 
                                            uint32_t        adr, 
@@ -122,7 +122,6 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
@@ -160,4 +159,5 @@ void px_uf2_on_wr_sector(uint32_t sector_adr, const uint8_t * buf);
     information only.
  */
 
+/// @}
 #endif

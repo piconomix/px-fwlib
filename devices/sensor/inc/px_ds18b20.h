@@ -32,8 +32,9 @@
  *  Example:
  *
  *  @include devices/sensor/test/px_ds18b20_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -114,9 +115,9 @@ uint16_t          px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

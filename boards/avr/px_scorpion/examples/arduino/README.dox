@@ -1,15 +1,13 @@
 Arduino development on Piconomix ATmega328P Scorpion Board {#SCORPION_BOARD_ARDUINO_DEV}
 ========================================================================================
   
-[TOC]
-
 [arduino_uno]:  http://arduino.cc/en/Main/ArduinoBoardUno
 [atmel_studio]: https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [optiboot]:     https://github.com/Optiboot/optiboot
 [atmel_ice]:    http://www.microchip.com/DevelopmentTools/ProductDetails/ATATMEL-ICE
 
-1. Introduction {#SCORPION_BOARD_ARDUINO_DEV_INTRO}
-===================================================
+1. Introduction
+===============
 
 You can also use the Arduino environment and ecosystem of libraries to develop 
 code for the Scorpion Board. The Scorpion Board uses the same microcontroller as
@@ -29,8 +27,8 @@ worthwhile to invest in an [Atmel-ICE] [atmel_ice]
 to program and debug.
 @tip_e
 
-2. Program ATmega328P with Optiboot bootloader {#SCORPION_BOARD_ARDUINO_DEV_BOOTLOADER}
-=======================================================================================
+2. Program ATmega328P with Optiboot bootloader
+==============================================
 
 Here is one method to do it using [Atmel Studio] [atmel_studio] and an 
 [Atmel-ICE] [atmel_ice]. Run Atmel Studio and open the device programming dialog
@@ -56,8 +54,8 @@ The Scorpion Board should now give 3 rapid LED flashes, pause and repeat. This
 indicates that Optiboot is executing, but no valid application is present.
 @tip_e
 
-3. Update "boards.txt" file of Arduino IDE  {#SCORPION_BOARD_ARDUINO_DEV_BOARDS_TXT}
-====================================================================================
+3. Update "boards.txt" file of Arduino IDE
+===========================================
 
 You need to inform the Arduino IDE about the Scorpion Board. The following applies
 to Arduino version 1.8.5 installed to it's default location on Windows 10 64-bit.
@@ -128,8 +126,8 @@ You can now launch the Arduino IDE and select the Scorpion Board:
 Remember to specify correct Serial Port too (Tools > Serial Port)
 @warn_e
 
-4. Scorpion Board to Arduino Uno pin mapping {#SCORPION_BOARD_ARDUINO_DEV_PIN_MAPPING}
-======================================================================================
+4. Scorpion Board to Arduino Uno pin mapping
+============================================
 
 The following file dictates the GPIO pin mapping for an Arduino Uno:
 
@@ -168,8 +166,8 @@ snippet of Arduino code:
     // Turn LED on:    
     digitalWrite(8, HIGH);
 
-5. Open and upload "demo_gpio" sketch {#SCORPION_BOARD_ARDUINO_DEMO_GPIO}
-=========================================================================
+5. Open and upload "demo_gpio" sketch
+=====================================
 
 Open the "demo_gpio" sketch:
 
@@ -190,8 +188,8 @@ upload. After the upload has finished succesfully, the sketch will execute.
 Press the user push button and the LED will shine.
 @tip_e
 
-6. Open and upload "demo_serial" sketch {#SCORPION_BOARD_ARDUINO_DEMO_SERIAL}
-=============================================================================
+6. Open and upload "demo_serial" sketch
+=======================================
 
 Open the "demo_serial" sketch:
 

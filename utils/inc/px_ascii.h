@@ -30,8 +30,9 @@
  *  
  *  @see https://en.wikipedia.org/wiki/ASCII
  *  @see https://en.wikipedia.org/wiki/Escape_sequences_in_C
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -140,9 +141,9 @@ void px_ascii_log_report_str(const char * str);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

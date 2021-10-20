@@ -1,10 +1,8 @@
 USB UF2 Bootloader {#HERO_BOARD_BOOTLOADER_USB_UF2}
 ===================================================
   
-[TOC]
-
-1. Introduction {#HERO_BOARD_BOOTLOADER_USB_UF2_INTRO}
-======================================================
+1. Introduction
+===============
 
 This bootloader implements the UF2 bootloader communication layer over 
 USB MSC (Mass Storage Class). It emulates (fakes) a USB removable flash drive
@@ -27,17 +25,17 @@ that it is in UF2 boot mode.
 The bootloader will ignore a UF2 file with the wrong Family ID. See #PX_UF2_CFG_FAMILY_ID
 @warn_e
 
-2. How to upload a new application {#HERO_BOARD_BOOTLOADER_USB_UF2_APP_UPLOAD}
-==============================================================================
+2. How to upload a new application
+==================================
 
-2.1 Connect USB1 to PC {#HERO_BOARD_BOOTLOADER_USB_UF2_UPLOAD_CONNECT}
-----------------------------------------------------------------------
+2.1 Connect USB1 to PC
+----------------------
 
 Apologies for stating the obvious, but the board must be connected via the USB1
 connector to your PC ;)
 
-2.2 Activate UF2 bootloader {#HERO_BOARD_BOOTLOADER_USB_UF2_UPLOAD_ACTIVATE}
-----------------------------------------------------------------------------
+2.2 Activate UF2 bootloader
+---------------------------
 
 ![](uf2_boot_activate.png)
 
@@ -57,8 +55,8 @@ connector to your PC ;)
 The LED will blink continuously to indicate that it is in UF2 boot mode.
 @tip_e
 
-2.3 Copy UF2 file to drive {#HERO_BOARD_BOOTLOADER_USB_UF2_COPY}
-----------------------------------------------------------------
+2.3 Copy UF2 file to drive
+--------------------------
 
 ![](uf2_copy_file.png)
 
@@ -77,8 +75,8 @@ copied. It's actually flashing very fast as each block of FLASH is written.
 After the file is written to the micro's FLASH, the application will start 
 automatically.
 
-3. Building an application for upload {#HERO_BOARD_BOOTLOADER_USB_UF2_APP_BUILD}
-================================================================================
+3. Building an application for upload
+=====================================
 
 The UF2 bootloader occupies the first 16k of FLASH. The application that would 
 normally start at the first address in FLASH must be moved to a higher address 
@@ -107,8 +105,8 @@ Observe on line 19 that the FLASH offset is specified with `-b 0x4000` and the
 UF2 Family ID is specified with `-f 0xe892273c`.
 @tip_e
 
-4. Technical details {#HERO_BOARD_BOOTLOADER_USB_UF2_BOOT_DETAILS}
-==================================================================
+4. Technical details
+====================
 
 The UF2 bootloader is ~13.5k in size and occupies the first 16k (0x00000000 to 
 0x00003FFF). The start address of the application is set in the bootloader's 

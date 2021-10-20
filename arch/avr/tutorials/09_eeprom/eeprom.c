@@ -31,27 +31,27 @@
  *  For example:
  *  @tip_e
  *  
- *      @code{.c}
+ *  @code{.c}
  *      #include <stdint.h>
  *      #include <avr/eeprom.h>
- *  
+ *
  *      EEMEM uint16_t ee_setting;
- *  
+ *
  *      int main(void)
  *      {
  *          uint16_t value;
- *  
+ *
  *          // Load value from EEPROM
  *          value = eeprom_read_word(&ee_setting);
- *  
+ *
  *          // Modify value
  *          value += 1;
- *  
+ *
  *          // Commit new value to EEPROM
  *          eeprom_write_word(&ee_setting, value);
  *          eeprom_busy_wait();
- *      } 
- *      @endcode
+ *      }
+ *  @endcode
  */
 
 #include <stdint.h>

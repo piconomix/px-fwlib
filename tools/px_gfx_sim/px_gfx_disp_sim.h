@@ -20,8 +20,9 @@
 
 /** 
  *  @addtogroup GFX
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -44,9 +45,9 @@ extern uint8_t px_gfx_frame_buf[PX_GFX_DISP_SIZE_Y][PX_GFX_DISP_SIZE_X];
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

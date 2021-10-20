@@ -32,8 +32,9 @@
  *  This driver initialises the accelerometer with a High Pass Filter enabled
  *  to detect movement. It tries to filter out the static G-force applied by our
  *  little blue green planet and be orientation agnostic.
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -79,9 +80,9 @@ bool px_lis3dh_test_active          (void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

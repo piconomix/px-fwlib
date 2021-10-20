@@ -129,8 +129,9 @@
  *  - CMD_LIST_ITEM_LED[0] points to the CMD_LED_ON cmd structure ("handler" == &led_on_fn)
  *  - CMD_LIST_ITEM_LED[1] points to the CMD_LED_OFF cmd structure ("handler" == &led_off_fn)
  *  - CMD_LIST_ITEM_LED[2] marks the end of the array
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -241,7 +242,7 @@ typedef union
  *
  *  Example:
  *
- *      @code{.c}
+ *  @code{.c}
  *      uint8_t i2c_sla_adr;
  *
  *      // <i2c_slave_adr>
@@ -250,7 +251,7 @@ typedef union
  *          return "Error. <i2c_slave_adr> must be 0 to 127";
  *      }
  *      i2c_sla_adr = px_cli_argv_val.u8;
- *      @endcode
+ *  @endcode
  */
 extern px_cli_argv_val_t    px_cli_argv_val;
 
@@ -293,7 +294,7 @@ extern const char * px_cli_cmd_help_fn(uint8_t argc, char * argv[]);
  *
  *  Example:
  *
- *      @code{.c}
+ *  @code{.c}
  *      switch(px_cli_util_argv_to_option(1, "on\0off\0")))
  *      {
  *      case 0:
@@ -305,7 +306,7 @@ extern const char * px_cli_cmd_help_fn(uint8_t argc, char * argv[]);
  *      default:
  *          return "Error: incorrect parameters!";
  *      }
- *      @endcode
+ *  @endcode
  *
  *  @param argv_index Index of ARGV to convert into an option
  *  @param options    Series of zero terminated strings. End is indicated by an
@@ -465,9 +466,9 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
  *
  *  Example:
  *
- *      @code{.c}
+ *  @code{.c}
  *      PX_CLI_CMD_CREATE(px_cli_cmd_led, "led", 1, 1, "<on|off>>", "Switch the LED on or off")
- *      @endcode
+ *  @endcode
  *
  *  @param cli_cmd          Prefix used to name command structures
  *  @param name_str         String name of command
@@ -509,9 +510,9 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
  *
  *  Example:
  *
- *      @code{.c}
+ *  @code{.c}
  *      PX_CLI_GROUP_CREATE(px_cli_group_i2c, "i2c")
- *      @endcode
+ *  @endcode
  *
  *  @param cli_group    Prefix used to name group structures
  *  @param name_str     String name of group
@@ -578,9 +579,9 @@ void px_cli_util_disp_data(const uint8_t * data, size_t nr_of_bytes);
         }, \
     };
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

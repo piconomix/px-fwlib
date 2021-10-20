@@ -64,9 +64,9 @@
  *
  *  Example usage:
  *
- *      @code{.c}
+ *  @code{.c}
  *      PX_LOG_I("This word is " PX_LOG_CF_GREEN "green" PX_LOG_CR);
- *      @endcode
+ *  @endcode
  *
  *  @tip_s
  *  Observe that the compiler will automatically concatenate adjacent strings.
@@ -77,10 +77,10 @@
  *  declared at the top of the C file using PX_LOG_NAME(). This is the correct
  *  way to declare the name:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      #include "px_log.h"
  *      PX_LOG_NAME("module / file name"); // Or PX_LOG_NAME(__FILE__);
- *      @endcode
+ *  @endcode
  *  
  *  @warn_s
  *  If PX_LOG_NAME() is not used, then the compiler will output the
@@ -89,7 +89,7 @@
  *  
  *      error: '_px_log_name' undeclared (first use in this function)
  *   
- *  The log output can be redirected by using the #PX_LOG_CFG_PUTCHAR macro,
+ *  The log output can be redirected by using the PX_LOG_CFG_PUTCHAR macro,
  *  for example to stderr stream, a different uart or to a log file on an SD
  *  card.
  *  
@@ -100,7 +100,7 @@
  *  The project wide #PX_LOG_CFG_LEVEL setting in the Makefile or
  *  "px_log_cfg.h" can be overriden for a specific C file as follows:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      // PX_LOG_CFG_LEVEL defined in Makefile?
  *      #ifdef PX_LOG_CFG_LEVEL
  *      #undef PX_LOG_CFG_LEVEL
@@ -109,24 +109,25 @@
  *      #define PX_LOG_CFG_LEVEL PX_LOG_LEVEL_DEBUG
  *      #include "px_log.h"
  *      PX_LOG_NAME("buggy_module");
- *      @endcode
+ *  @endcode
  *  
  *  The #PX_LOG_CFG_LEVEL can easily be tested with the the
- *  #PX_LOG_LEVEL_E, #PX_LOG_LEVEL_W, #PX_LOG_LEVEL_I or #PX_LOG_LEVEL_V or
- *  #PX_LOG_LEVEL_D macro to conditionally add code, for example:
+ *  #PX_LOG_LEVEL_IS_E(), #PX_LOG_LEVEL_IS_W(), #PX_LOG_LEVEL_IS_I(),
+ *  #PX_LOG_LEVEL_IS_V() or #PX_LOG_LEVEL_IS_D() macro to conditionally add
+ *  code, for example:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      void tx_data(void * data, size_t nr_of_bytes)
  *      {
  *          // PX_LOG=1 and PX_LOG_CFG_LEVEL includes VERBOSE messages?
- *          if(PX_LOG_LEVEL_V())
+ *          if(PX_LOG_LEVEL_IS_V())
  *          {
  *              // Report content of buffer
  *              PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes);
  *          }
  *          // Rest of function...
  *      }
- *      @endcode
+ *  @endcode
  *  
  *  @tip_s
  *  A naming convention is used to start a function, variable or macro name with
@@ -134,8 +135,9 @@
  *  and should not be used directly, for example _px_log_log_error() or
  *  _px_log_name[].
  *  @tip_e
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -491,9 +493,9 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
     #define PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes) ((void)0)
 #endif
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

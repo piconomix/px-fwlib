@@ -31,9 +31,9 @@
  *  Asynchronous 8-bit TMRx operation is selected to use an external
  *  32768 Hz crystal. TMRx is configured to generate an interrupt and call a
  *  handler function.
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -79,9 +79,9 @@ bool px_async_tmr_int_disable(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

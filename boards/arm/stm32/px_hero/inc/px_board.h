@@ -25,8 +25,9 @@
  *  - boards/arm/stm32/px_hero/inc/px_board.h 
  *  - boards/arm/stm32/px_hero/inc/px_board_gpio.h 
  *  - boards/arm/stm32/px_hero/src/px_board.c
- */   
-/// @{
+ *
+ *  @{
+ */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -59,13 +60,13 @@ typedef enum
 } px_board_spi_cs_t;
 
 /// @name Mapping of board's ADC pins to ADC channels
-//@{
+/// @{
 #define PX_BOARD_ADC0       PX_ADC_CH8
 #define PX_BOARD_ADC1       PX_ADC_CH15
 #define PX_BOARD_ADC2       PX_ADC_CH14
 #define PX_BOARD_ADC3       PX_ADC_CH7
 #define PX_BOARD_ADC_VBAT   PX_ADC_CH9
-//@}
+/// @}
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
@@ -170,9 +171,9 @@ void px_board_stop_mode(void);
 // Power hold
 #define PX_POWER_OFF()              px_gpio_pin_set_lo(&px_gpio_3v3_hold)
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

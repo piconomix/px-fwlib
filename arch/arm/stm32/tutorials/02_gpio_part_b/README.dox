@@ -1,10 +1,8 @@
 02 GPIO part B {#STM32_TUT02_GPIO_PART_B}
 =========================================
 
-[TOC]
-
-1. Introduction {#STM32_TUT02_GPIO_PART_B_INTRO}
-================================================
+1. Introduction
+===============
 
 *How to configure and use General Purpose (digital) I/O pins - part B*
 
@@ -15,12 +13,12 @@ Reference(s):
 - *[1]* [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
 
 This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the 
-[PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD), the LED is wired to Port H pin 0.
+[PX-HER0 Board](@ref STM32_PX_HERO_BOARD), the LED is wired to Port H pin 0.
 PH0 must be configured as a digital output pin. Set PH0 high to enable the LED 
 and set PH0 low to disable the LED.
 
-2. Peripheral access {#STM32_TUT02_GPIO_PART_B_PERIPHERALS}
-===========================================================
+2. Peripheral access
+====================
 
 The relative register map of each GPIO peripheral stays the same, it is
 just the base address that changes:
@@ -48,14 +46,14 @@ Note the use of the `volatile` keyword for each member of the structure.
 The structure definition is thus a template that defines how a certain
 memory area should be treated.
 
-2. Compound operation bit set/clear operation {#STM32_TUT02_GPIO_PART_B_COMPOUND}
-=================================================================================
+2. Compound operation bit set/clear operation
+=============================================
 
 In this tutorial the bitwise left shift and bitwise complement operator is also
 demonstrated. Let's break this down into individual steps:
 
-    @code{.c}
-    // Compound statement to clear bit 1 and bit 0 
+@code{.c}
+    // Compound statement to clear bit 1 and bit 0
     val &= ~(3 << 0);
 
     // Step 1: Expand &= (AND EQUALS) operator
@@ -64,10 +62,10 @@ demonstrated. Let's break this down into individual steps:
     val  = val & (~(0x00000003));
     // Step 3: Perform bitwise complement operator (flip/invert bits)
     val  = val & 0xfffffffc;
-    @endcode
+@endcode
 
-3. Memory alignment and padding {#STM32_TUT02_GPIO_PART_B_ALIGNMENT}
-====================================================================
+3. Memory alignment and padding
+===============================
 
 It is important to remember that the ARM Cortex M0+ requires 32-bit reads
 and writes to be aligned on addresses that is an exact multiple of 32-bits 
@@ -81,17 +79,17 @@ The default behaviour of the compiler is to create a structure with members
 correctly aligned by inserting padding, but it is sometimes better to 
 explicitely declare the padding, for example:
 
-    @code{.c}
+@code{.c}
     typedef struct
     {
-        uint8_t  field1;        // Offset 0
-        uint8_t  reserved_1[3]; // Padding of 3 bytes
-        uint32_t field2;        // Offset 4
-        uint16_t field3;        // Offset 8
-        uint8_t  reserved_2[2]; // Padding of 2 bytes
-        uint32_t field4;        // Offset 12
+    uint8_t  field1;        // Offset 0
+    uint8_t  reserved_1[3]; // Padding of 3 bytes
+    uint32_t field2;        // Offset 4
+    uint16_t field3;        // Offset 8
+    uint8_t  reserved_2[2]; // Padding of 2 bytes
+    uint32_t field4;        // Offset 12
     } my_struct_t;
-    @endcode
+@endcode
 
 @tip_s
 Being aware of compiler padding, it is even better to rearrange the members of a 
@@ -102,21 +100,18 @@ If you want to insist that the compiler must not use padding, then use the
 following (at the expense of generating extra instructions to access the 
 non-aligned members):
 
-    @code{.c}
+@code{.c}
     // Save current packing setting
     #pragma push
     // Set packing to 1 byte
     #pragma pack(1)
     typedef struct
     {
-        uint8_t  field1;        // Offset 0
-        uint32_t field2;        // Offset 1
-        uint16_t field3;        // Offset 5
-        uint32_t field4;        // Offset 7
+    uint8_t  field1;        // Offset 0
+    uint32_t field2;        // Offset 1
+    uint16_t field3;        // Offset 5
+    uint32_t field4;        // Offset 7
     } my_struct_t;
     // Restore packing setting
-    #pragma pop    
-    @endcode
-
-
-
+    #pragma pop
+@endcode

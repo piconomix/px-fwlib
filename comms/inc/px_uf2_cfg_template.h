@@ -20,8 +20,9 @@
 
 /** 
  *  @addtogroup PX_UF2
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -51,5 +52,6 @@
 
 /// Family ID
 #define PX_UF2_CFG_FAMILY_ID        0xe892273c
+
 /// @}
 #endif

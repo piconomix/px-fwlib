@@ -28,7 +28,7 @@
 PX_LOG_NAME("lcd");
 
 /// @name ST7565P commands (Table 16, page 51)
-//@{
+/// @{
 #define PX_LCD_CMD_DISP_ON_OFF          0xae    ///< (1)  Display ON/OFF
 #define PX_LCD_CMD_DISP_START_LINE_SET  0x40    ///< (2)  Display start line set 
 #define PX_LCD_CMD_PAGE_ADR_SET         0xb0    ///< (3)  Page address set
@@ -47,7 +47,7 @@ PX_LOG_NAME("lcd");
 #define PX_LCD_CMD_STATIC_IND_ON_OFF    0xac    ///< (19) Static indicator ON/OFF
 #define PX_LCD_CMD_STATIC_IND_REG_SET   0x00    ///< (19) Static indicator register set
 #define PX_LCD_CMD_BOOSTER_RATIO_SET    0xf8    ///< (20) Booster ratio set
-//@}
+/// @}
 
 #define PX_LCD_ST7565P_MAX_NR_OF_COLS   132
 #define PX_LCD_ST7565P_MAX_NR_OF_ROWS   65

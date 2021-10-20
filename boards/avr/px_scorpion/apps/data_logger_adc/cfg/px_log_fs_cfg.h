@@ -49,5 +49,4 @@ typedef struct
 /// Stop writing when full (1) or erase oldest records and continue writing (0)
 #define PX_LOG_FS_CFG_STOP_WR_WHEN_FULL 1
 
-/// @}
 #endif

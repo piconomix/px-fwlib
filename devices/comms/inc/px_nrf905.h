@@ -28,9 +28,9 @@
  *   
  *  Reference: 
  *  -  [Nordic nRF905] (https://www.nordicsemi.com/eng/Products/Sub-1-GHz-RF/nRF905) datasheet
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -54,7 +54,7 @@ extern "C" {
 #define PX_NRF905_MAX_PAYLOAD_SIZE     32
 
 /// @name RF - Configuration register settings
-//@{
+/// @{
 #define PX_NRF905_HFREQ_PLL_433MHZ     0   ///< 433 MHz
 #define PX_NRF905_HFREQ_PLL_868_915MHZ 1   ///< 868 / 915 MHz
 
@@ -88,7 +88,7 @@ extern "C" {
 
 #define PX_NRF905_CRC_MODE_8BITS       0   ///< 8-bit CRC check
 #define PX_NRF905_CRC_MODE_16BITS      1   ///< 16-bit CRC check
-//@}
+/// @}
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /// NRF905 Configuration register map
@@ -146,9 +146,9 @@ uint8_t px_nrf905_channel_config  (uint16_t channel_no, uint8_t hfreq_pll, uint8
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

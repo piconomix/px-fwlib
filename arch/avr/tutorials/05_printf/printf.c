@@ -49,9 +49,9 @@
  *  instead of "printf(...)". This handling has been encapsulated with the
  *  following variable argument macro:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      #define PRINTF_P(format, ...) printf_P(PSTR(format), ## __VA_ARGS__)
- *      @endcode
+ *  @endcode
  *  
  *  All of this functionality has been encapsulated in the following modules:
  *  

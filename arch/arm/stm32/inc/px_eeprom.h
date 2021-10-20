@@ -30,9 +30,10 @@
  *   
  *  @note 
  *  The flash erase and program functions must be executed from SRAM, not EEPROM.
- *  
+ *
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -69,9 +70,9 @@ void px_eeprom_erase_word(const uint32_t address);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

@@ -53,9 +53,9 @@
  *  This module requires a few functions that must be defined externally.
  *  Macros are used to bind to these functions (for flexibility and optimisation)
  *  and must be defined in 'px_xmodem_cfg.h'.
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -119,9 +119,9 @@ bool px_xmodem_send_file(px_xmodem_on_tx_data_t on_tx_data);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

@@ -29,8 +29,9 @@
  *  - utils/src/px_queue.c
  *  
  *  @see https://en.wikipedia.org/wiki/Queue_(abstract_data_type)
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stddef.h>
@@ -146,9 +147,9 @@ void px_queue_flush(px_queue_t * queue);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

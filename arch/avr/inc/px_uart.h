@@ -33,9 +33,10 @@
  *  "px_uart_cfg.h". "px_uart_cfg_template.h" can be copied, renamed and 
  *  modified to supply compile time options.
  *  
- *  @include "px_uart_test.c"
+ *  @include "avr/test/px_uart_test.c"
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -84,7 +85,7 @@ typedef enum
 {
     PX_UART_PARITY_NONE = 0,
     PX_UART_PARITY_ODD,
-    PX_UART_PARITY_EVEN
+    PX_UART_PARITY_EVEN,
 } px_uart_parity_t;
 
 // Specify number of data bits used (5..8)
@@ -93,7 +94,7 @@ typedef enum
     PX_UART_DATA_BITS_5 = 5,
     PX_UART_DATA_BITS_6 = 6,
     PX_UART_DATA_BITS_7 = 7,
-    PX_UART_DATA_BITS_8 = 8
+    PX_UART_DATA_BITS_8 = 8,
 } px_uart_data_bits_t;
 
 /// Specify number of stop bits (1/2)
@@ -115,7 +116,7 @@ typedef struct
 /** 
  *  Initialise UART driver.
  */
-void  px_uart_init(void);
+void px_uart_init(void);
 
 /** 
  *  Open UART peripheral using predefined (default) parameters
@@ -282,16 +283,15 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle);
  *  Change UART peripheral baud rate. 
  *  
  *  @param handle        Pointer to handle data structure
- *  
  *  @param baud          Baud rate in bits/s
  */
 void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

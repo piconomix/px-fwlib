@@ -1,10 +1,8 @@
 Minimal GPIO Example {#SCORPION_BOARD_EXAMPLE_GPIO}
-=============================================================
+===================================================
   
-[TOC]
-
-Introduction {#SCORPION_BOARD_EXAMPLE_GPIO_INTRO}
-===========================================================
+Introduction
+============
 
 This is a minimal GPIO example for the Scorpion Board. It is the embedded 
 equivalent of a "hello world" program on a PC to kick the tires and know that 

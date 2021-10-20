@@ -25,8 +25,9 @@
  *  File(s):
  *  - gfx/inc/px_gfx_obj_win.h 
  *  - gfx/src/px_gfx_obj_win.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -74,9 +75,9 @@ void                          px_gfx_obj_win_add_child(px_gfx_obj_handle_t      
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

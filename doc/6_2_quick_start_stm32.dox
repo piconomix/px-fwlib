@@ -1,10 +1,8 @@
 6.2 STM32 quick start guide {#STM32_QUICK_START_GUIDE}
 ======================================================
 
-[TOC]
-
-1. Introduction {#STM32_QS_INTRO}
-=================================
+1. Introduction
+===============
 
 [stm32cubeide]:       https://www.st.com/en/development-tools/stm32cubeide.html
 [python]:             https://www.python.org/downloads
@@ -28,8 +26,8 @@ The following free software tool is needed to get started:
   STM32 microcontroller applications. It includes a GCC build toolchain for 
   C and C++.
 
-1.1 Reference documents {#STM32_QS_REF}
----------------------------------------
+1.1 Reference documents
+-----------------------
 
 The STM32 portfolio is vast and the [STM32L072RB](https://www.st.com/en/microcontrollers-microprocessors/stm32l072rb.html)
 has been selected as a good practical introduction to start the journey. It is 
@@ -44,8 +42,8 @@ The reference documents can also be found here for off-line viewing:
 
     px-fwlib/boards/arm/stm32/px_hero/docs
 
-2. Brief introduction to processor architecture {#STM32_QS_PROCESSOR_INTRO}
-===========================================================================
+2. Brief introduction to processor architecture
+===============================================
 
 The STM32L072RB incorporates the ubiquitous 32-bit [Arm Cortex-M0+](https://developer.arm.com/ip-products/processors/cortex-m/cortex-m0-plus)
 processor core. ST licenses the standard core design from [Arm](https://www.arm.com), 
@@ -241,7 +239,7 @@ understand and get right. Fortunately ST provides a graphical tool called
 [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html) to 
 configure the clocks and generate working start up code.
 
-In the graphical example above for the [PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD) 
+In the graphical example above for the [PX-HER0 Board](@ref STM32_PX_HERO_BOARD)
 the LSE (Low Speed External) clock is enabled to run from an accurate 32.768 kHz 
 crystal (&plusmn;20 ppm) and it feeds the RTC (Real Time Clock).
 
@@ -261,8 +259,8 @@ The processor core use the MSI (Multi Speed Internal) RC oscillator at 2.1 MHz
 when it starts.
 @tip_e
 
-3. Install IDE software {#STM32_QS_IDE_INSTALL}
-===============================================
+3. Install IDE software
+=======================
 
 Follow the steps [HERE] (@ref HOWTO_STM32CUBEIDE) to install STM32CubeIDE. The 
 section also describes how to create a new project that uses an external 
@@ -272,8 +270,8 @@ Makefile as used in this library.
 For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
 @tip_e
 
-4. Build an example in the IDE {#STM32_QS_BUILD}
-================================================
+4. Build an example in the IDE
+==============================
 
 The tutorials and examples are provided with pre-configured STM32CubeIDE 
 projects. External Makefiles are referenced, instead of using STM32CubeIDE's 
@@ -327,8 +325,8 @@ Observe that the IDE is executing a `make build=debug all` command by
 spotting the "DEBUG" text in the start and end banner.
 @tip_e
 
-5. Program and debug example in IDE {#STM32_QS_DEBUG}
-=====================================================
+5. Program and debug example in IDE
+===================================
 
 Before debugging can start a debug configuration must exist. See
 [HERE](@ref STM32CUBEIDE_DEBUG_CONFIG) for the required steps.

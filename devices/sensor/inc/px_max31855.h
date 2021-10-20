@@ -28,8 +28,9 @@
  *
  *  Reference:
  *  - [Maxim MAX31855 datasheet](https://datasheets.maximintegrated.com/en/ds/MAX31855.pdf)
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -63,9 +64,9 @@ int16_t px_max31855_util_temp_int_to_deg_c  (int16_t temp);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

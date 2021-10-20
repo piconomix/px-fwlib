@@ -59,9 +59,9 @@
  *  Example:
  *  
  *  @include "px_debounce_test.c"
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -194,9 +194,9 @@ bool px_debounce_long_lo_detected(px_debounce_t * debounce);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

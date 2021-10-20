@@ -35,8 +35,9 @@
  *  
  *  @par Example:
  *  @include arch/arm/stm32/test/px_i2c_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -78,15 +79,16 @@ typedef enum
 } px_i2c_nr_t;
 
 /// @name I2C bit flags to demarcate the start and end of a transaction
-//@{
+/// @{
+
 /// Begin I2C transaction with a START condition
-#define PX_I2C_FLAG_START               (1<<0)
+#define PX_I2C_FLAG_START               (1 << 0)
 /// Finish I2C transaction with a STOP condition
-#define PX_I2C_FLAG_STOP                (1<<1)
+#define PX_I2C_FLAG_STOP                (1 << 1)
 /// Signal END of current I2C transaction for REP_START to follow
-#define PX_I2C_FLAG_END                 (1<<2)
+#define PX_I2C_FLAG_END                 (1 << 2)
 /// Begin I2C transaction with a REPEATED START condition
-#define PX_I2C_FLAG_REP_START           (1<<3)
+#define PX_I2C_FLAG_REP_START           (1 << 3)
 /// Begin and finish an I2C transaction with a START and STOP condition
 #define PX_I2C_FLAG_START_AND_STOP      (PX_I2C_FLAG_START + PX_I2C_FLAG_STOP)
 /// Begin and finish an I2C transaction with a START and END condition
@@ -95,7 +97,7 @@ typedef enum
 #define PX_I2C_FLAG_REP_START_AND_STOP  (PX_I2C_FLAG_REP_START + PX_I2C_FLAG_STOP)
 /// Begin and finish an I2C transaction with a REP START and END condition
 #define PX_I2C_FLAG_REP_START_AND_END   (PX_I2C_FLAG_REP_START + PX_I2C_FLAG_END)
-//@}
+/// @}
 
 /// Define I2C handle for a slave
 typedef struct
@@ -116,7 +118,7 @@ void px_i2c_init(void);
  *  Open I2C slave handle.
  *  
  *  @param handle       Pointer to handle data structure
- *  @param i2c_nr       I2C Peripheral number
+ *  @param i2c_nr       I2C peripheral number
  *  @param slave_adr    7-bit I2C slave address
  *  
  *  @retval false       Error - handle was not opened
@@ -223,16 +225,16 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
  *  Change I2C slave address.
  *  
  *  @param handle       Pointer to handle data structure
- *  @param slave_adr     New 7-bit I2C slave address
+ *  @param slave_adr    New 7-bit I2C slave address
  */
 void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
                                    uint8_t           slave_adr);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

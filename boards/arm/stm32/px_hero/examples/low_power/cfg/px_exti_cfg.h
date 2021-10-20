@@ -20,8 +20,9 @@
 
 /** 
  *  @addtogroup STM32_EXTI
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -30,7 +31,7 @@
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// @name Individual enable/disable of each external interrupt (0 to 15)
-//@{
+/// @{
 #define PX_EXTI_CFG_INT0_EN      0
 #define PX_EXTI_CFG_INT1_EN      0
 #define PX_EXTI_CFG_INT2_EN      0
@@ -47,7 +48,7 @@
 #define PX_EXTI_CFG_INT13_EN     0
 #define PX_EXTI_CFG_INT14_EN     0
 #define PX_EXTI_CFG_INT15_EN     0
-//@}
+/// @}
 
 /// @}
 #endif

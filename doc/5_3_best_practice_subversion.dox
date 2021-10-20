@@ -1,10 +1,8 @@
 5.3 Using Subversion (SVN) version control system {#SUBVERSION}
 ===============================================================
   
-[TOC]
-
-1. Introduction {#INTRO_SUBVERSION}
-===================================
+1. Introduction
+===============
 
 [Subversion](http://subversion.apache.org/) is a free version control system 
 that manages file and directory changes over time. Files are stored in a central
@@ -31,8 +29,8 @@ By default, they will be located here:
     C:\Program Files\TortoiseSVN\bin\svn.exe
     C:\Program Files\TortoiseSVN\bin\svnadmin.exe
 
-2. Command Line example {#SVN_CMD_EXAMPLE}
-==========================================
+2. Command Line example
+=======================
 
 Here is a quick Windows command line example:
 

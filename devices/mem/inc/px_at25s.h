@@ -35,8 +35,8 @@
  *
  *  @include devices/mem/test/px_at25s_test.c
  *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -55,13 +55,13 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 /// @name List of supported AT25S devices
-//@{
+/// @{
 #define PX_CFG_DEV_AT25SF041 0		///< 4 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
 #define PX_CFG_DEV_AT25SF081 1      ///< 8 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
 #define PX_CFG_DEV_AT25SF161 2      ///< 16 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
 #define PX_CFG_DEV_AT25SF321 3      ///< 32 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
 #define PX_CFG_DEV_AT25SF641 4      ///< 64 Mbit, 2.5-3.6V 104 MHz Standard Serial Flash
-//@}
+/// @}
 
 /// AT25S page size
 #define PX_AT25S_PAGE_SIZE  256
@@ -75,18 +75,18 @@ typedef enum
 } px_at25s_block_t;
 
 /// @name AT25S block sizes
-//@{
+/// @{
 #define PX_AT25S_BLOCK_SIZE_4KB     (4 * 1024)
 #define PX_AT25S_BLOCK_SIZE_32KB    (32 * 1024)
 #define PX_AT25S_BLOCK_SIZE_64KB    (64 * 1024)
-//@}
+/// @}
 
 /// @name Pages per block
-//@{
+/// @{
 #define PX_AT25S_PAGES_PER_BLOCK_4KB    (PX_AT25S_BLOCK_SIZE_4KB / PX_AT25S_PAGE_SIZE)
 #define PX_AT25S_PAGES_PER_BLOCK_32KB   (PX_AT25S_BLOCK_SIZE_32KB / PX_AT25S_PAGE_SIZE)
 #define PX_AT25S_PAGES_PER_BLOCK_64KB   (PX_AT25S_BLOCK_SIZE_64KB / PX_AT25S_PAGE_SIZE)
-//@}
+/// @}
 
 // Determine number of pages and page size according to device specified
 #if   (PX_AT25S_CFG_DEVICE == PX_CFG_DEV_AT25SF041)
@@ -110,7 +110,7 @@ typedef enum
 #define PX_AT25S_ADR_MAX            (PX_AT25S_FLASH_SIZE_BYTES - 1)
 
 /// @name Status register 1
-//@{
+/// @{
 #define PX_AT25S_STATUS_REG1_SRP0       7   ///< Status Register Protection bit 0
 #define PX_AT25S_STATUS_REG1_SEC        6   ///< Block Protection
 #define PX_AT25S_STATUS_REG1_TB         5   ///< Top or Bottom Protection
@@ -119,7 +119,7 @@ typedef enum
 #define PX_AT25S_STATUS_REG1_BP0        2   ///< Block Protection bit 0
 #define PX_AT25S_STATUS_REG1_WEL        1   ///< Write Enable Latch Status
 #define PX_AT25S_STATUS_REG1_BSY        0   ///< Ready/Busy Status
-//@}
+/// @}
 
 /// Maximum SPI Clock rate
 #define PX_AT25S_MAX_SPI_CLOCK_HZ  33000000
@@ -291,9 +291,9 @@ void px_at25s_rd_man_and_dev_id(uint8_t * buffer);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

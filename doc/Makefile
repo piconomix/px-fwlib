@@ -7,7 +7,7 @@ SVN_REVISION = $(shell svnversion -n)
 all: html
 
 # Create HTML documentation
-html:
+html: clean
 	mkdir -p html
 	cp -R images/html/* html
 	( cat Doxyfile ; echo "PROJECT_NUMBER = \"$(LIB_REVISION)\"" ) | doxygen -

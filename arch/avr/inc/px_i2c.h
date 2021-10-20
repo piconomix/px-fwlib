@@ -27,8 +27,8 @@
  *  File(s):
  *  - arch/avr/inc/px_i2c.h
  *  - arch/avr/inc/px_i2c_cfg_template.h
- *  - arch/avr/px_i2c_twi.c  (TWI peripheral version)
- *  - arch/avr/px_i2c_gpio.c (GPIO "bit-bang" version)
+ *  - arch/avr/src/px_i2c_twi.c  (TWI peripheral version)
+ *  - arch/avr/src/px_i2c_gpio.c (GPIO "bit-bang" version)
  *  
  *  The driver must be configured by supplying a project specific "px_i2c_cfg.h".
  *  "px_i2c_cfg_template.h" can be copied, renamed and modified to supply 
@@ -36,8 +36,9 @@
  *  
  *  @par Example:
  *  @include arch/avr/test/px_i2c_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -76,15 +77,16 @@ typedef enum
 } px_i2c_nr_t;
 
 /// @name I2C bit flags to demarcate the start and end of a transaction
-//@{
+/// @{
+
 /// Begin I2C transaction with a START condition
-#define PX_I2C_FLAG_START               (1<<0)
+#define PX_I2C_FLAG_START               (1 << 0)
 /// Finish I2C transaction with a STOP condition
-#define PX_I2C_FLAG_STOP                (1<<1)
+#define PX_I2C_FLAG_STOP                (1 << 1)
 /// Signal END of current I2C transaction for REP_START to follow
-#define PX_I2C_FLAG_END                 (1<<2)
+#define PX_I2C_FLAG_END                 (1 << 2)
 /// Begin I2C transaction with a REPEATED START condition
-#define PX_I2C_FLAG_REP_START           (1<<3)
+#define PX_I2C_FLAG_REP_START           (1 << 3)
 /// Begin and finish an I2C transaction with a START and STOP condition
 #define PX_I2C_FLAG_START_AND_STOP      (PX_I2C_FLAG_START + PX_I2C_FLAG_STOP)
 /// Begin and finish an I2C transaction with a START and END condition
@@ -93,7 +95,7 @@ typedef enum
 #define PX_I2C_FLAG_REP_START_AND_STOP  (PX_I2C_FLAG_REP_START + PX_I2C_FLAG_STOP)
 /// Begin and finish an I2C transaction with a REP START and END condition
 #define PX_I2C_FLAG_REP_START_AND_END   (PX_I2C_FLAG_REP_START + PX_I2C_FLAG_END)
-//@}
+/// @}
 
 /// Define I2C handle for a slave
 typedef struct
@@ -228,9 +230,9 @@ void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

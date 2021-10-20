@@ -38,8 +38,9 @@
  *  Example:
  *  
  *  @include arch/arm/stm32/test/px_uart_stdio_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stdio.h>
@@ -91,9 +92,9 @@ int px_uart_stdio_get_char(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

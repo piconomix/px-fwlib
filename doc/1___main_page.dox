@@ -3,8 +3,6 @@
 
 ![](piconomix_banner_300x70.png)
 
-[TOC]
-
 The foundation of **px-fwlib** is knowledge and freedom:
 <em>the knowledge and freedom to use the right microcontroller for the job and 
 not trying to force a square peg in a round hole.</em>
@@ -26,8 +24,8 @@ releases of the open source library (source code and offline documentation).
 STM32L072 PX-HER0 Board now in stock at Crowd Supply! Click [HERE](https://www.crowdsupply.com/piconomix/px-her0-board)
 @tip_e
 
-1.1 Goals {#GOALS}
-==================
+1.1 Goals
+---------
 
 - Teach **good firmware development practices** to guide the next 
   generation of professional embedded engineers.
@@ -45,12 +43,12 @@ years of experience to mentor the future generation and raise the bar in terms
 of quality and quantity. See @ref FEEDBACK
 @tip_e
 
-1.2 Sections {#SECTIONS}
-========================
+1.2 Sections
+------------
 
 This documentation is divided into the following sections:
 
-- @ref PICONOMIX_FW_LIC_OPEN
+- @ref PX_FW_LIC_OPEN
 - @ref COMPANION_BOARDS
 - @ref TOOLS
 - @ref BEST_PRACTICES
@@ -58,15 +56,15 @@ This documentation is divided into the following sections:
 - @ref HOW_TO_GUIDES
 - [8. C Modules](modules.html)
 
-1.3 Important Links {#LINKS}
-============================
+1.3 Important Links
+-------------------
 
 - [Piconomix FW Library home page](https://piconomix.com/px-fwlib/index.html)
 - [GitHub repository](https://github.com/piconomix/px-fwlib)
 - [Download page](https://sourceforge.net/projects/piconomic-fwlib/files) for file releases of the library (source code and offline documentation)
 
-1.4 Companion Boards {#BOARDS}
-==============================
+1.4 Companion Boards
+--------------------
 
 Here is the collection of boards that are supported with Board Support Packages
 (BSP), documentation and complete examples:
@@ -75,19 +73,18 @@ Here is the collection of boards that are supported with Board Support Packages
 |-------------------------|------------------------------------------------------------------------|
 |Microchip ATmega328P-AU  | [Arduino Uno R3 board](@ref ARDUINO_UNO_BOARD)                         |
 |Microchip ATmega328P-AU  | [Piconomix ATmega328p Scorpion Board](@ref PICONOMIX_SCORPION_BOARD)   |
-|ST STM32L072RB           | [Piconomix STM32L072RB PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD) |
+|ST STM32L072RB           | [Piconomix STM32L072RB PX-HER0 Board](@ref STM32_PX_HERO_BOARD) |
 |ST STM32L053R8T6         | [ST Nucleo64 L053R8 Board](@ref NUCLEO64_L053_BOARD)                   |
 
-1.5 Library Examples {#EXAMPLES}
-================================
+1.5 Library Examples
+--------------------
 
 Here are four examples selected to pique your interest:
 
-1.5.1 CLI Exlorer (Command Line Interpreter)
---------------------------------------------
+### 1.5.1 CLI Exlorer (Command Line Interpreter) ###
 
 Included with the library is a CLI (Command Line Interpreter) executing on an 
-Arduino Uno R3 that creates a "Un*x Shell"-like environment running on the 
+Arduino Uno R3 that creates a "Un\*x Shell"-like environment running on the
 microcontroller so that you can experiment with GPIO, ADC, I2C and SPI using 
 only an ANSI/VT100 terminal emulator 
 (for example [Tera Term](http://en.sourceforge.jp/projects/ttssh2)).
@@ -106,16 +103,14 @@ to and read from the I2C slave.
 
 For more info see @ref ARDUINO_UNO_BOARD_APP_CLI.
 
-1.5.2 I2C
----------
+### 1.5.2 I2C ###
 
 This example demonstrates how easy it is to set up and communicate with an I2C
 slave device after you have verified with the CLI that it works:
 
 @include avr/test/px_i2c_test.c
 
-1.5.3 GPIO
-----------
+### 1.5.3 GPIO ###
 
 This example demonstrates how easy and efficient it is to define and use a 
 GPIO pin:
@@ -126,47 +121,47 @@ Even though it looks like functions calls are used, the lines reduce to single
 assembly statements for maximum efficiency and minimum code size. This is the 
 generated assembly to inspect:
 
-    @code
-    0000007a <main>:
-    // Initialise pins
-    px_gpio_pin_init(&px_gpio_led);
+@code
+0000007a <main>:
+// Initialise pins
+px_gpio_pin_init(&px_gpio_led);
 
-    7a: 28 98           cbi 0x05, 0 ; 5
-    7c: 20 9a           sbi 0x04, 0 ; 4
+7a: 28 98           cbi 0x05, 0 ; 5
+7c: 20 9a           sbi 0x04, 0 ; 4
 
-    px_gpio_pin_init(&px_gpio_pb);
+px_gpio_pin_init(&px_gpio_pb);
 
-    7e: 5e 9a           sbi 0x0b, 6 ; 11
-    80: 56 98           cbi 0x0a, 6 ; 10
+7e: 5e 9a           sbi 0x0b, 6 ; 11
+80: 56 98           cbi 0x0a, 6 ; 10
 
-    // Repeat forever
-    for(;;)
+// Repeat forever
+for(;;)
+{
+    // Is button being pressed?
+    if(px_gpio_pin_is_lo(&px_gpio_pb))
     {
-        // Is button being pressed?
-        if(px_gpio_pin_is_lo(&px_gpio_pb))
-        {
 
-    82: 4e 99           sbic    0x09, 6 ; 9
-    84: 02 c0           rjmp    .+4         ; 0x8a <main+0x10>
+82: 4e 99           sbic    0x09, 6 ; 9
+84: 02 c0           rjmp    .+4         ; 0x8a <main+0x10>
 
-            // Enable LED
-            px_gpio_pin_set_hi(&px_gpio_led);
+        // Enable LED
+        px_gpio_pin_set_hi(&px_gpio_led);
 
-    86: 28 9a           sbi 0x05, 0 ; 5
-    88: fc cf           rjmp    .-8         ; 0x82 <main+0x8>
+86: 28 9a           sbi 0x05, 0 ; 5
+88: fc cf           rjmp    .-8         ; 0x82 <main+0x8>
 
-        }
-        else
-        {
-            // Disable LED
-            px_gpio_pin_set_lo(&px_gpio_led);
-
-    8a: 28 98           cbi 0x05, 0 ; 5
-    8c: fa cf           rjmp    .-12        ; 0x82 <main+0x8>
-
-        }
     }
-    @endcode
+    else
+    {
+        // Disable LED
+        px_gpio_pin_set_lo(&px_gpio_led);
+
+8a: 28 98           cbi 0x05, 0 ; 5
+8c: fa cf           rjmp    .-12        ; 0x82 <main+0x8>
+
+    }
+}
+@endcode
 
 @tip_s
 For IoT low power sensor nodes it is extremely important to wake up, do 
@@ -174,8 +169,7 @@ the job as fast as possible and go back to sleep again. C efficiency trumps
 C++ flexibility. Less code translates to a cheaper solution.
 @tip_e
 
-1.5.4 Data Logging
-------------------
+### 1.5.4 Data Logging ###
 
 [px_log_fs](@ref PX_LOG_FS) is a basic (but **resilient**) record-based file 
 system to log data to AT45D DataFlash (or similiar serial flash storage). It is 
@@ -196,8 +190,8 @@ Usage example:
 For a complete working example (with nice flash file system debugging), see 
 @ref SCORPION_BOARD_APP_DATA_LOGGER_TEMP_PRESSURE.
 
-1.6 Coding Evolution {#EVOLUTION}
-=================================
+1.6 Coding Evolution
+--------------------
 
 Great athletes spend years tweaking tiny aspects of their performance to get 
 a competitive edge: bicycle riders adapt their posture in a wind tunnel, 
@@ -218,24 +212,24 @@ memory.
 
 Ask yourself critically: which is better?
 
-    @code{.c}
+@code{.c}
     // Small fixed delay
-    for(i=0; i<100; i++)
+    for(i = 0; i < 100; i++)
     {
         __asm__ __volatile__("nop \n\t"::);
     }
-    @endcode
+@endcode
 
 
 Or
 
-    @code{.c}
+@code{.c}
     // Small fixed delay
-    for(i=100; i!=0; i--)
+    for(i = 100; i != 0; i--)
     {
-        __asm__ __volatile__("nop \n\t"::);
+    __asm__ __volatile__("nop \n\t"::);
     }
-    @endcode
+@endcode
 
 @tip_s
 Inspect the assembly generated by the compiler. Maybe the compiler is smarter
@@ -244,8 +238,8 @@ than you give it credit for (or not... it depends)
 
 **Evolve, improve or be left behind!**
 
-1.7 Questions or Feedback?{#FEEDBACK}
-=====================================
+1.7 Questions or Feedback? {#FEEDBACK}
+--------------------------------------
 
 Questions or feedback (positive and negative) is great and will help to improve 
 the library:
@@ -256,18 +250,18 @@ Methods of communication:
 - [Forum](https://piconomix.com/forum)
 - [Contact page](https://piconomix.com/contact)
 
-1.8 Code Contributions{#CODE}
-=============================
+1.8 Code Contributions
+----------------------
 
 You are most welcome to submit bug fixes, new code or documentation. It should:
 - fit in (be consistent with the naming style and conventions used)
 - comply with the [Piconomix Coding Style](@ref CODING_STYLE)
 - be documented if possible (with [Doxygen](@ref DOXYGEN) mark up)
 - be written in C or Assembler (no C++ yet)
-- use a compatible [open source license](@ref PICONOMIX_FW_LIC_OPEN)
+- use a compatible [open source license](@ref PX_FW_LIC_OPEN)
 
-1.9 Support{#SUPPORT}
-=====================
+1.9 Support
+-----------
 
 A significant amount of time has been invested to craft and refine this free 
 open source library. If you saved development time, acquired a new skill, or 

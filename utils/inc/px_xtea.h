@@ -29,8 +29,9 @@
  *  - utils/src/px_xtea.c
  *  
  *  @see http://en.wikipedia.org/wiki/XTEA
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -114,9 +115,9 @@ size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in,
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

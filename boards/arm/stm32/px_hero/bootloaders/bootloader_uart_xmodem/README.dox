@@ -1,10 +1,8 @@
 XMODEM-CRC UART Bootloader {#HERO_BOARD_BOOTLOADER_UART_XMODEM}
 ===============================================================
   
-[TOC]
-
-1. Introduction {#HERO_BOARD_BOOTLOADER_UART_XMODEM_INTRO}
-==========================================================
+1. Introduction
+===============
 
 [tera_term]: http://en.sourceforge.jp/projects/ttssh2
 
@@ -20,8 +18,8 @@ bootloader will jump to the application. A "double-tap" of the RESET button
 [XMODEM](https://en.wikipedia.org/wiki/XMODEM) reception of a new **binary** 
 application file.
 
-2. Set up ANSI/VT100 terminal emulator {#HERO_BOARD_BOOTLOADER_UART_XMODEM_VT100_SETUP}
-=======================================================================================
+2. Set up ANSI/VT100 terminal emulator
+======================================
 
 An ANSI/VT100 terminal emulator that supports XMODEM-CRC, for example 
 [Tera Term] [tera_term] can be used to send the new BIN file. Tera Term can auto 
@@ -56,8 +54,8 @@ Tera Term must now be set up to use the correct communication settings:
 
 ![](tera_term_setup02.png)
 
-3. Initialize XMODEM transfer on ANSI/VT100 terminal emulator {#HERO_BOARD_BOOTLOADER_UART_XMODEM_VT100_INIT}
-=============================================================================================================
+3. Initialize XMODEM transfer on ANSI/VT100 terminal emulator
+=============================================================
 
 The XMODEM transfer must be initialised on Tera Term first:
 
@@ -73,8 +71,8 @@ Tera Term will now wait for the XMODEM transfer to start:
 
 ![](tera_term_xmodem_send03.png)
 
-4. Start XMODEM reception on bootloader {#HERO_BOARD_BOOTLOADER_UART_XMODEM_BOOT_START}
-=======================================================================================
+4. Start XMODEM reception on bootloader
+=======================================
 
 "Double-tap" the RESET button. The bootloader will send the character 'C' to 
 start reception of the new BIN file.
@@ -88,8 +86,8 @@ accidentally.
 
 ![XMODEM transfer of new file](tera_term_xmodem_transfer.gif)
 
-5. Building an application for upload to bootloader {#HERO_BOARD_BOOTLOADER_UART_XMODEM_BOOT_APP_BUILD}
-=======================================================================================================
+5. Building an application for upload to bootloader
+===================================================
 
 The application would normally start at the first address in Flash, but it must
 be moved to a higher address to accomodate the bootloader which is executed 
@@ -129,8 +127,8 @@ Inspect the output of the build process. The start and end banner will include
 the text "RELEASE FOR BOOT"
 @tip_e
 
-6. Technical details {#HERO_BOARD_BOOTLOADER_UART_XMODEM_BOOT_TECH}
-===================================================================
+6. Technical details
+====================
 
 The bootloader is only ~2.5k in size, but 16k is reserved to leave enough space 
 for more complex bootloaders, for example @ref HERO_BOARD_BOOTLOADER_USB_UF2. 

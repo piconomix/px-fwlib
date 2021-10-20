@@ -1,10 +1,8 @@
 04 GPIO external interrupt {#STM32_TUT04_GPIO_EXT_INT}
 ======================================================
 
-[TOC]
-
-1. Introduction {#STM32_TUT04_GPIO_EXT_INT_INTRO}
-=================================================
+1. Introduction
+===============
 
 *How to wake up on an external interrupt from a GPIO pin*
 
@@ -22,8 +20,8 @@ function is called that handles external interrupts 4 to 15 and it clears
 the interrupt flag for external interrupt 9. The interrupt wakes up the
 core and the LED will be flashed before it goes back to sleep.
 
-2. 13 Extended interrupt and event controller (EXTI) {#STM32_TUT04_GPIO_EXT_INT_EXTI}
-=====================================================================================
+2. 13 Extended interrupt and event controller (EXTI)
+====================================================
 
 The EXTI peripheral manages events / interrupts and is also able to wake up the
 processor core.

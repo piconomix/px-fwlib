@@ -100,7 +100,6 @@ void px_board_stop_mode(void);
 /// User button
 #define PX_USR_PB_IS_PRESSED()  px_gpio_pin_is_lo(&px_gpio_btn_blue)
 
-/// @}
 #ifdef __cplusplus
 }
 #endif

@@ -38,8 +38,9 @@
  *  Example of setting ".bootloader" section address in Makefile:
  *  
  *      LDFLAGS += -Wl,--section-start,.bootloader=0x1FF00
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <avr/io.h>
@@ -75,9 +76,9 @@ void px_flash_wr_page(const uint16_t page, const  uint8_t * data);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

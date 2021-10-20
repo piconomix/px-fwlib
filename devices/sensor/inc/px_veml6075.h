@@ -28,8 +28,9 @@
  *  
  *  Reference: 
  *  - [Vishay VEML6075 datasheet](http://www.vishay.com/docs/84304/veml6075.pdf)
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -108,9 +109,9 @@ float px_veml6075_uvi(const px_veml6075_data_t * data);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

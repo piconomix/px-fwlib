@@ -35,8 +35,10 @@
  *  
  *  @par Example:
  *  @include arch/arm/stm32/test/px_gpio_test.c
+ *
+ *  @{
  */
-/// @{
+
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
@@ -145,7 +147,7 @@ typedef struct
  *  
  *  Usage example:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      // LED is an output pin on port D, pin 7, initially low
  *      #define PX_GPIO_LED    PX_GPIO(D, 7, PX_GPIO_MODE_OUT, \
  *                                           PX_GPIO_OTYPE_PUSH_PULL, \
@@ -153,13 +155,13 @@ typedef struct
  *                                           PX_GPIO_PULL_NONE, \
  *                                           PX_GPIO_OUT_INIT_LO, \
  *                                           PX_GPIO_ALT_FN_NA)
- *  
+ *
  *      // PX_GPIO_LED will be replaced by the C preprocessor with the following
  *      // sequence:
- *      // GPIOD, 7, PX_GPIO_MODE_OUT, PX_GPIO_OTYPE_PUSH_PULL, 
+ *      // GPIOD, 7, PX_GPIO_MODE_OUT, PX_GPIO_OTYPE_PUSH_PULL,
  *      // PX_GPIO_OSPEED_LOW, PX_GPIO_PULL_NONE, PX_GPIO_OUT_INIT_LO,
  *      // PX_GPIO_ALT_FN_NA
- *      @endcode
+ *  @endcode
  *  
  *  @param port         A, B, C, D, E or H
  *  @param pin          0, 1, 2, ..., or 15
@@ -344,18 +346,18 @@ void px_gpio_port_init(const px_gpio_port_init_t * init);
  *  
  * Example:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      px_gpio_handle_t px_gpio_led;
- *  
+ *
  *      px_gpio_init(&px_gpio_led,
  *                   GPIOD, 7,
- *                   PX_GPIO_MODE_OUT, 
+ *                   PX_GPIO_MODE_OUT,
  *                   PX_GPIO_OTYPE_PUSH_PULL,
  *                   PX_GPIO_OSPEED_LOW,
  *                   PX_GPIO_PULL_NONE,
  *                   PX_GPIO_OUT_INIT_LO,
  *                   PX_GPIO_ALT_FN_NA);
- *      @endcode
+ *  @endcode
  */
 static inline void px_gpio_open(px_gpio_handle_t * gpio, 
                                 GPIO_TypeDef *     gpio_base_reg,
@@ -565,9 +567,9 @@ static inline uint32_t px_gpio_reg_afrh_init(const px_gpio_handle_t * gpio)
     }
 }
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

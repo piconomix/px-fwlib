@@ -32,7 +32,7 @@
 PX_LOG_NAME("bme280");
 
 /// @name Memory Map (table 18, p. 25)
-//@{
+/// @{
 #define PX_BME280_REG_CALIB00                   0x88
 #define PX_BME280_REG_CALIB25                   0xa1
 #define PX_BME280_REG_ID                        0xd0
@@ -52,7 +52,7 @@ PX_LOG_NAME("bme280");
 #define PX_BME280_REG_TEMP_XLSB                 0xfc
 #define PX_BME280_REG_HUM_MSB                   0xfd
 #define PX_BME280_REG_HUM_LSB                   0xfe
-//@}
+/// @}
 
 // 7.4.1 Register 0xD0 "id"
 #define PX_BME280_REG_ID_VAL                    0x60

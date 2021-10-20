@@ -29,8 +29,9 @@
  *  - common/src/px_template.c
  *  
  *  Detailed description.
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -50,9 +51,9 @@ extern "C" {
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

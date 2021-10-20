@@ -29,7 +29,7 @@
 PX_LOG_NAME("px_gt511");
 
 /// @name GT511 Commands
-//@{
+/// @{
 #define PX_GT511_CMD_OPEN                   0x01    ///< Initialization
 #define PX_GT511_CMD_CLOSE                  0x02    ///< Termination
 #define PX_GT511_CMD_USB_CHECK              0x03    ///< Check if the connected USB device is valid
@@ -57,7 +57,7 @@ PX_LOG_NAME("px_gt511");
 #define PX_GT511_CMD_SET_TEMPLATE           0x71    ///< Upload the template of the specified ID
 #define PX_GT511_CMD_ACK                    0x30    ///< Acknowledge
 #define PX_GT511_CMD_NACK                   0x31    ///< Non-acknowledge
-//@}
+/// @}
 
 /// GT511 Command Packet
 typedef struct

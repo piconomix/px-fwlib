@@ -30,9 +30,9 @@
  *  
  *  Reference:
  *  - [ST 24Cxx] (http://www.st.com/internet/com/TECHNICAL_RESOURCES/TECHNICAL_LITERATURE/DATASHEET/DM00061111.pdf) 16-Kbit serial I2C bus EEPROM datasheet
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -107,9 +107,9 @@ extern bool px_eeprom_24cxx_wr_u8(uint16_t adr, uint8_t data);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

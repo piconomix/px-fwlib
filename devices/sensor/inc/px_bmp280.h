@@ -27,9 +27,10 @@
  *  - devices/sensor/src/px_bmp280.c 
  *   
  *  Reference: 
- *  - [Bosch BMP280 datasheet](https://www.bosch-sensortec.com/bst/products/all_products/bmp280) 
+ *  - [Bosch BMP280 datasheet](https://www.bosch-sensortec.com/bst/products/all_products/bmp280)
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -54,9 +55,9 @@ extern bool px_bmp280_read(int32_t * temperature, int32_t * pressure);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

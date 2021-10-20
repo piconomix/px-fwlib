@@ -62,7 +62,6 @@
  */
 #define PX_XMODEM_CFG_TMR_START(time_ms)   px_xmodem_tmr_start(time_ms)
 
-
 /**
  *  See if timer has expired.
  *  
@@ -71,6 +70,4 @@
  */
 #define PX_XMODEM_CFG_TMR_HAS_EXPIRED()    px_xmodem_tmr_has_expired()
 
-
-/// @}
 #endif

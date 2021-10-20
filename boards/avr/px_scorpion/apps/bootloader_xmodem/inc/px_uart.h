@@ -74,7 +74,6 @@ bool px_uart_rd_u8(uint8_t * data);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif

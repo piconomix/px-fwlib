@@ -28,6 +28,7 @@
  *  - arch/arm/stm32/inc/px_wwdg.h
  *  - arch/arm/stm32/src/px_wwdg.c
  *
+ *  @{
  */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
@@ -74,8 +75,6 @@ void px_wwdg_halt(void);
 
 /**
  *  Resume watchdog by enabling peripheral clock.
- *
- *  @param void
  */
 void px_wwdg_resume(void);
 
@@ -86,9 +85,9 @@ void px_wwdg_dbg_report(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

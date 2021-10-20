@@ -186,8 +186,8 @@
  *  that page is inspected until the first unarchived record is found
  *  (RECORD marker =0xAF).
  *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -432,9 +432,9 @@ void px_log_fs_dbg_report_info(px_log_fs_handle_t * handle);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

@@ -35,8 +35,9 @@
  *  
  *  @par Example:
  *  @include arch/arm/stm32/test/px_adc_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -210,9 +211,9 @@ uint16_t px_adc_sample(px_adc_handle_t * handle,
 /// Convert ADC channel number into bit mask
 #define PX_ADC_CH_TO_BITMASK(ch)    ((uint32_t)1<<(ch))
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

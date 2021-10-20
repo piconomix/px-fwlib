@@ -34,9 +34,9 @@
  *  Example:
  *  
  *  @include devices/mem/test/px_at45d_test.c
- *  
+ *
+ *  @{
  */
-/// @{
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
@@ -58,7 +58,7 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 /// @name List AT45D devices
-//@{
+/// @{
 #define PX_AT45DB011 0 ///< 1M bit, 2.7-Volt Minimum Serial-Interface Flash with One 264-Byte SRAM Buffer
 #define PX_AT45DB021 1 ///< 2M bit, 2.7-Volt Minimum Serial-Interface Flash with One 264-Byte SRAM Buffer
 #define PX_AT45DB041 2 ///< 4M bit 2.5-Volt or 2.7-Volt DataFlash
@@ -66,7 +66,7 @@ extern "C" {
 #define PX_AT45DB161 4 ///< 16M bit, 2.7-Volt Only Serial-Interface Flash with two SRAM Data Buffers
 #define PX_AT45DB321 5 ///< 32M bit, 2.7-Volt Only Serial Interface Flash
 #define PX_AT45DB642 6 ///< 64M bit, 2.7-Volt Dual-Interface Flash with two 1056-Byte SRAM
-//@}
+/// @}
 
 // Determine number of pages and page size according to device specified
 #if   (PX_AT45D_CFG_DEVICE == PX_AT45DB011)
@@ -102,13 +102,13 @@ extern "C" {
 #define PX_AT45D_ADR_MAX            (PX_AT45D_FLASH_SIZE_BYTES - 1)
 
 /// @name Status register
-//@{
+/// @{
 #define PX_AT45D_STATUS_READY          7       ///< Ready flag
 #define PX_AT45D_STATUS_COMP           6       ///< Compare flag
 #define PX_AT45D_STATUS_DENSITY_MASK   0x3C    ///< Density mask
 #define PX_AT45D_STATUS_PROTECT        1       ///< Protect flag
 #define PX_AT45D_STATUS_PAGE_SIZE      0       ///< Page size flag
-//@}
+/// @}
 
 /// Maximum SPI Clock rate
 #define PX_AT45D_MAX_SPI_CLOCK_HZ  33000000
@@ -319,9 +319,9 @@ bool px_at45d_set_page_size_to_pwr_of_two(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

@@ -32,7 +32,7 @@
 PX_LOG_NAME("bmp280");
 
 /// @name Memory Map (table 18, p. 24)
-//@{
+/// @{
 #define PX_BMP280_REG_CALIB00                   0x88
 #define PX_BMP280_REG_CALIB25                   0xa1
 #define PX_BMP280_REG_ID                        0xd0
@@ -46,7 +46,7 @@ PX_LOG_NAME("bmp280");
 #define PX_BMP280_REG_TEMP_MSB                  0xfa
 #define PX_BMP280_REG_TEMP_LSB                  0xfb
 #define PX_BMP280_REG_TEMP_XLSB                 0xfc
-//@}
+/// @}
 
 // 4.3.1 Register 0xD0 "id"
 #define PX_BMP280_REG_ID_VAL                    0x58

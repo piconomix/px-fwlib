@@ -35,8 +35,9 @@
  *  Example:
  *  
  *  @include comms/test/px_cli_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -48,7 +49,7 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 /// @name Special ASCII values
-//@{
+/// @{
 #define PX_VT100_CHAR_BEL                   0x07
 #define PX_VT100_CHAR_BS                    0x08
 #define PX_VT100_CHAR_TAB                   0x09
@@ -56,10 +57,10 @@ extern "C" {
 #define PX_VT100_CHAR_LF                    0x0A    // '\n'
 #define PX_VT100_CHAR_ESC                   0x1B
 #define PX_VT100_CHAR_DEL                   0x7F
-//@}
+/// @}
 
 /// @name VT100 escape sequences
-//@{
+/// @{
 #define PX_VT100_CURSOR_HOME                "\x1B[H"
 #define PX_VT100_CURSOR_UP                  "\x1B[1A"
 #define PX_VT100_CURSOR_DOWN                "\x1B[1B"
@@ -110,7 +111,7 @@ extern "C" {
 #define PX_VT100_SET_BG_MAGENTA             "\x1B[45m"
 #define PX_VT100_SET_BG_CYAN                "\x1B[46m"
 #define PX_VT100_SET_BG_WHITE               "\x1B[47m"
-//@}
+/// @}
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /// VT100 Terminal receive state
@@ -172,9 +173,9 @@ extern void px_vt100_del_chars(uint8_t nr_of_chars);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

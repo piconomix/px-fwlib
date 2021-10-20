@@ -17,7 +17,7 @@ is recommended to work through them in the order presented.
 |@subpage STM32_TUT05_STOP_MODE    |How to wake up from STOP mode with an external interrupt           |
 
 @warn_s
-The tutorials have been created for the [PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD)
+The tutorials have been created for the [PX-HER0 Board](@ref STM32_PX_HERO_BOARD)
 and may need to be modified for your specific target board.
 @warn_e
 

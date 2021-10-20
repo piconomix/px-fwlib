@@ -27,17 +27,17 @@ PX_LOG_NAME("px_veml6075")
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// @name Command code and register map (table 1, p. 6)
-//@{
+/// @{
 #define PX_VEML6075_REG_UV_CFG              0x00
 #define PX_VEML6075_REG_UVA_DATA            0x07
 #define PX_VEML6075_REG_UVB_DATA            0x09
 #define PX_VEML6075_REG_UVCOMP1_DATA        0x0A
 #define PX_VEML6075_REG_UVCOMP2_DATA        0x0B
 #define PX_VEML6075_REG_ID                  0x0C
-//@}
+/// @}
 
 /// @name Config register parameters (table 2, p. 7)
-//@{
+/// @{
 #define PX_VEML6075_REG_CFG_UV_IT_50MS      0x00
 #define PX_VEML6075_REG_CFG_UV_IT_100MS     0x10
 #define PX_VEML6075_REG_CFG_UV_IT_200MS     0x20
@@ -49,7 +49,7 @@ PX_LOG_NAME("px_veml6075")
 #define PX_VEML6075_REG_CFG_UV_AF_NORMAL    0x00
 #define PX_VEML6075_REG_CFG_UV_AF_FORCE     0x02
 #define PX_VEML6075_REG_CFG_SD              0x01
-//@}
+/// @}
 
 /// Register 0x0C "ID" value
 #define PX_VEML6075_REG_ID_VAL              0x26

@@ -36,8 +36,9 @@
  *
  *  Note that the polynomial value is bit reversed and a right shift operator is
  *  used during the calculation.
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -106,9 +107,9 @@ uint16_t px_crc16_update_data(uint16_t crc, const void * data, size_t nr_of_byte
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

@@ -35,8 +35,8 @@
  *  References: 
  *  1. newlib-2.5.0/newlib/libc/sys/arm/syscalls.c
  *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stdio.h>
@@ -143,9 +143,9 @@ uint16_t _px_usb_cdc_stdio_get_tx_data(uint8_t * data, uint16_t nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

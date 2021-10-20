@@ -1,17 +1,15 @@
 5.1 The Piconomix C coding style {#CODING_STYLE}
 ================================================
 
-[TOC]
-
-1. Introduction {#STYLE_INTRODUCTION}
-=====================================
+1. Introduction
+===============
 
 A crystal clear, consistent, concise coding style improves readibility, reduces 
 errors and improves maintainability. This page provides a short guide to the C 
 coding style used.
 
-2. Library Namespace {#STYLE_NAMESPACE}
-=======================================
+2. Library Namespace
+====================
 
 *All filenames, defines, typedefs, variables, functions, etc. are prefixed with*
 **px_** *or* **PX_**
@@ -31,8 +29,8 @@ typedefs, defines, etc. are prefixed with "px_" or "PX_" (in the case of
 it harder to fit a source line into 80 columns, but it is the only universal 
 solution to avoid a possible clash.
 
-3. Modules {#STYLE_MODULES}
-===========================
+3. Modules
+==========
 
 *All defines, typedefs, variables, functions, etc. are prefixed with the module
 name*
@@ -45,21 +43,18 @@ enumerations, etc.
 
 A good example of this approach is @ref PX_SYSTMR. Example usage:
 
-    @code{.c}
+@code{.c}
     #include "px_systmr.h"
 
     // Create a timer object
     px_systmr_t tmr;
-    
+
     // Start timer with a 250 ms timeout
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(250));
 
     // Wait until timer has expired
-    while(!px_systmr_has_expired(&tmr))
-    {
-        ;
-    }
-    @endcode
+    while(!px_systmr_has_expired(&tmr)) {;}
+@endcode
 
 The module name is **px_systmr**. The file names are "px_systmr.h" and 
 "px_systmr.c". Each function name starts with "px_systmr_" e.g. 
@@ -67,8 +62,8 @@ The module name is **px_systmr**. The file names are "px_systmr.h" and
 structure called `px_systmr_t` and each function is passed a pointer to the 
 object, e.g. `&tmr`.
 
-4. Templates {#STYLE_TEMPLATES}
-===============================
+4. Templates
+============
 
 Template files have been created for consistent organisation of each C module.
 See:
@@ -76,16 +71,16 @@ See:
 - common/src/px_template.c
 - common/src/px_template.S
 
-5. Comments {#STYLE_COMMENTS}
-=============================
+5. Comments
+===========
 
 Doxygen is used to document each module. For more info see @ref DOXYGEN.
 
 Here is an an example showing how a function is documented:
 @include doc/examples/doxy_ex_2.c
 
-6. Indentation and Brace style {#STYLE_INDENT_AND_BRACE}
-========================================================
+6. Indentation and Brace style
+==============================
 
 *4 spaces must be used for each indentation level, not tabs. Curly brackets {} 
 must be used, even for single lines*
@@ -93,63 +88,63 @@ must be used, even for single lines*
 The [Allman style](http://en.wikipedia.org/wiki/Indent_style#Allman_style)
 (a.k.a. ANSI C or BSD style) is followed. Example: 
 
-    @code{.c}
-    for(i=0; i<10; i++)
+@code{.c}
+    for(i = 0; i < 10; i++)
     {
-    ....for(j=0; j<10; j++)
+    ....for(j = 0; j < 10; j++)
     ....{
     ........buffer[i][j] = 0;
     ....}
     }
-    @endcode
+@endcode
 
-7. Naming convention {#STYLE_NAMING}
-====================================
+7. Naming convention
+====================
 
-7.1 Functions {#STYLE_NAMING_FUNC}
-----------------------------------
+7.1 Functions
+-------------
 
 *Lower case letters with underscores separating words*
 
 The name must have the module name prefixed. Example:
 
-    @code{.c}
+@code{.c}
     extern bool px_systmr_has_expired(px_systmr_t * systmr);
-    @endcode
+@endcode
 
-7.2 Preprocessor defines {#STYLE_NAMING_DEF}
---------------------------------------------
+7.2 Preprocessor defines
+------------------------
 
 *CAPITAL letters with underscores separating words*
 
 The name must have the module name prefixed. Example:
 
-    @code{.c}
+@code{.c}
     /// The generator polynomial CRC16-CCITT: x^16 + x^12 + x^5 + x^0
     #define PX_CRC_POLYNOMIAL  0x8408
-    @endcode
+@endcode
 
-7.3 Preprocessor macros {#STYLE_NAMING_MACRO}
----------------------------------------------
+7.3 Preprocessor macros
+-----------------------
 
 *CAPITAL letters with underscores separating words*
 
 The name must have the module name prefixed. Example:
 
-    @code{.c}
-    /** 
-     *  Macro used to convert a timeout in milliseconds to timer ticks
-     *  @param[in] delay_in_ms Delay in milliseconds
-     *  @return    Delay in timer ticks
-     */
+@code{.c}
+    /**
+    *  Macro used to convert a timeout in milliseconds to timer ticks
+    *  @param[in] delay_in_ms Delay in milliseconds
+    *  @return    Delay in timer ticks
+    */
     #define PX_SYSTMR_MS_TO_TICKS(delay_in_ms)    \
-         PX_UDIV_ROUND((delay_in_ms)*PX_SYSTMR_TICKS_PER_SEC, 1000ul)
-    @endcode
+     PX_UDIV_ROUND((delay_in_ms)*PX_SYSTMR_TICKS_PER_SEC, 1000ul)
+@endcode
 
 `do {} while` blocks and round brackets () around macro parameters are 
 recommended so that the macro will always expand correctly. Example:
 
-    @code{.c}
+@code{.c}
     #define PX_BIT_SET_HI(var,bit)     do {(var) |= (1<<(bit));} while(0)
     #define PX_BIT_SET_LO(var,bit)     do {(var) &= ~(1<<(bit));} while(0)
 
@@ -157,40 +152,40 @@ recommended so that the macro will always expand correctly. Example:
     // code behaves as expected:
     void set_pin(bool hi)
     {
-        if(hi)
-            PX_BIT_SET_HI(PORTA, 4);
-        else
-            PX_BIT_SET_LO(PORTA, 4);
+    if(hi)
+        PX_BIT_SET_HI(PORTA, 4);
+    else
+        PX_BIT_SET_LO(PORTA, 4);
     }
-    @endcode
+@endcode
 
 @warn_s
 Note that this example is in violation of the brace style, where curly 
 brackets {} must be used, even for single lines.
 @warn_e
 
-7.4 Function-like macros {#STYLE_NAMING_FN_MACRO}
--------------------------------------------------
+7.4 Function-like macros
+------------------------
 
 *lower case letters with underscores separating words is allowed*
 
 If a macro is used with the appearance of a function it is acceptable to use 
 the function naming convention. Example:
 
-    @code{.c}
+@code{.c}
     #define px_gpio_pin_set_hi(gpio) _gpio_pin_set_hi(gpio)
-    #define _gpio_pin_set_hi(port, pin, dir, init)      BIT_SET_HI(CONCAT(PORT,port), pin)
-    @endcode
+    #define _gpio_pin_set_hi(port, pin, dir, init)      PX_BIT_SET_HI(PX_CONCAT(PORT, port), pin)
+@endcode
 
-7.5 Variables {#STYLE_NAMING_VAR}
----------------------------------
+7.5 Variables
+-------------
 
 *Lower case letters with underscores separating words*
 
 If the variable is declared outside function or structure scope, then it must 
 have the module name prefixed. Example:
 
-    @code{.c}
+@code{.c}
     // Declare global counter value; Needs "px_systmr_" module prefix
     uint16_t px_systmr_counter;
 
@@ -199,40 +194,40 @@ have the module name prefixed. Example:
         // Variable declared inside function; Does not need module prefix
         int nr_of_items;
         ...
-    }
-    @endcode
+}
+@endcode
 
-7.6 Typedef {#STYLE_NAMING_TYPE}
---------------------------------
+7.6 Typedef
+-----------
 
 *Lower case letters with underscores separating words and "_t" suffix*
 
 The name must have the module name prefixed. An "_t" suffix must be added to 
 indicate that it is a typedef. Example:
 
-    @code{.c}
+@code{.c}
     /// Size definition of the tick counter
     typedef unsigned int px_sysclk_ticks_t;
-    @endcode
+@endcode
 
-7.7 Structures  {#STYLE_NAMING_STRUCT}
---------------------------------------
+7.7 Structures
+--------------
 
 *Lower case letters with underscores separating words and "_s" suffix*
 
 The name must have the module name prefixed. An "_s" suffix must be added to 
 indicate that it is a struct. Example:
 
-    @code{.c}
+@code{.c}
     typedef struct px_list_item_s
     {
-        struct px_list_item_s * next_item;
-        struct px_list_item_s * previous_item;
+    struct px_list_item_s * next_item;
+    struct px_list_item_s * previous_item;
     } px_list_item_t;
-    @endcode
+@endcode
 
-8. Standard Types {#STYLE_TYPES}
-================================
+8. Standard Types
+=================
 
 *Use standard types (uint8_t, int8_t, uint16_t, int16_t, uint32_t, int32_t, 
 uint64_t, int64_t, bool, false, true) defined via "px-fwlib/common/px_defines.h"*
@@ -243,28 +238,28 @@ it is compiled for. For the 8-bit Microchip AVR architecture, the size of an
 of an `int` will be 32-bits. This example will return a different answer 
 depending on which architecture it is compiled for:
 
-    @code{.c}
+@code{.c}
     int i;
 
     printf("sizeof(i) = %d\n", sizeof(i));
-    @endcode
+@endcode
 
 It is therefor imperative to use standard types (uint8_t, uint16_t, ...) to keep
 the code portable. See @ref PX_DEFINES. Example:
 
-    @code{.c}
+@code{.c}
     #include "px_common.h"
-    
+
     typedef struct
     {
         uint8_t  msg_type;  // Unsigned 8-bit value (0 to 255)
         int8_t   data[13];  // Array of signed 8-bit values (-128 to +127)
         uint16_t crc;       // Unsigned 16-bit value (0 to 65535)
     } msg_t;
-    @endcode
+@endcode
 
-9. Debug Output {#STYLE_DEBUG}
-==============================
+9. Debug Output
+===============
 
 A convenient debug module (@ref PX_LOG) has been created to report the flow of
 an embedded program as well as warnings and errors. The debug output can easily 
@@ -274,14 +269,14 @@ execution or code size.
 To conserve space, the module name string is declared once at the top of the C 
 file. Example:
 
-    @code{.c}
+@code{.c}
     #include "px_log.h"
     PX_LOG_NAME("px_uart");
-    @endcode
+@endcode
 
 Function parameters can be checked with a PX_LOG_ASSERT() macro. Example:
 
-    @code{.c}
+@code{.c}
     bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
     {
         // Verify that pointer to handle is not NULL
@@ -289,33 +284,33 @@ Function parameters can be checked with a PX_LOG_ASSERT() macro. Example:
 
         ...
     }
-    @endcode
+@endcode
 
-Info, warnings and errors can be reported with PX_LOG_INFO(), PX_LOG_WARN() and
-PX_LOG_ERR() macros. Example:
+Info, warnings and errors can be reported with PX_LOG_I(), PX_LOG_W() and
+PX_LOG_E() macros. Example:
 
-    @code{.c}
-    bool px_uart_open(px_uart_handle_t * handle, 
-                      px_uart_per_t      peripheral)
+@code{.c}
+    bool px_uart_open(px_uart_handle_t * handle,
+    	              px_uart_per_t      peripheral)
     {
-        ...
+    ...
 
-        // Set pointer to peripheral data
-        switch(peripheral)
-        {
-        case PX_UART_PER_1:
-            uart_data = &px_uart1_data;
-            break;
-    
-        case PX_UART_PER_2:
-            uart_data = &px_uart2_data;
-            break;
+    // Set pointer to peripheral data
+    switch(peripheral)
+    {
+    case PX_UART_PER_1:
+        uart_data = &px_uart1_data;
+        break;
 
-        default:
-            PX_LOG_ERR("Invalid peripheral specified");
-            return false;
-        }
+    case PX_UART_PER_2:
+        uart_data = &px_uart2_data;
+        break;
 
-        ...
+    default:
+        PX_LOG_ERR("Invalid peripheral specified");
+        return false;
     }
-    @endcode
+
+    ...
+    }
+@endcode

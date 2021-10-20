@@ -1,10 +1,8 @@
 02 GPIO part C {#STM32_TUT02_GPIO_PART_C}
 =========================================
 
-[TOC]
-
-1. Introduction {#STM32_TUT02_GPIO_PART_C_INTRO}
-================================================
+1. Introduction
+===============
 
 *How to configure and use General Purpose (digital) I/O pins - part C*
 
@@ -12,12 +10,12 @@ File(s):
 - arch/arm/stm32/tutorials/02_gpio_part_c/gpio.c
 
 This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the 
-[PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD), the LED is wired to Port H pin 0.
+[PX-HER0 Board](@ref STM32_PX_HERO_BOARD), the LED is wired to Port H pin 0.
 PH0 must be configured as a digital output pin. Set PH0 high to enable the LED 
 and set PH0 low to disable the LED.
 
-1. STM32Cube library (including CMSIS) {#STM32_TUT02_GPIO_PART_C_STM32CUBE}
-===========================================================================
+1. STM32Cube library (including CMSIS)
+======================================
 
 ST provides the STM32Cube library which includes the Arm 
 [CMSIS](https://developer.arm.com/tools-and-software/embedded/cmsis) (Cortex 
@@ -39,7 +37,7 @@ microcontroller in the Makefile:
 
 Inspect "stm32l072xx.h" and you will find the relevant definitions:
 
-    @code{.c}
+@code{.c}
     typedef struct
     {
       __IO uint32_t MODER;
@@ -63,17 +61,17 @@ Inspect "stm32l072xx.h" and you will find the relevant definitions:
 
     ...
 
-    #define GPIO_MODER_MODE0_Pos    (0U)  
+    #define GPIO_MODER_MODE0_Pos    (0U)
     #define GPIO_MODER_MODE0_Msk    (0x3UL << GPIO_MODER_MODE0_Pos)
-    #define GPIO_MODER_MODE0        GPIO_MODER_MODE0_Msk                   
+    #define GPIO_MODER_MODE0        GPIO_MODER_MODE0_Msk
     #define GPIO_MODER_MODE0_0      (0x1UL << GPIO_MODER_MODE0_Pos)
     #define GPIO_MODER_MODE0_1      (0x2UL << GPIO_MODER_MODE0_Pos)
     #define GPIO_MODER_MODE1_Pos    (2U)
-    @endcode
+@endcode
 
 In "px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Include/core_cm0plus.h" you will find
 the definition of '__IO':
 
-    @code{.c}
+@code{.c}
     #define __IO            volatile
-    @endcode
+@endcode

@@ -27,9 +27,10 @@
  *  - devices/sensor/src/px_bme280.c 
  *   
  *  Reference: 
- *  - [Bosch BME280 datasheet](https://www.bosch-sensortec.com/bst/products/all_products/bme280) 
+ *  - [Bosch BME280 datasheet](https://www.bosch-sensortec.com/bst/products/all_products/bme280)
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -125,9 +126,9 @@ extern uint32_t px_bme280_humidity(px_bme280_data_t * data);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

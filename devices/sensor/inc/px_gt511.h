@@ -41,8 +41,9 @@
  *  Example:
  *  
  *  @include devices/sensor/test/px_gt511_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -133,9 +134,9 @@ px_gt511_err_t px_gt511_set_template              (px_gt511_id_t id, uint8_t * t
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

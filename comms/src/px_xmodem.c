@@ -27,18 +27,18 @@
 PX_LOG_NAME("px_xmodem");
 
 /// @name XMODEM protocol definitions
-//@{
+/// @{
 #define PX_XMODEM_DATA_SIZE         128
-//@}
+/// @}
 
 /// @name XMODEM flow control characters
-//@{
+/// @{
 #define PX_XMODEM_SOH               0x01 ///< Start of Header
 #define PX_XMODEM_EOT               0x04 ///< End of Transmission 
 #define PX_XMODEM_ACK               0x06 ///< Acknowledge 
 #define PX_XMODEM_NAK               0x15 ///< Not Acknowledge 
 #define PX_XMODEM_C                 0x43 ///< ASCII 'C'
-//@}
+/// @}
 
 /// XMODEM packet structure definition
 typedef struct

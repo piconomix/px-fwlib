@@ -29,7 +29,7 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_SUB_ADR_AUTO_INC                  (1 << 7)
 
 /// @name Registers (table 21; p. 31)
-//@{
+/// @{
 #define PX_LIS3DH_REG_STATUS_REG_AUX                0x07
 
 #define PX_LIS3DH_REG_OUT_ADC1_L                    0x08
@@ -77,10 +77,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_TIME_WINDOW                   0x3d
 #define PX_LIS3DH_REG_ACT_THS                       0x3e
 #define PX_LIS3DH_REG_ACT_DUR                       0x3f
-//@}
+/// @}
 
 /// @name STATUS_REG_AUX register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_AUX_321OR     7
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_AUX_3OR       6
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_AUX_2OR       5
@@ -89,26 +89,26 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_AUX_3DA       2
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_AUX_2DA       1
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_AUX_1DA       0
-//@}
+/// @}
 
 /// Device identification register value
 #define PX_LIS3DH_REG_WHO_AM_I_VAL                  0x33
 
 /// @name CTRL_REG0 register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_REG0_SDO_PU_DISC         7
 #define PX_LIS3DH_REG_CTRL_REG0_SDO_PU_DIS          (1 << PX_LIS3DH_REG_CTRL_REG0_SDO_PU_DISC)
 #define PX_LIS3DH_REG_CTRL_REG0_SDO_PU_EN           (0 << PX_LIS3DH_REG_CTRL_REG0_SDO_PU_DISC)
-//@}
+/// @}
 
 /// @name TEMP_CFG_REG register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_TEMP_CFG_REG_ADC_EN      7
 #define PX_LIS3DH_REG_CTRL_TEMP_CFG_REG_TEMP_EN     6
-//@}
+/// @}
 
 /// @name CTRL_REG1 register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_REG1_ODR3                7
 #define PX_LIS3DH_REG_CTRL_REG1_ODR2                6
 #define PX_LIS3DH_REG_CTRL_REG1_ODR1                5
@@ -136,10 +136,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CTRL_REG1_YEN_EN              (1 << PX_LIS3DH_REG_CTRL_REG1_YEN)
 #define PX_LIS3DH_REG_CTRL_REG1_XEN_DIS             (0 << PX_LIS3DH_REG_CTRL_REG1_XEN)
 #define PX_LIS3DH_REG_CTRL_REG1_XEN_EN              (1 << PX_LIS3DH_REG_CTRL_REG1_XEN)
-//@}
+/// @}
 
 /// @name CTRL_REG2 register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_REG2_HPM1                7
 #define PX_LIS3DH_REG_CTRL_REG2_HPM0                6
 #define PX_LIS3DH_REG_CTRL_REG2_HPCF2               5
@@ -148,10 +148,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CTRL_REG2_HPCLICK             2
 #define PX_LIS3DH_REG_CTRL_REG2_HP_IA2              1
 #define PX_LIS3DH_REG_CTRL_REG2_HP_IA1              0
-//@}
+/// @}
 
 /// @name CTRL_REG3 register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_REG3_I1_CLICK            7
 #define PX_LIS3DH_REG_CTRL_REG3_I1_IA1              6
 #define PX_LIS3DH_REG_CTRL_REG3_I1_IA2              5
@@ -159,10 +159,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CTRL_REG3_I1_321DA            3
 #define PX_LIS3DH_REG_CTRL_REG3_I1_WTM              2
 #define PX_LIS3DH_REG_CTRL_REG3_I1_OVERRUN          1
-//@}
+/// @}
 
 /// @name CTRL_REG4 register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_REG4_BDU                 7
 #define PX_LIS3DH_REG_CTRL_REG4_BLE                 6
 #define PX_LIS3DH_REG_CTRL_REG4_FS1                 5
@@ -171,30 +171,30 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CTRL_REG4_ST1                 2
 #define PX_LIS3DH_REG_CTRL_REG4_ST0                 1
 #define PX_LIS3DH_REG_CTRL_REG4_SIM                 0
-//@}
+/// @}
 
 /// @name CTRL_REG5 register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_REG5_BOOT                7
 #define PX_LIS3DH_REG_CTRL_REG5_FIFO_EN             6
 #define PX_LIS3DH_REG_CTRL_REG5_LIR_INT1            3
 #define PX_LIS3DH_REG_CTRL_REG5_D4D_INT1            2
 #define PX_LIS3DH_REG_CTRL_REG5_LIR_INT2            1
 #define PX_LIS3DH_REG_CTRL_REG5_D4D_INT2            0
-//@}
+/// @}
 
 /// @name CTRL_REG6 register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_REG6_I2_CLICK            7
 #define PX_LIS3DH_REG_CTRL_REG6_I2_IA1              6
 #define PX_LIS3DH_REG_CTRL_REG6_I2_IA2              5
 #define PX_LIS3DH_REG_CTRL_REG6_I2_BOOT             4
 #define PX_LIS3DH_REG_CTRL_REG6_I2_ACT              3
 #define PX_LIS3DH_REG_CTRL_REG6_INT_POLARITY        1
-//@}
+/// @}
 
 /// @name STATUS_REG register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_ZYXOR         7
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_ZOR           6
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_YOR           5
@@ -203,10 +203,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_ZDA           2
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_YDA           1
 #define PX_LIS3DH_REG_CTRL_STATUS_REG_XDA           0
-//@}
+/// @}
 
 /// @name FIFO_CTRL_REG register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CTRL_FIFO_CTRL_REG_FM1        7
 #define PX_LIS3DH_REG_CTRL_FIFO_CTRL_REG_FM0        6
 #define PX_LIS3DH_REG_CTRL_FIFO_CTRL_REG_TR         5
@@ -215,10 +215,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CTRL_FIFO_CTRL_REG_FTH2       2
 #define PX_LIS3DH_REG_CTRL_FIFO_CTRL_REG_FTH1       1
 #define PX_LIS3DH_REG_CTRL_FIFO_CTRL_REG_FTH0       0
-//@}
+/// @}
 
 /// @name FIFO_SRC_REG register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_FIFO_SRC_REG_WTM              7
 #define PX_LIS3DH_REG_FIFO_SRC_REG_OVRN_FIFO        6
 #define PX_LIS3DH_REG_FIFO_SRC_REG_EMPTY            5
@@ -227,10 +227,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_FIFO_SRC_REG_FSS2             2
 #define PX_LIS3DH_REG_FIFO_SRC_REG_FSS1             1
 #define PX_LIS3DH_REG_FIFO_SRC_REG_FSS0             0
-//@}
+/// @}
 
 /// @name INT1_CFG register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_INT1_CFG_AOI                  7
 #define PX_LIS3DH_REG_INT1_CFG_6D                   6
 #define PX_LIS3DH_REG_INT1_CFG_ZHIE                 5
@@ -239,10 +239,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_INT1_CFG_YLIE                 2
 #define PX_LIS3DH_REG_INT1_CFG_XHIE                 1
 #define PX_LIS3DH_REG_INT1_CFG_XLIE                 0
-//@}
+/// @}
 
 /// @name INT1_SRC register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_INT1_SRC_IA                   6
 #define PX_LIS3DH_REG_INT1_SRC_ZH                   5
 #define PX_LIS3DH_REG_INT1_SRC_ZL                   4
@@ -250,10 +250,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_INT1_SRC_YL                   2
 #define PX_LIS3DH_REG_INT1_SRC_XH                   1
 #define PX_LIS3DH_REG_INT1_SRC_XL                   0
-//@}
+/// @}
 
 /// @name INT2_CFG register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_INT2_CFG_AOI                  7
 #define PX_LIS3DH_REG_INT2_CFG_6D                   6
 #define PX_LIS3DH_REG_INT2_CFG_ZHIE                 5
@@ -262,10 +262,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_INT2_CFG_YLIE                 2
 #define PX_LIS3DH_REG_INT2_CFG_XHIE                 1
 #define PX_LIS3DH_REG_INT2_CFG_XLIE                 0
-//@}
+/// @}
 
 /// @name INT2_SRC register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_INT2_SRC_IA                   6
 #define PX_LIS3DH_REG_INT2_SRC_ZH                   5
 #define PX_LIS3DH_REG_INT2_SRC_ZL                   4
@@ -273,20 +273,20 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_INT2_SRC_YL                   2
 #define PX_LIS3DH_REG_INT2_SRC_XH                   1
 #define PX_LIS3DH_REG_INT2_SRC_XL                   0
-//@}
+/// @}
 
 /// @name CLICK_CFG register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CLICK_CFG_ZD                  5
 #define PX_LIS3DH_REG_CLICK_CFG_ZS                  4
 #define PX_LIS3DH_REG_CLICK_CFG_YD                  3
 #define PX_LIS3DH_REG_CLICK_CFG_YS                  2
 #define PX_LIS3DH_REG_CLICK_CFG_XD                  1
 #define PX_LIS3DH_REG_CLICK_CFG_XS                  0
-//@}
+/// @}
 
 /// @name CLICK_SRC register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CLICK_SRC_IA                  6
 #define PX_LIS3DH_REG_CLICK_SRC_DCLICK              5
 #define PX_LIS3DH_REG_CLICK_SRC_SCLICK              4
@@ -294,10 +294,10 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CLICK_SRC_Z                   2
 #define PX_LIS3DH_REG_CLICK_SRC_Y                   1
 #define PX_LIS3DH_REG_CLICK_SRC_X                   0
-//@}
+/// @}
 
 /// @name CLICK_THS register bits
-//@{
+/// @{
 #define PX_LIS3DH_REG_CLICK_THS_LIR_CLICK           7
 #define PX_LIS3DH_REG_CLICK_THS_THS6                6
 #define PX_LIS3DH_REG_CLICK_THS_THS5                5
@@ -306,7 +306,7 @@ PX_LOG_NAME("px_lis3dh");
 #define PX_LIS3DH_REG_CLICK_THS_THS2                2
 #define PX_LIS3DH_REG_CLICK_THS_THS1                1
 #define PX_LIS3DH_REG_CLICK_THS_THS0                0
-//@}
+/// @}
 
 /* _____MACROS_______________________________________________________________ */
 

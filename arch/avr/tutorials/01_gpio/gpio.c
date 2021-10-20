@@ -30,39 +30,39 @@
  *  
  *  The following piece of code: 
  *  
- *      @code{.c}
+ *  @code{.c}
  *      PORTB = PORTB | 0x01; // Set bit 0 of PORTB register to enable LED
  *      PORTB = PORTB & 0xfe; // Clear bit 0 of PORTB to disable LED
- *      @endcode
+ *  @endcode
  *  
  *  can be compacted to:
  *  
- *      @code {.c}
+ *  @code{.c}
  *      PORTB |=  (1<<0);     // Set bit 0 of PORTB register to enable LED
  *      PORTB &= ~(1<<0);     // Clear bit 0 of PORTB to disable LED
- *      @endcode
+ *  @endcode
  *  
  *  and better yet, be replaced with macros:
  *  
- *      @code{.c}
+ *  @code{.c}
  *      // General purpose bit manipulation macros
  *      #define BIT_SET_HI(var, bit)    var |=  (1<<bit)
  *      #define BIT_SET_LO(var, bit)    var &= ~(1<<bit)
- *  
+ *
  *      // Define LED GPIO pin
  *      #define GPIO_LED_REG_PORT       PORTB
  *      #define GPIO_LED_BIT            0
- *  
+ *
  *      // Define macros to turn LED on and off
  *      #define LED_ON()                BIT_SET_HI(GPIO_LED_REG_PORT, GPIO_LED_BIT)
  *      #define LED_OFF()               BIT_SET_LO(GPIO_LED_REG_PORT, GPIO_LED_BIT)
- *  
+ *
  *      void example_fn(void)
  *      {
  *          LED_ON();  // Enable LED
  *          LED_OFF(); // Disable LED
  *      }
- *      @endcode 
+ *  @endcode
  *  
  *  or best yet, use @ref AVR_GPIO. Here is an example:
  *  

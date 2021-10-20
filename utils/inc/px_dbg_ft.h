@@ -28,8 +28,8 @@
  *  - utils/inc/px_dbg_ft_cfg_template.h
  *  - utils/src/px_dbg_ft.c
  *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -161,9 +161,9 @@ void px_dbg_ft_report(void);
     #define PX_DBG_FT_LOG_LINE_PARAM(line, param)
 #endif
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

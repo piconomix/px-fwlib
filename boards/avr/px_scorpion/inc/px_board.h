@@ -27,8 +27,9 @@
  *  - boards/avr/px_scorpion/inc/px_board.h 
  *  - boards/avr/px_scorpion/inc/px_board_gpio.h 
  *  - boards/avr/px_scorpion/src/px_board.c
- */   
-/// @{
+ *
+ *  @{
+ */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -49,12 +50,12 @@ extern "C" {
 #endif
 
 /// @name ADC Channel mux definitions
-//@{
+/// @{
 #define ADC0    1
 #define ADC1    0
 #define ADC2    7
 #define ADC3    6
-//@}
+/// @}
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 /// Identify which GPIO pins are used for CS in board_spi_cs_lo() and board_spi_cs_hi()
@@ -115,9 +116,9 @@ void px_board_delay_ms(uint16_t delay_ms);
 // Select UART Port 1
 #define PX_UART_SEL_1()     PX_GPIO_PIN_SET_LO(PX_GPIO_UART_SEL)
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

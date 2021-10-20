@@ -27,8 +27,9 @@
  *  File(s):
  *  - gfx/inc/px_gfx_obj.h 
  *  - gfx/src/px_gfx_obj.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -105,9 +106,9 @@ void           px_gfx_obj_draw        (px_gfx_obj_handle_t  obj);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

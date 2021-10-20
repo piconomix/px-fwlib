@@ -40,7 +40,6 @@ bool px_xmodem_tmr_has_expired(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif

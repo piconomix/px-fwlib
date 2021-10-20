@@ -23,14 +23,14 @@
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// @name commands
-//@{
+/// @{
 #define PX_CAT25M_CMD_WREN     0x06    ///< Enable Write Operations
 #define PX_CAT25M_CMD_WRDI     0x04    ///< Disable Write Operations
 #define PX_CAT25M_CMD_RDSR     0x05    ///< Read Status Register
 #define PX_CAT25M_CMD_WRSR     0x01    ///< Write Status Register
 #define PX_CAT25M_CMD_READ     0x03    ///< Read Data from Memory
 #define PX_CAT25M_CMD_WRITE    0x02    ///< Write Data to Memory
-//@}
+/// @}
 
 /* _____MACROS_______________________________________________________________ */
 

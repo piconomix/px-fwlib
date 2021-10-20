@@ -35,8 +35,8 @@
  *  - [Maxim AN187 - 1-Wire Search Algorithm] (https://www.maximintegrated.com/en/app-notes/index.mvp/id/187)
  *  - [Wikipedia - 1-Wire] (https://en.wikipedia.org/wiki/1-Wire)
  *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -117,9 +117,9 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

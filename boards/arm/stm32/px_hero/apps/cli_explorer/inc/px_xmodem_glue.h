@@ -33,14 +33,13 @@ extern "C" {
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-bool px_xmodem_rd_u8(uint8_t * data);
-void   px_xmodem_wr_u8(uint8_t data);
-void   px_xmodem_tmr_start(uint16_t time_ms);
+bool px_xmodem_rd_u8          (uint8_t * data);
+void px_xmodem_wr_u8          (uint8_t data);
+void px_xmodem_tmr_start      (uint16_t time_ms);
 bool px_xmodem_tmr_has_expired(void);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif

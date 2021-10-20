@@ -32,14 +32,14 @@ PX_LOG_NAME("px_log_fs");
 #define PX_LOG_FS_PAGE_INVALID      0xffff
 
 /// @name Marker values
-//@{
+/// @{
 #define PX_LOG_FS_MARKER_FREE       0xff        /* 1111_1111b */
 #define PX_LOG_FS_MARKER_PAGE       0x5f        /* 0101_1111b */
 #define PX_LOG_FS_MARKER_PAGE_A     0x55        /* 0101_0101b */
 #define PX_LOG_FS_MARKER_RECORD     0xaf        /* 1010_1111b */
 #define PX_LOG_FS_MARKER_RECORD_A   0xaa        /* 1010_1010b */
 #define PX_LOG_FS_MARKER_BAD        0x00        /* 0000_0000b */
-//@}
+/// @}
 
 /// Definition of header structure that is stored at the start of each page
 typedef struct

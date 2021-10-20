@@ -27,7 +27,7 @@
 PX_LOG_NAME("lcd");
 
 /// @name ST7567 commands (Table 8, page 21)
-//@{
+/// @{
 #define PX_LCD_CMD_DISP_ON_OFF          0xae    ///< (1)  Display ON/OFF
 #define PX_LCD_CMD_SET_START_LINE       0x40    ///< (2)  Set display start line
 #define PX_LCD_CMD_SET_PAGE_ADR         0xb0    ///< (3)  Set page address
@@ -43,7 +43,7 @@ PX_LOG_NAME("lcd");
 #define PX_LCD_CMD_REG_RATIO            0x20    ///< (17) Select regulation resistor ratio
 #define PX_LCD_CMD_SET_EV               0x81    ///< (18) Set electronic volume (EV) command
 #define PX_LCD_CMD_SET_BOOSTER          0xf8    ///< (19) Set booster level command
-//@}
+/// @}
 
 #define PX_LCD_ST7567_MAX_NR_OF_COLS    132
 #define PX_LCD_ST7567_MAX_NR_OF_ROWS    65

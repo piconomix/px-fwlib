@@ -32,25 +32,26 @@
  *  
  *  Example:
  *  
- *      @code
- *      No items in list:
+ *  @code
+ *  No items in list:
  *  
- *      [first = NULL] [last = NULL]
+ *  [first = NULL] [last = NULL]
  *  
- *      One item in list:
+ *  One item in list:
  *  
- *      [first] -> [prev = NULL][next = NULL] <- [last]
+ *  [first] -> [prev = NULL][next = NULL] <- [last]
  *  
- *      Two items in list:
+ *  Two items in list:
  *  
- *      [first] -> [prev = NULL][next] <-> [prev][next = NULL]  <- [last]
+ *  [first] -> [prev = NULL][next] <-> [prev][next = NULL]  <- [last]
  *  
- *      Three items in list:
+ *  Three items in list:
  *  
- *      [first] -> [prev = NULL][next] <-> [prev][next] <-> [prev][next = NULL]  <- [last]
- *      @endcode
+ *  [first] -> [prev = NULL][next] <-> [prev][next] <-> [prev][next = NULL]  <- [last]
+ *  @endcode
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <stddef.h>
@@ -247,9 +248,9 @@ bool px_link_list_item_in_list(px_link_list_t *      list,
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

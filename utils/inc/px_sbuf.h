@@ -34,8 +34,9 @@
  *  Example:
  *
  *  @include utils/test/px_sbuf_test.c
+ *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -128,9 +129,9 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

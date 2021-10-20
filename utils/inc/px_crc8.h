@@ -34,8 +34,8 @@
  *  @see http://en.wikipedia.org/wiki/Cyclic_redundancy_check
  *  @see https://crccalc.com
  *
+ *  @{
  */
-/// @{
 
 /* _____STANDARD INCLUDES____________________________________________________ */
 
@@ -102,9 +102,9 @@ uint8_t px_crc8_update_data(uint8_t crc, const void * data, size_t nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
 
-/// @}
 #ifdef __cplusplus
 }
 #endif
 
+/// @}
 #endif

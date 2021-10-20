@@ -26,40 +26,40 @@
 PX_LOG_NAME("px_at25s");
 
 /// @name Read commands
-//@{
+/// @{
 #define PX_AT25S_CMD_READ_ARRAY                     0x03
-//@}
+/// @}
 
 /// @name Program and Erase commands
-//@{
+/// @{
 #define PX_AT25S_CMD_BLOCK_ERASE_4KB                0x20
 #define PX_AT25S_CMD_BLOCK_ERASE_32KB               0x52
 #define PX_AT25S_CMD_BLOCK_ERASE_64KB               0xd8
 #define PX_AT25S_CMD_CHIP_ERASE                     0x60
 #define PX_AT25S_CMD_BYTE_PAGE_PROG                 0x02
-//@}
+/// @}
 
 /// @name Protection commands
-//@{
+/// @{
 #define PX_AT25S_CMD_WR_ENABLE                      0x06
 #define PX_AT25S_CMD_WR_DISABLE                     0x04
-//@}
+/// @}
 
 /// @name Status Register commands
-//@{
+/// @{
 #define PX_AT25S_CMD_RD_STATUS_REG_BYTE_1           0x05
 #define PX_AT25S_CMD_RD_STATUS_REG_BYTE_2           0x35
 #define PX_AT25S_CMD_WR_STATUS_REG                  0x01
 #define PX_AT25S_CMD_WR_EN_VOL_STATUS_REG           0x50
-//@}
+/// @}
 
 /// @name Miscellaneous commands
-//@{
+/// @{
 #define PX_AT25S_CMD_RD_MAN_AND_DEVICE_ID           0x9f
 #define PX_AT25S_CMD_RD_ID                          0x90
 #define PX_AT25S_CMD_DEEP_PWR_DN                    0xb9
 #define PX_AT25S_CMD_RESUME_FROM_DEEP_PWR_DN        0xab
-//@}
+/// @}
 
 /* _____MACROS_______________________________________________________________ */
 

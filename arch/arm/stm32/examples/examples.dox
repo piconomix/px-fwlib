@@ -10,7 +10,7 @@ equivalents of the "hello world" program on a PC.
 |@subpage STM32_EX_UART_PRINTF  |Redirect stdout to UART and print "hello world!" |
 
 @warn_s
-The examples have been created for the [PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD)
+The examples have been created for the [PX-HER0 Board](@ref STM32_PX_HERO_BOARD)
 and may need to be modified for your specific target board.
 @warn_e
 

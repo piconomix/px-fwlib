@@ -1,10 +1,8 @@
 CLI Explorer (Command Line Interpreter) {#SCORPION_BOARD_APP_CLI}
 =================================================================
   
-[TOC]
-
-Introduction {#SCORPION_BOARD_APP_CLI_INTRO}
-============================================
+Introduction
+============
 
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 
@@ -30,8 +28,8 @@ With this application you will be able to:
 2. CLI features {#SCORPION_BOARD_CLI_FEATURES}
 ==============================================
 
-2.1 Autocomplete (TAB) {#SCORPION_BOARD_CLI_AUTOCOMPLETE}
----------------------------------------------------------
+2.1 Autocomplete (TAB)
+----------------------
 
 Type the start of a command:
 
@@ -68,8 +66,8 @@ Press ENTER to execute command:
     >led off
     >
 
-2.2 Command History (UP/DN arrow) {#SCORPION_BOARD_CLI_HISTORY}
----------------------------------------------------------------
+2.2 Command History (UP/DN arrow)
+---------------------------------
 
 Type 'gpio info' command and ENTER:
 
@@ -116,8 +114,8 @@ Press UP arrow again to recall command before that:
 Press ENTER to execute command or BACKSPACE to edit command. You can also press
 DOWN arrow to recall newer command in history list if you went too far back.
 
-2.3 Help {#SCORPION_BOARD_CLI_HELP}
------------------------------------
+2.3 Help
+--------
 
 Type 'help' and press ENTER to list all the commands with parameters and 
 descriptions. Parameters indicated with angle brackets <> are required and 
@@ -134,11 +132,11 @@ output:
     i2c w           <adr> <d0> .. [d7]         : Write up to 8 bytes of data to an I2C slave
     i2c r           <adr> <nr of bytes>        : Read up to 16 bytes of data from an I2C slave
 
-3. CLI commands {#SCORPION_BOARD_CLI_COMMANDS}
-==============================================
+3. CLI commands
+===============
 
-3.1 Buzzer {#SCORPION_BOARD_CLI_BUZZER}
----------------------------------------
+3.1 Buzzer
+----------
 
 To make the buzzer beep for 1 second (1000 milliseconds):
 
@@ -148,8 +146,8 @@ To make the buzzer beep for 250 ms at 2 kHz:
 
     >buzzer 250 2000
 
-3.2 LED {#SCORPION_BOARD_CLI_LED}
----------------------------------
+3.2 LED
+-------
 
 To switch the LED on:
 
@@ -159,8 +157,8 @@ To switch the LED off:
 
     >led off
 
-3.3 GPIO {#SCORPION_BOARD_CLI_GPIO}
------------------------------------
+3.3 GPIO
+--------
 
 GPIO pins can be specified as @<port>@<pin>, for example 'b5' refers to Port B 
 pin 5, or by breakout header number (0 to 4), for example '4' refers to GPIO 4.
@@ -205,8 +203,8 @@ To report input value of Port D pin 7:
     >gpio i d7
     1
 
-3.4 ADC {#SCORPION_BOARD_CLI_ADC}
----------------------------------
+3.4 ADC
+-------
 
 The board has 4 ADC channels. The input voltage range on ADC0 and ADC1 is 
 +0 mV to +3300 mV (1:1 divider). The input voltage range on ADC2 and ADC3 is 
@@ -306,8 +304,8 @@ Read register value:
 The chip identification register value for the BMP280 is 0x58. This confirms 
 that you are able to write and read from the I2C slave.
 
-3.6 SPI {#SCORPION_BOARD_CLI_SPI}
----------------------------------
+3.6 SPI
+-------
 
 An SPI slave device can also be connected to the breakout header. For this 
 example, let's experiment with the onboard AT45D DataFlash.
@@ -335,8 +333,8 @@ Take Chip Select high to end transaction:
 
     >spi cs hi
 
-3.7 UART {#SCORPION_BOARD_CLI_UART}
------------------------------------
+3.7 UART
+--------
 
 The ATmega328p has a single UART peripheral. The UART can be digitally connected
 to the USB-Serial converter, or to the breakout header via GPIO pin PD5 
@@ -363,12 +361,12 @@ after 2 seconds):
     OK
     >
 
-Use double quotes (") to write a string that includes spaces:
+Use double quotes (\") to write a string that includes spaces:
 
     >uart s 2000 "hello world"
 
-3.8 RTC {#SCORPION_BOARD_CLI_RTC}
----------------------------------
+3.8 RTC
+-------
 
 A software RTC has been implemented using the system clock. This means that the
 board will not remember its time and date when the board is reset or power 
@@ -383,8 +381,8 @@ Get the date and time:
     >rtc r
     18-06-18 22:48:15
 
-3.9 Serial Flash {#SCORPION_BOARD_CLI_SF}
------------------------------------------
+3.9 Serial Flash
+----------------
 
 Report Serial Flash Info:
 

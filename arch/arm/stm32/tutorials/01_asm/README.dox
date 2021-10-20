@@ -1,10 +1,8 @@
 01 Flashing an LED in assembler {#STM32_TUT01_ASM}
 ==================================================
 
-[TOC]
-
-1. Introduction {#STM32_TUT01_ASM_INTRO}
-========================================
+1. Introduction
+===============
 
 @tip_s
 KEEP CALM and DON'T PANIC :)
@@ -23,16 +21,16 @@ Reference(s):
 - *[1]* [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
 - *[2]* [STM32L0 Series Cortex M0+ programming manual](https://www.st.com/resource/en/programming_manual/dm00104451.pdf)
 
-2. Brief description {#STM32_TUT01_ASM_BRIEF}
-=============================================
+2. Brief description
+====================
 
 This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the 
-[PX-HER0 Board](@ref PICONOMIX_STM32_HERO_BOARD), the LED is wired to Port H pin 0.
+[PX-HER0 Board](@ref STM32_PX_HERO_BOARD), the LED is wired to Port H pin 0.
 PH0 must be configured as a digital output pin. Set PH0 high to enable the LED 
 and set PH0 low to disable the LED.
 
-3. Single step debug {#STM32_TUT01_ASM_DEBUG}
-=============================================
+3. Single step debug
+====================
 
 Go right ahead and start a debugging session! There's no better teacher than 
 single stepping through the code and observing the processor core and peripheral 
@@ -40,8 +38,8 @@ registers:
 
 ![](sci_debug_flashing_led_asm.png)
 
-4. Assembly instruction tips {#STM32_TUT01_ASM_TIPS}
-====================================================
+4. Assembly instruction tips
+============================
 
 If you need more info regarding an instruction, search for it in *[2]*. For 
 example, on line 121, the instruction `subs r0, #1` is used. Searching for 
@@ -74,8 +72,8 @@ instruction has been used. The ".w" means that the **wide** 32-bit version of
 the instruction has been used. Observe that the narrow version of the 
 instruction is encoded in two bytes of machine code: 0xe7 and 0xf6.
 
-5. Building the project with a Makefile and Linker script {#STM32_TUT01_ASM_BUILD}
-==================================================================================
+5. Building the project with a Makefile and Linker script
+=========================================================
 
 The project is built with an introductory Makefile to demonstrate that it's not 
 that hard to understand and use. For a gentle introduction to Make, see 
@@ -88,8 +86,8 @@ locations using the introductory linker script "stm32l072xb.ld".
 See *[1] "2.2 Memory organization"* (page 57) for more information.
 @tip_e
 
-6. Machine code {#STM32_TUT01_ASM_MACHINE_CODE}
-===============================================
+6. Machine code
+===============
 
 The final executable "flashing_led.bin" is only 108 bytes of machine code:
 
@@ -133,8 +131,8 @@ switching between ARM and Thumb instructions.
 It will result in a Hard Fault if the least significant bit is not set.
 @warn_e
 
-7. Peripheral access {#STM32_TUT01_ASM_PERIPHERALS}
-===================================================
+7. Peripheral access
+====================
 
 The communication interface with peripherals is memory mapped: the processor 
 core communicates with a peripheral by writing to or reading from specific 
@@ -181,8 +179,8 @@ to GPIOH_BSRR[0].
 The LED is disabled by setting PH0 low. This is acomplished by writing a 1
 to GPIOH_BSRR[16].
 
-8. Delay loop {#STM32_TUT01_ASM_DELAY}
-======================================
+8. Delay loop
+=============
 
 A ~500 ms delay is achieved by wasting a large number of instruction clock 
 cycles in an empty count down loop. The counter value can be calculated if the
@@ -190,8 +188,8 @@ processor core clock frequency is known as well as how many clock cycles each
 instruction takes. See [HERE](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0484c/CHDCICDF.html)
 for an instruction clock cycle summary.
 
-9. Stack {#STM32_TUT01_ASM_STACK}
-=================================
+9. Stack
+========
 
 The `Delay()` function also provides an opportunity to observe the registers and 
 stack when it is called using a "bl" instruction (branch link):
@@ -210,8 +208,8 @@ See *[2] "2.1.2 Stacks"* (page 12) and also *[2] "3.6 "Branch and control
 instructions"* (page 65) for more info.
 @tip_e
 
-10. Source code {#STM32_TUT01_ASM_SOURCE}
-=========================================
+10. Source code
+===============
 
 File(s):
 - arch/arm/stm32/tutorials/01_asm/flashing_led.S

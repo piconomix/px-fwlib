@@ -1,10 +1,8 @@
 Serial ("hello world") Example {#ARDUINO_UNO_BOARD_EXAMPLE_SERIAL}
 ==================================================================
   
-[TOC]
-
-Introduction {#ARDUINO_UNO_BOARD_DEMO_SERIAL_INTRO}
-===================================================
+Introduction
+============
 
 This is a serial port example for the Arduino Uno board. It is the embedded 
 equivalent of a "hello world" program on a PC to kick the tires and know that 
