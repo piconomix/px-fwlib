@@ -6,10 +6,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2018 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
- 
+
     Title:          px_adc.h : ADC peripheral driver
     Author(s):      Pieter Conradie
     Creation Date:  2018-11-04
@@ -21,7 +21,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_adc.h"
 #include "px_board.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -30,9 +30,9 @@ PX_LOG_NAME("px_adc");
 /// Internal data for each ADC handle
 typedef struct px_adc_per_s
 {
-    ADC_TypeDef * adc_base_adr; ///< ADC peripheral base register address    
-    px_adc_nr_t adc_nr;         ///< ADC peripheral number
-    uint8_t open_counter;       ///< Number of open handles referencing peripheral    
+    ADC_TypeDef * adc_base_adr;     ///< ADC peripheral base register address
+    px_adc_nr_t   adc_nr;           ///< ADC peripheral number
+    uint8_t       open_counter;     ///< Number of open handles referencing peripheral
 } px_adc_per_t;
 
 /* _____MACROS_______________________________________________________________ */
@@ -63,7 +63,6 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
         PX_LOG_E("Invalid peripheral");
         return;
     }
-
     // Set ADC clock source
     switch(PX_ADC_CFG_CLK)
     {
@@ -80,7 +79,6 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
         PX_LOG_E("Unsupported ADC clock");
         break;
     }
-
     // Enable regulator
     LL_ADC_EnableInternalRegulator(adc_base_adr);
     // Set ADC sampling time
@@ -91,23 +89,17 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
     if(PX_ADC_CFG_OVERSAMPLING != PX_ADC_CFG_OVERSAMPLING_NONE)
     {
         LL_ADC_SetOverSamplingScope(adc_base_adr, LL_ADC_OVS_GRP_REGULAR_CONTINUED);
-        LL_ADC_ConfigOverSamplingRatioShift(adc_base_adr, 
-                                            ((uint32_t)PX_ADC_CFG_OVERSAMPLING - 1) << ADC_CFGR2_OVSR_Pos,
+        LL_ADC_ConfigOverSamplingRatioShift(adc_base_adr,
+                                            ((uint32_t)PX_ADC_CFG_OVERSAMPLING - 1  ) << ADC_CFGR2_OVSR_Pos,
                                             ((uint32_t)PX_ADC_CFG_OVERSAMPLING_SHIFT) << ADC_CFGR2_OVSS_Pos);
     }
     // Calibrate ADC
     LL_ADC_StartCalibration(adc_base_adr);
-    while(LL_ADC_IsCalibrationOnGoing(adc_base_adr))
-    {
-        ;
-    }
+    while(LL_ADC_IsCalibrationOnGoing(adc_base_adr)) {;}
     // Enable peripheral
     LL_ADC_ClearFlag_ADRDY(adc_base_adr);
     LL_ADC_Enable(adc_base_adr);
-    while(LL_ADC_IsActiveFlag_ADRDY(adc_base_adr) == 0)
-    {
-        ;
-    }
+    while(LL_ADC_IsActiveFlag_ADRDY(adc_base_adr) == 0) {;}
 }
 
 
@@ -177,8 +169,7 @@ bool px_adc_open(px_adc_handle_t * handle,
     }
 #endif
     // Initialise peripheral
-    px_adc_init_peripheral(adc_per->adc_base_adr,
-                           adc_nr);
+    px_adc_init_peripheral(adc_per->adc_base_adr, adc_nr);
     // Point handle to peripheral
     handle->adc_per = adc_per;
     // Success
@@ -210,7 +201,7 @@ bool px_adc_close(px_adc_handle_t * handle)
     adc_per->open_counter--;
     // More open handles referencing peripheral?
     if(adc_per->open_counter != 0)
-    {        
+    {
         // Close handle
         handle->adc_per = NULL;
         // Success
@@ -218,16 +209,10 @@ bool px_adc_close(px_adc_handle_t * handle)
     }
     // Disable peripheral
     LL_ADC_Disable(adc_base_adr);
-    while(LL_ADC_IsDisableOngoing(adc_base_adr))
-    {
-        ;
-    }
+    while(LL_ADC_IsDisableOngoing(adc_base_adr)) {;}
     // Disable regulator
     LL_ADC_DisableInternalRegulator(adc_base_adr);
-    while(LL_ADC_IsInternalRegulatorEnabled(adc_base_adr))
-    {
-        ;
-    }
+    while(LL_ADC_IsInternalRegulatorEnabled(adc_base_adr)) {;}
     // Disable peripheral clock
     switch(handle->adc_per->adc_nr)
     {
@@ -239,7 +224,6 @@ bool px_adc_close(px_adc_handle_t * handle)
     default:
         break;
     }
-
     // Close handle
     handle->adc_per = NULL;
     // Success
@@ -272,11 +256,7 @@ uint16_t px_adc_sample(px_adc_handle_t * handle, px_adc_ch_t ch)
     // Start conversion
     LL_ADC_REG_StartConversion(adc_base_adr);
     // Wait for conversion to finish
-    while(LL_ADC_REG_IsConversionOngoing(adc_base_adr))
-    {
-        ;
-    }
-
+    while(LL_ADC_REG_IsConversionOngoing(adc_base_adr)) {;}
     // Read result
     data = LL_ADC_REG_ReadConversionData12(adc_base_adr);
 

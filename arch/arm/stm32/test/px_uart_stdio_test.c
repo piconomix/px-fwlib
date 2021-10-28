@@ -26,7 +26,7 @@ int main(void)
     px_uart_stdio_init(&px_uart_handle);
 
     printf("Starting counter...\n");
-    for(counter = 0; counter<8; counter++)
+    for(counter = 0; counter < 8; counter++)
     {
         printf("Counter = %u\n", counter);
     }

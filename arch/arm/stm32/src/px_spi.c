@@ -21,7 +21,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_spi.h"
 #include "px_board.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -46,7 +46,6 @@ typedef struct px_spi_per_s
 #if PX_SPI_CFG_SPI1_EN
 static px_spi_per_t px_spi_per_1;
 #endif
-
 #if PX_SPI_CFG_SPI2_EN
 static px_spi_per_t px_spi_per_2;
 #endif
@@ -226,23 +225,18 @@ bool px_spi_open(px_spi_handle_t * handle,
     spi_cr1_val |= SPI_CR1_SSM | SPI_CR1_SSI;
     // Save value for SPI Control Register 1 (SPI_CR1)
     handle->spi_cr1_val = spi_cr1_val;
-
     // Save Chip Select GPIO ID
     handle->cs_id = cs_id;
     // Set default Master Out dummy byte
     handle->mo_dummy_byte = 0x00;
-
     // Peripheral already initialized?
     if(spi_per->open_counter == 0)
     {
         // No. Initialise peripheral
-        px_spi_init_peripheral(spi_per->spi_base_adr,
-                               spi_nr,
-                               spi_cr1_val);
+        px_spi_init_peripheral(spi_per->spi_base_adr, spi_nr, spi_cr1_val);
     }
     // Point handle to peripheral
     handle->spi_per = spi_per;
-
     // Success
     PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
@@ -272,7 +266,6 @@ bool px_spi_open2(px_spi_handle_t * handle,
         PX_LOG_W("Handle already open?");
     }
 #endif
-
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -300,7 +293,6 @@ bool px_spi_open2(px_spi_handle_t * handle,
         return false;
     }
 #endif
-
     // Set SPI data order (MSB or LSB first)
     if(data_order == PX_SPI_DATA_ORDER_LSB)
     {
@@ -316,23 +308,18 @@ bool px_spi_open2(px_spi_handle_t * handle,
     spi_cr1_val |= SPI_CR1_SSM | SPI_CR1_SSI;
     // Save value for SPI Control Register 1 (SPI_CR1)
     handle->spi_cr1_val = spi_cr1_val;
-
     // Save Chip Select GPIO ID
     handle->cs_id = cs_id;
     // Save Master Out dummy byte
     handle->mo_dummy_byte = mo_dummy_byte;
-
     // Peripheral already initialized?
     if(spi_per->open_counter == 0)
     {
         // No. Initialise peripheral
-        px_spi_init_peripheral(spi_per->spi_base_adr,
-                               spi_nr,
-                               spi_cr1_val);
+        px_spi_init_peripheral(spi_per->spi_base_adr, spi_nr, spi_cr1_val);
     }
     // Point handle to peripheral
     handle->spi_per = spi_per;
-
     // Success
     PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
@@ -390,7 +377,6 @@ bool px_spi_close(px_spi_handle_t * handle)
     }
     // Close handle
     handle->spi_per = NULL;
-
     // Success
     return true;
 }
@@ -415,10 +401,9 @@ void px_spi_wr(px_spi_handle_t * handle,
         return;
     }
 #endif
-
     // Set pointer to peripheral
     spi_per = handle->spi_per;
-
+    // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
         // Take Chip Select Low
@@ -432,32 +417,24 @@ void px_spi_wr(px_spi_handle_t * handle,
         PX_LOG_ASSERT(spi_base_adr != NULL);
         // Update communication parameters (if different)
         px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
-
         // Configure and enable DMA TX channel
         spi_per->dma_tx_base_adr->CMAR   = (uint32_t)data_wr_u8;
         spi_per->dma_tx_base_adr->CNDTR  = nr_of_bytes;
         spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
         // Enable DMA request for TX
         LL_SPI_EnableDMAReq_TX(spi_base_adr);
-
         // Block until TX DMA transfer is complete
         switch(spi_per->spi_nr)
         {
     #if PX_SPI_CFG_SPI1_EN
         case PX_SPI_NR_1:
-            while(!LL_DMA_IsActiveFlag_TC3(DMA1))
-            {
-                ;
-            }
+            while(!LL_DMA_IsActiveFlag_TC3(DMA1)) {;}
             LL_DMA_ClearFlag_TC3(DMA1);
             break;
     #endif
     #if PX_SPI_CFG_SPI2_EN
         case PX_SPI_NR_2:
-            while(!LL_DMA_IsActiveFlag_TC5(DMA1))
-            {
-                ;
-            }
+            while(!LL_DMA_IsActiveFlag_TC5(DMA1)) {;}
             LL_DMA_ClearFlag_TC5(DMA1);
             break;
     #endif
@@ -466,23 +443,16 @@ void px_spi_wr(px_spi_handle_t * handle,
             break;
         }
         // Wait until SPI transmit of last byte is complete
-        while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr))
-        {
-            ;
-        }
-        while(LL_SPI_IsActiveFlag_BSY(spi_base_adr))
-        {
-            ;
-        }
+        while(!LL_SPI_IsActiveFlag_TXE(spi_base_adr)) {;}
+        while(LL_SPI_IsActiveFlag_BSY(spi_base_adr)) {;}
         // Clear data overrun
         LL_SPI_ClearFlag_OVR(spi_base_adr);
-
         // Disable DMA TX channel
         spi_per->dma_tx_base_adr->CCR &= ~DMA_CCR_EN;
         // Disable DMA request for TX
         spi_base_adr->CR2 = 0;
     }
-
+    // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
         // Take Chip Select High
@@ -510,10 +480,9 @@ void px_spi_rd(px_spi_handle_t * handle,
         return;
     }
 #endif
-
     // Set pointer to peripheral
     spi_per = handle->spi_per;
-
+    // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
         // Take Chip Select Low
@@ -527,7 +496,6 @@ void px_spi_rd(px_spi_handle_t * handle,
         PX_LOG_ASSERT(spi_base_adr != NULL);
         // Update communication parameters (if different)
         px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
-
         // Enable DMA request for RX
         LL_SPI_EnableDMAReq_RX(spi_base_adr);
         // Configure and enable DMA RX channel
@@ -541,25 +509,18 @@ void px_spi_rd(px_spi_handle_t * handle,
         spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
         // Enable DMA request for TX
         LL_SPI_EnableDMAReq_TX(spi_base_adr);
-
         // Block until RX DMA transfer is complete
         switch(spi_per->spi_nr)
         {
     #if PX_SPI_CFG_SPI1_EN
         case PX_SPI_NR_1:
-            while(!LL_DMA_IsActiveFlag_TC2(DMA1))
-            {
-                ;
-            }
+            while(!LL_DMA_IsActiveFlag_TC2(DMA1)) {;}
             LL_DMA_ClearFlag_TC2(DMA1);
             break;
     #endif
     #if PX_SPI_CFG_SPI2_EN
         case PX_SPI_NR_2:
-            while(!LL_DMA_IsActiveFlag_TC4(DMA1))
-            {
-                ;
-            }
+            while(!LL_DMA_IsActiveFlag_TC4(DMA1)) {;}
             LL_DMA_ClearFlag_TC4(DMA1);
             break;
     #endif
@@ -576,7 +537,7 @@ void px_spi_rd(px_spi_handle_t * handle,
         // Disable DMA request for RX and TX
         spi_base_adr->CR2 = 0;
     }
-
+    // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
         // Take Chip Select High
@@ -606,16 +567,14 @@ void px_spi_xc(px_spi_handle_t * handle,
         return;
     }
 #endif
-
     // Set pointer to peripheral
     spi_per = handle->spi_per;
-
+    // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
         // Take Chip Select Low
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
-
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
     PX_LOG_ASSERT(spi_base_adr != NULL);
@@ -636,25 +595,18 @@ void px_spi_xc(px_spi_handle_t * handle,
         spi_per->dma_tx_base_adr->CCR   |= DMA_CCR_EN;
         // Enable DMA request for TX
         LL_SPI_EnableDMAReq_TX(spi_base_adr);
-
         // Block until RX DMA transfer is complete
         switch(spi_per->spi_nr)
         {
     #if PX_SPI_CFG_SPI1_EN
         case PX_SPI_NR_1:
-            while(!LL_DMA_IsActiveFlag_TC2(DMA1))
-            {
-                ;
-            }
+            while(!LL_DMA_IsActiveFlag_TC2(DMA1)) {;}
             LL_DMA_ClearFlag_TC2(DMA1);
             break;
     #endif
     #if PX_SPI_CFG_SPI2_EN
         case PX_SPI_NR_2:
-            while(!LL_DMA_IsActiveFlag_TC4(DMA1))
-            {
-                ;
-            }
+            while(!LL_DMA_IsActiveFlag_TC4(DMA1)) {;}
             LL_DMA_ClearFlag_TC4(DMA1);
             break;
     #endif
@@ -662,7 +614,6 @@ void px_spi_xc(px_spi_handle_t * handle,
             PX_LOG_E("Invalid peripheral");
             break;
         }
-
         // Disable DMA RX channel
         spi_per->dma_rx_base_adr->CCR &= ~DMA_CCR_EN;
         // Disable DMA TX channel
@@ -670,7 +621,7 @@ void px_spi_xc(px_spi_handle_t * handle,
         // Disable DMA request for RX and TX
         spi_base_adr->CR2 = 0;
     }
-
+    // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
         // Take Chip Select High
@@ -696,10 +647,8 @@ void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
         return;
     }
 #endif
-
     // Set pointer to peripheral
     spi_per = handle->spi_per;
-
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
     PX_LOG_ASSERT(spi_base_adr != NULL);
@@ -725,7 +674,6 @@ px_spi_baud_t px_spi_util_baud_hz_to_clk_div(uint32_t baud_hz)
     // Start with a divisor of 2
     actual_baud_hz = PX_BOARD_PER_CLK_HZ >> 1;
     baud           = PX_SPI_BAUD_CLK_DIV_2;
-
     // Closest baud equal or less than specified baud found?
     while(actual_baud_hz > baud_hz)
     {

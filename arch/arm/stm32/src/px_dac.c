@@ -21,7 +21,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_dac.h"
 #include "px_board.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -65,7 +65,6 @@ static void px_dac_init_peripheral(DAC_TypeDef * dac_base_adr,
         PX_LOG_E("Invalid peripheral");
         return;
     }
-
     // Enable peripheral
 #if PX_DAC_CFG_DAC1_CH1_EN
     dac_channel |= LL_DAC_CHANNEL_1;
@@ -143,8 +142,7 @@ bool px_dac_open(px_dac_handle_t * handle,
     }
 #endif
     // Initialise peripheral
-    px_dac_init_peripheral(dac_per->dac_base_adr,
-                           dac_nr);
+    px_dac_init_peripheral(dac_per->dac_base_adr, dac_nr);
     // Point handle to peripheral
     handle->dac_per = dac_per;
     // Success

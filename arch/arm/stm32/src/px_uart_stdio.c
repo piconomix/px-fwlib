@@ -48,7 +48,6 @@ FILE __stdin;
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 #ifdef PX_COMPILER_GCC_ARM
-
 int _write(int file, char * ptr, int len)
 {
     int i;
@@ -70,11 +69,9 @@ int _read(int file, char * ptr, int len)
     }
     return len;  
 }
-
-#endif // #ifdef PX_COMPILER_GCC_ARM
+#endif
 
 #ifdef PX_COMPILER_ARM_CC
-
 int fputc(int ch, FILE * f)
 {
     px_uart_stdio_put_char(ch);
@@ -91,8 +88,7 @@ void _sys_exit(int return_code)
 {
     while(1);
 }
-
-#endif // #ifdef PX_COMPILER_ARM_CC
+#endif
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_uart_stdio_init(px_uart_handle_t * handle)
@@ -115,7 +111,6 @@ int px_uart_stdio_put_char(char data)
         // Prepend a carriage return
         px_uart_put_char(px_uart_stdio_handle, '\r');
     }
-
     // Send character over UART
     px_uart_put_char(px_uart_stdio_handle, (uint8_t)data);
 

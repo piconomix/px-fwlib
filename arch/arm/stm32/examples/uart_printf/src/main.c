@@ -55,6 +55,7 @@ int main(void)
     // Send message
     printf("Hello World!\n");
 
+    // Repeat forever
     for(;;)
     {
         ;

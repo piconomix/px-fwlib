@@ -20,7 +20,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_exti.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 
 #include "px_log.h"
 PX_LOG_NAME("px_exti")
@@ -102,7 +102,6 @@ void EXTI0_1_IRQHandler(void)
         if(px_exti_1_handler) (*px_exti_1_handler)();
     }
 #endif
-
 }
 #endif
 
@@ -124,7 +123,6 @@ void EXTI2_3_IRQHandler(void)
         if(px_exti_3_handler) (*px_exti_3_handler)();
     }
 #endif
-
 }
 #endif
 
@@ -229,7 +227,6 @@ void EXTI4_15_IRQHandler(void)
         if(px_exti_15_handler) (*px_exti_15_handler)();
     }
 #endif
-
 }
 #endif
 

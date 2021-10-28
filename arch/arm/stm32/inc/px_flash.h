@@ -38,7 +38,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 
 #ifdef __cplusplus
 extern "C" {

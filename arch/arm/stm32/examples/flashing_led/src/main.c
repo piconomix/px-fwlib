@@ -42,6 +42,7 @@ int main(void)
     // LED on
     PX_USR_LED_ON();
 
+    // Repeat forefver
     for(;;)
     {
         // Wait 1/2 second

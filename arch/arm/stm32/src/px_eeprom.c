@@ -20,7 +20,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_eeprom.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -79,10 +79,7 @@ PX_ATTR_RAMFUNC void px_eeprom_erase_word(const uint32_t address)
     // Write 32-bit zero value to specified address
     *(uint32_t *)address = (uint32_t)0;
     // Wait until erase has finished (not busy)
-    while ((FLASH->SR & FLASH_SR_BSY) != 0)
-    {
-        continue;
-    }
+    while((FLASH->SR & FLASH_SR_BSY) != 0) {;}
     // EOP (End Of Programming) Flag set?
     if((FLASH->SR & FLASH_SR_EOP) != 0)
     {

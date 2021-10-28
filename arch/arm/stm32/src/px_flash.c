@@ -20,7 +20,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_flash.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -99,10 +99,7 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
     // Write 32-bit value in page to start erase sequence
     *(uint32_t *)address = (uint32_t)0;
     // Wait until erase has finished (not busy)
-    while ((FLASH->SR & FLASH_SR_BSY) != 0)
-    {
-        continue;
-    }
+    while ((FLASH->SR & FLASH_SR_BSY) != 0) {;}
     // EOP (End Of Programming) Flag set?
     if((FLASH->SR & FLASH_SR_EOP) != 0)
     {
@@ -134,10 +131,7 @@ PX_ATTR_RAMFUNC void px_flash_wr_half_page(const uint32_t address, const uint32_
         *(uint32_t*)(address) = *data++;
     }
     // Wait until programming has finished (not busy)
-    while ((FLASH->SR & FLASH_SR_BSY) != 0)
-    {
-        continue;
-    }
+    while ((FLASH->SR & FLASH_SR_BSY) != 0) {;}
     // EOP (End Of Programming) Flag set?
     if((FLASH->SR & FLASH_SR_EOP) != 0)
     {
@@ -174,10 +168,7 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
 	// Write Flash Control Register
 	FLASH->CR  = flash_cr;        
     // Wait until erase has finished (not busy)
-    while ((FLASH->SR & FLASH_SR_BSY1) != 0)
-    {
-        continue;
-    }
+    while ((FLASH->SR & FLASH_SR_BSY1) != 0) {;}
     // Disable page erase
     FLASH->CR &= ~FLASH_CR_PER;
 
@@ -203,10 +194,7 @@ PX_ATTR_RAMFUNC void px_flash_wr_row(const uint32_t address, const uint32_t * da
         *dest++ = *data++;
     }
     // Wait until programming has finished (not busy)
-    while ((FLASH->SR & FLASH_SR_BSY1) != 0)
-    {
-        continue;
-    }
+    while ((FLASH->SR & FLASH_SR_BSY1) != 0) {;}
     // EOP (End Of Programming) Flag is set?
     while ((FLASH->SR & FLASH_SR_EOP) != 0)
     {

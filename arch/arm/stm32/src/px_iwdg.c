@@ -20,7 +20,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_iwdg.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -56,10 +56,7 @@ void px_iwdg_init(px_iwdg_prescaler_t prescaler, uint16_t reload, uint16_t windo
         LL_IWDG_SetWindow(IWDG, window);
     }
     // Wait until all values have been updated
-    while(!LL_IWDG_IsReady(IWDG))
-    {
-        ;
-    }
+    while(!LL_IWDG_IsReady(IWDG)) {;}
 #if 0
     // Freeze watchdog when processor is halted by debugger
     LL_DBGMCU_APB1_GRP1_FreezePeriph(LL_DBGMCU_APB1_GRP1_IWDG_STOP);

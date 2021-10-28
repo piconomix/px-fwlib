@@ -28,7 +28,7 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
-// Port A defaults
+// Port H defaults
 #ifndef PX_GPIO_H0
 #define PX_GPIO_H0 PX_GPIO(H, 0,   PX_GPIO_MODE_ANA, PX_GPIO_OTYPE_NA, PX_GPIO_OSPEED_NA, PX_GPIO_PULL_NO, PX_GPIO_OUT_INIT_NA, PX_GPIO_AF_NA)
 #endif

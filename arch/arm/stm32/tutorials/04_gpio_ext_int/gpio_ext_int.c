@@ -65,7 +65,6 @@ int main(void)
         LL_GPIO_SetOutputPin(GPIOH, LL_GPIO_PIN_0);
         delay();
         LL_GPIO_ResetOutputPin(GPIOH, LL_GPIO_PIN_0);
-
         // Put core into sleep mode until an interrupt occurs
         // (WFI = Wait For Interrupt)
         __WFI();

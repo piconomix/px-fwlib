@@ -21,7 +21,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_rtc.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -108,10 +108,7 @@ void px_rtc_init(void)
     LL_RTC_DisableWriteProtection(RTC);
     // Enter initialization mode
     LL_RTC_EnableInitMode(RTC);
-    while(!LL_RTC_IsActiveFlag_INIT(RTC))
-    {
-        ;
-    }
+    while(!LL_RTC_IsActiveFlag_INIT(RTC)) {;}
     // Set asynchronous prescaler
     LL_RTC_SetAsynchPrescaler(RTC, 127);
     // Set synchronous prescaler
@@ -146,10 +143,7 @@ void px_rtc_date_time_wr(const px_rtc_date_time_t * date_time)
     LL_RTC_DisableWriteProtection(RTC);
     // Enter initialization mode
     LL_RTC_EnableInitMode(RTC);
-    while(!LL_RTC_IsActiveFlag_INIT(RTC))
-    {
-        ;
-    }
+    while(!LL_RTC_IsActiveFlag_INIT(RTC)) {;}
     // Set new time
     RTC->TR =   (((uint32_t)px_rtc_bin_to_bcd(date_time->hour)) << RTC_TR_HU_Pos )
               | (((uint32_t)px_rtc_bin_to_bcd(date_time->min )) << RTC_TR_MNU_Pos)
@@ -168,7 +162,7 @@ void px_rtc_date_time_rd(px_rtc_date_time_t * date_time)
 {
     uint32_t rtc_dr;
     uint32_t rtc_tr;
-    uint32_t rtc_tr_old = 0xffffffff;    
+    uint32_t rtc_tr_old = 0xffffffff;
 
     // Read time & date twice until both readings of time match
     while(true)
@@ -204,15 +198,11 @@ void px_rtc_alarm_a_enable(const px_rtc_date_time_t * alarm,
     {
         return;
     }
-    
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Alarm
     LL_RTC_ALMA_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_ALRAW(RTC))
-    {
-        ;
-    }
+    while(!LL_RTC_IsActiveFlag_ALRAW(RTC)) {;}
     // Set alarm and mask
     rtc_alrmar = RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1;
     if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_SEC)
@@ -259,10 +249,7 @@ void px_rtc_alarm_a_disable(void)
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Alarm
     LL_RTC_ALMA_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_ALRAW(RTC))
-    {
-        ;
-    }
+    while(!LL_RTC_IsActiveFlag_ALRAW(RTC)) {;}
     // Disable Alarm A interrupt
     LL_RTC_DisableIT_ALRA(RTC);
     // Enable write protection for RTC registers
@@ -289,15 +276,11 @@ void px_rtc_alarm_b_enable(const px_rtc_date_time_t * alarm,
     {
         return;
     }
-    
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Alarm
     LL_RTC_ALMB_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_ALRBW(RTC))
-    {
-        ;
-    }
+    while(!LL_RTC_IsActiveFlag_ALRBW(RTC)) {;}
     // Set alarm and mask
     rtc_alrmbr = RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1;
     if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_SEC)
@@ -344,10 +327,7 @@ void px_rtc_alarm_b_disable(void)
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Alarm
     LL_RTC_ALMB_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_ALRBW(RTC))
-    {
-        ;
-    }
+    while(!LL_RTC_IsActiveFlag_ALRBW(RTC)) {;}
     // Disable Alarm B interrupt
     LL_RTC_DisableIT_ALRB(RTC);
     // Enable write protection for RTC registers
@@ -371,10 +351,7 @@ void px_rtc_wakeup_tmr_enable(px_rtc_wakeup_presc_clk_t wakeup_presc_clk,
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Wakeup Timer
     LL_RTC_WAKEUP_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_WUTW(RTC))
-    {
-        ;
-    }
+    while(!LL_RTC_IsActiveFlag_WUTW(RTC)) {;}
     // Set Wakeup Timer clock prescaler
     LL_RTC_WAKEUP_SetClock(RTC, wakeup_presc_clk);
     // Set auto reload value
@@ -402,10 +379,7 @@ void px_rtc_wakeup_tmr_disable(void)
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Wakeup Timer
     LL_RTC_WAKEUP_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_WUTW(RTC))
-    {
-        ;
-    }
+    while(!LL_RTC_IsActiveFlag_WUTW(RTC)) {;}
     // Disable Wakeup Timer interrupt
     LL_RTC_DisableIT_WUT(RTC);
     // Enable write protection for RTC registers

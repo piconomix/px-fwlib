@@ -43,7 +43,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defines.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,64 +54,64 @@ extern "C" {
 /// GPIO mode selection; See GPIOx_MODER register
 typedef enum
 {
-    PX_GPIO_MODE_IN         = 0,    ///< Set pin mode to input
-    PX_GPIO_MODE_OUT        = 1,    ///< Set pin mode to output
-    PX_GPIO_MODE_AF         = 2,    ///< Set pin mode to alternative function
-    PX_GPIO_MODE_ANA        = 3,    ///< Set pin mode to analog
-    PX_GPIO_MODE_DEF        = 3,    ///< Set pin mode to default (analog)
-    PX_GPIO_MODE_BIT_MASK   = 0x3,  ///< Pin mode bit mask
+    PX_GPIO_MODE_IN         = 0,        ///< Set pin mode to input
+    PX_GPIO_MODE_OUT        = 1,        ///< Set pin mode to output
+    PX_GPIO_MODE_AF         = 2,        ///< Set pin mode to alternative function
+    PX_GPIO_MODE_ANA        = 3,        ///< Set pin mode to analog
+    PX_GPIO_MODE_DEF        = 3,        ///< Set pin mode to default (analog)
+    PX_GPIO_MODE_BIT_MASK   = 0x3,      ///< Pin mode bit mask
 } px_gpio_mode_t;
 
 /// GPIO output type selection; See GPIOx_OTYPER register
 typedef enum
 {
-    PX_GPIO_OTYPE_NA        = 0,    ///< Output type is not applicable (pin mode is input or analog)
-    PX_GPIO_OTYPE_PP        = 0,    ///< Set output type to push-pull
-    PX_GPIO_OTYPE_OD        = 1,    ///< Set output type to open-drain
-    PX_GPIO_OTYPE_BIT_MASK  = 0x1,  ///< Output type bit mask
+    PX_GPIO_OTYPE_NA        = 0,        ///< Output type is not applicable (pin mode is input or analog)
+    PX_GPIO_OTYPE_PP        = 0,        ///< Set output type to push-pull
+    PX_GPIO_OTYPE_OD        = 1,        ///< Set output type to open-drain
+    PX_GPIO_OTYPE_BIT_MASK  = 0x1,      ///< Output type bit mask
 } px_gpio_otype_t;
 
 /// GPIO output speed selection; See GPIOx_OSPEEDR register
 typedef enum
 {
-    PX_GPIO_OSPEED_NA       = 0,    ///< Output speed is not applicable (pin mode is input or analog)
-    PX_GPIO_OSPEED_LO       = 0,    ///< Set output speed to low
-    PX_GPIO_OSPEED_MD       = 1,    ///< Set output speed to medium
-    PX_GPIO_OSPEED_HI       = 2,    ///< Set output speed to high
-    PX_GPIO_OSPEED_VH       = 3,    ///< Set output speed to very high
-    PX_GPIO_OSPEED_BIT_MASK = 0x3,  ///< Output speed bit mask
+    PX_GPIO_OSPEED_NA       = 0,        ///< Output speed is not applicable (pin mode is input or analog)
+    PX_GPIO_OSPEED_LO       = 0,        ///< Set output speed to low
+    PX_GPIO_OSPEED_MD       = 1,        ///< Set output speed to medium
+    PX_GPIO_OSPEED_HI       = 2,        ///< Set output speed to high
+    PX_GPIO_OSPEED_VH       = 3,        ///< Set output speed to very high
+    PX_GPIO_OSPEED_BIT_MASK = 0x3,      ///< Output speed bit mask
 } px_gpio_ospeed_t;
 
 /// GPIO pull-up / pull-down selection; See GPIOx_PUPDR register
 typedef enum
 {
-    PX_GPIO_PULL_NO         = 0,    ///< No pull-up / pull-down
-    PX_GPIO_PULL_UP         = 1,    ///< Enable pull-up
-    PX_GPIO_PULL_DN         = 2,    ///< Enable pull-down
-    PX_GPIO_PULL_BIT_MASK   = 0x3,  ///< Pull-up / Pull-down bit mask
+    PX_GPIO_PULL_NO         = 0,        ///< No pull-up / pull-down
+    PX_GPIO_PULL_UP         = 1,        ///< Enable pull-up
+    PX_GPIO_PULL_DN         = 2,        ///< Enable pull-down
+    PX_GPIO_PULL_BIT_MASK   = 0x3,      ///< Pull-up / Pull-down bit mask
 } px_gpio_pull_t;
 
 /// GPIO initial output selection; See GPIOx_ODR register
 typedef enum
 {
-    PX_GPIO_OUT_INIT_NA     = 0,    ///< Initialize output is not applicable (pin mode is input or analog)
-    PX_GPIO_OUT_INIT_LO     = 0,    ///< Initialize output pin to low (0)
-    PX_GPIO_OUT_INIT_HI     = 1,    ///< Initialize output pin to high (1)
+    PX_GPIO_OUT_INIT_NA     = 0,        ///< Initialize output is not applicable (pin mode is input or analog)
+    PX_GPIO_OUT_INIT_LO     = 0,        ///< Initialize output pin to low (0)
+    PX_GPIO_OUT_INIT_HI     = 1,        ///< Initialize output pin to high (1)
 } px_gpio_out_init_t;
 
 /// GPIO alternate function selection; See GPIOx_AFRL and GPIOx_AFRH register
 typedef enum
 {
-    PX_GPIO_AF_NA           = 0,    ///< Alternate Function is not applicable (pin mode is not alternate function)
-    PX_GPIO_AF_0            = 0,    ///< Alternate Function 0
-    PX_GPIO_AF_1            = 1,    ///< Alternate Function 1
-    PX_GPIO_AF_2            = 2,    ///< Alternate Function 2
-    PX_GPIO_AF_3            = 3,    ///< Alternate Function 3
-    PX_GPIO_AF_4            = 4,    ///< Alternate Function 4
-    PX_GPIO_AF_5            = 5,    ///< Alternate Function 5
-    PX_GPIO_AF_6            = 6,    ///< Alternate Function 6
-    PX_GPIO_AF_7            = 7,    ///< Alternate Function 7
-    PX_GPIO_ALT_FN_BIT_MASK = 0xf,  ///< Alternate Function bit mask
+    PX_GPIO_AF_NA           = 0,        ///< Alternate Function is not applicable (pin mode is not alternate function)
+    PX_GPIO_AF_0            = 0,        ///< Alternate Function 0
+    PX_GPIO_AF_1            = 1,        ///< Alternate Function 1
+    PX_GPIO_AF_2            = 2,        ///< Alternate Function 2
+    PX_GPIO_AF_3            = 3,        ///< Alternate Function 3
+    PX_GPIO_AF_4            = 4,        ///< Alternate Function 4
+    PX_GPIO_AF_5            = 5,        ///< Alternate Function 5
+    PX_GPIO_AF_6            = 6,        ///< Alternate Function 6
+    PX_GPIO_AF_7            = 7,        ///< Alternate Function 7
+    PX_GPIO_ALT_FN_BIT_MASK = 0xf,      ///< Alternate Function bit mask
 } px_gpio_af_t;
 
 /// GPIO pin handle definition
@@ -214,7 +214,7 @@ typedef struct
                 LL_GPIO_SetAFPin_8_15(gpio_base_reg, (1 << pin), alt_fn); \
             } \
         } \
-        LL_GPIO_SetPinMode(gpio_base_reg, (1 << pin), mode);         \
+        LL_GPIO_SetPinMode(gpio_base_reg, (1 << pin), mode); \
     } \
     while(0)
 
@@ -512,9 +512,7 @@ static inline void px_gpio_mode_set(const px_gpio_handle_t * gpio,
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 
-    LL_GPIO_SetPinMode(gpio->gpio_base_reg, 
-                       pin_bit_mask,
-                       mode);
+    LL_GPIO_SetPinMode(gpio->gpio_base_reg, pin_bit_mask, mode);
 }
 
 /// Calculate bit mask used to initialise GPIOx_MODER register
@@ -559,7 +557,7 @@ static inline uint32_t px_gpio_reg_afrh_init(const px_gpio_handle_t * gpio)
 {
     if(gpio->pin >= 8)
     {
-        return (((uint32_t)gpio->pull) << ((gpio->pin - 8)* 4));
+        return (((uint32_t)gpio->pull) << ((gpio->pin - 8) * 4));
     }
     else
     {

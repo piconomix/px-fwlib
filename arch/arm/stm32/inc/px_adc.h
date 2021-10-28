@@ -209,7 +209,7 @@ uint16_t px_adc_sample(px_adc_handle_t * handle,
 
 /* _____MACROS_______________________________________________________________ */
 /// Convert ADC channel number into bit mask
-#define PX_ADC_CH_TO_BITMASK(ch)    ((uint32_t)1<<(ch))
+#define PX_ADC_CH_TO_BITMASK(ch)    ((uint32_t)1 << (ch))
 
 #ifdef __cplusplus
 }

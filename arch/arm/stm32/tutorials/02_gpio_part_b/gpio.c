@@ -69,7 +69,6 @@ int main(void)
         // Set PH0 output to enable LED
         gpioh->bsrr = (1 << 0);
         delay();
-
         // Clear PH0 output to disable LED
         gpioh->bsrr  = (1 << 16);
         delay();

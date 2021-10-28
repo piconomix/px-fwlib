@@ -21,7 +21,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_i2c.h"
 #include "px_board.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -40,7 +40,6 @@ typedef struct px_i2c_per_s
 #if PX_I2C_CFG_I2C1_EN
 static px_i2c_per_t px_i2c_per_1;
 #endif
-
 #if PX_I2C_CFG_I2C2_EN
 static px_i2c_per_t px_i2c_per_2;
 #endif
@@ -66,17 +65,14 @@ static bool px_i2c_init_peripheral(I2C_TypeDef * i2c_base_adr,
         PX_LOG_E("Invalid peripheral");
         return false;
     }
-
     // Set Control register 1
     i2c_base_adr->CR1 = 0;
     // Set Control register 2
     i2c_base_adr->CR2 = 0;
     // Set Timing register
     LL_I2C_SetTiming(i2c_base_adr, PX_I2C_CFG_TIMINGR);
-
     // Enable I2C
     LL_I2C_Enable(i2c_base_adr);
-
     // Success
     return true;
 }
@@ -137,7 +133,6 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         PX_LOG_W("Handle already open?");
     }
 #endif
-
     // Handle not initialised
     handle->i2c_per = NULL;
     // Set pointer to peripheral data
@@ -165,7 +160,6 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         return false;
     }
 #endif
-
     // Save 7-bit slave address
     handle->slave_adr = slave_adr;
     // Peripheral closed?
@@ -202,7 +196,6 @@ bool px_i2c_close(px_i2c_handle_t * handle)
         return false;
     }
 #endif
-
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Get I2C peripheral base register address
@@ -318,16 +311,10 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
         if(flags & PX_I2C_FLAG_START)
         {
             // Wait until I2C bus is busy
-            while(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-            {
-                ;
-            }
+            while(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
         }
         // Wait until START condition has ended
-        while(i2c_base_adr->CR2 & I2C_CR2_START)
-        {
-            ;
-        }
+        while(i2c_base_adr->CR2 & I2C_CR2_START) {;}
         // Received NAK?
         if(LL_I2C_IsActiveFlag_NACK(i2c_base_adr))
         {
@@ -336,10 +323,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             // I2C slave not present. STOP condition automatically generated
             PX_LOG_W("I2C Slave did not ACK SLA+W");
             // Wait until bus is free
-            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-            {
-                ;
-            }
+            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
             return false;
         }
     }
@@ -367,10 +351,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             // I2C Bus Error
             PX_LOG_E("I2C Bus Error");
             // Wait until bus is free
-            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-            {
-                ;
-            }
+            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
             return false;
         }
         // Received NAK?
@@ -381,10 +362,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             // I2C slave NACKed byte. STOP condition automatically generated
             PX_LOG_E("I2C Slave did not ACK byte");
             // Wait until bus is free
-            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-            {
-                ;
-            }
+            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
             return false;
         }
         // Transmit buffer ready to accept next byte?
@@ -433,17 +411,11 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
         // Generate STOP condition
         LL_I2C_GenerateStopCondition(i2c_base_adr);
         // Wait until stop condition has ended
-        while(!LL_I2C_IsActiveFlag_STOP(i2c_base_adr))
-        {
-            ;
-        }
+        while(!LL_I2C_IsActiveFlag_STOP(i2c_base_adr)) {;}
         // Clear flag
         LL_I2C_ClearFlag_STOP(i2c_base_adr);
         // Wait until bus is free
-        while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-        {
-            ;
-        }
+        while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
     }
     // Success
     return true;
@@ -495,7 +467,6 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
     {
         LL_I2C_SetTransferSize(i2c_base_adr, 0);
     }
-
     // Generate START or REPEATED START condition?
     if(  (flags & PX_I2C_FLAG_START) || (flags & PX_I2C_FLAG_REP_START)  )
     {
@@ -525,16 +496,10 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
         LL_I2C_GenerateStartCondition(i2c_base_adr);
         if(flags & PX_I2C_FLAG_START)
         {
-            while(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-            {
-                ;
-            }
+            while(!LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
         }
         // Wait until START condition has ended
-        while(i2c_base_adr->CR2 & I2C_CR2_START)
-        {
-            ;
-        }
+        while(i2c_base_adr->CR2 & I2C_CR2_START) {;}
         // Received NAK?
         if(LL_I2C_IsActiveFlag_NACK(i2c_base_adr))
         {
@@ -543,14 +508,10 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             // I2C slave not present. STOP condition automatically generated
             PX_LOG_W("I2C Slave did not ACK SLA+R");
             // Wait until bus is free
-            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-            {
-                ;
-            }
+            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
             return false;
         }
     }
-
     // Read byte(s)
     while(true)
     {
@@ -586,10 +547,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             // Received NACKF, but dit not expect it
             PX_LOG_E("Received NACKF");
             // Wait until bus is free
-            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-            {
-                ;
-            }
+            while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
             return false;
         }
         // Received TC?
@@ -622,7 +580,6 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             LL_I2C_SetTransferSize(i2c_base_adr, 1);
         }        
     }
-
     // Generate STOP condition?
     if(flags & PX_I2C_FLAG_STOP)
     {
@@ -635,19 +592,12 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
         // Generate STOP condition
         LL_I2C_GenerateStopCondition(i2c_base_adr);
         // Wait until stop condition has ended
-        while(!LL_I2C_IsActiveFlag_STOP(i2c_base_adr))
-        {
-            ;
-        }
+        while(!LL_I2C_IsActiveFlag_STOP(i2c_base_adr)) {;}
         // Clear flag
         LL_I2C_ClearFlag_STOP(i2c_base_adr);
         // Wait until bus is free
-        while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr))
-        {
-            ;
-        }
+        while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
     }
-
     // Success
     return true;
 }

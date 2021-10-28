@@ -45,7 +45,6 @@ int main(void)
         // Set PH0 output to enable LED
         GPIOH->BSRR = GPIO_BSRR_BS_0;
         delay();
-
         // Clear PH0 output to disable LED
         GPIOH->BSRR = GPIO_BSRR_BR_0;
         delay();

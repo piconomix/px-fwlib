@@ -69,9 +69,9 @@ void px_usb_cdc_stdio_init(void);
  *  Every carriage return ("\n") will be intercepted and replaced with a
  *  carriage return, new line sequence ("\r\n").
  *  
- *  @param data     byte to send
+ *  @param data         byte to send
  *  
- *  @return int     always returns 0
+ *  @return int         always returns 0
  */
 int px_usb_cdc_stdio_put_char(char data);
 
@@ -79,9 +79,8 @@ int px_usb_cdc_stdio_put_char(char data);
  *  Function to receive a byte.
  *  
  *  This function will block until a character has been received.
- *  
- *  
- *  @return int     received byte
+ *
+ *  @return int         received byte
  */
 int px_usb_cdc_stdio_get_char(void);
 
@@ -90,8 +89,8 @@ int px_usb_cdc_stdio_get_char(void);
  *  
  *  @param data Pointer to location to store received byte
  *  
- *  @retval TRUE    There is a byte received
- *  @retval FALSE   Circular buffer is empty (no bytes received)
+ *  @retval TRUE        There is a byte received
+ *  @retval FALSE       Circular buffer is empty (no bytes received)
  */
 bool px_usb_cdc_stdio_rd_u8(uint8_t * data);
 
@@ -123,10 +122,10 @@ void _px_usb_cdc_stdio_on_rx_data(const uint8_t * data, uint16_t nr_of_bytes);
 /**
  *  Get byte from circular buffer to send over USB CDC driver.
  *  
- *  @param data     Byte to send
+ *  @param data         Byte to send
  *  
- *  @retval TRUE    There is a byte to send
- *  @retval FALSE   Circular buffer is empty (no bytes to send)
+ *  @retval TRUE        There is a byte to send
+ *  @retval FALSE       Circular buffer is empty (no bytes to send)
  */
 bool _px_usb_cdc_stdio_get_tx_byte(uint8_t * data);
 

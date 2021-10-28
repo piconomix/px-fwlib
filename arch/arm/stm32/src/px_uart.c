@@ -23,7 +23,7 @@
 #include "px_uart.h"
 #include "px_board.h"
 #include "px_ring_buf.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -68,25 +68,21 @@ static px_uart_per_t px_uart_per_1;
 static uint8_t       px_uart1_tx_buf[PX_UART_CFG_UART1_TX_BUF_SIZE];
 static uint8_t       px_uart1_rx_buf[PX_UART_CFG_UART1_RX_BUF_SIZE];
 #endif
-
 #if PX_UART_CFG_UART2_EN
 static px_uart_per_t px_uart_per_2;
 static uint8_t       px_uart2_tx_buf[PX_UART_CFG_UART2_TX_BUF_SIZE];
 static uint8_t       px_uart2_rx_buf[PX_UART_CFG_UART2_RX_BUF_SIZE];
 #endif
-
 #if PX_UART_CFG_UART3_EN
 static px_uart_per_t px_uart_per_3;
 static uint8_t       px_uart3_tx_buf[PX_UART_CFG_UART3_TX_BUF_SIZE];
 static uint8_t       px_uart3_rx_buf[PX_UART_CFG_UART3_RX_BUF_SIZE];
 #endif
-
 #if PX_UART_CFG_UART4_EN
 static px_uart_per_t px_uart_per_4;
 static uint8_t       px_uart4_tx_buf[PX_UART_CFG_UART4_TX_BUF_SIZE];
 static uint8_t       px_uart4_rx_buf[PX_UART_CFG_UART4_RX_BUF_SIZE];
 #endif
-
 #if PX_UART_CFG_UART5_EN
 static px_uart_per_t px_uart_per_5;
 static uint8_t       px_uart5_tx_buf[PX_UART_CFG_UART5_TX_BUF_SIZE];
@@ -107,7 +103,6 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
 
         // Read receive data register
         data = LL_USART_ReceiveData8(usart_base_adr);
-
         // Overrrun Error?
         if(LL_USART_IsActiveFlag_ORE(usart_base_adr))
         {
@@ -154,7 +149,6 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
             px_ring_buf_wr_u8(&uart_per->rx_ring_buf, data);
         }
     }
-
     // Transmit data register interrupt enabled?
     if(LL_USART_IsEnabledIT_TXE(usart_base_adr))
     {
@@ -178,7 +172,6 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
             }
         }
     }
-
     // Transmit complete interrupt enabled?
     if(LL_USART_IsEnabledIT_TC(usart_base_adr))
     {
@@ -265,13 +258,11 @@ static bool px_uart_init_baud(USART_TypeDef * usart_base_adr,
     default:           PX_LOG_E("Invalid peripheral"); return false;
     }
     // Set BAUD
-    LL_USART_SetBaudRate(usart_base_adr,
-                         uart_clk_hz,
 #if STM32G0
-                         LL_USART_PRESCALER_DIV1,
+    LL_USART_SetBaudRate(usart_base_adr, uart_clk_hz, LL_USART_PRESCALER_DIV1, LL_USART_OVERSAMPLING_16, baud);
+#else
+    LL_USART_SetBaudRate(usart_base_adr, uart_clk_hz, LL_USART_OVERSAMPLING_16, baud);
 #endif
-                         LL_USART_OVERSAMPLING_16,
-                         baud);
     // Success
     return true;
 }
@@ -563,14 +554,12 @@ bool px_uart_close(px_uart_handle_t * handle)
     uart_per = handle->uart_per;
     // Check that handle is open
     PX_LOG_ASSERT(uart_per != NULL);
-
     // Already closed?
     if(uart_per->open_counter == 0)
     {
         PX_LOG_E("Peripheral already closed");
         return false;
     }
-
     // Disable interrupt handler
     switch(uart_per->uart_nr)
     {
@@ -579,19 +568,16 @@ bool px_uart_close(px_uart_handle_t * handle)
         NVIC_DisableIRQ(USART1_IRQn);
         break;
 #endif
-
 #if PX_UART_CFG_UART2_EN
     case PX_UART_NR_2:
         NVIC_DisableIRQ(USART2_IRQn);
         break;
 #endif
-
 #if PX_UART_CFG_UART3_EN
     case PX_UART_NR_3:
         NVIC_DisableIRQ(USART3_IRQn);
         break;
 #endif
-
 #if PX_UART_CFG_UART4_EN
     case PX_UART_NR_4:
 #if PX_UART_CFG_UART5_EN
@@ -602,7 +588,6 @@ bool px_uart_close(px_uart_handle_t * handle)
         }
         break;
 #endif
-
 #if PX_UART_CFG_UART5_EN
     case PX_UART_NR_5:
 #if PX_UART_CFG_UART4_EN
@@ -613,14 +598,11 @@ bool px_uart_close(px_uart_handle_t * handle)
         }
         break;
 #endif
-
     default:
         return false;
     }
-
     // Disable peripheral
     uart_per->usart_base_adr->CR1 = 0;
-
     // Disable peripheral clock
     switch(uart_per->uart_nr)
     {
@@ -653,10 +635,8 @@ bool px_uart_close(px_uart_handle_t * handle)
         PX_LOG_E("Invalid peripheral");
         return false;
     }
-
     // Close handle
     handle->uart_per = NULL;
-
     // Success
     uart_per->open_counter = 0;
     return true;
@@ -674,13 +654,8 @@ void px_uart_put_char(px_uart_handle_t * handle, char data)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
-
     // Wait until transmit buffer has space for one byte and add it
-    while(!px_ring_buf_wr_u8(&uart_per->tx_ring_buf, (uint8_t)data))
-    {
-        ;
-    }
-
+    while(!px_ring_buf_wr_u8(&uart_per->tx_ring_buf, (uint8_t)data)) {;}
     // Make sure transmit process is started by enabling interrupt
     px_uart_start_tx(uart_per->usart_base_adr);
 }
@@ -697,17 +672,14 @@ bool px_uart_wr_u8(px_uart_handle_t * handle, uint8_t data)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
-
     // Add byte to transmit buffer
     if(!px_ring_buf_wr_u8(&uart_per->tx_ring_buf, (uint8_t)data))
     {
         // Could not buffer byte for transmission
         return false;
     }
-
     // Make sure transmit process is started by enabling interrupt
     px_uart_start_tx(uart_per->usart_base_adr);
-
     // Success
     return true;
 }
@@ -728,18 +700,13 @@ size_t px_uart_wr(px_uart_handle_t * handle,
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
-
     // Add bytes to transmit buffer
-    bytes_buffered = px_ring_buf_wr(&uart_per->tx_ring_buf,
-                                    data_u8,
-                                    nr_of_bytes);
-
+    bytes_buffered = px_ring_buf_wr(&uart_per->tx_ring_buf, data_u8, nr_of_bytes);
     if(bytes_buffered > 0)
     {
         // Make sure transmit process is started by enabling interrupt
         px_uart_start_tx(uart_per->usart_base_adr);
     }
-
     // Indicate number of bytes buffered
     return bytes_buffered;
 }
@@ -757,12 +724,8 @@ char px_uart_get_char(px_uart_handle_t * handle)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
-
     // Wait until a byte is in receive buffer and fetch it
-    while(!px_ring_buf_rd_u8(&uart_per->rx_ring_buf, &data))
-    {
-        ;
-    }
+    while(!px_ring_buf_rd_u8(&uart_per->rx_ring_buf, &data)) {;+}
 
     return (char)data;
 }
@@ -779,7 +742,6 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
-
     // Return byte from receive buffer (if it is available)
     return px_ring_buf_rd_u8(&uart_per->rx_ring_buf, data);
 }
@@ -798,11 +760,8 @@ size_t px_uart_rd(px_uart_handle_t * handle,
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
-
     // Fetch data from receive buffer (up to the specified number of bytes)
-    return px_ring_buf_rd(&uart_per->rx_ring_buf,
-                               buffer,
-                               nr_of_bytes);
+    return px_ring_buf_rd(&uart_per->rx_ring_buf, buffer, nr_of_bytes);
 }
 
 bool px_uart_wr_buf_is_full(px_uart_handle_t * handle)
@@ -892,7 +851,6 @@ bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
     // Set pointer to peripheral base address
     usart_base_adr = uart_per->usart_base_adr;
-
     // Is UART enabled?
     if(LL_USART_IsEnabled(usart_base_adr))
     {
@@ -934,7 +892,6 @@ bool px_uart_ioctl_change_data_format(px_uart_handle_t *  handle,
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
     // Set pointer to peripheral base address
     usart_base_adr = uart_per->usart_base_adr;
-
     // Is UART enabled?
     if(LL_USART_IsEnabled(usart_base_adr))
     {

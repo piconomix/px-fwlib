@@ -35,10 +35,7 @@ void delay(void)
     // Reset delay to 500 ms
     systick_delay = 500;
     // Wait until delay has expired
-    while(systick_delay != 0)
-    {
-        ;
-    }
+    while(systick_delay != 0) {;}
 }
 
 int main(void)

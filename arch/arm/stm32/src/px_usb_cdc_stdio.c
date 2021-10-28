@@ -56,7 +56,6 @@ static uint8_t       px_usb_cdc_stdio_rx_buffer_data[PX_USB_CDC_STDIO_RX_BUF_SIZ
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 #ifdef PX_COMPILER_GCC_ARM
-
 int _write(int file, char * ptr, int len)
 {
     int i;
@@ -78,11 +77,9 @@ int _read(int file, char * ptr, int len)
     }
     return len;  
 }
-
-#endif // #ifdef PX_COMPILER_GCC_ARM
+#endif
 
 #ifdef PX_COMPILER_ARM_CC
-
 int fputc(int ch, FILE * f)
 {
     px_usb_cdc_stdio_put_char(ch);
@@ -99,8 +96,7 @@ void _sys_exit(int return_code)
 {
     while(1);
 }
-
-#endif // #ifdef PX_COMPILER_ARM_CC
+#endif
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_usb_cdc_stdio_init(void)
@@ -129,7 +125,6 @@ int px_usb_cdc_stdio_put_char(char data)
         // Prepend cariage return
         px_usb_cdc_stdio_put_char('\r');
     }
-    
     // Buffer transmit byte (wait until circular buffer accepts byte)
     while(!px_ring_buf_wr_u8(&px_usb_cdc_stdio_tx_buffer, (uint8_t)data))
     {

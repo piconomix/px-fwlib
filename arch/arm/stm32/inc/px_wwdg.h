@@ -78,7 +78,7 @@ void px_wwdg_halt(void);
  */
 void px_wwdg_resume(void);
 
-/*
+/**
  *  Report state saved by early warning interrupt in .noinit variables.
  */
 void px_wwdg_dbg_report(void);

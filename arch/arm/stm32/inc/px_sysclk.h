@@ -80,13 +80,15 @@ typedef uint32_t px_sysclk_ticks_t;
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-/// Start system clock (one clock tick every 1/PX_SYSCLK_TICKS_PER_SEC seconds)
+/**
+ *  Start system clock (one clock tick every 1/PX_SYSCLK_TICKS_PER_SEC seconds)
+ */
 void px_sysclk_init(void);
 
 /**
- * Return number of ticks since system clock started.
+ *  Return number of ticks since system clock started.
  *  
- * @return px_sysclk_ticks_t   Number of clock ticks 
+ *  @return px_sysclk_ticks_t   Number of clock ticks
  */
 px_sysclk_ticks_t px_sysclk_get_tick_count(void);
 

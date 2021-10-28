@@ -29,7 +29,6 @@ int main(void)
 {
     // Set RCC_IOPENR register bit 7 to enable clock of Port H
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOH);
-
     // Configure PH0 as a digital output
     LL_GPIO_SetPinMode(GPIOH, LL_GPIO_PIN_0, LL_GPIO_MODE_OUTPUT);
 
@@ -39,7 +38,6 @@ int main(void)
         // Set PH0 output to enable LED
         LL_GPIO_SetOutputPin(GPIOH, LL_GPIO_PIN_0);
         delay();
-
         // Clear PH0 output to disable LED
         LL_GPIO_ResetOutputPin(GPIOH, LL_GPIO_PIN_0);
         delay();

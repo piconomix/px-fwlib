@@ -153,27 +153,27 @@ void px_uart_init(void);
 /** 
  *  Open UART peripheral using predefined (default) parameters
  *  
- *  @param handle        Pointer to handle data structure
- *  @param uart_nr       UART peripheral number
+ *  @param handle           Pointer to handle data structure
+ *  @param uart_nr          UART peripheral number
  *  
- *  @retval false        Error: peripheral was not opened
- *  @retval true         Success: peripheral was opened
+ *  @retval false           Error: peripheral was not opened
+ *  @retval true            Success: peripheral was opened
  */
 bool px_uart_open(px_uart_handle_t * handle, 
                   px_uart_nr_t       uart_nr);
 
 /** 
- *  Open UART peripheral using specified parameters
+ *  Open UART peripheral using specified parameters.
  *  
- *  @param handle        Pointer to handle data structure
- *  @param uart_nr       UART peripheral number
- *  @param baud          Baud rate in bits/s
- *  @param data_bits     Data bits (7,8 or 9)
- *  @param parity        Parity(NONE, ODD or EVEN)
- *  @param stop_bits     Stop bits (1 or 2)
+ *  @param handle           Pointer to handle data structure
+ *  @param uart_nr          UART peripheral number
+ *  @param baud             Baud rate in bits/s
+ *  @param data_bits        Data bits (7,8 or 9)
+ *  @param parity           Parity(NONE, ODD or EVEN)
+ *  @param stop_bits        Stop bits (1 or 2)
  *  
- *  @retval false        Error: peripheral was not opened
- *  @retval true         Success: peripheral was opened
+ *  @retval false           Error: peripheral was not opened
+ *  @retval true            Success: peripheral was opened
  */
 bool px_uart_open2(px_uart_handle_t *  handle,
                    px_uart_nr_t        uart_nr,
@@ -185,10 +185,10 @@ bool px_uart_open2(px_uart_handle_t *  handle,
 /**
  *  Close specified peripheral.
  *  
- *  @param handle    Pointer to handle data structure
+ *  @param handle           Pointer to handle data structure
  *  
- *  @retval true     Success 
- *  @retval false    Specified peripheral was already closed (or not opened)
+ *  @retval true            Success
+ *  @retval false           Specified peripheral was already closed (or not opened)
  */
 bool px_uart_close(px_uart_handle_t * handle);
 
@@ -197,19 +197,19 @@ bool px_uart_close(px_uart_handle_t * handle);
  *  
  *  This function blocks until space is available in the write buffer.
  *  
- *  @param handle     Pointer to handle data structure
- *  @param[in] data   Byte to be written
+ *  @param handle           Pointer to handle data structure
+ *  @param[in] data         Byte to be written
  */
 void px_uart_put_char(px_uart_handle_t * handle, char data);
 
 /**
  *  Buffer one byte for transmission.
  *  
- *  @param handle     Pointer to handle data structure
- *  @param[in] data   Byte to be written
+ *  @param handle           Pointer to handle data structure
+ *  @param[in] data         Byte to be written
  *  
- *  @retval true    Byte has been buffered
- *  @retval false   Byte has not been buffered, because write buffer is full
+ *  @retval true            Byte has been buffered
+ *  @retval false           Byte has not been buffered, because write buffer is full
  */
 bool px_uart_wr_u8(px_uart_handle_t * handle, uint8_t data);
 
@@ -234,7 +234,7 @@ size_t px_uart_wr(px_uart_handle_t * handle,
  *  
  *  This function blocks until a byte is received.
  *  
- *  @param handle        Pointer to handle data structure
+ *  @param handle           Pointer to handle data structure
  *  
  *  @return     Received byte
  */
@@ -243,11 +243,11 @@ char px_uart_get_char(px_uart_handle_t * handle);
 /**
  *  See if a received byte is available and store it in the specified location.
  *  
- *  @param handle        Pointer to handle data structure
- *  @param[out] data    Pointer to location where data byte must be stored
+ *  @param handle           Pointer to handle data structure
+ *  @param[out] data        Pointer to location where data byte must be stored
  *  
- *  @retval true        Received byte is stored in specified location
- *  @retval false       No received data available (receive buffer empty)
+ *  @retval true            Received byte is stored in specified location
+ *  @retval false           No received data available (receive buffer empty)
  */
 bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data);
 
@@ -267,10 +267,10 @@ size_t px_uart_rd(px_uart_handle_t * handle,
 /** 
  *  See if transmit buffer can accept more data.
  *  
- *  @param handle        Pointer to handle data structure
+ *  @param handle       Pointer to handle data structure
  *  
- *  @retval true    Transmit buffer is full
- *  @retval false   Transmit buffer has space for at least one byte
+ *  @retval true        Transmit buffer is full
+ *  @retval false       Transmit buffer has space for at least one byte
  */
 bool px_uart_wr_buf_is_full(px_uart_handle_t * handle);
 
@@ -281,10 +281,10 @@ bool px_uart_wr_buf_is_full(px_uart_handle_t * handle);
  *        with the transmission of the last byte in the buffer. 
  *        @see px_uart_tx_finished.
  *  
- *  @param handle        Pointer to handle data structure
+ *  @param handle       Pointer to handle data structure
  *  
- *  @retval true    Transmit buffer is empty
- *  @retval false   Transmit buffer has space for at least one byte
+ *  @retval true        Transmit buffer is empty
+ *  @retval false       Transmit buffer has space for at least one byte
  */
 bool px_uart_wr_buf_is_empty(px_uart_handle_t * handle);
 
@@ -294,20 +294,20 @@ bool px_uart_wr_buf_is_empty(px_uart_handle_t * handle);
  *  This functions is usefull for communication standards like RS-485 
  *  where the mode must be changed manually from TX to RX after transmission.
  *  
- *  @param handle        Pointer to handle data structure
+ *  @param handle       Pointer to handle data structure
  *  
- *  @retval true    Transmision completely finished
- *  @retval false   Busy with transmission
+ *  @retval true        Transmision completely finished
+ *  @retval false       Busy with transmission
  */
 bool px_uart_wr_is_done(px_uart_handle_t * handle);
 
 /**
  *  See if there is received data in the receive buffer.
  *  
- *  @param handle        Pointer to handle data structure
+ *  @param handle       Pointer to handle data structure
  *  
- *  @retval true    There is received data in the receive buffer
- *  @retval false   The receive buffer is empty
+ *  @retval true        There is received data in the receive buffer
+ *  @retval false       The receive buffer is empty
  */
 bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle);
 

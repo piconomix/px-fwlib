@@ -21,7 +21,7 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_sysclk.h"
 #include "px_board.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 
 #if PX_SYSCLK_CFG_STMCUBE_HAL_TMR
 #include "stm32l0xx_hal.h"
@@ -51,7 +51,7 @@ void SysTick_Handler(void)
 
 #if PX_SYSCLK_CFG_STMCUBE_HAL_TMR
 #if (PX_SYSCLK_CFG_TICKS_PER_SEC != 1000)
-#error "STMCube HAL expects SysTick interval to be 1 ms"
+    #error "STMCube HAL expects SysTick interval to be 1 ms"
 #endif
     // Increment HAL Tick value for timeout functionality in STMCUBE HAL library
     HAL_IncTick();
@@ -83,16 +83,14 @@ void px_sysclk_init(void)
 
    // Calculate number of ticks per SysTick period (SysTick is fed from AHB clock by default)
    ticks_per_period = PX_UDIV_ROUND(PX_BOARD_SYS_CLK_HZ, PX_SYSCLK_CFG_TICKS_PER_SEC);
-
    // Configure SysTick peripheral
    SysTick_Config(ticks_per_period);
-
    // Enable SysTick interrupt
    NVIC_EnableIRQ(SysTick_IRQn);
 
 #ifdef PX_SYSCLK_CFG_TIMEOUT_PERIOD_TICKS
     // Reset timeout counter
-    px_sysclk_timeout_counter =  PX_SYSCLK_CFG_TIMEOUT_PERIOD_TICKS;
+    px_sysclk_timeout_counter = PX_SYSCLK_CFG_TIMEOUT_PERIOD_TICKS;
 #endif
 }
 

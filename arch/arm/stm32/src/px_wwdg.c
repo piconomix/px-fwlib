@@ -20,7 +20,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_wwdg.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
@@ -77,10 +77,7 @@ PX_ATTR_NORETURN void px_wwdg_save_regs(uint32_t * stack_adr)
     px_wwdg_pc  = stack_adr[6]; // (sp + 0x18)
     px_wwdg_psr = stack_adr[7]; // (sp + 0x1c)
 
-    for(;;)
-    {
-        ;
-    }
+    while(true) {;}
 }
 
 void WWDG_IRQHandler(void) PX_ATTR_NAKED;
@@ -199,18 +196,18 @@ void px_wwdg_resume(void)
 void px_wwdg_dbg_report(void)
 {
 #ifdef PX_WWDG_CFG_EARLY_WARNING_FLAG
-    printf("ew_flag = 0x%08lX\n", px_wwdg_ew_flag);
+    PX_LOG_TRACE("ew_flag = 0x%08lX\n", px_wwdg_ew_flag);
 #endif
 
 #ifdef PX_WWDG_CFG_EARLY_WARNING_REGS
-    printf("r0 = 0x%08lX\n", px_wwdg_r0);
-    printf("r1 = 0x%08lX\n", px_wwdg_r1);
-    printf("r2 = 0x%08lX\n", px_wwdg_r2);
-    printf("r3 = 0x%08lX\n", px_wwdg_r3);
-    printf("r1 = 0x%08lX\n", px_wwdg_r12);
-    printf("lr = 0x%08lX\n", px_wwdg_lr);
-    printf("pc = 0x%08lX\n", px_wwdg_pc);
-    printf("psr = 0x%08lX\n", px_wwdg_psr);
+    PX_LOG_TRACE("r0 = 0x%08lX\n", px_wwdg_r0);
+    PX_LOG_TRACE("r1 = 0x%08lX\n", px_wwdg_r1);
+    PX_LOG_TRACE("r2 = 0x%08lX\n", px_wwdg_r2);
+    PX_LOG_TRACE("r3 = 0x%08lX\n", px_wwdg_r3);
+    PX_LOG_TRACE("r1 = 0x%08lX\n", px_wwdg_r12);
+    PX_LOG_TRACE("lr = 0x%08lX\n", px_wwdg_lr);
+    PX_LOG_TRACE("pc = 0x%08lX\n", px_wwdg_pc);
+    PX_LOG_TRACE("psr = 0x%08lX\n", px_wwdg_psr);
 #endif
 }
 
