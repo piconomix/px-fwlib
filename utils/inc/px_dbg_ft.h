@@ -156,7 +156,7 @@ void px_dbg_ft_report(void);
     #define PX_DBG_FT_NAME(name)
     #define PX_DBG_FT_INIT()
     #define PX_DBG_FT_LOG()
-    #define PX_DBG_FT_LOG_LINE()
+    #define PX_DBG_FT_LOG_LINE(line)
     #define PX_DBG_FT_LOG_PARAM(param)
     #define PX_DBG_FT_LOG_LINE_PARAM(line, param)
 #endif
