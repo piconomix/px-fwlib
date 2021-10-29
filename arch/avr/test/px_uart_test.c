@@ -22,7 +22,6 @@ int main(void)
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
-
     // Repeat forever
     for(;;)
     {

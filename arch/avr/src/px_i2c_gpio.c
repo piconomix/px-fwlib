@@ -48,19 +48,19 @@ static px_i2c_per_t px_i2c0_per;
 #endif
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
-static void px_i2c_delay_half_clk                   (void);
-static bool px_i2c_scl_set_hiz_and_wait_clk_stretch (void);
-static bool px_i2c_tx_bit                           (bool bit);
-static bool px_i2c_rx_bit                           (bool * bit);
-static bool px_i2c_start                            (uint8_t sla_adr, 
-                                                     px_i2c_start_t start);
-static bool px_i2c_start_repeat                     (uint8_t sla_adr, 
-                                                     px_i2c_start_t start);
-static bool px_i2c_stop                             (void);
-static bool px_i2c_wr_u8                            (uint8_t data);
-static bool px_i2c_rd_u8                            (uint8_t * data, bool nak);
-static void px_i2c_init_peripheral_data             (px_i2c_nr_t    i2c_nr,
-                                                     px_i2c_per_t * i2c_per);
+static void px_i2c_delay_half_clk                  (void);
+static bool px_i2c_scl_set_hiz_and_wait_clk_stretch(void);
+static bool px_i2c_tx_bit                          (bool bit);
+static bool px_i2c_rx_bit                          (bool * bit);
+static bool px_i2c_start                           (uint8_t sla_adr,
+                                                    px_i2c_start_t start);
+static bool px_i2c_start_repeat                    (uint8_t sla_adr,
+                                                    px_i2c_start_t start);
+static bool px_i2c_stop                            (void);
+static bool px_i2c_wr_u8                           (uint8_t data);
+static bool px_i2c_rd_u8                           (uint8_t * data, bool nak);
+static void px_i2c_init_peripheral_data            (px_i2c_nr_t    i2c_nr,
+                                                    px_i2c_per_t * i2c_per);
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_i2c_delay_half_clk(void)
@@ -73,7 +73,7 @@ static bool px_i2c_scl_set_hiz_and_wait_clk_stretch(void)
     uint8_t i;
 
     PX_I2C_CFG_SCL_SET_HIZ();
-    for(i=100; i != 0; i--)
+    for(i = 100; i != 0; i--)
     {
         px_i2c_delay_half_clk();
         if(PX_I2C_CFG_SCL_IS_HI())
@@ -207,7 +207,7 @@ static bool px_i2c_wr_u8(uint8_t data)
     bool    nak;
 
     // Send 8 bits, MSB first
-    for(bit_mask = (1<<7); bit_mask != 0; bit_mask >>= 1)
+    for(bit_mask = (1 << 7); bit_mask != 0; bit_mask >>= 1)
     {
         // Send next bit
         if(!px_i2c_tx_bit((data & bit_mask) != 0))
@@ -240,7 +240,7 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     uint8_t byte;
 
     byte = 0;
-    for(bit_mask = (1<<7); bit_mask != 0; bit_mask >>= 1)
+    for(bit_mask = (1 << 7); bit_mask != 0; bit_mask >>= 1)
     {
         // Receive next bit
         if(!px_i2c_rx_bit(&bit))
@@ -353,10 +353,10 @@ bool px_i2c_close(px_i2c_handle_t * handle)
         // Success
         return true;
     }
-   // Close handle
-   handle->i2c_per = NULL;
-   // Success
-   return true;
+    // Close handle
+    handle->i2c_per = NULL;
+    // Success
+    return true;
 }
 
 bool px_i2c_wr(px_i2c_handle_t * handle,
@@ -376,7 +376,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
     PX_LOG_ASSERT(i2c_per->open_counter != 0);
     // Check that slave address is 7 bits
     PX_LOG_ASSERT(handle->slave_adr < 0x80);
-#if !DBG
+#if !PX_LOG
     // Supress compiler warning about unused variable
     (void)i2c_per;
 #endif
@@ -443,7 +443,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
     PX_LOG_ASSERT(i2c_per->open_counter != 0);
     // Check that slave address is 7 bits
     PX_LOG_ASSERT(handle->slave_adr < 0x80);
-#if !DBG
+#if !PX_LOG
     // Supress compiler warning about unused variable
     (void)i2c_per;
 #endif

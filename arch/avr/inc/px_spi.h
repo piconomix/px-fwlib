@@ -122,9 +122,9 @@ typedef enum
 /// @{
 
 /// Begin SPI transaction (take SPI slave's Chip Select line low)
-#define PX_SPI_FLAG_START           (1<<0)
+#define PX_SPI_FLAG_START           (1 << 0)
 /// Finish SPI transaction (take SPI slave's Chip Select line high)
-#define PX_SPI_FLAG_STOP            (1<<1)
+#define PX_SPI_FLAG_STOP            (1 << 1)
 /// Begin and finish SPI transaction
 #define PX_SPI_FLAG_START_AND_STOP  (PX_SPI_FLAG_START + PX_SPI_FLAG_STOP)
 /// @}

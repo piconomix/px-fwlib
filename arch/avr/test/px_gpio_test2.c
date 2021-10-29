@@ -19,7 +19,6 @@ int main(void)
     // Initialise pins
     px_gpio_pin_init(&px_gpio_led);
     px_gpio_pin_init(&px_gpio_pb);
-
     // Repeat forever
     for(;;)
     {

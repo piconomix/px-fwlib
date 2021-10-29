@@ -38,16 +38,16 @@
  *  can be compacted to:
  *  
  *  @code{.c}
- *      PORTB |=  (1<<0);     // Set bit 0 of PORTB register to enable LED
- *      PORTB &= ~(1<<0);     // Clear bit 0 of PORTB to disable LED
+ *      PORTB |=  (1 << 0);     // Set bit 0 of PORTB register to enable LED
+ *      PORTB &= ~(1 << 0);     // Clear bit 0 of PORTB to disable LED
  *  @endcode
  *  
  *  and better yet, be replaced with macros:
  *  
  *  @code{.c}
  *      // General purpose bit manipulation macros
- *      #define BIT_SET_HI(var, bit)    var |=  (1<<bit)
- *      #define BIT_SET_LO(var, bit)    var &= ~(1<<bit)
+ *      #define BIT_SET_HI(var, bit)    var |=  (1 << bit)
+ *      #define BIT_SET_LO(var, bit)    var &= ~(1 << bit)
  *
  *      // Define LED GPIO pin
  *      #define GPIO_LED_REG_PORT       PORTB
@@ -84,27 +84,24 @@
 int main(void)
 {
     // Configure LED as output pin (set bit 0 of DDRB register)
-    DDRB |= (1<<0);
-
+    DDRB |= (1 << 0);
     // Configure PB as input pin (clear bit 7 of DDRD register)
-    DDRD &= ~(1<<7);
-
+    DDRD &= ~(1 << 7);
     // Enable pull-up on PB (set bit 7 of PORTD register)
-    PORTD |= (1<<7);
-
+    PORTD |= (1 << 7);
     // Repeat forever
     for(;;)
     {
         // PB is pressed? (bit 7 of PIND register cleared?)
-        if((PIND & (1<<7)) == 0)
+        if((PIND & (1 << 7)) == 0)
         {
             // Enable LED (set bit 0 of PORTB register)
-            PORTB |= (1<<0);
+            PORTB |= (1 << 0);
         }
         else
         {
             // Disable LED (clear bit 0 of PORTB register)
-            PORTB &= ~(1<<0);
+            PORTB &= ~(1 << 0);
         }
     }
 }

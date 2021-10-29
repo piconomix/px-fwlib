@@ -42,9 +42,8 @@
 int main(void)
 {
     // Initialise PD6 to output low to buzzer
-    PORTD &= ~(1<<6);
-    DDRD  |=  (1<<6);
-
+    PORTD &= ~(1 << 6);
+    DDRD  |=  (1 << 6);
     /* 
      *  Start Timer 0 with clock prescaler CLK/64 and CTC mode.
      *  Output on PD6 (OC0A).
@@ -53,18 +52,12 @@ int main(void)
      *   - resolution is 8.7 us
      *   - frequency range is 57600 Hz to 225 Hz
      */
-    TCCR0A =  (0<<COM0A1) | (1<<COM0A0) | (1<<WGM01) | (0<<WGM00);
-    TCCR0B =  (0<<WGM02)  | (1<<CS02)   | (0<<CS01)  | (0<<CS00);
-
+    TCCR0A =  (0 << COM0A1) | (1 << COM0A0) | (1 << WGM01) | (0 << WGM00);
+    TCCR0B =  (0 << WGM02)  | (1 << CS02)   | (0 << CS01)  | (0 << CS00);
     // Reset counter
     TCNT0 = 0;
-
     // Set frequency to about 1000 Hz
     OCR0A  = ((F_CPU / (2 * 64)) / 1000) - 1;
-
-    // Repeat indefinitely
-    for(;;)
-    {
-        ;
-    }
+    // Repeat forever
+    for(;;) {;}
 }

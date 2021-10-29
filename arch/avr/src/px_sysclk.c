@@ -202,10 +202,8 @@ px_sysclk_ticks_t px_sysclk_get_tick_count(void)
 
     // Disable timer interrupt to perform atomic access
     TMR_INT_DISABLE();
-
     // Fetch current time
     counter = px_sysclk_tick_counter;
-
     // Enable timer interrupt
     TMR_INT_ENABLE();
 

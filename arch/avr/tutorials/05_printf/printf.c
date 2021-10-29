@@ -76,7 +76,6 @@
 
 // Macro to send strings stored in program memory space
 #define PRINTF_P(format, ...) printf_P(PSTR(format), ## __VA_ARGS__)
-
 // Define baud rate
 #define UART0_BAUD      115200ul
 #define UART0_UBBR_VAL  ((F_CPU / (UART0_BAUD * 16)) - 1)
@@ -85,12 +84,10 @@ void uart_init(void)
 {
     // Set baud rate
     UBRR0 = UART0_UBBR_VAL;
-
     // Set frame format to 8 data bits, no parity, 1 stop bit
-    UCSR0C = (0<<USBS0) | (1<<UCSZ01) | (1<<UCSZ00);
-
+    UCSR0C = (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00);
     // Enable receiver and transmitter
-    UCSR0B = (1<<RXEN0) | (1<<TXEN0);
+    UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 }
 
 int uart_put_char(char data, FILE * stream)
@@ -101,10 +98,7 @@ int uart_put_char(char data, FILE * stream)
         uart_put_char('\r', stream);
     }
     // Wait until data register is empty
-    while((UCSR0A & (1<<UDRE0)) == 0)
-    {
-        ;
-    }
+    while((UCSR0A & (1 << UDRE0)) == 0) {;}
     // Load transmit register with new data
     UDR0 = data;
 
@@ -118,26 +112,17 @@ int main(void)
 {
     // Initialise board
     px_board_init();
-
     // Initialise UART
     uart_init();
-
     // Direct stdout stream to uart_stream
     stdout = &uart_stream;
-
     // String stored in program memory and copied to SRAM upon startup by
     // C Run Time set up (CRT).
     printf("printf - String in data memory (SRAM)\n");
-
     // String stored in and accessed from program memory
     printf_P(PSTR("printf_P - String in program memory (FLASH)\n"));
-
     // Convenience macro to store and access string in program memory
     PRINTF_P("PRINTF_P - String also in program memory (FLASH)\n");
-
     // Repeat forever
-    for(;;)
-    {
-        ;
-    }
+    for(;;) {;}
 }

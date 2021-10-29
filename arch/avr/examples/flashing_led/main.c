@@ -60,13 +60,10 @@ int main(void)
     // Initialise modules
     px_board_init();
     px_sysclk_init();
-
     // Enable LED
     PX_LED_ON();
-
     // Enable interrupts
     px_interrupts_enable();
-
     // Initialise timer to expire once a second
     px_systmr_start(&systmr, PX_SYSTMR_TICKS_PER_SEC);
 
@@ -74,13 +71,9 @@ int main(void)
     for(;;)
     {
         // Wait until timer has expired
-        while(!px_systmr_has_expired(&systmr))
-        {
-            ;
-        }
+        while(!px_systmr_has_expired(&systmr)) {;}
         // Reset timer
         px_systmr_reset(&systmr);
-
         // Toggle LED pin
         PX_LED_TOGGLE();
     }

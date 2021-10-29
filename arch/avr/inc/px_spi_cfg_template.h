@@ -36,7 +36,7 @@
 
 /// Default value for SPI Control Register used in px_spi_open().
 #define PX_SPI_CFG_SPCR \
-    ((0<<SPIE) | (1<<SPE) | (0<<DORD) | (1<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<SPR1) | (0<<SPR0))
+    ((0 << SPIE) | (1 << SPE) | (0 << DORD) | (1 << MSTR) | (0 << CPOL) | (0 << CPHA) | (0 << SPR1) | (0 << SPR0))
 
 /// Default value for "Use double clock rate" used in px_spi_open().
 #define PX_SPI_CFG_USE_SPI2X    0
@@ -52,6 +52,7 @@
 
 /**
  *  Map PX_SPI_CFG_CS_LO() macro to board_spi_cs_lo() function.
+ *
  *  A manual Chip Select function must be implemented, e.g.
  *  
  *      void board_spi_cs_lo(uint8_t cs_id)
@@ -67,10 +68,11 @@
  *          }
  *      }
  */
-#define PX_SPI_CFG_CS_LO(cs_id) px_board_spi_cs_lo(cs_id)
+#define PX_SPI_CFG_CS_LO(cs_id)     px_board_spi_cs_lo(cs_id)
 
 /** 
  *  Map PX_SPI_CFG_CS_HI() macro to board_spi_cs_hi() function.
+ *
  *  A manual Chip Select function must be implemented, e.g.
  *  
  *      void board_spi_cs_hi(uint8_t cs_id)
@@ -87,7 +89,7 @@
  *      }
  *  
  */
-#define PX_SPI_CFG_CS_HI(cs_id) px_board_spi_cs_hi(cs_id)
+#define PX_SPI_CFG_CS_HI(cs_id)     px_board_spi_cs_hi(cs_id)
 
 /// @}
 #endif

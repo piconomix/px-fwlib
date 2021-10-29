@@ -37,7 +37,6 @@
  *      C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\iom328p.h
  */
 
-
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -45,10 +44,8 @@
 // LED GPIO pin macros
 #define LED_INIT()   DDRB  |= (1<<0)
 #define LED_TOGGLE() PORTB ^= (1<<0)
-
 // Define CPU frequency in Hz
 #define F_CPU           7372800ul
-
 // Define delay
 #define PERIOD_MS       250
 
@@ -69,33 +66,24 @@ void tmr_init(void)
      *  that when TCNT1 reaches the OCR1A value, OCF1A flag will be set and TCNT1
      *  will be reset to 0.
      */ 
-    TCCR1A = (0<<WGM11) | (0<<WGM10);
-    TCCR1B = (0<<WGM13) | (1<<WGM12) | (1<<CS12) | (0<<CS11) | (1<<CS10);
-
+    TCCR1A = (0 << WGM11) | (0 << WGM10);
+    TCCR1B = (0 << WGM13) | (1 << WGM12) | (1 << CS12) | (0 << CS11) | (1 << CS10);
     // Reset counter
     TCNT1 = 0;
-
     // Calculate and set delay
     OCR1A  = (uint16_t)(((F_CPU / 1024) * PERIOD_MS) / 1000) - 1;
-
     // Enable interrupt on compare match
-    TIMSK1 |= (1<<OCIE1A);
+    TIMSK1 |= (1 << OCIE1A);
 }
 
 int main(void)
 {
     // Initialise LED GPIO pin
     LED_INIT();
-
     // Initialise timer
     tmr_init();
-
     // Enable interrupts
     sei();
-
     // Repeat forever
-    for(;;)
-    {
-        ;
-    }
+    for(;;) {;}
 }

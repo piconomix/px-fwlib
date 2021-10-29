@@ -43,10 +43,8 @@
  *
  *          // Load value from EEPROM
  *          value = eeprom_read_word(&ee_setting);
- *
  *          // Modify value
  *          value += 1;
- *
  *          // Commit new value to EEPROM
  *          eeprom_write_word(&ee_setting, value);
  *          eeprom_busy_wait();
@@ -64,7 +62,6 @@
 
 // Macro to send strings stored in program memory space
 #define PRINTF_P(format, ...) printf_P(PSTR(format), ## __VA_ARGS__)
-
 // Define baud rate
 #define UART0_BAUD      115200ul
 #define UART0_UBBR_VAL  ((F_CPU / (UART0_BAUD * 16)) - 1)
@@ -73,12 +70,10 @@ void uart_init(void)
 {
     // Set baud rate
     UBRR0 = UART0_UBBR_VAL;
-
     // Set frame format to 8 data bits, no parity, 1 stop bit
-    UCSR0C = (0<<USBS0)|(1<<UCSZ01)|(1<<UCSZ00);
-
+    UCSR0C = (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00);
     // Enable receiver and transmitter
-    UCSR0B = (1<<RXEN0)|(1<<TXEN0);   
+    UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 }
 
 int uart_put_char(char data, FILE *stream)
@@ -89,10 +84,7 @@ int uart_put_char(char data, FILE *stream)
         uart_put_char('\r', stream);
     }
     // Wait until data register is empty
-    while((UCSR0A&(1<<UDRE0)) == 0)
-    {
-        ;
-    }
+    while((UCSR0A & (1 << UDRE0)) == 0) {;}
     // Load transmit register with new data
     UDR0 = data;
 
@@ -107,7 +99,7 @@ uint8_t ee_read_byte(uint16_t adr)
     // Set address
     EEAR = adr;
     // Start read operation
-    EECR |= (1<<EERE);
+    EECR |= (1 << EERE);
     // Return data
     return EEDR;
 }
@@ -117,7 +109,7 @@ void ee_write_byte(uint16_t adr, uint8_t data)
     uint8_t sreg;
 
     // Select EEPROM Programming mode: Erase and Write in one operation (Atomic Operation)
-    EECR &= ~((1<<EEPM1) | (1<<EEPM0));
+    EECR &= ~((1 << EEPM1) | (1 << EEPM0));
     // Set address
     EEAR = adr;
     // Set data to write
@@ -127,15 +119,12 @@ void ee_write_byte(uint16_t adr, uint8_t data)
     // Disable interrupts
     cli();
     // Start write operation
-    EECR |= (1<<EEMPE);
-    EECR |= (1<<EEPE);
+    EECR |= (1 << EEMPE);
+    EECR |= (1 << EEPE);
     // Restore status of global interrupts
     SREG = sreg;
     // Wait until write operation has finished
-    while(EECR & (1<<EEPE))
-    {
-        ;
-    }
+    while(EECR & (1 << EEPE)) {;}
 }
 int main(void)
 {
@@ -143,26 +132,18 @@ int main(void)
 
     // Initialise board
     px_board_init();
-
     // Initialise UART
     uart_init();
-
     // Direct stdout stream to uart_stream
     stdout = &uart_stream;
-
     PRINTF_P("\nEEPROM Tutorial\n");
-
     // Write a byte to EEPROM
     ee_write_byte(0x000C, 0xAB);
-
     // Read a byte from EEPROM
     data = ee_read_byte(0x000C);
 
     PRINTF_P("EEPROM value at adr 0x000C is 0x%02X\n", data);
 
     // Repeat forever
-    for(;;)
-    {
-        ;
-    }
+    for(;;) {;}
 }

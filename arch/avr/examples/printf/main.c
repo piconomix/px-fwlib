@@ -74,16 +74,12 @@ int main(void)
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
     px_uart_stdio_init(&px_uart_handle);
-
     // Enable interrupts
     px_interrupts_enable();
-
     // String stored in program memory and copied to SRAM upon startup by CRT
     printf("printf - String in data memory (RAM)\n");
-
     // String stored in and accessed from program memory
     printf_P(PX_PGM_STR("printf_P - String in program memory (ROM)\n"));
-
     // Convenience macro to store and access string in program memory
     PX_PRINTF_P("PRINTF_P - String also in program memory (ROM)\n");
 

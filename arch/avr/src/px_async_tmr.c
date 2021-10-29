@@ -64,32 +64,24 @@ void px_async_tmr_init(void)
 
     // Select asynchronous timer operation to use external 32.768 kHz crystal
     PX_BIT_SET_HI(ASSR, AS0);
-
     // Start timer with clock prescaler CLK/1024 and CTC Mode ("Clear Timer on Compare")
     // Resolution is 32.25 ms
-    TCCR0 = (0<<WGM00)|(1<<WGM01)|(1<<CS02)|(1<<CS01)|(1<<CS00);
-
+    TCCR0 = (0 << WGM00) | (1 << WGM01) | (1 << CS02) | (1 << CS01) | (1 << CS00);
     // Reset time
     TCNT0 = 0;
-
     // Calculate and set period
     OCR0 = (uint16_t)(((F_RTC / 1024) * PX_RTC_PERIOD_MS) / 1000) - 1;
-
     // Wait for "update busy" flags to clear
-    while(ASSR & ((1<<TCN0UB) | (1<<OCR0UB) | (1<<TCR0UB)))
-    {
-        ;
-    }
+    while(ASSR & ((1 << TCN0UB) | (1 << OCR0UB) | (1 << TCR0UB))) {;}
 
 #elif (ASYNC_TMR == 2)
 
     // Select asynchronous timer operation to use external 32768 Hz crystal
     PX_BIT_SET_HI(ASSR, AS2);
-
     // Start timer with clock prescaler CLK/1024 and CTC Mode ("Clear Timer on Compare")
     // Resolution is 32.25 ms
-    TCCR2A = (0<<WGM20) | (1<<WGM21);
-    TCCR2B = (0<<WGM22) | (1<<CS22) | (1<<CS21) | (1<<CS20);
+    TCCR2A = (0 << WGM20) | (1 << WGM21);
+    TCCR2B = (0 << WGM22) | (1 << CS22) | (1 << CS21) | (1 << CS20);
 
     // Reset time
     TCNT2 = 0;
@@ -98,10 +90,7 @@ void px_async_tmr_init(void)
     OCR2A = (uint16_t)(((F_RTC / 1024) * ASYNC_TMR_CFG_PERIOD_MS) / 1000) - 1;
 
     // Wait for "update busy" flags to clear
-    while(ASSR & ((1<<TCN2UB) | (1<<OCR2AUB) | (1<<TCR2AUB)))
-    {
-        ;
-    }
+    while(ASSR & ((1 << TCN2UB) | (1 << OCR2AUB) | (1 << TCR2AUB))) {;}
 
 #else
 #error "Unsupported AVR"

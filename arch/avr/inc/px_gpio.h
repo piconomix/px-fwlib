@@ -252,26 +252,26 @@ typedef struct
 
 /// Initialise a GPIO pin
 #define PX_GPIO_PIN_INIT(gpio) _GPIO_PIN_INIT(gpio)
-#define _GPIO_PIN_INIT(port, ddr, pin, bit, dir, init)                      \
-do                                                                          \
-{                                                                           \
-    if(init == PX_GPIO_INIT_LO)                                                \
-    {                                                                       \
-        PX_BIT_SET_LO(*(port), bit);                                           \
-    }                                                                       \
-    else                                                                    \
-    {                                                                       \
-        PX_BIT_SET_HI(*(port), bit);                                           \
-    }                                                                       \
-    if(dir == PX_GPIO_DIR_IN)                                                  \
-    {                                                                       \
-        PX_BIT_SET_LO(*(ddr), bit);                                            \
-    }                                                                       \
-    else                                                                    \
-    {                                                                       \
-        PX_BIT_SET_HI(*(ddr), bit);                                            \
-    }                                                                       \
-}                                                                           \
+#define _GPIO_PIN_INIT(port, ddr, pin, bit, dir, init) \
+do \
+{ \
+    if(init == PX_GPIO_INIT_LO) \
+    { \
+        PX_BIT_SET_LO(*(port), bit); \
+    } \
+    else \
+    { \
+        PX_BIT_SET_HI(*(port), bit); \
+    } \
+    if(dir == PX_GPIO_DIR_IN) \
+    { \
+        PX_BIT_SET_LO(*(ddr), bit); \
+    } \
+    else \
+    { \
+        PX_BIT_SET_HI(*(ddr), bit); \
+    } \
+} \
 while(0)
 
 /// Set GPIO pin output high
@@ -356,12 +356,12 @@ while(0)
  *  
  */
 inline void px_gpio_open(px_gpio_handle_t * gpio, 
-                         px_gpio_reg_t port,
-                         px_gpio_reg_t ddr,
-                         px_gpio_reg_t pin,
-                         uint8_t bit,
-                         uint8_t dir,
-                         uint8_t init)
+                         px_gpio_reg_t      port,
+                         px_gpio_reg_t      ddr,
+                         px_gpio_reg_t      pin,
+                         uint8_t            bit,
+                         uint8_t            dir,
+                         uint8_t            init)
 {
     gpio->port = port;
     gpio->ddr  = ddr;

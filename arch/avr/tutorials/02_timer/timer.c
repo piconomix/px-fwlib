@@ -32,9 +32,9 @@
 #include <avr/io.h>
 
 // LED GPIO pin macros
-#define LED_INIT()  DDRB  |=  (1<<0)
-#define LED_ON()    PORTB |=  (1<<0)
-#define LED_OFF()   PORTB &= ~(1<<0)
+#define LED_INIT()  DDRB  |=  (1 << 0)
+#define LED_ON()    PORTB |=  (1 << 0)
+#define LED_OFF()   PORTB &= ~(1 << 0)
 
 // Define CPU frequency in Hz
 #define F_CPU 7372800ul
@@ -49,49 +49,38 @@ void tmr_init(void)
      *  that when TCNT1 reaches the OCR1A value, OCF1A flag will be set and
      *  TCNT1 will be reset to 0.
      */ 
-    TCCR1A = (0<<WGM11) | (0<<WGM10);
-    TCCR1B = (0<<WGM13) | (1<<WGM12) | (1<<CS12) | (0<<CS11) | (1<<CS10);
+    TCCR1A = (0 << WGM11) | (0 << WGM10);
+    TCCR1B = (0 << WGM13) | (1 << WGM12) | (1 << CS12) | (0 << CS11) | (1 << CS10);
 }
 
 void tmr_delay(uint16_t delay_ms)
 {
     // Calculate and set delay
     OCR1A = ((F_CPU / 1024) * delay_ms) / 1000;
-
     // Reset counter
     TCNT1 = 0;
-
     // Clear OCF1A flag by writing a logical 1; other flags are unchanged
     // This is more efficient than using "TIFR1 |= (1<<OCF1A);"
-    TIFR1 = (1<<OCF1A);
-
+    TIFR1 = (1 << OCF1A);
     // Wait until OCF1A flag is set
-    while((TIFR1 & (1<<OCF1A)) == 0)
-    {
-        ;
-    }
+    while((TIFR1 & (1 << OCF1A)) == 0) {;}
 }
 
 int main(void)
 {
     // Initialise LED GPIO pin
     LED_INIT();
-
     // Initialise timer
     tmr_init();
-
     // Repeat forever
     for(;;)
     {
         // Enable LED
         LED_ON();
-
         // Wait 100 ms
         tmr_delay(100);
-
         // Disable LED
         LED_OFF();
-
         // Wait 900 ms
         tmr_delay(900);
     }

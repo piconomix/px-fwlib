@@ -195,23 +195,23 @@ bool px_spi_open2(px_spi_handle_t * handle,
     // Save Chip Select GPIO ID
     handle->cs_id = cs_id;
     // Initial value for SPCR
-    spcr =   (0<<SPIE) | (1<<SPE)  | (0<<DORD) | (1<<MSTR)
-           | (0<<CPOL) | (0<<CPHA) | (0<<SPR1) | (0<<SPR0);
+    spcr =   (0 << SPIE) | (1 << SPE)  | (0 << DORD) | (1 << MSTR)
+           | (0 << CPOL) | (0 << CPHA) | (0 << SPR1) | (0 << SPR0);
     // Set baud
     use_spi2x = false;
     switch(baud)
     {
-    case PX_SPI_BAUD_CLK_DIV_2:     spcr |= (0<<SPR1) | (0<<SPR0); use_spi2x = true; break;
-    case PX_SPI_BAUD_CLK_DIV_4:     spcr |= (0<<SPR1) | (0<<SPR0); break;
-    case PX_SPI_BAUD_CLK_DIV_8:     spcr |= (0<<SPR1) | (1<<SPR0); use_spi2x = true; break;
-    case PX_SPI_BAUD_CLK_DIV_16:    spcr |= (0<<SPR1) | (1<<SPR0); break;
-    case PX_SPI_BAUD_CLK_DIV_32:    spcr |= (1<<SPR1) | (0<<SPR0); use_spi2x = true; break;
-    case PX_SPI_BAUD_CLK_DIV_64:    spcr |= (1<<SPR1) | (0<<SPR0); break;
-    case PX_SPI_BAUD_CLK_DIV_128:   spcr |= (1<<SPR1) | (1<<SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_2:   spcr |= (0 << SPR1) | (0 << SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_4:   spcr |= (0 << SPR1) | (0 << SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_8:   spcr |= (0 << SPR1) | (1 << SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_16:  spcr |= (0 << SPR1) | (1 << SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_32:  spcr |= (1 << SPR1) | (0 << SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_64:  spcr |= (1 << SPR1) | (0 << SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_128: spcr |= (1 << SPR1) | (1 << SPR0); break;
     default: break;
     }
     // Set SPI Mode (0,1,2 or 3)
-    spcr |= (((uint8_t)mode)&3) << CPHA;
+    spcr |= (((uint8_t)mode) & 3) << CPHA;
     // Set data order
     if(data_order == PX_SPI_DATA_ORDER_LSB)
     {
@@ -224,9 +224,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
     // Set value for "Master Out dummy byte"
     handle->mo_dummy_byte = mo_dummy_byte;
     // Initialise peripheral
-    px_spi_init_peripheral(spi_nr,
-                           handle->spcr,
-                           handle->use_spi2x);
+    px_spi_init_peripheral(spi_nr, handle->spcr, handle->use_spi2x);
     // Point handle to peripheral
     handle->spi_per = spi_per;
     // Success
@@ -290,9 +288,7 @@ void px_spi_wr(px_spi_handle_t * handle,
     PX_LOG_ASSERT(spi_per != NULL);
     PX_LOG_ASSERT(spi_per->open_counter != 0);
     // Update communication parameters (if different)
-    px_spi_update_cfg(spi_per->spi_nr,
-                      handle->spcr,
-                      handle->use_spi2x);
+    px_spi_update_cfg(spi_per->spi_nr, handle->spcr, handle->use_spi2x);
 
     if(flags & PX_SPI_FLAG_START)
     {
@@ -338,9 +334,7 @@ void px_spi_rd(px_spi_handle_t * handle,
     PX_LOG_ASSERT(spi_per->open_counter != 0);
 
     // Update communication parameters (if different)
-    px_spi_update_cfg(spi_per->spi_nr,
-                      handle->spcr,
-                      handle->use_spi2x);
+    px_spi_update_cfg(spi_per->spi_nr, handle->spcr, handle->use_spi2x);
 
     if(flags & PX_SPI_FLAG_START)
     {
@@ -387,9 +381,7 @@ void px_spi_xc(px_spi_handle_t * handle,
     PX_LOG_ASSERT(spi_per->open_counter != 0);
 
     // Update communication parameters (if different)
-    px_spi_update_cfg(spi_per->spi_nr,
-                      handle->spcr,
-                      handle->use_spi2x);
+    px_spi_update_cfg(spi_per->spi_nr, handle->spcr, handle->use_spi2x);
 
     if(flags & PX_SPI_FLAG_START)
     {
@@ -431,41 +423,27 @@ void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
     // Check that handle is open
     PX_LOG_ASSERT(spi_per != NULL);
     PX_LOG_ASSERT(spi_per->open_counter != 0);
-
     // Clear SPI Clock divisor bits
-    spcr = handle->spcr & (~((1<<SPR1) | (1<<SPR0)));
-
+    spcr = handle->spcr & (~((1 << SPR1) | (1 << SPR0)));
     // Set new clock divisor
     use_spi2x = false;
     switch(baud)
     {
-    case PX_SPI_BAUD_CLK_DIV_2:     spcr |= (0<<SPR1) | (0<<SPR0); use_spi2x = true;
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_4:     spcr |= (0<<SPR1) | (0<<SPR0);
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_8:     spcr |= (0<<SPR1) | (1<<SPR0); use_spi2x = true;
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_16:    spcr |= (0<<SPR1) | (1<<SPR0);
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_32:    spcr |= (1<<SPR1) | (0<<SPR0); use_spi2x = true;
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_64:    spcr |= (1<<SPR1) | (0<<SPR0);
-                                    break;
-    case PX_SPI_BAUD_CLK_DIV_128:   spcr |= (1<<SPR1) | (1<<SPR0);
-                                    break;
-    default:
-        break;
+    case PX_SPI_BAUD_CLK_DIV_2:   spcr |= (0 << SPR1) | (0 << SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_4:   spcr |= (0 << SPR1) | (0 << SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_8:   spcr |= (0 << SPR1) | (1 << SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_16:  spcr |= (0 << SPR1) | (1 << SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_32:  spcr |= (1 << SPR1) | (0 << SPR0); use_spi2x = true; break;
+    case PX_SPI_BAUD_CLK_DIV_64:  spcr |= (1 << SPR1) | (0 << SPR0); break;
+    case PX_SPI_BAUD_CLK_DIV_128: spcr |= (1 << SPR1) | (1 << SPR0); break;
+    default: break;
     }
-
     // Update value for SPI Control Register
     handle->spcr = spcr;
     // Update value for "Use SPI 2x clock rate"
     handle->use_spi2x = use_spi2x;
-
     // Initialise peripheral
-    px_spi_update_cfg(spi_per->spi_nr, 
-                      handle->spcr, 
-                      handle->use_spi2x);
+    px_spi_update_cfg(spi_per->spi_nr, handle->spcr, handle->use_spi2x);
 }
 
 px_spi_baud_t px_spi_util_baud_hz_to_clk_div(uint32_t baud_hz)
@@ -497,5 +475,5 @@ px_spi_baud_t px_spi_util_baud_hz_to_clk_div(uint32_t baud_hz)
 
 uint32_t px_spi_util_clk_div_to_baud_hz(px_spi_baud_t baud)
 {
-    return (((uint32_t)F_CPU) >> (baud+1));
+    return (((uint32_t)F_CPU) >> (baud + 1));
 }

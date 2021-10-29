@@ -14,11 +14,9 @@ int main(void)
     // Open gpio handles
     px_gpio_open(&px_gpio_led, PX_GPIO_LED); 
     px_gpio_open(&px_gpio_pb, PX_GPIO_PB);
-
     // Initialise pins
     px_gpio_pin_init(&px_gpio_led);
     px_gpio_pin_init(&px_gpio_pb);
-
     // Repeat forever
     for(;;)
     {

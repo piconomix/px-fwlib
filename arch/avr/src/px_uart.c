@@ -70,8 +70,8 @@ ISR(USART0_RX_vect)
     uint8_t ucsra = UCSR0A;
     uint8_t data  = UDR0;
 
-    // Accept data only if there were no Framing, Data Overrun or Parity Error(s)
-    if(ucsra & ((1<<FE0)|(1<<DOR0)|(1<<UPE0)))
+    // Accept data only if there were no Framing or Parity Error(s)
+    if(ucsra & ((1 << FE0) | (1 << UPE0)))
     {
         // Received data had an error, discard received data
         return;
@@ -122,8 +122,8 @@ ISR(USART1_RX_vect)
     uint8_t ucsra = UCSR1A;
     uint8_t data  = UDR1;
 
-    // Accept data only if there were no Framing, Data Overrun or Parity Error(s)
-    if(ucsra & ((1<<FE1)|(1<<DOR1)|(1<<UPE1)))
+    // Accept data only if there were no Framing or Parity Error(s)
+    if(ucsra & ((1 << FE1) | (1 << UPE1)))
     {
         // Received data had an error, discard received data
         return;
@@ -224,7 +224,7 @@ static bool px_uart_init_peripheral(px_uart_nr_t uart_nr,
         UCSR0B = 0;
 #if (PX_UART_CFG_USE_2X_BAUD_RATE == 1)
         // Double the USART transmission speed
-        UCSR0A = (1<<U2X0);
+        UCSR0A = (1 << U2X0);
 #else
         UCSR0A = 0;
 #endif
@@ -234,7 +234,7 @@ static bool px_uart_init_peripheral(px_uart_nr_t uart_nr,
         // Configure data bits, parity and stop bits
         UCSR0C = ucsrc;
         // Enable RxD/TxD and receive interupt
-        UCSR0B = (1<<RXCIE0) | (1<<RXEN0) | (1<<TXEN0);
+        UCSR0B = (1 << RXCIE0) | (1 << RXEN0) | (1 << TXEN0);
         break;
 #endif
 
@@ -244,7 +244,7 @@ static bool px_uart_init_peripheral(px_uart_nr_t uart_nr,
         UCSR1B = 0;
 #if (PX_UART_CFG_USE_2X_BAUD_RATE == 1)
         // Double the USART transmission speed
-        UCSR1A = (1<<U2X1);
+        UCSR1A = (1 << U2X1);
 #else
         UCSR1A = 0;
 #endif
@@ -254,7 +254,7 @@ static bool px_uart_init_peripheral(px_uart_nr_t uart_nr,
         // Configure data bits, parity and stop bits
         UCSR1C = ucsrc;
         // Enable RxD/TxD and receive interupt
-        UCSR1B = (1<<RXCIE1) | (1<<RXEN1) | (1<<TXEN1);
+        UCSR1B = (1 << RXCIE1) | (1 << RXEN1) | (1 << TXEN1);
         break;
 #endif
 
@@ -363,20 +363,15 @@ bool px_uart_open2(px_uart_handle_t *  handle,
     switch(uart_nr)
     {
 #if PX_UART_CFG_UART0_EN
-    case PX_UART_NR_0:
-        uart_per = &px_uart_per_0;
-        break;
+    case PX_UART_NR_0: uart_per = &px_uart_per_0; break;
 #endif
 #if PX_UART_CFG_UART1_EN
-    case PX_UART_NR_1:
-        uart_per = &px_uart_per_1;
-        break;
+    case PX_UART_NR_1: uart_per = &px_uart_per_1; break;
 #endif
     default:
         PX_LOG_E("Invalid peripheral specified");
         return false;
     }
-
     // Already open?
     if(uart_per->open_counter != 0)
     {
@@ -388,15 +383,9 @@ bool px_uart_open2(px_uart_handle_t *  handle,
     // Set parity
     switch(parity)
     {
-    case PX_UART_PARITY_ODD :
-        ucsrc |= (1<<UPM01) | (1<<UPM00);
-        break;
-    case PX_UART_PARITY_EVEN :
-        ucsrc |= (1<<UPM01) | (0<<UPM00);
-        break;
-    case PX_UART_PARITY_NONE :
-        ucsrc |= (0<<UPM01) | (0<<UPM00);
-        break;
+    case PX_UART_PARITY_ODD:  ucsrc |= (1 << UPM01) | (1 << UPM00); break;
+    case PX_UART_PARITY_EVEN: ucsrc |= (1 << UPM01) | (0 << UPM00); break;
+    case PX_UART_PARITY_NONE: ucsrc |= (0 << UPM01) | (0 << UPM00); break;
     default:
         PX_LOG_E("Invalid parity specified");
         handle->uart_per = NULL;
@@ -405,18 +394,10 @@ bool px_uart_open2(px_uart_handle_t *  handle,
     // Set data bits
     switch(data_bits)
     {
-    case PX_UART_DATA_BITS_5:
-        ucsrc |= (0<<UCSZ01) | (0<<UCSZ00);
-        break;
-    case PX_UART_DATA_BITS_6:
-        ucsrc |= (0<<UCSZ01) | (1<<UCSZ00);
-        break;
-    case PX_UART_DATA_BITS_7:
-        ucsrc |= (1<<UCSZ01) | (0<<UCSZ00);
-        break;
-    case PX_UART_DATA_BITS_8:
-        ucsrc |= (1<<UCSZ01) | (1<<UCSZ00);
-        break;
+    case PX_UART_DATA_BITS_5: ucsrc |= (0 << UCSZ01) | (0 << UCSZ00); break;
+    case PX_UART_DATA_BITS_6: ucsrc |= (0 << UCSZ01) | (1 << UCSZ00); break;
+    case PX_UART_DATA_BITS_7: ucsrc |= (1 << UCSZ01) | (0 << UCSZ00); break;
+    case PX_UART_DATA_BITS_8: ucsrc |= (1 << UCSZ01) | (1 << UCSZ00); break;
     default:
         PX_LOG_E("Invalid number of data bits");
         handle->uart_per = NULL;
@@ -425,21 +406,15 @@ bool px_uart_open2(px_uart_handle_t *  handle,
     // Set stop bits
     switch(stop_bits)
     {
-    case PX_UART_STOP_BITS_1:
-        ucsrc |= (0<<USBS0);
-        break;
-    case PX_UART_STOP_BITS_2:
-        ucsrc |= (1<<USBS0);
-        break;
+    case PX_UART_STOP_BITS_1: ucsrc |= (0 << USBS0); break;
+    case PX_UART_STOP_BITS_2: ucsrc |= (1 << USBS0); break;
     default:
         PX_LOG_E("Invalid number of stop bits specified");
         handle->uart_per = NULL;
         return false;
     }
     // Initialise peripheral
-    if(!px_uart_init_peripheral(uart_nr,
-                                ubrr, 
-                                ucsrc))
+    if(!px_uart_init_peripheral(uart_nr, ubrr, ucsrc))
     {
         // Invalid parameter specified
         return false;
@@ -469,19 +444,14 @@ bool px_uart_close(px_uart_handle_t * handle)
         return false;
     }
 
+    // Disable UART
     switch(uart_per->uart_nr)
     {
 #if PX_UART_CFG_UART0_EN
-    case 0:
-        // Disable UART
-        UCSR0B = 0;
-        break;
+    case 0: UCSR0B = 0; break;
 #endif
 #if PX_UART_CFG_UART1_EN
-    case 1:
-        // Disable UART
-        UCSR1B = 0;
-        break;
+    case 1: UCSR1B = 0; break;
 #endif
     default:
         PX_LOG_E("Invalid peripheral");
@@ -507,10 +477,7 @@ void px_uart_put_char(px_uart_handle_t * handle, char data)
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
     // Wait until transmit buffer has space for one byte
-    while(PX_RING_BUF_FULL(uart_per->tx_circ_buf))
-    {
-        ;
-    }
+    while(PX_RING_BUF_FULL(uart_per->tx_circ_buf)) {;}
     // Buffer the byte to be transmitted
     PX_RING_BUF_WRITE(uart_per->tx_circ_buf, (uint8_t)data);
     // Make sure transmit process is started by enabling interrupt
@@ -562,10 +529,8 @@ size_t px_uart_wr(px_uart_handle_t * handle, const void* data, size_t nr_of_byte
         {
             break;
         }
-
         // Insert data into buffer
         PX_RING_BUF_WRITE(uart_per->tx_circ_buf, *data_u8++);
-
         // Next byte
         bytes_buffered++;
         nr_of_bytes--;
@@ -591,11 +556,7 @@ char px_uart_get_char(px_uart_handle_t * handle)
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
     // Wait until at least one byte has been received
-    while(PX_RING_BUF_EMPTY(uart_per->rx_circ_buf))
-    {
-        ;
-    }
-
+    while(PX_RING_BUF_EMPTY(uart_per->rx_circ_buf)) {;}
     // Fetch received byte
     PX_RING_BUF_READ(uart_per->rx_circ_buf, data);
 
@@ -648,7 +609,6 @@ size_t px_uart_rd(px_uart_handle_t * handle, void* buffer, size_t nr_of_bytes)
         }
         // Fetch byte
         PX_RING_BUF_READ(uart_per->rx_circ_buf, *buffer_u8++);
-
         // Next byte
         data_received++;
         nr_of_bytes--;
@@ -758,25 +718,19 @@ void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
 
     // Calculate new 16-bit UBRR register value
     ubrr = px_uart_calc_ubrr(baud);
-
     // Get current UCSRxC register value (data bits, parity & stop bits)
     switch(uart_per->uart_nr)
     {
 #if PX_UART_CFG_UART0_EN
-    case 0:
-        ucsrc = UCSR0C;
-        break;
+    case 0: ucsrc = UCSR0C; break;
 #endif
 #if PX_UART_CFG_UART1_EN
-    case 1:
-        ucsrc = UCSR1C;
-        break;
+    case 1: ucsrc = UCSR1C; break;
 #endif
     default:
         PX_LOG_E("Invalid peripheral");
         return;
     }
-
     // Initialise peripheral with new BAUD rate
     px_uart_init_peripheral(uart_per->uart_nr, ubrr, ucsrc);
 }

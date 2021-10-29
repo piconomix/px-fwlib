@@ -36,7 +36,6 @@
 
 // Macro to send strings stored in program memory space
 #define PRINTF_P(format, ...) printf_P(PSTR(format), ## __VA_ARGS__)
-
 // Define baud rate
 #define UART0_BAUD      115200ul
 #define UART0_UBBR_VAL  ((F_CPU / (UART0_BAUD * 16)) - 1)
@@ -45,12 +44,10 @@ void uart_init(void)
 {
     // Set baud rate
     UBRR0 = UART0_UBBR_VAL;
-
     // Set frame format to 8 data bits, no parity, 1 stop bit
-    UCSR0C = (0<<USBS0) | (1<<UCSZ01) | (1<<UCSZ00);
-
+    UCSR0C = (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00);
     // Enable receiver and transmitter
-    UCSR0B = (1<<RXEN0) | (1<<TXEN0);
+    UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 }
 
 int uart_put_char(char data, FILE * stream)
@@ -61,10 +58,7 @@ int uart_put_char(char data, FILE * stream)
         uart_put_char('\r', stream);
     }
     // Wait until data register is empty
-    while((UCSR0A & (1<<UDRE0)) == 0)
-    {
-        ;
-    }
+    while((UCSR0A & (1 << UDRE0)) == 0) {;}
     // Load transmit register with new data
     UDR0 = data;
 
@@ -84,27 +78,21 @@ void tmr_init(void)
      *  that when TCNT1 reaches the OCR1A value, OCF1A flag will be set and TCNT1
      *  will be reset to 0.
      */ 
-    TCCR1A = (0<<WGM11) | (0<<WGM10);
-    TCCR1B = (0<<WGM13) | (1<<WGM12) | (1<<CS12) | (0<<CS11) | (1<<CS10);
+    TCCR1A = (0 << WGM11) | (0 << WGM10);
+    TCCR1B = (0 << WGM13) | (1 << WGM12) | (1 << CS12) | (0 << CS11) | (1 << CS10);
 }
 
 void tmr_delay(uint16_t delay_ms)
 {
     // Calculate and set delay
     OCR1A = ((F_CPU / 1024) * delay_ms) / 1000;
-
     // Reset counter
     TCNT1 = 0;
-
     // Clear OCF1A flag by writing a logical 1; other flags are unchanged
-    // This is more efficient than using "TIFR |= (1<<OCF1A);"
-    TIFR1 = (1<<OCF1A);
-
+    // This is more efficient than using "TIFR |= (1 << OCF1A);"
+    TIFR1 = (1 << OCF1A);
     // Wait until OCF1A flag is set
-    while((TIFR1 & (1<<OCF1A)) == 0)
-    {
-        ;
-    }
+    while((TIFR1 & (1 << OCF1A)) == 0) {;}
 }
 
 void adc_init(void)
@@ -113,29 +101,24 @@ void adc_init(void)
      *  Select AVCC as reference with external capacitor at AREF pin
      *  Select ADC0 (MUX3...0 = 0000b)
      */
-    ADMUX =   (0<<REFS1) | (1<<REFS0) 
-            | (0<<MUX3)  | (0<<MUX2)  | (0<<MUX1) | (0<<MUX0);
+    ADMUX =   (0 << REFS1) | (1 << REFS0)
+            | (0 << MUX3)  | (0 << MUX2)  | (0 << MUX1) | (0 << MUX0);
     /*
      *  Enable ADC; Select ADC Prescaler of 128 resulting in an ADC clock
      *  frequency of 57.6 kHz with F_CPU = 7.3728 MHz
      */
-    ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);
+    ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 }
 
 uint16_t adc_get_sample(void)
 {
     // Start conversion
-    ADCSRA |= (1<<ADSC);
-
+    ADCSRA |= (1 << ADSC);
     /*
      *  Wait until conversion is finished, which normally takes 13 ADC clock 
      *  cycles (226 us).
      */
-    while(ADCSRA & (1<<ADSC))
-    {
-        ;
-    }
-
+    while(ADCSRA & (1 << ADSC)) {;}
     // Return sampled value
     return ADC;
 }
@@ -146,28 +129,21 @@ int main(void)
 
     // Initialise board
     px_board_init();
-
     // Initialise UART
     uart_init();
-
     // Direct stdout stream to uart_stream
     stdout = &uart_stream;
-
     // Initialise timer
     tmr_init();
-
     // Initialise ADC
     adc_init();
-
     // Repeat forever
     for(;;)
     {
         // Retrieve a sample
         adc = adc_get_sample();
-
-        // Output value
+        // Report value
         PRINTF_P("ADC value is %d\n", adc);
-
         // Wait 1 s
         tmr_delay(1000);
     }
