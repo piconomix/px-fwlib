@@ -725,7 +725,7 @@ char px_uart_get_char(px_uart_handle_t * handle)
     PX_LOG_ASSERT(uart_per->open_counter != 0);
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
     // Wait until a byte is in receive buffer and fetch it
-    while(!px_ring_buf_rd_u8(&uart_per->rx_ring_buf, &data)) {;+}
+    while(!px_ring_buf_rd_u8(&uart_per->rx_ring_buf, &data)) {;}
 
     return (char)data;
 }
