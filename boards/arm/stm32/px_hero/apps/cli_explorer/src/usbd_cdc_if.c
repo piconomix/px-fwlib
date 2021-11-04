@@ -51,7 +51,7 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 #include "px_usb_cdc_stdio.h"
 #include "px_board.h"
 #include "main.h"
