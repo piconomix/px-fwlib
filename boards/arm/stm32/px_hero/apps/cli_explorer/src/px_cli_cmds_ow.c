@@ -67,7 +67,7 @@ static const char* px_cli_cmd_fn_ow_info(uint8_t argc, char* argv[])
     px_one_wire_init();
 
     printf("1-Wire (GPIO0) = ");
-    if(PX_GPIO_PIN_IS_LO(PX_GPIO_0))
+    if(PX_GPIO_IN_IS_LO(PX_GPIO_0))
     {
         printf("0\n");
     }

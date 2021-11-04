@@ -148,7 +148,7 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
     }
 
     // Initialise CS pin as an output
-    px_gpio_pin_set_hi(&px_spi_cs_gpio);
+    px_gpio_out_set_hi(&px_spi_cs_gpio);
     px_gpio_dir_set_out(&px_spi_cs_gpio);
 
     // Handle already open?
@@ -183,12 +183,12 @@ static const char* px_cli_cmd_fn_spi_cs(uint8_t argc, char* argv[])
     switch(px_cli_util_argv_to_option(0, "lo\0hi\0"))
     {
     case 0: 
-        px_gpio_pin_set_lo(&px_spi_cs_gpio);
+        px_gpio_out_set_lo(&px_spi_cs_gpio);
         // Start SPI transaction
         px_spi_wr(&px_spi_handle, NULL, 0, PX_SPI_FLAG_START);
         break;
     case 1: 
-        px_gpio_pin_set_hi(&px_spi_cs_gpio);
+        px_gpio_out_set_hi(&px_spi_cs_gpio);
         // Stop SPI transaction
         px_spi_wr(&px_spi_handle, NULL, 0, PX_SPI_FLAG_STOP);
         break;

@@ -93,12 +93,12 @@ void px_board_stop_mode(void);
 
 /* _____MACROS_______________________________________________________________ */
 /// LED
-#define PX_USR_LED_ON()         px_gpio_pin_set_hi(&px_gpio_led_grn)
-#define PX_USR_LED_OFF()        px_gpio_pin_set_lo(&px_gpio_led_grn)
-#define PX_USR_LED_TOGGLE()     px_gpio_pin_toggle(&px_gpio_led_grn)
+#define PX_USR_LED_ON()         px_gpio_out_set_hi(&px_gpio_led_grn)
+#define PX_USR_LED_OFF()        px_gpio_out_set_lo(&px_gpio_led_grn)
+#define PX_USR_LED_TOGGLE()     px_gpio_out_toggle(&px_gpio_led_grn)
 
 /// User button
-#define PX_USR_PB_IS_PRESSED()  px_gpio_pin_is_lo(&px_gpio_btn_blue)
+#define PX_USR_PB_IS_PRESSED()  px_gpio_in_is_lo(&px_gpio_btn_blue)
 
 #ifdef __cplusplus
 }

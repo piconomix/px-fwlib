@@ -42,10 +42,10 @@
  */
 #define PX_ONE_WIRE_CFG_PIN_INIT() \
     { \
-        PX_GPIO_PIN_INIT(PX_GPIO_0); \
+        PX_GPIO_INIT(PX_GPIO_0); \
         PX_GPIO_DIR_SET_IN(PX_GPIO_0); \
         PX_GPIO_PULL_DISABLE(PX_GPIO_0); \
-        PX_GPIO_PIN_SET_LO(PX_GPIO_0); \
+        PX_GPIO_OUT_SET_LO(PX_GPIO_0); \
     }
 
 /// Set 1-Wire GPIO pin as an input
@@ -55,10 +55,10 @@
 #define PX_ONE_WIRE_CFG_PIN_SET_LO()        PX_GPIO_DIR_SET_OUT(PX_GPIO_0)
 
 /// Is 1-Wire GPIO pin input high?
-#define PX_ONE_WIRE_CFG_PIN_IS_HI()         PX_GPIO_PIN_IS_HI(PX_GPIO_0)
+#define PX_ONE_WIRE_CFG_PIN_IS_HI()         PX_GPIO_IN_IS_HI(PX_GPIO_0)
 
 /// Is 1-Wire GPIO pin input low?
-#define PX_ONE_WIRE_CFG_PIN_IS_LO()         PX_GPIO_PIN_IS_LO(PX_GPIO_0)
+#define PX_ONE_WIRE_CFG_PIN_IS_LO()         PX_GPIO_IN_IS_LO(PX_GPIO_0)
 
 /// Delay trim factor in microseconds
 #define PX_ONE_WIRE_CFG_DELAY_TRIM_US       0

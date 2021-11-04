@@ -72,23 +72,23 @@ void px_board_spi_cs_lo(uint8_t cs_id)
     {
     case PX_BOARD_SPI_CS_NONE:               break;
     case PX_BOARD_SPI_SS:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_SPI_SS);  break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_SPI_SS);  break;
     case PX_BOARD_SPI_D2:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_D2);      break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_D2);      break;
     case PX_BOARD_SPI_D3:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_D3);      break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_D3);      break;
     case PX_BOARD_SPI_D4:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_D4);      break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_D4);      break;
     case PX_BOARD_SPI_D5:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_D5);      break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_D5);      break;
     case PX_BOARD_SPI_D6:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_D6);      break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_D6);      break;
     case PX_BOARD_SPI_D7:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_D7);      break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_D7);      break;
     case PX_BOARD_SPI_D8:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_D8);      break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_D8);      break;
     case PX_BOARD_SPI_D9:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_D9);      break;
+        PX_GPIO_OUT_SET_LO(PX_GPIO_D9);      break;
     default:
         PX_LOG_ASSERT(false);
         break;
@@ -101,23 +101,23 @@ void px_board_spi_cs_hi(uint8_t cs_id)
     {
     case PX_BOARD_SPI_CS_NONE:               break;
     case PX_BOARD_SPI_SS:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_SPI_SS);  break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_SPI_SS);  break;
     case PX_BOARD_SPI_D2:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_D2);      break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_D2);      break;
     case PX_BOARD_SPI_D3:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_D3);      break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_D3);      break;
     case PX_BOARD_SPI_D4:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_D4);      break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_D4);      break;
     case PX_BOARD_SPI_D5:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_D5);      break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_D5);      break;
     case PX_BOARD_SPI_D6:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_D6);      break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_D6);      break;
     case PX_BOARD_SPI_D7:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_D7);      break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_D7);      break;
     case PX_BOARD_SPI_D8:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_D8);      break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_D8);      break;
     case PX_BOARD_SPI_D9:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_D9);      break;
+        PX_GPIO_OUT_SET_HI(PX_GPIO_D9);      break;
     default:
         PX_LOG_ASSERT(false);
         break;

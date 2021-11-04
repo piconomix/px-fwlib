@@ -26,7 +26,7 @@
 // Assign Digital 2 (Port D pin 2) as LED output pin
 #define PX_GPIO_LED    PX_GPIO(D, 2, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO)
 // Assign Digital 3 (Port D pin 3) as Button input pin
-#define PX_GPIO_PB     PX_GPIO(D, 3, PX_GPIO_DIR_IN, PX_GPIO_INIT_PULLUP)
+#define PX_GPIO_PB     PX_GPIO(D, 3, PX_GPIO_DIR_IN, PX_GPIO_INIT_PULL_UP)
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -44,22 +44,22 @@ static const px_gpio_handle_t px_gpio_pb  = {PX_GPIO_PB};
 int main(void)
 {    
     // Initialise pins
-    px_gpio_pin_init(&px_gpio_led);
-    px_gpio_pin_init(&px_gpio_pb);
+    px_gpio_init(&px_gpio_led);
+    px_gpio_init(&px_gpio_pb);
 
     // Repeat forever
     for(;;)
     {
         // Is button being pressed?
-        if(px_gpio_pin_is_lo(&px_gpio_pb))
+        if(px_gpio_in_is_lo(&px_gpio_pb))
         {
             // Enable LED
-            px_gpio_pin_set_hi(&px_gpio_led);
+            px_gpio_out_set_hi(&px_gpio_led);
         }
         else
         {
             // Disable LED
-            px_gpio_pin_set_lo(&px_gpio_led);
+            px_gpio_out_set_lo(&px_gpio_led);
         }
     }
 }

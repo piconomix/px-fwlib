@@ -66,7 +66,7 @@ void px_gpio_open2(px_gpio_handle_t * gpio,
     }
 }
 
-void px_gpio_pin_init(const px_gpio_handle_t * gpio)
+void px_gpio_init(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 

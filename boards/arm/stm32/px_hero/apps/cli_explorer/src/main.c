@@ -181,12 +181,12 @@ static void main_report_button(uint8_t button)
 static void main_monitor_buttons(void)
 {
     // Update debounce state machines with push button states
-    px_debounce_update(&px_debounce_pb1, px_gpio_pin_is_hi(&px_gpio_lcd_btn_1_lt));
-    px_debounce_update(&px_debounce_pb2, px_gpio_pin_is_hi(&px_gpio_lcd_btn_2_rt));
-    px_debounce_update(&px_debounce_pb3, px_gpio_pin_is_hi(&px_gpio_lcd_btn_3_up));
-    px_debounce_update(&px_debounce_pb4, px_gpio_pin_is_hi(&px_gpio_lcd_btn_4_dn));
-    px_debounce_update(&px_debounce_pb5, px_gpio_pin_is_hi(&px_gpio_lcd_btn_5_yes));
-    px_debounce_update(&px_debounce_pb6, px_gpio_pin_is_hi(&px_gpio_lcd_btn_6_no));
+    px_debounce_update(&px_debounce_pb1, px_gpio_in_is_hi(&px_gpio_lcd_btn_1_lt));
+    px_debounce_update(&px_debounce_pb2, px_gpio_in_is_hi(&px_gpio_lcd_btn_2_rt));
+    px_debounce_update(&px_debounce_pb3, px_gpio_in_is_hi(&px_gpio_lcd_btn_3_up));
+    px_debounce_update(&px_debounce_pb4, px_gpio_in_is_hi(&px_gpio_lcd_btn_4_dn));
+    px_debounce_update(&px_debounce_pb5, px_gpio_in_is_hi(&px_gpio_lcd_btn_5_yes));
+    px_debounce_update(&px_debounce_pb6, px_gpio_in_is_hi(&px_gpio_lcd_btn_6_no));
     // Button pressed?
     if(px_debounce_falling_edge_detected(&px_debounce_pb1))
     {
@@ -229,12 +229,12 @@ int main(void)
     PX_LOG_TRACE("Debug enabled\n");
 
     // Initialize debounced buttons
-    px_debounce_init(&px_debounce_pb1, px_gpio_pin_is_hi(&px_gpio_lcd_btn_1_lt));
-    px_debounce_init(&px_debounce_pb2, px_gpio_pin_is_hi(&px_gpio_lcd_btn_2_rt));
-    px_debounce_init(&px_debounce_pb3, px_gpio_pin_is_hi(&px_gpio_lcd_btn_3_up));
-    px_debounce_init(&px_debounce_pb4, px_gpio_pin_is_hi(&px_gpio_lcd_btn_4_dn));
-    px_debounce_init(&px_debounce_pb5, px_gpio_pin_is_hi(&px_gpio_lcd_btn_5_yes));
-    px_debounce_init(&px_debounce_pb6, px_gpio_pin_is_hi(&px_gpio_lcd_btn_6_no));
+    px_debounce_init(&px_debounce_pb1, px_gpio_in_is_hi(&px_gpio_lcd_btn_1_lt));
+    px_debounce_init(&px_debounce_pb2, px_gpio_in_is_hi(&px_gpio_lcd_btn_2_rt));
+    px_debounce_init(&px_debounce_pb3, px_gpio_in_is_hi(&px_gpio_lcd_btn_3_up));
+    px_debounce_init(&px_debounce_pb4, px_gpio_in_is_hi(&px_gpio_lcd_btn_4_dn));
+    px_debounce_init(&px_debounce_pb5, px_gpio_in_is_hi(&px_gpio_lcd_btn_5_yes));
+    px_debounce_init(&px_debounce_pb6, px_gpio_in_is_hi(&px_gpio_lcd_btn_6_no));
 
     // Beep
     px_board_buzzer_on(4000);

@@ -50,11 +50,11 @@ static void px_i2c_gpio_disable(void)
 static const char * px_i2c_check_idle_state(void)
 {
     px_i2c_gpio_enable();
-    if(PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SCL))
+    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SCL))
     {
         PX_PRINTF_P("Error. SCL is 0\n");
     }
-    if(PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SDA))
+    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SDA))
     {
         PX_PRINTF_P("Error. SDA is 0. Try I2C Bus Reset procedure\n");
     }
@@ -67,7 +67,7 @@ static const char * px_cli_cmd_fn_i2c_info(uint8_t argc, char* argv[])
 {
     px_i2c_gpio_enable();
     PX_PRINTF_P("SCL = ");
-    if(PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SCL))
+    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SCL))
     {
         PX_PRINTF_P("0\n");
     }
@@ -76,7 +76,7 @@ static const char * px_cli_cmd_fn_i2c_info(uint8_t argc, char* argv[])
         PX_PRINTF_P("1\n");
     }
     PX_PRINTF_P("SDA = ");
-    if(PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SDA))
+    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SDA))
     {
         PX_PRINTF_P("0\n");
     }
@@ -85,11 +85,11 @@ static const char * px_cli_cmd_fn_i2c_info(uint8_t argc, char* argv[])
         PX_PRINTF_P("1\n");
     }
 
-    if(PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SCL))
+    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SCL))
     {
         PX_PRINTF_P("Error. SCL is 0\n");
     }
-    if(PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SDA))
+    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SDA))
     {
         PX_PRINTF_P("Error. SDA is 0. Try I2C Bus Reset procedure\n");
     }
@@ -105,7 +105,7 @@ static const char * px_cli_cmd_fn_i2c_reset(uint8_t argc, char* argv[])
 
     px_i2c_gpio_enable();
 
-    if(PX_GPIO_PIN_IS_LO(PX_GPIO_I2C_SCL))
+    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SCL))
     {
         px_i2c_gpio_disable();
         return PX_PGM_STR("Error. SCL is 0. I2C Bus reset requires SCL to be released");
@@ -114,9 +114,9 @@ static const char * px_cli_cmd_fn_i2c_reset(uint8_t argc, char* argv[])
     // Clock SCL 8 times
     for(i=8; i!=0; i--)
     {
-        PX_GPIO_PIN_SET_LO(PX_GPIO_I2C_SCL);
+        PX_GPIO_OUT_SET_LO(PX_GPIO_I2C_SCL);
         px_board_delay_us(1000);
-        PX_GPIO_PIN_SET_HI(PX_GPIO_I2C_SCL);
+        PX_GPIO_OUT_SET_HI(PX_GPIO_I2C_SCL);
         px_board_delay_us(1000);
     }
 

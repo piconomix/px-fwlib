@@ -403,7 +403,7 @@ static const char* px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
     gpio_handle.out_init    = PX_GPIO_OUT_INIT_NA;
     gpio_handle.af          = PX_GPIO_AF_NA;
 
-    px_gpio_pin_init(&gpio_handle);
+    px_gpio_init(&gpio_handle);
 
     return NULL;
 }
@@ -465,7 +465,7 @@ static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
     gpio_handle.mode   = PX_GPIO_MODE_OUT;
     gpio_handle.ospeed  = PX_GPIO_OSPEED_VH;
     gpio_handle.af = PX_GPIO_AF_NA;
-    px_gpio_pin_init(&gpio_handle);
+    px_gpio_init(&gpio_handle);
 
     return NULL;
 }
@@ -481,7 +481,7 @@ static const char* px_cli_cmd_fn_gpio_in(uint8_t argc, char* argv[])
         return result;
     }
 
-    if(px_gpio_pin_is_lo(&gpio_handle))
+    if(px_gpio_in_is_lo(&gpio_handle))
     {
         printf("0\n");
     }
@@ -507,8 +507,8 @@ static const char* px_cli_cmd_fn_gpio_out(uint8_t argc, char* argv[])
     // <0|1>
     switch(argv[1][0])
     {
-    case '0': px_gpio_pin_set_lo(&gpio_handle); break;
-    case '1': px_gpio_pin_set_hi(&gpio_handle); break;
+    case '0': px_gpio_out_set_lo(&gpio_handle); break;
+    case '1': px_gpio_out_set_hi(&gpio_handle); break;
     default:  return "Error. <0|1> must be 0 or 1";
     }
 

@@ -77,11 +77,11 @@ void px_board_spi_cs_lo(uint8_t cs_id)
         break;
 
     case PX_BOARD_SPI_CS:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_SPI_CS);
+        PX_GPIO_OUT_SET_LO(PX_GPIO_SPI_CS);
         break;
 
     case PX_BOARD_SPI_CS_DF:
-        PX_GPIO_PIN_SET_LO(PX_GPIO_SPI_CS_DF);
+        PX_GPIO_OUT_SET_LO(PX_GPIO_SPI_CS_DF);
         break;
 
     default:
@@ -98,11 +98,11 @@ void px_board_spi_cs_hi(uint8_t cs_id)
         break;
 
     case PX_BOARD_SPI_CS:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_SPI_CS);
+        PX_GPIO_OUT_SET_HI(PX_GPIO_SPI_CS);
         break;
 
     case PX_BOARD_SPI_CS_DF:
-        PX_GPIO_PIN_SET_HI(PX_GPIO_SPI_CS_DF);
+        PX_GPIO_OUT_SET_HI(PX_GPIO_SPI_CS_DF);
         break;
 
     default:

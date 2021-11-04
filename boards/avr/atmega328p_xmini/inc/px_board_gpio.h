@@ -29,9 +29,9 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 #define PX_GPIO_LED         PX_GPIO(B, 5, PX_GPIO_DIR_OUT, PX_GPIO_INIT_LO)
-#define PX_GPIO_BTN         PX_GPIO(B, 7, PX_GPIO_DIR_IN, PX_GPIO_INIT_PULLUP)
+#define PX_GPIO_BTN         PX_GPIO(B, 7, PX_GPIO_DIR_IN, PX_GPIO_INIT_PULL_UP)
 
-#define PX_GPIO_UART_RXD    PX_GPIO(D, 0, PX_GPIO_DIR_IN, PX_GPIO_INIT_PULLUP)
+#define PX_GPIO_UART_RXD    PX_GPIO(D, 0, PX_GPIO_DIR_IN, PX_GPIO_INIT_PULL_UP)
 #define PX_GPIO_UART_TXD    PX_GPIO(D, 1, PX_GPIO_DIR_OUT, PX_GPIO_INIT_HI)
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */

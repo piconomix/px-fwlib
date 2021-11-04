@@ -26,12 +26,7 @@
  *  
  *  File(s):
  *  - arch/arm/stm32/inc/px_gpio.h
- *  - arch/arm/stm32/inc/px_gpio_cfg_template.h
  *  - arch/arm/stm32/src/px_gpio.c
- *  
- *  The driver must be configured by supplying a project specific "px_gpio_cfg.h".
- *  "px_gpio_cfg_template.h" can be copied, renamed and modified to supply 
- *  compile time options.
  *  
  *  @par Example:
  *  @include arch/arm/stm32/test/px_gpio_test.c
@@ -127,6 +122,7 @@ typedef struct
     px_gpio_af_t        af;             ///< Alternative function: AF0, AF1, ... or AF7
 } px_gpio_handle_t;
 
+/// GPIO register values to intialise a port
 typedef struct
 {
     GPIO_TypeDef * gpio_base_reg;       ///< GPIO peripheral base register address
@@ -176,8 +172,8 @@ typedef struct
     GPIO ## port, pin, mode, output_type, speed, pull, output_init, alt_fn
 
 /// Initialise a GPIO pin
-#define PX_GPIO_PIN_INIT(gpio) _GPIO_PIN_INIT(gpio)
-#define _GPIO_PIN_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define PX_GPIO_INIT(gpio) _GPIO_INIT(gpio)
+#define _GPIO_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
     do \
     { \
         if(mode == PX_GPIO_MODE_IN) \
@@ -219,18 +215,18 @@ typedef struct
     while(0)
 
 /// Set GPIO pin output high
-#define PX_GPIO_PIN_SET_HI(gpio) _GPIO_PIN_SET_HI(gpio)
-#define _GPIO_PIN_SET_HI(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define PX_GPIO_OUT_SET_HI(gpio) _GPIO_OUT_SET_HI(gpio)
+#define _GPIO_OUT_SET_HI(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetOutputPin(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Set GPIO pin output low
-#define PX_GPIO_PIN_SET_LO(gpio) _GPIO_PIN_SET_LO(gpio)
-#define _GPIO_PIN_SET_LO(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define PX_GPIO_OUT_SET_LO(gpio) _GPIO_PIN_OUT_SET_LO(gpio)
+#define _GPIO_PIN_OUT_SET_LO(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_ResetOutputPin(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Toggle GPIO pin output
-#define PX_GPIO_PIN_TOGGLE(gpio) _GPIO_PIN_TOGGLE(gpio)
-#define _GPIO_PIN_TOGGLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define PX_GPIO_OUT_TOGGLE(gpio) _GPIO_OUT_TOGGLE(gpio)
+#define _GPIO_OUT_TOGGLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_TogglePin(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Test if GPIO pin output is set high
@@ -244,13 +240,13 @@ typedef struct
         (!LL_GPIO_IsOutputPinSet(gpio_base_reg, ((uint32_t)1 << pin)))
 
 /// Test if GPIO pin input is high
-#define PX_GPIO_PIN_IS_HI(gpio) _GPIO_PIN_IS_HI(gpio)
-#define _GPIO_PIN_IS_HI(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define PX_GPIO_IN_IS_HI(gpio) _GPIO_IN_IS_HI(gpio)
+#define _GPIO_IN_IS_HI(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_IsInputPinSet(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Test if GPIO pin input is low
-#define PX_GPIO_PIN_IS_LO(gpio) _GPIO_PIN_IS_LO(gpio)
-#define _GPIO_PIN_IS_LO(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define PX_GPIO_IN_IS_LO(gpio) _GPIO_IN_IS_LO(gpio)
+#define _GPIO_IN_IS_LO(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (!LL_GPIO_IsInputPinSet(gpio_base_reg, ((uint32_t)1 << pin)))
 
 /// Set GPIO pin direction to output
@@ -274,13 +270,13 @@ typedef struct
         (LL_GPIO_GetPinMode(gpio_base_reg, ((uint32_t)1 << pin)) == LL_GPIO_MODE_OUTPUT);
 
 /// Enable pull-up on GPIO pin
-#define PX_GPIO_PULLUP_ENABLE(gpio) _GPIO_PULLUP_ENABLE(gpio)
-#define _GPIO_PULLUP_ENABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define PX_GPIO_PULL_UP_ENABLE(gpio) _GPIO_PULL_UP_ENABLE(gpio)
+#define _GPIO_PULL_UP_ENABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinPull(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_PULL_UP);
 
 /// Enable pull-down on GPIO pin
-#define PX_GPIO_PULLDN_ENABLE(gpio) _GPIO_PULLDN_ENABLE(gpio)
-#define _GPIO_PULLDN_ENABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define PX_GPIO_PULL_DN_ENABLE(gpio) _GPIO_PULL_DN_ENABLE(gpio)
+#define _GPIO_PULL_DN_ENABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinPull(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_PULL_DN);
 
 /// Disable pull-up / pull-down on GPIO pin
@@ -392,10 +388,10 @@ void px_gpio_open2(px_gpio_handle_t * gpio,
                    uint8_t            pin);
 
 /// Initialise a GPIO pin using supplied handle
-void px_gpio_pin_init(const px_gpio_handle_t * gpio);
+void px_gpio_init(const px_gpio_handle_t * gpio);
 
 /// Set GPIO pin output high
-static inline void px_gpio_pin_set_hi(const px_gpio_handle_t * gpio)
+static inline void px_gpio_out_set_hi(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 
@@ -403,7 +399,7 @@ static inline void px_gpio_pin_set_hi(const px_gpio_handle_t * gpio)
 }
 
 /// Set GPIO pin output low
-static inline void px_gpio_pin_set_lo(const px_gpio_handle_t * gpio)
+static inline void px_gpio_out_set_lo(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 
@@ -411,7 +407,7 @@ static inline void px_gpio_pin_set_lo(const px_gpio_handle_t * gpio)
 }
 
 /// Toggle GPIO pin output
-static inline void px_gpio_pin_toggle(const px_gpio_handle_t * gpio)
+static inline void px_gpio_out_toggle(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 
@@ -435,7 +431,7 @@ static inline bool px_gpio_out_is_lo(const px_gpio_handle_t * gpio)
 }
 
 /// Test if GPIO pin input is high
-static inline bool px_gpio_pin_is_hi(const px_gpio_handle_t * gpio)
+static inline bool px_gpio_in_is_hi(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 
@@ -443,7 +439,7 @@ static inline bool px_gpio_pin_is_hi(const px_gpio_handle_t * gpio)
 }
 
 /// Test if GPIO pin input is low
-static inline bool px_gpio_pin_is_lo(const px_gpio_handle_t * gpio)
+static inline bool px_gpio_in_is_lo(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 
@@ -483,7 +479,7 @@ static inline bool px_gpio_dir_is_in(const px_gpio_handle_t * gpio)
 }
 
 /// Enable pull-up on GPIO pin
-static inline void px_gpio_pullup_enable(const px_gpio_handle_t * gpio)
+static inline void px_gpio_pull_up_enable(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 
@@ -491,7 +487,7 @@ static inline void px_gpio_pullup_enable(const px_gpio_handle_t * gpio)
 }
 
 /// Enable pull-down on GPIO pin
-static inline void px_gpio_pulldn_enable(const px_gpio_handle_t * gpio)
+static inline void px_gpio_pull_dn_enable(const px_gpio_handle_t * gpio)
 {
     uint32_t pin_bit_mask = ((uint32_t)1) << gpio->pin;
 

@@ -207,19 +207,19 @@ static const char* px_cli_cmd_fn_gpio_info(uint8_t argc, char* argv[])
 
     px_report_gpio(PX_PGM_STR("GPIO 0"), PX_GPIO_DIR_IS_OUT(PX_GPIO_0), 
                                       PX_GPIO_OUT_IS_HI(PX_GPIO_0),
-                                      PX_GPIO_PIN_IS_HI(PX_GPIO_0));
+                                      PX_GPIO_IN_IS_HI(PX_GPIO_0));
     px_report_gpio(PX_PGM_STR("GPIO 1"), PX_GPIO_DIR_IS_OUT(PX_GPIO_1), 
                                       PX_GPIO_OUT_IS_HI(PX_GPIO_1),
-                                      PX_GPIO_PIN_IS_HI(PX_GPIO_1));
+                                      PX_GPIO_IN_IS_HI(PX_GPIO_1));
     px_report_gpio(PX_PGM_STR("GPIO 2"), PX_GPIO_DIR_IS_OUT(PX_GPIO_2), 
                                       PX_GPIO_OUT_IS_HI(PX_GPIO_2),
-                                      PX_GPIO_PIN_IS_HI(PX_GPIO_2));
+                                      PX_GPIO_IN_IS_HI(PX_GPIO_2));
     px_report_gpio(PX_PGM_STR("GPIO 3"), PX_GPIO_DIR_IS_OUT(PX_GPIO_3), 
                                       PX_GPIO_OUT_IS_HI(PX_GPIO_3),
-                                      PX_GPIO_PIN_IS_HI(PX_GPIO_3));
+                                      PX_GPIO_IN_IS_HI(PX_GPIO_3));
     px_report_gpio(PX_PGM_STR("GPIO 4"), PX_GPIO_DIR_IS_OUT(PX_GPIO_4), 
                                       PX_GPIO_OUT_IS_HI(PX_GPIO_4),
-                                      PX_GPIO_PIN_IS_HI(PX_GPIO_4));
+                                      PX_GPIO_IN_IS_HI(PX_GPIO_4));
     return NULL;
 }
 
@@ -244,7 +244,7 @@ static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
 
     // Configure specified GPIO pin as an output
     px_gpio_handle.dir = PX_GPIO_DIR_OUT;
-    px_gpio_pin_init(&px_gpio_handle);
+    px_gpio_init(&px_gpio_handle);
 
     return NULL;
 }
@@ -267,7 +267,7 @@ static const char * px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
         {
             return "Error. [pu] must be pu";
         }
-        px_gpio_handle.init = PX_GPIO_INIT_PULLUP;
+        px_gpio_handle.init = PX_GPIO_INIT_PULL_UP;
     }
     else
     {
@@ -276,7 +276,7 @@ static const char * px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
 
     // Configure specified GPIO pin as an input
     px_gpio_handle.dir = PX_GPIO_DIR_IN;
-    px_gpio_pin_init(&px_gpio_handle);
+    px_gpio_init(&px_gpio_handle);
 
     return NULL;
 }
@@ -295,8 +295,8 @@ static const char * px_cli_cmd_fn_gpio_out(uint8_t argc, char* argv[])
     // <0|1>
     switch(argv[1][0])
     {
-    case '0': px_gpio_pin_set_lo(&px_gpio_handle); break;
-    case '1': px_gpio_pin_set_hi(&px_gpio_handle); break;
+    case '0': px_gpio_out_set_lo(&px_gpio_handle); break;
+    case '1': px_gpio_out_set_hi(&px_gpio_handle); break;
     default:  return "Error. <0|1> must be 0 or 1";
     }
 
@@ -314,7 +314,7 @@ static const char * px_cli_cmd_fn_gpio_in(uint8_t argc, char* argv[])
         return result;
     }
 
-    if(px_gpio_pin_is_lo(&px_gpio_handle))
+    if(px_gpio_in_is_lo(&px_gpio_handle))
     {
         PX_PRINTF_P("0\n");
     }

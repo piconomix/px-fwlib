@@ -367,9 +367,9 @@ static int main_gfx_usr_select(void)
     {
         // Updated debounced button states
         px_board_delay_ms(10);
-        px_debounce_update(&main_debounce_btn_up,  px_gpio_pin_is_hi(&px_gpio_lcd_btn_3_up));
-        px_debounce_update(&main_debounce_btn_dn,  px_gpio_pin_is_hi(&px_gpio_lcd_btn_4_dn));
-        px_debounce_update(&main_debounce_btn_yes, px_gpio_pin_is_hi(&px_gpio_lcd_btn_5_yes));
+        px_debounce_update(&main_debounce_btn_up,  px_gpio_in_is_hi(&px_gpio_lcd_btn_3_up));
+        px_debounce_update(&main_debounce_btn_dn,  px_gpio_in_is_hi(&px_gpio_lcd_btn_4_dn));
+        px_debounce_update(&main_debounce_btn_yes, px_gpio_in_is_hi(&px_gpio_lcd_btn_5_yes));
         // UP pressed?
         if(px_debounce_falling_edge_detected(&main_debounce_btn_up))
         {
@@ -470,7 +470,7 @@ int main(void)
 
     // Enable +3V3 Hold pin so that board does not switch off while rebooting
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOC);
-    px_gpio_pin_init(&px_gpio_3v3_hold);
+    px_gpio_init(&px_gpio_3v3_hold);
 
     // Is this an external reset (NRST)?
     if(LL_RCC_IsActiveFlag_PINRST())

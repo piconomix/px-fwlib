@@ -25,7 +25,7 @@
 #include "px_gpio_init_port_c.h"
 #include "px_gpio_init_port_d.h"
 #include "px_gpio_init_port_h.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 // Check that correct 'board.h' has been included
@@ -202,10 +202,10 @@ void px_board_spi_cs_lo(uint8_t cs_id)
 {
     switch(cs_id)
     {
-    case PX_BOARD_SPI1_CS:     PX_GPIO_PIN_SET_LO(PX_GPIO_SPI1_CS);     break;
-    case PX_BOARD_SPI1_CS_SD:  PX_GPIO_PIN_SET_LO(PX_GPIO_SPI1_CS_SD);  break;
-    case PX_BOARD_SPI2_CS_LCD: PX_GPIO_PIN_SET_LO(PX_GPIO_SPI2_CS_LCD); break;
-    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_PIN_SET_LO(PX_GPIO_SPI2_CS_SF);  break;
+    case PX_BOARD_SPI1_CS:     PX_GPIO_OUT_SET_LO(PX_GPIO_SPI1_CS);     break;
+    case PX_BOARD_SPI1_CS_SD:  PX_GPIO_OUT_SET_LO(PX_GPIO_SPI1_CS_SD);  break;
+    case PX_BOARD_SPI2_CS_LCD: PX_GPIO_OUT_SET_LO(PX_GPIO_SPI2_CS_LCD); break;
+    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_OUT_SET_LO(PX_GPIO_SPI2_CS_SF);  break;
     default:                   break;
     }
 }
@@ -214,10 +214,10 @@ void px_board_spi_cs_hi(uint8_t cs_id)
 {
     switch(cs_id)
     {
-    case PX_BOARD_SPI1_CS:     PX_GPIO_PIN_SET_HI(PX_GPIO_SPI1_CS);     break;
-    case PX_BOARD_SPI1_CS_SD:  PX_GPIO_PIN_SET_HI(PX_GPIO_SPI1_CS_SD);  break;
-    case PX_BOARD_SPI2_CS_LCD: PX_GPIO_PIN_SET_HI(PX_GPIO_SPI2_CS_LCD); break;
-    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_PIN_SET_HI(PX_GPIO_SPI2_CS_SF);  break;
+    case PX_BOARD_SPI1_CS:     PX_GPIO_OUT_SET_HI(PX_GPIO_SPI1_CS);     break;
+    case PX_BOARD_SPI1_CS_SD:  PX_GPIO_OUT_SET_HI(PX_GPIO_SPI1_CS_SD);  break;
+    case PX_BOARD_SPI2_CS_LCD: PX_GPIO_OUT_SET_HI(PX_GPIO_SPI2_CS_LCD); break;
+    case PX_BOARD_SPI2_CS_SF:  PX_GPIO_OUT_SET_HI(PX_GPIO_SPI2_CS_SF);  break;
     default:                   break;
     }
 }
@@ -309,9 +309,9 @@ void px_board_dbg_enable(void)
 {
     // Enable SWD pins with pull resistors
     px_gpio_mode_set(&px_gpio_swdck, PX_GPIO_MODE_AF);
-    px_gpio_pulldn_enable(&px_gpio_swdck);
+    px_gpio_pull_dn_enable(&px_gpio_swdck);
     px_gpio_mode_set(&px_gpio_swdio, PX_GPIO_MODE_AF);
-    px_gpio_pullup_enable(&px_gpio_swdio);
+    px_gpio_pull_up_enable(&px_gpio_swdio);
 
     // Enable Debug Module during SLEEP and STOP mode
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_DBGMCU);

@@ -168,7 +168,7 @@ int main(void)
 {
     // Enable +3V3 Hold pin so that board does not switch off while rebooting
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOC);
-    px_gpio_pin_init(&px_gpio_3v3_hold);
+    px_gpio_init(&px_gpio_3v3_hold);
 
     // Is this an external reset (NRST)?
     if(LL_RCC_IsActiveFlag_PINRST())

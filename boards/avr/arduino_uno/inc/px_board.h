@@ -114,11 +114,11 @@ void px_board_delay_ms(uint16_t delay_ms);
 
 /* _____MACROS_______________________________________________________________ */
 /// Enable LED (shared with SPI clock)
-#define PX_LED_ON()            PX_GPIO_PIN_SET_HI(PX_GPIO_LED)
+#define PX_LED_ON()            PX_GPIO_OUT_SET_HI(PX_GPIO_LED)
 /// Disable LED (shared with SPI clock)
-#define PX_LED_OFF()           PX_GPIO_PIN_SET_LO(PX_GPIO_LED)
+#define PX_LED_OFF()           PX_GPIO_OUT_SET_LO(PX_GPIO_LED)
 /// Toggle LED (shared with SPI clock)
-#define PX_LED_TOGGLE()        PX_GPIO_PIN_TOGGLE(PX_GPIO_LED)
+#define PX_LED_TOGGLE()        PX_GPIO_OUT_TOGGLE(PX_GPIO_LED)
 
 #ifdef __cplusplus
 }

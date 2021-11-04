@@ -115,7 +115,7 @@ int main(void)
     uint8_t data;
 
     main_init();
-    px_debounce_init(&px_debounce_pb, PX_GPIO_PIN_IS_HI(PX_GPIO_PB));
+    px_debounce_init(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));
       
     // Enable LED
     PX_LED_ON();
@@ -131,7 +131,7 @@ int main(void)
     for(;;)
     {
         // Update debounce state machine with push button state
-        px_debounce_update(&px_debounce_pb, PX_GPIO_PIN_IS_HI(PX_GPIO_PB));
+        px_debounce_update(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));
         // Button pressed?
         if(px_debounce_falling_edge_detected(&px_debounce_pb))
         {

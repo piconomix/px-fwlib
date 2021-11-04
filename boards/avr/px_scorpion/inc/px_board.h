@@ -102,19 +102,19 @@ void px_board_delay_ms(uint16_t delay_ms);
 
 /* _____MACROS_______________________________________________________________ */
 /// Detect if push button is being pressed
-#define PX_PB_IS_PRESSED()  PX_GPIO_PIN_IS_LO(PX_GPIO_PB)
+#define PX_PB_IS_PRESSED()  PX_GPIO_IN_IS_LO(PX_GPIO_PB)
 
 /// Enable LED
-#define PX_LED_ON()         PX_GPIO_PIN_SET_HI(PX_GPIO_LED)
+#define PX_LED_ON()         PX_GPIO_OUT_SET_HI(PX_GPIO_LED)
 /// Disable LED
-#define PX_LED_OFF()        PX_GPIO_PIN_SET_LO(PX_GPIO_LED)
+#define PX_LED_OFF()        PX_GPIO_OUT_SET_LO(PX_GPIO_LED)
 /// Toggle LED
-#define PX_LED_TOGGLE()     PX_GPIO_PIN_TOGGLE(PX_GPIO_LED)
+#define PX_LED_TOGGLE()     PX_GPIO_OUT_TOGGLE(PX_GPIO_LED)
 
 // Select UART Port 0
-#define PX_UART_SEL_0()     PX_GPIO_PIN_SET_HI(PX_GPIO_UART_SEL)
+#define PX_UART_SEL_0()     PX_GPIO_OUT_SET_HI(PX_GPIO_UART_SEL)
 // Select UART Port 1
-#define PX_UART_SEL_1()     PX_GPIO_PIN_SET_LO(PX_GPIO_UART_SEL)
+#define PX_UART_SEL_1()     PX_GPIO_OUT_SET_LO(PX_GPIO_UART_SEL)
 
 #ifdef __cplusplus
 }

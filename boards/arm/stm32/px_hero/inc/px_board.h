@@ -148,28 +148,28 @@ void px_board_stop_mode(void);
 
 /* _____MACROS_______________________________________________________________ */
 /// User button
-#define PX_USR_PB_IS_PRESSED()      px_gpio_pin_is_lo(&px_gpio_lcd_btn_6_no)
+#define PX_USR_PB_IS_PRESSED()      px_gpio_in_is_lo(&px_gpio_lcd_btn_6_no)
 
 /// User LED
-#define PX_USR_LED_ON()             px_gpio_pin_set_hi(&px_gpio_usr_led)
-#define PX_USR_LED_OFF()            px_gpio_pin_set_lo(&px_gpio_usr_led)
-#define PX_USR_LED_TOGGLE()         px_gpio_pin_toggle(&px_gpio_usr_led)
+#define PX_USR_LED_ON()             px_gpio_out_set_hi(&px_gpio_usr_led)
+#define PX_USR_LED_OFF()            px_gpio_out_set_lo(&px_gpio_usr_led)
+#define PX_USR_LED_TOGGLE()         px_gpio_out_toggle(&px_gpio_usr_led)
 
 /// LCD
-#define PX_LCD_RS_LO()              px_gpio_pin_set_lo(&px_gpio_lcd_rs)
-#define PX_LCD_RS_HI()              px_gpio_pin_set_hi(&px_gpio_lcd_rs)
-#define PX_LCD_BACKLIGHT_ON()       px_gpio_pin_set_lo(&px_gpio_lcd_backlight)
-#define PX_LCD_BACKLIGHT_OFF()      px_gpio_pin_set_hi(&px_gpio_lcd_backlight)
+#define PX_LCD_RS_LO()              px_gpio_out_set_lo(&px_gpio_lcd_rs)
+#define PX_LCD_RS_HI()              px_gpio_out_set_hi(&px_gpio_lcd_rs)
+#define PX_LCD_BACKLIGHT_ON()       px_gpio_out_set_lo(&px_gpio_lcd_backlight)
+#define PX_LCD_BACKLIGHT_OFF()      px_gpio_out_set_hi(&px_gpio_lcd_backlight)
 
 // SD Card
-#define PX_SD_CARD_DETECTED()       px_gpio_pin_is_lo(&px_gpio_7_sd_cd)
+#define PX_SD_CARD_DETECTED()       px_gpio_in_is_lo(&px_gpio_7_sd_cd)
 
 // Battery voltage measurement
-#define PX_VBAT_MEAS_ENABLE()       px_gpio_pin_set_hi(&px_gpio_vbat_meas_en)
-#define PX_VBAT_MEAS_DISABLE()      px_gpio_pin_set_lo(&px_gpio_vbat_meas_en)
+#define PX_VBAT_MEAS_ENABLE()       px_gpio_out_set_hi(&px_gpio_vbat_meas_en)
+#define PX_VBAT_MEAS_DISABLE()      px_gpio_out_set_lo(&px_gpio_vbat_meas_en)
 
 // Power hold
-#define PX_POWER_OFF()              px_gpio_pin_set_lo(&px_gpio_3v3_hold)
+#define PX_POWER_OFF()              px_gpio_out_set_lo(&px_gpio_3v3_hold)
 
 #ifdef __cplusplus
 }

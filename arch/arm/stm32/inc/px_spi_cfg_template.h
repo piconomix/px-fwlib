@@ -74,7 +74,7 @@
  *          switch(cs_id)
  *          {
  *          case BOARD_SPI_CS:
- *              PX_GPIO_PIN_SET_HI(PX_GPIO_SPI_CS);
+ *              PX_GPIO_OUT_SET_HI(PX_GPIO_SPI_CS);
  *              break;
  *  
  *          default:

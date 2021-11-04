@@ -39,10 +39,10 @@
 #define PX_LCD_CFG_RST_HI()     /* px_gpio_pin_set_hi(&px_gpio_lcd_rst) */
 
 /// Macro to set RS pin low
-#define PX_LCD_CFG_RS_LO()      px_gpio_pin_set_lo(&px_gpio_lcd_rs)
+#define PX_LCD_CFG_RS_LO()      px_gpio_out_set_lo(&px_gpio_lcd_rs)
 
 /// Macro to set RS pin high
-#define PX_LCD_CFG_RS_HI()      px_gpio_pin_set_hi(&px_gpio_lcd_rs)
+#define PX_LCD_CFG_RS_HI()      px_gpio_out_set_hi(&px_gpio_lcd_rs)
 
 /// Configuration option to rotate mapping of LCD by 180 degrees
 #define PX_LCD_CFG_ROT_180_DEG  1

@@ -23,7 +23,7 @@
 #include "px_gpio_init_port_a.h"
 #include "px_gpio_init_port_b.h"
 #include "px_gpio_init_port_c.h"
-#include "px_lib_stm32cube.h"
+#include "px_stm32cube.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 // Check that correct 'board.h' has been included
@@ -208,9 +208,9 @@ void px_board_dbg_enable(void)
 {
     // Enable SWD pins with pull resistors
     px_gpio_mode_set(&px_gpio_swdck, PX_GPIO_MODE_AF);
-    px_gpio_pulldn_enable(&px_gpio_swdck);
+    px_gpio_pull_dn_enable(&px_gpio_swdck);
     px_gpio_mode_set(&px_gpio_swdio, PX_GPIO_MODE_AF);
-    px_gpio_pullup_enable(&px_gpio_swdio);
+    px_gpio_pull_up_enable(&px_gpio_swdio);
 
     // Enable Debug Module during SLEEP and STOP mode
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_DBGMCU);

@@ -60,7 +60,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
     }
 
     // Switch to other UART
-    PX_GPIO_PIN_TOGGLE(PX_GPIO_UART_SEL);
+    PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // <data>
     for(i=0; i<argc; i++)
@@ -80,7 +80,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
     }
 
     // Switch UART back
-    PX_GPIO_PIN_TOGGLE(PX_GPIO_UART_SEL);
+    PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // Flush receive buffer
     px_cli_cmd_uart_flush_rx();
@@ -117,7 +117,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     }
 
     // Switch to other UART
-    PX_GPIO_PIN_TOGGLE(PX_GPIO_UART_SEL);
+    PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // Start timeout
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(timeout_ms));
@@ -143,7 +143,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     }
 
     // Switch UART back
-    PX_GPIO_PIN_TOGGLE(PX_GPIO_UART_SEL);
+    PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // Flush receive buffer
     px_cli_cmd_uart_flush_rx();
@@ -187,7 +187,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     }
 
     // Switch to other UART
-    PX_GPIO_PIN_TOGGLE(PX_GPIO_UART_SEL);
+    PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // <data>
     for(i=2; i<argc; i++)
@@ -224,7 +224,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     }
 
     // Switch UART back
-    PX_GPIO_PIN_TOGGLE(PX_GPIO_UART_SEL);
+    PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // Flush receive buffer
     px_cli_cmd_uart_flush_rx();
@@ -261,7 +261,7 @@ static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
     }
 
     // Switch to other UART
-    PX_GPIO_PIN_TOGGLE(PX_GPIO_UART_SEL);
+    PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // <"w str">
     printf(argv[1]);
@@ -319,7 +319,7 @@ static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
     }    
 
     // Switch UART back
-    PX_GPIO_PIN_TOGGLE(PX_GPIO_UART_SEL);
+    PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // Flush receive buffer
     px_cli_cmd_uart_flush_rx();
