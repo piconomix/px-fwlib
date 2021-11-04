@@ -30,7 +30,7 @@
 PX_LOG_NAME("board");
 
 // Check that correct 'px_board.h' has been included
-#ifndef BOARD_AVR_ATMEGA328P_XMINI
+#ifndef PX_BOARD_ATMEGA328P_XMINI
 #warning "Wrong 'px_board.h' has been included. Check that include path is correct."
 #endif
 

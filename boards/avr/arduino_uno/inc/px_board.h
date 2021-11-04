@@ -45,7 +45,7 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 /// Board name
-#define BOARD_AVR_ARDUINO_UNO
+#define PX_BOARD_ARDUINO_UNO
 
 /// Processor frequency in Hz
 #ifndef F_CPU

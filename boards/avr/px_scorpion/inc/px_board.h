@@ -42,7 +42,7 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 /// Board name
-#define BOARD_AVR_PICONOMIX_SCORPION
+#define PX_BOARD_PX_SCORPION
 
 /// Processor frequency in Hz
 #ifndef F_CPU

@@ -46,7 +46,7 @@ extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
 /// Board name
-#define BOARD_AVR_ATMEGA328P_XMINI
+#define PX_BOARD_ATMEGA328P_XMINI
 
 /**
  *  Processor frequency in Hz.
