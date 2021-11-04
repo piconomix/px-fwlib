@@ -302,7 +302,7 @@ void main_log_putchar(char data)
         main_log_putchar('\r');
     }
 
-    px_uart_put_char(&px_uart1_handle, data);
+    px_uart_putchar(&px_uart1_handle, data);
 }
 
 void main_log_timestamp(char * str)

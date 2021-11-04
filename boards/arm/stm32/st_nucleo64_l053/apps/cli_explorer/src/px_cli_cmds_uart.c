@@ -155,7 +155,7 @@ static const char* px_cli_cmd_fn_uart_bridge(uint8_t argc, char* argv[])
         if(px_uart_rd_u8(&px_uart2_handle, &data))
         {
             // Send byte to UART
-            px_uart_put_char(&px_uart_handle, data);
+            px_uart_putchar(&px_uart_handle, data);
         }
         // Any byte received from UART?
         if(px_uart_rd_u8(&px_uart_handle, &data))
@@ -190,7 +190,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
             printf("Error. <data> at index %d invalid\n", i);
             return NULL;
         }
-        px_uart_put_char(&px_uart_handle, (char)px_cli_argv_val.u8);
+        px_uart_putchar(&px_uart_handle, (char)px_cli_argv_val.u8);
     }
 
     return NULL;
@@ -275,7 +275,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
             printf("Error. <data> at index %d invalid\n", i);
             return NULL;
         }
-        px_uart_put_char(&px_uart_handle, (char)px_cli_argv_val.u8);
+        px_uart_putchar(&px_uart_handle, (char)px_cli_argv_val.u8);
     }
 
     // Start timeout
@@ -323,7 +323,7 @@ static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
     tx_char = argv[1];
     while(*tx_char != '\0')
     {
-        px_uart_put_char(&px_uart_handle, *tx_char++);
+        px_uart_putchar(&px_uart_handle, *tx_char++);
     }
 
     // [cr|lf|crlf]
@@ -332,14 +332,14 @@ static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
         switch(px_cli_util_argv_to_option(2, "cr\0lf\0crlf\0"))
         {
         case 0:
-            px_uart_put_char(&px_uart_handle, '\r');
+            px_uart_putchar(&px_uart_handle, '\r');
             break;
         case 1:
-            px_uart_put_char(&px_uart_handle, '\n');
+            px_uart_putchar(&px_uart_handle, '\n');
             break;
         case 2:
-            px_uart_put_char(&px_uart_handle, '\r');
-            px_uart_put_char(&px_uart_handle, '\n');
+            px_uart_putchar(&px_uart_handle, '\r');
+            px_uart_putchar(&px_uart_handle, '\n');
             break;
         default:
             return "Error: [cr|lf|crlf] must be cr (Carriage Return) or lf (Line Feed) or crlf (CR+LF)";

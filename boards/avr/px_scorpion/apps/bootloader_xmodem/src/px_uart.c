@@ -56,7 +56,7 @@ void px_uart_init(void)
     UCSR0B = (1<<RXEN0) | (1<<TXEN0);
 }
 
-void px_uart_put_char(char data)
+void px_uart_putchar(char data)
 {
     // Wait until transmit register is empty
     PX_WAIT_UNTIL_BIT_IS_HI(UCSR0A, UDRE0);
@@ -79,7 +79,7 @@ bool px_uart_wr_u8(uint8_t data)
     return true;
 }
 
-char px_uart_get_char(void)
+char px_uart_getchar(void)
 {
     uint8_t ucsra;
     uint8_t udr;

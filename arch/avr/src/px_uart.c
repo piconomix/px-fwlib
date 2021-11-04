@@ -464,7 +464,7 @@ bool px_uart_close(px_uart_handle_t * handle)
     return true;
 }
 
-void px_uart_put_char(px_uart_handle_t * handle, char data)
+void px_uart_putchar(px_uart_handle_t * handle, char data)
 {
     px_uart_per_t * uart_per;
 
@@ -542,7 +542,7 @@ size_t px_uart_wr(px_uart_handle_t * handle, const void* data, size_t nr_of_byte
     return bytes_buffered;
 }
 
-char px_uart_get_char(px_uart_handle_t * handle)
+char px_uart_getchar(px_uart_handle_t * handle)
 {
     px_uart_per_t * uart_per;
     uint8_t         data;

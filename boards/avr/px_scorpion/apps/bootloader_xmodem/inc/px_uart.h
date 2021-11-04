@@ -43,7 +43,7 @@ void  px_uart_init(void);
  *  
  *  @param[in] data   Byte to be transmitted
  */
-void px_uart_put_char(char data);
+void px_uart_putchar(char data);
 
 /**
  *  Buffer one byte for transmission.
@@ -60,7 +60,7 @@ bool px_uart_wr_u8(uint8_t data);
  *  
  *  @return     Received byte
  */
-char px_uart_get_char(void);
+char px_uart_getchar(void);
 
 /**
  *  See if received byte is available and store it in specified location.

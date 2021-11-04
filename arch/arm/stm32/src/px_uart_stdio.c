@@ -109,10 +109,10 @@ int px_uart_stdio_put_char(char data)
     if(data == '\n')
     {
         // Prepend a carriage return
-        px_uart_put_char(px_uart_stdio_handle, '\r');
+        px_uart_putchar(px_uart_stdio_handle, '\r');
     }
     // Send character over UART
-    px_uart_put_char(px_uart_stdio_handle, (uint8_t)data);
+    px_uart_putchar(px_uart_stdio_handle, (uint8_t)data);
 
     return 0;
 }
@@ -120,5 +120,5 @@ int px_uart_stdio_put_char(char data)
 int px_uart_stdio_get_char(void)
 {
     // Receive character over UART
-    return (int)px_uart_get_char(px_uart_stdio_handle);
+    return (int)px_uart_getchar(px_uart_stdio_handle);
 }

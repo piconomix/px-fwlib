@@ -169,7 +169,7 @@ static void px_gt511_tx(void * data, size_t nr_of_bytes)
     uint8_t * data_u8 = (uint8_t *)data;
     while(nr_of_bytes != 0)
     {
-        px_uart_put_char(px_gt511_uart_handle, *data_u8++);
+        px_uart_putchar(px_gt511_uart_handle, *data_u8++);
         nr_of_bytes--;
     }
 }

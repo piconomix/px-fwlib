@@ -61,7 +61,7 @@ int px_uart_stdio_put_char(char data, FILE *stream)
     }
 
     // Send character over UART
-    px_uart_put_char(px_uart_stdio_handle, data);
+    px_uart_putchar(px_uart_stdio_handle, data);
 
     return 0;
 }
@@ -69,5 +69,5 @@ int px_uart_stdio_put_char(char data, FILE *stream)
 int px_uart_stdio_get_char(FILE *stream)
 {
     // Receive character over UART
-    return (int)px_uart_get_char(px_uart_stdio_handle);
+    return (int)px_uart_getchar(px_uart_stdio_handle);
 }

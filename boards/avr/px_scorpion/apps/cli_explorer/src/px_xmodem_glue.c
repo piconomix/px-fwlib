@@ -47,7 +47,7 @@ bool px_xmodem_rd_u8(uint8_t * data)
 
 void px_xmodem_wr_u8(uint8_t data)
 {
-    px_uart_put_char(&px_uart_handle, (char)data);
+    px_uart_putchar(&px_uart_handle, (char)data);
 }
 
 void px_xmodem_tmr_start(uint16_t time_ms)

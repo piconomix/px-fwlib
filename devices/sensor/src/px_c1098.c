@@ -129,7 +129,7 @@ static void px_c1098_tx_data(uint8_t * data, uint8_t nr_of_bytes)
 {
     while(nr_of_bytes != 0)
     {
-        px_uart_put_char(px_c1098_uart_handle, *data++);
+        px_uart_putchar(px_c1098_uart_handle, *data++);
         nr_of_bytes--;
     }
 }

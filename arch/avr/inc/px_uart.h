@@ -168,7 +168,7 @@ bool px_uart_close(px_uart_handle_t * handle);
  *  @param handle     Pointer to handle data structure
  *  @param[in] data   Byte to be written
  */
-void px_uart_put_char(px_uart_handle_t * handle, char data);
+void px_uart_putchar(px_uart_handle_t * handle, char data);
 
 /**
  *  Buffer one byte for transmission.
@@ -206,7 +206,7 @@ size_t px_uart_wr(px_uart_handle_t * handle,
  *  
  *  @return     Received byte
  */
-char px_uart_get_char(px_uart_handle_t * handle);
+char px_uart_getchar(px_uart_handle_t * handle);
 
 /**
  *  See if a received byte is available and store it in the specified location.
