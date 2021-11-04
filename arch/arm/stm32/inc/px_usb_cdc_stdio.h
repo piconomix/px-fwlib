@@ -29,7 +29,7 @@
  *  
  *  This component initialises the @b stdout stream to output over USB.
  *  
- *  px_usb_cdc_stdio_put_char() will intercept all line feed characters (@b \\n) 
+ *  px_usb_cdc_stdio_putchar() will intercept all line feed characters (@b \\n)
  *  and replace it with a carriage return, line feed sequence (@b \\r\\n). 
  *   
  *  References: 
@@ -58,7 +58,7 @@ extern "C" {
 /**
  *  Initialise @b stdout stream to use a USB driver.
  *  
- *  px_usb_cdc_stdio_put_char() is provided as the handler for all outgoing 
+ *  px_usb_cdc_stdio_putchar() is provided as the handler for all outgoing
  *  data.
  */
 void px_usb_cdc_stdio_init(void);
@@ -73,7 +73,7 @@ void px_usb_cdc_stdio_init(void);
  *  
  *  @return int         always returns 0
  */
-int px_usb_cdc_stdio_put_char(char data);
+int px_usb_cdc_stdio_putchar(char data);
 
 /**
  *  Function to receive a byte.
@@ -82,7 +82,7 @@ int px_usb_cdc_stdio_put_char(char data);
  *
  *  @return int         received byte
  */
-int px_usb_cdc_stdio_get_char(void);
+int px_usb_cdc_stdio_getchar(void);
 
 /**
  *  Fetch a received byte from USB CDC circular buffer

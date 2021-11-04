@@ -34,8 +34,8 @@
 px_uart_handle_t * px_uart_stdio_handle;
 
 /// Declare stream object in data memory (not heap memory)
-FILE px_uart_stdio_stream = FDEV_SETUP_STREAM(px_uart_stdio_put_char, 
-                                              px_uart_stdio_get_char, 
+FILE px_uart_stdio_stream = FDEV_SETUP_STREAM(px_uart_stdio_putchar,
+                                              px_uart_stdio_getchar,
                                               _FDEV_SETUP_RW);
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
@@ -51,13 +51,13 @@ void px_uart_stdio_init(px_uart_handle_t * handle)
     stdin  = &px_uart_stdio_stream;
 }
 
-int px_uart_stdio_put_char(char data, FILE *stream)
+int px_uart_stdio_putchar(char data, FILE *stream)
 {
     // New line character?
     if(data == '\n')
     {
         // Prepend a carriage return
-        px_uart_stdio_put_char('\r', stream);
+        px_uart_stdio_putchar('\r', stream);
     }
 
     // Send character over UART
@@ -66,7 +66,7 @@ int px_uart_stdio_put_char(char data, FILE *stream)
     return 0;
 }
 
-int px_uart_stdio_get_char(FILE *stream)
+int px_uart_stdio_getchar(FILE *stream)
 {
     // Receive character over UART
     return (int)px_uart_getchar(px_uart_stdio_handle);

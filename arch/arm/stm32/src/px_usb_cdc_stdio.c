@@ -62,7 +62,7 @@ int _write(int file, char * ptr, int len)
 
     for(i = 0; i < len; i++)
     {
-        px_usb_cdc_stdio_put_char(*ptr++);
+        px_usb_cdc_stdio_putchar(*ptr++);
     }
     return len;
 }
@@ -73,7 +73,7 @@ int _read(int file, char * ptr, int len)
 
     for(i = 0; i < len; i++)
     {
-        *ptr++ = px_usb_cdc_stdio_get_char();
+        *ptr++ = px_usb_cdc_stdio_getchar();
     }
     return len;  
 }
@@ -82,14 +82,14 @@ int _read(int file, char * ptr, int len)
 #ifdef PX_COMPILER_ARM_CC
 int fputc(int ch, FILE * f)
 {
-    px_usb_cdc_stdio_put_char(ch);
+    px_usb_cdc_stdio_putchar(ch);
 
     return 0;
 }
 
 int fgetc(FILE * f)
 {
-    return px_usb_cdc_stdio_get_char();
+    return px_usb_cdc_stdio_getchar();
 }
 
 void _sys_exit(int return_code)
@@ -117,13 +117,13 @@ void px_usb_cdc_stdio_init(void)
 #endif
 }
 
-int px_usb_cdc_stdio_put_char(char data)
+int px_usb_cdc_stdio_putchar(char data)
 {
     // Newline character?
     if(data == '\n')
     {
         // Prepend cariage return
-        px_usb_cdc_stdio_put_char('\r');
+        px_usb_cdc_stdio_putchar('\r');
     }
     // Buffer transmit byte (wait until circular buffer accepts byte)
     while(!px_ring_buf_wr_u8(&px_usb_cdc_stdio_tx_buffer, (uint8_t)data))
@@ -134,7 +134,7 @@ int px_usb_cdc_stdio_put_char(char data)
     return 0;
 }
 
-int px_usb_cdc_stdio_get_char(void)
+int px_usb_cdc_stdio_getchar(void)
 {
     uint8_t data;
 

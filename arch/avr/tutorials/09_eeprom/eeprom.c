@@ -76,12 +76,12 @@ void uart_init(void)
     UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 }
 
-int uart_put_char(char data, FILE *stream)
+int uart_putchar(char data, FILE *stream)
 {
     // Recursive function to prepend a carriage return before a line feed
     if(data == '\n')
     {
-        uart_put_char('\r', stream);
+        uart_putchar('\r', stream);
     }
     // Wait until data register is empty
     while((UCSR0A & (1 << UDRE0)) == 0) {;}
@@ -92,7 +92,7 @@ int uart_put_char(char data, FILE *stream)
 }
 
 // Declare stream object in data memory (not heap memory)
-FILE uart_stream = FDEV_SETUP_STREAM(uart_put_char, NULL, _FDEV_SETUP_WRITE);
+FILE uart_stream = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
 
 uint8_t ee_read_byte(uint16_t adr)
 {

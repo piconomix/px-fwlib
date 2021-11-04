@@ -54,7 +54,7 @@ int _write(int file, char * ptr, int len)
 
     for(i = 0; i < len; i++)
     {
-        px_uart_stdio_put_char(*ptr++);
+        px_uart_stdio_putchar(*ptr++);
     }
     return len;
 }
@@ -65,7 +65,7 @@ int _read(int file, char * ptr, int len)
 
     for(i = 0; i < len; i++)
     {
-        *ptr++ = px_uart_stdio_get_char();
+        *ptr++ = px_uart_stdio_getchar();
     }
     return len;  
 }
@@ -74,14 +74,14 @@ int _read(int file, char * ptr, int len)
 #ifdef PX_COMPILER_ARM_CC
 int fputc(int ch, FILE * f)
 {
-    px_uart_stdio_put_char(ch);
+    px_uart_stdio_putchar(ch);
 
     return 0;
 }
 
 int fgetc(FILE * f)
 {
-    return px_uart_stdio_get_char();
+    return px_uart_stdio_getchar();
 }
 
 void _sys_exit(int return_code)
@@ -103,7 +103,7 @@ void px_uart_stdio_init(px_uart_handle_t * handle)
 #endif
 }
 
-int px_uart_stdio_put_char(char data)
+int px_uart_stdio_putchar(char data)
 {
     // New line character?
     if(data == '\n')
@@ -117,7 +117,7 @@ int px_uart_stdio_put_char(char data)
     return 0;
 }
 
-int px_uart_stdio_get_char(void)
+int px_uart_stdio_getchar(void)
 {
     // Receive character over UART
     return (int)px_uart_getchar(px_uart_stdio_handle);

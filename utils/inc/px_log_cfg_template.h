@@ -80,7 +80,7 @@
 // Example 2: Use UART and handle created in main
 #include "px_uart.h"
 #include "main.h"
-#define PX_LOG_CFG_PUTCHAR(data) px_uart_put_char(&main_uart_handle, data)
+#define PX_LOG_CFG_PUTCHAR(data) px_uart_putchar(&main_uart_handle, data)
 #endif
 #if 0
 // Example 3: Call function in main

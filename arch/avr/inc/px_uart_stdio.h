@@ -29,7 +29,7 @@
  *  
  *  This component initialises the @b stdout stream to output over UART.
  *  
- *  px_uart_stdio_put_char() will intercept all line feed characters (@b \\n) 
+ *  px_uart_stdio_putchar() will intercept all line feed characters (@b \\n)
  *  and replace it with a carriage return, line feed sequence (@b \\r\\n). 
  *   
  *  References: 
@@ -62,7 +62,7 @@ extern "C" {
 /**
  *  Initialise @b stdout stream to use a UART driver.
  *  
- *  px_uart_stdio_put_char() is provided as the handler for all outgoing data. A
+ *  px_uart_stdio_putchar() is provided as the handler for all outgoing data. A
  *  @b px_uart_stdout_stream structure is declared statically so that heap 
  *  memory is not used (no malloc).
  *  
@@ -81,7 +81,7 @@ void px_uart_stdio_init(px_uart_handle_t * handle);
  *  
  *  @return int     always returns 0
  */
-int px_uart_stdio_put_char(char data, FILE * stream);
+int px_uart_stdio_putchar(char data, FILE * stream);
 
 /**
  *  Function to receive a byte.
@@ -92,7 +92,7 @@ int px_uart_stdio_put_char(char data, FILE * stream);
  *  
  *  @return int     received byte
  */
-int px_uart_stdio_get_char(FILE * stream);
+int px_uart_stdio_getchar(FILE * stream);
 
 /* _____MACROS_______________________________________________________________ */
 
