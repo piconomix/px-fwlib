@@ -27,7 +27,7 @@
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 #if (PX_SYSCLK_CFG_USE_TMRX == 0)
 
-#define TMR_VECT                TIM0_COMPA_vect
+#define TMR_VECT                TIMER0_COMPA_vect
 #define TMR_INT_ENABLE()        PX_BIT_SET_HI(TIMSK0, OCIE0A)
 #define TMR_INT_DISABLE()       PX_BIT_SET_LO(TIMSK0, OCIE0A)
 #define TMR_INT_IS_ENABLED()    PX_BIT_IS_HI(TIMSK0, OCIE0A)
@@ -48,7 +48,7 @@
 
 #elif (PX_SYSCLK_CFG_USE_TMRX == 1)
 
-#define TMR_VECT                TIM1_COMPA_vect
+#define TMR_VECT                TIMER1_COMPA_vect
 #define TMR_INT_ENABLE()        PX_BIT_SET_HI(TIMSK1, OCIE1A)
 #define TMR_INT_DISABLE()       PX_BIT_SET_LO(TIMSK1, OCIE1A)
 #define TMR_INT_IS_ENABLED()    PX_BIT_IS_HI(TIMSK1, OCIE1A)
