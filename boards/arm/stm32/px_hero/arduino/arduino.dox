@@ -29,7 +29,7 @@ Open the Preferences dialog in the Arduino IDE:
 
 Add a link to the stm32duino JSON file in the "Additional Boards Manager URLs" field:
 
-    https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json
+    https://github.com/stm32duino/BoardManagerFiles/raw/main/package_stmicroelectronics_index.json
 
 @tip_s
 More than one link (URL) can be added by using the button next to the text field.
@@ -44,17 +44,19 @@ Now open the Boards Manager window in the Arduino IDE:
 ![](hero_board_arduino_manager.png)
 
 Type "STM32" into the search bar to narrow down the list of packages and install
-the "STM32 Cores by STMicroelectronics" package.
+the "STM32 MCU based boards by STMicroelectronics" package.
 
 4. Specify the PX-HER0 board
 ============================
 
 Select the PX-HER0 board from the list of supported boards:
 
-    Tools > Board: "xxx" > STM32 Boards > Generic STM32L0 series
+    Tools > Board: "xxx" > STM32 boards groups > Generic STM32L0 series
     Tools > Board part number: "xxx" > PX-HERO
 
 ![](hero_board_arduino_select.png)
+
+![](hero_board_arduino_select2.png)
 
 Options can be specified for the PX-HER0 board in sub menus:
 
@@ -116,10 +118,10 @@ remove the BOOT jumper when you are finished. Otherwise, the STM32 will appear
 8. Digital pin mapping
 ======================
 
-The PX-HER0 board pins are mapped in [THIS](https://github.com/stm32duino/Arduino_Core_STM32/blob/master/variants/PX_HER0/variant.h)
+The PX-HER0 board pins are mapped in [THIS](https://github.com/stm32duino/Arduino_Core_STM32/blob/main/variants/STM32L0xx/L072R(B-Z)T_L073R(B-Z)T_L083R(B-Z)T/variant_PX_HER0.h)
 file. It is duplicated here for easy offline viewing:
 
-    px-fwlib/boards/arm/stm32/px_hero/arduino/variants/PX_HERO/variant.h
+    px-fwlib/boards/arm/stm32/px_hero/arduino/variants/STM32L0xx/L072R(B-Z)T_L073R(B-Z)T_L083R(B-Z)T/variant_PX_HER0.h
 
 Here is the map table:
 
