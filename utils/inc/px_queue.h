@@ -22,7 +22,7 @@
  *  @ingroup UTILS
  *  @defgroup PX_QUEUE px_queue.h : A FIFO item queue
  *  
- *  A FIFO (First In First Out) queue of fixed sized items using pointers.
+ *  A FIFO (First In First Out) queue of fixed sized items using zero based indexes.
  *  
  *  File(s):
  *  - utils/inc/px_queue.h
@@ -45,16 +45,21 @@ extern "C" {
 /* _____DEFINITIONS__________________________________________________________ */
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
+/// Queue index size definition
+typedef uint8_t px_queue_idx_t;
+
+/// Queue item size definition
+typedef uint8_t px_queue_item_size_t;
+
 /// Queue structure
 typedef struct
 {
-    void * item_first;          ///< Pointer to first item in the array
-    void * item_last;           ///< Pointer to last item in the array
-    void * item_wr;             ///< Pointer to position where next item will be written to
-    void * item_rd;             ///< Pointer to oldest item in the queue
-    size_t item_size;           ///< Size of each item in the array
-    size_t nr_of_items;         ///< Counter for number of items in the queue
-    size_t max_nr_of_items;     ///< Maximum number of items allowed in queue
+    uint8_t *            item_buf;    ///< Array buffer to hold item data
+    px_queue_idx_t       idx_rd;      ///< Read index
+    px_queue_idx_t       idx_wr;      ///< Write index
+    px_queue_idx_t       item_count;  ///< Number of items stored in queue
+    px_queue_idx_t       items_max;   ///< Maximum number of items that can be stored in queue
+    px_queue_item_size_t item_size;   ///< Size of each item
 } px_queue_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -63,15 +68,15 @@ typedef struct
 /**
  *  Initialises a queue structure.
  *  
- *  @param queue            Pointer to a queue object
- *  @param item_array       Pointer to an item array to buffer items
- *  @param item_size        Fixed size of each item
- *  @param max_nr_of_items  Maximum number of items that can be stored in array
+ *  @param queue        Pointer to a queue object
+ *  @param item_buf     Array buffer to hold items (must be at least item_size * items_max bytes)
+ *  @param item_size    Fixed size of each item
+ *  @param items_max    Maximum number of items that can be stored in array
  */
-void px_queue_init(px_queue_t * queue,
-                   void *       item_array,
-                   size_t       item_size,
-                   size_t       max_nr_of_items);
+void px_queue_init(px_queue_t *         queue,
+                   void *               item_buf,
+                   px_queue_idx_t       items_max,
+                   px_queue_item_size_t item_size);
 
 /** 
  *  See if the queue is empty.
@@ -98,50 +103,50 @@ bool px_queue_is_full(px_queue_t * queue);
  *  
  *  @param queue        Pointer to a queue object
  *  
- *  @returns size_t     The number of items in the queue 
+ *  @returns px_queue_idx_t The number of items in the queue
  */
-size_t px_queue_nr_of_items(px_queue_t * queue);
+px_queue_idx_t px_queue_get_item_count(px_queue_t * queue);
 
 /**
  *  Write a new item to the queue.
  *  
  *  The item data is copied into the array.
  *  
- *  @param queue    Pointer to a queue object.
- *  @param item     Pointer to item data.
+ *  @param queue        Pointer to a queue object.
+ *  @param item_data    Pointer to item data.
  *  
- *  @retval true    Item added to the queue
- *  @retval false   Queue is full and item was not added
+ *  @retval true        Item added to the queue
+ *  @retval false       Queue is full and item was not added
  */
-bool px_queue_wr(px_queue_t * queue, const void * item);
+bool px_queue_wr(px_queue_t * queue, const void * item_data);
 
 /**
  *  Read the oldest item from the queue.
  *
  *  The item data is copied into the specified buffer
  *
- *  @param queue    Pointer to a queue object.
- *  @param item     Pointer to item data buffer.
+ *  @param queue        Pointer to a queue object.
+ *  @param item_data    Pointer to item data buffer.
  *
- *  @retval true    Item copied and removed from queue
- *  @retval false   Queue is empty
+ *  @retval true        Item copied and removed from queue
+ *  @retval false       Queue is empty
  */
-bool px_queue_rd(px_queue_t * queue, void * item);
+bool px_queue_rd(px_queue_t * queue, void * item_data);
 
 /**
  *  Remove oldest item from queue.
  *
- *  @param queue    Pointer to a queue object.
+ *  @param queue        Pointer to a queue object.
  *
- *  @retval true    Oldest item removed
- *  @retval false   Queue is empty
+ *  @retval true        Oldest item removed
+ *  @retval false       Queue is empty
  */
 bool px_queue_discard_oldest(px_queue_t * queue);
 
 /**
  *  Remove all items from queue.
  *  
- *  @param queue Pointer to queue object.
+ *  @param queue        Pointer to queue object.
  */
 void px_queue_flush(px_queue_t * queue);
 
