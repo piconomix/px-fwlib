@@ -120,6 +120,7 @@ bool px_spi_open(px_spi_handle_t * handle,
         PX_LOG_W("Handle already open?");
     }
 #endif
+
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -143,11 +144,10 @@ bool px_spi_open(px_spi_handle_t * handle,
     // Set default value for "Master Out dummy byte"
     handle->mo_dummy_byte = 0x00;
     // Initialise peripheral
-    px_spi_init_peripheral(spi_nr,
-                           handle->spcr,
-                           handle->use_spi2x);
+    px_spi_init_peripheral(spi_nr, handle->spcr, handle->use_spi2x);
     // Point handle to peripheral
     handle->spi_per = spi_per;
+
     // Success
     PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
@@ -178,6 +178,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
         PX_LOG_W("Handle already open?");
     }
 #endif
+
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -227,6 +228,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
     px_spi_init_peripheral(spi_nr, handle->spcr, handle->use_spi2x);
     // Point handle to peripheral
     handle->spi_per = spi_per;
+
     // Success
     PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
@@ -243,9 +245,11 @@ bool px_spi_close(px_spi_handle_t * handle)
     spi_per = handle->spi_per;
     // Check that handle is open
     PX_LOG_ASSERT(spi_per != NULL);
+
     // Decrement open count
     PX_LOG_ASSERT(spi_per->open_counter > 0);
     spi_per->open_counter--;
+
     // More open handles referencing peripheral?
     if(spi_per->open_counter != 0)
     {
@@ -267,6 +271,7 @@ bool px_spi_close(px_spi_handle_t * handle)
     }
     // Close handle
     handle->spi_per = NULL;
+
     // Success
     return true;
 }
@@ -287,15 +292,18 @@ void px_spi_wr(px_spi_handle_t * handle,
     // Check that handle is open
     PX_LOG_ASSERT(spi_per != NULL);
     PX_LOG_ASSERT(spi_per->open_counter != 0);
+
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_per->spi_nr, handle->spcr, handle->use_spi2x);
 
+    // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
         // Take Chip Select Low
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
+    // Write data
     while(nr_of_bytes)
     {
         // Buffer transmit data
@@ -310,6 +318,7 @@ void px_spi_wr(px_spi_handle_t * handle,
         nr_of_bytes--;
     }
 
+    // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
         // Take Chip Select High
@@ -336,6 +345,7 @@ void px_spi_rd(px_spi_handle_t * handle,
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_per->spi_nr, handle->spcr, handle->use_spi2x);
 
+    // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
         // Take Chip Select Low
@@ -355,6 +365,7 @@ void px_spi_rd(px_spi_handle_t * handle,
         nr_of_bytes--;
     }
 
+    // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
         // Take Chip Select High
@@ -383,6 +394,7 @@ void px_spi_xc(px_spi_handle_t * handle,
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_per->spi_nr, handle->spcr, handle->use_spi2x);
 
+    // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
         // Take Chip Select Low
@@ -402,6 +414,7 @@ void px_spi_xc(px_spi_handle_t * handle,
         nr_of_bytes--;
     }
 
+    // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
         // Take Chip Select High
@@ -423,6 +436,7 @@ void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
     // Check that handle is open
     PX_LOG_ASSERT(spi_per != NULL);
     PX_LOG_ASSERT(spi_per->open_counter != 0);
+
     // Clear SPI Clock divisor bits
     spcr = handle->spcr & (~((1 << SPR1) | (1 << SPR0)));
     // Set new clock divisor

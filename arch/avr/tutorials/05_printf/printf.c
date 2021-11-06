@@ -114,8 +114,10 @@ int main(void)
     px_board_init();
     // Initialise UART
     uart_init();
+
     // Direct stdout stream to uart_stream
     stdout = &uart_stream;
+
     // String stored in program memory and copied to SRAM upon startup by
     // C Run Time set up (CRT).
     printf("printf - String in data memory (SRAM)\n");
@@ -123,6 +125,7 @@ int main(void)
     printf_P(PSTR("printf_P - String in program memory (FLASH)\n"));
     // Convenience macro to store and access string in program memory
     PRINTF_P("PRINTF_P - String also in program memory (FLASH)\n");
+
     // Repeat forever
     for(;;) {;}
 }

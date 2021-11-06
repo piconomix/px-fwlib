@@ -119,6 +119,7 @@ uint16_t adc_get_sample(void)
      *  cycles (226 us).
      */
     while(ADCSRA & (1 << ADSC)) {;}
+
     // Return sampled value
     return ADC;
 }
@@ -137,6 +138,7 @@ int main(void)
     tmr_init();
     // Initialise ADC
     adc_init();
+
     // Repeat forever
     for(;;)
     {

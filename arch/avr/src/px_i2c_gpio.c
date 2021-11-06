@@ -73,6 +73,7 @@ static bool px_i2c_scl_set_hiz_and_wait_clk_stretch(void)
     uint8_t i;
 
     PX_I2C_CFG_SCL_SET_HIZ();
+
     for(i = 100; i != 0; i--)
     {
         px_i2c_delay_half_clk();
@@ -229,7 +230,7 @@ static bool px_i2c_wr_u8(uint8_t data)
         px_i2c_stop();            
         return false;
     }
-
+    // Success
     return true;
 }
 
@@ -256,13 +257,13 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     }
     // Return received byte
     *data = byte;
-
     // Send ACK/NAK
     if(!px_i2c_tx_bit(nak))
     {
         // Error
         return false;
     }
+    //Success
     return true;
 }
 
@@ -348,6 +349,7 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     // Decrement open count
     PX_LOG_ASSERT(i2c_per->open_counter > 0);
     i2c_per->open_counter--;
+
     // More open handles referencing peripheral?
     if(i2c_per->open_counter != 0)
     {
@@ -404,6 +406,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
         }
     }
 
+    // Write data
     while(nr_of_bytes != 0)
     {
         // Send data
@@ -471,6 +474,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
         }
     }
 
+    // Read data
     while(nr_of_bytes != 0)
     {
         if((nr_of_bytes == 1) && (nak_last_byte))

@@ -46,8 +46,8 @@
 #include <avr/interrupt.h>
 
 // LED GPIO pin macros
-#define LED_INIT()   DDRB  |= (1<<0)
-#define LED_TOGGLE() PORTB ^= (1<<0)
+#define LED_INIT()      DDRB  |= (1 << 0)
+#define LED_TOGGLE()    PORTB ^= (1 << 0)
 // Define CPU frequency in Hz
 #define F_CPU           7372800ul
 // Define delay

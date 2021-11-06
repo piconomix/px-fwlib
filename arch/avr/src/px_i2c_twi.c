@@ -97,6 +97,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
         PX_LOG_E("TWI_STATUS != TW_START");
         return false;
     }
+
     // Add R/W bit
     sla_adr = (sla_adr << 1) | start;
     // Send SLA+R/W
@@ -104,6 +105,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
     TWCR = (1 << TWINT) | (1 << TWEN);
     // Wait for TWINT flag to be set
     PX_WAIT_UNTIL_BIT_IS_HI(TWCR, TWINT);
+
     // Master Receiver?
     if((sla_adr & (1 << 0)) != 0)
     {
@@ -128,6 +130,7 @@ static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
         }
     }
     
+    // Success
     return true;
 }
 
@@ -143,6 +146,7 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
         PX_LOG_E("TWI_STATUS != TW_REP_START");
         return false;
     }
+
     // Add R/W bit
     sla_adr = (sla_adr << 1) | start;
     // Send SLA+R/W
@@ -150,6 +154,7 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
     TWCR = (1 << TWINT) | (1 << TWEN);
     // Wait for TWINT flag to be set
     PX_WAIT_UNTIL_BIT_IS_HI(TWCR, TWINT);
+
     // Master Receiver?
     if((sla_adr & (1 << 0)) != 0)
     {
@@ -173,6 +178,8 @@ static bool px_i2c_start_repeat(uint8_t sla_adr, px_i2c_start_t start)
             return false;
         }
     }
+
+    // Success
     return true;
 }
 
@@ -187,6 +194,7 @@ static bool px_i2c_stop(void)
     // Wait for TWSTO flag to be cleared
     PX_WAIT_UNTIL_BIT_IS_LO(TWCR, TWSTO);
 
+    // Success
     return true;
 }
 
@@ -197,6 +205,7 @@ static bool px_i2c_wr_u8(uint8_t data)
     TWCR = (1 << TWINT) | (1 << TWEN);
     // Wait for TWINT flag to be set
     PX_WAIT_UNTIL_BIT_IS_HI(TWCR, TWINT);
+
     // Check TWI Status
     if((TW_STATUS & 0xf8) != TW_MT_DATA_ACK)
     {
@@ -205,7 +214,8 @@ static bool px_i2c_wr_u8(uint8_t data)
         px_i2c_stop();
         return false;
     }
-    return true;    
+    // Success
+    return true;
 }
 
 static bool px_i2c_rd_u8(uint8_t *data, bool nak)
@@ -221,6 +231,7 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     }
     // Wait for TWINT flag to be set
     PX_WAIT_UNTIL_BIT_IS_HI(TWCR, TWINT);
+
     // Check TWI Status
     if(nak)
     {
@@ -243,9 +254,10 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
         }
     }
 
-    // Store received byte
+    // Return received byte
     *data = TWDR;
 
+    // Success
     return true;
 }
 
@@ -309,6 +321,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         PX_LOG_W("Handle already open?");
     }
 #endif
+
     // Handle not initialised
     handle->i2c_per = NULL;
     // Set pointer to peripheral data
@@ -337,6 +350,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
     }
     // Point handle to peripheral
     handle->i2c_per = i2c_per;
+
     // Success
     i2c_per->open_counter++;
     return true;
@@ -352,6 +366,7 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     i2c_per = handle->i2c_per;
     // Check that handle is open
     PX_LOG_ASSERT(i2c_per != NULL);
+
     // Decrement open count
     PX_LOG_ASSERT(i2c_per->open_counter > 0);
     i2c_per->open_counter--;
@@ -363,12 +378,11 @@ bool px_i2c_close(px_i2c_handle_t * handle)
         // Success
         return true;
     }
-
+    // Disable peripheral
     switch(i2c_per->i2c_nr)
     {
 #if PX_I2C_CFG_I2C0_EN
     case PX_I2C_NR_0:
-        // Disable TWI peripheral
         TWCR = 0x00;
         break;
 #endif
@@ -377,6 +391,7 @@ bool px_i2c_close(px_i2c_handle_t * handle)
     }
    // Close handle
    handle->i2c_per = NULL;
+
     // Success
     return true;
 }
@@ -422,6 +437,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
         }
     }
 
+    // Write data
     while(nr_of_bytes != 0)
     {
         // Send data
@@ -434,6 +450,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
         data_u8++;
         nr_of_bytes--;        
     }
+
     // Generate STOP condition?
     if(flags & PX_I2C_FLAG_STOP)
     {
@@ -442,6 +459,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             return false;
         }
     }
+
     // Success
     return true;
 }
@@ -487,6 +505,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
         }
     }
 
+    // Read data
     while(nr_of_bytes != 0)
     {
         if(  (nr_of_bytes == 1)
@@ -510,6 +529,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
         data_u8++;
         nr_of_bytes--;
     }
+
     // Generate STOP condition?
     if(flags & PX_I2C_FLAG_STOP)
     {
@@ -518,6 +538,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             return false;
         }
     }
+
     // Success
     return true;
 }

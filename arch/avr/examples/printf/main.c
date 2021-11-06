@@ -76,6 +76,7 @@ int main(void)
     px_uart_stdio_init(&px_uart_handle);
     // Enable interrupts
     px_interrupts_enable();
+
     // String stored in program memory and copied to SRAM upon startup by CRT
     printf("printf - String in data memory (RAM)\n");
     // String stored in and accessed from program memory

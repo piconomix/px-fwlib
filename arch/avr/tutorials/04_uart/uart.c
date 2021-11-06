@@ -85,6 +85,7 @@ int main(void)
     px_board_init();
     // Initialise UART
     uart_init();
+
     // Send string
     uart_send_byte('U');
     uart_send_byte('A');
@@ -92,6 +93,7 @@ int main(void)
     uart_send_byte('T');
     uart_send_byte('\r');
     uart_send_byte('\n');
+
     // Repeat forever
     for(;;)
     {

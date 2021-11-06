@@ -19,11 +19,13 @@ int main(void)
                  PX_SPI_BAUD_CLK_DIV_2, 
                  PX_SPI_MODE0, 
                  PX_SPI_DATA_ORDER_MSB);
+
     // Take Chip Select low and send command byte
     data = 0xd7;
     px_spi_wr(px_at45d_spi_handle, &data, 1, PX_SPI_FLAG_START);
     // Read status byte and take Chip Select high
     px_spi_rd(px_at45d_spi_handle, &data, 1, PX_SPI_FLAG_STOP);
+
     // Close SPI Handle
     px_spi_close(px_spi_handle);
 }

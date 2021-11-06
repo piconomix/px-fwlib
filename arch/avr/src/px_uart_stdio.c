@@ -31,7 +31,7 @@
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// UART handle
-px_uart_handle_t * px_uart_stdio_handle;
+static px_uart_handle_t * px_uart_stdio_handle;
 
 /// Declare stream object in data memory (not heap memory)
 FILE px_uart_stdio_stream = FDEV_SETUP_STREAM(px_uart_stdio_putchar,

@@ -136,7 +136,9 @@ int main(void)
     uart_init();
     // Direct stdout stream to uart_stream
     stdout = &uart_stream;
+
     PRINTF_P("\nEEPROM Tutorial\n");
+
     // Write a byte to EEPROM
     ee_write_byte(0x000C, 0xAB);
     // Read a byte from EEPROM

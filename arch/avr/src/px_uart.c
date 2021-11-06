@@ -33,16 +33,11 @@ PX_LOG_NAME("uart");
 /// Definition of data for each UART peripheral
 typedef struct px_uart_per_s
 { 
-    /// Peripheral
-    px_uart_nr_t uart_nr;
-    /// Number of open handles referencing peripheral
-    uint8_t open_counter;
-    /// Transmit done flag
-    volatile bool tx_done;
-    /// Transmit circular buffer
-    PX_RING_BUF_DECLARE(tx_circ_buf, PX_UART_CFG_TX_BUF_SIZE);
-    /// Receive circular buffer
-    PX_RING_BUF_DECLARE(rx_circ_buf, PX_UART_CFG_RX_BUF_SIZE);
+    px_uart_nr_t  uart_nr;                                      ///< UART peripheral number
+    uint8_t       open_counter;                                 ///< Number of open handles referencing peripheral
+    volatile bool tx_done;                                      ///< Transmit done flag
+    PX_RING_BUF_DECLARE(tx_ring_buf, PX_UART_CFG_TX_BUF_SIZE);  ///< Transmit ring buffer
+    PX_RING_BUF_DECLARE(rx_ring_buf, PX_UART_CFG_RX_BUF_SIZE);  ///< Receive ring buffer
 } px_uart_per_t;
 
 /* _____MACROS_______________________________________________________________ */
@@ -53,11 +48,10 @@ typedef struct px_uart_per_s
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-/// Allocate data for each en1bled UART peripheral
+/// Allocate data for each enabled UART peripheral
 #if PX_UART_CFG_UART0_EN
 static px_uart_per_t px_uart_per_0;
 #endif
-
 #if PX_UART_CFG_UART1_EN
 static px_uart_per_t px_uart_per_1;
 #endif
@@ -76,11 +70,11 @@ ISR(USART0_RX_vect)
         // Received data had an error, discard received data
         return;
     }
-    // Make sure there is space available in buffer.
-    if(!PX_RING_BUF_FULL(px_uart_per_0.rx_circ_buf))
+    // Is there is space available in buffer?
+    if(!PX_RING_BUF_FULL(px_uart_per_0.rx_ring_buf))
     {
         // Add data to ring buffer
-        PX_RING_BUF_WRITE(px_uart_per_0.rx_circ_buf, data);
+        PX_RING_BUF_WRITE(px_uart_per_0.rx_ring_buf, data);
     }
 }
 
@@ -90,7 +84,7 @@ ISR(USART0_UDRE_vect)
     uint8_t data;
 
     // Finished sending data?
-    if(PX_RING_BUF_EMPTY(px_uart_per_0.tx_circ_buf))
+    if(PX_RING_BUF_EMPTY(px_uart_per_0.tx_ring_buf))
     {
         // Disable transmit data register empty interrupt
         PX_BIT_SET_LO(UCSR0B, UDRIE0);
@@ -99,7 +93,7 @@ ISR(USART0_UDRE_vect)
         return;
     }
     // Send data
-    PX_RING_BUF_READ(px_uart_per_0.tx_circ_buf, data);
+    PX_RING_BUF_READ(px_uart_per_0.tx_ring_buf, data);
     UDR0 = data;
     // Clear flag to indicate that transmission is busy
     px_uart_per_0.tx_done = false;
@@ -113,7 +107,7 @@ ISR(USART0_TX_vect)
     // Disable interrupt
     PX_BIT_SET_LO(UCSR0B, TXCIE0);
 }
-#endif // PX_UART_CFG_UART0_EN
+#endif
 
 #if PX_UART_CFG_UART1_EN
 /// Received data interrupt handler
@@ -128,11 +122,11 @@ ISR(USART1_RX_vect)
         // Received data had an error, discard received data
         return;
     }
-    // Make sure there is space available in buffer.
-    if(!PX_RING_BUF_FULL(px_uart_per_1.rx_circ_buf))
+    // Is there is space available in buffer?
+    if(!PX_RING_BUF_FULL(px_uart_per_1.rx_ring_buf))
     {
         // Add data to ring buffer
-        PX_RING_BUF_WRITE(px_uart_per_1.rx_circ_buf, data);
+        PX_RING_BUF_WRITE(px_uart_per_1.rx_ring_buf, data);
     }
 }
 
@@ -142,7 +136,7 @@ ISR(USART1_UDRE_vect)
     uint8_t data;
 
     // Finished sending data?
-    if(PX_RING_BUF_EMPTY(px_uart_per_1.tx_circ_buf))
+    if(PX_RING_BUF_EMPTY(px_uart_per_1.tx_ring_buf))
     {
         // Disable transmit data register empty interrupt
         PX_BIT_SET_LO(UCSR1B, UDRIE1);
@@ -151,7 +145,7 @@ ISR(USART1_UDRE_vect)
         return;
     }
     // Send data
-    PX_RING_BUF_READ(px_uart_per_1.tx_circ_buf, data);
+    PX_RING_BUF_READ(px_uart_per_1.tx_ring_buf, data);
     UDR1 = data;
     // Clear flag to indicate that transmission is busy
     px_uart_per_1.tx_done = false;
@@ -172,17 +166,12 @@ static void px_uart_start_tx(px_uart_nr_t peripheral)
     switch(peripheral)
     {
 #if PX_UART_CFG_UART0_EN
-    case PX_UART_NR_0: 
-        PX_BIT_SET_HI(UCSR0B, UDRIE0); 
-        break;
+    case PX_UART_NR_0:  PX_BIT_SET_HI(UCSR0B, UDRIE0);  break;
 #endif
 #if PX_UART_CFG_UART1_EN
-    case PX_UART_NR_1:
-        PX_BIT_SET_HI(UCSR1B, UDRIE1);
-        break;
+    case PX_UART_NR_1:  PX_BIT_SET_HI(UCSR1B, UDRIE1); break;
 #endif
-    default:
-        break;
+    default: break;
     }
 }
 
@@ -278,9 +267,9 @@ static void px_uart_init_peripheral_data(px_uart_nr_t    uart_nr,
     // Set transmit done flag
     uart_per->tx_done = true;
     // Initialise transmit circular buffer
-    PX_RING_BUF_INIT(uart_per->tx_circ_buf);
+    PX_RING_BUF_INIT(uart_per->tx_ring_buf);
     // Initialise receive circular buffer
-    PX_RING_BUF_INIT(uart_per->rx_circ_buf);
+    PX_RING_BUF_INIT(uart_per->rx_ring_buf);
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -309,18 +298,12 @@ bool px_uart_open(px_uart_handle_t * handle,
     switch(uart_nr)
     {
 #if PX_UART_CFG_UART0_EN
-    case PX_UART_NR_0:
-        uart_per = &px_uart_per_0;
-        break;
+    case PX_UART_NR_0: uart_per = &px_uart_per_0; break;
 #endif
 #if PX_UART_CFG_UART1_EN
-    case PX_UART_NR_1:
-        uart_per = &px_uart_per_1;
-        break;
+    case PX_UART_NR_1: uart_per = &px_uart_per_1; break;
 #endif
-    default:
-        PX_LOG_E("Invalid peripheral specified");
-        return false;
+    default: PX_LOG_E("Invalid peripheral specified"); return false;
     }
     // Already open?
     if(uart_per->open_counter != 0)
@@ -338,6 +321,7 @@ bool px_uart_open(px_uart_handle_t * handle,
     }
     // Point handle to peripheral
     handle->uart_per = uart_per;
+
     // Success
     uart_per->open_counter = 1;
     return true;
@@ -368,9 +352,7 @@ bool px_uart_open2(px_uart_handle_t *  handle,
 #if PX_UART_CFG_UART1_EN
     case PX_UART_NR_1: uart_per = &px_uart_per_1; break;
 #endif
-    default:
-        PX_LOG_E("Invalid peripheral specified");
-        return false;
+    default: PX_LOG_E("Invalid peripheral specified"); return false;
     }
     // Already open?
     if(uart_per->open_counter != 0)
@@ -421,6 +403,7 @@ bool px_uart_open2(px_uart_handle_t *  handle,
     }
     // Point handle to peripheral
     handle->uart_per = uart_per;
+
     // Success
     uart_per->open_counter = 1;
     return true;
@@ -453,12 +436,11 @@ bool px_uart_close(px_uart_handle_t * handle)
 #if PX_UART_CFG_UART1_EN
     case 1: UCSR1B = 0; break;
 #endif
-    default:
-        PX_LOG_E("Invalid peripheral");
-        return false;
+    default: PX_LOG_E("Invalid peripheral"); return false;
     }
     // Close handle
     handle->uart_per = NULL;
+
     // Success
     uart_per->open_counter = 0;
     return true;
@@ -477,9 +459,9 @@ void px_uart_putchar(px_uart_handle_t * handle, char data)
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
     // Wait until transmit buffer has space for one byte
-    while(PX_RING_BUF_FULL(uart_per->tx_circ_buf)) {;}
+    while(PX_RING_BUF_FULL(uart_per->tx_ring_buf)) {;}
     // Buffer the byte to be transmitted
-    PX_RING_BUF_WRITE(uart_per->tx_circ_buf, (uint8_t)data);
+    PX_RING_BUF_WRITE(uart_per->tx_ring_buf, (uint8_t)data);
     // Make sure transmit process is started by enabling interrupt
     px_uart_start_tx(uart_per->uart_nr);
 }
@@ -496,12 +478,13 @@ bool px_uart_wr_u8(px_uart_handle_t * handle, uint8_t data)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
-    if(PX_RING_BUF_FULL(uart_per->tx_circ_buf))
+    // Buffer full?
+    if(PX_RING_BUF_FULL(uart_per->tx_ring_buf))
     {
         return false;
     }
-    PX_RING_BUF_WRITE(uart_per->tx_circ_buf, data);
-
+    // Add byte to buffer
+    PX_RING_BUF_WRITE(uart_per->tx_ring_buf, data);
     // Make sure transmit process is started by enabling interrupt
     px_uart_start_tx(uart_per->uart_nr);
 
@@ -522,15 +505,17 @@ size_t px_uart_wr(px_uart_handle_t * handle, const void* data, size_t nr_of_byte
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
+    // Write data
     while(nr_of_bytes)
     {
-        // Make sure there is space available in buffer
-        if(PX_RING_BUF_FULL(uart_per->tx_circ_buf))
+        // Is there is space available in buffer?
+        if(PX_RING_BUF_FULL(uart_per->tx_ring_buf))
         {
+            // No
             break;
         }
-        // Insert data into buffer
-        PX_RING_BUF_WRITE(uart_per->tx_circ_buf, *data_u8++);
+        // Add data to buffer
+        PX_RING_BUF_WRITE(uart_per->tx_ring_buf, *data_u8++);
         // Next byte
         bytes_buffered++;
         nr_of_bytes--;
@@ -556,9 +541,9 @@ char px_uart_getchar(px_uart_handle_t * handle)
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
     // Wait until at least one byte has been received
-    while(PX_RING_BUF_EMPTY(uart_per->rx_circ_buf)) {;}
+    while(PX_RING_BUF_EMPTY(uart_per->rx_ring_buf)) {;}
     // Fetch received byte
-    PX_RING_BUF_READ(uart_per->rx_circ_buf, data);
+    PX_RING_BUF_READ(uart_per->rx_ring_buf, data);
 
     return (char)data;
 }
@@ -575,13 +560,13 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t* data)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
-    if(PX_RING_BUF_EMPTY(uart_per->rx_circ_buf))
+    if(PX_RING_BUF_EMPTY(uart_per->rx_ring_buf))
     {
         return false;
     }
     else
     {
-        PX_RING_BUF_READ(uart_per->rx_circ_buf, *data);
+        PX_RING_BUF_READ(uart_per->rx_ring_buf, *data);
         return true;
     }
 }
@@ -600,15 +585,16 @@ size_t px_uart_rd(px_uart_handle_t * handle, void* buffer, size_t nr_of_bytes)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
+    // Read bytes
     while(nr_of_bytes)
     {
         // See if there is data in the buffer
-        if(PX_RING_BUF_EMPTY(uart_per->rx_circ_buf))
+        if(PX_RING_BUF_EMPTY(uart_per->rx_ring_buf))
         {
             break;
         }
         // Fetch byte
-        PX_RING_BUF_READ(uart_per->rx_circ_buf, *buffer_u8++);
+        PX_RING_BUF_READ(uart_per->rx_ring_buf, *buffer_u8++);
         // Next byte
         data_received++;
         nr_of_bytes--;
@@ -629,7 +615,7 @@ bool px_uart_wr_buf_is_full(px_uart_handle_t * handle)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
-    if(PX_RING_BUF_FULL(uart_per->tx_circ_buf))
+    if(PX_RING_BUF_FULL(uart_per->tx_ring_buf))
     {
         return true;
     }
@@ -651,7 +637,7 @@ bool px_uart_wr_buf_is_empty(px_uart_handle_t * handle)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
-    if(PX_RING_BUF_EMPTY(uart_per->tx_circ_buf))
+    if(PX_RING_BUF_EMPTY(uart_per->tx_ring_buf))
     {
         return true;
     }
@@ -673,7 +659,7 @@ bool px_uart_wr_is_done(px_uart_handle_t * handle)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
-    if(!(PX_RING_BUF_EMPTY(uart_per->tx_circ_buf)))
+    if(!(PX_RING_BUF_EMPTY(uart_per->tx_ring_buf)))
     {
         return false;
     }
@@ -692,7 +678,7 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle)
     PX_LOG_ASSERT(uart_per != NULL);
     PX_LOG_ASSERT(uart_per->open_counter != 0);
 
-    if(PX_RING_BUF_EMPTY(uart_per->rx_circ_buf))
+    if(PX_RING_BUF_EMPTY(uart_per->rx_ring_buf))
     {
         return true;
     }

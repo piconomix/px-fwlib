@@ -89,6 +89,7 @@ int main(void)
     DDRD &= ~(1 << 7);
     // Enable pull-up on PB (set bit 7 of PORTD register)
     PORTD |= (1 << 7);
+
     // Repeat forever
     for(;;)
     {

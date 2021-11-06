@@ -56,7 +56,6 @@ ISR(ASYNC_TMR_INT)
     ASYNC_TMR_CFG_ON_TICK();
 }
 
-
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_async_tmr_init(void)
 {
@@ -82,13 +81,10 @@ void px_async_tmr_init(void)
     // Resolution is 32.25 ms
     TCCR2A = (0 << WGM20) | (1 << WGM21);
     TCCR2B = (0 << WGM22) | (1 << CS22) | (1 << CS21) | (1 << CS20);
-
     // Reset time
     TCNT2 = 0;
-
     // Calculate and set period (F_CPU is defined in 'px_board.h')
     OCR2A = (uint16_t)(((F_RTC / 1024) * ASYNC_TMR_CFG_PERIOD_MS) / 1000) - 1;
-
     // Wait for "update busy" flags to clear
     while(ASSR & ((1 << TCN2UB) | (1 << OCR2AUB) | (1 << TCR2AUB))) {;}
 
