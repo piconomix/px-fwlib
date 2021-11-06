@@ -118,10 +118,7 @@ static const char* px_cli_cmd_fn_lcd_pixel(uint8_t argc, char* argv[])
 
 static const char* px_cli_cmd_fn_lcd_line(uint8_t argc, char* argv[])
 {
-    px_gfx_xy_t     x1;
-    px_gfx_xy_t     y1;
-    px_gfx_xy_t     x2;
-    px_gfx_xy_t     y2;
+    px_gfx_xy_t    x1, y1, x2, y2;
     px_gfx_color_t color;
 
     // <x1>
@@ -188,10 +185,7 @@ static const char* px_cli_cmd_fn_lcd_line(uint8_t argc, char* argv[])
 
 static const char* px_cli_cmd_fn_lcd_rect(uint8_t argc, char* argv[])
 {
-    px_gfx_xy_t     x;
-    px_gfx_xy_t     y;
-    px_gfx_xy_t     w;
-    px_gfx_xy_t     h;
+    px_gfx_xy_t    x, y, w, h;
     px_gfx_color_t color;
 
     // <x>
@@ -258,10 +252,7 @@ static const char* px_cli_cmd_fn_lcd_rect(uint8_t argc, char* argv[])
 
 static const char* px_cli_cmd_fn_lcd_fill(uint8_t argc, char* argv[])
 {
-    px_gfx_xy_t     x;
-    px_gfx_xy_t     y;
-    px_gfx_xy_t     w;
-    px_gfx_xy_t     h;
+    px_gfx_xy_t    x, y, w, h;
     px_gfx_color_t color;
 
     // <x>
@@ -328,9 +319,7 @@ static const char* px_cli_cmd_fn_lcd_fill(uint8_t argc, char* argv[])
 
 static const char* px_cli_cmd_fn_lcd_circle(uint8_t argc, char* argv[])
 {
-    px_gfx_xy_t     x;
-    px_gfx_xy_t     y;
-    px_gfx_xy_t     r;
+    px_gfx_xy_t    x, y, r;
     px_gfx_color_t color;
 
     // <x>
@@ -389,8 +378,7 @@ static const char* px_cli_cmd_fn_lcd_circle(uint8_t argc, char* argv[])
 
 static const char* px_cli_cmd_fn_lcd_str(uint8_t argc, char* argv[])
 {
-    px_gfx_xy_t     x;
-    px_gfx_xy_t     y;
+    px_gfx_xy_t    x, y;
     px_gfx_color_t color;
 
     // <x>

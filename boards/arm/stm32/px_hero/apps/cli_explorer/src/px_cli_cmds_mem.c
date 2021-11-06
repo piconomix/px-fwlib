@@ -67,40 +67,40 @@ static const char* px_cli_cmd_fn_mem_rd(uint8_t argc, char* argv[])
     switch(argv[0][0])
     {
     case 'b':
+    {
+        uint8_t * data = (uint8_t *)adr;
+        while(count != 0)
         {
-            uint8_t * data = (uint8_t *)adr;
-            while(count != 0)
-            {
-                printf("0x%02x %u\n", *data, *data);
-                data++;
-                count--;
-            }
-            break;
+            printf("0x%02x %u\n", *data, *data);
+            data++;
+            count--;
         }
+        break;
+    }
 
     case 'w':
+    {
+        uint16_t * data = (uint16_t *)adr;
+        while(count != 0)
         {
-            uint16_t * data = (uint16_t *)adr;
-            while(count != 0)
-            {
-                printf("0x%04x %u\n", *data, *data);
-                data++;
-                count--;
-            }
-            break;
+            printf("0x%04x %u\n", *data, *data);
+            data++;
+            count--;
         }
+        break;
+    }
 
     case 'l':
+    {
+        uint32_t * data = (uint32_t *)adr;
+        while(count != 0)
         {
-            uint32_t * data = (uint32_t *)adr;
-            while(count != 0)
-            {
-                printf("0x%08lx %lu\n", *data, *data);
-                data++;
-                count--;
-            }
-            break;
+            printf("0x%08lx %lu\n", *data, *data);
+            data++;
+            count--;
         }
+        break;
+    }
 
     default:
         return "Error! <b|w|l> must be b (byte:8-bits), w (word:16-bits) or l (long:32-bits)"; 
@@ -127,40 +127,40 @@ static const char* px_cli_cmd_fn_mem_wr(uint8_t argc, char* argv[])
     switch(argv[0][0])
     {
     case 'b':
+    {
+        uint8_t * data = (uint8_t *)adr;
+        while(count != 0)
         {
-            uint8_t * data = (uint8_t *)adr;
-            while(count != 0)
-            {
-                px_cli_util_argv_to_u8(count + 2, 0, PX_U8_MAX);
-                *data++ = px_cli_argv_val.u8;
-                count--;
-            }
-            break;
+            px_cli_util_argv_to_u8(count + 2, 0, PX_U8_MAX);
+            *data++ = px_cli_argv_val.u8;
+            count--;
         }
+        break;
+    }
 
     case 'w':
+    {
+        uint16_t * data = (uint16_t *)adr;
+        while(count != 0)
         {
-            uint16_t * data = (uint16_t *)adr;
-            while(count != 0)
-            {
-                px_cli_util_argv_to_u16(count + 2, 0, PX_U16_MAX);
-                *data++ = px_cli_argv_val.u16;
-                count--;
-            }
-            break;
+            px_cli_util_argv_to_u16(count + 2, 0, PX_U16_MAX);
+            *data++ = px_cli_argv_val.u16;
+            count--;
         }
+        break;
+    }
 
     case 'l':
+    {
+        uint32_t * data = (uint32_t *)adr;
+        while(count != 0)
         {
-            uint32_t * data = (uint32_t *)adr;
-            while(count != 0)
-            {
-                px_cli_util_argv_to_u32(count + 2, 0, PX_U32_MAX);
-                *data++ = px_cli_argv_val.u32;
-                count--;
-            }
-            break;
+            px_cli_util_argv_to_u32(count + 2, 0, PX_U32_MAX);
+            *data++ = px_cli_argv_val.u32;
+            count--;
         }
+        break;
+    }
 
     default:
         return "Error! <b|w|l> must be b (byte:8-bits), w (word:16-bits) or l (long:32-bits)"; 

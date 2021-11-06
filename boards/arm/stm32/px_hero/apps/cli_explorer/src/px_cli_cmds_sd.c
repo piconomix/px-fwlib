@@ -31,7 +31,7 @@
 PX_LOG_NAME("cli_cmds_sd");
 
 // Make sure buffer is big enough to hold a block of data
-#if (MAIN_BUFFER_SIZE < (PX_SD_BLOCK_SIZE-1))
+#if (MAIN_BUFFER_SIZE < (PX_SD_BLOCK_SIZE - 1))
 #error "Make MAIN_BUFFER_SIZE larger"
 #endif
 
@@ -75,16 +75,14 @@ static const char* px_cli_cmd_fn_sd_mount(uint8_t argc, char* argv[])
     printf("Manufacturer ID: %02X\n", cid->mid);
     printf("OEM ID: %c%c\n", cid->oid[0], cid->oid[1]);
     printf("Product name: ");
-    for(i=0; i<5; i++)
+    for(i = 0; i < 5; i++)
     {
         putchar(cid->pnm[i]);
     }
     putchar('\n');
     printf("Product rev: %u.%u\n", PX_U8_HI4(cid->prv), PX_U8_LO4(cid->prv));
     printf("Serial nr: %08lX\n", cid->psn);
-    printf("Manufacture date: %u/%u\n", 
-           2000 + PX_U8_CONCAT_U4(cid->year_hi, cid->year_lo),
-           cid->month);
+    printf("Manufacture date: %u/%u\n",  2000 + PX_U8_CONCAT_U4(cid->year_hi, cid->year_lo), cid->month);
 
     if(!px_sd_read_csd(csd))
     {
@@ -148,7 +146,6 @@ static const char* px_cli_cmd_fn_sd_ls(uint8_t argc, char* argv[])
     {
         return "Error! Unable to open dir";
     }
-
     while(f_readdir(&chan_fs_dir, &chan_fs_file_info) == FR_OK)
     {
         if(chan_fs_file_info.fname[0] == '\0')
@@ -158,7 +155,6 @@ static const char* px_cli_cmd_fn_sd_ls(uint8_t argc, char* argv[])
         printf(chan_fs_file_info.fname);
         putchar('\n');
     }
-
     if(f_closedir(&chan_fs_dir) != FR_OK)
     {
         return "Error! Unable to close dir";

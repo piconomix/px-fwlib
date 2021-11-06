@@ -56,14 +56,9 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
     {
         switch(argv[0][0])
         {
-        case '1':
-            per = PX_SPI_NR_1;
-            break;
-        case '2':
-            per = PX_SPI_NR_2;
-            break;
-        default:
-            return "Error. [per] must be 1 or 2";
+        case '1': per = PX_SPI_NR_1; break;
+        case '2': per = PX_SPI_NR_2; break;
+        default:  return "Error. [per] must be 1 or 2";
         }
     }
     else
@@ -106,20 +101,11 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
     {
         switch(argv[3][0])
         {
-        case '0':
-            mode = PX_SPI_MODE0;
-            break;
-        case '1':
-            mode = PX_SPI_MODE1;
-            break;
-        case '2':
-            mode = PX_SPI_MODE2;
-            break;
-        case '3':
-            mode = PX_SPI_MODE3;
-            break;
-        default:
-            return "Error. [mode] must be 0, 1, 2 or 3";
+        case '0': mode = PX_SPI_MODE0; break;
+        case '1': mode = PX_SPI_MODE1; break;
+        case '2': mode = PX_SPI_MODE2; break;
+        case '3': mode = PX_SPI_MODE3; break;
+        default:  return "Error. [mode] must be 0, 1, 2 or 3";
         }
     }
     else
@@ -132,14 +118,9 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
     {
         switch(px_cli_util_argv_to_option(4, "lsb\0msb\0"))
         {
-        case 0: 
-            data_order = PX_SPI_DATA_ORDER_LSB;
-            break;
-        case 1: 
-            data_order = PX_SPI_DATA_ORDER_MSB;
-            break;
-        default:
-            return "Error: [order] must be lsb or msb";
+        case 0:  data_order = PX_SPI_DATA_ORDER_LSB; break;
+        case 1:  data_order = PX_SPI_DATA_ORDER_MSB; break;
+        default: return "Error: [order] must be lsb or msb";
         }
     }
     else
@@ -205,7 +186,7 @@ static const char* px_cli_cmd_fn_spi_wr(uint8_t argc, char* argv[])
     uint8_t data[8];
 
     // <data>
-    for(i=0; i<argc; i++)
+    for(i = 0; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -238,7 +219,7 @@ static const char* px_cli_cmd_fn_spi_rd(uint8_t argc, char* argv[])
     px_spi_rd(&px_spi_handle, data, nr_of_bytes, 0);
 
     // Report received data
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         printf("0x%02x ", data[i]);
     }
@@ -253,7 +234,7 @@ static const char* px_cli_cmd_fn_spi_exchange(uint8_t argc, char* argv[])
     uint8_t data[16];
 
     // <data>
-    for(i=0; i<argc; i++)
+    for(i = 0; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -267,7 +248,7 @@ static const char* px_cli_cmd_fn_spi_exchange(uint8_t argc, char* argv[])
     px_spi_xc(&px_spi_handle, data, data, argc, PX_SPI_FLAG_START_AND_STOP);
 
     // Report received data
-    for(i=0; i<argc; i++)
+    for(i = 0; i < argc; i++)
     {
         printf("0x%02x ", data[i]);
     }

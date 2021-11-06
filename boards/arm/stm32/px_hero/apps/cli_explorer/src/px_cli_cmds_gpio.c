@@ -257,7 +257,7 @@ static void px_cli_fn_gpio_report_pin(px_gpio_handle_t * handle)
     switch(handle->pull)
     {
     case PX_GPIO_PULL_UP:   printf("Pull-Up "); break;
-    case PX_GPIO_PULL_DN: printf("Pull-Dn "); break;
+    case PX_GPIO_PULL_DN:   printf("Pull-Dn "); break;
     default:                break;
     }
 
@@ -291,11 +291,10 @@ static void px_cli_fn_gpio_report_pin(px_gpio_handle_t * handle)
     switch(handle->ospeed)
     {
     case PX_GPIO_OSPEED_LO:     printf("Low ");         break;
-    case PX_GPIO_OSPEED_MD:    printf("Medium ");      break;
+    case PX_GPIO_OSPEED_MD:     printf("Medium ");      break;
     case PX_GPIO_OSPEED_HI:     printf("High ");        break;
     case PX_GPIO_OSPEED_VH:     printf("VeryHigh ");    break;
-    default:
-        break;
+    default: break;
     }
 
     // Output?

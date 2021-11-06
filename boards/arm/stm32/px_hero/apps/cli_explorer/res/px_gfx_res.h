@@ -1,5 +1,5 @@
-#ifndef __PX_GFX_RESOURCES_H__
-#define __PX_GFX_RESOURCES_H__
+#ifndef __PX_GFX_RES_H__
+#define __PX_GFX_RES_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -25,5 +25,22 @@
 #include "px_gfx.h"
 #include "px_gfx_fonts.h"
 #include "px_gfx_img_hero_logo.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* _____DEFINITIONS__________________________________________________________ */
+
+/* _____TYPE DEFINITIONS_____________________________________________________ */
+
+/* _____GLOBAL VARIABLES_____________________________________________________ */
+
+/* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
+
+/* _____MACROS_______________________________________________________________ */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -110,15 +110,11 @@ static const char* px_cli_cmd_fn_ow_scan(uint8_t argc, char* argv[])
     while(one_wire_error == PX_ONE_WIRE_ERR_NONE)
     {
         // Report device
-        printf("0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X\n",
-               one_wire_search.rom.data[0],
-               one_wire_search.rom.data[1],
-               one_wire_search.rom.data[2],
-               one_wire_search.rom.data[3],
-               one_wire_search.rom.data[4],
-               one_wire_search.rom.data[5],
-               one_wire_search.rom.data[6],
-               one_wire_search.rom.data[7]);
+        for(int i = 0; i < sizeof(one_wire_search.rom.data); i++)
+        {
+            printf("%02X ", one_wire_search.rom.data[i]);
+        }
+        putchar('\n');
         // Find next 1-wire device
         one_wire_error = px_one_wire_search_rom_next(&one_wire_search);
     }
@@ -132,7 +128,7 @@ static const char* px_cli_cmd_fn_rd_rom(uint8_t argc, char* argv[])
     px_one_wire_error_t error;
 
     // [ROM0] .. [ROM7]
-    for(i=0; i < 8; i++)
+    for(i = 0; i < 8; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -179,7 +175,7 @@ static const char* px_cli_cmd_fn_match_rom(uint8_t argc, char* argv[])
     px_one_wire_error_t error;
 
     // [ROM0] .. [ROM7]
-    for(i=0; i < 8; i++)
+    for(i = 0; i < 8; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -220,7 +216,7 @@ static const char* px_cli_cmd_fn_ow_wr(uint8_t argc, char* argv[])
         data[i] = px_cli_argv_val.u8;
     }
 
-    for(i=0; i < nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         px_one_wire_wr_u8(data[i]);
     }
@@ -241,7 +237,7 @@ static const char* px_cli_cmd_fn_ow_rd(uint8_t argc, char* argv[])
     }
     nr_of_bytes = px_cli_argv_val.u8;
 
-    for(i=0; i < nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         data = px_one_wire_rd_u8();
         printf("%02X ", (unsigned int)data);
@@ -263,7 +259,7 @@ static const char* px_cli_cmd_fn_ds18b20_temp(uint8_t argc, char* argv[])
     if(argc != 0)
     {
         // <ROM0> .. <ROM7>
-        for(i=0; i < 8; i++)
+        for(i = 0; i < 8; i++)
         {
             if(!px_cli_util_argv_to_u8(i, 0, 255))
             {

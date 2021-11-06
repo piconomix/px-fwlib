@@ -46,10 +46,7 @@ bool px_xmodem_rd_u8(uint8_t * data)
 
 void px_xmodem_wr_u8(uint8_t data)
 {
-    while(!px_usb_cdc_stdio_wr_u8(data))
-    {
-        ;
-    }
+    while(!px_usb_cdc_stdio_wr_u8(data)) {;}
 }
 
 void px_xmodem_tmr_start(uint16_t time_ms)

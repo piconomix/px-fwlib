@@ -18,12 +18,6 @@
 
 ============================================================================= */
 
-/** 
- *  @addtogroup STM32_ADC
- *
- *  @{
- */
-
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
@@ -48,5 +42,4 @@
 /// Specify ADC oversampling (see 'px_adc_cfg_oversampling_shift_t')
 #define PX_ADC_CFG_OVERSAMPLING_SHIFT   PX_ADC_CFG_OVERSAMPLING_SHIFT_NONE
 
-/// @}
 #endif

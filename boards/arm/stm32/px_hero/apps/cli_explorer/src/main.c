@@ -108,7 +108,6 @@ static bool main_init(void)
     // Connect stdin and stdout to UART1
     px_uart_stdio_init(&px_uart1_handle);
 #endif
-
     // Connect stdin and stdout to USB CDC circular buffers
     px_usb_cdc_stdio_init();
 
@@ -117,13 +116,10 @@ static bool main_init(void)
 
     // Open I2C1
     px_i2c_open(&px_i2c_handle, PX_I2C_NR_1, 0x3c);
-
     // Open ADC
     px_adc_open(&px_adc_handle, PX_ADC_NR_1);
-
     // Open DAC
     px_dac_open(&px_dac_handle, PX_DAC_NR_1);
-
 
     // Initialise SD Card driver
     px_spi_open2(&px_spi_sd_handle,
@@ -134,7 +130,6 @@ static bool main_init(void)
                  PX_SD_SPI_DATA_ORDER,
                  PX_SD_SPI_MO_DUMMY_BYTE);
     px_sd_init(&px_spi_sd_handle);
-
     // Initialise LCD driver
     px_spi_open2(&px_spi_lcd_handle,
                  PX_SPI_NR_2,
@@ -144,7 +139,6 @@ static bool main_init(void)
                  PX_LCD_SPI_DATA_ORDER,
                  0x00);
     px_lcd_init(&px_spi_lcd_handle);
-
     // Initialise AT25S Serial Flash driver
     px_spi_open2(&px_spi_sf_handle,
                  PX_SPI_NR_2,
@@ -252,6 +246,7 @@ int main(void)
     // Initialize CLI
     px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
+    // Repeat forever
     for(;;)
     {
         // USB connected event?
@@ -301,7 +296,6 @@ void main_log_putchar(char data)
         // Prepend a carriage return
         main_log_putchar('\r');
     }
-
     px_uart_putchar(&px_uart1_handle, data);
 }
 
@@ -310,7 +304,6 @@ void main_log_timestamp(char * str)
     px_rtc_date_time_t date_time;
 
     px_rtc_date_time_rd(&date_time);
-
     sprintf(str, "%02hu:%02hu:%02hu",
                  (unsigned short)date_time.hour,
                  (unsigned short)date_time.min,

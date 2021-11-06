@@ -52,8 +52,7 @@ static const char* px_cli_cmd_fn_sf_info(uint8_t argc, char* argv[])
     uint8_t data[3];
 
     px_at25s_rd_man_and_dev_id(data);
-    printf("Manufacturer and Device ID: %02X %02X %02X\n", 
-           data[0], data[1], data[2]);
+    printf("Manufacturer and Device ID: %02X %02X %02X\n",  data[0], data[1], data[2]);
 
     printf("Size: %lu KB\n", PX_AT25S_FLASH_SIZE_BYTES / 1024);
     printf("Pages: %lu\n", PX_AT25S_PAGES);
@@ -175,20 +174,17 @@ static bool px_xmodem_on_tx_data(uint8_t * data, uint8_t bytes_to_send)
     {
         // Calculate maximum remaining bytes that can be read from page
         nr_of_bytes = PX_AT25S_PAGE_SIZE - px_cli_cmd_sf_offset;
-
         // More than enough bytes left in page?
         if(nr_of_bytes > bytes_to_send)
         {
             // Only read requested number of bytes
             nr_of_bytes = bytes_to_send;
         }
-
         // Read data from Serial Flash
         px_at25s_rd_page_offset(data,
                              px_cli_cmd_sf_page,
                              px_cli_cmd_sf_offset,
                              nr_of_bytes);
-
         // Advance offset (and page)
         px_cli_cmd_sf_offset += nr_of_bytes;
         while(px_cli_cmd_sf_offset >= PX_AT25S_PAGE_SIZE)
@@ -202,13 +198,12 @@ static bool px_xmodem_on_tx_data(uint8_t * data, uint8_t bytes_to_send)
                 return false;
             }
         }
-
         // Advance data buffer pointer
         data += nr_of_bytes;
-
         // Calculate remain number of bytes to read
         bytes_to_send -= nr_of_bytes;
     }
+
     return true;
 }
 
@@ -249,10 +244,7 @@ static const char * px_cli_cmd_fn_sf_rd_xmodem(uint8_t argc, char* argv[])
 
     // Wait until button is pressed
     printf("Press button when host is ready to receive file (after XMODEM transfer has been started)...\n");
-    while(!PX_USR_PB_IS_PRESSED())
-    {
-        ;
-    }
+    while(!PX_USR_PB_IS_PRESSED()) {;}
 
     // Send Serial Flash content using XMODEM protocol
     px_cli_cmd_sf_page     = start_page;
@@ -287,7 +279,7 @@ static const char* px_cli_cmd_fn_sf_wr_page(uint8_t argc, char* argv[])
     offset = px_cli_argv_val.u16;
 
     // <data>
-    for(i=2; i<argc; i++)
+    for(i = 2; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -315,14 +307,12 @@ static void px_xmodem_on_rx_data(const uint8_t * data, uint8_t bytes_received)
     {
         // Calculate maximum remaining bytes that can be written to page
         nr_of_bytes = PX_AT25S_PAGE_SIZE - px_cli_cmd_sf_offset;
-
         // More than enough bytes left in page?
         if(nr_of_bytes > bytes_received)
         {
             // Only write number of bytes received
             nr_of_bytes = bytes_received;
         }
-
         // Start of new block?
         if(  (px_cli_cmd_sf_offset == 0)
            &&((px_cli_cmd_sf_page % PX_AT25S_PAGES_PER_BLOCK_4KB) == 0))
@@ -330,13 +320,8 @@ static void px_xmodem_on_rx_data(const uint8_t * data, uint8_t bytes_received)
             // Erase block first
             px_at25s_erase(PX_AT25S_BLOCK_4KB, px_cli_cmd_sf_page);
         }
-
         // Write data to Serial Flash
-        px_at25s_wr_page_offset(data, 
-                                px_cli_cmd_sf_page,   
-                                px_cli_cmd_sf_offset,                                    
-                                nr_of_bytes);
-
+        px_at25s_wr_page_offset(data,  px_cli_cmd_sf_page, px_cli_cmd_sf_offset, nr_of_bytes);
         // Advance offset
         px_cli_cmd_sf_offset += nr_of_bytes;
         while(px_cli_cmd_sf_offset >= PX_AT25S_PAGE_SIZE)
@@ -350,14 +335,11 @@ static void px_xmodem_on_rx_data(const uint8_t * data, uint8_t bytes_received)
                 return;
             }            
         }
-
         // Advance data buffer pointer
         data += nr_of_bytes;
-
         // Calculate remain number of bytes to write to Serial Flash
         bytes_received -= nr_of_bytes;
     }
-    return;
 }
 
 static const char* px_cli_cmd_fn_sf_wr_xmodem(uint8_t argc, char* argv[])
@@ -381,10 +363,7 @@ static const char* px_cli_cmd_fn_sf_wr_xmodem(uint8_t argc, char* argv[])
 
     // Wait until button is pressed
     printf("Press button when host is ready to send file (after XMODEM transfer has been started)...\n");
-    while(!PX_USR_PB_IS_PRESSED())
-    {
-        ;
-    }
+    while(!PX_USR_PB_IS_PRESSED()) {;}
 
     // Receive Serial Flash content using XMODEM protocol
     px_cli_cmd_sf_page     = start_page;

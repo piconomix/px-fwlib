@@ -53,12 +53,8 @@ static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
     // <per>
     switch(argv[0][0])
     {
-    case '2':
-        per = PX_UART_NR_2;
-        break;
-    case '4':
-        per = PX_UART_NR_4;
-        break;
+    case '2': per = PX_UART_NR_2; break;
+    case '4': per = PX_UART_NR_4; break;
     default:
         return "Error. <per> must be 2 or 4";
     }
@@ -76,17 +72,10 @@ static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
     {
         switch(argv[2][0])
         {
-        case '7':
-            data_bits = PX_UART_DATA_BITS_7;
-            break;
-        case '8':
-            data_bits = PX_UART_DATA_BITS_8;
-            break;
-        case '9':
-            data_bits = PX_UART_DATA_BITS_9;
-            break;
-        default:
-            return "Error. [data] must be 7, 8 or 9";
+        case '7': data_bits = PX_UART_DATA_BITS_7; break;
+        case '8': data_bits = PX_UART_DATA_BITS_8; break;
+        case '9': data_bits = PX_UART_DATA_BITS_9; break;
+        default: return "Error. [data] must be 7, 8 or 9";
         }
     }
 
@@ -95,17 +84,10 @@ static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
     {
         switch(argv[3][0])
         {
-        case 'n':
-            parity = PX_UART_PARITY_NONE;
-            break;
-        case 'o':
-            parity = PX_UART_PARITY_ODD;
-            break;
-        case 'e':
-            parity = PX_UART_PARITY_EVEN;
-            break;
-        default:
-            return "Error. [parity] must be n (none), o (odd) or e (even)";
+        case 'n': parity = PX_UART_PARITY_NONE; break;
+        case 'o': parity = PX_UART_PARITY_ODD;  break;
+        case 'e': parity = PX_UART_PARITY_EVEN; break;
+        default:  return "Error. [parity] must be n (none), o (odd) or e (even)";
         }
     }
 
@@ -114,14 +96,9 @@ static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
     {
         switch(argv[4][0])
         {
-        case '1':
-            stop_bits = PX_UART_STOP_BITS_1;
-            break;
-        case '2':
-            stop_bits = PX_UART_STOP_BITS_2;
-            break;
-        default:
-            return "Error. [stop] must be 1 or 2";
+        case '1': stop_bits = PX_UART_STOP_BITS_1; break;
+        case '2': stop_bits = PX_UART_STOP_BITS_2; break;
+        default: return "Error. [stop] must be 1 or 2";
         }
     }
 
@@ -165,18 +142,12 @@ static const char* px_cli_cmd_fn_uart_bridge(uint8_t argc, char* argv[])
         if(px_uart_rd_u8(&px_uart_handle, &data))
         {
             // Send byte to console
-            while(!px_usb_cdc_stdio_wr_u8(data))
-            {
-                ;
-            }
+            while(!px_usb_cdc_stdio_wr_u8(data)) {;}
         }
     }
 
     // Wait until button is released
-    while(PX_USR_PB_IS_PRESSED())
-    {
-        ;
-    }
+    while(PX_USR_PB_IS_PRESSED()) {;}
 
     putchar('\n');
     return NULL;
@@ -187,7 +158,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
     uint8_t     i;    
 
     // <data>
-    for(i=0; i<argc; i++)
+    for(i = 0; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -226,7 +197,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(timeout_ms));
 
     // Try to receive specified number of bytes
-    i=0;
+    i = 0;
     while(!px_systmr_has_expired(&tmr))
     {
         if(px_uart_rd_u8(&px_uart_handle, &data[i]))
@@ -240,7 +211,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     nr_of_bytes = i;
 
     // Report received bytes
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         printf("0x%02x ", data[i]);
     }
@@ -272,7 +243,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     timeout_ms = px_cli_argv_val.u16;
 
     // <data>
-    for(i=2; i<argc; i++)
+    for(i = 2; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -286,7 +257,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(timeout_ms));
 
     // Try to receive specified number of bytes
-    i=0;
+    i = 0;
     while(!px_systmr_has_expired(&tmr))
     {
         if(px_uart_rd_u8(&px_uart_handle, &data[i]))
@@ -300,7 +271,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     nr_of_bytes = i;
 
     // Report received bytes
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         printf("0x%02x ", data[i]);
     }
