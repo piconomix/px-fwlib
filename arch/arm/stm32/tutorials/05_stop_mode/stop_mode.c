@@ -49,12 +49,14 @@ int main(void)
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOH);    
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+
     // Configure LED pin (PH0) as a digital output low
     LL_GPIO_SetPinMode(GPIOH, LL_GPIO_PIN_0, LL_GPIO_MODE_OUTPUT);
     LL_GPIO_ResetOutputPin(GPIOH, LL_GPIO_PIN_0);
     // Configure button pin (PC9) as a digital input with pull-up
     LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_9, LL_GPIO_MODE_INPUT);
     LL_GPIO_SetPinPull(GPIOC, LL_GPIO_PIN_9, LL_GPIO_PULL_UP);
+
     // Select PC9 for extended interrupt on EXTI9
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE9);
     // Enable falling edge external interrupt on line 9

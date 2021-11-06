@@ -65,6 +65,7 @@ void RTC_IRQHandler(void)
         // Clear EXTI line flag associated with RTC Alarm
         LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_17);
     }
+
     // Alarm B interrupt enabled?
     if(LL_RTC_IsEnabledIT_ALRB(RTC))
     {
@@ -79,6 +80,7 @@ void RTC_IRQHandler(void)
         // Clear EXTI line flag associated with RTC Alarm
         LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_17);
     }
+
     // Wakeup Timer interrupt enabled?
     if(LL_RTC_IsEnabledIT_WUT(RTC))
     {
@@ -104,6 +106,7 @@ void px_rtc_init(void)
         // RTC has already been initialised
         return;
     }
+
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
     // Enter initialization mode
@@ -139,6 +142,7 @@ void px_rtc_date_time_wr(const px_rtc_date_time_t * date_time)
     {
         return;
     }
+
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
     // Enter initialization mode
@@ -178,6 +182,7 @@ void px_rtc_date_time_rd(px_rtc_date_time_t * date_time)
         // Save previous time value
         rtc_tr_old = rtc_tr;
     };
+
     // Return date
     date_time->year  = px_rtc_bcd_to_bin((rtc_dr >> RTC_DR_YU_Pos)  & 0xff);
     date_time->month = px_rtc_bcd_to_bin((rtc_dr >> RTC_DR_MU_Pos)  & 0x1f);
@@ -198,11 +203,13 @@ void px_rtc_alarm_a_enable(const px_rtc_date_time_t * alarm,
     {
         return;
     }
+
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Alarm
     LL_RTC_ALMA_Disable(RTC);
     while(!LL_RTC_IsActiveFlag_ALRAW(RTC)) {;}
+
     // Set alarm and mask
     rtc_alrmar = RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1;
     if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_SEC)
@@ -226,6 +233,7 @@ void px_rtc_alarm_a_enable(const px_rtc_date_time_t * alarm,
         rtc_alrmar &= ~RTC_ALRMAR_MSK3;
     }
     RTC->ALRMAR = rtc_alrmar;
+
     // Clear flag
     px_rtc_alarm_a_flag = false;
     // Clear interrupt flag
@@ -276,11 +284,13 @@ void px_rtc_alarm_b_enable(const px_rtc_date_time_t * alarm,
     {
         return;
     }
+
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Alarm
     LL_RTC_ALMB_Disable(RTC);
     while(!LL_RTC_IsActiveFlag_ALRBW(RTC)) {;}
+
     // Set alarm and mask
     rtc_alrmbr = RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1;
     if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_SEC)
@@ -304,6 +314,7 @@ void px_rtc_alarm_b_enable(const px_rtc_date_time_t * alarm,
         rtc_alrmbr &= ~RTC_ALRMAR_MSK3;
     }
     RTC->ALRMBR = rtc_alrmbr;
+
     // Clear flag
     px_rtc_alarm_b_flag = false;
     // Clear interrupt flag
@@ -352,6 +363,7 @@ void px_rtc_wakeup_tmr_enable(px_rtc_wakeup_presc_clk_t wakeup_presc_clk,
     // Disable Wakeup Timer
     LL_RTC_WAKEUP_Disable(RTC);
     while(!LL_RTC_IsActiveFlag_WUTW(RTC)) {;}
+
     // Set Wakeup Timer clock prescaler
     LL_RTC_WAKEUP_SetClock(RTC, wakeup_presc_clk);
     // Set auto reload value
@@ -363,6 +375,7 @@ void px_rtc_wakeup_tmr_enable(px_rtc_wakeup_presc_clk_t wakeup_presc_clk,
     // Enable rising edge external interrupt on line 20
     LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_20);
     LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_20);
+
     // Enable RTC interrupt
     NVIC_EnableIRQ(RTC_IRQn);
     // Enable Wakeup Timer interrupt

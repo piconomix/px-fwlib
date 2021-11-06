@@ -106,6 +106,7 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
         // Reset EOP flag
         FLASH->SR = FLASH_SR_EOP;
     }
+
     // Disable page erase
     FLASH->PECR &= ~(FLASH_PECR_ERASE | FLASH_PECR_PROG);
 
@@ -122,8 +123,10 @@ PX_ATTR_RAMFUNC void px_flash_wr_half_page(const uint32_t address, const uint32_
     primask = __get_PRIMASK();
     // Disable interrupts
     px_interrupts_disable();
+
     // Enable half page programming
     FLASH->PECR |= (FLASH_PECR_PROG | FLASH_PECR_FPRG);
+
     // Write half page by copying data (32-bits at a time)
     // The same address can be used as it is incremented internally
     for (i = 0; i < PX_FLASH_HALF_PAGE_SIZE_WORDS; i++)
@@ -138,8 +141,10 @@ PX_ATTR_RAMFUNC void px_flash_wr_half_page(const uint32_t address, const uint32_
         // Reset EOP flag
         FLASH->SR = FLASH_SR_EOP;
     }
+
     // Disable half page programming
     FLASH->PECR &= ~(FLASH_PECR_PROG | FLASH_PECR_FPRG);
+
     // Restore interrupt status
     __set_PRIMASK(primask);
 }
@@ -169,6 +174,7 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
 	FLASH->CR  = flash_cr;        
     // Wait until erase has finished (not busy)
     while ((FLASH->SR & FLASH_SR_BSY1) != 0) {;}
+
     // Disable page erase
     FLASH->CR &= ~FLASH_CR_PER;
 
@@ -186,8 +192,10 @@ PX_ATTR_RAMFUNC void px_flash_wr_row(const uint32_t address, const uint32_t * da
     primask = __get_PRIMASK();
     // Disable interrupts
     px_interrupts_disable();
+
     // Enable fast programming
     FLASH->CR |= FLASH_CR_FSTPG;
+
     // Write row by copying data
     for (i = 0; i < PX_FLASH_ROW_SIZE_WORDS; i++)
     {
@@ -200,9 +208,11 @@ PX_ATTR_RAMFUNC void px_flash_wr_row(const uint32_t address, const uint32_t * da
     {
         // Reset EOP flag
         FLASH->SR = FLASH_SR_EOP;
-    }    
+    }
+
     // Disable fast programming
     FLASH->CR &= ~FLASH_CR_FSTPG;
+
     // Restore interrupt status
     __set_PRIMASK(primask);
 }

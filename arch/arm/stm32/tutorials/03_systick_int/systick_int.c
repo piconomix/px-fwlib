@@ -44,6 +44,7 @@ int main(void)
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOH);
     // Configure PH0 as a digital output
     LL_GPIO_SetPinMode(GPIOH, LL_GPIO_PIN_0, LL_GPIO_MODE_OUTPUT);
+
     // Configure SysTick peripheral to generate an interrupt every 1 ms:
     // Default system clock is 2.1 MHz after startup from reset
     // Reload value = 1 ms / ( 1 / 2.1 MHz) - 1 = 2099

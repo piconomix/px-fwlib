@@ -102,11 +102,14 @@ static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
         PX_LOG_E("Invalid peripheral");
         return;
     }
+
     // Disable peripheral
     LL_SPI_Disable(spi_base_adr);
+
     // Set SPI Control Register 1:
     // master, data order, clock divisor, mode (clock polarity & phase)
     spi_base_adr->CR1 = spi_cr1_val;
+
     // Enable peripheral
     LL_SPI_Enable(spi_base_adr);
 }
@@ -186,6 +189,7 @@ bool px_spi_open(px_spi_handle_t * handle,
         PX_LOG_W("Handle already open?");
     }
 #endif
+
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -213,6 +217,7 @@ bool px_spi_open(px_spi_handle_t * handle,
         return false;
     }
 #endif
+
     // Set SPI data order (MSB or LSB first)
     spi_cr1_val |= PX_SPI_CFG_DEFAULT_DATA_ORDER << SPI_CR1_LSBFIRST_Pos;
     // Set SPI clock divisor
@@ -237,6 +242,7 @@ bool px_spi_open(px_spi_handle_t * handle,
     }
     // Point handle to peripheral
     handle->spi_per = spi_per;
+
     // Success
     PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
@@ -266,6 +272,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
         PX_LOG_W("Handle already open?");
     }
 #endif
+
     // Handle not initialised
     handle->spi_per = NULL;
     // Set pointer to peripheral data
@@ -293,6 +300,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
         return false;
     }
 #endif
+
     // Set SPI data order (MSB or LSB first)
     if(data_order == PX_SPI_DATA_ORDER_LSB)
     {
@@ -320,6 +328,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
     }
     // Point handle to peripheral
     handle->spi_per = spi_per;
+
     // Success
     PX_LOG_ASSERT(spi_per->open_counter < 255);
     spi_per->open_counter++;
@@ -342,6 +351,7 @@ bool px_spi_close(px_spi_handle_t * handle)
         return false;
     }
 #endif
+
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Get SPI peripheral base register address
@@ -357,6 +367,7 @@ bool px_spi_close(px_spi_handle_t * handle)
         // Success
         return true;
     }
+
     // Disable peripheral
     LL_SPI_Disable(spi_base_adr);
     // Disable peripheral clock
@@ -377,6 +388,7 @@ bool px_spi_close(px_spi_handle_t * handle)
     }
     // Close handle
     handle->spi_per = NULL;
+
     // Success
     return true;
 }
@@ -401,8 +413,10 @@ void px_spi_wr(px_spi_handle_t * handle,
         return;
     }
 #endif
+
     // Set pointer to peripheral
     spi_per = handle->spi_per;
+
     // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
@@ -410,6 +424,7 @@ void px_spi_wr(px_spi_handle_t * handle,
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
+    // Write data
     if(nr_of_bytes != 0)
     {
         // Get SPI peripheral base register address
@@ -452,6 +467,7 @@ void px_spi_wr(px_spi_handle_t * handle,
         // Disable DMA request for TX
         spi_base_adr->CR2 = 0;
     }
+
     // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
@@ -480,8 +496,10 @@ void px_spi_rd(px_spi_handle_t * handle,
         return;
     }
 #endif
+
     // Set pointer to peripheral
     spi_per = handle->spi_per;
+
     // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
@@ -489,6 +507,7 @@ void px_spi_rd(px_spi_handle_t * handle,
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
 
+    // Read data
     if(nr_of_bytes != 0)
     {
         // Get SPI peripheral base register address
@@ -537,6 +556,7 @@ void px_spi_rd(px_spi_handle_t * handle,
         // Disable DMA request for RX and TX
         spi_base_adr->CR2 = 0;
     }
+
     // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
@@ -567,20 +587,24 @@ void px_spi_xc(px_spi_handle_t * handle,
         return;
     }
 #endif
+
     // Set pointer to peripheral
     spi_per = handle->spi_per;
+
     // Assert Chip Select?
     if(flags & PX_SPI_FLAG_START)
     {
         // Take Chip Select Low
         PX_SPI_CFG_CS_LO(handle->cs_id);
     }
+
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
     PX_LOG_ASSERT(spi_base_adr != NULL);
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
 
+    // Exchange data
     if(nr_of_bytes != 0)
     {
         // Enable DMA request for RX
@@ -621,6 +645,7 @@ void px_spi_xc(px_spi_handle_t * handle,
         // Disable DMA request for RX and TX
         spi_base_adr->CR2 = 0;
     }
+
     // De-assert Chip Select?
     if(flags & PX_SPI_FLAG_STOP)
     {
@@ -647,13 +672,16 @@ void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
         return;
     }
 #endif
+
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
     PX_LOG_ASSERT(spi_base_adr != NULL);
+
     // Disable peripheral
     LL_SPI_Disable(spi_base_adr);
+
     // Set new SPI clock divisor
     spi_cr1_val  = handle->spi_cr1_val;
     spi_cr1_val &= ~SPI_CR1_BR_Msk;
@@ -662,6 +690,7 @@ void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
     handle->spi_cr1_val = spi_cr1_val;
     // Set SPI Control Register 1 value
     spi_base_adr->CR1 = spi_cr1_val;
+
     // Enable peripheral
     LL_SPI_Enable(spi_base_adr);
 }
@@ -690,5 +719,5 @@ px_spi_baud_t px_spi_util_baud_hz_to_clk_div(uint32_t baud_hz)
 
 uint32_t px_spi_util_clk_div_to_baud_hz(px_spi_baud_t baud)
 {
-    return (((uint32_t)PX_BOARD_PER_CLK_HZ) >> (baud+1));
+    return (((uint32_t)PX_BOARD_PER_CLK_HZ) >> (baud + 1));
 }

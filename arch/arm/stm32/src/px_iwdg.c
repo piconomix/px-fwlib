@@ -39,6 +39,7 @@ PX_LOG_NAME("px_iwdg");
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_iwdg_init(px_iwdg_prescaler_t prescaler, uint16_t reload, uint16_t window)
 {
+    // Check that parameters does not exceed maximum value
     PX_LOG_ASSERT(reload < 0x1000);
     PX_LOG_ASSERT(window < 0x1000);
 

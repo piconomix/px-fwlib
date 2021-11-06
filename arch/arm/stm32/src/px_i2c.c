@@ -133,6 +133,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
         PX_LOG_W("Handle already open?");
     }
 #endif
+
     // Handle not initialised
     handle->i2c_per = NULL;
     // Set pointer to peripheral data
@@ -196,6 +197,7 @@ bool px_i2c_close(px_i2c_handle_t * handle)
         return false;
     }
 #endif
+
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Get I2C peripheral base register address
@@ -258,6 +260,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
 #endif
     // Check that slave address is 7 bits
     PX_LOG_ASSERT(handle->slave_adr < 0x80);
+
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Get I2C peripheral base register address
@@ -327,6 +330,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             return false;
         }
     }
+
     // Write byte(s)
     while(true)
     {
@@ -399,6 +403,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
             LL_I2C_SetTransferSize(i2c_base_adr, 1);
         }
     }
+
     // Generate STOP condition?
     if(flags & PX_I2C_FLAG_STOP)
     {
@@ -417,6 +422,7 @@ bool px_i2c_wr(px_i2c_handle_t * handle,
         // Wait until bus is free
         while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
     }
+
     // Success
     return true;
 }
@@ -444,6 +450,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
 #endif
     // Check that slave address is 7 bits
     PX_LOG_ASSERT(handle->slave_adr < 0x80);
+
     // Set pointer to peripheral
     i2c_per = handle->i2c_per;
     // Get I2C peripheral base register address
@@ -512,6 +519,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             return false;
         }
     }
+
     // Read byte(s)
     while(true)
     {
@@ -580,6 +588,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
             LL_I2C_SetTransferSize(i2c_base_adr, 1);
         }        
     }
+
     // Generate STOP condition?
     if(flags & PX_I2C_FLAG_STOP)
     {
@@ -598,6 +607,7 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
         // Wait until bus is free
         while(LL_I2C_IsActiveFlag_BUSY(i2c_base_adr)) {;}
     }
+
     // Success
     return true;
 }
@@ -618,6 +628,7 @@ void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
 #endif
     // Check that slave address is 7 bits
     PX_LOG_ASSERT(slave_adr < 0x80);
+
     // Set new slave address
     handle->slave_adr = slave_adr;
 }

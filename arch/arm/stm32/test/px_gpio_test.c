@@ -10,6 +10,7 @@ int main(void)
     // Initialise pins
     PX_GPIO_INIT(PX_GPIO_LED);
     PX_GPIO_INIT(PX_GPIO_PB);
+
     // Repeat forever
     for(;;)
     {

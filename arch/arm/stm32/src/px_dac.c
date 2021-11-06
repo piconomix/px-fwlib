@@ -119,6 +119,7 @@ bool px_dac_open(px_dac_handle_t * handle,
         return false;
     }
 #endif
+
     // Handle not initialised
     handle->dac_per = NULL;
     // Set pointer to peripheral data
@@ -167,6 +168,7 @@ bool px_dac_close(px_dac_handle_t * handle)
         return false;
     }
 #endif
+
     // Set pointer to peripheral
     dac_per = handle->dac_per;
     // Get DAC peripheral base register address
@@ -224,6 +226,7 @@ void px_dac_wr(px_dac_handle_t * handle,
         return;
     }
 #endif
+
     // Set pointer to peripheral
     dac_per = handle->dac_per;
     // Get DAC peripheral base register address

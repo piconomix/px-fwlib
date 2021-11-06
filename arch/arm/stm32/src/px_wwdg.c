@@ -77,7 +77,8 @@ PX_ATTR_NORETURN void px_wwdg_save_regs(uint32_t * stack_adr)
     px_wwdg_pc  = stack_adr[6]; // (sp + 0x18)
     px_wwdg_psr = stack_adr[7]; // (sp + 0x1c)
 
-    while(true) {;}
+    // Block forever
+    for(;;) {;}
 }
 
 void WWDG_IRQHandler(void) PX_ATTR_NAKED;

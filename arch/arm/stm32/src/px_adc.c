@@ -146,6 +146,7 @@ bool px_adc_open(px_adc_handle_t * handle,
         return false;
     }
 #endif
+
     // Handle not initialised
     handle->adc_per = NULL;
     // Set pointer to peripheral data
@@ -193,6 +194,7 @@ bool px_adc_close(px_adc_handle_t * handle)
         return false;
     }
 #endif
+
     // Set pointer to peripheral
     adc_per = handle->adc_per;
     // Get ADC peripheral base register address
@@ -247,6 +249,7 @@ uint16_t px_adc_sample(px_adc_handle_t * handle, px_adc_ch_t ch)
         return false;
     }
 #endif
+
     // Set pointer to peripheral
     adc_per = handle->adc_per;
     // Get ADC peripheral base register address

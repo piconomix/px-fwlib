@@ -126,10 +126,7 @@ int px_usb_cdc_stdio_putchar(char data)
         px_usb_cdc_stdio_putchar('\r');
     }
     // Buffer transmit byte (wait until circular buffer accepts byte)
-    while(!px_ring_buf_wr_u8(&px_usb_cdc_stdio_tx_buffer, (uint8_t)data))
-    {
-        ;
-    }
+    while(!px_ring_buf_wr_u8(&px_usb_cdc_stdio_tx_buffer, (uint8_t)data)) {;}
 
     return 0;
 }
@@ -139,10 +136,7 @@ int px_usb_cdc_stdio_getchar(void)
     uint8_t data;
 
     // Wait until a byte has been received
-    while(!px_ring_buf_rd_u8(&px_usb_cdc_stdio_rx_buffer, &data))
-    {
-        ;
-    }
+    while(!px_ring_buf_rd_u8(&px_usb_cdc_stdio_rx_buffer, &data)) {;}
 
     return (int)data;
 }
