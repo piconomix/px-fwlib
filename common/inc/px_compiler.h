@@ -85,58 +85,55 @@
 #endif
 
 #ifdef PX_COMPILER_GCC_AVR
-#include <avr/interrupt.h>
-#define px_interrupts_enable()         sei()
-#define px_interrupts_disable()        cli()
-#ifndef px_nop
-#define px_nop()                       __asm__ __volatile__("nop\n\t"::)
-#endif
+    #include <avr/interrupt.h>
+    #define px_interrupts_enable()          sei()
+    #define px_interrupts_disable()         cli()
+    #ifndef PX_NOP
+    #define PX_NOP()                        __asm__ __volatile__("nop\n\t"::)
+    #endif
 #endif
 
 #ifdef PX_COMPILER_MICROCHIP_XC16
-#include <xc.h>
-#define px_interrupts_enable()         do{SRbits.IPL = 0;} while(0)
-#define px_interrupts_disable()        do{SRbits.IPL = 7;} while(0)
-#ifndef px_nop
-#define px_nop()                       __asm__ __volatile__("nop\n\t"::)
-#endif
+    #include <xc.h>
+    #define px_interrupts_enable()          do{ SRbits.IPL = 0; } while(0)
+    #define px_interrupts_disable()         do{ SRbits.IPL = 7; } while(0)
+    #ifndef PX_NOP
+    #define PX_NOP()                        __asm__ __volatile__("nop\n\t"::)
+    #endif
 #endif
 
 #if defined(PX_COMPILER_GCC_ARM)
-#define PX_ATTR_RAMFUNC                __attribute__((section(".RamFunc")))
+    #define PX_ATTR_RAMFUNC                 __attribute__((section(".RamFunc")))
 #endif
 
 #if defined(PX_COMPILER_GCC_ARM) || defined (PX_COMPILER_ARM_CC)
-#define px_interrupts_enable()      __enable_irq()
-#define px_interrupts_disable()     __disable_irq()
+    #define px_interrupts_enable()          __enable_irq()
+    #define px_interrupts_disable()         __disable_irq()
 #endif
 
 #if defined(PX_COMPILER_GCC) || defined (PX_COMPILER_ARM_CC)
-// See https://gcc.gnu.org/onlinedocs/gcc/Function-Attributes.html
-#define PX_ATTR_CONST                       __attribute__ ((const))
-#define PX_ATTR_NORETURN                    __attribute__ ((noreturn))
-#define PX_ATTR_NAKED                       __attribute__ ((naked))
-#define PX_ATTR_ALWAYS_INLINE               __attribute__ ((always_inline))
-#define PX_ATTR_UNUSED                      __attribute__ ((unused))
-#define PX_ATTR_SECTION(section_str)        __attribute__ ((section (section_str)))
-#define PX_ATTR_FORMAT_ARG(str_index)       __attribute__ ((format_arg(str_index)))
-#define PX_ATTR_PACKED                      __attribute__ ((packed))
-#define PX_ATTR_ALIGNED(a)                  __attribute__((__aligned__(a)))
-#define PX_ATTR_WEAK                        __attribute__((weak))
-
+    // See https://gcc.gnu.org/onlinedocs/gcc/Function-Attributes.html
+    #define PX_ATTR_CONST                   __attribute__ ((const))
+    #define PX_ATTR_NORETURN                __attribute__ ((noreturn))
+    #define PX_ATTR_NAKED                   __attribute__ ((naked))
+    #define PX_ATTR_ALWAYS_INLINE           __attribute__ ((always_inline))
+    #define PX_ATTR_UNUSED                  __attribute__ ((unused))
+    #define PX_ATTR_SECTION(section_str)    __attribute__ ((section (section_str)))
+    #define PX_ATTR_FORMAT_ARG(str_index)   __attribute__ ((format_arg(str_index)))
+    #define PX_ATTR_PACKED                  __attribute__ ((packed))
+    #define PX_ATTR_ALIGNED(a)              __attribute__((__aligned__(a)))
+    #define PX_ATTR_WEAK                    __attribute__((weak))
 #else
-
-#define PX_ATTR_CONST
-#define PX_ATTR_NORETURN
-#define PX_ATTR_NAKED
-#define PX_ATTR_ALWAYS_INLINE
-#define PX_ATTR_UNUSED
-#define PX_ATTR_SECTION(section_str)
-#define PX_ATTR_FORMAT_ARG(str_index)
-#define PX_ATTR_PACKED
-#define PX_ATTR_ALIGNED(a)
-#define PX_ATTR_WEAK
-
+    #define PX_ATTR_CONST
+    #define PX_ATTR_NORETURN
+    #define PX_ATTR_NAKED
+    #define PX_ATTR_ALWAYS_INLINE
+    #define PX_ATTR_UNUSED
+    #define PX_ATTR_SECTION(section_str)
+    #define PX_ATTR_FORMAT_ARG(str_index)
+    #define PX_ATTR_PACKED
+    #define PX_ATTR_ALIGNED(a)
+    #define PX_ATTR_WEAK
 #endif
 
 
