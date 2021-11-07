@@ -293,9 +293,9 @@ int main(void)
     printf("done\n");
 
     // The end
-    for(;;) {;}
+    while(true) {;}
 error:
     // Report error
     main_report_err(err);
-    for(;;) {;}
+    while(true) {;}
 }

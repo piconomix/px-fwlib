@@ -52,7 +52,7 @@
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_board_fatal_error(void)
 {
-    for(;;) {;}
+    while(true) {;}
 }
 
 static void px_board_clocks_init(void)

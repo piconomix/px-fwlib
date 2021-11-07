@@ -74,7 +74,7 @@ int main(void)
     tmr_init();
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Enable LED
         LED_ON();

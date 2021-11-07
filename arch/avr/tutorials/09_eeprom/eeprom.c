@@ -147,5 +147,5 @@ int main(void)
     PRINTF_P("EEPROM value at adr 0x000C is 0x%02X\n", data);
 
     // Loop forever
-    for(;;) {;}
+    while(true) {;}
 }

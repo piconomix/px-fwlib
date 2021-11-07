@@ -114,7 +114,7 @@ int main(void)
     }
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // USB connected event?
         if(main_usb_connected_event_flag)

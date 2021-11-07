@@ -153,7 +153,7 @@ int main(void)
     main_gpio_disable();
     
     // Loop forever
-    for(;;)
+    while(true)
     {
 #if (CFG_LCD_STAY_ON == 0)
         // Turn LCD power save off

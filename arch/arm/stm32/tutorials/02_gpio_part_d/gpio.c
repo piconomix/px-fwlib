@@ -33,7 +33,7 @@ int main(void)
     LL_GPIO_SetPinMode(GPIOH, LL_GPIO_PIN_0, LL_GPIO_MODE_OUTPUT);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Set PH0 output to enable LED
         LL_GPIO_SetOutputPin(GPIOH, LL_GPIO_PIN_0);

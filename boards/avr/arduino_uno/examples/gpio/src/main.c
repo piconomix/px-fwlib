@@ -48,7 +48,7 @@ int main(void)
     px_gpio_init(&px_gpio_pb);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Is button being pressed?
         if(px_gpio_in_is_lo(&px_gpio_pb))

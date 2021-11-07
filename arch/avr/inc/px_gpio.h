@@ -106,7 +106,7 @@
  *      80: 57 98           cbi 0x0a, 7 ; 10
  *
  *      // Repeat forever
- *      for(;;)
+ *      while(true)
  *      {
  *          // Is button being pressed?
  *          if(PX_GPIO_IN_IS_LO(PX_GPIO_PB))

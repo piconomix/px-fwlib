@@ -129,7 +129,7 @@ int main(void)
     px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Update debounce state machine with push button state
         px_debounce_update(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));

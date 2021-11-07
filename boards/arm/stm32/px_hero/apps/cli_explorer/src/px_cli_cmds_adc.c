@@ -106,7 +106,7 @@ static const char* px_cli_cmd_fn_adc_s(uint8_t argc, char* argv[])
     px_systmr_start(&adc_tmr, PX_SYSTMR_MS_TO_TICKS(interval_ms));
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Get raw ADC value
         val = px_adc_sample(&px_adc_handle, ch);
@@ -176,7 +176,7 @@ static const char* px_cli_cmd_fn_adc_bat(uint8_t argc, char* argv[])
     px_systmr_start(&adc_tmr, PX_SYSTMR_MS_TO_TICKS(interval_ms));
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Enable measurement circuit
         PX_VBAT_MEAS_ENABLE();

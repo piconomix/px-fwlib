@@ -91,7 +91,7 @@ int main(void)
     PORTD |= (1 << 7);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // PB is pressed? (bit 7 of PIND register cleared?)
         if((PIND & (1 << 7)) == 0)

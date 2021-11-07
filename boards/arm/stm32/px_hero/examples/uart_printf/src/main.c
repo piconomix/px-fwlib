@@ -68,7 +68,7 @@ int main(void)
     printf("Hello World!\n");
 
     //Repeat forever
-    for(;;)
+    while(true)
     {
         // Byte has been received?
         if(px_uart_rd_u8(&px_uart_handle, &data))

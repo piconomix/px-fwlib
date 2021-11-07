@@ -24,7 +24,7 @@ int main(void)
                   PX_UART_STOP_BITS_1);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Wait until a byte is received
         if(px_uart_rd_u8(&px_uart_handle, &data))

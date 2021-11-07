@@ -62,5 +62,5 @@ int main(void)
     OCR0A  = ((F_CPU / (2 * 64)) / 1000) - 1;
 
     // Loop forever
-    for(;;) {;}
+    while(true) {;}
 }

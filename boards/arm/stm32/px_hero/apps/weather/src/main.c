@@ -270,7 +270,7 @@ int main(void)
     // Start display update timer
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(1000));
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Update display?
         if(px_systmr_has_expired(&tmr))

@@ -12,7 +12,7 @@ int main(void)
     PX_GPIO_INIT(PX_GPIO_PB);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Is button being pressed?
         if(PX_GPIO_IN_IS_LO(PX_GPIO_PB))

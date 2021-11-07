@@ -127,5 +127,5 @@ int main(void)
     PRINTF_P("PRINTF_P - String also in program memory (FLASH)\n");
 
     // Loop forever
-    for(;;) {;}
+    while(true) {;}
 }

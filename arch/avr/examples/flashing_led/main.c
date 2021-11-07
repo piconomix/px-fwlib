@@ -68,7 +68,7 @@ int main(void)
     px_systmr_start(&systmr, PX_SYSTMR_TICKS_PER_SEC);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Wait until timer has expired
         while(!px_systmr_has_expired(&systmr)) {;}

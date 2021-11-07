@@ -43,7 +43,7 @@ int main(void)
     PX_USR_LED_ON();
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Push button being pressed?
         if(PX_USR_PB_IS_PRESSED())

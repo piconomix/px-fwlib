@@ -140,7 +140,7 @@ int main(void)
     adc_init();
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Retrieve a sample
         adc = adc_get_sample();

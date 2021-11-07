@@ -396,7 +396,7 @@ void _px_log_assert(const char * name,
     px_log_printf(expression);
 #endif
     // Block forever
-    for(;;) {;}
+    while(true) {;}
 }
 
 void _px_log_trace(const char * format, ...)

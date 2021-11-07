@@ -82,7 +82,7 @@ int main(void)
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(40));
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         if(ship_x <= 0)
         {

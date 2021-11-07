@@ -73,7 +73,7 @@ int main(void)
     LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_4, LL_GPIO_MODE_ANALOG);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Flash LED
         LL_GPIO_SetOutputPin(GPIOH, LL_GPIO_PIN_0);

@@ -87,5 +87,5 @@ int main(void)
     sei();
 
     // Loop forever
-    for(;;) {;}
+    while(true) {;}
 }

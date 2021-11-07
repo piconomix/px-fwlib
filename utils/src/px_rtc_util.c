@@ -389,7 +389,7 @@ void px_rtc_util_date_time_wr(px_rtc_date_time_t * date_time)
 #endif
 
     // Repeat writing date-time and sec since Y2K together until they match
-    for(;;)
+    while(true)
     {
         // Write date-time
         memcpy(&px_rtc_util_date_time, date_time, sizeof(px_rtc_date_time_t));

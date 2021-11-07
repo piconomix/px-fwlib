@@ -61,7 +61,7 @@ int main(void)
     NVIC_EnableIRQ(EXTI4_15_IRQn);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Flash LED
         LL_GPIO_SetOutputPin(GPIOH, LL_GPIO_PIN_0);

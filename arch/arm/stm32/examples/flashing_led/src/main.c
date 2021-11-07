@@ -43,7 +43,7 @@ int main(void)
     PX_USR_LED_ON();
 
     // Repeat forefver
-    for(;;)
+    while(true)
     {
         // Wait 1/2 second
         px_board_delay_ms(500);

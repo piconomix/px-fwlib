@@ -28,7 +28,7 @@ int main(void)
     px_debounce_init(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Wait one systmr tick
         px_systmr_wait(1);

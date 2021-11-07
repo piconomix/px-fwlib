@@ -79,5 +79,5 @@ int main(void)
     px_gfx_draw_update();
 
     // Block forever
-    for(;;) {;}
+    while(true) {;}
 }

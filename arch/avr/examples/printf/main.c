@@ -85,7 +85,7 @@ int main(void)
     PX_PRINTF_P("PRINTF_P - String also in program memory (ROM)\n");
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Byte has been received?
         if(px_uart_rd_u8(&px_uart_handle, &data))

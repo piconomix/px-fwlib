@@ -116,7 +116,7 @@ static void task_btn(void *pvParameters)
     px_exti_enable(PX_EXTI_LINE_12);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Wait until any button is pressed
         if(xSemaphoreTake(btn_task_press_sem, portMAX_DELAY) == pdTRUE)
@@ -151,7 +151,7 @@ static void task_led(void *pvParameters)
     SSV_LOG_INFO("LED task started");
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Toggle LED
         PX_USR_LED_TOGGLE();
@@ -225,5 +225,5 @@ int main(void)
 
     // Error! Not supposed to get here...
     SSV_LOG_ERROR("FreeRTOS fatal error");
-    for(;;) {;}
+    while(true) {;}
 }

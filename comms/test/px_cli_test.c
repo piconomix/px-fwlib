@@ -90,7 +90,7 @@ int main(void)
     // Initialise CLI (after STDIO is ready)
     px_cli_init(px_cli_cmd_list, PX_PGM_STR("CLI Example\n\n"));
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Byte received?
         if(px_uart_rd_u8(&px_uart_handle, &data))

@@ -41,7 +41,7 @@ int main(void)
     px_board_init();
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Push button pressed?
         if(PX_PB_IS_PRESSED())

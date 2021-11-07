@@ -134,7 +134,7 @@ void px_systmr_restart(px_systmr_t * systmr);
  *  Thus the prefered usage for a periodic timer is:
  *  
  *  @code{.c}
- *      for(;;)
+ *      while(true)
  *      {
  *          // Wait until timer has expired
  *          while(px_systmr_has_expired(&systmr) == false)

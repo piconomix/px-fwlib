@@ -92,7 +92,7 @@ int main(void)
     px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Byte has been received?
         if(px_uart_rd_u8(&px_uart_handle, &data))

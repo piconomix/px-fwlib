@@ -41,5 +41,5 @@ int main(void)
     printf("%s\n", sbuf.buf);
 
     // Loop forever
-    for(;;) {;}
+    while(true) {;}
 }

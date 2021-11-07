@@ -135,7 +135,7 @@ px_gpio_pin_init(&px_gpio_pb);
 80: 56 98           cbi 0x0a, 6 ; 10
 
 // Repeat forever
-for(;;)
+while(true)
 {
     // Is button being pressed?
     if(px_gpio_pin_is_lo(&px_gpio_pb))

@@ -50,7 +50,7 @@ int main(void)
     *gpioh_moder = val;
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Set PH0 output to enable LED
         *gpioh_bsrr = 0x00000001;

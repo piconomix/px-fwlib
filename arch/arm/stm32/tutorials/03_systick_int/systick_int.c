@@ -53,7 +53,7 @@ int main(void)
     NVIC_EnableIRQ(SysTick_IRQn);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Enable LED
         LL_GPIO_SetOutputPin(GPIOH, LL_GPIO_PIN_0);

@@ -79,7 +79,7 @@ int main(void)
 
     // Loop forever
     i = 0;
-    for(;;)
+    while(true)
     {
         // Clear display area
         px_gfx_buf_clear();

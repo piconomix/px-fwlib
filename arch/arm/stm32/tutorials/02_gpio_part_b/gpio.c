@@ -64,7 +64,7 @@ int main(void)
     gpioh->moder = val;
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Set PH0 output to enable LED
         gpioh->bsrr = (1 << 0);

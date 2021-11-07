@@ -49,7 +49,7 @@ void px_hdlc_test(void)
     px_hdlc_tx_frame(&data, 1);
 
     // Process received data
-    for(;;)
+    while(true)
     {
         if(uart1_get_rx_byte(&data))
         {

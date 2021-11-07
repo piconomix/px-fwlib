@@ -93,7 +93,7 @@ int main(void)
     px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Received byte over UART?
         if(px_uart_rd_u8(&px_uart2_handle, &data))

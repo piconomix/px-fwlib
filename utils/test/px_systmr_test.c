@@ -17,7 +17,7 @@ void px_systmr_test(void)
     px_systmr_start(&tmr, TMR_MS_TO_TICKS(250));
     
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Wait until timer has expired
         while(!px_systmr_has_expired(&tmr))

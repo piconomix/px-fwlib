@@ -40,7 +40,7 @@ int main(void)
     GPIOH->MODER = val;
 
     // Loop forever
-    for(;;)
+    while(true)
     {
         // Set PH0 output to enable LED
         GPIOH->BSRR = GPIO_BSRR_BS_0;
