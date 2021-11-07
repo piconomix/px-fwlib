@@ -94,7 +94,7 @@ int main(void)
     uart_send_byte('\r');
     uart_send_byte('\n');
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Echo received characters

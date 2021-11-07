@@ -116,7 +116,7 @@ static void kbd_key_state_and(px_kbd_matrix_key_state_t * key_x,
 {
     size_t i;
 
-    for (i=0; i < sizeof(px_kbd_matrix_key_state_t); i++)
+    for (i = 0; i < sizeof(px_kbd_matrix_key_state_t); i++)
     {
         key_result->bit_mask[i] = key_x->bit_mask[i] & key_y->bit_mask[i];
     }
@@ -128,7 +128,7 @@ static void kbd_key_state_or(px_kbd_matrix_key_state_t * key_x,
 {
     size_t i;
 
-    for (i=0; i < sizeof(px_kbd_matrix_key_state_t); i++)
+    for (i = 0; i < sizeof(px_kbd_matrix_key_state_t); i++)
     {
         key_result->bit_mask[i] = key_x->bit_mask[i] | key_y->bit_mask[i];
     }
@@ -140,7 +140,7 @@ static void kbd_key_state_xor(px_kbd_matrix_key_state_t * key_x,
 {
     size_t i;
 
-    for (i=0; i < sizeof(px_kbd_matrix_key_state_t); i++)
+    for (i = 0; i < sizeof(px_kbd_matrix_key_state_t); i++)
     {
         key_result->bit_mask[i] = key_x->bit_mask[i] ^ key_y->bit_mask[i];
     }
@@ -218,7 +218,7 @@ static void px_kbd_matrix_on_key_event(px_kbd_matrix_t *     matrix,
         }
         
         // Get an unused structure to add to the list
-        for(i=0; i<PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED; i++)
+        for(i = 0; i < PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED; i++)
         {
             key_press = &(matrix->key_press_array[i]);
 
@@ -332,7 +332,7 @@ static void px_kbd_matrix_debounce(px_kbd_matrix_t *matrix)
     
     // Process each pending event
     nr_of_keys = matrix->nr_of_rows   matrix->nr_of_columns;
-    for (i=0; i < nr_of_keys; i++)
+    for (i = 0; i < nr_of_keys; i++)
 	{    
         if (kbd_key_state_get(&changed, i))
         {
@@ -512,7 +512,7 @@ void px_kbd_matrix_init(px_kbd_matrix_t *            matrix,
     kbd_key_state_init(&(matrix->key_state));
 
     // Initialise history state array(s)
-    for(i=0; i < PX_KBD_MATRIX_NR_SAMPLES; i++)
+    for(i = 0; i < PX_KBD_MATRIX_NR_SAMPLES; i++)
     {
         kbd_key_state_init(&(matrix->key_history[i]));
     }
@@ -521,7 +521,7 @@ void px_kbd_matrix_init(px_kbd_matrix_t *            matrix,
     px_list_init(&(matrix->key_press_list), PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED);
 
     // Initialise items used for linked list
-    for(i=0; i<PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED; i++)
+    for(i = 0; i < PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED; i++)
     {
         px_list_item_init(&(matrix->key_press_list), &(matrix->key_press_array[i].key_list_item));
         matrix->key_press_array[i].row               = 0;

@@ -57,9 +57,7 @@ static const char* px_cli_cmd_reset_fn(uint8_t argc, char* argv[])
     // Enable watchdog to reset microcontroller
     wdt_enable(WDTO_15MS);
     // Wait until watchdog reset kicks in
-    for(;;)
-    {
-    }
+    for(;;) {;}
 }
 
 static const char* px_cli_cmd_led_fn(uint8_t argc, char* argv[])

@@ -141,7 +141,7 @@ ISR(ADC_vect)
         adc_page = 1;
 
         // Reset page 1 data
-        for(i=0; i<PX_ADC_NR_OF_CHANNELS; i++)
+        for(i = 0; i < PX_ADC_NR_OF_CHANNELS; i++)
         {
             adc_data_rst(&adc_data_page1[i]);
         }
@@ -152,7 +152,7 @@ ISR(ADC_vect)
         adc_page = 0;
 
         // Reset page 0 data
-        for(i=0; i<PX_ADC_NR_OF_CHANNELS; i++)
+        for(i = 0; i < PX_ADC_NR_OF_CHANNELS; i++)
         {
             adc_data_rst(&adc_data_page0[i]);
         }
@@ -218,7 +218,7 @@ void px_adc_start(uint16_t sampling_freq_hz, uint16_t nr_of_samples_per_sum)
     uint8_t i;
 
     // Reset all data 
-    for(i=0; i<PX_ADC_NR_OF_CHANNELS; i++)
+    for(i = 0; i < PX_ADC_NR_OF_CHANNELS; i++)
     {
         adc_data_rst(&adc_data_page0[i]);
         adc_data_rst(&adc_data_page1[i]);

@@ -112,7 +112,7 @@ static const char * px_cli_cmd_fn_i2c_reset(uint8_t argc, char* argv[])
     }
 
     // Clock SCL 8 times
-    for(i=8; i!=0; i--)
+    for(i = 8; i != 0; i--)
     {
         PX_GPIO_OUT_SET_LO(PX_GPIO_I2C_SCL);
         px_board_delay_us(1000);
@@ -139,7 +139,7 @@ static const char * px_cli_cmd_fn_i2c_scan(uint8_t argc, char* argv[])
     }
 
     // Scan all 7-bit addresses
-    for(adr=0; adr<128; adr++)
+    for(adr = 0; adr < 128; adr++)
     {
         px_i2c_ioctl_change_slave_adr(&px_i2c_handle, adr);
         // SLA+W
@@ -173,7 +173,7 @@ static const char * px_cli_cmd_fn_i2c_wr(uint8_t argc, char* argv[])
 
     // <data>
     nr_of_bytes = argc - 1;
-    for(i=1; i<argc; i++)
+    for(i = 1; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -219,7 +219,7 @@ static const char * px_cli_cmd_fn_i2c_rd(uint8_t argc, char* argv[])
         return PX_PGM_STR("Error!");
     }    
 
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         PX_PRINTF_P("%02X ", (unsigned int)data[i]);
     }

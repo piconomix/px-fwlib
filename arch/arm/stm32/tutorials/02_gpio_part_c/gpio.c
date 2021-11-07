@@ -17,7 +17,7 @@
 void delay(void)
 {
     // Wait ~ 500 ms; default system clock is 2.1 MHz after startup from reset
-    for(uint32_t i = 0x40000; i!=0; i--)
+    for(uint32_t i = 0x40000; i != 0; i--)
     {
         // Prevent compiler from optimizing and removing empty delay loop
         __asm__ __volatile__("\n\t");
@@ -39,7 +39,7 @@ int main(void)
     // Write updated GPIOH_MODER register value
     GPIOH->MODER = val;
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Set PH0 output to enable LED

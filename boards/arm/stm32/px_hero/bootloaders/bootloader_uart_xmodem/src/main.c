@@ -44,7 +44,7 @@
 #define MAIN_SRAM_ADR_END       (SRAM_BASE + SRAM_SIZE_MAX)
 
 /// Magic value stored in SRAM to detect a reset double tap
-#define MAIN_MAGIC_DOUBLE_TAP 0xa59b71dc 
+#define MAIN_MAGIC_DOUBLE_TAP   0xa59b71dc
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -179,7 +179,7 @@ int main(void)
             // Store SRAM magic value to signal that first reset has occured
             main_magic = MAIN_MAGIC_DOUBLE_TAP;
             // Wait ~ 500 ms
-            for(uint32_t i = 0x40000; i!=0; i--)
+            for(uint32_t i = 0x40000; i != 0; i--)
             {
                 // Prevent compiler from optimizing and removing empty delay loop
                 __asm__ __volatile__("\n\t");

@@ -177,7 +177,7 @@ bool px_m41t00_get_time(px_m41t00_time_t * px_rtc_time)
     ((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_CB_ADR]  &= ~PX_M41T00_CB_BIT;
 
     // Convert to binary format
-    for(i=0;i<sizeof(*px_rtc_time);i++)
+    for(i = 0; i < sizeof(*px_rtc_time); i++)
     {
         ((uint8_t*)px_rtc_time)[i] = px_m41t00_bcd_to_byte(((uint8_t*)(&px_m41t00_data.bcd_time))[i]);
     }
@@ -197,7 +197,7 @@ bool px_m41t00_set_time(const px_m41t00_time_t * px_rtc_time)
     int i;
 
     // Convert to BCD format
-    for(i=0;i<sizeof(px_m41t00_data.bcd_time);i++)
+    for(i = 0; i < sizeof(px_m41t00_data.bcd_time); i++)
     {
         ((uint8_t*)(&px_m41t00_data.bcd_time))[i] = px_m41t00_byte_to_bcd(((uint8_t*)px_rtc_time)[i]);
     }

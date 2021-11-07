@@ -73,7 +73,7 @@ static void px_cli_disp_record(const px_log_fs_record_data_t * record_data)
 
     px_rtc_util_sec_since_y2k_to_date_time(record_data->timestamp, &date_time);
     px_rtc_util_report_date_time(&date_time);
-    for(i=0; i<PX_ADC_NR_OF_CHANNELS; i++)
+    for(i = 0; i < PX_ADC_NR_OF_CHANNELS; i++)
     {
         PX_PRINTF_P("\t%f\t%f\t%f", 
                  px_cli_adc_scaled_val(i, record_data->adc_data[i].min),
@@ -92,7 +92,7 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
 
     // Print column headings
     PX_PRINTF_P("Timestamp");
-    for(i=0; i<4; i++)
+    for(i = 0; i < 4; i++)
     {
         PX_PRINTF_P("\tADC%u_MIN\tADC%u_MAX\tADC%u_AVE", i, i, i);
     }
@@ -159,7 +159,7 @@ static const char* px_cli_cmd_log_dump_fn(uint8_t argc, char* argv[])
 
     // Print column headings
     PX_PRINTF_P("Timestamp");
-    for(i=0; i<4; i++)
+    for(i = 0; i < 4; i++)
     {
         PX_PRINTF_P("\tADC%u_MIN\tADC%u_MAX\tADC%u_AVE", i, i, i);
     }
@@ -192,7 +192,7 @@ static const char* px_cli_cmd_log_info_fn(uint8_t argc, char* argv[])
 
     PX_PRINTF_P("Sampling rate = 1000 Hz\n");
     PX_PRINTF_P("Number of samples = %u\n", cfg.nr_of_samples);
-    for(i = 0; i<PX_ADC_NR_OF_CHANNELS; i++)
+    for(i = 0; i < PX_ADC_NR_OF_CHANNELS; i++)
     {
         PX_PRINTF_P("ADC%d : Scale = %f, Offset = %f\n", 
                  i, cfg.fit[i].scale, cfg.fit[i].offset);

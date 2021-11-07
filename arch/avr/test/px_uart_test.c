@@ -23,7 +23,7 @@ int main(void)
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Wait until a byte is received

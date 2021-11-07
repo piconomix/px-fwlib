@@ -84,7 +84,7 @@ int main(void)
     // Convenience macro to store and access string in program memory
     PX_PRINTF_P("PRINTF_P - String also in program memory (ROM)\n");
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Byte has been received?

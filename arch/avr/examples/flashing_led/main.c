@@ -67,7 +67,7 @@ int main(void)
     // Initialise timer to expire once a second
     px_systmr_start(&systmr, PX_SYSTMR_TICKS_PER_SEC);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Wait until timer has expired

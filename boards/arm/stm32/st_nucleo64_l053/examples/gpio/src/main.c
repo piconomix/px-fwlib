@@ -39,10 +39,10 @@ int main(void)
 {
     // Initialize board
     px_board_init();
-
     // LED on
     PX_USR_LED_ON();
 
+    // Loop forever
     for(;;)
     {
         // Push button being pressed?
@@ -56,7 +56,6 @@ int main(void)
             // Wait 250 milliseconds
             px_board_delay_ms(250);
         }
-
         // Toggle LED
         PX_USR_LED_TOGGLE();
     }	

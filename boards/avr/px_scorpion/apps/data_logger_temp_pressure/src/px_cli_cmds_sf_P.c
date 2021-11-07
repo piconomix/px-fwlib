@@ -271,7 +271,7 @@ static const char* px_cli_cmd_fn_sf_wr_page(uint8_t argc, char* argv[])
     offset = px_cli_argv_val.u16;
 
     // <data>
-    for(i=2; i<argc; i++)
+    for(i = 2; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {

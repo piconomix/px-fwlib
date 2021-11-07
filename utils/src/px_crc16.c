@@ -111,7 +111,7 @@ uint16_t px_crc16_update_u8(uint16_t crc, uint8_t data)
     uint8_t i;
 
     crc ^= data;
-    for(i=8; i != 0; i--)
+    for(i = 8; i != 0; i--)
     {
         if(crc & 1)
         {

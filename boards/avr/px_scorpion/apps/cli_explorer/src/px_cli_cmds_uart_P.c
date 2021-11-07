@@ -63,7 +63,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
     PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // <data>
-    for(i=0; i<argc; i++)
+    for(i = 0; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -123,7 +123,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(timeout_ms));
 
     // Try to receive specified number of bytes
-    i=0;
+    i = 0;
     while(!px_systmr_has_expired(&tmr))
     {
         if(px_uart_rd_u8(&px_uart_handle, &data[i]))
@@ -149,7 +149,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     px_cli_cmd_uart_flush_rx();
 
     // Report received bytes
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         PX_PRINTF_P("0x%02x ", data[i]);
     }
@@ -190,7 +190,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     PX_GPIO_OUT_TOGGLE(PX_GPIO_UART_SEL);
 
     // <data>
-    for(i=2; i<argc; i++)
+    for(i = 2; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -204,7 +204,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(timeout_ms));
 
     // Try to receive specified number of bytes
-    i=0;
+    i = 0;
     while(!px_systmr_has_expired(&tmr))
     {
         if(px_uart_rd_u8(&px_uart_handle, &data[i]))
@@ -230,7 +230,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     px_cli_cmd_uart_flush_rx();
 
     // Report received bytes
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         PX_PRINTF_P("0x%02x ", data[i]);
     }
@@ -290,7 +290,7 @@ static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(timeout_ms));
 
     // Try to receive specified number of bytes
-    i=0;
+    i = 0;
     while(!px_systmr_has_expired(&tmr))
     {
         if(px_uart_rd_u8(&px_uart_handle, (uint8_t *)&rx_char))

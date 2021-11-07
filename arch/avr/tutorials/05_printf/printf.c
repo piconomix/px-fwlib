@@ -126,6 +126,6 @@ int main(void)
     // Convenience macro to store and access string in program memory
     PRINTF_P("PRINTF_P - String also in program memory (FLASH)\n");
 
-    // Repeat forever
+    // Loop forever
     for(;;) {;}
 }

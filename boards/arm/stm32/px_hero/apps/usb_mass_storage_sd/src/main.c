@@ -42,7 +42,6 @@ uint8_t          main_buffer[MAIN_BUFFER_SIZE];
 bool             main_usb_connected_event_flag;
 uint32_t         main_sd_capacity_blocks;
 
-
 /* _____LOCAL VARIABLES______________________________________________________ */             
 px_sd_csd_t main_sd_csd;
 
@@ -91,13 +90,11 @@ bool main_sd_reset(void)
         PX_LOG_E("Failed to reset SD card");
         return false;
     }
-
     if(!px_sd_read_csd(&main_sd_csd))
     {
         PX_LOG_E("Failed to read CSD");
         return false;
     }
-
     main_sd_capacity_blocks = px_sd_get_capacity_in_blocks(&main_sd_csd);
 
     return true;
@@ -108,16 +105,15 @@ int main(void)
 {
     // Initialize board and peripheral drivers
     main_init();
-
     // Enable LED
     PX_USR_LED_ON();
-
     // Is SD card inserted?
     if(PX_SD_CARD_DETECTED())
     {
         main_sd_reset();
     }
 
+    // Loop forever
     for(;;)
     {
         // USB connected event?
@@ -145,7 +141,6 @@ void main_log_putchar(char data)
         // Prepend a carriage return
         main_log_putchar('\r');
     }
-
     px_uart_putchar(&px_uart1_handle, data);
 }
 

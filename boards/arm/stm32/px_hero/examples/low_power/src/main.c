@@ -152,6 +152,7 @@ int main(void)
     // (Pull-up resistor = ~45 kOhm).
     main_gpio_disable();
     
+    // Loop forever
     for(;;)
     {
 #if (CFG_LCD_STAY_ON == 0)

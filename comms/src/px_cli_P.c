@@ -716,7 +716,7 @@ void px_cli_init(const px_cli_cmd_list_item_t * cli_cmd_list, const char * start
     px_cli_hist_size_t i;
 
     // Clear history buffer
-    for(i=0; i<PX_CLI_CFG_HISTORY_SIZE; i++)
+    for(i = 0; i < PX_CLI_CFG_HISTORY_SIZE; i++)
     {
         px_cli_hist_circ_buf[i] = '\0';
     }
@@ -918,7 +918,7 @@ const char * px_cli_cmd_help_fn(uint8_t argc, char * argv[])
         {
             // Longest command string?
             len = 0;
-            for(i=0; i<=px_cli_tree_path_depth; i++)
+            for(i = 0; i <= px_cli_tree_path_depth; i++)
             {
                 px_cli_cmd_get_item(px_cli_tree_path[i]);
                 len += strlen_P(px_cli_cmd_list_item_data.cmd.name) + 1;
@@ -993,7 +993,7 @@ const char * px_cli_cmd_help_fn(uint8_t argc, char * argv[])
 
                 // Display all command strings
                 len = 0;
-                for(i=0; i<=px_cli_tree_path_depth; i++)
+                for(i = 0; i <= px_cli_tree_path_depth; i++)
                 {
                     // Display name
                     px_cli_cmd_get_item(px_cli_tree_path[i]);
@@ -1241,11 +1241,11 @@ void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes)
 {
     size_t i, j;
 
-    for(i=0; i<nr_of_bytes; i+= 16)
+    for(i = 0; i < nr_of_bytes; i+= 16)
     {
-        for(j=i; j<(i+16); j++)
+        for(j = i; j < (i + 16); j++)
         {
-            if(j<nr_of_bytes)
+            if(j < nr_of_bytes)
             {
                 PX_PRINTF_P("%02hX ", data[j]);
             }
@@ -1254,9 +1254,9 @@ void px_cli_util_disp_buf(const uint8_t * data, size_t nr_of_bytes)
                 PX_PRINTF_P("   ");
             }
         }
-        for(j=i; j<(i+16); j++)
+        for(j = i; j < (i + 16); j++)
         {
-            if(j<nr_of_bytes)
+            if(j < nr_of_bytes)
             {
                 if( (data[j] >= 32) && (data[j] <= 127) )
                 {

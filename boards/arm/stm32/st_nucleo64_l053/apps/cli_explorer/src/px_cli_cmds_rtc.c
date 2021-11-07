@@ -53,17 +53,9 @@ static const char* px_cli_cmd_fn_rtc_wr(uint8_t argc, char* argv[])
     uint16_t year, month, day;
     uint16_t hour, min, sec;
 
-    sscanf(argv[0],
-           "%02hu-%02hu-%02hu",
-           &year, 
-           &month, 
-           &day);
+    sscanf(argv[0], "%02hu-%02hu-%02hu", &year, &month, &day);
 
-    sscanf(argv[1],
-           "%02hu:%02hu:%02hu",
-           &hour,
-           &min,
-           &sec);
+    sscanf(argv[1], "%02hu:%02hu:%02hu", &hour, &min, &sec);
 
     date_time.year  = year;
     date_time.month = month;

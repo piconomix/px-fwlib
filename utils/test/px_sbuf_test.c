@@ -40,7 +40,6 @@ int main(void)
     // Report result
     printf("%s\n", sbuf.buf);
 
-    for(;;)
-    {
-    }
+    // Loop forever
+    for(;;) {;}
 }

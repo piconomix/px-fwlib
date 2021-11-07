@@ -52,12 +52,10 @@ void px_m41t00_test(void)
     if(!px_m41t00_set_time(&time))
     {
         PX_PRINTF_P("Unable to set time!\n");
-        for(;;)
-        {
-            ;
-        }
+        for(;;) {;}
     }
   
+    // Loop forever
     for(;;)
     {
         // Remember current seconds value
@@ -66,10 +64,7 @@ void px_m41t00_test(void)
         if(!px_m41t00_get_time(&time))
         {
             PX_PRINTF_P("Unable to set time!\n");
-            for(;;)
-            {
-                ;
-            }
+            for(;;) {;}
         }
         // See if a second has elapsed
         if(time.sec != sec)

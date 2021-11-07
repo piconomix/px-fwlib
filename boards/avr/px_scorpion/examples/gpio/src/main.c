@@ -40,6 +40,7 @@ int main(void)
     // Initialize board
     px_board_init();
 
+    // Loop forever
     for(;;)
     {
         // Push button pressed?

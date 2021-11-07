@@ -395,7 +395,7 @@ px_gt511_err_t px_gt511_auto_baud(void)
         19200
     };
 
-    for(i=0; i < PX_SIZEOF_ARRAY(baud); i++)
+    for(i = 0; i < PX_SIZEOF_ARRAY(baud); i++)
     {
         PX_LOG_D("Baud = %lu", baud[i]);
         px_uart_ioctl_change_baud(px_gt511_uart_handle, baud[i]);

@@ -67,7 +67,7 @@ int main(void)
     px_systmr_start(&px_systmr, PX_SYSTMR_MS_TO_TICKS(500));
     // Send message
     PX_PRINTF_P("Hello World!\n");
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Byte has been received?

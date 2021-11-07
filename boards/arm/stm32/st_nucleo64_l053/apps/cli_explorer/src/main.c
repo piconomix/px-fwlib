@@ -92,6 +92,7 @@ int main(void)
     // Initialize CLI
     px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
+    // Loop forever
     for(;;)
     {
         // Received byte over UART?

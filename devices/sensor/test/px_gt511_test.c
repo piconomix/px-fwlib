@@ -106,7 +106,7 @@ int main(void)
     }
     printf("Firmware Version: %08lx\n", dev_info.fw_version);
     printf("Device Serial Number: ");
-    for(i=0; i < sizeof(dev_info.device_serial_number); i++)
+    for(i = 0; i < sizeof(dev_info.device_serial_number); i++)
     {
         printf("%02X", dev_info.device_serial_number[i]);
     }
@@ -153,7 +153,7 @@ int main(void)
         goto error;
     }
 
-    for(i=0; i < 3; i++)
+    for(i = 0; i < 3; i++)
     {
         // Wait until finger is placed on sensor
         printf("\nPlace finger on sensor... ");
@@ -223,7 +223,7 @@ int main(void)
     }
     px_systmr_wait(PX_SYSTMR_MS_TO_TICKS(2000));
 
-    for(i=0; i < 10; i++)
+    for(i = 0; i < 10; i++)
     {
         // Enable CMOS LED
         if((err = px_gt511_cmos_led_control(true)) != PX_GT511_ERR_NONE)
@@ -293,16 +293,9 @@ int main(void)
     printf("done\n");
 
     // The end
-    for(;;)
-    {
-        ;
-    }
-
+    for(;;) {;}
 error:
     // Report error
     main_report_err(err);
-    for(;;)
-    {
-        ;
-    }
+    for(;;) {;}
 }

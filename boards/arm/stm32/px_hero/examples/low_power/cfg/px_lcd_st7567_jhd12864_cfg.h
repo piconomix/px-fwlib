@@ -19,12 +19,6 @@
 
 ============================================================================= */
 
-/** 
- *  @addtogroup PX_LCD_ST7567_JHD12864
- *
- *  @{
- */
-
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
@@ -47,5 +41,4 @@
 /// Configuration option to rotate mapping of LCD by 180 degrees
 #define PX_LCD_CFG_ROT_180_DEG  1
 
-/// @}
 #endif

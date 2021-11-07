@@ -32,13 +32,13 @@ extern "C" {
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];
-extern uint32_t         main_sd_capacity_blocks;
+extern uint8_t  main_buffer[MAIN_BUFFER_SIZE];
+extern uint32_t main_sd_capacity_blocks;
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void main_usb_event_connected   (void);
-void main_log_putchar          (char data);
-void main_log_timestamp         (char * str);
+void main_usb_event_connected(void);
+void main_log_putchar        (char data);
+void main_log_timestamp      (char * str);
 
 /* _____MACROS_______________________________________________________________ */
 

@@ -168,7 +168,7 @@ static const char* px_cli_cmd_fn_adc_sc(uint8_t argc, char* argv[])
             px_adc_rst_data_ready_flag();
             // Display TAB separated ADC data for each channel
             PX_PRINTF_P("%05d", counter);
-            for(i=0; i<PX_ADC_NR_OF_CHANNELS; i++)
+            for(i = 0; i < PX_ADC_NR_OF_CHANNELS; i++)
             {
                 adc_data = px_adc_get_data(i);
                 scaled_val  =    px_adc_cfg.channel[i].scale *

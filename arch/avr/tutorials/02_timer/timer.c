@@ -73,7 +73,7 @@ int main(void)
     // Initialise timer
     tmr_init();
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Enable LED

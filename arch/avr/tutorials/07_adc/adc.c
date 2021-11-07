@@ -139,7 +139,7 @@ int main(void)
     // Initialise ADC
     adc_init();
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Retrieve a sample

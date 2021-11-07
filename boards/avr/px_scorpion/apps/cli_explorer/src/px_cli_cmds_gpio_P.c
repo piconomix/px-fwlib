@@ -124,7 +124,7 @@ static void px_report_gpio_reg(const char * name, uint8_t val, char zero, char o
     printf_P(name);
     PX_PRINTF_P(" = 0x%02x   ", val);
 
-    for(i=(1<<7); i!=0; i>>=1)
+    for(i = (1 << 7); i != 0; i >>= 1)
     {
         if(val & i)
         {

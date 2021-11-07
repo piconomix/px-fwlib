@@ -257,9 +257,9 @@ static void px_cli_fn_gpio_report_pin(px_gpio_handle_t * handle)
     // Report pull-up/pull-down
     switch(handle->pull)
     {
-    case PX_GPIO_PULL_UP:   printf("Pull-Up "); break;
+    case PX_GPIO_PULL_UP: printf("Pull-Up "); break;
     case PX_GPIO_PULL_DN: printf("Pull-Dn "); break;
-    default:                break;
+    default:              break;
     }
 
     // Input?
@@ -282,8 +282,8 @@ static void px_cli_fn_gpio_report_pin(px_gpio_handle_t * handle)
     // Report output type (push-pull or open drain)
     switch(handle->otype)
     {
-    case PX_GPIO_OTYPE_PP:      printf("Push-Pull ");   break;
-    case PX_GPIO_OTYPE_OD:      printf("Open-Drain ");  break;
+    case PX_GPIO_OTYPE_PP:  printf("Push-Pull ");   break;
+    case PX_GPIO_OTYPE_OD:  printf("Open-Drain ");  break;
     default: break;
     }
 
@@ -291,10 +291,10 @@ static void px_cli_fn_gpio_report_pin(px_gpio_handle_t * handle)
     printf("Speed=");
     switch(handle->ospeed)
     {
-    case PX_GPIO_OSPEED_LO:     printf("Low ");         break;
-    case PX_GPIO_OSPEED_MD:    printf("Medium ");      break;
-    case PX_GPIO_OSPEED_HI:     printf("High ");        break;
-    case PX_GPIO_OSPEED_VH:     printf("VeryHigh ");    break;
+    case PX_GPIO_OSPEED_LO: printf("Low ");         break;
+    case PX_GPIO_OSPEED_MD: printf("Medium ");      break;
+    case PX_GPIO_OSPEED_HI: printf("High ");        break;
+    case PX_GPIO_OSPEED_VH: printf("VeryHigh ");    break;
     default:
         break;
     }
@@ -463,8 +463,8 @@ static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
 
     // Configure specified GPIO pin as an output
     gpio_handle.mode   = PX_GPIO_MODE_OUT;
-    gpio_handle.ospeed  = PX_GPIO_OSPEED_VH;
-    gpio_handle.af = PX_GPIO_AF_NA;
+    gpio_handle.ospeed = PX_GPIO_OSPEED_VH;
+    gpio_handle.af     = PX_GPIO_AF_NA;
     px_gpio_init(&gpio_handle);
 
     return NULL;

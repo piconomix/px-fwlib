@@ -419,7 +419,7 @@ void px_gfx_draw_line_hor(px_gfx_xy_t    x,
     // Update dirty area
     px_gfx_update_area(x, y, x + width - 1, y);
     // Draw horizontal line
-    for(i=0; i < width; i++)
+    for(i = 0; i < width; i++)
     {
         px_gfx_vp_draw_pixel(x, y, px_gfx.draw_prop.color_fg);
         x++;
@@ -438,7 +438,7 @@ void px_gfx_draw_line_ver(px_gfx_xy_t    x,
     // Update dirty area
     px_gfx_update_area(x, y, x, y + height - 1);
     // Draw vertical line
-    for(j=0; j < height; j++)
+    for(j = 0; j < height; j++)
     {
         px_gfx_vp_draw_pixel(x, y, px_gfx.draw_prop.color_fg);
         y++;
@@ -473,9 +473,9 @@ void px_gfx_draw_fill_fg(px_gfx_xy_t    x,
     // Update dirty area
     px_gfx_update_area(x, y, x + width - 1, y + height - 1);
     // Draw fill
-    for(j=y; j < y + height; j++)
+    for(j = y; j < y + height; j++)
     {
-        for(i=x; i < x + width; i++)
+        for(i = x; i < x + width; i++)
         {
             px_gfx_vp_draw_pixel(i, j, px_gfx.draw_prop.color_fg);
         }
@@ -495,9 +495,9 @@ void px_gfx_draw_fill_bg(px_gfx_xy_t    x,
     // Update dirty area
     px_gfx_update_area(x, y, x + width - 1, y + height - 1);
     // Draw fill
-    for(j=y; j < y + height; j++)
+    for(j = y; j < y + height; j++)
     {
-        for(i=x; i < x + width; i++)
+        for(i = x; i < x + width; i++)
         {
             px_gfx_vp_draw_pixel(i, j, px_gfx.draw_prop.color_bg);
         }

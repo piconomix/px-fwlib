@@ -98,7 +98,7 @@ static uint16_t px_xmodem_calc_checksum(void)
     uint16_t crc = 0x0000;
 
     // Repeat until all the data has been processed...
-    for(i=0; i<PX_XMODEM_DATA_SIZE; i++)
+    for(i = 0; i < PX_XMODEM_DATA_SIZE; i++)
     {
         data = px_xmodem_packet.packet.data[i];
 
@@ -106,7 +106,7 @@ static uint16_t px_xmodem_calc_checksum(void)
         crc = crc ^ (((uint16_t)data)<<8);
 
         // Repeat 8 times (for each bit)
-        for(j=8; j!=0; j--)
+        for(j = 8; j != 0; j--)
         {
             // Is highest bit set?
             if((crc & (1<<15)) != 0)
@@ -151,7 +151,7 @@ static bool px_xmodem_rx_packet(void)
     PX_XMODEM_CFG_TMR_START(PX_XMODEM_CFG_TIMEOUT_MS);
 
     // Repeat until whole packet has been received
-    for(i=0; i<sizeof(px_xmodem_packet.data); i++)
+    for(i = 0; i < sizeof(px_xmodem_packet.data); i++)
     {
         // See if character has been received
         if(!px_xmodem_wait_rx_char(&data))
@@ -215,7 +215,7 @@ static void px_xmodem_tx_packet(void)
     px_xmodem_packet.packet.crc16_lo8 = PX_U16_LO8(crc);
 
     // Send whole packet
-    for(i=0; i<sizeof(px_xmodem_packet.data); i++)
+    for(i = 0; i < sizeof(px_xmodem_packet.data); i++)
     {
         PX_XMODEM_CFG_WR_U8(px_xmodem_packet.data[i]);
     }

@@ -183,7 +183,7 @@ static bool px_c1098_package_data_checksum_ok(uint16_t data_size)
     uint16_t checksum = 0;
     uint16_t i;
 
-    for(i=0; i<(data_size+4); i++)
+    for(i = 0; i < (data_size + 4); i++)
     {
         checksum += px_c1098_rx_packet.data[i];
     }

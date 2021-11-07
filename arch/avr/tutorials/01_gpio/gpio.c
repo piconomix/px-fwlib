@@ -90,7 +90,7 @@ int main(void)
     // Enable pull-up on PB (set bit 7 of PORTD register)
     PORTD |= (1 << 7);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // PB is pressed? (bit 7 of PIND register cleared?)

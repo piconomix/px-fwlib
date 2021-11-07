@@ -31,7 +31,7 @@ void EXTI4_15_IRQHandler(void)
 void delay(void)
 {
     // Wait ~ 500 ms; default system clock is 2.1 MHz after startup from reset
-    for(uint32_t i = 0x40000; i!=0; i--)
+    for(uint32_t i = 0x40000; i != 0; i--)
     {
         // Prevent compiler from optimizing and removing empty delay loop
         __asm__ __volatile__("\n\t");
@@ -60,7 +60,7 @@ int main(void)
     // Enable EXTI4_15 interrupt
     NVIC_EnableIRQ(EXTI4_15_IRQn);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Flash LED

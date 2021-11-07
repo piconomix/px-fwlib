@@ -18,12 +18,6 @@
 
 ============================================================================= */
 
-/** 
- *  @addtogroup PX_DEBOUNCE
- *
- *  @{
- */
-
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
@@ -42,5 +36,4 @@
 /// Count threshold for long LO/ HI; Set to 0 to disable option
 #define PX_DEBOUNCE_CFG_LONG_COUNT 0
 
-/// @}
 #endif

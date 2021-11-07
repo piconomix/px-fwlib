@@ -125,7 +125,7 @@ void px_lcd_clr(void)
     memset(data, 0, PX_LCD_NR_OF_COLS);
 
     // Repeat for each page
-    for(y=0; y < PX_LCD_NR_OF_PAGES; y++)
+    for(y = 0; y < PX_LCD_NR_OF_PAGES; y++)
     {
         // Select page
         px_lcd_sel_page(y);

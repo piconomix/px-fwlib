@@ -89,7 +89,7 @@ int main(void)
     sei();
     // Select IDLE sleep Mode by clearing bits SM2...SM0
     SMCR &= ~((1 << SM2) | (1 << SM1) | (1 << SM0));
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Enable sleep mode

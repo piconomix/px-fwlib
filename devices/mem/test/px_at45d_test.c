@@ -29,10 +29,7 @@ int main(void)
         px_at45d_set_page_size_to_pwr_of_two();
 
         // Device must be power cycled for setting to take effect
-        for(;;)
-        {
-            ;
-        }
+        for(;;) {;}
     }
 #endif
 

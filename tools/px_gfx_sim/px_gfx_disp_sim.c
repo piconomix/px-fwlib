@@ -80,9 +80,9 @@ void px_gfx_disp_dbg_report_buf(void)
 {
     px_gfx_xy_t x, y;
 
-    for(y=0; y<PX_GFX_DISP_SIZE_Y; y++)
+    for(y = 0; y < PX_GFX_DISP_SIZE_Y; y++)
     {
-        for(x=0; x<PX_GFX_DISP_SIZE_X; x++)
+        for(x = 0; x < PX_GFX_DISP_SIZE_X; x++)
         {
             if(px_gfx_frame_buf[y][x])
             {

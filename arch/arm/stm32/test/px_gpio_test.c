@@ -11,7 +11,7 @@ int main(void)
     PX_GPIO_INIT(PX_GPIO_LED);
     PX_GPIO_INIT(PX_GPIO_PB);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Is button being pressed?

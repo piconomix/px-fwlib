@@ -1113,7 +1113,7 @@ static void DFU_Leave(USBD_HandleTypeDef *pdev)
     NVIC_SystemReset();
 
     /* This instruction will not be reached (system reset) */
-    for(;;){}
+    for(;;){;}
   }
 }
 

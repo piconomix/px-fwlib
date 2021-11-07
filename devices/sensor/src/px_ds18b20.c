@@ -116,7 +116,7 @@ px_ds18b20_error_t px_ds18b20_rd_scratchpad(px_one_wire_rom_t *       rom,
     px_one_wire_wr_u8(PX_DS18B20_CMD_RD_SCRATCHPAD);
 
     // Read content
-    for(i=sizeof(px_ds18b20_scratchpad_t); i != 0; i--)
+    for(i = sizeof(px_ds18b20_scratchpad_t); i != 0; i--)
     {
         *data_u8++ = px_one_wire_rd_u8();
     }

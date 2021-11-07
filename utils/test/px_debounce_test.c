@@ -27,6 +27,7 @@ int main(void)
     // Initialise debounce state
     px_debounce_init(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));
 
+    // Loop forever
     for(;;)
     {
         // Wait one systmr tick

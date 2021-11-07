@@ -39,10 +39,10 @@ int main(void)
 {
     // Initialize board
     px_board_init();
-
     // LED on
     PX_USR_LED_ON();
 
+    // Loop forever
     for(;;)
     {
         // Push button being pressed?

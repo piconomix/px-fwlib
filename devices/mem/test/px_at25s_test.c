@@ -22,7 +22,7 @@ int main(void)
     px_at25s_init(&px_at25s_spi_handle);
   
     // Write a page of Serial Flash
-    for(i = 0; i<PX_AT25S_PAGE_SIZE; i++)
+    for(i = 0; i < PX_AT25S_PAGE_SIZE; i++)
     {
         data[i] = (uint8_t)(i&0xff);
     }

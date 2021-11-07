@@ -16,6 +16,7 @@ void px_systmr_test(void)
     // Start timer with a 250 ms timeout
     px_systmr_start(&tmr, TMR_MS_TO_TICKS(250));
     
+    // Loop forever
     for(;;)
     {
         // Wait until timer has expired

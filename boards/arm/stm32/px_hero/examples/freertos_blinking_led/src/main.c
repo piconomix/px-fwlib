@@ -225,8 +225,5 @@ int main(void)
 
     // Error! Not supposed to get here...
     SSV_LOG_ERROR("FreeRTOS fatal error");
-    for(;;)
-    {
-        ;
-    }
+    for(;;) {;}
 }

@@ -302,7 +302,7 @@ void px_at45d_wr_page_offset(const void * buffer,
     px_spi_wr(px_at45d_spi_handle, data, 3, 0);
 
     // Fill buffer with data to be written (other bytes are 0xFF to leave them unchanged)
-    for(i=0; i<PX_AT45D_PAGE_SIZE; i++)
+    for(i = 0; i < PX_AT45D_PAGE_SIZE; i++)
     {
         if(  (i >= start_byte_in_page              )
            &&(i  < start_byte_in_page + nr_of_bytes)  )

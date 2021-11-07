@@ -360,7 +360,7 @@ bool px_sd_reset(void)
     
     // Card requires at least 74 clocks to start up
     PX_LOG_D("80 Clocks");
-    for(retry=10; retry!=0 ; retry--)
+    for(retry = 10; retry != 0 ; retry--)
     {
         px_sd_spi_rd_u8();
     }
@@ -424,7 +424,7 @@ bool px_sd_reset(void)
             return false;
         }
         
-        for(wait=1000; wait!=0; wait--)
+        for(wait = 1000; wait != 0; wait--)
         {
             /* 
              *  Send host capacity support information and activate the
@@ -489,7 +489,7 @@ bool px_sd_reset(void)
             return false;
         }
 
-        for(wait=1000; wait!=0; wait--)
+        for(wait = 1000; wait != 0; wait--)
         {
             /* 
              *  Send host capacity support information and activate the

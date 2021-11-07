@@ -185,7 +185,7 @@ static const char* px_cli_cmd_fn_spi_wr(uint8_t argc, char* argv[])
     uint8_t data[8];
 
     // <data>
-    for(i=0; i<argc; i++)
+    for(i = 0; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -218,7 +218,7 @@ static const char* px_cli_cmd_fn_spi_rd(uint8_t argc, char* argv[])
     px_spi_rd(&px_spi_handle, data, nr_of_bytes, 0);
 
     // Report received data
-    for(i=0; i<nr_of_bytes; i++)
+    for(i = 0; i < nr_of_bytes; i++)
     {
         PX_PRINTF_P("0x%02x ", data[i]);
     }
@@ -233,7 +233,7 @@ static const char* px_cli_cmd_fn_spi_exchange(uint8_t argc, char* argv[])
     uint8_t data[16];
 
     // <data>
-    for(i=0; i<argc; i++)
+    for(i = 0; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {
@@ -247,7 +247,7 @@ static const char* px_cli_cmd_fn_spi_exchange(uint8_t argc, char* argv[])
     px_spi_xc(&px_spi_handle, data, data, argc, PX_SPI_FLAG_START_AND_STOP);
 
     // Report received data
-    for(i=0; i<argc; i++)
+    for(i = 0; i < argc; i++)
     {
         PX_PRINTF_P("0x%02x ", data[i]);
     }

@@ -65,7 +65,7 @@ int main(void)
     // Send message
     PX_PRINTF_P("Hello World!\n");
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Byte has been received?

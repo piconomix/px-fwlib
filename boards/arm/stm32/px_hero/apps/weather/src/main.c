@@ -269,6 +269,7 @@ int main(void)
 
     // Start display update timer
     px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(1000));
+    // Loop forever
     for(;;)
     {
         // Update display?
@@ -308,7 +309,6 @@ void main_log_putchar(char data)
         // Prepend a carriage return
         main_log_putchar('\r');
     }
-
     px_uart_putchar(&px_uart1_handle, data);
 }
 

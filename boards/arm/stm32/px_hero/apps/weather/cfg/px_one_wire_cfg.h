@@ -18,12 +18,6 @@
 
 ============================================================================= */
 
-/** 
- *  @addtogroup PX_ONE_WIRE
- *
- *  @{
- */
-
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
@@ -78,5 +72,4 @@
 /// Enable interrupts after critical delay timing
 #define PX_ONE_WIRE_CFG_INTS_ENABLE()       px_interrupts_enable()
 
-/// @}
 #endif

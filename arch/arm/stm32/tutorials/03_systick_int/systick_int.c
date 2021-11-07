@@ -52,7 +52,7 @@ int main(void)
     // Enable SysTick interrupt
     NVIC_EnableIRQ(SysTick_IRQn);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Enable LED

@@ -89,7 +89,7 @@ int main(void)
     px_interrupts_enable();
     // Initialise CLI (after STDIO is ready)
     px_cli_init(px_cli_cmd_list, PX_PGM_STR("CLI Example\n\n"));
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Byte received?

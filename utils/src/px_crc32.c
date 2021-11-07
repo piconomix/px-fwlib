@@ -123,7 +123,7 @@ uint32_t px_crc32_update_u8(uint32_t crc, uint8_t data)
     uint8_t i;
 
     crc ^= data;
-    for(i=8; i !=0 ; i--)
+    for(i = 8; i !=0 ; i--)
     {
         if(crc & 1)
         {

@@ -47,7 +47,7 @@ int main(void)
     px_gpio_init(&px_gpio_led);
     px_gpio_init(&px_gpio_pb);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Is button being pressed?

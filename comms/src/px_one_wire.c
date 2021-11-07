@@ -169,7 +169,7 @@ uint8_t px_one_wire_rd_u8(void)
     int  i;
     uint8_t data = 0;
     
-    for(i=8; i != 0; i--)
+    for(i = 8; i != 0; i--)
     {
         // Shift to make space for next bit
         data >>= 1;
@@ -223,7 +223,7 @@ px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom)
     px_one_wire_wr_u8(PX_ONE_WIRE_CMD_READ_ROM);
 
     // Read ROM content
-    for(i=sizeof(px_one_wire_rom_t); i != 0; i--)
+    for(i = sizeof(px_one_wire_rom_t); i != 0; i--)
     {
         *data_u8++ = px_one_wire_rd_u8();
     }
@@ -283,7 +283,7 @@ px_one_wire_error_t px_one_wire_match_rom(px_one_wire_rom_t * rom)
     px_one_wire_wr_u8(PX_ONE_WIRE_CMD_MATCH_ROM);
 
     // Write ROM content
-    for(i=sizeof(px_one_wire_rom_t); i != 0; i--)
+    for(i = sizeof(px_one_wire_rom_t); i != 0; i--)
     {
         px_one_wire_wr_u8(*data_u8++);
     }

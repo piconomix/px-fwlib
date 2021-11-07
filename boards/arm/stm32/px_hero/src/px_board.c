@@ -52,10 +52,7 @@
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_board_fatal_error(void)
 {
-    while(true)
-    {
-        ;
-    }
+    for(;;) {;}
 }
 
 static void px_board_clocks_init(void)
@@ -78,10 +75,7 @@ static void px_board_clocks_init(void)
 
     // Enable High Speed Internal 16 MHz RC Oscillator (HSI)
     LL_RCC_HSI_Enable();
-    while(!LL_RCC_HSI_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_HSI_IsReady()) {;}
     // Trim HSI RC Oscillator to 16 MHz +- 1%
     LL_RCC_HSI_SetCalibTrimming(16);
     
@@ -89,10 +83,7 @@ static void px_board_clocks_init(void)
     LL_RCC_HSI48_Enable();
     // Enable buffer used to generate VREFINT reference for HSI48 oscillator
     LL_SYSCFG_VREFINT_EnableHSI48();
-    while(!LL_RCC_HSI48_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_HSI48_IsReady()) {;}
 
     // Enable CRS (Clock Recovery System) peripheral clock
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_CRS);
@@ -118,10 +109,7 @@ static void px_board_clocks_init(void)
     LL_RCC_LSE_SetDriveCapability(LL_RCC_LSEDRIVE_LOW);
     // Enable Low Speed External 32768 Hz crystal oscillator (LSE)
     LL_RCC_LSE_Enable();
-    while(!LL_RCC_LSE_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_LSE_IsReady()) {;}
 
     // Select LSE as clock source for RTC
     LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
@@ -136,10 +124,7 @@ static void px_board_clocks_init(void)
                                 LL_RCC_PLL_DIV_2);
     // Enable PLL
     LL_RCC_PLL_Enable();
-    while(!LL_RCC_PLL_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_PLL_IsReady()) {;}
 
     // Set Arm High Performance Bus (AHB) clock prescaler to 1
     LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
@@ -150,10 +135,7 @@ static void px_board_clocks_init(void)
 
     // Select 32 MHz output of PLL as clock source for system
     LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
-    while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-    {
-        ;
-    }
+    while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL) {;}
 
     // Store system frequency in global SystemCoreClock CMSIS variable
     LL_SetSystemCoreClock(PX_BOARD_SYS_CLK_HZ);
@@ -187,13 +169,10 @@ void px_board_init(void)
 {
     // Initialise clock system
     px_board_clocks_init();
-
     // Enable pre-read flash buffer
     LL_FLASH_EnablePreRead();
-
     // Initialise GPIOs
-    px_board_gpio_init();    
-
+    px_board_gpio_init();
     // Initialise delay
     px_board_delay_init();
 }
@@ -249,10 +228,7 @@ void px_board_delay_us(uint16_t delay_us)
     // Enable counter
     TIM6->CR1 |= TIM_CR1_CEN;
     // Wait until CEN is cleared (in one-pulse mode when an update event occurs)
-    while(TIM6->CR1 & TIM_CR1_CEN)
-    {
-        ;
-    }
+    while(TIM6->CR1 & TIM_CR1_CEN) {;}
 }
 
 void px_board_delay_ms(uint16_t delay_ms)
@@ -271,23 +247,18 @@ void px_board_buzzer_on(uint16_t freq_hz)
 
     // Enable TIM3 peripheral clock
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM3);
-
     // Set prescaler
     psc = __LL_TIM_CALC_PSC(PX_BOARD_PER_CLK_HZ, 100000);
     LL_TIM_SetPrescaler(TIM3, psc);
-
     // Set auto reload value according to desired frequency (in Hz)
     LL_TIM_EnableARRPreload(TIM3);
     arr = __LL_TIM_CALC_ARR(PX_BOARD_PER_CLK_HZ, psc, ((uint32_t)freq_hz) * 2);
     LL_TIM_SetAutoReload(TIM3, arr);
-
     // Select output toggle mode (when counter reaches maximum value)
     LL_TIM_OC_SetMode(TIM3, LL_TIM_CHANNEL_CH1, LL_TIM_OCMODE_TOGGLE);
     LL_TIM_OC_SetPolarity(TIM3, LL_TIM_CHANNEL_CH1, LL_TIM_OCPOLARITY_HIGH);
-
     // Change PWM pin GPIO mode from Analog to Alternative Function
     px_gpio_mode_set(&px_gpio_pwm_buzzer, PX_GPIO_MODE_AF);
-
     // Start PWM
     LL_TIM_OC_EnablePreload(TIM3, LL_TIM_CHANNEL_CH1);
     LL_TIM_CC_EnableChannel(TIM3, LL_TIM_CHANNEL_CH1);
@@ -299,7 +270,6 @@ void px_board_buzzer_off(void)
 {
     // Change PWM pin GPIO mode from Alternative Function to Analog
     px_gpio_mode_set(&px_gpio_pwm_buzzer, PX_GPIO_MODE_ANA);
-
     // Disable timer
     LL_TIM_DisableCounter(TIM3);
     LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_TIM3);
@@ -379,16 +349,10 @@ void px_board_stop_mode(void)
 
     // Enable PLL
     LL_RCC_PLL_Enable();
-    while(!LL_RCC_PLL_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_PLL_IsReady()) {;}
     // Select 32 MHz output of PLL as clock source for system
     LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
-    while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-    {
-        ;
-    }
+    while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL) {;}
 
     // Clear SLEEPDEEP bit of Cortex System Control Register
     LL_LPM_EnableSleep();

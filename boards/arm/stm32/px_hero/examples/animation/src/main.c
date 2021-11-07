@@ -35,7 +35,7 @@
 /* _____LOCAL VARIABLES______________________________________________________ */
 static px_spi_handle_t px_spi_lcd_handle;
 
-static const px_gfx_img_t * img_array[] =
+static const px_gfx_img_t * img_array[8] =
 {
     &px_gfx_img_clown1,
     &px_gfx_img_clown2,
@@ -45,7 +45,6 @@ static const px_gfx_img_t * img_array[] =
     &px_gfx_img_clown6,
     &px_gfx_img_clown7,
     &px_gfx_img_clown8,
-    NULL,
 };
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
@@ -78,7 +77,7 @@ int main(void)
     // Enable LCD backlight
     PX_LCD_BACKLIGHT_ON();
 
-    // Repeat forever
+    // Loop forever
     i = 0;
     for(;;)
     {
@@ -87,15 +86,13 @@ int main(void)
         // Draw image
         img = img_array[i];
         px_gfx_align_set(PX_GFX_ALIGN_MID);
-        px_gfx_draw_img(img,
-                        PX_GFX_DISP_SIZE_X / 2,
-                        PX_GFX_DISP_SIZE_Y / 2 - 1);
+        px_gfx_draw_img(img, PX_GFX_DISP_SIZE_X / 2, PX_GFX_DISP_SIZE_Y / 2 - 1);
         // Update display
         px_gfx_draw_update();
         // Delay
         px_board_delay_ms(100);
         // Next image
-        if(++i == 8)
+        if(++i == PX_SIZEOF_ARRAY(img_array))
         {
             // Start at first image
             i = 0;

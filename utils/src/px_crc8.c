@@ -112,7 +112,7 @@ uint8_t px_crc8_update_u8(uint8_t crc, uint8_t data)
     uint8_t i;
 
     crc ^= data;
-    for(i=8; i != 0; i--)
+    for(i = 8; i != 0; i--)
     {
         if(crc & 0x80)
         {

@@ -246,7 +246,7 @@ int main(void)
     // Initialize CLI
     px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // USB connected event?

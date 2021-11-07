@@ -210,7 +210,7 @@ static uint8_t px_log_fs_crc(const void * data, size_t nr_of_bytes)
         crc = crc ^ (*data_u8++);
 
         // Repeat 8 times (for each bit)
-        for(i=8; i!=0; i--)
+        for(i = 8; i != 0; i--)
         {
             // Is lowest bit set?
             if((crc & 1) != 0)
@@ -1017,7 +1017,7 @@ void px_log_fs_dbg_report_info(px_log_fs_handle_t * handle)
     }
     printf("\n");
 
-    i=0;
+    i = 0;
     for(page = handle->fs_page_start; page <= handle->fs_page_end; page++)
     {
         if(i == 0)

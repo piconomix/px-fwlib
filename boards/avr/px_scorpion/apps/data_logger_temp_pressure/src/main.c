@@ -135,6 +135,7 @@ int main(void)
     // Initialise CLI (after STDIO is ready)
     px_cli_init(px_cli_cmd_list, main_cli_init_str);
 
+    // Loop forever
     for(;;)
     {
 

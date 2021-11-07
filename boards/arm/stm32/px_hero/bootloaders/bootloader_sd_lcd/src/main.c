@@ -481,7 +481,7 @@ int main(void)
             // Store SRAM magic value to signal that first reset has occured
             main_magic = MAIN_MAGIC_DOUBLE_TAP;
             // Wait ~ 500 ms
-            for(uint32_t i = 0x40000; i!=0; i--)
+            for(uint32_t i = 0x40000; i != S0; i--)
             {
                 // Prevent compiler from optimizing and removing empty delay loop
                 __asm__ __volatile__("\n\t");

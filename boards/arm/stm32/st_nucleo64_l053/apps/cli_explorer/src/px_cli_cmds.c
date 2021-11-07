@@ -48,10 +48,7 @@ static const char* px_cli_cmd_reset_fn(uint8_t argc, char* argv[]) PX_ATTR_NORET
 static const char* px_cli_cmd_reset_fn(uint8_t argc, char* argv[])
 {
     NVIC_SystemReset();
-    for(;;)
-    {
-        ;
-    }
+    for(;;) {;}
 }
 
 static const char* px_cli_cmd_led_fn(uint8_t argc, char* argv[])

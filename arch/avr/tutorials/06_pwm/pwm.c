@@ -61,6 +61,6 @@ int main(void)
     // Set frequency to about 1000 Hz
     OCR0A  = ((F_CPU / (2 * 64)) / 1000) - 1;
 
-    // Repeat forever
+    // Loop forever
     for(;;) {;}
 }

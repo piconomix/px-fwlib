@@ -206,7 +206,7 @@ static const char* px_cli_cmd_fn_ow_wr(uint8_t argc, char* argv[])
 
     // <data>
     nr_of_bytes = argc;
-    for(i=0; i < argc; i++)
+    for(i = 0; i < argc; i++)
     {
         if(!px_cli_util_argv_to_u8(i, 0, 255))
         {

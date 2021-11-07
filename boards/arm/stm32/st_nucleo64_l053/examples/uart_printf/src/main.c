@@ -67,6 +67,7 @@ int main(void)
     // Send message
     printf("Hello World!\n");
 
+    // Loop forever
     for(;;)
     {
         // Byte has been received?

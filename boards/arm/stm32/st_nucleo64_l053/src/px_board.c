@@ -48,10 +48,7 @@
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_board_fatal_error(void)
 {
-    while(true)
-    {
-        ;
-    }
+    for(;;) {;}
 }
 
 static void px_board_clocks_init(void)
@@ -74,10 +71,7 @@ static void px_board_clocks_init(void)
 
     // Enable High Speed Internal 16 MHz RC Oscillator (HSI)
     LL_RCC_HSI_Enable();
-    while(!LL_RCC_HSI_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_HSI_IsReady()) {;}
     // Trim HSI RC Oscillator to 16 MHz +- 1%
     LL_RCC_HSI_SetCalibTrimming(16);
 
@@ -89,10 +83,7 @@ static void px_board_clocks_init(void)
     LL_RCC_LSE_SetDriveCapability(LL_RCC_LSEDRIVE_LOW);
     // Enable Low Speed External 32768 Hz crystal oscillator (LSE)
     LL_RCC_LSE_Enable();
-    while(!LL_RCC_LSE_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_LSE_IsReady()) {;}
 
     // Select LSE as clock source for RTC
     LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
@@ -107,10 +98,7 @@ static void px_board_clocks_init(void)
                                 LL_RCC_PLL_DIV_2);
     // Enable PLL
     LL_RCC_PLL_Enable();
-    while(!LL_RCC_PLL_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_PLL_IsReady()) {;}
 
     // Set Arm High Performance Bus (AHB) clock prescaler to 1
     LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
@@ -121,10 +109,7 @@ static void px_board_clocks_init(void)
 
     // Select 32 MHz output of PLL as clock source for system
     LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
-    while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-    {
-        ;
-    }
+    while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL) {;}
 
     // Store system frequency in global SystemCoreClock CMSIS variable
     LL_SetSystemCoreClock(PX_BOARD_SYS_CLK_HZ);
@@ -189,10 +174,7 @@ void px_board_delay_us(uint16_t delay_us)
     // Enable counter
     TIM2->CR1 |= TIM_CR1_CEN;
     // Wait until CEN is cleared (in one-pulse mode when an update event occurs)
-    while(TIM2->CR1 & TIM_CR1_CEN)
-    {
-        ;
-    }
+    while(TIM2->CR1 & TIM_CR1_CEN) {;}
 }
 
 void px_board_delay_ms(uint16_t delay_ms)
@@ -277,16 +259,10 @@ void px_board_stop_mode(void)
 
     // Enable PLL
     LL_RCC_PLL_Enable();
-    while(!LL_RCC_PLL_IsReady())
-    {
-        ;
-    }
+    while(!LL_RCC_PLL_IsReady()) {;}
     // Select 32 MHz output of PLL as clock source for system
     LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
-    while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-    {
-        ;
-    }
+    while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL) {;}
 
     // Clear SLEEPDEEP bit of Cortex System Control Register
     LL_LPM_EnableSleep();

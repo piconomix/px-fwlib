@@ -72,7 +72,7 @@ int main(void)
      */ 
     LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_4, LL_GPIO_MODE_ANALOG);
 
-    // Repeat forever
+    // Loop forever
     for(;;)
     {
         // Flash LED

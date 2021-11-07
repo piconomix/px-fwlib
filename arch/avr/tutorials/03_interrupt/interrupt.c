@@ -86,6 +86,6 @@ int main(void)
     // Enable interrupts
     sei();
 
-    // Repeat forever
+    // Loop forever
     for(;;) {;}
 }

@@ -102,7 +102,7 @@ static const px_gpio_handle_t px_gpio_usb1d_n =         {PX_GPIO_USB1D_N};
 static const px_gpio_handle_t px_gpio_usb1d_p =         {PX_GPIO_USB1D_P};
 static const px_gpio_handle_t px_gpio_swdio =           {PX_GPIO_SWDIO};
 static const px_gpio_handle_t px_gpio_swdck =           {PX_GPIO_SWDCK};
-static const px_gpio_handle_t px_gpio_lcd_btn_5_yes =    {PX_GPIO_LCD_BTN_5_YES};
+static const px_gpio_handle_t px_gpio_lcd_btn_5_yes =   {PX_GPIO_LCD_BTN_5_YES};
 
 static const px_gpio_handle_t px_gpio_adc0 =            {PX_GPIO_ADC0};
 static const px_gpio_handle_t px_gpio_adc_vbat =        {PX_GPIO_ADC_VBAT};
