@@ -100,7 +100,7 @@ static bool main_init(void)
     px_at45d_resume_from_deep_power_down();
 
     // Check DataFlash communication
-    if((px_at45d_get_status()&0xfe) != ((1<<PX_AT45D_STATUS_READY) | (0x7 << 2)))
+    if((px_at45d_get_status()&0xfe) != ((1 << PX_AT45D_STATUS_READY) | (0x7 << 2)))
     {
         return false;
     }

@@ -57,12 +57,12 @@ extern "C" {
 /// @name Alarm bit mask
 /// @{
 #define PX_RTC_UTIL_ALARM_MASK_DIS      0       ///< Disable alarm
-#define PX_RTC_UTIL_ALARM_MASK_SEC      (1<<0)  ///< Alarm match on second
-#define PX_RTC_UTIL_ALARM_MASK_MIN      (1<<1)  ///< Alarm match on minute
-#define PX_RTC_UTIL_ALARM_MASK_HOUR     (1<<2)  ///< Alarm match on hour
-#define PX_RTC_UTIL_ALARM_MASK_DAY      (1<<3)  ///< Alarm match on day
-#define PX_RTC_UTIL_ALARM_MASK_MONTH    (1<<4)  ///< Alarm match on month
-#define PX_RTC_UTIL_ALARM_MASK_YEAR     (1<<5)  ///< Alarm match on year
+#define PX_RTC_UTIL_ALARM_MASK_SEC      (1 << 0)  ///< Alarm match on second
+#define PX_RTC_UTIL_ALARM_MASK_MIN      (1 << 1)  ///< Alarm match on minute
+#define PX_RTC_UTIL_ALARM_MASK_HOUR     (1 << 2)  ///< Alarm match on hour
+#define PX_RTC_UTIL_ALARM_MASK_DAY      (1 << 3)  ///< Alarm match on day
+#define PX_RTC_UTIL_ALARM_MASK_MONTH    (1 << 4)  ///< Alarm match on month
+#define PX_RTC_UTIL_ALARM_MASK_YEAR     (1 << 5)  ///< Alarm match on year
 /// @}
 
 /// Day of week

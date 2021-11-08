@@ -47,26 +47,26 @@ typedef struct
 
 /// Stop bit
 #define PX_M41T00_ST_ADR   0x00
-#define PX_M41T00_ST_BIT   (1<<7)
+#define PX_M41T00_ST_BIT   (1 << 7)
 
 /// Century Enable Bit
 #define PX_M41T00_CEB_ADR  0x02
-#define PX_M41T00_CEB_BIT  (1<<7)
+#define PX_M41T00_CEB_BIT  (1 << 7)
 
 /// Century Bit
 #define PX_M41T00_CB_ADR   0x02
-#define PX_M41T00_CB_BIT   (1<<6)
+#define PX_M41T00_CB_BIT   (1 << 6)
 
 // Control register map
 
 /// Output level bit
-#define PX_M41T00_OUT_BIT  (1<<7)
+#define PX_M41T00_OUT_BIT  (1 << 7)
 
 /// Frequency test bit
-#define PX_M41T00_FT_BIT   (1<<6)
+#define PX_M41T00_FT_BIT   (1 << 6)
 
 /// Sign bit
-#define PX_M41T00_S_BIT    (1<<5)
+#define PX_M41T00_S_BIT    (1 << 5)
 
 /// Clock calibration
 #define PX_M41T00_CAL_MASK 0x1F

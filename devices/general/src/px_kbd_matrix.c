@@ -91,11 +91,11 @@ static void kbd_key_state_set(px_kbd_matrix_key_state_t * key_state,
 
     if (state)
     {
-        key_state->bit_mask[byte] |= (1<<bit);
+        key_state->bit_mask[byte] |= (1 << bit);
     }
     else
     {
-        key_state->bit_mask[byte] &= ~(1<<bit);
+        key_state->bit_mask[byte] &= ~(1 << bit);
     }
 }
 

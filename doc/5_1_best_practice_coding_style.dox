@@ -134,8 +134,8 @@ The name must have the module name prefixed. Example:
 recommended so that the macro will always expand correctly. Example:
 
 @code{.c}
-    #define PX_BIT_SET_HI(var,bit)     do {(var) |= (1<<(bit));} while(0)
-    #define PX_BIT_SET_LO(var,bit)     do {(var) &= ~(1<<(bit));} while(0)
+    #define PX_BIT_SET_HI(var,bit)     do {(var) |= (1 << (bit));} while(0)
+    #define PX_BIT_SET_LO(var,bit)     do {(var) &= ~(1 << (bit));} while(0)
 
     // Function-like macro example where do {}while blocks are required so that
     // code behaves as expected:

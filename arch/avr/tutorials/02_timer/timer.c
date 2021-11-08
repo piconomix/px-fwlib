@@ -60,7 +60,7 @@ void tmr_delay(uint16_t delay_ms)
     // Reset counter
     TCNT1 = 0;
     // Clear OCF1A flag by writing a logical 1; other flags are unchanged
-    // This is more efficient than using "TIFR1 |= (1<<OCF1A);"
+    // This is more efficient than using "TIFR1 |= (1 << OCF1A);"
     TIFR1 = (1 << OCF1A);
     // Wait until OCF1A flag is set
     while((TIFR1 & (1 << OCF1A)) == 0) {;}

@@ -66,7 +66,7 @@ void px_board_init(void)
     DDRD  = GPIO_DDRD_INIT_VAL;
 
     // Disable digital input buffer on ADC pins 0 & 1 to conserve power
-    DIDR0 = (1<<1) | (1<<0);
+    DIDR0 = (1 << 1) | (1 << 0);
 }
 
 void px_board_spi_cs_lo(uint8_t cs_id)

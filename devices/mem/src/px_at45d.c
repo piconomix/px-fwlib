@@ -88,7 +88,7 @@ static void px_at45d_tx_adr(uint16_t page, uint16_t start_byte_in_page)
     data[2] = (uint8_t)(start_byte_in_page&0xFF);
 #else
     data[0] = (page>>7)&0xFF;
-    data[1] = ((page<<1)|(start_byte_in_page>>8))&0xFF;
+    data[1] = ((page<<1) | (start_byte_in_page>>8))&0xFF;
     data[2] = start_byte_in_page&0xFF;
 #endif
 

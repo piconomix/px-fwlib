@@ -61,12 +61,14 @@ int main(void)
 
     // Initialise board
     main_init();
+
     // Enable LED
     PX_LED_ON();
     // Start LED timer
     px_systmr_start(&px_systmr, PX_SYSTMR_MS_TO_TICKS(500));
     // Send message
     PX_PRINTF_P("Hello World!\n");
+
     // Loop forever
     while(true)
     {

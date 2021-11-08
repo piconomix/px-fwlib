@@ -5,31 +5,10 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (C) 2013 Piconomix Design <https://piconomix.com>
-    All rights reserved.
- 
-    The source code contained in this file is confidential, proprietary 
-    and a trade secret. Without prior written approval from Piconomix Design
-    no part of this source code may be reproduced or transmitted in any 
-    form or by any means, included but not limited to electronic, 
-    mechanical, photocopying or recording or stored in any retrieval 
-    system of whatever nature. Use of any copyright notice does not 
-    imply unrestricted public access to any part of this source code.
- 
-    All content is owned by Piconomix Design. Other trademarks and copyright 
-    notices are acknowledged as the property of their rightful owners.
- 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-    ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
+    Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
+
+    License: MIT
+    https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          Buzzer Driver
     Author(s):      pieter.conradie
@@ -53,12 +32,13 @@
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 static const uint16_t px_buzzer_piano_freq_table[89] PX_ATTR_PGM = 
-        {0,27,29,31,33,35,37,39,41,44,46,49,52,55,58,62,65,69,73,78,82,87,92,98,
-         104,110,117,123,131,139,147,156,165,175,185,196,208,220,233,247,262,
-         277,294,311,330,349,370,392,415,440,466,494,523,554,587,622,659,698,
-         740,784,831,880,932,988,1047,1109,1175,1245,1319,1397,1480,1568,1661,
-         1760,1865,1976,2093,2217,2349,2489,2637,2794,2960,3136,3322,3520,3729,
-         3951,4186};
+        {0, 27, 29, 31, 33, 35, 37, 39, 41, 44, 46, 49, 52, 55, 58, 62, 65, 69,
+         73, 78, 82, 87, 92, 98, 104, 110, 117, 123, 131, 139, 147, 156, 165,
+         175, 185, 196, 208, 220, 233, 247, 262, 277, 294, 311, 330, 349, 370,
+         392, 415, 440, 466, 494, 523, 554, 587, 622, 659, 698, 740, 784, 831,
+         880, 932, 988, 1047, 1109, 1175, 1245, 1319, 1397, 1480, 1568, 1661,
+         1760, 1865, 1976, 2093, 2217, 2349, 2489, 2637, 2794, 2960, 3136, 3322,
+         3520, 3729, 3951, 4186};
 
 static px_systmr_t           px_buzzer_systmr;
 static const buzzer_tune_t * px_buzzer_tune_start;
@@ -120,8 +100,8 @@ void px_buzzer_on(const uint16_t freq_hz)
      * 
      *  For F_CPU = 7372800 Hz, resolution is 8.7 us -> 57600 Hz to 225 Hz
      */
-    TCCR0A =  (0<<COM0A1)|(1<<COM0A0)|(1<<WGM01)|(0<<WGM00);
-    TCCR0B =  (0<<WGM02)|(1<<CS02)|(0<<CS01)|(0<<CS00);
+    TCCR0A =  (0 << COM0A1) | (1 << COM0A0) | (1 << WGM01) | (0 << WGM00);
+    TCCR0B =  (0 << WGM02) | (1 << CS02) | (0 << CS01) | (0 << CS00);
 
     // Reset counter
     TCNT0 = 0;
@@ -206,7 +186,7 @@ bool px_buzzer_task(void)
         px_buzzer_off();
         // Mark tune as finished
         px_buzzer_tune_start = NULL;
-        buzzer_tune       = NULL;
+        buzzer_tune          = NULL;
         // Task finished
         return false;
     }

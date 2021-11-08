@@ -625,7 +625,7 @@ void px_gfx_draw_img(const px_gfx_img_t * img,
             }
         }
         // Ended on 8-bit boundary?
-        if(mask != (1<<7))
+        if(mask != (1 << 7))
         {
             // No. Ignore rest of bits in byte
             data++;

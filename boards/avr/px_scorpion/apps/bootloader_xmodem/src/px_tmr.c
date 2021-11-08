@@ -38,8 +38,8 @@
 void px_tmr_init(void)
 {
     // Initialise 16-bit TMR1 @ CK/1024 in CTC (Clear Timer Compare) mode
-    TCCR1A = (0<<WGM11) | (0<<WGM10);
-    TCCR1B = (0<<WGM13) | (1<<WGM12) | (1<<CS12) | (0<<CS11) | (1<<CS10);
+    TCCR1A = (0 << WGM11) | (0 << WGM10);
+    TCCR1B = (0 << WGM13) | (1 << WGM12) | (1 << CS12) | (0 << CS11) | (1 << CS10);
 }
 
 void px_tmr_start(uint16_t ticks)
@@ -71,7 +71,6 @@ void px_tmr_wait(uint16_t ticks)
 
     // Clear output compare flag
     PX_BIT_SET_HI(TIFR1, OCF1A);
-
     // Wait until otput compare flag is set
     PX_WAIT_UNTIL_BIT_IS_HI(TIFR1, OCF1A);   
 }

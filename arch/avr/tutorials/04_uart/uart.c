@@ -72,7 +72,7 @@ void uart_send_byte(uint8_t data)
 uint8_t uart_receive_byte(void)
 {
     // Wait until a byte has been received
-    while((UCSR0A & (1<<RXC0)) == 0) {;}
+    while((UCSR0A & (1 << RXC0)) == 0) {;}
     // Return received data
     return UDR0;
 }

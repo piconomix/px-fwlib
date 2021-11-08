@@ -71,6 +71,7 @@ void px_tmr_wait(uint16_t ticks);
  *  @return    uint16_t    TMR ticks
  */
 #define TMR_MS_TO_TICKS(ms) (uint16_t)((uint32_t)ms * (F_CPU / 1024ul) / 1000ul)
+
 #ifdef __cplusplus
 }
 #endif

@@ -56,9 +56,9 @@ PX_LOG_NAME("bmp280");
 
 // 4.3.3 Register 0xF3 "status"
 #define PX_BMP280_REG_STATUS_MEAS_POS           3
-#define PX_BMP280_REG_STATUS_MEAS_MSK           (1<<3)
+#define PX_BMP280_REG_STATUS_MEAS_MSK           (1 << 3)
 #define PX_BMP280_REG_STATUS_IM_UPDATE_POS      0
-#define PX_BMP280_REG_STATUS_IM_UPDATE_MSK      (1<<0)
+#define PX_BMP280_REG_STATUS_IM_UPDATE_MSK      (1 << 0)
 
 // 4.3.4 Register 0xF4 "ctrl_meas"
 #define PX_BMP280_REG_CTRL_MEAS_OSRS_T_POS      5
@@ -83,7 +83,7 @@ PX_LOG_NAME("bmp280");
 #define PX_BMP280_REG_CONFIG_FILTER_POS         2
 #define PX_BMP280_REG_CONFIG_FILTER_MSK         (7<<2)
 #define PX_BMP280_REG_CONFIG_SPI3W_EN_POS       0
-#define PX_BMP280_REG_CONFIG_SPI3W_EN_MSK       (1<<0)
+#define PX_BMP280_REG_CONFIG_SPI3W_EN_MSK       (1 << 0)
 
 // 4.3.6 Register 0xF7..0xF9 "press" (_msb, _lsb, _xlsb)
 #define PX_BMP280_PRESS_XLSB_POS                4

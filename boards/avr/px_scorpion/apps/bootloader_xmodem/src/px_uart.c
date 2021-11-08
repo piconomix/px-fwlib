@@ -31,7 +31,7 @@ PX_LOG_NAME("px_uart_polled");
 #define PX_UART_DEFAULT_BAUD   115200ul
 #endif
 #ifndef PX_UART_DEFAULT_UCSRC
-#define PX_UART_DEFAULT_UCSRC  ((1<<UCSZ01) | (1<<UCSZ00))
+#define PX_UART_DEFAULT_UCSRC  ((1 << UCSZ01) | (1 << UCSZ00))
 #endif
 
 /* _____MACROS_______________________________________________________________ */
@@ -53,7 +53,7 @@ void px_uart_init(void)
     UCSR0C = PX_UART_DEFAULT_UCSRC;
 
     // Enable RxD/TxD
-    UCSR0B = (1<<RXEN0) | (1<<TXEN0);
+    UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 }
 
 void px_uart_putchar(char data)
@@ -89,10 +89,10 @@ char px_uart_getchar(void)
         // Wait until data received flag is set
         PX_WAIT_UNTIL_BIT_IS_HI(UCSR0A, RXC0);
     
-        // Accept data only if there were no Framing, Data Overrun or Parity Error(s)
+        // Accept data only if there were no Framing or Parity Error(s)
         ucsra = UCSR0A;
         udr   = UDR0;
-        if(ucsra & ((1<<FE0) | (1<<DOR0) | (1<<UPE0)))
+        if(ucsra & ((1 << FE0) | (1 << UPE0)))
         {
             // Received data had an error, discard received data
             continue;
@@ -108,16 +108,16 @@ bool px_uart_rd_u8(uint8_t * data)
     uint8_t udr;
 
     // Data received flag is set?
-    if(PX_BIT_IS_LO(UCSR0A,RXC0))
+    if(PX_BIT_IS_LO(UCSR0A, RXC0))
     {
         // No
         return false;
     }
 
-    // Accept data only if there were no Framing, Data Overrun or Parity Error(s)
+    // Accept data only if there were no Framing or Parity Error(s)
     ucsra = UCSR0A;
     udr   = UDR0;
-    if(ucsra & ((1<<FE0)|(1<<DOR0)|(1<<UPE0)))
+    if(ucsra & ((1 << FE0) | (1 << UPE0)))
     {
         // Received data had an error, discard received data
         return false;

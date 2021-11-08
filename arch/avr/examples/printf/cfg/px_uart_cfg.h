@@ -34,7 +34,7 @@
 #define PX_UART_CFG_DEFAULT_BAUD 115200ul
 
 /// Default UART configuration (8 data bits, no parity, 1 stop bit)
-#define PX_UART_CFG_DEFAULT_UCSRC  ((1<<UCSZ01) | (1<<UCSZ00))
+#define PX_UART_CFG_DEFAULT_UCSRC  ((1 << UCSZ01) | (1 << UCSZ00))
 
 /// Size of transmit buffer (must be a power of two, e.g. 2,4,8,..., 256)
 #define PX_UART_CFG_TX_BUF_SIZE 32

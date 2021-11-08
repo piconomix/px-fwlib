@@ -61,12 +61,12 @@ PX_LOG_NAME("px_sd");
 #define PX_SD_ACMD_MARKER_BIT              7
 
 // SD SPI application specific commands (after PX_SD_CMD55_APP_CMD)
-#define PX_SD_ACMD13_SD_STATUS             ((1<<PX_SD_ACMD_MARKER_BIT) + 13) // Request the SD Status
-#define PX_SD_ACMD22_SEND_NUM_WR_BLOCKS    ((1<<PX_SD_ACMD_MARKER_BIT) + 22) // Send the number of the well written (without errors) blocks
-#define PX_SD_ACMD23_SET_WR_BLOCK_COUNT    ((1<<PX_SD_ACMD_MARKER_BIT) + 23) // Set the number of write blocks to be pre-erased before writing
-#define PX_SD_ACMD41_SD_SEND_OP_COND       ((1<<PX_SD_ACMD_MARKER_BIT) + 41) // Send host capacity support information and activate init
-#define PX_SD_ACMD42_SET_CLR_CARD_DETECT   ((1<<PX_SD_ACMD_MARKER_BIT) + 42) // Connect / Disconnect the 50 KOhm pull-up resistor on CS
-#define PX_SD_ACMD51_SEND_SCR              ((1<<PX_SD_ACMD_MARKER_BIT) + 51) // Read the SD Configuration Register
+#define PX_SD_ACMD13_SD_STATUS             ((1 << PX_SD_ACMD_MARKER_BIT) + 13) // Request the SD Status
+#define PX_SD_ACMD22_SEND_NUM_WR_BLOCKS    ((1 << PX_SD_ACMD_MARKER_BIT) + 22) // Send the number of the well written (without errors) blocks
+#define PX_SD_ACMD23_SET_WR_BLOCK_COUNT    ((1 << PX_SD_ACMD_MARKER_BIT) + 23) // Set the number of write blocks to be pre-erased before writing
+#define PX_SD_ACMD41_SD_SEND_OP_COND       ((1 << PX_SD_ACMD_MARKER_BIT) + 41) // Send host capacity support information and activate init
+#define PX_SD_ACMD42_SET_CLR_CARD_DETECT   ((1 << PX_SD_ACMD_MARKER_BIT) + 42) // Connect / Disconnect the 50 KOhm pull-up resistor on CS
+#define PX_SD_ACMD51_SEND_SCR              ((1 << PX_SD_ACMD_MARKER_BIT) + 51) // Read the SD Configuration Register
 
 // SD R1 response bits
 #define PX_SD_RESP_R1_START_BIT            7   // Start bit of response is always '0'
@@ -187,7 +187,7 @@ static uint8_t px_sd_tx_cmd_rx_resp_r1(uint8_t cmd, uint32_t arg)
         r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD55_APP_CMD, 0);
     
         // start bit = 1 or any error bit set? (ignore idle state bit)
-        if((r1 & ~(1<<PX_SD_RESP_R1_IDLE_STATE)) != 0)
+        if((r1 & ~(1 << PX_SD_RESP_R1_IDLE_STATE)) != 0)
         {
             PX_LOG_E("CMD55 received R1 = 0x%02x", r1);
             return r1;
@@ -371,7 +371,7 @@ bool px_sd_reset(void)
         // Send CMD0+ (CMD0 with CS asserted)
         r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD0_GO_IDLE_STATE, 0);
         // SD Card in idle state?
-        if(r1 == (1<<PX_SD_RESP_R1_IDLE_STATE))
+        if(r1 == (1 << PX_SD_RESP_R1_IDLE_STATE))
         {
             break;
         }
@@ -393,7 +393,7 @@ bool px_sd_reset(void)
      */
     r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD8_SEND_IF_COND, 0x000001aa);
     // Did card respond correctly?
-    if(r1 == (1<<PX_SD_RESP_R1_IDLE_STATE))
+    if(r1 == (1 << PX_SD_RESP_R1_IDLE_STATE))
     {
         // Ver 2.00 or later SD Card
         PX_LOG_D("Ver 2.00 or later SD Card");
@@ -417,7 +417,7 @@ bool px_sd_reset(void)
 
         // Explicitely disable CRC, even though spec says that it is disabled by default
         r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD59_CRC_ON_OFF, 0);
-        if(r1 != (1<<PX_SD_RESP_R1_IDLE_STATE))
+        if(r1 != (1 << PX_SD_RESP_R1_IDLE_STATE))
         {
             PX_LOG_E("Incorrect response to CMD59 (R1 = 0x%02X)", r1);
             px_sd_spi_cs_end();
@@ -445,7 +445,7 @@ bool px_sd_reset(void)
                              px_sd_rx_data[0], px_sd_rx_data[1],
                              px_sd_rx_data[2], px_sd_rx_data[3]);
                     // Is Card Capacity Status (CCS) bit 30 set?
-                    if(px_sd_rx_data[0] & (1<<6))
+                    if(px_sd_rx_data[0] & (1 << 6))
                     {
                         PX_LOG_D("Ver 2.00 HCSD or XCSD Card");
                         px_sd_card_type = PX_SD_CARD_TYPE_VER_2_HCSD_XCSD;
@@ -482,7 +482,7 @@ bool px_sd_reset(void)
 
         // Explicitely disable CRC, even though spec says that it is disabled by default
         r1 = px_sd_tx_cmd_rx_resp_r1(PX_SD_CMD59_CRC_ON_OFF, 0);
-        if(r1 != (1<<PX_SD_RESP_R1_IDLE_STATE))
+        if(r1 != (1 << PX_SD_RESP_R1_IDLE_STATE))
         {
             PX_LOG_E("Incorrect response to CMD59 (R1 = 0x%02X)", r1);
             px_sd_spi_cs_end();

@@ -76,16 +76,16 @@ static void px_adc_select_channel(uint8_t channel)
     switch(channel)
     {
     case 0:
-        ADMUX = (0<<REFS1) | (1<<REFS0) | (ADC0<<MUX0);
+        ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC0<<MUX0);
         break;
     case 1:
-        ADMUX = (0<<REFS1) | (1<<REFS0) | (ADC1<<MUX0);
+        ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC1<<MUX0);
         break;
     case 2:
-        ADMUX = (0<<REFS1) | (1<<REFS0) | (ADC2<<MUX0);
+        ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC2<<MUX0);
         break;
     case 3:
-        ADMUX = (0<<REFS1) | (1<<REFS0) | (ADC3<<MUX0);
+        ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC3<<MUX0);
         break;
     default:
         break;
@@ -179,22 +179,22 @@ ISR(TIMER1_COMPA_vect)
 void px_adc_init(void)
 {
     // Disable digital input buffer on ADC pins 1 and 0 to conserve power
-    DIDR0 = (1<<1) | (1<<0);
+    DIDR0 = (1 << 1) | (1 << 0);
 }
 
 uint16_t px_adc_sample(uint8_t channel)
 {
     //  Select AVCC as reference with external capacitor at AREF pin
     // Select ADC0 (MUX3...0 = 0000b)
-    ADMUX =   (0<<REFS1) | (1<<REFS0) 
-            | (0<<MUX3)  | (0<<MUX2)  | (0<<MUX1) | (0<<MUX0);
+    ADMUX =   (0 << REFS1) | (1 << REFS0)
+            | (0 << MUX3)  | (0 << MUX2)  | (0 << MUX1) | (0 << MUX0);
 
     // Select channel
     px_adc_select_channel(channel);
 
     // Enable ADC; Select ADC Prescaler of 128 resulting in an ADC clock
     // frequency of 57.6 kHz with F_CPU = 7.3728 MHz
-    ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);
+    ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 
     // Start conversion
     PX_BIT_SET_HI(ADCSRA, ADSC);
@@ -234,8 +234,8 @@ void px_adc_start(uint16_t sampling_freq_hz, uint16_t nr_of_samples_per_sum)
      *  Select ADC Prescaler of 32 resulting in an ADC clock frequency of
      *  230.4 kHz with F_CPU = 7.3728 MHz
      */
-    ADCSRA =   (1<<ADEN)  | (0<<ADSC)  | (1<<ADIE) 
-             | (1<<ADPS2) | (0<<ADPS1) | (1<<ADPS0);
+    ADCSRA =   (1 << ADEN)  | (0 << ADSC)  | (1 << ADIE)
+             | (1 << ADPS2) | (0 << ADPS1) | (1 << ADPS0);
 
     /* 
      *  Start 16-bit TMR1 with clock prescaler CLK/8. For F_CPU = 7372800 Hz,
@@ -245,8 +245,8 @@ void px_adc_start(uint16_t sampling_freq_hz, uint16_t nr_of_samples_per_sum)
      *  that when TCNT1 reaches the OCR1A value, OCF1A flag will be set and
      *  TCNT1 will be reset to 0.
      */ 
-    TCCR1A = (0<<WGM11) | (0<<WGM10);
-    TCCR1B = (0<<WGM13) | (1<<WGM12) | (0<<CS12) | (0<<CS11) | (1<<CS10);
+    TCCR1A = (0 << WGM11) | (0 << WGM10);
+    TCCR1B = (0 << WGM13) | (1 << WGM12) | (0 << CS12) | (0 << CS11) | (1 << CS10);
 
     // Reset counter
     TCNT1 = 0;

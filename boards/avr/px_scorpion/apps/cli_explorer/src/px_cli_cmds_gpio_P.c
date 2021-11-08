@@ -54,28 +54,12 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
     {
         switch(pin_str[0])
         {
-        case '0':
-            px_gpio_open(handle, PX_GPIO_0);
-            break;
-
-        case '1':
-            px_gpio_open(handle, PX_GPIO_1);
-            break;
-
-        case '2':
-            px_gpio_open(handle, PX_GPIO_2);
-            break;
-
-        case '3':
-            px_gpio_open(handle, PX_GPIO_3);
-            break;
-
-        case '4':
-            px_gpio_open(handle, PX_GPIO_4);
-            break;
-
-        default:
-            return PX_PGM_STR("Error. <pin> must be 0,1,2,3 or 4");
+        case '0': px_gpio_open(handle, PX_GPIO_0); break;
+        case '1': px_gpio_open(handle, PX_GPIO_1); break;
+        case '2': px_gpio_open(handle, PX_GPIO_2); break;
+        case '3': px_gpio_open(handle, PX_GPIO_3); break;
+        case '4': px_gpio_open(handle, PX_GPIO_4); break;
+        default:  return PX_PGM_STR("Error. <pin> must be 0,1,2,3 or 4");
         }
     }
     else if(strlen(pin_str) == 2)
@@ -87,19 +71,16 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
             handle->ddr  = &DDRB;
             handle->pin  = &PINB;
             break;
-
         case 'c':
             handle->port = &PORTC;
             handle->ddr  = &DDRC;
             handle->pin  = &PINC;
             break;
-
         case 'd':
             handle->port = &PORTD;
             handle->ddr  = &DDRD;
             handle->pin  = &PIND;
             break;
-
         default:
             return PX_PGM_STR("Error. <pin> prefix must be b, c or d");
         }

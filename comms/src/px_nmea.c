@@ -513,7 +513,7 @@ void px_nmea_tx_frame(char* frame)
    }
    else
    {
-       px_nmea_tx_byte(((checksum>>4)&0x0f)+('A'-10));
+       px_nmea_tx_byte(((checksum>>4)&0x0f) + ('A'-10));
    }
    // Send low nibble
    checksum &=0x0f;

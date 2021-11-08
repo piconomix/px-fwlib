@@ -35,8 +35,7 @@
  *  - https://en.wikipedia.org/wiki/ANSI_escape_code
  *  - https://www2.ccs.neu.edu/research/gpc/MSim/vona/terminal/vtansi.htm
  *
- *  1. Introduction
- *  ===============
+ *  # 1. Introduction #
  *
  *  This CLI supports autocomplete using TAB and recalling old commands
  *  using UP/DOWN (command history).
@@ -47,21 +46,18 @@
  *  Commands starting with a hash (#) are regarded as comments and ignored.
  *  @tip_e
  *
- *  2. Code example
- *  ===============
+ *  # 2. Code example #
  *
  *  @include comms/test/px_cli_test.c
  *
- *  3. Implementation details
- *  =========================
+ *  # 3. Implementation details #
  *
  *  The CLI command tree is declared statically using three structures:
  *  - #px_cli_cmd_t
  *  - #px_cli_group_t
  *  - #px_cli_cmd_list_item_t
  *
- *  3.1 CMD
- *  -------
+ *  ## 3.1 CMD ##
  *
  *  ![](cli/cli_struct_cmd.png)
  *
@@ -73,8 +69,7 @@
  *  - The "help" field contains the address of the command help string that is
  *    displayed when the "help" command is executed.
  *
- *  3.2 GROUP
- *  ---------
+ *  ## 3.2 GROUP ##
  *
  *  ![](cli/cli_struct_group.png)
  *
@@ -83,8 +78,7 @@
  *  - The "list" field points to a static array of px_cli_cmd_list_item_t
  *    structures. This array will contain the sub commands for that group.
  *
- *  3.3 CMD LIST ITEM
- *  -----------------
+ *  ## 3.3 CMD LIST ITEM ##
  *
  *  ![](cli/cli_struct_cmd_list_item.png)
  *
@@ -99,8 +93,7 @@
  *  end of the array. It is similar to a NULL ('\0') terminator at the end of a
  *  character string.
  *
- *  3.4 Example
- *  -----------
+ *  ## 3.4 Example ##
  *
  *  Let's look again at the declaration of the command tree in the example:
  *

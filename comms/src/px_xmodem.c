@@ -109,7 +109,7 @@ static uint16_t px_xmodem_calc_checksum(void)
         for(j = 8; j != 0; j--)
         {
             // Is highest bit set?
-            if((crc & (1<<15)) != 0)
+            if((crc & (1 << 15)) != 0)
             {
                 // Shift left and XOR with polynomial CRC16-CCITT (x^16 + x^12 + x^5 + x^0)
                 crc = (crc << 1) ^ 0x1021;

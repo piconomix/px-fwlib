@@ -48,11 +48,11 @@ extern "C" {
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// PX_DS18B20 configuration register values
-#define PX_DS18B20_CFG_REG_RES_9BIT    (0<<5)
-#define PX_DS18B20_CFG_REG_RES_10BIT   (1<<5)
+#define PX_DS18B20_CFG_REG_RES_9BIT    (0 << 5)
+#define PX_DS18B20_CFG_REG_RES_10BIT   (1 << 5)
 #define PX_DS18B20_CFG_REG_RES_11BIT   (2<<5)
 #define PX_DS18B20_CFG_REG_RES_12BIT   (3<<5)
-#define PX_DS18B20_CFG_REG_RES_MASK    ((1<<6)|(1<<5))
+#define PX_DS18B20_CFG_REG_RES_MASK    ((1 << 6) | (1 << 5))
 #define PX_DS18B20_CFG_REG_RESERVED    0x1f
 
 #define PX_DS18B20_FAMILY_CODE         0x28
