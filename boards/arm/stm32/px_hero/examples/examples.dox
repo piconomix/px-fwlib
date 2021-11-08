@@ -1,5 +1,4 @@
-13. Examples {#HERO_BOARD_EXAMPLES}
-===================================
+# 13. Examples {#HERO_BOARD_EXAMPLES} #
 
 - @subpage HERO_BOARD_EXAMPLE_GPIO
 - @subpage HERO_BOARD_EXAMPLE_UART_PRINTF

@@ -1,5 +1,4 @@
-10. Examples {#SCORPION_BOARD_EXAMPLES}
-=======================================
+# 10. Examples {#SCORPION_BOARD_EXAMPLES} #
 
 - @subpage SCORPION_BOARD_EXAMPLE_GPIO
 - @subpage SCORPION_BOARD_EXAMPLE_SERIAL

@@ -1,5 +1,4 @@
-Low Power STOP Mode Example {#HERO_BOARD_EXAMPLE_LOW_POWER}
-===========================================================
+# Low Power STOP Mode Example {#HERO_BOARD_EXAMPLE_LOW_POWER} #
 
 This demonstrates how to put the STM32 into STOP low power mode.
 

@@ -1,8 +1,6 @@
-3.1.1 Arduino UNO R3 Board {#ARDUINO_UNO_BOARD}
-===============================================
+# 3.1.1 Arduino UNO R3 Board {#ARDUINO_UNO_BOARD} #
   
-1. About
-========
+# 1. About #
 
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
@@ -50,8 +48,7 @@ with [XLoader] [xloader] and use Terminal software (for example [Tera Term] [ter
 to interact with the app.
 @tip_e
 
-2. Board Support Package
-========================
+# 2. Board Support Package #
 
 A Board Support Package (@ref BOARDS_AVR_ARDUINO_UNO) is provided that:
 - define the CPU frequency
@@ -65,15 +62,13 @@ Files:
 - boards/avr/arduino_uno/inc/px_board_gpio.h
 - boards/avr/arduino_uno/src/px_board.c
 
-3. Reference documents
-======================
+# 3. Reference documents #
 
 - [Microchip ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328P)
 - [AVR Instruction Set Manual](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
 - [AVR Libc Reference Manual](http://www.nongnu.org/avr-libc/user-manual/index.html)
 
-4. Getting started
-==================
+# 4. Getting started #
 
 The following free software tools are needed:
 - [Atmel Studio 7] [atmel_studio] : 
@@ -96,21 +91,18 @@ The following free software tools are needed:
 (from the [CoreUtils] [core_utils] package) but lacks* **sh** *that is required 
 for advanced Makefiles.*
 
-4.1 Install Atmel Studio 7
---------------------------
+## 4.1 Install Atmel Studio 7 ##
 
 Download and install [Atmel Studio 7] [atmel_studio].
 
-4.2 Install UnixShellUtils
---------------------------
+## 4.2 Install UnixShellUtils ##
 
 Download [UnixShellUtils] [unix_shell_utils] and extract downloaded package 
 to root of drive, e.g.
 
     C:\UnixShellUtils
 
-4.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#ARDUINO_UNO_BOARD_CUSTOM_BUILD_TOOLS}
-----------------------------------------------------------------------------------------------------------
+## 4.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#ARDUINO_UNO_BOARD_CUSTOM_BUILD_TOOLS} ##
 
 Start Atmel Studio. Configure options:
 
@@ -129,8 +121,7 @@ Atmel Studio will remember the custom settings, so it is quick to switch between
 Custom and Default.
 @warn_e
 
-4.4 Build example in Atmel Studio
----------------------------------
+## 4.4 Build example in Atmel Studio ##
 
 All of the tutorials and examples are provided with pre-configured Atmel 
 Studio projects. External Makefiles are referenced, instead of using Atmel
@@ -159,8 +150,7 @@ If this step was not succesfull, it probably means that the custom build tools
 was not correctly set up. Go back to @ref ARDUINO_UNO_BOARD_CUSTOM_BUILD_TOOLS
 @tip_e
 
-4.5 Upload example to Arduino Uno
----------------------------------
+## 4.5 Upload example to Arduino Uno ##
 
 After building @ref ARDUINO_UNO_BOARD_EXAMPLE_SERIAL succesfully, you will have
 a HEX file called "serial.hex".
@@ -180,8 +170,7 @@ like this:
     that you specify the correct communication port (in the correct format).
 @warn_e
 
-4.6 Launch Tera Term to interact with example
----------------------------------------------
+## 4.6 Launch Tera Term to interact with example ##
 
 Download and run [Tera Term] [tera_term]. Configure Tera Term to use the correct
 serial port settings:
@@ -200,8 +189,7 @@ typed in the terminal window will be echoed back.
 If the Arduino board does not reset, press the reset button on the board itself.
 @tip_e
 
-5. AVR quick start guide
-========================
+# 5. AVR quick start guide #
 
 You now have a working development environment and I really hope it was quick 
 and straight forward to set up. You should be able to compile an application in 

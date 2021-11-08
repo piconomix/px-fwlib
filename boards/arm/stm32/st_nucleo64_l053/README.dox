@@ -1,10 +1,8 @@
-3.2.2 ST Nucleo64 L053 Board {#NUCLEO64_L053_BOARD}
-===================================================
+# 3.2.2 ST Nucleo64 L053 Board {#NUCLEO64_L053_BOARD} #
 
 <center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
 
-1. Introduction
-===============
+# 1. Introduction #
 
 @subpage NUCLEO64_L053_APPS     "Apps"
 @subpage NUCLEO64_L053_EXAMPLES "Examples"

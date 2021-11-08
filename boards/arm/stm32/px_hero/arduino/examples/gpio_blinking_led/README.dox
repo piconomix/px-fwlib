@@ -1,5 +1,4 @@
-GPIO blinking LED example {#HERO_BOARD_ARDUINO_EX_GPIO_BLINKING_LED}
-====================================================================
+# GPIO blinking LED example {#HERO_BOARD_ARDUINO_EX_GPIO_BLINKING_LED} #
 
 This is the classic Arduino Blink example that turns an LED on for one second, 
 then off for one second, repeatedly.

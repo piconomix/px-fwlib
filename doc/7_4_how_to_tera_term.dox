@@ -1,8 +1,6 @@
-7.4 How to install and configure Tera Term (an ANSI/VT100 terminal emulator) {#HOWTO_TERA_TERM}
-===============================================================================================
+# 7.4 How to install and configure Tera Term (an ANSI/VT100 terminal emulator) {#HOWTO_TERA_TERM} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 [tera_term]: http://en.sourceforge.jp/projects/ttssh2
 
@@ -12,18 +10,15 @@ TCP/IP. It has a multitude of features, one of which is an easy-to-implement
 [XMODEM-CRC](http://en.wikipedia.org/wiki/XMODEM) protocol to transfer files 
 (see @ref PX_XMODEM).
 
-2. Steps
-========
+# 2. Steps #
 
 Here are the steps to download and configure Tera Term:
 
-2.1 Download and install
-------------------------
+## 2.1 Download and install ##
 
 Click [HERE][tera_term] to download Tera Term.
 
-2.2 Edit TERATERM.INI
----------------------
+## 2.2 Edit TERATERM.INI ##
 
 Tera Term can auto detect which variant of XMODEM protocol to use (checksum, 
 CRC or 1k), but it can also be preset in the TERATERM.INI file. To open the file
@@ -48,8 +43,7 @@ While you are modifying TERATERM.INI, you can also change the default BAUD from
 After modifying and saving TERATERM.INI, close and reopen Tera Term for the new 
 configuration to take effect.
 
-2.3 Select serial port and communication settings
--------------------------------------------------
+## 2.3 Select serial port and communication settings ##
 
 Tera Term can now be set up to use the correct communication settings. Make sure
 that a device is connected that has been assigned a COM port.  The Device 

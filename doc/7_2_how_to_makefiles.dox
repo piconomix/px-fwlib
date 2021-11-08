@@ -1,8 +1,6 @@
-7.2 How to understand and modify Makefiles {#HOWTO_MAKEFILES}
-=============================================================
+# 7.2 How to understand and modify Makefiles {#HOWTO_MAKEFILES} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [make]:              http://gnuwin32.sourceforge.net/packages/make.htm
@@ -34,14 +32,12 @@ The Makefile build process is used extensively in the Un*x world and the time
 invested to master this fundamental tool will pay big dividends later in life.
 @tip_e
 
-1.1 References
---------------
+## 1.1 References ##
 
 - [1] [GNU Make manual - an introduction to Makefiles](https://www.gnu.org/software/make/manual/make.html#Introduction)
 - [2] [Wikipedia - Makefile](http://en.wikipedia.org/wiki/Makefile)
 
-2. Manual build
-===============
+# 2. Manual build #
 
 To perform a (simplified) hand build of an Microchip ATmega328P project on the 
 command line, you would do something like this:
@@ -69,8 +65,7 @@ WHOLE project is built from scratch, even though maybe only one source file was
 modified. There must be a better way, and the answer is... 
 [Make](http://www.gnu.org/software/make/)
 
-3. A "simple" Makefile
-======================
+# 3. A "simple" Makefile #
 
 Here is a simple Makefile to build the project:
 
@@ -96,8 +91,7 @@ To create a specific target, e.g. "board.o", you will invoke Make as follows:
 And now for a brief explanation...
 @tip_e
 
-4. Make Rules (pun intended)
-============================
+# 4. Make Rules (pun intended) #
 
 A Makefile consists mostly of rules to create targets. The syntax / form is as 
 follows:
@@ -190,8 +184,7 @@ You can see that Make did not recompile "board.c", but only did what it needed
 to update "test.elf".
 @tip_e
 
-5. Make Variables
-=================
+# 5. Make Variables #
 
 @tip_s
 One of the golden coding rules is: never repeat yourself!
@@ -235,8 +228,7 @@ The variable value can then be provided when Make is executed, for example:
 
     make MCU=atmega128
 
-6. Make Automatic Variables
-===========================
+# 6. Make Automatic Variables #
 
 [Automatic variables](https://www.gnu.org/software/make/manual/make.html#Automatic-Variables)
 are calculated for each rule that is executed. They only have a value within the 
@@ -258,8 +250,7 @@ Can be updated to:
 For more info on automatic variables and a detailed list, click
 [here](https://www.gnu.org/software/make/manual/make.html#Automatic-Variables).
 
-7. Make Pattern Rules
-=====================
+# 7. Make Pattern Rules #
 
 Instead of writing a separate rule for each object file, you can use a 
 [pattern rule](https://www.gnu.org/software/make/manual/make.html#Pattern-Rules).
@@ -277,8 +268,7 @@ prerequisite is "board.c".
 Note the use of automatic variables ($< and $@) in the recipe.
 @tip_e
 
-8. An "advanced" Makefile
-=========================
+# 8. An "advanced" Makefile #
 
 After applying all of these features, the "simple" Makefile is updated to:
 
@@ -290,8 +280,7 @@ Note the use of the a
 on line 4.
 @tip_e
 
-9. Dependencies
-===============
+# 9. Dependencies #
 
 If your C file includes other H files, then you can specify these files as 
 prerequisites too. That way, you can ensure that your C file will be rebuilt if 
@@ -314,8 +303,7 @@ The GCC compiler can parse your C files and generate these dependencies
 automatically. This has been implemented in the Make scripts (\*.mk) included 
 in the library.
 
-10. Conclusion
-==============
+# 10. Conclusion #
 
 Well, that's the end of the "gentle" introduction. I hope that you have enough
 insight now to copy, paste and modify the Makefiles used in this library and

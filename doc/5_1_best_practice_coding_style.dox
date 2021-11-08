@@ -1,15 +1,12 @@
-5.1 The Piconomix C coding style {#CODING_STYLE}
-================================================
+# 5.1 The Piconomix C coding style {#CODING_STYLE} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 A crystal clear, consistent, concise coding style improves readibility, reduces 
 errors and improves maintainability. This page provides a short guide to the C 
 coding style used.
 
-2. Library Namespace
-====================
+# 2. Library Namespace #
 
 *All filenames, defines, typedefs, variables, functions, etc. are prefixed with*
 **px_** *or* **PX_**
@@ -29,8 +26,7 @@ typedefs, defines, etc. are prefixed with "px_" or "PX_" (in the case of
 it harder to fit a source line into 80 columns, but it is the only universal 
 solution to avoid a possible clash.
 
-3. Modules
-==========
+# 3. Modules #
 
 *All defines, typedefs, variables, functions, etc. are prefixed with the module
 name*
@@ -62,8 +58,7 @@ The module name is **px_systmr**. The file names are "px_systmr.h" and
 structure called `px_systmr_t` and each function is passed a pointer to the 
 object, e.g. `&tmr`.
 
-4. Templates
-============
+# 4. Templates #
 
 Template files have been created for consistent organisation of each C module.
 See:
@@ -71,16 +66,14 @@ See:
 - common/src/px_template.c
 - common/src/px_template.S
 
-5. Comments
-===========
+# 5. Comments #
 
 Doxygen is used to document each module. For more info see @ref DOXYGEN.
 
 Here is an an example showing how a function is documented:
 @include doc/examples/doxy_ex_2.c
 
-6. Indentation and Brace style
-==============================
+# 6. Indentation and Brace style #
 
 *4 spaces must be used for each indentation level, not tabs. Curly brackets {} 
 must be used, even for single lines*
@@ -98,11 +91,9 @@ The [Allman style](http://en.wikipedia.org/wiki/Indent_style#Allman_style)
     }
 @endcode
 
-7. Naming convention
-====================
+# 7. Naming convention #
 
-7.1 Functions
--------------
+## 7.1 Functions ##
 
 *Lower case letters with underscores separating words*
 
@@ -112,8 +103,7 @@ The name must have the module name prefixed. Example:
     extern bool px_systmr_has_expired(px_systmr_t * systmr);
 @endcode
 
-7.2 Preprocessor defines
-------------------------
+## 7.2 Preprocessor defines ##
 
 *CAPITAL letters with underscores separating words*
 
@@ -124,8 +114,7 @@ The name must have the module name prefixed. Example:
     #define PX_CRC_POLYNOMIAL  0x8408
 @endcode
 
-7.3 Preprocessor macros
------------------------
+## 7.3 Preprocessor macros ##
 
 *CAPITAL letters with underscores separating words*
 
@@ -164,8 +153,7 @@ Note that this example is in violation of the brace style, where curly
 brackets {} must be used, even for single lines.
 @warn_e
 
-7.4 Function-like macros
-------------------------
+## 7.4 Function-like macros ##
 
 *lower case letters with underscores separating words is allowed*
 
@@ -177,8 +165,7 @@ the function naming convention. Example:
     #define _gpio_pin_set_hi(port, pin, dir, init)      PX_BIT_SET_HI(PX_CONCAT(PORT, port), pin)
 @endcode
 
-7.5 Variables
--------------
+## 7.5 Variables ##
 
 *Lower case letters with underscores separating words*
 
@@ -197,8 +184,7 @@ have the module name prefixed. Example:
 }
 @endcode
 
-7.6 Typedef
------------
+## 7.6 Typedef ##
 
 *Lower case letters with underscores separating words and "_t" suffix*
 
@@ -210,8 +196,7 @@ indicate that it is a typedef. Example:
     typedef unsigned int px_sysclk_ticks_t;
 @endcode
 
-7.7 Structures
---------------
+## 7.7 Structures ##
 
 *Lower case letters with underscores separating words and "_s" suffix*
 
@@ -226,8 +211,7 @@ indicate that it is a struct. Example:
     } px_list_item_t;
 @endcode
 
-8. Standard Types
-=================
+# 8. Standard Types #
 
 *Use standard types (uint8_t, int8_t, uint16_t, int16_t, uint32_t, int32_t, 
 uint64_t, int64_t, bool, false, true) defined via "px-fwlib/common/px_defines.h"*
@@ -258,8 +242,7 @@ the code portable. See @ref PX_DEFINES. Example:
     } msg_t;
 @endcode
 
-9. Debug Output
-===============
+# 9. Debug Output #
 
 A convenient debug module (@ref PX_LOG) has been created to report the flow of
 an embedded program as well as warnings and errors. The debug output can easily 

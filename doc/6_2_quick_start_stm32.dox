@@ -1,8 +1,6 @@
-6.2 STM32 quick start guide {#STM32_QUICK_START_GUIDE}
-======================================================
+# 6.2 STM32 quick start guide {#STM32_QUICK_START_GUIDE} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 [stm32cubeide]:       https://www.st.com/en/development-tools/stm32cubeide.html
 [python]:             https://www.python.org/downloads
@@ -26,8 +24,7 @@ The following free software tool is needed to get started:
   STM32 microcontroller applications. It includes a GCC build toolchain for 
   C and C++.
 
-1.1 Reference documents
------------------------
+## 1.1 Reference documents ##
 
 The STM32 portfolio is vast and the [STM32L072RB](https://www.st.com/en/microcontrollers-microprocessors/stm32l072rb.html)
 has been selected as a good practical introduction to start the journey. It is 
@@ -42,8 +39,7 @@ The reference documents can also be found here for off-line viewing:
 
     px-fwlib/boards/arm/stm32/px_hero/docs
 
-2. Brief introduction to processor architecture
-===============================================
+# 2. Brief introduction to processor architecture #
 
 The STM32L072RB incorporates the ubiquitous 32-bit [Arm Cortex-M0+](https://developer.arm.com/ip-products/processors/cortex-m/cortex-m0-plus)
 processor core. ST licenses the standard core design from [Arm](https://www.arm.com), 
@@ -55,8 +51,7 @@ This intro may feel totally weird and alien at first and it may help to read it
 again in conjunction with the first tutorial @ref STM32_TUT01_ASM.
 @tip_e
 
-2.1 32-bit general purpose registers R0 to R15
-----------------------------------------------
+## 2.1 32-bit general purpose registers R0 to R15 ##
 
 ![](stm32_regs.png)
 
@@ -80,8 +75,7 @@ Saving a value on the stack is known as "pushing" (e.g. `push {r0, lr}`) and
 restoring a saved value from the stack is known as "popping" (e.g. 
 `pop {r0, pc}`).
 
-2.2 PSR - Program Status Register
----------------------------------
+## 2.2 PSR - Program Status Register ##
 
 ![](stm32_psr.png)
 
@@ -117,8 +111,7 @@ The Cortex-M0+ core only supports 16-bit Thumb instructions and it will result
 in a Hard Fault if the T bit is not set.
 @warn_e
 
-2.3 PRIMASK - Priority Mask Register
-------------------------------------
+## 2.3 PRIMASK - Priority Mask Register ##
 
 ![](stm32_primask.png)
 
@@ -129,8 +122,7 @@ interrupts are enabled. If this flag is cleared, interrupts are disabled.
 Interrupts are enabled by default.
 @tip_e
 
-2.4 CONTROL Register
---------------------
+## 2.4 CONTROL Register ##
 
 ![](stm32_control.png)
 
@@ -143,8 +135,7 @@ Mode and Handler Mode) are also available to restrict an application's access to
 critical resources and to prevent a faulty application from stalling or 
 corrupting the operating system.
 
-2.5 16-bit / 32-bit instructions
---------------------------------
+## 2.5 16-bit / 32-bit instructions ##
 
 ![](stm32_instructions.png)
 
@@ -158,8 +149,7 @@ Most 16-bit instructions can only access the lower eight general purpose
 registers R0 - R7 and a small number of 16-bit instructions can access the high 
 registers R8 - R15.
 
-2.6 32-bit (4 GB) Memory map
------------------------------
+## 2.6 32-bit (4 GB) Memory map ##
 
 ![](stm32_mem_map.png)
 
@@ -175,8 +165,7 @@ Only Memory containing the ST Bootloader) or SRAM can be also be mapped to
 0x0000_0000 by pulling the BOOT0 pin low or changing the BOOT1 configuration 
 option bit. For more info, see *[3] "2.4 Boot configuration"* (page 63).
 
-2.7 Vector Table
-----------------
+## 2.7 Vector Table ##
 
 ![](stm32_vector_table.png)
 
@@ -215,8 +204,7 @@ will load this value in the IPSR (Interrupt Program Status Register).
 
 For more info, see *[4] "2.3.4 Vector table"* (page 29).
 
-2.8 Full-descending stack
--------------------------
+## 2.8 Full-descending stack ##
 
 ![](stm32_stack.png)
 
@@ -226,8 +214,7 @@ Note that it starts in the reserved region *just* above the top of SRAM. As
 downwards. As values are restored from the stack ("popped"), SP increases. SP 
 will point to the last item pushed on the stack.
 
-2.9 Clocks
------------
+## 2.9 Clocks ##
 
 ![STM32CubeMX clock configuration](stm32_clocks.png)
 
@@ -259,8 +246,7 @@ The processor core use the MSI (Multi Speed Internal) RC oscillator at 2.1 MHz
 when it starts.
 @tip_e
 
-3. Install IDE software
-=======================
+# 3. Install IDE software #
 
 Follow the steps [HERE] (@ref HOWTO_STM32CUBEIDE) to install STM32CubeIDE. The 
 section also describes how to create a new project that uses an external 
@@ -270,8 +256,7 @@ Makefile as used in this library.
 For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
 @tip_e
 
-4. Build an example in the IDE
-==============================
+# 4. Build an example in the IDE #
 
 The tutorials and examples are provided with pre-configured STM32CubeIDE 
 projects. External Makefiles are referenced, instead of using STM32CubeIDE's 
@@ -325,8 +310,7 @@ Observe that the IDE is executing a `make build=debug all` command by
 spotting the "DEBUG" text in the start and end banner.
 @tip_e
 
-5. Program and debug example in IDE
-===================================
+# 5. Program and debug example in IDE #
 
 Before debugging can start a debug configuration must exist. See
 [HERE](@ref STM32CUBEIDE_DEBUG_CONFIG) for the required steps.

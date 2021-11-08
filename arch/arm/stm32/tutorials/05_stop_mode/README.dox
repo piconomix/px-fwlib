@@ -1,8 +1,6 @@
-05 STOP low power mode {#STM32_TUT05_STOP_MODE}
-===============================================
+# 05 STOP low power mode {#STM32_TUT05_STOP_MODE} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 *How to put the processor into STOP low power mode and wake up on an external 
 interrupt on a GPIO pin*

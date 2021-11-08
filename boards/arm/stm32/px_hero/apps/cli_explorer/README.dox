@@ -1,8 +1,6 @@
-CLI Explorer (Command Line Interpreter) {#HERO_BOARD_APP_CLI}
-=============================================================
+# CLI Explorer (Command Line Interpreter) {#HERO_BOARD_APP_CLI} #
   
-Introduction
-============
+# Introduction #
 
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 
@@ -31,11 +29,9 @@ With this application you will be able to:
 
 ![CLI Exlorer executing on a Hero Board](hero_board_cli.gif)
 
-2. CLI features
-===============
+# 2. CLI features #
 
-2.1 Autocomplete (TAB)
-----------------------
+## 2.1 Autocomplete (TAB) ##
 
 Type the start of a command:
 
@@ -77,8 +73,7 @@ You have just configured GPIO0 on the breakout header (Port A, pin 6 on STM32)
 to output a high (+3V3)
 @tip_e
 
-2.2 Command History (UP/DN arrow)
----------------------------------
+## 2.2 Command History (UP/DN arrow) ##
 
 Type 'gpio info h0' and press ENTER:
 
@@ -116,8 +111,7 @@ Press UP arrow again:
 Press ENTER to execute command or BACKSPACE to edit command. You can also press
 DOWN arrow to recall newer command in history list if you went too far back.
 
-2.3 Help
---------
+## 2.3 Help ##
 
 Type 'help' and press ENTER to list all the commands with parameters and 
 descriptions. Parameters indicated with angle brackets <> are required and 
@@ -137,11 +131,9 @@ example to list only commands starting with 'i2c' type 'help i2c':
     i2c w     <adr> <d0> .. [d7]    : Write up to 8 bytes of data to an I2C slave
     i2c r     <adr> <nr of bytes>   : Read up to 16 bytes of data from an I2C slave
 
-3. CLI commands
-===============
+# 3. CLI commands #
 
-3.1 LED
--------
+## 3.1 LED ##
 
     >help led
     led       <on|off>      : Switch LED on or off
@@ -154,8 +146,7 @@ To switch the LED off:
 
     >led off
 
-3.2 Buzzer
-----------
+## 3.2 Buzzer ##
 
     >help beep
     beep      <ms> [freq Hz]    : Beep for specified number of milliseconds. Frequency can also be specified
@@ -174,8 +165,7 @@ the loudest at it's resonant frequency and softer at other frequencies. See if
 you can figure out experimentally what frequency is the loudest.
 @tip_e
 
-3.3 LCD
--------
+## 3.3 LCD ##
 
     >help lcd
     lcd clr                                 : Clear LCD display
@@ -228,8 +218,7 @@ To draw text:
 
     >lcd s 30 5 "Hello World!"
 
-3.4 ADC
--------
+## 3.4 ADC ##
 
     >help adc
     adc s     <ch> [interval ms]    : Sample ADC channel. <ch> is <0..3> or <c0..c18>
@@ -292,8 +281,7 @@ Capture the values as the battery is charged and create a spreadsheet graph to
 observe the charging profile of the battery.
 @tip_e
 
-3.5 DAC
--------
+## 3.5 DAC ##
 
     >help dac
     dac o     <val>     : Set DAC output value
@@ -308,8 +296,7 @@ the output value. You should read 1650 mV.
 @tip_e
 
 
-3.6 GPIO
---------
+## 3.6 GPIO ##
 
     >help gpio
     gpio info <pin|all|regs>        : Report GPIO info. <pin> is <0..6> or <a..h|0..15>
@@ -391,8 +378,7 @@ To report input value of GPIO0:
 Connect a wire from GPIO0 to GND and repeat the command. What do you expect?
 @tip_e
 
-3.7 UART
---------
+## 3.7 UART ##
 
     >help uart
     uart cfg  <per> <baud> [data] [parity] [stop]      : Configure UART
@@ -452,8 +438,7 @@ Use double quotes (") to write a string that includes spaces:
 
     >uart s 2000 "hello world"
 
-3.8 I2C
--------
+## 3.8 I2C ##
 
     >help i2c
     i2c info                        : Report status of SCL and SDA pins
@@ -504,8 +489,7 @@ The chip identification register value for the BMP280 is 0x58. This confirms
 that you are able to write and read from the I2C slave.
 @tip_e
 
-3.9 SPI
--------
+## 3.9 SPI ##
 
     >help spi
     spi cfg   [per] [cs] [baud] [mode] [order]  : Configure SPI
@@ -554,8 +538,7 @@ The Manufacturer and Device ID value for the AT25S is 1Fh 84h 01h. This
 confirms that you are able to communicate with the SPI device.
 @tip_e
 
-3.10 1-Wire
------------
+## 3.10 1-Wire ##
 
     >help ow
     ow info                                                  : Report status of 1-Wire line
@@ -611,8 +594,7 @@ Read DS18B20 temperature:
     >ow ds18b20_temp
     0x0120 18.0 deg C
 
-3.10 Serial Flash
------------------
+## 3.10 Serial Flash ##
 
     >help sf
     sf info                                 : Report Serial Flash info
@@ -688,8 +670,7 @@ The whole Serial Flash or a part of it can be transferred to a PC using the
 the "sf wx" command.
 @tip_e
 
-3.11 SD Card
-------------
+## 3.11 SD Card ##
 
     >help sd
     sd mount            : Initialize SD Card and report info
@@ -772,8 +753,7 @@ To view raw data on SD card:
 Spot anything familiar?
 @tip_e
 
-3.12 RTC
---------
+## 3.12 RTC ##
 
     >help rtc
     rtc r                               : Read RTC time
@@ -789,8 +769,7 @@ To get the date and time:
     20-02-21 12:35:02
 
 
-3.13 Raw memory read & write
-----------------------------
+## 3.13 Raw memory read & write ##
 
     >help mem
     mem r     <b|w|l> <adr> [count]         : Read a byte/word/long from memory. Optionally a count can be specified
@@ -835,8 +814,7 @@ Cortex-M0+ programming manual. Why is the least significant bit of the
 aligned address), not 0x08000B29?
 @tip_e
 
-3.14 Reset
-----------
+## 3.14 Reset ##
 
     >help rst
     rst                 : Reset microcontroller
@@ -845,8 +823,7 @@ This command will perform a system reset. The bootloader will be executed and it
 will jump to the application (no "double-tap" reset sequence; See
 @ref HERO_BOARD_BOOTLOADER_USB_UF2).
 
-4 Button press reporting {#HERO_BOARD_APP_CLI_BUTTONS}
-======================================================
+# 4 Button press reporting {#HERO_BOARD_APP_CLI_BUTTONS} #
 
 The CLI will report if a button is pressed. Press 1/LEFT:
 

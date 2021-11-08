@@ -1,21 +1,17 @@
-14. Arduino {#HERO_BOARD_ARDUINO}
-=================================
+# 14. Arduino {#HERO_BOARD_ARDUINO} #
   
-1. Introduction
-===============
+# 1. Introduction #
 
 With it's massive community and extensive set of supported boards and libraries, 
 the Arduino development environment has become a force of nature. Here are the
 steps to set up and use the Arduino IDE for the PX-HER0 board.
 
-2. Download and install the Arduino IDE
-=======================================
+# 2. Download and install the Arduino IDE #
 
 Go to [THIS](https://www.arduino.cc/en/main/software) page to download and 
 install Arduino 1.8.10 or newer.
 
-3. Install support for STM32 based boards
-=========================================
+# 3. Install support for STM32 based boards #
 
 Support for STM32 boards are provided [HERE](https://github.com/stm32duino/Arduino_Core_STM32).
 
@@ -46,8 +42,7 @@ Now open the Boards Manager window in the Arduino IDE:
 Type "STM32" into the search bar to narrow down the list of packages and install
 the "STM32 MCU based boards by STMicroelectronics" package.
 
-4. Specify the PX-HER0 board
-============================
+# 4. Specify the PX-HER0 board #
 
 Select the PX-HER0 board from the list of supported boards:
 
@@ -71,8 +66,7 @@ use the STM32CubeProgrammer command line software to program the STM32 via it's
 bootloader in ROM. We will use the USB1 connector on the PX-HER0 board to 
 program the STM32 too.
 
-5. Build a sketch
-=================
+# 5. Build a sketch #
 
 Open the "serial_hello_world" sketch. It is located here:
 
@@ -82,8 +76,7 @@ Build the sketch:
 
     Sketch > Verify/Compile Ctrl+R
 
-7. Uploading a sketch to the PX-HER0 board
-==========================================
+# 7. Uploading a sketch to the PX-HER0 board #
 
 Connect the BOOT jumper on the PX-HER0 board. It will pull the BOOT0 pin of the 
 STM32 low and the built-in bootloader will be activated upon reset or power up.
@@ -115,8 +108,7 @@ remove the BOOT jumper when you are finished. Otherwise, the STM32 will appear
 "dead", because it is in boot mode and not executing your program.
 @warn_e
 
-8. Digital pin mapping
-======================
+# 8. Digital pin mapping #
 
 The PX-HER0 board pins are mapped in [THIS](https://github.com/stm32duino/Arduino_Core_STM32/blob/main/variants/STM32L0xx/L072R(B-Z)T_L073R(B-Z)T_L083R(B-Z)T/variant_PX_HER0.h)
 file. It is duplicated here for easy offline viewing:
@@ -182,8 +174,7 @@ Thus the following code lines are all equivalent:
     digitalWrite(LED_BUILTIN, HIGH);
 @endcode
 
-9. Next step
-============
+# 9. Next step #
 
 Several @subpage HERO_BOARD_ARDUINO_EXAMPLES "examples" are provided to 
 demonstrate different parts of the board. Click [HERE](@ref HERO_BOARD_ARDUINO_EXAMPLES)

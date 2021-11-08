@@ -1,5 +1,4 @@
-USB Mass Storage Device for SD Card {#HERO_BOARD_APP_USB_MSD_SD}
-================================================================
+# USB Mass Storage Device for SD Card {#HERO_BOARD_APP_USB_MSD_SD} #
 
 Insert an SD card and run this app. The SD card will show up as a Mass 
 Storage Device over USB and allow you to read from or write to the SD card.

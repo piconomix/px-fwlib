@@ -1,5 +1,4 @@
-1. Introduction {#mainpage}
-===========================
+# 1. Introduction {#mainpage} #
 
 ![](piconomix_banner_300x70.png)
 
@@ -24,8 +23,7 @@ releases of the open source library (source code and offline documentation).
 STM32L072 PX-HER0 Board now in stock at Crowd Supply! Click [HERE](https://www.crowdsupply.com/piconomix/px-her0-board)
 @tip_e
 
-1.1 Goals
----------
+## 1.1 Goals ##
 
 - Teach **good firmware development practices** to guide the next 
   generation of professional embedded engineers.
@@ -43,8 +41,7 @@ years of experience to mentor the future generation and raise the bar in terms
 of quality and quantity. See @ref FEEDBACK
 @tip_e
 
-1.2 Sections
-------------
+## 1.2 Sections ##
 
 This documentation is divided into the following sections:
 
@@ -56,15 +53,13 @@ This documentation is divided into the following sections:
 - @ref HOW_TO_GUIDES
 - [8. C Modules](modules.html)
 
-1.3 Important Links
--------------------
+## 1.3 Important Links ##
 
 - [Piconomix FW Library home page](https://piconomix.com/px-fwlib/index.html)
 - [GitHub repository](https://github.com/piconomix/px-fwlib)
 - [Download page](https://sourceforge.net/projects/piconomic-fwlib/files) for file releases of the library (source code and offline documentation)
 
-1.4 Companion Boards
---------------------
+## 1.4 Companion Boards ##
 
 Here is the collection of boards that are supported with Board Support Packages
 (BSP), documentation and complete examples:
@@ -76,8 +71,7 @@ Here is the collection of boards that are supported with Board Support Packages
 |ST STM32L072RB           | [Piconomix STM32L072RB PX-HER0 Board](@ref STM32_PX_HERO_BOARD) |
 |ST STM32L053R8T6         | [ST Nucleo64 L053R8 Board](@ref NUCLEO64_L053_BOARD)                   |
 
-1.5 Library Examples
---------------------
+## 1.5 Library Examples ##
 
 Here are four examples selected to pique your interest:
 
@@ -190,8 +184,7 @@ Usage example:
 For a complete working example (with nice flash file system debugging), see 
 @ref SCORPION_BOARD_APP_DATA_LOGGER_TEMP_PRESSURE.
 
-1.6 Coding Evolution
---------------------
+## 1.6 Coding Evolution ##
 
 Great athletes spend years tweaking tiny aspects of their performance to get 
 a competitive edge: bicycle riders adapt their posture in a wind tunnel, 
@@ -238,8 +231,7 @@ than you give it credit for (or not... it depends)
 
 **Evolve, improve or be left behind!**
 
-1.7 Questions or Feedback? {#FEEDBACK}
---------------------------------------
+## 1.7 Questions or Feedback? {#FEEDBACK} ##
 
 Questions or feedback (positive and negative) is great and will help to improve 
 the library:
@@ -250,8 +242,7 @@ Methods of communication:
 - [Forum](https://piconomix.com/forum)
 - [Contact page](https://piconomix.com/contact)
 
-1.8 Code Contributions
-----------------------
+## 1.8 Code Contributions ##
 
 You are most welcome to submit bug fixes, new code or documentation. It should:
 - fit in (be consistent with the naming style and conventions used)
@@ -260,8 +251,7 @@ You are most welcome to submit bug fixes, new code or documentation. It should:
 - be written in C or Assembler (no C++ yet)
 - use a compatible [open source license](@ref PX_FW_LIC_OPEN)
 
-1.9 Support
------------
+## 1.9 Support ##
 
 A significant amount of time has been invested to craft and refine this free 
 open source library. If you saved development time, acquired a new skill, or 

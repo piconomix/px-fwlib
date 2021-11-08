@@ -1,8 +1,6 @@
-3.1.2 Microchip ATmega328P-XMINI Board {#ATMEGA328P_XMINI_BOARD}
-================================================================
+# 3.1.2 Microchip ATmega328P-XMINI Board {#ATMEGA328P_XMINI_BOARD} #
   
-1. About
-========
+# 1. About #
 
 ![ATmega328P-XMINI](atmega328p_xmini.jpg)
 Image Copyright (c) [Microchip Technology Inc](https://www.microchip.com).
@@ -13,8 +11,7 @@ Image Copyright (c) [Microchip Technology Inc](https://www.microchip.com).
 * [Board Support Package](@ref BOARDS_AVR_ATMEGA328P_XMINI)
 * @subpage ATMEGA328P_XMINI_BOARD_EXAMPLES "Examples"
 
-2. Board Support Package
-========================
+# 2. Board Support Package #
 
 A Board Support Package (@ref BOARDS_AVR_ATMEGA328P_XMINI) is provided that:
 - define the CPU frequency
@@ -27,8 +24,7 @@ Files:
 - boards/avr/atmega328p_xmini/inc/px_board_gpio.h
 - boards/avr/atmega328p_xmini/src/px_board.c
 
-3. Reference documents
-======================
+# 3. Reference documents #
 
 - [ATmega328P Xplained Mini User Guide](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328P-Xplained-Mini-UG-DS50002659B.pdf)
 - [ATmega328P Xplained Mini Design Documentation](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328P-Xplained-Mini_Design-Documentation.zip)

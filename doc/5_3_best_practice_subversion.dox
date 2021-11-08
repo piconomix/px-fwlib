@@ -1,8 +1,6 @@
-5.3 Using Subversion (SVN) version control system {#SUBVERSION}
-===============================================================
+# 5.3 Using Subversion (SVN) version control system {#SUBVERSION} #
   
-1. Introduction
-===============
+# 1. Introduction #
 
 [Subversion](http://subversion.apache.org/) is a free version control system 
 that manages file and directory changes over time. Files are stored in a central
@@ -29,18 +27,15 @@ By default, they will be located here:
     C:\Program Files\TortoiseSVN\bin\svn.exe
     C:\Program Files\TortoiseSVN\bin\svnadmin.exe
 
-2. Command Line example
-=======================
+# 2. Command Line example #
 
 Here is a quick Windows command line example:
 
-2.1 Test that svn is available on the path
-------------------------------------------
+## 2.1 Test that svn is available on the path ##
 
     C:\svn --help
 
-2.2 Create repository
----------------------
+## 2.2 Create repository ##
 
 For this example, let's say that you want a separate repostitory for each 
 project and they are all located here:
@@ -51,8 +46,7 @@ Issue this command to create a new repository called "my_project":
 
     C:\repos>svnadmin create my_project
 
-2.3 Import directories and files
---------------------------------
+## 2.3 Import directories and files ##
 
 Let's also say that a (temporary) copy of the directories and files to be 
 imported into the repository is located here:
@@ -67,8 +61,7 @@ To import the directories and files, issue the following command:
 Observe the URL format of the path to the repository ("file:///c:/repos/my_project")
 @tip_e
 
-2.4 Checkout a working copy
----------------------------
+## 2.4 Checkout a working copy ##
 
 The location where you work on all your projects is actually here:
 
@@ -79,21 +72,18 @@ command:
 
     C:\projects>svn checkout file:///c:/repos/my_project my_project
 
-2.5 Commit a new version
-------------------------
+## 2.5 Commit a new version ##
 
 Navigate into your working folder and update a file. You can now commit the new
 version with the following command:
 
     C:\projects\my_project>svn commit . -m "Updated file"
 
-2.6 Update working folder
--------------------------
+## 2.6 Update working folder ##
 
     C:\projects\my_project>svn update
 
-2.7 Report log messages
------------------------
+## 2.7 Report log messages ##
 
     C:\projects\my_project>svn log
 

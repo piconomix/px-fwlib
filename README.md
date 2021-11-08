@@ -12,15 +12,13 @@ The online documentation URL has changed to:
 
     https://piconomix.com/px-fwlib/index.html
 
-PX-HER0 Board
-=============
+# PX-HER0 Board #
 
 ![](https://github.com/piconomix/px-fwlib/blob/master/doc/images/hero_board/hero_board_isometric_top_bot.jpg)
 
 STM32L072 PX-HER0 Board now in stock at Crowd Supply! Click [HERE](https://www.crowdsupply.com/piconomix/px-her0-board)
 
-Introduction
-============
+# Introduction #
 
 ![https://piconomix.com](https://github.com/piconomix/px-fwlib/blob/master/doc/images/piconomix_banner_300x70.png)
 
@@ -39,8 +37,7 @@ documentation.
 Click [HERE](https://github.com/piconomix/px-fwlib/releases) to download
 releases of the open source library (source code and offline documentation).
 
-Goals
-=====
+# Goals #
 
 - Teach **good firmware development practices** to guide the next
   generation of professional embedded engineers.
@@ -56,8 +53,7 @@ Goals
 years of experience to mentor the future generation and raise the bar in terms
 of quality and quantity.*
 
-Example
-=======
+# Example #
 
 Included with the library is a CLI (Command Line Interpreter) executing on an
 Arduino Uno R3 that creates a "Un*x Shell"-like environment so that you can
@@ -112,8 +108,7 @@ int main(void)
 }
 ```
 
-License
-=======
+# License #
 
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
@@ -122,15 +117,13 @@ has been selected to grant freedom for both open source and commercial
 (closed source) projects and to nurture future growth of the library. Please see
 the [LICENSE](https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md).
 
-Important Links
-===============
+# Important Links #
 
 - [Piconomix FW Library home page](https://piconomix.com/px-fwlib/index.html)
 - [GitHub repository](https://github.com/piconomix/px-fwlib)
 - [Download page](https://sourceforge.net/projects/piconomic-fwlib/files) for file releases of the library (source code and offline documentation)
 
-Questions or Feedback?
-======================
+# Questions or Feedback? #
 
 Questions or feedback (positive and negative) is great and will help to improve
 the library:
@@ -141,8 +134,7 @@ Methods of communication:
 - [Forum](https://piconomix.com/forum)
 - [Contact page](https://piconomix.com/contact)
 
-Support
-=======
+# Support #
 
 A significant amount of time has been invested to craft and refine this free
 open source library. If you saved development time, acquired a new skill, or

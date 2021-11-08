@@ -1,8 +1,6 @@
-Minimal GPIO Example {#ARDUINO_UNO_BOARD_EXAMPLE_GPIO}
-======================================================
+# Minimal GPIO Example {#ARDUINO_UNO_BOARD_EXAMPLE_GPIO} #
   
-Introduction
-============
+# Introduction #
 
 This is a minimal GPIO example for the Arduino Uno board. It is the embedded 
 equivalent of a "hello world" program on a PC to kick the tires and know that 

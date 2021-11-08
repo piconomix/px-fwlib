@@ -1,8 +1,6 @@
-03 SysTick periodic interrupt {#STM32_TUT03_SYSTICK_INT}
-========================================================
+# 03 SysTick periodic interrupt {#STM32_TUT03_SYSTICK_INT} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 *How to use the standard SysTick peripheral to generate a periodic interrupt*
 
@@ -15,8 +13,7 @@ Reference(s):
 
 The LED flashes at 1 Hz (500 ms on; 500 ms off).
 
-2. Vector Table
-===============
+# 2. Vector Table #
 
 The vector table contains the reset value of the Stack Pointer (SP / R13), the 
 address of the first instruction to execute after reset and the addresses of 
@@ -69,8 +66,7 @@ to 0x0000_0000.
 See *[1] "2.2 Memory organization"* (page 57) for more info.
 @tip_e
 
-3. Interrupts
-=============
+# 3. Interrupts #
 
 "SysTick_Handler" is the name of the exception handler function that is called 
 by the processor core to handle the SysTick interrupt. If you search for it's 
@@ -97,8 +93,7 @@ The `Default_Handler()` function will be called to handle the interrupt, but it
 is declared as weak, which allows you to provide your own handler (with the same
 name) and it will be called instead of `Default_Handler()`.
 
-4. SysTick timer
-================
+# 4. SysTick timer #
 
 The SysTick timer is a standard Arm core peripheral. It's a 24-bit count down 
 timer that is programmed using the standard 
@@ -107,8 +102,7 @@ timer that is programmed using the standard
 
 See *[2] "4.4 SysTick timer (STK)"* (page 95)
 
-5. Nested Vectored Interrupt Controller (NVIC)
-==============================================
+# 5. Nested Vectored Interrupt Controller (NVIC) #
 
 The NVIC is also a standard Arm core peripheral and it is responsible for 
 prioritizing and signalling interrupts to the processor core. The SysTick 
@@ -150,8 +144,7 @@ The [DMB](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0497a/B
 M0+ processor core, but is included for compatibilty with ARM cores that have 
 more complex memory systems and pipelines.
 
-6. Interrupt stack frame
-========================
+# 6. Interrupt stack frame #
 
 The normal instruction execution flow is interrupted when an exception occurs.
 The processor core must save sufficient state information before jumping to the
@@ -179,8 +172,7 @@ flow (as if nothing happened).
 
 For more info regarding EXC_RETURN, see *[2] "Exception return"* (page 32).
 
-7. AAPCS - Procedure Calling Standard for the ARM Architecture
-==============================================================
+# 7. AAPCS - Procedure Calling Standard for the ARM Architecture #
 
 Why does the processor core save the content of R12, R3, R2, R1 and R0 too 
 before it jumps to the interrupt handler? It is done so that a regular C 
@@ -199,8 +191,7 @@ returning to the regular execution flow (as if nothing happened).
 See [HERE](https://community.arm.com/developer/ip-products/processors/b/processors-ip-blog/posts/on-the-aapcs-with-an-application-to-efficient-parameter-passing)
 for more info.
 
-8. 'volatile' keyword
-=====================
+# 8. 'volatile' keyword #
 
 Did you spot the `volatile` keyword in the following line?
 

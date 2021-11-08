@@ -1,8 +1,6 @@
-02 GPIO part C {#STM32_TUT02_GPIO_PART_C}
-=========================================
+# 02 GPIO part C {#STM32_TUT02_GPIO_PART_C} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 *How to configure and use General Purpose (digital) I/O pins - part C*
 
@@ -14,8 +12,7 @@ This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the
 PH0 must be configured as a digital output pin. Set PH0 high to enable the LED 
 and set PH0 low to disable the LED.
 
-1. STM32Cube library (including CMSIS)
-======================================
+# 1. STM32Cube library (including CMSIS) #
 
 ST provides the STM32Cube library which includes the Arm 
 [CMSIS](https://developer.arm.com/tools-and-software/embedded/cmsis) (Cortex 

@@ -1,10 +1,8 @@
-3.2.1 Piconomix STM32L072RB PX-HER0 Board {#STM32_PX_HERO_BOARD}
-================================================================
+# 3.2.1 Piconomix STM32L072RB PX-HER0 Board {#STM32_PX_HERO_BOARD} #
 
 <center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
 
-1. Introduction
-===============
+# 1. Introduction #
 
 [stm32cubeide]:       https://www.st.com/en/development-tools/stm32cubeide.html
 [python]:             https://www.python.org/downloads
@@ -45,8 +43,7 @@ The Hero Board is shipped preprogrammed with a @ref HERO_BOARD_BOOTLOADER_USB_UF
 and @ref HERO_BOARD_APP_CLI.
 @tip_e
 
-2. Board layout - top view
-==========================
+# 2. Board layout - top view #
 
 ![](hero_board_top_annotated.png)
 \n
@@ -59,8 +56,7 @@ and @ref HERO_BOARD_APP_CLI.
 | **E.** USB1: STM32                         |                                       |
 
 
-3. Board layout - bottom view
-=============================
+# 3. Board layout - bottom view #
 
 ![](hero_board_bot_annotated.png)
 \n
@@ -74,8 +70,7 @@ and @ref HERO_BOARD_APP_CLI.
 | **F.** ARM Cortex Debug Connector          | **M.** USB2: USB-Serial Bridge        |
 | **G.** Peripheral Connector                | **N.** Li-Po Battery Connector        |
 
-4. Features & Specifications
-============================
+# 4. Features & Specifications #
 
 - **Microcontroller**: [STM32L072RB](https://www.st.com/en/microcontrollers/stm32l072rb.html) ultra low-power ARM Cortex-M0+
     - 128k FLASH
@@ -111,8 +106,7 @@ and @ref HERO_BOARD_APP_CLI.
     - Board: 100 x 80 mm (3.94 x 3.15\")
     - Display active pixel area: 48.6 x 24.9 mm (1.91 x 0.98") / 54.6 mm (2.15") diagonal
 
-5. Comparision between Deluxe and Lite Edition
-==============================================
+# 5. Comparision between Deluxe and Lite Edition #
 
 @tip_s
 In the future a Lite Edition may also be available.
@@ -146,8 +140,7 @@ Here is a table highlighting the differences:
 | Sparkfun Qwiic / STEMMA QT Connector                                             | YES            | YES          |
 | Seeed GROVE I2C Connector                                                        | YES            | YES          |
 
-6. Design Documents
-===================
+# 6. Design Documents #
 
 Most OSHW designs hide some of the "magic sauce". The schematics are hard to 
 follow and complete manufacturer part numbers are not disclosed. The Hero Board
@@ -166,8 +159,7 @@ The design documents can also be found here for off-line viewing:
 
     px-fwlib/boards/arm/stm32/px_hero/docs
 
-7. Reference documents
-======================
+# 7. Reference documents #
 
 - [STM32L072RB Datasheet](https://www.st.com/resource/en/datasheet/stm32l072rb.pdf)
 - [STM32L072RB Reference Manual](https://www.st.com/resource/en/reference_manual/dm00108281.pdf)
@@ -178,8 +170,7 @@ The reference documents can also be found here for off-line viewing:
 
     px-fwlib/boards/arm/stm32/px_hero/docs
 
-8. Disclaimer
-=============
+# 8. Disclaimer #
 
     This development/evaluation tool is suitable for research and development in
     a controlled laboratory environment and not designed or tested as a finished
@@ -199,8 +190,7 @@ The reference documents can also be found here for off-line viewing:
     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS HARDWARE, EVEN
     IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-9. Board Support Package {#STM32_PX_HERO_BOARD_BSP}
-===================================================
+# 9. Board Support Package {#STM32_PX_HERO_BOARD_BSP} #
 
 A Board Support Package (@ref BOARDS_STM32_PX_HERO) is provided that:
 - defines the function of each GPIO pin
@@ -214,8 +204,7 @@ Files:
 - boards/arm/stm32/px_hero/inc/px_board_gpio.h
 - boards/arm/stm32/px_hero/src/px_board.c
 
-10. Getting started
-===================
+# 10. Getting started #
 
 The following free software tools are needed:
 - [STM32CubeIDE][stm32cubeide] : 
@@ -239,8 +228,7 @@ The following command line tools are optional, but recommended:
 - [GNU Arm Embedded Toolchain][gnu_arm_tools] : A GNU GCC build toolchain for C 
   and C++.
 
-10.1 Connect USB1 of Hero Board to PC
--------------------------------------
+## 10.1 Connect USB1 of Hero Board to PC ##
 
 The Hero Board is shipped with the @ref HERO_BOARD_APP_CLI app. Connect USB1 to 
 the PC.
@@ -259,22 +247,19 @@ be used to find out. Right-click "Start (Windows icon bottom left of task bar) >
 
 ![Device Manager - COM port assignment](hero_board_device_manager.png)
 
-10.2 Install Tera Term (an ANSI/VT100 Terminal Emulator)
---------------------------------------------------------
+## 10.2 Install Tera Term (an ANSI/VT100 Terminal Emulator) ##
 
 Follow the steps [HERE](@ref HOWTO_TERA_TERM) to install and configure Tera Term
 using the COM port noted previously.
 
-10.3 Play with the CLI Explorer app
------------------------------------
+## 10.3 Play with the CLI Explorer app ##
 
 You are now ready to use Tera Term to interact with the CLI explorer app. Follow
 the full documentation [HERE](@ref HERO_BOARD_APP_CLI).
 
 ![CLI Exlorer executing on a Hero Board](hero_board_cli.gif)
 
-10.4 Install USB-UART Bridge Virtual Com Port (VCP) USB driver
---------------------------------------------------------------
+## 10.4 Install USB-UART Bridge Virtual Com Port (VCP) USB driver ##
 
 @tip_s
 If you already have the latest driver installed and correctly configured, then 
@@ -300,8 +285,7 @@ connect to it. When you type characters in the terminal window, the TX LED will
 flash on the board.
 @tip_e
 
-10.5 Install Python
--------------------
+## 10.5 Install Python ##
 
 Click [HERE][python] to download and install Python 3. It is needed to create a 
 [UF2] (https://github.com/Microsoft/uf2) file suitable for uploading via the 
@@ -315,15 +299,13 @@ Make sure sure that the path has been set up to find Python and it's scripts:
 
 ![](python_win_path.png)
 
-10.6 Install STM32CubeIDE
--------------------------
+## 10.6 Install STM32CubeIDE ##
 
 Follow the steps [HERE] (@ref HOWTO_STM32CUBEIDE) to install STM32CubeIDE.
 The section also describes how to create a new project that uses an external 
 Makefile as used in this library.
 
-10.7 Build an example in the IDE
---------------------------------
+## 10.7 Build an example in the IDE ##
 
 The tutorials and examples are provided with pre-configured STM32CubeIDE 
 projects. External Makefiles are referenced, instead of using STM32CubeIDE's 
@@ -384,8 +366,7 @@ the app, the Makefile executes a Python script to create a UF2 file suitable for
 uploading via the bootloader.
 @tip_e
 
-10.8 Upload example to Hero Board via bootloader
-------------------------------------------------
+## 10.8 Upload example to Hero Board via bootloader ##
 
 After building the @ref HERO_BOARD_EXAMPLE_GPIO succesfully, you will 
 have a UF2 file called "gpio.uf2" in the "RELEASE_FOR_BOOT" subdirectory. 
@@ -400,8 +381,7 @@ app.
 The LED will start flashing at a slow 2 Hz while the 6/NO button is released and 
 will flash at a fast 8 Hz while the button is being pressed. **Success!**
 
-10.9 Build example on command line
-----------------------------------
+## 10.9 Build example on command line ##
 
 The following steps are optional but recommended, because it shines a light on
 the building mechanics used by the IDE and demonstrates how firmware can be 
@@ -483,8 +463,7 @@ Execute `make' to build the whole project:
 
 **Congratulations Hero!!**
 
-11. The next step
-=================
+# 11. The next step #
 
 You now have a working development environment and I really hope it was quick 
 and straight forward to set up (if not, please use @ref FEEDBACK). You should be 

@@ -1,5 +1,4 @@
-7.1 STM32 Flashing LED Example {#STM32_EX_FLASHING_LED}
-=======================================================
+# 7.1 STM32 Flashing LED Example {#STM32_EX_FLASHING_LED} #
 
 This is a basic GPIO example using **px-fwlib**. It is the embedded equivalent of
 a "hello world" program on a PC to kick the tires and know that your development

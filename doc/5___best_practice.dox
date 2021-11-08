@@ -1,5 +1,4 @@
-5. Recommended best practices {#BEST_PRACTICES}
-===============================================
+# 5. Recommended best practices {#BEST_PRACTICES} #
 
 - C coding style:
     + @subpage CODING_STYLE

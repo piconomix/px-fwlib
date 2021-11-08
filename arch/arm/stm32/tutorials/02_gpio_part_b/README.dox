@@ -1,8 +1,6 @@
-02 GPIO part B {#STM32_TUT02_GPIO_PART_B}
-=========================================
+# 02 GPIO part B {#STM32_TUT02_GPIO_PART_B} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 *How to configure and use General Purpose (digital) I/O pins - part B*
 
@@ -17,8 +15,7 @@ This example flashes the LED at 1 Hz (500 ms on; 500 ms off). On the
 PH0 must be configured as a digital output pin. Set PH0 high to enable the LED 
 and set PH0 low to disable the LED.
 
-2. Peripheral access
-====================
+# 2. Peripheral access #
 
 The relative register map of each GPIO peripheral stays the same, it is
 just the base address that changes:
@@ -46,8 +43,7 @@ Note the use of the `volatile` keyword for each member of the structure.
 The structure definition is thus a template that defines how a certain
 memory area should be treated.
 
-2. Compound operation bit set/clear operation
-=============================================
+# 2. Compound operation bit set/clear operation #
 
 In this tutorial the bitwise left shift and bitwise complement operator is also
 demonstrated. Let's break this down into individual steps:
@@ -64,8 +60,7 @@ demonstrated. Let's break this down into individual steps:
     val  = val & 0xfffffffc;
 @endcode
 
-3. Memory alignment and padding
-===============================
+# 3. Memory alignment and padding #
 
 It is important to remember that the ARM Cortex M0+ requires 32-bit reads
 and writes to be aligned on addresses that is an exact multiple of 32-bits 

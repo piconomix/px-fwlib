@@ -1,8 +1,6 @@
-Temp&Pressure Data Logger Application {#SCORPION_BOARD_APP_DATA_LOGGER_TEMP_PRESSURE}
-=====================================================================================
+# Temp&Pressure Data Logger Application {#SCORPION_BOARD_APP_DATA_LOGGER_TEMP_PRESSURE} #
   
-1. Introduction
-===============
+# 1. Introduction #
 
 This is a temperature and pressure data logger app for the Piconomix ATmega328P 
 Scorpion Board. An [Electrodragon BMP280 breakout board](http://www.electrodragon.com/product/bme280-pressure-huminity-temperature-sensor-breakout/)
@@ -18,8 +16,7 @@ Here is an example of collected data:
 
 ![Temperature & Pressure graph](scorpion_board_log_temp_pressure_graph.png)
 
-2. Command examples
-===================
+# 2. Command examples #
 
 Basic use of the Command Line Interpreter is documented [here] (@ref SCORPION_BOARD_CLI_FEATURES)
 

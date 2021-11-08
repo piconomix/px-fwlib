@@ -1,8 +1,6 @@
-6.1 AVR quick start guide {#AVR_QUICK_START_GUIDE}
-==================================================
+# 6.1 AVR quick start guide {#AVR_QUICK_START_GUIDE} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [make]:              http://gnuwin32.sourceforge.net/packages/make.htm
@@ -34,15 +32,13 @@ for advanced Makefiles.*
 For a gentle introduction to Makefiles, see @ref HOWTO_MAKEFILES.
 @tip_e
 
-1.1 Reference documents
------------------------
+## 1.1 Reference documents ##
 
 - [Microchip ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328P)
 - [AVR Instruction Set Manual](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
 - [AVR Libc Reference Manual](http://www.nongnu.org/avr-libc/user-manual/index.html)
 
-2. Tutorials
-============
+# 2. Tutorials #
 
 These tutorials demonstrate how to use a peripheral by offering a distilled 
 example. The tutorials build on each other, so it is recommended to work through
@@ -64,8 +60,7 @@ them in the order presented.
 The tutorials may need to be modified for your specific target board.
 @warn_e
 
-3. Examples
-===========
+# 3. Examples #
 
 These examples show how the Piconomix FW library can be used to achieve two
 embedded equivalents of the "hello world" program on a PC.
@@ -79,8 +74,7 @@ embedded equivalents of the "hello world" program on a PC.
 The examples may need to be modified for your specific target board.
 @warn_e
 
-4. Brief introduction to AVR instruction set
-============================================
+# 4. Brief introduction to AVR instruction set #
 
 The AVR core has an advanced reduced instruction set (RISC) architecture with 
 most of the instructions being executed in a single clock cycle. The AVR uses a 
@@ -132,24 +126,20 @@ is the flag that enables/disables interrupts globally:
 - Bit 1 @b Z: Zero Flag
 - Bit 0 @b C: Carry Flag
 
-5. Install software
-===================
+# 5. Install software #
 
-5.1 Install Atmel Studio 7
---------------------------
+## 5.1 Install Atmel Studio 7 ##
 
 Download and install [Atmel Studio 7] [atmel_studio].
 
-5.2 Install UnixShellUtils
---------------------------
+## 5.2 Install UnixShellUtils ##
 
 Download [UnixShellUtils] [unix_shell_utils] and extract downloaded package 
 to root of drive, e.g.
 
     C:\UnixShellUtils
 
-5.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#AVR_QS_CUSTOM_BUILD_TOOLS}
------------------------------------------------------------------------------------------------
+## 5.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#AVR_QS_CUSTOM_BUILD_TOOLS} ##
 
 Start Atmel Studio. Configure options:
 
@@ -168,8 +158,7 @@ Studio will remember the custom settings, so it is quick to switch between
 Custom and Default.
 @warn_e
 
-6. Open and build an existing project in Atmel Studio
-=====================================================
+# 6. Open and build an existing project in Atmel Studio #
 
 All of the tutorials and examples are provided with pre-configured Atmel 
 Studio projects. External Makefiles are referenced, instead of using Atmel
@@ -198,11 +187,9 @@ If this step was not succesfull, it probably means that the custom build tools
 was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
 @tip_e
 
-7. Simulate the project
-=======================
+# 7. Simulate the project #
 
-7.1 Open the project properties
--------------------------------
+## 7.1 Open the project properties ##
 
 ![Project properties](as_project_properties.png)
 
@@ -210,23 +197,20 @@ Verify that Simulator for debugger / programmer is selected:
 
 ![Select simulator for debugger / programmer](as_sim_select.png)
 
-7.2 Start simulation
---------------------
+## 7.2 Start simulation ##
 
 Debug > Start Debugging and Break **Alt+F5**
 
 ![Atmel Studio - Debug](as_debug_menu.png)
 
 
-7.3 Enable I/O view window
---------------------------
+## 7.3 Enable I/O view window ##
 
 Debug > Windows > I/O
 
 ![Enable I/O view window](as_enable_io_view.png)
 
-7.4 Step over one source line and observe result
-------------------------------------------------
+## 7.4 Step over one source line and observe result ##
 
 Debug > Step Over **F10**
 
@@ -237,16 +221,14 @@ You are now able to single step, set break points, run the code and inspect the
 peripheral status using the I/O view.
 @tip_e
 
-8. How to create a new project
-==============================
+# 8. How to create a new project #
 
 Atmel Studio insists on creating a whole directory structure for a new project
 and refuses to create **just** the project files (*.atsln and *.cproj). Here 
 are the convoluted steps to create a new Atmel Studio project that uses the 
 Piconomix FW Library.
 
-8.1 Create new project / solution
----------------------------------
+## 8.1 Create new project / solution ##
 
 File > New > Project... **Ctrl+Shift+N**
 
@@ -263,8 +245,7 @@ File > New > Project... **Ctrl+Shift+N**
 Makefile <em>(in this example 'flashing_led.elf')</em>
 @warn_e
 
-8.2 Specify the device
-----------------------
+## 8.2 Specify the device ##
 
 ![Device Selection](as_device_selection.png)
 
@@ -277,15 +258,13 @@ A whole new directory structure has now been created in the specified
 directory (in this example 'flashing_led').
 @tip_e
 
-8.3 Save & Close the project
-----------------------------
+## 8.3 Save & Close the project ##
 
 File > Save All **Ctrl+Shift+S**
 
 File > Close Solution
 
-8.4 Move project files to root directory
-----------------------------------------
+## 8.4 Move project files to root directory ##
 
 Open Windows Explorer or any other file manipulation tool and navigate to the 
 created directory structure:
@@ -302,8 +281,7 @@ Situation check. Your root directory should now look something like this:
 
 ![Project directory and files](as_project_files.png)
 
-8.5 Open the moved project
---------------------------
+## 8.5 Open the moved project ##
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 
@@ -314,8 +292,7 @@ Studio:
 
 ![Remove missing file](as_rm_missing_file.png)
 
-8.6 Add folder structure to project
------------------------------------
+## 8.6 Add folder structure to project ##
 
 @warn_s
 Atmel Studio refuses to add a folder to the project if the subdirectory already
@@ -333,8 +310,7 @@ subdirectory:
 !['cfg' folder added](as_new_folder_added.png)
 
 
-8.7 Add existing files to project
----------------------------------
+## 8.7 Add existing files to project ##
 
 Copy existing source files into the project:
 
@@ -357,8 +333,7 @@ Situation check. Your project should now look like this:
 
 ![Project with files added](as_project_with_files.png)
 
-8.8 Use external Makefile
--------------------------
+## 8.8 Use external Makefile ##
 
 Project > Properties **Alt+F7** > Build
 
@@ -375,8 +350,7 @@ the project, so that you don't have to reselect the Makefile when the project is
 moved.
 @warn_e
 
-8.9 Modify path(s) in Makefile
-------------------------------
+## 8.9 Modify path(s) in Makefile ##
 
 If the project uses the Piconomix FW Library (which it does), you have to modify
 the path so that the required files can be found.
@@ -394,8 +368,7 @@ the library:
 
 ![Modify path(s) in Makefile](as_ext_makefile_modify.png)
 
-9. Clean Solution
-=================
+# 9. Clean Solution #
 
 Delete any previously build files. *This is the same as executing a 'make clean'
 on the command line.*
@@ -409,8 +382,7 @@ If this step was not successful, it probably means that the custom build tools
 was not correctly set up. Go back to @ref AVR_QS_CUSTOM_BUILD_TOOLS
 @tip_e
 
-10. Build Solution
-==================
+# 10. Build Solution #
 
 Build the project. *This is the same as executing a 'make' on the command line.*
 
@@ -418,8 +390,7 @@ Build > build Solution **F7**
 
 ![](as_build_project.png)
 
-11. How to build a project from the command line
-================================================
+# 11. How to build a project from the command line #
 
 Open a command prompt in the root of the project where the Makefile is located:
 

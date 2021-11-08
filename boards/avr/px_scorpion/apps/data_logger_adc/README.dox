@@ -1,8 +1,6 @@
-ADC Data Logger Application {#SCORPION_BOARD_APP_DATA_LOGGER_ADC}
-=================================================================
+# ADC Data Logger Application {#SCORPION_BOARD_APP_DATA_LOGGER_ADC} #
   
-1. Introduction
-===============
+# 1. Introduction #
 
 This is an ADC data logger app for the Piconomix ATmega328P Scorpion Board.
 
@@ -22,8 +20,7 @@ The board has 4 ADC channels. The input voltage range on ADC0 and ADC1 is
 +0 mV to +36300 mV (11:1 divider). The scale can be changed by replacing or 
 removing the resistor dividers.
 
-2. Command examples
-===================
+# 2. Command examples #
 
 Basic use of the Command Line Interpreter is documented [here] (@ref SCORPION_BOARD_CLI_FEATURES)
 

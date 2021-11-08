@@ -1,5 +1,4 @@
-7. Examples {#STM32_EXAMPLES}
-==============================
+# 7. Examples {#STM32_EXAMPLES} #
 
 These examples show how **px-fwlib** can be used to achieve two embedded
 equivalents of the "hello world" program on a PC.

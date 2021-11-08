@@ -1,5 +1,4 @@
-7. How to guides {#HOW_TO_GUIDES}
-=================================
+# 7. How to guides {#HOW_TO_GUIDES} #
 
 - @subpage HOWTO_MSYS2
 - @subpage HOWTO_MAKEFILES

@@ -1,5 +1,4 @@
-Basic GPIO example {#NUCLEO64_L053_EXAMPLE_GPIO}
-================================================
+# Basic GPIO example {#NUCLEO64_L053_EXAMPLE_GPIO} #
 
 This is a basic GPIO example for the ST Nucleo64 L053R8 board. It is the 
 embedded equivalent of a "hello world" program on a PC to kick the tires and 

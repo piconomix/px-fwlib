@@ -1,5 +1,4 @@
-FreeRTOS Blinking LED example {#HERO_BOARD_EXAMPLE_FREERTOS_BLINKING_LED}
-=========================================================================
+# FreeRTOS Blinking LED example {#HERO_BOARD_EXAMPLE_FREERTOS_BLINKING_LED} #
 
 File(s):
 - boards/arm/stm32/px_hero/examples/freertos_blinking_led/cfg/FreeRTOSConfig.h
@@ -8,8 +7,7 @@ File(s):
 Reference(s):
 - [Mastering the FreeRTOS Real Time Kernel: a Hands On Tutorial Guide](https://www.freertos.org/Documentation/RTOS_book.html)
 
-1. Introduction
-===============
+# 1. Introduction #
 
 **px-fwlib** is a *bare metal* embedded C library and does not have the RTOS
 mechanisms to manage access to a shared resource like a UART or signal a task
@@ -17,8 +15,7 @@ when an event has occurred, for example when a character has been received, but
 that does not prevent us from trying a basic example to get a taste of what
 [FreeRTOS](https://www.freertos.org) has to offer.
 
-2. Description
-==============
+# 2. Description #
 
 This elaborate example to change the blinking rate of an LED demonstrates
 a few key RTOS concepts. It creates two [tasks]((https://www.freertos.org/taskandcr.html))
@@ -40,8 +37,7 @@ This example contains a subtle bug on purpose! See if you can spot it... hint at
 the end.
 @warn_e
 
-3. Segger SystemView
-====================
+# 3. Segger SystemView #
 
 [Segger SystemView](https://www.segger.com/products/development-tools/systemview/)
 is a wonderful visualisation tool to record timestamped events and inspect them
@@ -61,8 +57,7 @@ to download the *.SVDat file saved from this session.
 The underlying high speed communication transport mechanism is
 [Segger Real-Time Transfer (RTT)](https://www.segger.com/products/debug-probes/j-link/technology/about-real-time-transfer/).
 
-3.1 Patch FreeRTOS
-------------------
+## 3.1 Patch FreeRTOS ##
 
 There are a few steps required to add the Segger SystemView source code to
 your FreeRTOS project. The FreeRTOS source files must be patched to instrument
@@ -82,8 +77,7 @@ must be edited and the following line must be added at the end:
     #include "SEGGER_SYSVIEW_FreeRTOS.h"
 @endcode
 
-3.2 Timestamps
---------------
+## 3.2 Timestamps ##
 
 All SystemView events **must** be timestamped correctly and the usual solution
 is to piggy-back on the SysTick peripheral interrupt. Unfortunately the SysTick
@@ -107,8 +101,7 @@ is in [SEGGER_SYSVIEW_Config_FreeRTOS.c](https://github.com/piconomix/px-fwlib/b
 
 @snippet libs/segger_sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c SYSVIEW_TIMESTAMP
 
-3.3 GUI
--------
+## 3.3 GUI ##
 
 The GUI has three important windows. The Terminal window shows debug output text
 created with calls to SEGGER_SYSVIEW_Print(), SEGGER_SYSVIEW_Warn() or

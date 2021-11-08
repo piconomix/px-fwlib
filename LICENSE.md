@@ -1,5 +1,4 @@
-Open Source License
-===================
+# Open Source License #
   
 ```
  ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM

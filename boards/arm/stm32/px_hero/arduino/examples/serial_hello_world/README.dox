@@ -1,4 +1,3 @@
-Serial "hello world" example {#HERO_BOARD_ARDUINO_EX_SERIAL_HELLO_WORLD}
-========================================================================
+# Serial "hello world" example {#HERO_BOARD_ARDUINO_EX_SERIAL_HELLO_WORLD} #
 
 This example outputs the "Hello World!" string once a second.

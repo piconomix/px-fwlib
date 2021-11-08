@@ -1,8 +1,6 @@
-5.2 Using Doxygen source documentation system {#DOXYGEN}
-========================================================
+# 5.2 Using Doxygen source documentation system {#DOXYGEN} #
 
-1. Introduction
-===============
+# 1. Introduction #
 
 [Doxygen](http://www.doxygen.org) is a tool that generates 
 documentation from source code.
@@ -35,14 +33,12 @@ configuration file.
 Settings that differ from the default are highlighted in red.
 @tip_e
 
-2. Cheat sheet
-==============
+# 2. Cheat sheet #
 
 This section provides a quick cheat sheet of the Doxygen documentation 
 style selected for this library.
 
-2.1 Brief description comment block
------------------------------------
+## 2.1 Brief description comment block ##
 
 A brief comment block is marked with three slash characters (`///`).
 Example:
@@ -52,8 +48,7 @@ Example:
     extern void some_function(void);
 @endcode
 
-2.2 Brief description comment block after a member
---------------------------------------------------
+## 2.2 Brief description comment block after a member ##
 
 A brief comment after a member is indicated with three slash characters and a 
 smaller than sign (`///<`). Example:
@@ -65,8 +60,7 @@ smaller than sign (`///<`). Example:
     } some_struct_t;
 @endcode
 
-2.3 Detailed description comment block (using JavaDoc style)
-------------------------------------------------------------
+## 2.3 Detailed description comment block (using JavaDoc style) ##
 
 The start of a detailed description comment block is indicated with a slash and 
 double star sequence (`/**`). To make the block stand out as a unit, the star 
@@ -78,8 +72,7 @@ description. Example:
 
 @include doc/examples/doxy_ex_1.c
 
-2.4 Special command prefix
---------------------------
+## 2.4 Special command prefix ##
 
 All Doxygen [special commands](http://www.stack.nl/~dimitri/doxygen/manual/commands.html)
 are prefixed with an `@` (at) sign, for example @b @@ingroup and @b @@defgroup:
@@ -95,8 +88,7 @@ are prefixed with an `@` (at) sign, for example @b @@ingroup and @b @@defgroup:
      */
 @endcode
 
-2.5 Frequently used special commands
-------------------------------------
+## 2.5 Frequently used special commands ##
 
 Here is a list of [special commands](http://www.stack.nl/~dimitri/doxygen/manual/commands.html) 
 that are used frequently in the library:
@@ -110,16 +102,14 @@ that are used frequently in the library:
 |@@defgroup   | Define a group                                                 |
 |@@addtogroup | Add additional members to a group                              |
 
-2.6 Function documentation
---------------------------
+## 2.6 Function documentation ##
 
 Here is an example that shows how a function, it's parameters and return value
 is documented:
 
 @include doc/examples/doxy_ex_2.c
 
-2.7 Module Grouping
--------------------
+## 2.7 Module Grouping ##
 
 C modules are documented in the H file using explicit
 [grouping](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html) 
@@ -134,8 +124,7 @@ end marker is used to indicate that all of the definitions, typedefs, variables
 and functions in between is part of that group.
 @tip_e
 
-2.8 Page Grouping
------------------
+## 2.8 Page Grouping ##
 
 Documentation pages are grouped into sections and sub sections by refering to a 
 child page anywhere on the parent page using the @b @@subpage command.
