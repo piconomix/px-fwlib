@@ -105,7 +105,7 @@
  *      7e: 5f 9a           sbi 0x0b, 7 ; 11
  *      80: 57 98           cbi 0x0a, 7 ; 10
  *
- *      // Repeat forever
+ *      // Loop forever
  *      while(true)
  *      {
  *          // Is button being pressed?

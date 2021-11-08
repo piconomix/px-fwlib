@@ -128,7 +128,7 @@ px_gpio_pin_init(&px_gpio_pb);
 7e: 5e 9a           sbi 0x0b, 6 ; 11
 80: 56 98           cbi 0x0a, 6 ; 10
 
-// Repeat forever
+// Loop forever
 while(true)
 {
     // Is button being pressed?

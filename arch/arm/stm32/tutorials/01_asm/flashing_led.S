@@ -85,7 +85,7 @@ _main_loop:
     str     r1, [r0]
     /* Call delay function; Return address is stored in LR (Link Register / R13) */
     bl      delay
-    /* Repeat forever */
+    /* Loop forever */
     b       _main_loop
 
 /*
