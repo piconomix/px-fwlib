@@ -383,17 +383,14 @@ void _px_log_log_verbose(const char * name, uint16_t line, const char * format, 
 }
 
 void _px_log_assert(const char * name,
-                    uint16_t     line, 
-                    const char * expression)
+                    uint16_t     line)
 {
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_ERROR, name, line);
 #ifdef PX_COMPILER_GCC_AVR
-    px_log_printf_P(PX_PGM_STR("ASSERT: "));
-    px_log_printf_P(expression);
+    px_log_printf_P(PX_PGM_STR("ASSERT"));
 #else
-    px_log_printf("ASSERT: ");
-    px_log_printf(expression);
+    px_log_printf("ASSERT");
 #endif
     // Block forever
     while(true) {;}

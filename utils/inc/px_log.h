@@ -301,12 +301,10 @@ void _px_log_log_verbose(const char * name,
  *  Report that an assertion has failed and block indefinitely.
  *
  *  @param name         Module / file name
- *  @param line         Line number 
- *  @param expression   Test expression string for assertion
+ *  @param line         Line number
  */
 void _px_log_assert(const char * name,
-                    uint16_t     line, 
-                    const char * expression) PX_ATTR_NORETURN;
+                    uint16_t     line) PX_ATTR_NORETURN;
 
 /**
  *  Output a user format string.
@@ -427,7 +425,7 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
  *  Macro that will test an expression, and block indefinitely if false.
  *
  *  This macro will perform the test and if false, will output the filename and
- *  line number with the test appended. The macro will then block indefinitely.
+ *  line number. The macro will then block indefinitely.
  *
  *  @param[in] expression   Expression that evaluates to a boolean value
  *                          (true or false)
@@ -437,7 +435,7 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
             { \
                 if(!(expression)) \
                 { \
-                    _px_log_assert(_px_log_name, (uint16_t)__LINE__, PX_PGM_STR(#expression)); \
+                    _px_log_assert(_px_log_name, (uint16_t)__LINE__); \
                 } \
             } while(0)
 
