@@ -33,9 +33,9 @@
 #include "px_compiler.h"
 
 #ifndef __PX_STD_TYPES_ABSENT__
-#include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #endif
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
