@@ -68,17 +68,17 @@ extern "C" {
 /// Link structure that must be at the head of each item in the list
 typedef struct px_link_list_item_s
 {
-    struct px_link_list_item_s * next_item;
-    struct px_link_list_item_s * previous_item;
+    struct px_link_list_item_s * item_next;
+    struct px_link_list_item_s * item_previous;
 } px_link_list_item_t;
 
 /// Linked list structure
 typedef struct
 {
-    struct px_link_list_item_s * first_item;        ///< Pointer to first item in the list
-    struct px_link_list_item_s * last_item;         ///< Pointer to last item in the list
-    size_t                       nr_of_items;       ///< Counter for number of items in the list
-    size_t                       max_nr_of_items;   ///< Maximum number of items allowed in list; 0 means no limit
+    struct px_link_list_item_s * item_first;    ///< Pointer to first item in the list
+    struct px_link_list_item_s * item_last;     ///< Pointer to last item in the list
+    size_t                       item_count;    ///< Number of items in the list
+    size_t                       items_max;     ///< Maximum number of items allowed in list; 0 means no limit
 } px_link_list_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -132,7 +132,7 @@ bool px_link_list_is_full(px_link_list_t * list);
  *  
  *  @returns size_t The number of items in the list 
  */
-size_t px_link_list_nr_of_items(px_link_list_t * list);
+size_t px_link_list_get_item_count(px_link_list_t * list);
 
 /** 
  *  Get a pointer to the first item in the list
@@ -142,7 +142,7 @@ size_t px_link_list_nr_of_items(px_link_list_t * list);
  *  @returns px_link_list_item_t *  Pointer to the first item in the list;
  *                                  NULL will be returned if the list is empty.
  */
-px_link_list_item_t * px_link_list_first_item(px_link_list_t * list);
+px_link_list_item_t * px_link_list_get_item_first(px_link_list_t * list);
 
 /** 
  *  Get a pointer to the last item in the list
@@ -152,7 +152,7 @@ px_link_list_item_t * px_link_list_first_item(px_link_list_t * list);
  *  @returns px_link_list_item_t *  Pointer to the last item in the list;
  *                                  NULL will be returned if the list is empty.
  */
-px_link_list_item_t * px_link_list_last_item(px_link_list_t * list);
+px_link_list_item_t * px_link_list_get_item_last(px_link_list_t * list);
 
 /** 
  *  Get a pointer to the next item in the list (after the specified item).
@@ -164,8 +164,8 @@ px_link_list_item_t * px_link_list_last_item(px_link_list_t * list);
  *                                  NULL will be returned if the specified item
  *                                  is the last one in the list.
  */
-px_link_list_item_t * px_link_list_next_item(px_link_list_t *      list,
-                                             px_link_list_item_t * item);
+px_link_list_item_t * px_link_list_get_item_next(px_link_list_t *      list,
+                                                 px_link_list_item_t * item);
 
 /** 
  *  Get a pointer to the previous item in the list (before the specified item).
@@ -177,7 +177,7 @@ px_link_list_item_t * px_link_list_next_item(px_link_list_t *      list,
  *                                  NULL will be returned if the specified item
  *                                  is the first one in the list.
  */
-px_link_list_item_t * px_link_list_previous_item(px_link_list_t *      list,
+px_link_list_item_t * px_link_list_get_item_prev(px_link_list_t *      list,
                                                  px_link_list_item_t * item);
 
 /** 
@@ -189,8 +189,8 @@ px_link_list_item_t * px_link_list_previous_item(px_link_list_t *      list,
  *  @retval true     Item has been inserted
  *  @retval false    List is full
  */
-bool px_link_list_add_to_start(px_link_list_t *      list,
-                               px_link_list_item_t * item);
+bool px_link_list_insert_item_start(px_link_list_t *      list,
+                                    px_link_list_item_t * item);
 
 /** 
  *  Add item to the end of the list.
@@ -201,8 +201,8 @@ bool px_link_list_add_to_start(px_link_list_t *      list,
  *  @retval true    Item has been inserted
  *  @retval false   List is full
  */
-bool px_link_list_add_to_end(px_link_list_t *      list,
-                             px_link_list_item_t * item);
+bool px_link_list_insert_item_end(px_link_list_t *      list,
+                                  px_link_list_item_t * item);
 
 /** 
  *  Remove first item from the list
@@ -212,7 +212,7 @@ bool px_link_list_add_to_end(px_link_list_t *      list,
  *  @return px_link_list_item_t *   Pointer to the (old) first item;
  *                                  NULL will be returned if the list is empty.
  */
-px_link_list_item_t * px_link_list_remove_first_item(px_link_list_t * list);
+px_link_list_item_t * px_link_list_remove_item_first(px_link_list_t * list);
 
 /** 
  *  Remove last item from the list
@@ -222,7 +222,7 @@ px_link_list_item_t * px_link_list_remove_first_item(px_link_list_t * list);
  *  @return px_link_list_item_t *   Pointer to the (old) last item;
  *                                  NULL will be returned if the list is empty.
  */
-px_link_list_item_t * px_link_list_remove_last_item(px_link_list_t * list);
+px_link_list_item_t * px_link_list_remove_item_last(px_link_list_t * list);
 
 /** 
  *  Remove item from the list
@@ -243,8 +243,8 @@ void px_link_list_remove_item(px_link_list_t *      list,
  *  @retval true    Item is in the list
  *  @retval false   Item is not in the list
  */
-bool px_link_list_item_in_list(px_link_list_t *      list,
-                               px_link_list_item_t * item);
+bool px_link_list_has_item(px_link_list_t *      list,
+                           px_link_list_item_t * item);
 
 /* _____MACROS_______________________________________________________________ */
 

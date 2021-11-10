@@ -37,22 +37,22 @@
 void px_link_list_init(px_link_list_t * list,
                        size_t           max_nr_of_items)
 {
-    list->first_item      = NULL;
-    list->last_item       = NULL;
-    list->nr_of_items     = 0;
-    list->max_nr_of_items = max_nr_of_items;
+    list->item_first = NULL;
+    list->item_last  = NULL;
+    list->item_count = 0;
+    list->items_max  = max_nr_of_items;
 }
 
 void px_link_list_item_init(px_link_list_t *      list,
                             px_link_list_item_t * item)
 {
-    item->previous_item = NULL;
-    item->next_item     = NULL;
+    item->item_previous = NULL;
+    item->item_next     = NULL;
 }
 
 bool px_link_list_is_empty(px_link_list_t * list)
 {
-    if(list->first_item == NULL)
+    if(list->item_first == NULL)
     {
         return true;
     }
@@ -64,12 +64,12 @@ bool px_link_list_is_empty(px_link_list_t * list)
 
 bool px_link_list_is_full(px_link_list_t * list)
 {
-    if(list->max_nr_of_items == 0)
+    if(list->items_max == 0)
     {
         return false;
     }
 
-    if(list->nr_of_items < list->max_nr_of_items)
+    if(list->item_count < list->items_max)
     {
         return false;
     }
@@ -79,158 +79,147 @@ bool px_link_list_is_full(px_link_list_t * list)
     }
 }
 
-size_t px_link_list_nr_of_items(px_link_list_t * list)
+size_t px_link_list_get_item_count(px_link_list_t * list)
 {
-    // Return item count
-    return (list->nr_of_items);
+    return list->item_count;
 }
 
-px_link_list_item_t * px_link_list_first_item(px_link_list_t * list)
+px_link_list_item_t * px_link_list_get_item_first(px_link_list_t * list)
 {
-    return list->first_item;
+    return list->item_first;
 }
 
-px_link_list_item_t * px_link_list_last_item(px_link_list_t * list)
+px_link_list_item_t * px_link_list_get_item_last(px_link_list_t * list)
 {
-    return list->last_item;
+    return list->item_last;
 }
 
-px_link_list_item_t * px_link_list_next_item(px_link_list_t *      list,
-                                             px_link_list_item_t * item)
-{
-    return item->next_item;
-}
-
-px_link_list_item_t * px_link_list_previous_item(px_link_list_t *      list,
+px_link_list_item_t * px_link_list_get_item_next(px_link_list_t *      list,
                                                  px_link_list_item_t * item)
 {
-    return item->previous_item;
+    return item->item_next;
 }
 
-bool px_link_list_add_to_start(px_link_list_t *      list,
-                               px_link_list_item_t * item)
+px_link_list_item_t * px_link_list_get_item_prev(px_link_list_t *      list,
+                                                 px_link_list_item_t * item)
+{
+    return item->item_previous;
+}
+
+bool px_link_list_insert_item_start(px_link_list_t *      list,
+                                    px_link_list_item_t * item)
 {
     if(px_link_list_is_full(list))
     {
         return false;
     }
-
     if(px_link_list_is_empty(list))
     {
         // Add first item
-        list->first_item    = item;
-        list->last_item     = item;
-        item->next_item     = NULL;
-        item->previous_item = NULL;
+        list->item_first    = item;
+        list->item_last     = item;
+        item->item_next     = NULL;
+        item->item_previous = NULL;
     }
     else
     {
         // Insert new item before first item
-        item->previous_item             = NULL;
-        item->next_item                 = list->first_item;
-        list->first_item->previous_item = item;
-        list->first_item                = item;
+        item->item_previous             = NULL;
+        item->item_next                 = list->item_first;
+        list->item_first->item_previous = item;
+        list->item_first                = item;
     }
-
     // Increment item count
-    (list->nr_of_items)++;
+    list->item_count++;
 
     return true;
 }
 
-bool px_link_list_add_to_end(px_link_list_t *      list,
-                             px_link_list_item_t * item)
+bool px_link_list_insert_item_end(px_link_list_t *      list,
+                                  px_link_list_item_t * item)
 {
     if(px_link_list_is_full(list))
     {
         return false;
     }
-
     if(px_link_list_is_empty(list))
     {
         // Add first item
-        list->first_item    = item;
-        list->last_item     = item;
-        item->next_item     = NULL;
-        item->previous_item = NULL;
+        list->item_first    = item;
+        list->item_last     = item;
+        item->item_next     = NULL;
+        item->item_previous = NULL;
     }
     else
     {
         // Append new item to last item
-        item->previous_item        = list->last_item;
-        item->next_item            = NULL;
-        list->last_item->next_item = item;
-        list->last_item            = item;
+        item->item_previous        = list->item_last;
+        item->item_next            = NULL;
+        list->item_last->item_next = item;
+        list->item_last            = item;
     }
-
     // Increment item count
-    (list->nr_of_items)++;
+    (list->item_count)++;
 
     return true;
 }
 
-px_link_list_item_t * px_link_list_remove_first_item(px_link_list_t * list)
+px_link_list_item_t * px_link_list_remove_item_first(px_link_list_t * list)
 {
-    px_link_list_item_t * item = list->first_item;
+    px_link_list_item_t * item = list->item_first;
 
     // See if list is empty
     if(px_link_list_is_empty(list))
     {
         return NULL;
     }
-
     // See if there is only one item
-    if(list->first_item == list->last_item)
+    if(list->item_first == list->item_last)
     {
-        list->first_item = NULL;
-        list->last_item  = NULL;
+        list->item_first = NULL;
+        list->item_last  = NULL;
     }
     else
     {
         // The next item become the first one in the list
-        list->first_item               = item->next_item;
-        item->next_item->previous_item = NULL;
+        list->item_first               = item->item_next;
+        item->item_next->item_previous = NULL;
     }
-
     // Clear links of removed item
-    item->previous_item = NULL;
-    item->next_item     = NULL;
-
+    item->item_previous = NULL;
+    item->item_next     = NULL;
     // Decrement item count
-    (list->nr_of_items)--;
+    list->item_count--;
 
     return item;
 }
 
-px_link_list_item_t * px_link_list_remove_last_item(px_link_list_t * list)
+px_link_list_item_t * px_link_list_remove_item_last(px_link_list_t * list)
 {
-    px_link_list_item_t * item = list->last_item;
+    px_link_list_item_t * item = list->item_last;
 
     // See if list is empty
     if(px_link_list_is_empty(list))
     {
         return NULL;
     }
-
     // See if there is only one item
-    if(list->first_item == list->last_item)
+    if(list->item_first == list->item_last)
     {
-        list->first_item = NULL;
-        list->last_item  = NULL;
+        list->item_first = NULL;
+        list->item_last  = NULL;
     }
     else
     {
         // The previous item become the last one in the list
-        list->last_item                = item->previous_item;
-        item->previous_item->next_item = NULL;        
+        list->item_last                = item->item_previous;
+        item->item_previous->item_next = NULL;
     }
-
     // Clear links of removed item
-    item->previous_item = NULL;
-    item->next_item     = NULL;
-
+    item->item_previous = NULL;
+    item->item_next     = NULL;
     // Decrement item count
-    (list->nr_of_items)--;
+    list->item_count--;
 
     return item;
 }
@@ -243,38 +232,34 @@ void px_link_list_remove_item(px_link_list_t *      list,
     {
         return;
     }
-
     // See if this is the first item in the list
-    if(item == list->first_item)
+    if(item == list->item_first)
     {
-        px_link_list_remove_first_item(list);
+        px_link_list_remove_item_first(list);
         return;
     }
 
     // See if this is the last item in the list
-    if(item == list->last_item)
+    if(item == list->item_last)
     {
-        px_link_list_remove_last_item(list);
+        px_link_list_remove_item_last(list);
         return;
     }
-
     // Link previous and next item to each other
-    item->previous_item->next_item = item->next_item;
-    item->next_item->previous_item = item->previous_item;
-    
+    item->item_previous->item_next = item->item_next;
+    item->item_next->item_previous = item->item_previous;
     // Clear links of item
-    item->previous_item = NULL;
-    item->next_item     = NULL;
-
+    item->item_previous = NULL;
+    item->item_next     = NULL;
     // Decrement item count
-    (list->nr_of_items)--;
+    list->item_count--;
 }
 
-bool px_link_list_item_in_list(px_link_list_t *      list,
-                               px_link_list_item_t * item)
+bool px_link_list_has_item(px_link_list_t *      list,
+                           px_link_list_item_t * item)
 {
     // Start at first item in the list
-    px_link_list_item_t * item_in_list = list->first_item;
+    px_link_list_item_t * item_in_list = list->item_first;
 
     // Search all items in the list
     while(item_in_list != NULL)
@@ -285,7 +270,7 @@ bool px_link_list_item_in_list(px_link_list_t *      list,
             return true;
         }
         // Next item
-        item_in_list = item_in_list->next_item;
+        item_in_list = item_in_list->item_next;
     }
     // Item is not in the list
     return false;
