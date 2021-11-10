@@ -39,45 +39,45 @@
 /* _____DEFINITIONS__________________________________________________________ */
 #if PX_LOG_CFG_COLOR
 
-#define PX_LOG_CR           PX_VT100_RST_ALL_ATTRS      ///< Color Reset
+#define PX_LOG_CR           PX_VT100_ATTR_RST      ///< Color Reset
 
-#define PX_LOG_CF_BLACK     PX_VT100_SET_FG_BLACK       ///< Color Foreground BLACK
-#define PX_LOG_CF_RED       PX_VT100_SET_FG_RED         ///< Color Foreground RED
-#define PX_LOG_CF_GREEN     PX_VT100_SET_FG_GREEN       ///< Color Foreground GREEN
-#define PX_LOG_CF_YELLOW    PX_VT100_SET_FG_YELLOW      ///< Color Foreground YELLOW
-#define PX_LOG_CF_BLUE      PX_VT100_SET_FG_BLUE        ///< Color Foreground BLUE
-#define PX_LOG_CF_MAGENTA   PX_VT100_SET_FG_MAGENTA     ///< Color Foreground MAGENTA
-#define PX_LOG_CF_CYAN      PX_VT100_SET_FG_CYAN        ///< Color Foreground CYAN
-#define PX_LOG_CF_WHITE     PX_VT100_SET_FG_WHITE       ///< Color Foreground WHITE
+#define PX_LOG_FG_BLACK     PX_VT100_FG_BLACK       ///< Color Foreground BLACK
+#define PX_LOG_FG_RED       PX_VT100_FG_RED         ///< Color Foreground RED
+#define PX_LOG_FG_GREEN     PX_VT100_FG_GREEN       ///< Color Foreground GREEN
+#define PX_LOG_FG_YELLOW    PX_VT100_FG_YELLOW      ///< Color Foreground YELLOW
+#define PX_LOG_FG_BLUE      PX_VT100_FG_BLUE        ///< Color Foreground BLUE
+#define PX_LOG_FG_MAGENTA   PX_VT100_FG_MAGENTA     ///< Color Foreground MAGENTA
+#define PX_LOG_FG_CYAN      PX_VT100_FG_CYAN        ///< Color Foreground CYAN
+#define PX_LOG_FG_WHITE     PX_VT100_FG_WHITE       ///< Color Foreground WHITE
 
-#define PX_LOG_CB_BLACK     PX_VT100_SET_BG_BLACK       ///< Color Background BLACK
-#define PX_LOG_CB_RED       PX_VT100_SET_BG_RED         ///< Color Background RED
-#define PX_LOG_CB_GREEN     PX_VT100_SET_BG_GREEN       ///< Color Background GREEN
-#define PX_LOG_CB_YELLOW    PX_VT100_SET_BG_YELLOW      ///< Color Background YELLOW
-#define PX_LOG_CB_BLUE      PX_VT100_SET_BG_BLUE        ///< Color Background BLUE
-#define PX_LOG_CB_MAGENTA   PX_VT100_SET_BG_MAGENTA     ///< Color Background MAGENTA
-#define PX_LOG_CB_CYAN      PX_VT100_SET_BG_CYAN        ///< Color Background CYAN
-#define PX_LOG_CB_WHITE     PX_VT100_SET_BG_WHITE       ///< Color Background WHITE
+#define PX_LOG_BG_BLACK     PX_VT100_BG_BLACK       ///< Color Background BLACK
+#define PX_LOG_BG_RED       PX_VT100_BG_RED         ///< Color Background RED
+#define PX_LOG_BG_GREEN     PX_VT100_BG_GREEN       ///< Color Background GREEN
+#define PX_LOG_BG_YELLOW    PX_VT100_BG_YELLOW      ///< Color Background YELLOW
+#define PX_LOG_BG_BLUE      PX_VT100_BG_BLUE        ///< Color Background BLUE
+#define PX_LOG_BG_MAGENTA   PX_VT100_BG_MAGENTA     ///< Color Background MAGENTA
+#define PX_LOG_BG_CYAN      PX_VT100_BG_CYAN        ///< Color Background CYAN
+#define PX_LOG_BG_WHITE     PX_VT100_BG_WHITE       ///< Color Background WHITE
 
 #else
 
 #define PX_LOG_CR
-#define PX_LOG_CF_BLACK
-#define PX_LOG_CF_RED
-#define PX_LOG_CF_GREEN
-#define PX_LOG_CF_YELLOW
-#define PX_LOG_CF_BLUE
-#define PX_LOG_CF_MAGENTA
-#define PX_LOG_CF_CYAN
-#define PX_LOG_CF_WHITE
-#define PX_LOG_CB_BLACK
-#define PX_LOG_CB_RED
-#define PX_LOG_CB_GREEN
-#define PX_LOG_CB_YELLOW
-#define PX_LOG_CB_BLUE
-#define PX_LOG_CB_MAGENTA
-#define PX_LOG_CB_CYAN
-#define PX_LOG_CB_WHITE
+#define PX_LOG_FG_BLACK
+#define PX_LOG_FG_RED
+#define PX_LOG_FG_GREEN
+#define PX_LOG_FG_YELLOW
+#define PX_LOG_FG_BLUE
+#define PX_LOG_FG_MAGENTA
+#define PX_LOG_FG_CYAN
+#define PX_LOG_FG_WHITE
+#define PX_LOG_BG_BLACK
+#define PX_LOG_BG_RED
+#define PX_LOG_BG_GREEN
+#define PX_LOG_BG_YELLOW
+#define PX_LOG_BG_BLUE
+#define PX_LOG_BG_MAGENTA
+#define PX_LOG_BG_CYAN
+#define PX_LOG_BG_WHITE
 
 #endif
 

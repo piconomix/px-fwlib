@@ -32,7 +32,7 @@ uint8_t calc(uint8_t val)
     uint8_t answer;
 
     // Report function call with parameter value
-    PX_LOG_D("calc(" PX_LOG_CB_YELLOW "val = %u" PX_LOG_CR ")", val);
+    PX_LOG_D("calc(" PX_LOG_BG_YELLOW "val = %u" PX_LOG_CR ")", val);
     // Is val equal to zero?
     if(val == 0)
     {
@@ -42,7 +42,7 @@ uint8_t calc(uint8_t val)
     // Calculate answer
     answer = 100 / val;
     // Report answer
-    PX_LOG_I("answer = " PX_LOG_CF_GREEN "%u" PX_LOG_CR, answer);
+    PX_LOG_I("answer = " PX_LOG_FG_GREEN "%u" PX_LOG_CR, answer);
 
     return answer;
 }

@@ -65,7 +65,7 @@
  *  Example usage:
  *
  *  @code{.c}
- *      PX_LOG_I("This word is " PX_LOG_CF_GREEN "green" PX_LOG_CR);
+ *      PX_LOG_I("This word is " PX_LOG_FG_GREEN "green" PX_LOG_CR);
  *  @endcode
  *
  *  @tip_s

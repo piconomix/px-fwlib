@@ -158,7 +158,7 @@ static void px_log_report_log_prefix(px_log_level_t level,
     {
     case PX_LOG_LEVEL_ERROR:
 #if PX_LOG_CFG_COLOR
-        px_log_print_str(PX_LOG_CF_RED "E");
+        px_log_print_str(PX_LOG_FG_RED "E");
 #else
         px_log_putchar('E');
 #endif
@@ -166,7 +166,7 @@ static void px_log_report_log_prefix(px_log_level_t level,
 
     case PX_LOG_LEVEL_WARNING:
 #if PX_LOG_CFG_COLOR
-        px_log_print_str(PX_LOG_CF_YELLOW "W");
+        px_log_print_str(PX_LOG_FG_YELLOW "W");
 #else
         px_log_putchar('W');
 #endif
@@ -174,7 +174,7 @@ static void px_log_report_log_prefix(px_log_level_t level,
 
     case PX_LOG_LEVEL_INFO:
 #if PX_LOG_CFG_COLOR
-        px_log_print_str(PX_LOG_CF_GREEN "I");
+        px_log_print_str(PX_LOG_FG_GREEN "I");
 #else
         px_log_putchar('I');
 #endif
@@ -182,7 +182,7 @@ static void px_log_report_log_prefix(px_log_level_t level,
 
     case PX_LOG_LEVEL_DEBUG:
 #if PX_LOG_CFG_COLOR
-        px_log_print_str(PX_LOG_CF_BLUE "D");
+        px_log_print_str(PX_LOG_FG_BLUE "D");
 #else
         px_log_putchar('D');
 #endif
@@ -190,7 +190,7 @@ static void px_log_report_log_prefix(px_log_level_t level,
 
     case PX_LOG_LEVEL_VERBOSE:
 #if PX_LOG_CFG_COLOR
-        px_log_print_str(PX_LOG_CF_CYAN "V");
+        px_log_print_str(PX_LOG_FG_CYAN "V");
 #else
         px_log_putchar('V');
 #endif
