@@ -719,4 +719,6 @@ void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
     }
     // Initialise peripheral with new BAUD rate
     px_uart_init_peripheral(uart_per->uart_nr, ubrr, ucsrc);
+
+    return true;
 }

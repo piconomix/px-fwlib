@@ -150,30 +150,30 @@ typedef struct
  */
 void px_uart_init(void);
 
-/** 
+/**
  *  Open UART peripheral using predefined (default) parameters
- *  
- *  @param handle           Pointer to handle data structure
- *  @param uart_nr          UART peripheral number
- *  
- *  @retval false           Error: peripheral was not opened
- *  @retval true            Success: peripheral was opened
+ *
+ *  @param handle        Pointer to handle data structure
+ *  @param uart_nr       UART peripheral number. @see px_uart_nr_t
+ *
+ *  @retval false        Error: peripheral was not opened
+ *  @retval true         Success: peripheral was opened
  */
 bool px_uart_open(px_uart_handle_t * handle, 
                   px_uart_nr_t       uart_nr);
 
-/** 
- *  Open UART peripheral using specified parameters.
- *  
- *  @param handle           Pointer to handle data structure
- *  @param uart_nr          UART peripheral number
- *  @param baud             Baud rate in bits/s
- *  @param data_bits        Data bits (7,8 or 9)
- *  @param parity           Parity(NONE, ODD or EVEN)
- *  @param stop_bits        Stop bits (1 or 2)
- *  
- *  @retval false           Error: peripheral was not opened
- *  @retval true            Success: peripheral was opened
+/**
+ *  Open UART peripheral using specified parameters
+ *
+ *  @param handle        Pointer to handle data structure
+ *  @param uart_nr       UART peripheral number. @see px_uart_nr_t
+ *  @param baud          Baud rate in bits/s
+ *  @param data_bits     Data bits. @see px_uart_data_bits_t
+ *  @param parity        Parity. @see px_uart_parity_t
+ *  @param stop_bits     Stop bits. @see px_uart_stop_bits_t
+ *
+ *  @retval false        Error: peripheral was not opened
+ *  @retval true         Success: peripheral was opened
  */
 bool px_uart_open2(px_uart_handle_t *  handle,
                    px_uart_nr_t        uart_nr,

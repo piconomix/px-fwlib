@@ -190,7 +190,7 @@ px_link_list_item_t * px_link_list_get_item_prev(px_link_list_t *      list,
  *  @retval false       List is full
  */
 bool px_link_list_insert_item_start(px_link_list_t *      list,
-                                    px_link_list_item_t * item);
+                                    px_link_list_item_t * item_insert);
 
 /** 
  *  Add item to the end of the list.

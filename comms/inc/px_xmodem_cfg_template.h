@@ -71,9 +71,9 @@
 
 /**
  *  See if timer has expired.
- *  
+ *
  *  @retval true    Timer has expired
- *  @retval true    Timer has not expired
+ *  @retval false   Timer has not expired
  */
 #define PX_XMODEM_CFG_TMR_HAS_EXPIRED()    px_xmodem_tmr_has_expired()
 

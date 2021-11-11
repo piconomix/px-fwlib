@@ -122,7 +122,7 @@ void px_uart_init(void);
  *  Open UART peripheral using predefined (default) parameters
  *  
  *  @param handle        Pointer to handle data structure
- *  @param uart_nr       UART peripheral number
+ *  @param uart_nr       UART peripheral number. @see px_uart_nr_t
  *  
  *  @retval false        Error: peripheral was not opened
  *  @retval true         Success: peripheral was opened
@@ -134,11 +134,11 @@ bool px_uart_open(px_uart_handle_t * handle,
  *  Open UART peripheral using specified parameters
  *  
  *  @param handle        Pointer to handle data structure
- *  @param uart_nr       UART peripheral number
+ *  @param uart_nr       UART peripheral number. @see px_uart_nr_t
  *  @param baud          Baud rate in bits/s
- *  @param data_bits     Data bits (5, 6, 7 or 8)
- *  @param parity        Parity(NONE, ODD or EVEN)
- *  @param stop_bits     Stop bits (1 or 2)
+ *  @param data_bits     Data bits. @see px_uart_data_bits_t
+ *  @param parity        Parity. @see px_uart_parity_t
+ *  @param stop_bits     Stop bits. @see px_uart_stop_bits_t
  *  
  *  @retval false        Error: peripheral was not opened
  *  @retval true         Success: peripheral was opened
@@ -280,12 +280,15 @@ bool px_uart_wr_is_done(px_uart_handle_t * handle);
 bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle);
 
 /**
- *  Change UART peripheral baud rate. 
- *  
+ *  Change UART peripheral baud rate.
+ *
  *  @param handle        Pointer to handle data structure
  *  @param baud          Baud rate in bits/s
+ *
+ *  @retval true         Success. Baud was changed
+ *  @retval false        Error. Requested baud invalid
  */
-void px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
+bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
 
 /* _____MACROS_______________________________________________________________ */
 

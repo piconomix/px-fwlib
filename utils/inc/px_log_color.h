@@ -39,7 +39,7 @@
 /* _____DEFINITIONS__________________________________________________________ */
 #if PX_LOG_CFG_COLOR
 
-#define PX_LOG_CR           PX_VT100_ATTR_RST      ///< Color Reset
+#define PX_LOG_CR           PX_VT100_ATTR_RST       ///< Color Reset
 
 #define PX_LOG_FG_BLACK     PX_VT100_FG_BLACK       ///< Color Foreground BLACK
 #define PX_LOG_FG_RED       PX_VT100_FG_RED         ///< Color Foreground RED
