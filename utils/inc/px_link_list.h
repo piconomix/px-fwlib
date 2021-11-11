@@ -69,7 +69,7 @@ extern "C" {
 typedef struct px_link_list_item_s
 {
     struct px_link_list_item_s * item_next;
-    struct px_link_list_item_s * item_previous;
+    struct px_link_list_item_s * item_prev;
 } px_link_list_item_t;
 
 /// Linked list structure
@@ -183,11 +183,11 @@ px_link_list_item_t * px_link_list_get_item_prev(px_link_list_t *      list,
 /** 
  *  Insert item to the start of the list.
  *   
- *  @param list      Pointer to the linked list
- *  @param item      Item to be inserted
+ *  @param list         Pointer to the linked list
+ *  @param item_insert  Item to be inserted
  *   
- *  @retval true     Item has been inserted
- *  @retval false    List is full
+ *  @retval true        Item has been inserted
+ *  @retval false       List is full
  */
 bool px_link_list_insert_item_start(px_link_list_t *      list,
                                     px_link_list_item_t * item);
@@ -195,16 +195,46 @@ bool px_link_list_insert_item_start(px_link_list_t *      list,
 /** 
  *  Add item to the end of the list.
  *   
- *  @param list     Pointer to the linked list
- *  @param item     Item to be inserted
+ *  @param list         Pointer to the linked list
+ *  @param item_insert  Item to be inserted
  *   
- *  @retval true    Item has been inserted
- *  @retval false   List is full
+ *  @retval true        Item has been inserted
+ *  @retval false       List is full
  */
 bool px_link_list_insert_item_end(px_link_list_t *      list,
-                                  px_link_list_item_t * item);
+                                  px_link_list_item_t * item_insert);
 
-/** 
+/**
+ *  Insert item before specified item.
+ *
+ *  @param list         Pointer to the linked list
+ *  @param item_insert  Item to be inserted
+ *  @param item_pos     Insert before this item
+ *
+ *  @retval true        Item has been inserted
+ *  @retval false       List is full
+ *
+ */
+bool px_link_list_insert_item_before(px_link_list_t *      list,
+                                     px_link_list_item_t * item_insert,
+                                     px_link_list_item_t * item_pos);
+
+/**
+ *  Insert item after specified item.
+ *
+ *  @param list         Pointer to the linked list
+ *  @param item_insert  Item to be inserted
+ *  @param item_pos     Insert after this item
+ *
+ *  @retval true        Item has been inserted
+ *  @retval false       List is full
+ *
+ */
+bool px_link_list_insert_item_after(px_link_list_t *      list,
+                                    px_link_list_item_t * item_insert,
+                                    px_link_list_item_t * item_pos);
+
+/**
  *  Remove first item from the list
  *   
  *  @param list                     Pointer to the linked list
