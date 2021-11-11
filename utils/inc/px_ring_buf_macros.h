@@ -87,16 +87,16 @@ typedef uint8_t px_ring_buf_index_t;
 /**
  * Declare a static circular buffer structure.
  *  
- * @param px_ring_buf          Name of the circular buffer structure
- * @param px_ring_buf_size     Data buffer size, which *MUST* be a multiple of 2
+ * @param px_ring_buf       Name of the circular buffer structure
+ * @param px_ring_buf_size  Data buffer size, which *MUST* be a multiple of 2
  *                          and equal to or less than MAX_OF_TYPE(px_ring_buf_index_t),
  *                          e.g. 2, 4, 8, 16, 32, ...
  */
 #define PX_RING_BUF_DECLARE(px_ring_buf, px_ring_buf_size) \
 struct \
 { \
-    volatile px_ring_buf_index_t read_index; \
-    volatile px_ring_buf_index_t write_index; \
+    volatile px_ring_buf_index_t idx_rd; \
+    volatile px_ring_buf_index_t idx_wr; \
     uint8_t                      buffer[(px_ring_buf_size)]; \
 } px_ring_buf
 
@@ -108,8 +108,8 @@ struct \
 #define PX_RING_BUF_INIT(px_ring_buf) \
    do \
    { \
-      (px_ring_buf).read_index  = 0; \
-      (px_ring_buf).write_index = 0; \
+      (px_ring_buf).idx_rd = 0; \
+      (px_ring_buf).idx_wr = 0; \
    } \
    while(0)
 
@@ -119,8 +119,7 @@ struct \
  *  @param px_ring_buf     Name of the circular buffer structure 
  */
 #define PX_RING_BUF_EMPTY(px_ring_buf) \
-   ((px_ring_buf).read_index == (px_ring_buf).write_index)
-
+   ((px_ring_buf).idx_rd == (px_ring_buf).idx_wr)
 
 /**
  *  Test to see if the circular buffer is full.
@@ -128,7 +127,7 @@ struct \
  *  @param px_ring_buf     Name of the circular buffer structure 
  */
 #define PX_RING_BUF_FULL(px_ring_buf) \
-   ((px_ring_buf).read_index == (((px_ring_buf).write_index + 1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer)-1)))
+   ((px_ring_buf).idx_rd == (((px_ring_buf).idx_wr + 1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer) - 1)))
 
 /**
  *  Reads the next available byte from the circular buffer.
@@ -142,10 +141,10 @@ struct \
 #define PX_RING_BUF_READ(px_ring_buf, data) \
    do \
    { \
-      px_ring_buf_index_t index = (px_ring_buf).read_index; \
-      (data) = (px_ring_buf).buffer[index]; \
-      index = (index+1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer)-1); \
-      (px_ring_buf).read_index = index; \
+      px_ring_buf_index_t idx = (px_ring_buf).idx_rd; \
+      (data) = (px_ring_buf).buffer[idx]; \
+      idx = (idx + 1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer) - 1); \
+      (px_ring_buf).idx_rd = idx; \
    } while(0)
 
 /**
@@ -160,10 +159,10 @@ struct \
 #define PX_RING_BUF_WRITE(px_ring_buf, data) \
    do \
    { \
-      px_ring_buf_index_t index = (px_ring_buf).write_index; \
-      (px_ring_buf).buffer[index] = (data); \
-      index = (index+1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer)-1); \
-      (px_ring_buf).write_index = index; \
+      px_ring_buf_index_t idx = (px_ring_buf).idx_wr; \
+      (px_ring_buf).buffer[idx] = (data); \
+      idx = (idx + 1) & (PX_SIZEOF_ARRAY((px_ring_buf).buffer) - 1); \
+      (px_ring_buf).idx_wr = idx; \
    } while(0)
 
 #ifdef __cplusplus

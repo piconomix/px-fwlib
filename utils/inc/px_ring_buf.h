@@ -107,8 +107,8 @@ typedef struct
 {
     uint8_t *           buf;        ///< Pointer to fixed-size buffer
     px_ring_buf_idx_t   buf_size;   ///< Size of fixed-size buffer
-    px_ring_buf_idx_t   wr;         ///< Index that is one ahead of last byte written to the buffer
-    px_ring_buf_idx_t   rd;         ///< Index to the first byte to be read from the buffer
+    px_ring_buf_idx_t   idx_wr;     ///< Index that is next open position to write to in the buffer
+    px_ring_buf_idx_t   idx_rd;     ///< Index to the first byte to be read from the buffer
 } px_ring_buf_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -171,7 +171,7 @@ bool px_ring_buf_wr_u8(px_ring_buf_t * px_ring_buf,
  *  @param px_ring_buf          Pointer to the circular buffer object
  *  @param data                 Pointer to array of data to be stored in the
  *                              circular buffer
- *  @param nr_of_bytes_to_wr    Number of data bytes to be written
+ *  @param nr_of_bytes          Number of data bytes to write
  *  
  *  @return px_ring_buf_idx_t   The actual number of data bytes stored, which
  *                              may be less than the number specified, because
@@ -179,7 +179,7 @@ bool px_ring_buf_wr_u8(px_ring_buf_t * px_ring_buf,
  */
 px_ring_buf_idx_t px_ring_buf_wr(px_ring_buf_t * px_ring_buf, 
                                  const void *    data,
-                                 size_t          nr_of_bytes_to_wr);
+                                 size_t          nr_of_bytes);
 
 /** 
  *  Read (retrieve) a byte from the circular buffer.
@@ -198,7 +198,7 @@ bool px_ring_buf_rd_u8(px_ring_buf_t * px_ring_buf,
  *  
  * @param px_ring_buf           Pointer to the circular buffer object
  * @param data                  Pointer to location where data must be stored
- * @param nr_of_bytes_to_rd     Number of bytes to retrieve    
+ * @param nr_of_bytes           Number of bytes to read
  *  
  * @return px_ring_buf_idx_t    The actual number of bytes retrieved, which may 
  *                              be less than the number specified, because the 
@@ -206,7 +206,7 @@ bool px_ring_buf_rd_u8(px_ring_buf_t * px_ring_buf,
  */
 px_ring_buf_idx_t px_ring_buf_rd(px_ring_buf_t * px_ring_buf,
                                  void *          data,
-                                 size_t          nr_of_bytes_to_rd);
+                                 size_t          nr_of_bytes);
 
 
 /** 
