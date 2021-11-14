@@ -359,21 +359,21 @@ px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * dat
  *
  *  @param date_time        date-time structure to report
  */
-void px_rtc_util_report_date_time(const px_rtc_date_time_t * date_time);
+void px_rtc_util_log_report_date_time(const px_rtc_date_time_t * date_time);
 
 /**
  *  Report date using printf.
  *
  *  @param date_time        date-time structure to report
  */
-void px_rtc_util_report_date(const px_rtc_date_time_t * date_time);
+void px_rtc_util_log_report_date(const px_rtc_date_time_t * date_time);
 
 /**
  *  Report time using printf.
  *
  *  @param date_time        date-time structure to report
  */
-void px_rtc_util_report_time(const px_rtc_date_time_t * date_time);
+void px_rtc_util_log_report_time(const px_rtc_date_time_t * date_time);
 
 /* _____MACROS_______________________________________________________________ */
 

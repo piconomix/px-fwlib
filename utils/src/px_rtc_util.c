@@ -226,32 +226,19 @@ static void px_rtc_util_inc_date_time_on_tick(void)
 static bool px_rtc_util_date_time_match(const px_rtc_date_time_t * date_time1,
                                         const px_rtc_date_time_t * date_time2)
 {
-    if(date_time1->sec != date_time2->sec)
+    if(  (date_time1->sec   == date_time2->sec  )
+       &&(date_time1->min   == date_time2->min  )
+       &&(date_time1->hour  == date_time2->hour )
+       &&(date_time1->day   == date_time2->day  )
+       &&(date_time1->month == date_time2->month)
+       &&(date_time1->year  == date_time2->year )  )
+    {
+        return true;
+    }
+    else
     {
         return false;
     }
-    if(date_time1->min != date_time2->min)
-    {
-        return false;
-    }
-    if(date_time1->hour != date_time2->hour)
-    {
-        return false;
-    }
-    if(date_time1->day != date_time2->day)
-    {
-        return false;
-    }
-    if(date_time1->month != date_time2->month)
-    {
-        return false;
-    }
-    if(date_time1->year != date_time2->year)
-    {
-        return false;
-    }
-    // Match
-    return true;
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
@@ -444,12 +431,7 @@ void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm,
                           px_rtc_alarm_mask_t        alarm_mask)
 {
     // Sanity checks
-    PX_LOG_ASSERT(alarm->year  <= 99);
-    PX_LOG_ASSERT(alarm->month <= 12);
-    PX_LOG_ASSERT(alarm->day   <= 31);
-    PX_LOG_ASSERT(alarm->hour  <= 23);
-    PX_LOG_ASSERT(alarm->min   <= 59);
-    PX_LOG_ASSERT(alarm->sec   <= 59);
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(alarm));
 
     // Disable alarm first
     px_rtc_util_alarm_mask = PX_RTC_UTIL_ALARM_MASK_DIS;
@@ -523,7 +505,7 @@ void px_rtc_util_date_time_reset(px_rtc_date_time_t * date_time)
     date_time->min          = 0;
     date_time->sec          = 0;
 #if PX_RTC_UTIL_CFG_DAY_OF_WEEK
-    date_time->day_of_week  = PX_RTC_UTIL_DAY_SAT;
+    date_time->day_of_week  = PX_RTC_UTIL_DAY_SAT;  // 2000-01-01 was a Saturday
 #endif
 #if PX_RTC_UTIL_CFG_TICKS_PER_SEC
     date_time->ticks        = 0;
@@ -792,12 +774,7 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
 {
     // Sanity checks
     PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
-    PX_LOG_ASSERT(date_time_inc->year  <= 99);
-    PX_LOG_ASSERT(date_time_inc->month <= 12);
-    PX_LOG_ASSERT(date_time_inc->day   <= 31);
-    PX_LOG_ASSERT(date_time_inc->hour  <= 23);
-    PX_LOG_ASSERT(date_time_inc->min   <= 59);
-    PX_LOG_ASSERT(date_time_inc->sec   <= 59);
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time_inc));
 
     // Seconds
     date_time->sec += date_time_inc->sec;
@@ -869,12 +846,7 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
 {
     // Sanity checks
     PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
-    PX_LOG_ASSERT(date_time_dec->year  <= 99);
-    PX_LOG_ASSERT(date_time_dec->month <= 12);
-    PX_LOG_ASSERT(date_time_dec->day   <= 31);
-    PX_LOG_ASSERT(date_time_dec->hour  <= 23);
-    PX_LOG_ASSERT(date_time_dec->min   <= 59);
-    PX_LOG_ASSERT(date_time_dec->sec   <= 59);
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time_dec));
 
     // Seconds
     date_time->sec -= date_time_dec->sec;
@@ -943,9 +915,9 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
 
 px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * date_time)
 {
-    int8_t      i;
-    uint16_t    days;
-    uint8_t     day;
+    int8_t   i;
+    uint16_t days;
+    uint8_t  day;
 
     // Sanity checks
     PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
@@ -975,29 +947,29 @@ px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * dat
     return day;
 }
 
-void px_rtc_util_report_date_time(const px_rtc_date_time_t * date_time)
+void px_rtc_util_log_report_date_time(const px_rtc_date_time_t * date_time)
 {
-    PX_PRINTF_P("%02hu-%02hu-%02hu %02hu:%02hu:%02hu",
-                (unsigned short)date_time->year,
-                (unsigned short)date_time->month,
-                (unsigned short)date_time->day,
-                (unsigned short)date_time->hour,
-                (unsigned short)date_time->min,
-                (unsigned short)date_time->sec);
+    PX_LOG_TRACE("%02hu-%02hu-%02hu %02hu:%02hu:%02hu",
+                 (unsigned short)date_time->year,
+                 (unsigned short)date_time->month,
+                 (unsigned short)date_time->day,
+                 (unsigned short)date_time->hour,
+                 (unsigned short)date_time->min,
+                 (unsigned short)date_time->sec);
 }
 
-void px_rtc_util_report_date(const px_rtc_date_time_t * date_time)
+void px_rtc_util_log_report_date(const px_rtc_date_time_t * date_time)
 {
-    PX_PRINTF_P("%02hu-%02hu-%02hu",
-                (unsigned short)date_time->year,
-                (unsigned short)date_time->month,
-                (unsigned short)date_time->day);
+    PX_LOG_TRACE("%02hu-%02hu-%02hu",
+                 (unsigned short)date_time->year,
+                 (unsigned short)date_time->month,
+                 (unsigned short)date_time->day);
 }
 
-void px_rtc_util_report_time(const px_rtc_date_time_t * date_time)
+void px_rtc_util_log_report_time(const px_rtc_date_time_t * date_time)
 {
-    PX_PRINTF_P("%02hu:%02hu:%02hu",
-                (unsigned short)date_time->hour,
-                (unsigned short)date_time->min,
-                (unsigned short)date_time->sec);
+    PX_LOG_TRACE("%02hu:%02hu:%02hu",
+                 (unsigned short)date_time->hour,
+                 (unsigned short)date_time->min,
+                 (unsigned short)date_time->sec);
 }

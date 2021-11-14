@@ -40,7 +40,13 @@ static const char* px_cli_cmd_fn_rtc_rd(uint8_t argc, char* argv[])
     px_rtc_date_time_t date_time;
 
     px_rtc_date_time_rd(&date_time);
-    px_rtc_util_report_date_time(&date_time);
+    printf("%02hu-%02hu-%02hu %02hu:%02hu:%02hu",
+        (unsigned short)date_time.year,
+        (unsigned short)date_time.month,
+        (unsigned short)date_time.day,
+        (unsigned short)date_time.hour,
+        (unsigned short)date_time.min,
+        (unsigned short)date_time.sec);
     putchar('\n');
 
     return NULL;
