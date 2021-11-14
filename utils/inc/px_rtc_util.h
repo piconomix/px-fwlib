@@ -359,17 +359,24 @@ px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * dat
  *
  *  @param date_time        date-time structure to report
  */
+void px_rtc_util_printf_date_time(const px_rtc_date_time_t * date_time);
+
+/**
+ *  Report date and time using PX_LOG_TRACE().
+ *
+ *  @param date_time        date-time structure to report
+ */
 void px_rtc_util_log_report_date_time(const px_rtc_date_time_t * date_time);
 
 /**
- *  Report date using printf.
+ *  Report date using PX_LOG_TRACE().
  *
  *  @param date_time        date-time structure to report
  */
 void px_rtc_util_log_report_date(const px_rtc_date_time_t * date_time);
 
 /**
- *  Report time using printf.
+ *  Report time using PX_LOG_TRACE().
  *
  *  @param date_time        date-time structure to report
  */

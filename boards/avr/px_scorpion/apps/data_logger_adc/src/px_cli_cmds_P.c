@@ -72,13 +72,7 @@ static void px_cli_disp_record(const px_log_fs_record_data_t * record_data)
     px_rtc_date_time_t date_time;
 
     px_rtc_util_sec_since_y2k_to_date_time(record_data->timestamp, &date_time);
-    PX_PRINTF_P("%02hu-%02hu-%02hu %02hu:%02hu:%02hu",
-                (unsigned short)date_time.year,
-                (unsigned short)date_time.month,
-                (unsigned short)date_time.day,
-                (unsigned short)date_time.hour,
-                (unsigned short)date_time.min,
-                (unsigned short)date_time.sec);
+    px_rtc_util_printf_date_time(&date_time);
     for(i = 0; i < PX_ADC_NR_OF_CHANNELS; i++)
     {
         PX_PRINTF_P("\t%f\t%f\t%f", 

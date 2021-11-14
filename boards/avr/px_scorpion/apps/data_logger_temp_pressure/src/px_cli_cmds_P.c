@@ -142,13 +142,7 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
             return PX_PGM_STR("Error! BMP280 read failed");
         }
         // Display TAB separated data
-        PX_PRINTF_P("%02hu-%02hu-%02hu %02hu:%02hu:%02hu",
-                (unsigned short)log_date_time.year,
-                (unsigned short)log_date_time.month,
-                (unsigned short)log_date_time.day,
-                (unsigned short)log_date_time.hour,
-                (unsigned short)log_date_time.min,
-                (unsigned short)log_date_time.sec);
+        px_rtc_util_printf_date_time(&log_date_time);
         PX_PRINTF_P("\t%ld\t%ld\n", record_data.bmp280_temp, record_data.bmp280_press);    
         // Log data
         retry = 8;
@@ -176,13 +170,7 @@ static const char* px_cli_cmd_log_dump_fn(uint8_t argc, char* argv[])
     {
         // Display TAB separated data
         px_rtc_util_sec_since_y2k_to_date_time(record_data.timestamp, &date_time);
-        PX_PRINTF_P("%02hu-%02hu-%02hu %02hu:%02hu:%02hu",
-                (unsigned short)date_time.year,
-                (unsigned short)date_time.month,
-                (unsigned short)date_time.day,
-                (unsigned short)date_time.hour,
-                (unsigned short)date_time.min,
-                (unsigned short)date_time.sec);
+        px_rtc_util_printf_date_time(&date_time);
         PX_PRINTF_P("\t%ld\t%ld\n", record_data.bmp280_temp, record_data.bmp280_press);
         // Next record
         px_log_fs_err = px_log_fs_rd_next(&px_log_fs_handle, &record_data, sizeof(record_data));

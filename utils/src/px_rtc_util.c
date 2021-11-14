@@ -947,6 +947,17 @@ px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * dat
     return day;
 }
 
+void px_rtc_util_printf_date_time(const px_rtc_date_time_t * date_time)
+{
+    PX_PRINTF_P("%02hu-%02hu-%02hu %02hu:%02hu:%02hu",
+                 (unsigned short)date_time->year,
+                 (unsigned short)date_time->month,
+                 (unsigned short)date_time->day,
+                 (unsigned short)date_time->hour,
+                 (unsigned short)date_time->min,
+                 (unsigned short)date_time->sec);
+}
+
 void px_rtc_util_log_report_date_time(const px_rtc_date_time_t * date_time)
 {
     PX_LOG_TRACE("%02hu-%02hu-%02hu %02hu:%02hu:%02hu",
