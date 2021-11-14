@@ -1,5 +1,5 @@
-#ifndef __PX_RING_BUFFER_H__
-#define __PX_RING_BUFFER_H__
+#ifndef __PX_RING_BUF_H__
+#define __PX_RING_BUF_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -98,11 +98,11 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
-/// Circular buffer index size definition
+/// Ring buffer index size definition
 typedef uint16_t px_ring_buf_idx_t;
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
-/// Circular buffer structure
+/// Ring buffer structure
 typedef struct
 {
     uint8_t *                  buf;         ///< Pointer to fixed-size buffer
