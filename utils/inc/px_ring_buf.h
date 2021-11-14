@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
-    Title:          px_ring_buf.h : FIFO circular buffer
+    Title:          px_ring_buf.h : FIFO ring buffer
     Author(s):      Pieter Conradie
     Creation Date:  2008-08-06
 
@@ -20,7 +20,7 @@
 
 /** 
  *  @ingroup UTILS
- *  @defgroup PX_RING_BUFFER px_ring_buf.h : FIFO circular buffer
+ *  @defgroup PX_RING_BUFFER px_ring_buf.h : FIFO ring buffer
  *  
  *  A data structure that uses a single, fixed-size buffer as if it were
  *  connected end-to-end (circular).
@@ -50,15 +50,15 @@
  *                   |
  *      [x][x][x][x][x][x][x][x]
  *                   |
- *                  rd
+ *                   rd
  *
- *      One byte is written to the buffer ('1'):
+ *      One byte is written ('1') to the buffer:
  *
  *                      wr
  *                      |
  *      [x][x][x][x][1][x][x][x]
  *                   |
- *                  rd
+ *                   rd
  *
  *      One byte is read ('1'); buffer is empty again:
  *
@@ -66,7 +66,7 @@
  *                      |
  *      [x][x][x][x][x][x][x][x]
  *                      |
- *                     rd
+ *                      rd
  *
  *      5 bytes are written ('2','3','4','5','6'); buffer wraps:
  *
@@ -74,7 +74,7 @@
  *             |
  *      [5][6][x][x][x][2][3][4]
  *                      |
- *                     rd
+ *                      rd
  *
  *      2 more bytes are written ('7','8'); buffer is full:
  *
@@ -82,7 +82,7 @@
  *                   |
  *      [5][6][7][8][x][2][3][4]
  *                      |
- *                     rd
+ *                      rd
  *  @endcode
  *
  *  @{
@@ -105,72 +105,74 @@ typedef uint16_t px_ring_buf_idx_t;
 /// Circular buffer structure
 typedef struct
 {
-    uint8_t *           buf;        ///< Pointer to fixed-size buffer
-    px_ring_buf_idx_t   buf_size;   ///< Size of fixed-size buffer
-    px_ring_buf_idx_t   idx_wr;     ///< Index that is next open position to write to in the buffer
-    px_ring_buf_idx_t   idx_rd;     ///< Index to the first byte to be read from the buffer
+    uint8_t *                  buf;         ///< Pointer to fixed-size buffer
+    px_ring_buf_idx_t          buf_size;    ///< Size of fixed-size buffer
+    volatile px_ring_buf_idx_t idx_wr;      ///< Index that is next open position to write to in the buffer
+    volatile px_ring_buf_idx_t idx_rd;      ///< Index to the first byte to be read from the buffer
 } px_ring_buf_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /** 
- *  Initialize the circular buffer.
+ *  Initialize the ring buffer.
  *  
- *  @param px_ring_buf      Pointer to the circular buffer object
- *  @param buf              Fixed-size data buffer
- *  @param buf_size         Fixed-size data buffer size
+ *  @param px_ring_buf          Pointer to the ring buffer object
+ *  @param buf                  Fixed-size data buffer
+ *  @param buf_size             Fixed-size data buffer size
  */
 void px_ring_buf_init(px_ring_buf_t *   px_ring_buf,
                       uint8_t *         buf,
                       px_ring_buf_idx_t buf_size);
 
 /** 
- *  See if the circular buffer is empty.
+ *  See if the ring buffer is empty.
  *  
- *  @param px_ring_buf  Pointer to the circular buffer object
+ *  @param px_ring_buf          Pointer to the ring buffer object
  *  
- *  @retval true            buffer is empty
- *  @retval false           buffer contains data
+ *  @retval true                buffer is empty
+ *  @retval false               buffer contains data
  */
 bool px_ring_buf_is_empty(const px_ring_buf_t * px_ring_buf);
 
 /** 
- *  See if the circular buffer is full.
+ *  See if the ring buffer is full.
  *  
- *  @param px_ring_buf  Pointer to the circular buffer object
+ *  @param px_ring_buf          Pointer to the ring buffer object
  *  
- *  @retval true            buffer is full
- *  @retval false           buffer is NOT full
+ *  @retval true                buffer is full
+ *  @retval false               buffer is NOT full
  */
 bool px_ring_buf_is_full(const px_ring_buf_t * px_ring_buf);
 
-/** 
- *  Removed all data from circular buffer.
- *  
- *  @param px_ring_buf  Pointer to the circular buffer object
- *  
+/**
+ *  Removed data from ring buffer.
+ *
+ *  @param px_ring_buf          Pointer to the ring buffer object
+ *  @param nr_of_bytes          Number of bytes to flush; 0 = flush everything
+ *
  */
-void px_ring_buf_flush(px_ring_buf_t * px_ring_buf);
+void px_ring_buf_flush(px_ring_buf_t * px_ring_buf,
+                       size_t          nr_of_bytes);
 
 /** 
- *  Write (store) a byte in the circular buffer.
+ *  Write (store) a byte in the ring buffer.
  *  
- *  @param px_ring_buf      Pointer to the circular buffer object
- *  @param data             The byte to store in the circular buffer
+ *  @param px_ring_buf          Pointer to the ring buffer object
+ *  @param data                 The byte to store in the ring buffer
  *  
- *  @retval true            Byte has been stored in the circular buffer
- *  @retval false           Buffer is full and byte was not stored
+ *  @retval true                Byte has been stored in the ring buffer
+ *  @retval false               Buffer is full and byte was not stored
  */
 bool px_ring_buf_wr_u8(px_ring_buf_t * px_ring_buf,
                        const uint8_t   data);
 
 /** 
- *  Write (store) data in the circular buffer
+ *  Write (store) data in the ring buffer
  *  
- *  @param px_ring_buf          Pointer to the circular buffer object
+ *  @param px_ring_buf          Pointer to the ring buffer object
  *  @param data                 Pointer to array of data to be stored in the
- *                              circular buffer
+ *                              ring buffer
  *  @param nr_of_bytes          Number of data bytes to write
  *  
  *  @return px_ring_buf_idx_t   The actual number of data bytes stored, which
@@ -182,68 +184,71 @@ px_ring_buf_idx_t px_ring_buf_wr(px_ring_buf_t * px_ring_buf,
                                  size_t          nr_of_bytes);
 
 /** 
- *  Read (retrieve) a byte from the circular buffer.
+ *  Read (retrieve) a byte from the ring buffer.
  *  
- *  @param px_ring_buf      Pointer to the circular buffer object
- *  @param data             Pointer to location where byte must be stored
+ *  @param px_ring_buf          Pointer to the ring buffer object
+ *  @param data                 Pointer to location where byte must be stored
  *  
- *  @retval true            Valid byte has been retrieved
- *  @retval false           Buffer is empty
+ *  @retval true                Valid byte has been retrieved
+ *  @retval false               Buffer is empty
  */
 bool px_ring_buf_rd_u8(px_ring_buf_t * px_ring_buf,
                        uint8_t *       data);
 
 /** 
- * Read (retrieve) data from the circular buffer.
- *  
- * @param px_ring_buf           Pointer to the circular buffer object
- * @param data                  Pointer to location where data must be stored
- * @param nr_of_bytes           Number of bytes to read
- *  
- * @return px_ring_buf_idx_t    The actual number of bytes retrieved, which may 
- *                              be less than the number specified, because the 
+ *  Read (retrieve) data from the ring buffer.
+ *
+ *  @param px_ring_buf          Pointer to the ring buffer object
+ *  @param data                 Pointer to location where data must be stored
+ *  @param nr_of_bytes          Number of bytes to read
+ *
+ *  @return px_ring_buf_idx_t   The actual number of bytes retrieved, which may
+ *                              be less than the number specified, because the
  *                              buffer is empty.
  */
 px_ring_buf_idx_t px_ring_buf_rd(px_ring_buf_t * px_ring_buf,
                                  void *          data,
                                  size_t          nr_of_bytes);
 
-
 /** 
- * Peek data from the circular buffer, without advancing the read pointer.
- *  
- * @param px_ring_buf           Pointer to the circular buffer object
- * @param data                  Pointer to location where data must be stored
- * @param nr_of_bytes_to_peek   Number of bytes to peek    
- * @param nr_of_bytes_to_skip   Number of bytes to skip, before peeking    
- *  
- * @return px_ring_buf_idx_t    The actual number of bytes peeked, which may 
- *                              be less than the number specified, because the 
- *                              buffer is empty.
+ *  Peek data from the ring buffer, without advancing the read pointer.
+ *
+ *  @param px_ring_buf           Pointer to the ring buffer object
+ *  @param data                  Pointer to location where data must be stored
+ *  @param nr_of_bytes           Number of bytes to peek
+ *
+ *  @return px_ring_buf_idx_t    The actual number of bytes peeked, which may
+ *                               be less than the number specified, because the
+ *                               buffer is empty.
  */
 px_ring_buf_idx_t px_ring_buf_peek(px_ring_buf_t * px_ring_buf, 
                                    void *          data,
-                                   size_t          nr_of_bytes_to_peek,
-                                   size_t          nr_of_bytes_to_skip);
+                                   size_t          nr_of_bytes);
 
-
-
-/** 
- * Get free bytes available in buffer, an empty buffer has one less byte than the size
+/**
+ *  Get number of bytes stored in the buffer.
  *  
- * @param px_ring_buf           Pointer to the circular buffer object
- * @return px_ring_buf_idx_t    The actual number of bytes available in the buffer
+ *  @param px_ring_buf          Pointer to the ring buffer object
+ *  @return px_ring_buf_idx_t   Number of bytes stored in the buffer
  */
-px_ring_buf_idx_t px_ring_buf_free(px_ring_buf_t * px_ring_buf);
+px_ring_buf_idx_t px_ring_buf_get_count_used(px_ring_buf_t * px_ring_buf);
 
-
-/** 
- * Get the number of bytes in the buffer, how full is the buffer?
- *  
- * @param px_ring_buf           Pointer to the circular buffer object
- * @return px_ring_buf_idx_t    The actual number of bytes in the buffer
+/**
+ *  Get number of free bytes available in buffer.
+ *
+ *  Note: an empty buffer has one less byte than the buffer size
+ *
+ *  @param px_ring_buf          Pointer to the ring buffer object
+ *  @return px_ring_buf_idx_t   Number of bytes available in the buffer
  */
-px_ring_buf_idx_t px_ring_buf_full(px_ring_buf_t * px_ring_buf);
+px_ring_buf_idx_t px_ring_buf_get_count_free(px_ring_buf_t * px_ring_buf);
+
+/**
+ *  Report status of ring buffer.
+ *
+ *  @param px_ring_buf          Pointer to the ring buffer object
+ */
+void px_ring_buf_log_report(px_ring_buf_t * px_ring_buf);
 
 /* _____MACROS_______________________________________________________________ */
 
