@@ -359,7 +359,7 @@ void px_gfx_draw_line(px_gfx_xy_t    x1,
         // Start error with dx / 2
         err = dx >> 1;
         // Positive slope?
-        if ( y2 > y1 )
+        if( y2 > y1 )
         {
             // Yes. Change of y in positive direction
             ystep = true;

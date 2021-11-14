@@ -435,7 +435,7 @@ void px_nmea_on_rx_byte(uint8_t data)
          // Put received byte into buffer
          px_nmea_rx_buffer[px_nmea_rx_index] = data;
          // Check for buffer overflow
-         if (++px_nmea_rx_index >= (PX_NMEA_BUFFER_SIZE-1))
+         if(++px_nmea_rx_index >= (PX_NMEA_BUFFER_SIZE-1))
          {
              break;
          }

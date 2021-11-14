@@ -93,7 +93,7 @@ static bool px_rtc_util_is_leap_year(uint8_t year)
 
     //  Apply simplified (2000 to 2099) Gregorian calender rules:
     //  Every 4 years is a leap year, e.g. [2000, 2004, 2008, ..., 2096]
-    if ((year % 4) == 0)
+    if((year % 4) == 0)
     {
         return true;
     }
@@ -110,7 +110,7 @@ static uint16_t px_rtc_util_days_in_year(uint8_t year)
 
     //  Apply simplified (2000 to 2099) Gregorian calender rules:
     //  Every 4 years is a leap year, e.g. [2000, 2004, 2008, ..., 2096]
-    if ((year % 4) == 0)
+    if((year % 4) == 0)
     {
         return 366;
     }
