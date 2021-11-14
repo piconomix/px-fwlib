@@ -83,10 +83,10 @@ void px_ring_buf_flush(px_ring_buf_t * px_ring_buf, size_t nr_of_bytes)
     idx_rd = px_ring_buf->idx_rd;
     while(nr_of_bytes != 0)
     {
-        // Is data in the buffer?
+        // Buffer empty?
         if(idx_rd == px_ring_buf->idx_wr)
         {
-            // No
+            // Yes
             break;
         }
         // Advance index
@@ -113,8 +113,10 @@ bool px_ring_buf_wr_u8(px_ring_buf_t * px_ring_buf,
 
     // Add data to buffer
     px_ring_buf->buf[idx_wr] = data;
+    // Advance index
+    idx_wr = px_ring_buf_idx_next(px_ring_buf, idx_wr);
     // Update write index
-    px_ring_buf->idx_wr = px_ring_buf_idx_next(px_ring_buf, idx_wr);
+    px_ring_buf->idx_wr = idx_wr;
 
     return true;
 }
@@ -163,8 +165,10 @@ bool px_ring_buf_rd_u8(px_ring_buf_t * px_ring_buf,
     }
     // Fetch data
     *data = px_ring_buf->buf[idx_rd];
+    // Advance index
+    idx_rd = px_ring_buf_idx_next(px_ring_buf, idx_rd);
     // Update read index
-    px_ring_buf->idx_rd = px_ring_buf_idx_next(px_ring_buf, idx_rd);
+    px_ring_buf->idx_rd = idx_rd;
 
     return true;
 }
