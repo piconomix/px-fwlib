@@ -121,7 +121,7 @@ MSG_GDB                 = 'Launching GDB:'
 
 # Define all object files from source files (C, C++ and Assembly)
 #     Relative paths are stripped and BUILD_DIR prefix is added.
-OBJECTS = $(foreach file,$(SRC) $(CXXSRC) $(ASRC), $(BUILD_DIR)/$(basename $(notdir $(file))).o)
+OBJECTS = $(foreach file,$(ASRC) $(SRC) $(CXXSRC), $(BUILD_DIR)/$(basename $(notdir $(file))).o)
 
 # Compiler flags to generate dependency files
 DEP_FLAGS = -MMD -MP -MF $$(patsubst %.o,%.d,$$@)
