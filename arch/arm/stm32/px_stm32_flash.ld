@@ -10,19 +10,19 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
-    Title:          stm32.ld : STM32 Linker Script for GNU ld
+    Title:          px_stm32_flash.ld : STM32 Linker Script for GNU ld
     Author(s):      Pieter Conradie
     Creation Date:  2018-05-18
 
 ============================================================================= */
 
 /*
- *  This linker script is for the STM32cubeL0 library and in particular the 
- *  following C startup code:
+ *  This linker script is originally for the STM32cubeL0 library and in
+ *  particular the following C startup code:
  *  px-fwlib/libs/STM32Cube/L0/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/gcc/startup_stm32l072xx.s
  *
  *  The default linker script for normal executables packaged with the GNU ARM 
- *  toolchain was consulted:
+ *  toolchain was used as reference:
  *  (arm-none-eabi/lib/ldscripts/armelf.x)
  *  
  *  Documentation references:
