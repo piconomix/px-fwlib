@@ -133,16 +133,16 @@ typedef signed long long   int64_t;
  *      #define XY       123456
  *      #define TOKEN1   X
  *      #define TOKEN2   Y
- *      #define TOKEN1_2 CONCAT(TOKEN1,TOKEN2)
+ *      #define TOKEN1_2 PX_CONCAT(TOKEN1, TOKEN2)
  *
  *      int i = TOKEN1_2;
  *  @endcode
  *  
  *  Preprocessor steps:
  *  
- *  1. TOKEN1_2 is replaced with CONCAT(TOKEN1,TOKEN2)
- *  2. CONCAT(TOKEN1,TOKEN2) is replaced with _CONCAT(X,Y)
- *  3. _CONCAT(X,Y) is replaced with XY
+ *  1. TOKEN1_2 is replaced with PX_CONCAT(TOKEN1, TOKEN2)
+ *  2. PX_CONCAT(TOKEN1, TOKEN2) is replaced with _PX_CONCAT(X, Y)
+ *  3. _PX_CONCAT(X, Y) is replaced with XY
  *  4. XY is replaced with 123456
  *  
  *  Compiler step:
