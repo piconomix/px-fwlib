@@ -53,9 +53,9 @@ static px_spi_per_t px_spi_per_2;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void px_spi_init_peripheral(SPI_TypeDef * spi_base_adr,
-                                   px_spi_nr_t   spi_nr,
-                                   uint32_t      spi_cr1_val)
+static void px_spi_init_per(SPI_TypeDef * spi_base_adr,
+                            px_spi_nr_t   spi_nr,
+                            uint32_t      spi_cr1_val)
 {
     // Enable peripheral clocks
     switch(spi_nr)
@@ -128,8 +128,8 @@ static void px_spi_update_cfg(SPI_TypeDef * spi_base_adr, uint32_t spi_cr1_val)
     }
 }
 
-static void px_spi_init_peripheral_data(px_spi_nr_t    spi_nr,
-                                        px_spi_per_t * spi_per)
+static void px_spi_init_per_data(px_spi_nr_t    spi_nr,
+                                 px_spi_per_t * spi_per)
 {
     // Set peripheral number
     spi_per->spi_nr = spi_nr;
@@ -163,10 +163,10 @@ void px_spi_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_SPI_CFG_SPI1_EN
-    px_spi_init_peripheral_data(PX_SPI_NR_1, &px_spi_per_1);
+    px_spi_init_per_data(PX_SPI_NR_1, &px_spi_per_1);
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    px_spi_init_peripheral_data(PX_SPI_NR_2, &px_spi_per_2);
+    px_spi_init_per_data(PX_SPI_NR_2, &px_spi_per_2);
 #endif
 }
 
@@ -238,7 +238,7 @@ bool px_spi_open(px_spi_handle_t * handle,
     if(spi_per->open_counter == 0)
     {
         // No. Initialise peripheral
-        px_spi_init_peripheral(spi_per->spi_base_adr, spi_nr, spi_cr1_val);
+        px_spi_init_per(spi_per->spi_base_adr, spi_nr, spi_cr1_val);
     }
     // Point handle to peripheral
     handle->spi_per = spi_per;
@@ -324,7 +324,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
     if(spi_per->open_counter == 0)
     {
         // No. Initialise peripheral
-        px_spi_init_peripheral(spi_per->spi_base_adr, spi_nr, spi_cr1_val);
+        px_spi_init_per(spi_per->spi_base_adr, spi_nr, spi_cr1_val);
     }
     // Point handle to peripheral
     handle->spi_per = spi_per;

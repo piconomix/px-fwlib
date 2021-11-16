@@ -201,9 +201,9 @@ static uint16_t px_uart_calc_ubrr(uint32_t baud)
     return ubrr;
 }
 
-static bool px_uart_init_peripheral(px_uart_nr_t uart_nr,
-                                    uint16_t     ubrr,
-                                    uint8_t      ucsrc)
+static bool px_uart_init_per(px_uart_nr_t uart_nr,
+                             uint16_t     ubrr,
+                             uint8_t      ucsrc)
 {
     switch(uart_nr)
     {
@@ -257,8 +257,8 @@ static bool px_uart_init_peripheral(px_uart_nr_t uart_nr,
     return true;
 }
 
-static void px_uart_init_peripheral_data(px_uart_nr_t    uart_nr,
-                                         px_uart_per_t * uart_per)
+static void px_uart_init_per_data(px_uart_nr_t    uart_nr,
+                                  px_uart_per_t * uart_per)
 {
     // Set peripheral
     uart_per->uart_nr = uart_nr;
@@ -277,10 +277,10 @@ void px_uart_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_UART_CFG_UART0_EN
-    px_uart_init_peripheral_data(PX_UART_NR_0, &px_uart_per_0);
+    px_uart_init_per_data(PX_UART_NR_0, &px_uart_per_0);
 #endif
 #if PX_UART_CFG_UART1_EN
-    px_uart_init_peripheral_data(PX_UART_NR_1, &px_uart_per_1);
+    px_uart_init_per_data(PX_UART_NR_1, &px_uart_per_1);
 #endif
 }
 
@@ -312,9 +312,9 @@ bool px_uart_open(px_uart_handle_t * handle,
         return false;
     }    
     // Initialise peripheral
-    if(!px_uart_init_peripheral(uart_nr,
-                                PX_UART_CALC_UBRR(PX_UART_CFG_DEFAULT_BAUD),
-                                PX_UART_CFG_DEFAULT_UCSRC))
+    if(!px_uart_init_per(uart_nr,
+                         PX_UART_CALC_UBRR(PX_UART_CFG_DEFAULT_BAUD),
+                         PX_UART_CFG_DEFAULT_UCSRC))
     {
         // Invalid parameter specified
         return false;
@@ -396,7 +396,7 @@ bool px_uart_open2(px_uart_handle_t *  handle,
         return false;
     }
     // Initialise peripheral
-    if(!px_uart_init_peripheral(uart_nr, ubrr, ucsrc))
+    if(!px_uart_init_per(uart_nr, ubrr, ucsrc))
     {
         // Invalid parameter specified
         return false;
@@ -718,7 +718,7 @@ bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
         return false;
     }
     // Initialise peripheral with new BAUD rate
-    px_uart_init_peripheral(uart_per->uart_nr, ubrr, ucsrc);
+    px_uart_init_per(uart_per->uart_nr, ubrr, ucsrc);
 
     return true;
 }

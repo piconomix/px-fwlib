@@ -48,8 +48,8 @@ static px_dac_per_t px_dac_per_1;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void px_dac_init_peripheral(DAC_TypeDef * dac_base_adr,
-                                   px_dac_nr_t   dac_nr)
+static void px_dac_init_per(DAC_TypeDef * dac_base_adr,
+                            px_dac_nr_t   dac_nr)
 {
     uint32_t dac_channel = 0;
 
@@ -76,8 +76,8 @@ static void px_dac_init_peripheral(DAC_TypeDef * dac_base_adr,
 }
 
 
-static void px_dac_init_peripheral_data(px_dac_nr_t    dac_nr,
-                                        px_dac_per_t * dac_per)
+static void px_dac_init_per_data(px_dac_nr_t    dac_nr,
+                                 px_dac_per_t * dac_per)
 {
     // Set peripheral
     dac_per->dac_nr = dac_nr;
@@ -102,7 +102,7 @@ void px_dac_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_DAC_CFG_DAC1_EN
-    px_dac_init_peripheral_data(PX_DAC_NR_1, &px_dac_per_1);
+    px_dac_init_per_data(PX_DAC_NR_1, &px_dac_per_1);
 #endif
 }
 
@@ -143,7 +143,7 @@ bool px_dac_open(px_dac_handle_t * handle,
     }
 #endif
     // Initialise peripheral
-    px_dac_init_peripheral(dac_per->dac_base_adr, dac_nr);
+    px_dac_init_per(dac_per->dac_base_adr, dac_nr);
     // Point handle to peripheral
     handle->dac_per = dac_per;
     // Success

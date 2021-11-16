@@ -145,7 +145,7 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
                     data &= ~(1 << 6);
                 }
             }
-            // Add received byte to circular buffer (byte is discarded if buffer is full)
+            // Add received byte to ring buffer (byte is discarded if buffer is full)
             px_ring_buf_wr_u8(&uart_per->rx_ring_buf, data);
         }
     }
@@ -323,12 +323,12 @@ static bool px_uart_init_data_format(USART_TypeDef *     usart_base_adr,
     return true;
 }
 
-static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
-                                    px_uart_nr_t        uart_nr,
-                                    uint32_t            baud,
-                                    px_uart_data_bits_t data_bits,
-                                    px_uart_parity_t    parity,
-                                    px_uart_stop_bits_t stop_bits)
+static bool px_uart_init_per(USART_TypeDef *     usart_base_adr,
+                             px_uart_nr_t        uart_nr,
+                             uint32_t            baud,
+                             px_uart_data_bits_t data_bits,
+                             px_uart_parity_t    parity,
+                             px_uart_stop_bits_t stop_bits)
 {
     // Sanity check
     PX_LOG_ASSERT(usart_base_adr != NULL);
@@ -396,12 +396,12 @@ static bool px_uart_init_peripheral(USART_TypeDef *     usart_base_adr,
     return true;
 }
 
-static void px_uart_init_peripheral_data(px_uart_nr_t    uart_nr,
-                                         px_uart_per_t * uart_per)
+static void px_uart_init_per_data(px_uart_nr_t    uart_nr,
+                                  px_uart_per_t * uart_per)
 {
     // Set peripheral number
     uart_per->uart_nr = uart_nr;
-    // Set peripheral base address and intialise circular buffers
+    // Set peripheral base address and intialise ring buffers
     switch(uart_nr)
     {
 #if PX_UART_CFG_UART1_EN
@@ -453,19 +453,19 @@ void px_uart_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_UART_CFG_UART1_EN
-    px_uart_init_peripheral_data(PX_UART_NR_1, &px_uart_per_1);
+    px_uart_init_per_data(PX_UART_NR_1, &px_uart_per_1);
 #endif
 #if PX_UART_CFG_UART2_EN
-    px_uart_init_peripheral_data(PX_UART_NR_2, &px_uart_per_2);
+    px_uart_init_per_data(PX_UART_NR_2, &px_uart_per_2);
 #endif
 #if PX_UART_CFG_UART3_EN
-    px_uart_init_peripheral_data(PX_UART_NR_3, &px_uart_per_3);
+    px_uart_init_per_data(PX_UART_NR_3, &px_uart_per_3);
 #endif
 #if PX_UART_CFG_UART4_EN
-    px_uart_init_peripheral_data(PX_UART_NR_4, &px_uart_per_4);
+    px_uart_init_per_data(PX_UART_NR_4, &px_uart_per_4);
 #endif
 #if PX_UART_CFG_UART5_EN
-    px_uart_init_peripheral_data(PX_UART_NR_5, &px_uart_per_5);
+    px_uart_init_per_data(PX_UART_NR_5, &px_uart_per_5);
 #endif
 }
 
@@ -523,12 +523,12 @@ bool px_uart_open2(px_uart_handle_t *  handle,
     // Set transmit done flag
     uart_per->tx_done = true;
     // Initialise peripheral
-    if(!px_uart_init_peripheral(uart_per->usart_base_adr,
-                                uart_nr,
-                                baud,
-                                data_bits,
-                                parity,
-                                stop_bits))
+    if(!px_uart_init_per(uart_per->usart_base_adr,
+                         uart_nr,
+                         baud,
+                         data_bits,
+                         parity,
+                         stop_bits))
     {
         // Invalid parameter specified
         return false;

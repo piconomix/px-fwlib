@@ -48,8 +48,8 @@ static px_adc_per_t px_adc_per_1;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
-                                   px_adc_nr_t   adc_nr)
+static void px_adc_init_per(ADC_TypeDef * adc_base_adr,
+                            px_adc_nr_t   adc_nr)
 {
     // Enable peripheral clock
     switch(adc_nr)
@@ -103,8 +103,8 @@ static void px_adc_init_peripheral(ADC_TypeDef * adc_base_adr,
 }
 
 
-static void px_adc_init_peripheral_data(px_adc_nr_t    adc_nr,
-                                        px_adc_per_t * adc_per)
+static void px_adc_init_per_data(px_adc_nr_t    adc_nr,
+                                 px_adc_per_t * adc_per)
 {
     // Set peripheral number
     adc_per->adc_nr = adc_nr;
@@ -129,7 +129,7 @@ void px_adc_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_ADC_CFG_ADC1_EN
-    px_adc_init_peripheral_data(PX_ADC_NR_1, &px_adc_per_1);
+    px_adc_init_per_data(PX_ADC_NR_1, &px_adc_per_1);
 #endif
 }
 
@@ -170,7 +170,7 @@ bool px_adc_open(px_adc_handle_t * handle,
     }
 #endif
     // Initialise peripheral
-    px_adc_init_peripheral(adc_per->adc_base_adr, adc_nr);
+    px_adc_init_per(adc_per->adc_base_adr, adc_nr);
     // Point handle to peripheral
     handle->adc_per = adc_per;
     // Success

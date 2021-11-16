@@ -50,9 +50,9 @@ static px_spi_per_t px_spi_per_0;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void px_spi_init_peripheral(px_spi_nr_t spi_nr,
-                                   uint8_t     spcr,
-                                   bool        use_spi2x)
+static void px_spi_init_per(px_spi_nr_t spi_nr,
+                            uint8_t     spcr,
+                            bool        use_spi2x)
 {
     switch(spi_nr)
     {
@@ -81,11 +81,11 @@ static void px_spi_update_cfg(px_spi_nr_t spi_nr,
                               uint8_t     spcr,
                               bool        use_spi2x)
 {
-    px_spi_init_peripheral(spi_nr, spcr, use_spi2x);
+    px_spi_init_per(spi_nr, spcr, use_spi2x);
 }
 
-static void px_spi_init_peripheral_data(px_spi_nr_t    spi_nr,
-                                        px_spi_per_t * spi_data)
+static void px_spi_init_per_data(px_spi_nr_t    spi_nr,
+                                 px_spi_per_t * spi_data)
 {
     // Set peripheral
     spi_data->spi_nr = spi_nr;
@@ -98,7 +98,7 @@ void px_spi_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_SPI_CFG_SPI0_EN
-    px_spi_init_peripheral_data(PX_SPI_NR_0, &px_spi_per_0);
+    px_spi_init_per_data(PX_SPI_NR_0, &px_spi_per_0);
 #endif
 }
 
@@ -144,7 +144,7 @@ bool px_spi_open(px_spi_handle_t * handle,
     // Set default value for "Master Out dummy byte"
     handle->mo_dummy_byte = 0x00;
     // Initialise peripheral
-    px_spi_init_peripheral(spi_nr, handle->spcr, handle->use_spi2x);
+    px_spi_init_per(spi_nr, handle->spcr, handle->use_spi2x);
     // Point handle to peripheral
     handle->spi_per = spi_per;
 
@@ -225,7 +225,7 @@ bool px_spi_open2(px_spi_handle_t * handle,
     // Set value for "Master Out dummy byte"
     handle->mo_dummy_byte = mo_dummy_byte;
     // Initialise peripheral
-    px_spi_init_peripheral(spi_nr, handle->spcr, handle->use_spi2x);
+    px_spi_init_per(spi_nr, handle->spcr, handle->use_spi2x);
     // Point handle to peripheral
     handle->spi_per = spi_per;
 

@@ -75,14 +75,14 @@ static px_i2c_per_t px_i2c_per_0;
 #endif
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
-static bool px_i2c_start               (uint8_t sla_adr, px_i2c_start_t start);
-static bool px_i2c_start_repeat        (uint8_t sla_adr, px_i2c_start_t start);
-static bool px_i2c_stop                (void);
-static bool px_i2c_wr_u8               (uint8_t data);
-static bool px_i2c_rd_u8               (uint8_t *data, bool nak);
-static bool px_i2c_init_peripheral     (px_i2c_nr_t i2c_nr);
-static void px_i2c_init_peripheral_data(px_i2c_nr_t    i2c_nr,
-                                        px_i2c_per_t * i2c_per);
+static bool px_i2c_start        (uint8_t sla_adr, px_i2c_start_t start);
+static bool px_i2c_start_repeat (uint8_t sla_adr, px_i2c_start_t start);
+static bool px_i2c_stop         (void);
+static bool px_i2c_wr_u8        (uint8_t data);
+static bool px_i2c_rd_u8        (uint8_t *data, bool nak);
+static bool px_i2c_init_per     (px_i2c_nr_t i2c_nr);
+static void px_i2c_init_per_data(px_i2c_nr_t    i2c_nr,
+                                 px_i2c_per_t * i2c_per);
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static bool px_i2c_start(uint8_t sla_adr, px_i2c_start_t start)
@@ -261,7 +261,7 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     return true;
 }
 
-static bool px_i2c_init_peripheral(px_i2c_nr_t i2c_nr)
+static bool px_i2c_init_per(px_i2c_nr_t i2c_nr)
 {
     switch(i2c_nr)
     {
@@ -285,8 +285,8 @@ static bool px_i2c_init_peripheral(px_i2c_nr_t i2c_nr)
     return true;
 }
 
-static void px_i2c_init_peripheral_data(px_i2c_nr_t    i2c_nr,
-                                        px_i2c_per_t * i2c_per)
+static void px_i2c_init_per_data(px_i2c_nr_t    i2c_nr,
+                                 px_i2c_per_t * i2c_per)
 {
     // Set peripheral
     i2c_per->i2c_nr = i2c_nr;
@@ -299,7 +299,7 @@ void px_i2c_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_I2C_CFG_I2C0_EN
-    px_i2c_init_peripheral_data(PX_I2C_NR_0, &px_i2c_per_0);
+    px_i2c_init_per_data(PX_I2C_NR_0, &px_i2c_per_0);
 #endif
 }
 
@@ -342,7 +342,7 @@ bool px_i2c_open(px_i2c_handle_t * handle,
     if(i2c_per->open_counter == 0)
     {
         // Initialise peripheral
-        if(!px_i2c_init_peripheral(i2c_per->i2c_nr))
+        if(!px_i2c_init_per(i2c_per->i2c_nr))
         {
             // Invalid parameter specified
             return false;

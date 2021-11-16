@@ -59,7 +59,7 @@ static bool px_i2c_start_repeat                    (uint8_t sla_adr,
 static bool px_i2c_stop                            (void);
 static bool px_i2c_wr_u8                           (uint8_t data);
 static bool px_i2c_rd_u8                           (uint8_t * data, bool nak);
-static void px_i2c_init_peripheral_data            (px_i2c_nr_t    i2c_nr,
+static void px_i2c_init_per_data                   (px_i2c_nr_t    i2c_nr,
                                                     px_i2c_per_t * i2c_per);
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
@@ -267,8 +267,8 @@ static bool px_i2c_rd_u8(uint8_t *data, bool nak)
     return true;
 }
 
-static void px_i2c_init_peripheral_data(px_i2c_nr_t    i2c_nr,
-                                        px_i2c_per_t * i2c_per)
+static void px_i2c_init_per_data(px_i2c_nr_t    i2c_nr,
+                                 px_i2c_per_t * i2c_per)
 {
     // Set peripheral
     i2c_per->spi_nr = i2c_nr;
@@ -281,7 +281,7 @@ void px_i2c_init(void)
 {
     // Initialize peripheral data for each enabled peripheral
 #if PX_I2C_CFG_I2C0_EN
-    px_i2c_init_peripheral_data(PX_I2C_NR_0, &px_i2c0_per);
+    px_i2c_init_per_data(PX_I2C_NR_0, &px_i2c0_per);
 #endif
 
     // Set bus to free state (Hi-Z)
