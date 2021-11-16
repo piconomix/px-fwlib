@@ -352,8 +352,7 @@ bool px_sd_reset(void)
     px_sd_card_type = PX_SD_CARD_TYPE_INVALID;
 
     // Change to bit rate equal or below 400 kHz
-    px_spi_ioctl_change_baud(px_spi_handle_sd,
-                             px_spi_util_baud_hz_to_clk_div(400000));
+    px_spi_change_baud(px_spi_handle_sd, px_spi_util_baud_hz_to_clk_div(400000));
 
     // Wait 1 ms
     px_board_delay_us(1000);
@@ -527,8 +526,7 @@ bool px_sd_reset(void)
     }
 
     // Change to maximum bit rate
-    px_spi_ioctl_change_baud(px_spi_handle_sd, 
-                             px_spi_util_baud_hz_to_clk_div(PX_SD_MAX_SPI_CLOCK_HZ));
+    px_spi_change_baud(px_spi_handle_sd, px_spi_util_baud_hz_to_clk_div(PX_SD_MAX_SPI_CLOCK_HZ));
 
     px_sd_spi_cs_end();
     return true;

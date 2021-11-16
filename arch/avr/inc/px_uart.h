@@ -288,7 +288,7 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle);
  *  @retval true         Success. Baud was changed
  *  @retval false        Error. Requested baud invalid
  */
-bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
+bool px_uart_change_baud(px_uart_handle_t * handle, uint32_t baud);
 
 /* _____MACROS_______________________________________________________________ */
 

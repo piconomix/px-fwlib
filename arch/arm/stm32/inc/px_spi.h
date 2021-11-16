@@ -276,8 +276,8 @@ void px_spi_xc(px_spi_handle_t * handle,
  *  @param handle       Pointer to handle data structure
  *  @param baud         Desired BAUD rate as a division of peripheral clock
  */
-void px_spi_ioctl_change_baud(px_spi_handle_t * handle,
-                              px_spi_baud_t     baud);
+void px_spi_change_baud(px_spi_handle_t * handle,
+                        px_spi_baud_t     baud);
 
 /**
  *  Calculate clock divisor that will yield closest frequency equal to or

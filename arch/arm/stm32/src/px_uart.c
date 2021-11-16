@@ -830,7 +830,7 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle)
     return px_ring_buf_is_empty(&uart_per->rx_ring_buf);
 }
 
-bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
+bool px_uart_change_baud(px_uart_handle_t * handle, uint32_t baud)
 {
     px_uart_per_t * uart_per;
     USART_TypeDef * usart_base_adr;
@@ -869,10 +869,10 @@ bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud)
     return result;
 }
 
-bool px_uart_ioctl_change_data_format(px_uart_handle_t *  handle,
-                                      px_uart_data_bits_t data_bits,
-                                      px_uart_parity_t    parity,
-                                      px_uart_stop_bits_t stop_bits)
+bool px_uart_change_data_format(px_uart_handle_t *  handle,
+                                px_uart_data_bits_t data_bits,
+                                px_uart_parity_t    parity,
+                                px_uart_stop_bits_t stop_bits)
 {
     px_uart_per_t * uart_per;
     USART_TypeDef * usart_base_adr;

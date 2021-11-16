@@ -121,7 +121,7 @@ typedef enum
     PX_UART_PARITY_EVEN,
 } px_uart_parity_t;
 
-// Specify number of data bits used (7..9)
+/// Specify number of data bits used (7..9)
 typedef enum
 {
     PX_UART_DATA_BITS_7 = 7,
@@ -320,7 +320,7 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle);
  *  @retval true         Success. Baud was changed
  *  @retval false        Error. Requested baud invalid
  */
-bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
+bool px_uart_change_baud(px_uart_handle_t * handle, uint32_t baud);
 
 /**
  *  Change UART peripheral data format.
@@ -333,10 +333,10 @@ bool px_uart_ioctl_change_baud(px_uart_handle_t * handle, uint32_t baud);
  *  @retval true         Success. data format was changed
  *  @retval false        Error. Requested data format invalid
  */
-bool px_uart_ioctl_change_data_format(px_uart_handle_t *  handle,
-                                      px_uart_data_bits_t data_bits,
-                                      px_uart_parity_t    parity,
-                                      px_uart_stop_bits_t stop_bits);
+bool px_uart_change_data_format(px_uart_handle_t *  handle,
+                                px_uart_data_bits_t data_bits,
+                                px_uart_parity_t    parity,
+                                px_uart_stop_bits_t stop_bits);
 
 /* _____MACROS_______________________________________________________________ */
 

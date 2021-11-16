@@ -543,8 +543,8 @@ bool px_i2c_rd(px_i2c_handle_t * handle,
     return true;
 }
 
-void px_i2c_ioctl_change_slave_adr(px_i2c_handle_t * handle,
-                                   uint8_t           slave_adr)
+void px_i2c_change_slave_adr(px_i2c_handle_t * handle,
+                             uint8_t           slave_adr)
 {
     // Verify that pointer to handle is not NULL
     PX_LOG_ASSERT(handle != NULL);
