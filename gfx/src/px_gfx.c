@@ -145,9 +145,7 @@ static px_gfx_xy_t px_gfx_vp_adjust_y(px_gfx_xy_t y)
     }
 }
 
-static void px_gfx_vp_draw_pixel(px_gfx_xy_t    x,
-                                 px_gfx_xy_t    y,
-                                 px_gfx_color_t color)
+static void px_gfx_vp_draw_pixel(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_color_t color)
 {
     // View port active?
     if(px_gfx.draw_prop.vp_active)
@@ -238,11 +236,7 @@ px_gfx_align_t px_gfx_align_set(px_gfx_align_t align)
     return old;
 }
 
-void px_gfx_view_port_set(px_gfx_xy_t     x,
-                          px_gfx_xy_t     y,
-                          px_gfx_xy_t     width,
-                          px_gfx_xy_t     height,
-                          px_gfx_xy_ref_t xy_ref)
+void px_gfx_view_port_set(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t width, px_gfx_xy_t height, px_gfx_xy_ref_t xy_ref)
 {
     px_gfx.draw_prop.vp.x      = x;
     px_gfx.draw_prop.vp.y      = y;
@@ -265,8 +259,7 @@ const px_gfx_font_t * px_gfx_font_set(const px_gfx_font_t * font)
     return old;
 }
 
-void px_gfx_draw_pixel(px_gfx_xy_t    x,
-                       px_gfx_xy_t    y)
+void px_gfx_draw_pixel(px_gfx_xy_t x, px_gfx_xy_t y)
 {
     // Adjust coordinates relative to viewport
     x = px_gfx_vp_adjust_x(x);
@@ -277,10 +270,7 @@ void px_gfx_draw_pixel(px_gfx_xy_t    x,
     px_gfx_vp_draw_pixel(x, y, px_gfx.draw_prop.color_fg);
 }
 
-void px_gfx_draw_line(px_gfx_xy_t    x1,
-                      px_gfx_xy_t    y1,
-                      px_gfx_xy_t    x2,
-                      px_gfx_xy_t    y2)
+void px_gfx_draw_line(px_gfx_xy_t x1, px_gfx_xy_t y1, px_gfx_xy_t x2, px_gfx_xy_t y2)
 {
     // Vertical line?
     if(x1 == x2)
@@ -293,7 +283,7 @@ void px_gfx_draw_line(px_gfx_xy_t    x1,
         }
         px_gfx_draw_line_ver(x1, y1, y2 - y1 + 1);
     }
-    // Horisontal line?
+    // Horizontal line?
     else if(y1 == y2)
     {
         // Must x1 and x2 be swapped?
@@ -407,9 +397,7 @@ void px_gfx_draw_line(px_gfx_xy_t    x1,
     }
 }
 
-void px_gfx_draw_line_hor(px_gfx_xy_t    x,
-                          px_gfx_xy_t    y,
-                          px_gfx_xy_t    width)
+void px_gfx_draw_line_hor(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t width)
 {
     px_gfx_xy_t i;
 
@@ -426,9 +414,7 @@ void px_gfx_draw_line_hor(px_gfx_xy_t    x,
     }
 }
 
-void px_gfx_draw_line_ver(px_gfx_xy_t    x,
-                          px_gfx_xy_t    y,
-                          px_gfx_xy_t    height)
+void px_gfx_draw_line_ver(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t height)
 {
     px_gfx_xy_t j;
 
@@ -445,10 +431,7 @@ void px_gfx_draw_line_ver(px_gfx_xy_t    x,
     }
 }
 
-void px_gfx_draw_rect(px_gfx_xy_t    x,
-                      px_gfx_xy_t    y,
-                      px_gfx_xy_t    width,
-                      px_gfx_xy_t    height)
+void px_gfx_draw_rect(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t width, px_gfx_xy_t height)
 {
     // Top
     px_gfx_draw_line_hor(x, y, width);
@@ -460,10 +443,7 @@ void px_gfx_draw_rect(px_gfx_xy_t    x,
     px_gfx_draw_line_ver(x + width - 1, y, height);
 }
 
-void px_gfx_draw_fill_fg(px_gfx_xy_t    x,
-                         px_gfx_xy_t    y,
-                         px_gfx_xy_t    width,
-                         px_gfx_xy_t    height)
+void px_gfx_draw_fill_fg(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t width, px_gfx_xy_t height)
 {
     px_gfx_xy_t i, j;
 
@@ -482,10 +462,7 @@ void px_gfx_draw_fill_fg(px_gfx_xy_t    x,
     }    
 }
 
-void px_gfx_draw_fill_bg(px_gfx_xy_t    x,
-                         px_gfx_xy_t    y,
-                         px_gfx_xy_t    width,
-                         px_gfx_xy_t    height)
+void px_gfx_draw_fill_bg(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t width, px_gfx_xy_t height)
 {
     px_gfx_xy_t i, j;
 
@@ -504,9 +481,7 @@ void px_gfx_draw_fill_bg(px_gfx_xy_t    x,
     }    
 }
 
-void px_gfx_draw_circ(px_gfx_xy_t    x,
-                      px_gfx_xy_t    y,
-                      px_gfx_xy_t    radius)
+void px_gfx_draw_circ(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t radius)
 {
     // https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
     // https://rosettacode.org/wiki/Bitmap/Midpoint_circle_algorithm#C
@@ -560,9 +535,7 @@ void px_gfx_draw_circ(px_gfx_xy_t    x,
     }
 }
 
-void px_gfx_draw_img(const px_gfx_img_t * img,
-                     px_gfx_xy_t          x,
-                     px_gfx_xy_t          y)
+void px_gfx_draw_img(px_gfx_xy_t x, px_gfx_xy_t y, const px_gfx_img_t * img)
 {
     px_gfx_xy_t     i;
     px_gfx_xy_t     j;
@@ -633,9 +606,7 @@ void px_gfx_draw_img(const px_gfx_img_t * img,
     }   
 }
 
-void px_gfx_draw_char(px_gfx_xy_t           x,
-                      px_gfx_xy_t           y,
-                      char                  glyph)
+void px_gfx_draw_char(px_gfx_xy_t x, px_gfx_xy_t y, char glyph)
 {
     px_gfx_img_t          img;
     const px_gfx_font_t * font        = px_gfx.draw_prop.font;
@@ -665,12 +636,10 @@ void px_gfx_draw_char(px_gfx_xy_t           x,
     img.height = font->height;
     img.data   = data;
     // Draw glyph
-    px_gfx_draw_img(&img, x, y);
+    px_gfx_draw_img(x, y, &img);
 }
 
-void px_gfx_draw_str(px_gfx_xy_t           x,
-                     px_gfx_xy_t           y,
-                     const char *          str)
+void px_gfx_draw_str(px_gfx_xy_t  x, px_gfx_xy_t  y, const char * str)
 {
     const px_gfx_font_t * font = px_gfx.draw_prop.font;
 
@@ -709,9 +678,7 @@ void px_gfx_draw_str(px_gfx_xy_t           x,
     px_gfx.draw_prop.align = align;
 }
 
-void px_gfx_printf(px_gfx_xy_t           x,
-                   px_gfx_xy_t           y,
-                   const char *          format, ...)
+void px_gfx_printf(px_gfx_xy_t x, px_gfx_xy_t y, const char * format, ...)
 {
     va_list args;
     char str[PX_GFX_CFG_STR_BUFFER_SIZE];

@@ -73,7 +73,7 @@ int main(void)
     // Draw text
     px_gfx_draw_str(30, 2, "Hello World!");
     // Draw image
-    px_gfx_draw_img(&px_gfx_img_dino, PX_GFX_X_MID + 30, PX_GFX_Y_MID - 15);
+    px_gfx_draw_img(PX_GFX_X_MID + 30, PX_GFX_Y_MID - 15, &px_gfx_img_dino);
 
     // Update display
     px_gfx_draw_update();

@@ -86,7 +86,7 @@ int main(void)
         // Draw image
         img = img_array[i];
         px_gfx_align_set(PX_GFX_ALIGN_MID);
-        px_gfx_draw_img(img, PX_GFX_DISP_SIZE_X / 2, PX_GFX_DISP_SIZE_Y / 2 - 1);
+        px_gfx_draw_img(PX_GFX_DISP_SIZE_X / 2, PX_GFX_DISP_SIZE_Y / 2 - 1, img);
         // Update display
         px_gfx_draw_update();
         // Delay

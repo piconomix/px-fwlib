@@ -239,7 +239,7 @@ int main(void)
     PX_LCD_BACKLIGHT_ON();
     px_gfx_init();
     px_gfx_align_set(PX_GFX_ALIGN_MID);
-    px_gfx_draw_img(&px_gfx_img_hero_logo, PX_GFX_X_MID, PX_GFX_Y_MID);    
+    px_gfx_draw_img(PX_GFX_X_MID, PX_GFX_Y_MID, &px_gfx_img_hero_logo);
     px_gfx_draw_update();
     px_gfx_draw_prop_reset();
 

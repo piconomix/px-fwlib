@@ -353,13 +353,13 @@ void px_gfx_draw_circ(px_gfx_xy_t x,
 /**
  *  Draw a graphic image using the current foreground and background color.
  *  
- *  @param img  Pointer to image structure
  *  @param x    X coordinate of image
  *  @param y    Y coordinate of image
+ *  @param img  Pointer to image structure
  */
-void px_gfx_draw_img(const px_gfx_img_t * img,
-                     px_gfx_xy_t          x,
-                     px_gfx_xy_t          y);
+void px_gfx_draw_img(px_gfx_xy_t          x,
+                     px_gfx_xy_t          y,
+                     const px_gfx_img_t * img);
 
 /**
  *  Draw a font character using the current foreground color.
