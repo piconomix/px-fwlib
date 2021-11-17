@@ -99,19 +99,19 @@ int main(void)
         // Draw aliens
         for(i = 0; i < 8; i++)
         {
-            px_gfx_draw_img(&px_gfx_img_alien1, i * 8,  8);
-            px_gfx_draw_img(&px_gfx_img_alien2, i * 8,  16);
-            px_gfx_draw_img(&px_gfx_img_alien2, i * 8,  24);
-            px_gfx_draw_img(&px_gfx_img_alien3, i * 8,  32);
-            px_gfx_draw_img(&px_gfx_img_alien3, i * 8,  40);
+            px_gfx_draw_img(i * 8,  8,  &px_gfx_img_alien1);
+            px_gfx_draw_img(i * 8,  16, &px_gfx_img_alien2);
+            px_gfx_draw_img(i * 8,  24, &px_gfx_img_alien2);
+            px_gfx_draw_img(i * 8,  32, &px_gfx_img_alien3);
+            px_gfx_draw_img(i * 8,  40, &px_gfx_img_alien3);
         }
         // Draw bases
-        px_gfx_draw_img(&px_gfx_img_base, 12, PX_GFX_Y_MAX - 10);
-        px_gfx_draw_img(&px_gfx_img_base, 31, PX_GFX_Y_MAX - 10);
-        px_gfx_draw_img(&px_gfx_img_base, 50, PX_GFX_Y_MAX - 10);
-        px_gfx_draw_img(&px_gfx_img_base, 69, PX_GFX_Y_MAX - 10);
+        px_gfx_draw_img(12, PX_GFX_Y_MAX - 10, &px_gfx_img_base);
+        px_gfx_draw_img(31, PX_GFX_Y_MAX - 10, &px_gfx_img_base);
+        px_gfx_draw_img(50, PX_GFX_Y_MAX - 10, &px_gfx_img_base);
+        px_gfx_draw_img(69, PX_GFX_Y_MAX - 10, &px_gfx_img_base);
         // Draw ship
-        px_gfx_draw_img(&px_gfx_img_ship, ship_x,  PX_GFX_Y_MAX - 5);
+        px_gfx_draw_img(ship_x,  PX_GFX_Y_MAX - 5, &px_gfx_img_ship);
         // Wait until it is time to draw new frame
         while(!px_systmr_has_expired(&tmr)) {;}
         px_systmr_reset(&tmr);
