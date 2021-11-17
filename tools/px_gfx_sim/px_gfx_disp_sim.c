@@ -47,8 +47,8 @@ void px_gfx_disp_buf_clear(void)
 }
 
 void px_gfx_disp_buf_pixel(px_gfx_xy_t    x,
-                               px_gfx_xy_t    y,
-                               px_gfx_color_t color)
+                           px_gfx_xy_t    y,
+                           px_gfx_color_t color)
 {
     uint8_t * data;
 
@@ -76,7 +76,7 @@ void px_gfx_disp_update(const px_gfx_area_t * area)
     px_gfx_disp_sim_draw(area);
 }
 
-void px_gfx_disp_dbg_report_buf(void)
+void px_gfx_disp_log_report_buf(void)
 {
     px_gfx_xy_t x, y;
 
@@ -86,14 +86,14 @@ void px_gfx_disp_dbg_report_buf(void)
         {
             if(px_gfx_frame_buf[y][x])
             {
-                putchar('1');
+                PX_LOG_TRACE('1');
             }
             else
             {
-                putchar('0');
+                PX_LOG_TRACE('0');
             }
         }
-        putchar('\n');
+        PX_LOG_TRACE('\n');
     }
 }
 

@@ -43,10 +43,10 @@ extern "C"
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 void px_gfx_disp_buf_clear     (void);
 void px_gfx_disp_buf_pixel     (px_gfx_xy_t    x,
-                                   px_gfx_xy_t    y,
-                                   px_gfx_color_t color);
+                                px_gfx_xy_t    y,
+                                px_gfx_color_t color);
 void px_gfx_disp_update        (const px_gfx_area_t * area);
-void px_gfx_disp_dbg_report_buf(void);
+void px_gfx_disp_log_report_buf(void);
 
 /* _____MACROS_______________________________________________________________ */
 

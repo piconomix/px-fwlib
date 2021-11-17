@@ -83,7 +83,7 @@ void px_gfx_disp_update(const px_gfx_area_t * area)
     }
 }
 
-void px_gfx_disp_dbg_report_buf(void)
+void px_gfx_disp_log_report_buf(void)
 {
     px_gfx_xy_t x, y;
 
