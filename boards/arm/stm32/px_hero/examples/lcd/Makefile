@@ -75,10 +75,13 @@ SRC += $(BSP)/src/px_board.c
 SRC += res/px_gfx_img_dino.c
 SRC += $(PX_FWLIB)/$(ARCH)/src/px_gpio.c
 SRC += $(PX_FWLIB)/$(ARCH)/src/px_spi.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_uart.c
 SRC += $(PX_FWLIB)/devices/display/src/px_lcd_st7567_jhd12864.c
 SRC += $(PX_FWLIB)/gfx/src/px_gfx.c
 SRC += $(PX_FWLIB)/gfx/src/px_gfx_disp_st7567_jhd12864.c
 SRC += $(PX_FWLIB)/gfx/fonts/src/px_gfx_font_5x7.c
+SRC += $(PX_FWLIB)/utils/src/px_log.c
+SRC += $(PX_FWLIB)/utils/src/px_ring_buf.c
 SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 SRC += $(STMCUBE)/Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_ll_utils.c
 
@@ -138,6 +141,7 @@ INCDIRS += $(STMCUBE_USB)/Core/Inc
 CDEFS += STM32L0
 CDEFS += STM32L072xx
 CDEFS += USE_FULL_LL_DRIVER
+CDEFS += PX_LOG=1
 #CDEFS += USE_HAL_DRIVER
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)

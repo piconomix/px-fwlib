@@ -21,18 +21,23 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_board.h"
+#include "px_uart.h"
 #include "px_spi.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
 #include "px_gfx_res.h"
+#include "px_gfx_disp.h"
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+PX_LOG_NAME("main");
 
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____LOCAL VARIABLES______________________________________________________ */
+static px_uart_handle_t px_uart_handle;
 static px_spi_handle_t px_spi_lcd_handle;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
@@ -44,7 +49,14 @@ int main(void)
 {
     // Initialize board
     px_board_init();
-
+    // Initialise UART
+    px_uart_init();
+    px_uart_open2(&px_uart_handle,
+                  PX_UART_NR_1,
+                  115200,
+                  PX_UART_DATA_BITS_8,
+                  PX_UART_PARITY_NONE,
+                  PX_UART_STOP_BITS_1);
     // Initialise LCD driver
     px_spi_init();
     px_spi_open2(&px_spi_lcd_handle,
@@ -78,6 +90,22 @@ int main(void)
     // Update display
     px_gfx_draw_update();
 
+#if PX_LOG
+    px_gfx_disp_log_report_buf();
+#endif
+
     // Block forever
     while(true) {;}
 }
+
+void main_log_putchar(char data)
+{
+    // New line character?
+    if(data == '\n')
+    {
+        // Prepend a carriage return
+        main_log_putchar('\r');
+    }
+    px_uart_putchar(&px_uart_handle, data);
+}
+
