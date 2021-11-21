@@ -410,6 +410,11 @@ void _px_log_trace(const char * format, ...)
     va_end(args);
 }
 
+void _px_log_trace_char(char c)
+{
+    px_log_putchar(c);
+}
+
 void _px_log_trace_data(const void * data, size_t nr_of_bytes)
 {
     size_t          i;

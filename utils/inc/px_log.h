@@ -318,6 +318,13 @@ void _px_log_assert(const char * name,
 void _px_log_trace(const char * format, ...);
 
 /**
+ *  Output a character.
+ *
+ *  @param c        Character to output
+ */
+void _px_log_trace_char(char c);
+
+/**
  *  Output the content of a buffer as an array of HEX values.
  *  
  *  @param data         Pointer to buffer containing data to display
@@ -451,6 +458,13 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
 #define PX_LOG_TRACE(format, ...) _px_log_trace(PX_PGM_STR(format), ## __VA_ARGS__)
 
 /**
+ *  Macro to output a char if #PX_LOG=1
+ *
+ *  @param c            Character to output
+ */
+#define PX_LOG_TRACE_CHAR(c) _px_log_trace_char(c)
+
+/**
  *  Macro to output the content of a buffer if #PX_LOG=1
  *  
  *  The data is displayed as an array of HEX values.
@@ -487,6 +501,7 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
     #define PX_LOG_V(format, ...)                   ((void)0)
     #define PX_LOG_ASSERT(expression)               ((void)0)
     #define PX_LOG_TRACE(format, ...)               ((void)0)
+    #define PX_LOG_TRACE_CHAR(c)                    ((void)0)
     #define PX_LOG_TRACE_DATA(data, nr_of_bytes)    ((void)0)
     #define PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes) ((void)0)
 #endif

@@ -93,13 +93,13 @@ void px_gfx_disp_log_report_buf(void)
         {
             if(((px_gfx_frame_buf[y / 8][x]) & (1 << (y % 8))) != 0)
             {
-                PX_LOG_TRACE("1");
+                PX_LOG_TRACE_CHAR('1');
             }
             else
             {
-                PX_LOG_TRACE("0");
+                PX_LOG_TRACE_CHAR('0');
             }
         }
-        PX_LOG_TRACE("\n");
+        PX_LOG_TRACE_CHAR('\n');
     }
 }
