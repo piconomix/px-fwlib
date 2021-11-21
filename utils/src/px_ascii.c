@@ -31,7 +31,7 @@ PX_LOG_NAME("px_ascii")
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-static const char px_ascii_strings[][4] =
+static const char px_ascii_strings[32][4] =
 {
     {"NUL"},    // 0    Null
     {"SOH"},    // 1    Start of Header
