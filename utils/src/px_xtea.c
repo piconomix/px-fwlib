@@ -69,21 +69,21 @@ void px_xtea_encrypt(uint32_t data[2] )
     data[1] = d1;
 }
 
-size_t px_xtea_encrypt_data_ecb(const uint8_t * data_in, uint8_t * data_out, size_t nr_of_bytes_in)
+size_t px_xtea_encrypt_data_ecb(const uint8_t * data_in, uint8_t * data_out, size_t nr_of_bytes)
 {
     uint32_t buf[2];
     size_t   nr_of_bytes_out = 0;
 
-    while(nr_of_bytes_in != 0)
+    while(nr_of_bytes != 0)
     {
         // Less than 8 bytes (64 bits)?
-        if(nr_of_bytes_in < 8)
+        if(nr_of_bytes < 8)
         {
             // Set bytes to zero
             buf[0] = 0;
             buf[1] = 0;
             // Copy remaining bytes
-            memcpy(buf, data_in, nr_of_bytes_in);
+            memcpy(buf, data_in, nr_of_bytes);
             // Encrypt block
             px_xtea_encrypt(buf);
             memcpy(data_out, buf, 8);
@@ -100,7 +100,7 @@ size_t px_xtea_encrypt_data_ecb(const uint8_t * data_in, uint8_t * data_out, siz
             px_xtea_encrypt(buf);
             memcpy(data_out, buf, 8);
             // Next block
-            nr_of_bytes_in  -= 8;
+            nr_of_bytes  -= 8;
             nr_of_bytes_out += 8;
             data_in         += 8;
             data_out        += 8;
@@ -127,21 +127,21 @@ void px_xtea_decrypt(uint32_t data[2] )
     data[1] = d1;
 }
 
-size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in, uint8_t * data_out, size_t nr_of_bytes_in)
+size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in, uint8_t * data_out, size_t nr_of_bytes)
 {
     uint32_t buf[2];
     size_t   nr_of_bytes_out = 0;
 
-    while(nr_of_bytes_in != 0)
+    while(nr_of_bytes != 0)
     {
         // Less than 8 bytes (64 bits)?
-        if(nr_of_bytes_in < 8)
+        if(nr_of_bytes < 8)
         {
             // Set bytes to zero
             buf[0] = 0;
             buf[1] = 0;
             // Copy remaining bytes
-            memcpy(buf, data_in, nr_of_bytes_in);
+            memcpy(buf, data_in, nr_of_bytes);
             // Decrypt block
             px_xtea_decrypt(buf);
             memcpy(data_out, buf, 8);
@@ -158,7 +158,7 @@ size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in, uint8_t * data_out, siz
             px_xtea_decrypt(buf);
             memcpy(data_out, buf, 8);
             // Next block
-            nr_of_bytes_in  -= 8;
+            nr_of_bytes     -= 8;
             nr_of_bytes_out += 8;
             data_in         += 8;
             data_out        += 8;

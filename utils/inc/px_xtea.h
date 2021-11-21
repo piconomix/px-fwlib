@@ -78,13 +78,13 @@ void px_xtea_encrypt(uint32_t data[2]);
  *  
  *  @param data_in          Pointer to data buffer to be encrypted
  *  @param data_out         Pointer to data buffer to contain encrypted data
- *  @param nr_of_bytes_in   Number of bytes to encrypt
+ *  @param nr_of_bytes      Number of bytes to encrypt
  *  
  *  @returns size_t         Number of bytes encrypted (multiple of block size)
  */
 size_t px_xtea_encrypt_data_ecb(const uint8_t * data_in,
                                 uint8_t *       data_out, 
-                                size_t          nr_of_bytes_in);
+                                size_t          nr_of_bytes);
 
 /**
  *  Decrypt 64-bit data with 128-bit key. 
@@ -105,13 +105,13 @@ void px_xtea_decrypt(uint32_t data[2]);
  *  
  *  @param data_in          Pointer to data buffer to be decrypted
  *  @param data_out         Pointer to data buffer to contain decrypted data
- *  @param nr_of_bytes_in   Number of bytes to decrypt
+ *  @param nr_of_bytes      Number of bytes to decrypt
  *  
  *  @returns size_t         Number of bytes decrypted (multiple of block size)
  */
 size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in, 
                                 uint8_t *       data_out,
-                                size_t          nr_of_bytes_in);
+                                size_t          nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
 
