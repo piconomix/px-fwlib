@@ -360,7 +360,7 @@ void px_rtc_util_date_time_wr(px_rtc_date_time_t * date_time)
 #endif
 
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time));
 
 #if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
     // Convert date-time to seconds since Y2K
@@ -431,7 +431,7 @@ void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm,
                           px_rtc_alarm_mask_t        alarm_mask)
 {
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(alarm));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(alarm));
 
     // Disable alarm first
     px_rtc_util_alarm_mask = PX_RTC_UTIL_ALARM_MASK_DIS;
@@ -512,7 +512,7 @@ void px_rtc_util_date_time_reset(px_rtc_date_time_t * date_time)
 #endif
 }
 
-bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time)
+bool px_rtc_util_date_time_fields_are_valid(const px_rtc_date_time_t * date_time)
 {
     // Year?
     if(date_time->year > 99)
@@ -558,8 +558,8 @@ px_rtc_time_compare_t px_rtc_util_cmp_date_time(const px_rtc_date_time_t * date_
                                                 const px_rtc_date_time_t * date_time2)
 {
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time1));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time2));
 
     // Year?
     if(date_time1->year > date_time2->year)
@@ -623,8 +623,8 @@ px_rtc_time_compare_t px_rtc_util_cmp_date(const px_rtc_date_time_t * date_time1
                                            const px_rtc_date_time_t * date_time2)
 {
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time1));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time2));
 
     // Year?
     if(date_time1->year > date_time2->year)
@@ -661,8 +661,8 @@ bool px_rtc_util_date_is_equal(const px_rtc_date_time_t * date_time1,
                                const px_rtc_date_time_t * date_time2)
 {
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time1));
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time2));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time1));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time2));
 
     // Year?
     if(date_time1->year != date_time2->year)
@@ -690,7 +690,7 @@ px_rtc_sec_since_y2k_t px_rtc_util_date_time_to_sec_since_y2k(const px_rtc_date_
     px_rtc_sec_since_y2k_t sec_since_y2k;
 
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time));
 
     // Years (ignoring extra day for each leap year)
     sec_since_y2k = date_time->year * PX_RTC_SEC_PER_DAY * 365ul;
@@ -773,8 +773,8 @@ void px_rtc_util_date_time_inc(px_rtc_date_time_t *       date_time,
                                const px_rtc_date_time_t * date_time_inc)
 {
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time_inc));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time_inc));
 
     // Seconds
     date_time->sec += date_time_inc->sec;
@@ -845,8 +845,8 @@ void px_rtc_util_date_time_dec(px_rtc_date_time_t *       date_time,
                                const px_rtc_date_time_t * date_time_dec)
 {
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time_dec));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time_dec));
 
     // Seconds
     date_time->sec -= date_time_dec->sec;
@@ -920,7 +920,7 @@ px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * dat
     uint8_t  day;
 
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_valid(date_time));
+    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(date_time));
 
     // Years (ignoring extra day for each leap year)
     days = date_time->year * 365ul;

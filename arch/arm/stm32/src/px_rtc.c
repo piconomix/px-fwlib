@@ -138,7 +138,7 @@ void px_rtc_init(void)
 void px_rtc_date_time_wr(const px_rtc_date_time_t * date_time)
 {
     // Verify that date-time fields are valid
-    if(!px_rtc_util_date_time_fields_valid(date_time))
+    if(!px_rtc_util_date_time_fields_are_valid(date_time))
     {
         return;
     }

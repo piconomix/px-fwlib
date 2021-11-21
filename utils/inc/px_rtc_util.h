@@ -56,25 +56,25 @@ extern "C" {
 
 /// @name Alarm bit mask
 /// @{
-#define PX_RTC_UTIL_ALARM_MASK_DIS      0       ///< Disable alarm
-#define PX_RTC_UTIL_ALARM_MASK_SEC      (1 << 0)  ///< Alarm match on second
-#define PX_RTC_UTIL_ALARM_MASK_MIN      (1 << 1)  ///< Alarm match on minute
-#define PX_RTC_UTIL_ALARM_MASK_HOUR     (1 << 2)  ///< Alarm match on hour
-#define PX_RTC_UTIL_ALARM_MASK_DAY      (1 << 3)  ///< Alarm match on day
-#define PX_RTC_UTIL_ALARM_MASK_MONTH    (1 << 4)  ///< Alarm match on month
-#define PX_RTC_UTIL_ALARM_MASK_YEAR     (1 << 5)  ///< Alarm match on year
+#define PX_RTC_UTIL_ALARM_MASK_DIS      0           ///< Disable alarm
+#define PX_RTC_UTIL_ALARM_MASK_SEC      (1 << 0)    ///< Alarm match on second
+#define PX_RTC_UTIL_ALARM_MASK_MIN      (1 << 1)    ///< Alarm match on minute
+#define PX_RTC_UTIL_ALARM_MASK_HOUR     (1 << 2)    ///< Alarm match on hour
+#define PX_RTC_UTIL_ALARM_MASK_DAY      (1 << 3)    ///< Alarm match on day
+#define PX_RTC_UTIL_ALARM_MASK_MONTH    (1 << 4)    ///< Alarm match on month
+#define PX_RTC_UTIL_ALARM_MASK_YEAR     (1 << 5)    ///< Alarm match on year
 /// @}
 
 /// Day of week
 typedef enum
 {
-    PX_RTC_UTIL_DAY_MON = 0,                    ///< Monday
-    PX_RTC_UTIL_DAY_TUE = 1,                    ///< Tuesday
-    PX_RTC_UTIL_DAY_WED = 2,                    ///< Wednesday
-    PX_RTC_UTIL_DAY_THU = 3,                    ///< Thursday
-    PX_RTC_UTIL_DAY_FRI = 4,                    ///< Friday
-    PX_RTC_UTIL_DAY_SAT = 5,                    ///< Saturday
-    PX_RTC_UTIL_DAY_SUN = 6,                    ///< Sunday
+    PX_RTC_UTIL_DAY_MON = 0,                        ///< Monday
+    PX_RTC_UTIL_DAY_TUE = 1,                        ///< Tuesday
+    PX_RTC_UTIL_DAY_WED = 2,                        ///< Wednesday
+    PX_RTC_UTIL_DAY_THU = 3,                        ///< Thursday
+    PX_RTC_UTIL_DAY_FRI = 4,                        ///< Friday
+    PX_RTC_UTIL_DAY_SAT = 5,                        ///< Saturday
+    PX_RTC_UTIL_DAY_SUN = 6,                        ///< Sunday
 } px_rtc_util_day_t;
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
@@ -111,9 +111,9 @@ typedef struct
 /// Result of RTC time comparision
 typedef enum
 {
-    PX_RTC_UTIL_TIME_OLDER,             ///< Time is older
-    PX_RTC_UTIL_TIME_EQUAL,             ///< Time is equal
-    PX_RTC_UTIL_TIME_NEWER              ///< Time is newer
+    PX_RTC_UTIL_TIME_OLDER,                 ///< Time is older
+    PX_RTC_UTIL_TIME_EQUAL,                 ///< Time is equal
+    PX_RTC_UTIL_TIME_NEWER                  ///< Time is newer
 } px_rtc_time_compare_t;
 
 /// Alarm mask
@@ -252,7 +252,7 @@ void px_rtc_util_date_time_reset(px_rtc_date_time_t * date_time);
  *  @retval true            All of the fields are valid.
  *  @retval false           One or more of the fields are invalid.
  */
-bool px_rtc_util_date_time_fields_valid(const px_rtc_date_time_t * date_time);
+bool px_rtc_util_date_time_fields_are_valid(const px_rtc_date_time_t * date_time);
 
 /**
  *  Compare two date-time structures to see if the first is older, equal or

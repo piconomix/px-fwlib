@@ -64,7 +64,7 @@ static const char* px_cli_cmd_fn_rtc_wr(uint8_t argc, char* argv[])
     date_time.min   = min;
     date_time.sec   = sec;
 
-    if(!px_rtc_util_date_time_fields_valid(&date_time))
+    if(!px_rtc_util_date_time_fields_are_valid(&date_time))
     {
         return PX_PGM_STR("Error! One or more date-time fields are invalid");
     }
