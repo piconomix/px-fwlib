@@ -43,47 +43,47 @@
  *  
  *  Example:
  *  
- *  @code
- *      Buffer is empty:
+ *  ```
+ *  Buffer is empty:
  *
- *                   wr
- *                   |
- *      [x][x][x][x][x][x][x][x]
- *                   |
- *                   rd
+ *               wr
+ *               |
+ *  [x][x][x][x][x][x][x][x]
+ *               |
+ *               rd
  *
- *      One byte is written ('1') to the buffer:
+ *  One byte is written ('1') to the buffer:
  *
- *                      wr
- *                      |
- *      [x][x][x][x][1][x][x][x]
- *                   |
- *                   rd
+ *                  wr
+ *                  |
+ *  [x][x][x][x][1][x][x][x]
+ *               |
+ *               rd
  *
- *      One byte is read ('1'); buffer is empty again:
+ *  One byte is read ('1'); buffer is empty again:
  *
- *                      wr
- *                      |
- *      [x][x][x][x][x][x][x][x]
- *                      |
- *                      rd
+ *                  wr
+ *                  |
+ *  [x][x][x][x][x][x][x][x]
+ *                  |
+ *                  rd
  *
- *      5 bytes are written ('2','3','4','5','6'); buffer wraps:
+ *  5 bytes are written ('2','3','4','5','6'); buffer wraps:
  *
- *             wr
- *             |
- *      [5][6][x][x][x][2][3][4]
- *                      |
- *                      rd
+ *         wr
+ *         |
+ *  [5][6][x][x][x][2][3][4]
+ *                  |
+ *                  rd
  *
- *      2 more bytes are written ('7','8'); buffer is full:
+ *  2 more bytes are written ('7','8'); buffer is full:
  *
- *                   wr
- *                   |
- *      [5][6][7][8][x][2][3][4]
- *                      |
- *                      rd
- *  @endcode
+ *               wr
+ *               |
+ *  [5][6][7][8][x][2][3][4]
+ *                  |
+ *                  rd
+ *  ```
  *
  *  @{
  */
@@ -108,7 +108,7 @@ typedef struct
     uint8_t *                  buf;         ///< Pointer to fixed-size buffer
     px_ring_buf_idx_t          buf_size;    ///< Size of fixed-size buffer
     volatile px_ring_buf_idx_t idx_wr;      ///< Index that is next open position to write to in the buffer
-    volatile px_ring_buf_idx_t idx_rd;      ///< Index to the first byte to be read from the buffer
+    volatile px_ring_buf_idx_t idx_rd;      ///< Index to the next byte to be read from the buffer
 } px_ring_buf_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */

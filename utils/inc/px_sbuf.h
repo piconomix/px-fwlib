@@ -71,7 +71,7 @@ void px_sbuf_init(px_sbuf_t * sbuf, char * buf, size_t buf_size);
 /**
  *  Reset safe buffer
  *
- *  @param sbuf Pointer to buffer object
+ *  @param sbuf     Pointer to buffer object
  */
 void px_sbuf_reset(px_sbuf_t * sbuf);
 

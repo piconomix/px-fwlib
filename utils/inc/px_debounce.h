@@ -139,6 +139,8 @@ void px_debounce_update(px_debounce_t * debounce,
 
 /** 
  *  Return current debounced state of digital input.
+ *
+ *  @param debounce     Debounce state tracking structure to update
  */
 px_debounce_state_t px_debounce_state(const px_debounce_t * debounce);
 
