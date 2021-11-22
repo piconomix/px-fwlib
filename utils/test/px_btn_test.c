@@ -1,4 +1,4 @@
-#include "px_debounce.h"
+#include "px_btn.h"
 #include "px_gpio.h"
 #include "px_sysclk.h"
 #include "px_systmr.h"
@@ -9,8 +9,8 @@
 // Push Button is on PORT B, pin 0, configured as an input, pull-up enabled
 #define PX_GPIO_PB     PX_GPIO(D, 7, PX_GPIO_DIR_IN, PX_GPIO_INIT_PULL_UP)
 
-// Declare debounce state tracking structure
-px_debounce_t px_debounce_pb;
+// Create a button object
+px_btn_t px_btn;
 
 int main(void)
 {   
@@ -24,8 +24,8 @@ int main(void)
     PX_GPIO_INIT(PX_GPIO_LED);
     PX_GPIO_INIT(PX_GPIO_PB);
 
-    // Initialise debounce state
-    px_debounce_init(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));
+    // Initialise button state
+    px_btn_init(&px_btn, PX_GPIO_IN_IS_LO(PX_GPIO_PB));
 
     // Loop forever
     while(true)
@@ -33,18 +33,18 @@ int main(void)
         // Wait one systmr tick
         px_systmr_wait(1);
 
-        // Update debounce state
-        px_debounce_update(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));
+        // Update button state
+        px_btn_update(&px_btn, PX_GPIO_IN_IS_LO(PX_GPIO_PB));
 
         // Has button been pressed?
-        if(px_debounce_falling_edge_detected(&px_debounce_pb))
+        if(px_btn_event_press(&px_btn))
         {
             // Enable LED
             PX_GPIO_OUT_SET_HI(PX_GPIO_LED);
         }
         
         // Has button been released?
-        if(px_debounce_rising_edge_detected(&px_debounce_pb))
+        if(px_btn_event_release(&px_btn))
         {
             // Disable LED
             PX_GPIO_OUT_SET_LO(PX_GPIO_LED);

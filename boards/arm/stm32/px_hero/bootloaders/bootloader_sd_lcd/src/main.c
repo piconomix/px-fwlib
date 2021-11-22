@@ -34,7 +34,7 @@
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
 #include "px_gfx_fonts.h"
-#include "px_debounce.h"
+#include "px_btn.h"
 #include "ff.h"
 #include "px_log.h"
 
@@ -117,9 +117,9 @@ static char main_files[MAIN_FILES_MAX][MAIN_FILE_NAME_SIZE_MAX];
 static int  main_nr_of_files;
 
 // Debounced button presses
-static px_debounce_t main_debounce_btn_up;
-static px_debounce_t main_debounce_btn_dn;
-static px_debounce_t main_debounce_btn_yes;
+static px_btn_t main_btn_up;
+static px_btn_t main_btn_dn;
+static px_btn_t main_btn_yes;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 static void main_fatal_error(const char * error_msg) PX_ATTR_NORETURN;
@@ -356,9 +356,9 @@ static int main_gfx_usr_select(void)
     int i_old = 0;
 
     // Init debouncing for buttons
-    px_debounce_init(&main_debounce_btn_up,  true);
-    px_debounce_init(&main_debounce_btn_dn,  true);
-    px_debounce_init(&main_debounce_btn_yes, true);
+    px_btn_init(&main_btn_up,  false);
+    px_btn_init(&main_btn_dn,  false);
+    px_btn_init(&main_btn_yes, false);
     // Display arrow next to first file
     px_gfx_draw_char(0, 0, '>');
     px_gfx_draw_update();
@@ -367,11 +367,11 @@ static int main_gfx_usr_select(void)
     {
         // Updated debounced button states
         px_board_delay_ms(10);
-        px_debounce_update(&main_debounce_btn_up,  px_gpio_in_is_hi(&px_gpio_lcd_btn_3_up));
-        px_debounce_update(&main_debounce_btn_dn,  px_gpio_in_is_hi(&px_gpio_lcd_btn_4_dn));
-        px_debounce_update(&main_debounce_btn_yes, px_gpio_in_is_hi(&px_gpio_lcd_btn_5_yes));
+        px_btn_update(&main_btn_up,  px_gpio_in_is_lo(&px_gpio_lcd_btn_3_up));
+        px_btn_update(&main_btn_dn,  px_gpio_in_is_lo(&px_gpio_lcd_btn_4_dn));
+        px_btn_update(&main_btn_yes, px_gpio_in_is_lo(&px_gpio_lcd_btn_5_yes));
         // UP pressed?
-        if(px_debounce_falling_edge_detected(&main_debounce_btn_up))
+        if(px_btn_event_press(&main_btn_up))
         {
             // Move arrow up
             main_beep();
@@ -381,7 +381,7 @@ static int main_gfx_usr_select(void)
             }
         }
         // Down pressed?
-        if(px_debounce_falling_edge_detected(&main_debounce_btn_dn))
+        if(px_btn_event_press(&main_btn_dn))
         {
             // Move arrow down
             main_beep();
@@ -391,7 +391,7 @@ static int main_gfx_usr_select(void)
             }
         }
         // Yes pressed?
-        if(px_debounce_falling_edge_detected(&main_debounce_btn_yes))
+        if(px_btn_event_press(&main_btn_yes))
         {
             // Stop and return user selection
             main_beep();
@@ -481,7 +481,7 @@ int main(void)
             // Store SRAM magic value to signal that first reset has occured
             main_magic = MAIN_MAGIC_DOUBLE_TAP;
             // Wait ~ 500 ms
-            for(uint32_t i = 0x40000; i != S0; i--)
+            for(uint32_t i = 0x40000; i != 0; i--)
             {
                 // Prevent compiler from optimizing and removing empty delay loop
                 __asm__ __volatile__("\n\t");

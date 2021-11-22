@@ -36,7 +36,7 @@
 #include "px_spi.h"
 #include "px_i2c.h"
 #include "px_sysclk.h"
-#include "px_debounce.h"
+#include "px_btn.h"
 #include "px_sd.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
@@ -75,12 +75,12 @@ static const char main_cli_init_str[] =
     "    \\/          https://piconomix.com\n\n";
 
 // Debounced buttons
-static px_debounce_t px_debounce_pb1;
-static px_debounce_t px_debounce_pb2;
-static px_debounce_t px_debounce_pb3;
-static px_debounce_t px_debounce_pb4;
-static px_debounce_t px_debounce_pb5;
-static px_debounce_t px_debounce_pb6;
+static px_btn_t px_btn_1;
+static px_btn_t px_btn_2;
+static px_btn_t px_btn_3;
+static px_btn_t px_btn_4;
+static px_btn_t px_btn_5;
+static px_btn_t px_btn_6;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
@@ -175,34 +175,34 @@ static void main_report_button(uint8_t button)
 static void main_monitor_buttons(void)
 {
     // Update debounce state machines with push button states
-    px_debounce_update(&px_debounce_pb1, px_gpio_in_is_hi(&px_gpio_lcd_btn_1_lt));
-    px_debounce_update(&px_debounce_pb2, px_gpio_in_is_hi(&px_gpio_lcd_btn_2_rt));
-    px_debounce_update(&px_debounce_pb3, px_gpio_in_is_hi(&px_gpio_lcd_btn_3_up));
-    px_debounce_update(&px_debounce_pb4, px_gpio_in_is_hi(&px_gpio_lcd_btn_4_dn));
-    px_debounce_update(&px_debounce_pb5, px_gpio_in_is_hi(&px_gpio_lcd_btn_5_yes));
-    px_debounce_update(&px_debounce_pb6, px_gpio_in_is_hi(&px_gpio_lcd_btn_6_no));
+    px_btn_update(&px_btn_1, px_gpio_in_is_lo(&px_gpio_lcd_btn_1_lt));
+    px_btn_update(&px_btn_2, px_gpio_in_is_lo(&px_gpio_lcd_btn_2_rt));
+    px_btn_update(&px_btn_3, px_gpio_in_is_lo(&px_gpio_lcd_btn_3_up));
+    px_btn_update(&px_btn_4, px_gpio_in_is_lo(&px_gpio_lcd_btn_4_dn));
+    px_btn_update(&px_btn_5, px_gpio_in_is_lo(&px_gpio_lcd_btn_5_yes));
+    px_btn_update(&px_btn_6, px_gpio_in_is_lo(&px_gpio_lcd_btn_6_no));
     // Button pressed?
-    if(px_debounce_falling_edge_detected(&px_debounce_pb1))
+    if(px_btn_event_press(&px_btn_1))
     {
         main_report_button(1);
     }
-    if(px_debounce_falling_edge_detected(&px_debounce_pb2))
+    if(px_btn_event_press(&px_btn_2))
     {
         main_report_button(2);
     }
-    if(px_debounce_falling_edge_detected(&px_debounce_pb3))
+    if(px_btn_event_press(&px_btn_3))
     {
         main_report_button(3);
     }
-    if(px_debounce_falling_edge_detected(&px_debounce_pb4))
+    if(px_btn_event_press(&px_btn_4))
     {
         main_report_button(4);
     }
-    if(px_debounce_falling_edge_detected(&px_debounce_pb5))
+    if(px_btn_event_press(&px_btn_5))
     {
         main_report_button(5);
     }
-    if(px_debounce_falling_edge_detected(&px_debounce_pb6))
+    if(px_btn_event_press(&px_btn_6))
     {
         main_report_button(6);
     }
@@ -223,12 +223,12 @@ int main(void)
     PX_LOG_TRACE("Debug enabled\n");
 
     // Initialize debounced buttons
-    px_debounce_init(&px_debounce_pb1, px_gpio_in_is_hi(&px_gpio_lcd_btn_1_lt));
-    px_debounce_init(&px_debounce_pb2, px_gpio_in_is_hi(&px_gpio_lcd_btn_2_rt));
-    px_debounce_init(&px_debounce_pb3, px_gpio_in_is_hi(&px_gpio_lcd_btn_3_up));
-    px_debounce_init(&px_debounce_pb4, px_gpio_in_is_hi(&px_gpio_lcd_btn_4_dn));
-    px_debounce_init(&px_debounce_pb5, px_gpio_in_is_hi(&px_gpio_lcd_btn_5_yes));
-    px_debounce_init(&px_debounce_pb6, px_gpio_in_is_hi(&px_gpio_lcd_btn_6_no));
+    px_btn_init(&px_btn_1, false);
+    px_btn_init(&px_btn_2, false);
+    px_btn_init(&px_btn_3, false);
+    px_btn_init(&px_btn_4, false);
+    px_btn_init(&px_btn_5, false);
+    px_btn_init(&px_btn_6, false);
 
     // Beep
     px_board_buzzer_on(4000);

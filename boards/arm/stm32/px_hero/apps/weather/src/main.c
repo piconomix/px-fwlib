@@ -31,7 +31,7 @@
 #include "px_spi.h"
 #include "px_i2c.h"
 #include "px_sysclk.h"
-#include "px_debounce.h"
+#include "px_btn.h"
 #include "px_sd.h"
 #include "px_lcd_st7567_jhd12864.h"
 #include "px_gfx.h"
@@ -57,12 +57,12 @@ uint8_t          main_buffer[MAIN_BUFFER_SIZE];
 
 /* _____LOCAL VARIABLES______________________________________________________ */             
 // Debounced buttons
-static px_debounce_t px_debounce_pb1;
-static px_debounce_t px_debounce_pb2;
-static px_debounce_t px_debounce_pb3;
-static px_debounce_t px_debounce_pb4;
-static px_debounce_t px_debounce_pb5;
-static px_debounce_t px_debounce_pb6;
+static px_btn_t px_btn_1;
+static px_btn_t px_btn_2;
+static px_btn_t px_btn_3;
+static px_btn_t px_btn_4;
+static px_btn_t px_btn_5;
+static px_btn_t px_btn_6;
 // Timer
 static px_systmr_t tmr;
 
@@ -251,12 +251,12 @@ int main(void)
     // Report debug output
     PX_LOG_TRACE("Debug enabled\n");
     // Initialize debounced buttons
-    px_debounce_init(&px_debounce_pb1, px_gpio_in_is_hi(&px_gpio_lcd_btn_1_lt));
-    px_debounce_init(&px_debounce_pb2, px_gpio_in_is_hi(&px_gpio_lcd_btn_2_rt));
-    px_debounce_init(&px_debounce_pb3, px_gpio_in_is_hi(&px_gpio_lcd_btn_3_up));
-    px_debounce_init(&px_debounce_pb4, px_gpio_in_is_hi(&px_gpio_lcd_btn_4_dn));
-    px_debounce_init(&px_debounce_pb5, px_gpio_in_is_hi(&px_gpio_lcd_btn_5_yes));
-    px_debounce_init(&px_debounce_pb6, px_gpio_in_is_hi(&px_gpio_lcd_btn_6_no));
+    px_btn_init(&px_btn_1, false);
+    px_btn_init(&px_btn_2, false);
+    px_btn_init(&px_btn_3, false);
+    px_btn_init(&px_btn_4, false);
+    px_btn_init(&px_btn_5, false);
+    px_btn_init(&px_btn_6, false);
     // Beep
     px_board_buzzer_on(4000);
     px_board_delay_ms(100);

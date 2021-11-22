@@ -28,7 +28,7 @@
 #include "px_at45d.h"
 #include "px_systmr.h"
 #include "px_rtc_util.h"
-#include "px_debounce.h"
+#include "px_btn.h"
 
 #include "px_board.h"
 #include "px_uart.h"
@@ -58,7 +58,7 @@ PX_ATTR_PGM static const char main_cli_init_str[] =
     "|  __/   /  \\ PICONOMIX - Embedded Elegance\n"
     "|_|     /_/\\_\\    https://piconomix.com\n\n";
 
-static px_debounce_t px_debounce_pb;
+static px_btn_t px_btn;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
@@ -115,7 +115,7 @@ int main(void)
     uint8_t data;
 
     main_init();
-    px_debounce_init(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));
+    px_btn_init(&px_btn, PX_GPIO_IN_IS_LO(PX_GPIO_PB));
       
     // Enable LED
     PX_LED_ON();
@@ -132,9 +132,9 @@ int main(void)
     while(true)
     {
         // Update debounce state machine with push button state
-        px_debounce_update(&px_debounce_pb, PX_GPIO_IN_IS_HI(PX_GPIO_PB));
+        px_btn_update(&px_btn, PX_GPIO_IN_IS_LO(PX_GPIO_PB));
         // Button pressed?
-        if(px_debounce_falling_edge_detected(&px_debounce_pb))
+        if(px_btn_event_press(&px_btn))
         {
             // Indicate that key has been pressed
             printf("\nPB\n>");
