@@ -93,7 +93,10 @@ void px_btn_update(px_btn_t * btn, bool btn_is_pressed)
                     // Longer than minimum press?
                     if(btn->state_counter > PX_BTN_CFG_CLICK_PRESS_MIN)
                     {
-                        btn->nr_of_clicks++;    // Yes. Increment button click count
+                        if(btn->nr_of_clicks < PX_BTN_CFG_CLICKS_MAX)
+                        {
+                            btn->nr_of_clicks++;    // Yes. Increment button click count
+                        }
                     }
                     btn->flag.state         = 0;    // Change to LO state
                     btn->flag.event_release = 1;    // Set button release flag
