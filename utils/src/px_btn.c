@@ -238,24 +238,23 @@ bool px_btn_event_long_release(px_btn_t * btn)
     }
 }
 
-bool px_btn_event_click(px_btn_t * btn, uint8_t * nr_of_clicks)
+uint8_t px_btn_event_click(px_btn_t * btn)
 {
+    uint8_t nr_of_clicks;
+
     // Flag set?
     if(btn->flag.event_click)
     {
         // Clear flag
         btn->flag.event_click = 0;
-        if(nr_of_clicks != NULL)
-        {
-            *nr_of_clicks = btn->nr_of_clicks;
-        }
+        // Save number of clicks
+        nr_of_clicks = btn->nr_of_clicks;
+        // Reset number of clicks
         btn->nr_of_clicks = 0;
-        // Flag was set
-        return true;
+        return nr_of_clicks;
     }
     else
     {
-        // Flag is not set
-        return false;
+        return 0;
     }
 }
