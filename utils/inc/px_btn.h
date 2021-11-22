@@ -72,13 +72,13 @@
 #include "px_btn_cfg.h"
 
 // Check that all project specific options have been specified in "px_btn_cfg.h"
-#if (   !defined(PX_BTN_CFG_COUNT_MAX    ) \
-     || !defined(PX_BTN_CFG_THRESHOLD_LO ) \
-     || !defined(PX_BTN_CFG_THRESHOLD_HI ) \
-     || !defined(PX_BTN_CFG_LONG_COUNT   ) \
-     || !defined(PX_BTN_CFG_CLICKS_MAX   ) \
-     || !defined(PX_BTN_CFG_CLICK_WIN_MIN) \
-     || !defined(PX_BTN_CFG_CLICK_WIN_MAX)  )
+#if (   !defined(PX_BTN_CFG_COUNT_MAX        ) \
+     || !defined(PX_BTN_CFG_THRESHOLD_LO     ) \
+     || !defined(PX_BTN_CFG_THRESHOLD_HI     ) \
+     || !defined(PX_BTN_CFG_LONG_COUNT       ) \
+     || !defined(PX_BTN_CFG_CLICKS_MAX       ) \
+     || !defined(PX_BTN_CFG_CLICK_PRESS_MIN  ) \
+     || !defined(PX_BTN_CFG_CLICK_RELEASE_MAX)  )
 #error "One or more options not defined in 'px_btn_cfg.h'"
 #endif
 #if (PX_BTN_CFG_COUNT_MAX > 0xff)

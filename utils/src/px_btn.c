@@ -90,26 +90,10 @@ void px_btn_update(px_btn_t * btn, bool btn_is_pressed)
                 // Must state be changed?
                 if(btn->flag.state == 1)
                 {
-                    // Is this the first click?
-                    if(btn->nr_of_clicks == 0)
+                    // Longer than minimum press?
+                    if(btn->state_counter > PX_BTN_CFG_CLICK_PRESS_MIN)
                     {
-                        // Longer than minimum press?
-                        if(btn->state_counter >= PX_BTN_CFG_CLICK_WIN_MIN)
-                        {
-                            btn->nr_of_clicks = 1;    // Yes. First button click detected
-                        }
-                    }
-                    else
-                    {
-                        // Within button click window?
-                        if(  (btn->state_counter >= PX_BTN_CFG_CLICK_WIN_MIN)
-                           &&(btn->state_counter <= PX_BTN_CFG_CLICK_WIN_MAX)  )
-                        {
-                            if(btn->nr_of_clicks < PX_BTN_CFG_CLICKS_MAX)
-                            {
-                                btn->nr_of_clicks++;    // Yes. Increment button click count
-                            }
-                        }
+                        btn->nr_of_clicks++;    // Yes. Increment button click count
                     }
                     btn->flag.state         = 0;    // Change to LO state
                     btn->flag.event_release = 1;    // Set button release flag
@@ -138,7 +122,7 @@ void px_btn_update(px_btn_t * btn, bool btn_is_pressed)
         if((btn->nr_of_clicks != 0) && (btn->flag.state == 0))
         {
             // Outside button click release window?
-            if(btn->state_counter == (PX_BTN_CFG_CLICK_WIN_MAX + 1))
+            if(btn->state_counter == PX_BTN_CFG_CLICK_RELEASE_MAX)
             {
                 btn->flag.event_click = 1;  // Yes. Set button click flag
             }
