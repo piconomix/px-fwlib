@@ -54,12 +54,12 @@ typedef uint8_t px_queue_item_size_t;
 /// Queue structure
 typedef struct
 {
-    uint8_t *            item_buf;    ///< Array buffer to hold item data
-    px_queue_idx_t       idx_rd;      ///< Read index
-    px_queue_idx_t       idx_wr;      ///< Write index
-    px_queue_idx_t       item_count;  ///< Number of items stored in queue
-    px_queue_idx_t       items_max;   ///< Maximum number of items that can be stored in queue
-    px_queue_item_size_t item_size;   ///< Size of each item
+    uint8_t *            buf;           ///< Buffer to hold item data
+    px_queue_idx_t       idx_rd;        ///< Read index
+    px_queue_idx_t       idx_wr;        ///< Write index
+    px_queue_idx_t       item_count;    ///< Number of items stored in queue
+    px_queue_idx_t       items_max;     ///< Maximum number of items that can be stored in queue
+    px_queue_item_size_t item_size;     ///< Size of each item
 } px_queue_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -69,12 +69,12 @@ typedef struct
  *  Initialises a queue structure.
  *  
  *  @param queue        Pointer to a queue object
- *  @param item_buf     Array buffer to hold items (must be at least item_size * items_max bytes)
+ *  @param buf          Buffer to hold items (must be at least item_size * items_max bytes)
  *  @param item_size    Fixed size of each item
  *  @param items_max    Maximum number of items that can be stored in array
  */
 void px_queue_init(px_queue_t *         queue,
-                   void *               item_buf,
+                   void *               buf,
                    px_queue_idx_t       items_max,
                    px_queue_item_size_t item_size);
 

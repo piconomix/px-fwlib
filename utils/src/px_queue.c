@@ -48,7 +48,7 @@ static inline px_queue_idx_t px_queue_idx_next(const px_queue_t * queue, px_queu
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_queue_init(px_queue_t *         queue,
-                   void *               item_buf,
+                   void *               buf,
                    px_queue_idx_t       items_max,
                    px_queue_item_size_t item_size)
 {
@@ -58,7 +58,7 @@ void px_queue_init(px_queue_t *         queue,
     PX_LOG_ASSERT(item_size != 0);
     PX_LOG_ASSERT(items_max != 0);
     // Initialise queue
-    queue->item_buf   = (uint8_t *)item_buf;
+    queue->buf        = (uint8_t *)buf;
     queue->idx_rd     = 0;
     queue->idx_wr     = 0;
     queue->item_count = 0;
@@ -112,8 +112,8 @@ bool px_queue_wr(px_queue_t * queue, const void * item_data)
     {
         return false;
     }
-    // Copy item data into array
-    memcpy(queue->item_buf + queue->item_size * queue->idx_wr, item_data, queue->item_size);
+    // Copy item data into buffer
+    memcpy(&queue->buf[queue->idx_wr * queue->item_size], item_data, queue->item_size);
     // Increment item count
     queue->item_count++;
     // Next index (wrap if going past end)
@@ -132,8 +132,8 @@ bool px_queue_rd(px_queue_t * queue, void * item_data)
     {
         return NULL;
     }
-    // Copy item data
-    memcpy(item_data, queue->item_buf + queue->item_size * queue->idx_rd, queue->item_size);
+    // Copy item data from buffer
+    memcpy(item_data, &queue->buf[queue->idx_rd * queue->item_size], queue->item_size);
     // Decrement item count
     queue->item_count--;
     // Next index (wrap if going past end)
