@@ -22,7 +22,7 @@
  *  @ingroup UTILS
  *  @defgroup PX_BTN px_btn.h : Digital button input
  *  
- *  This module debounces a digital button input and reports button events
+ *  This module debounces a digital button input and reports button events.
  *  
  *  File(s):
  *  - utils/inc/px_btn.h
@@ -41,17 +41,37 @@
  *  
  *  This module is able to debounce a digital input by looking at successive
  *  values and deciding if it is a valid low or high state. It is also able to
- *  detect and remember a rising and falling edge event, e.g. "key pressed
- *  event" or "key released event". Finally, if PX_BTN_CFG_LONG_COUNT is
- *  defined with a non-zero value, a long HI or long LO is also detected.
+ *  detect and remember a button pressed event (debounced rising edge) or button
+ *  released event (debounced falling edge). Finally, if PX_BTN_CFG_LONG_COUNT
+ *  is defined with a large non-zero value, a long press or long release is also
+ *  detected.
+ *
+ *  Single, double or triple clicks can be detected and reported by
+ *  setting PX_BTN_CFG_CLICKS_MAX to the maximum number of clicks. A click is
+ *  defined as a button press exceeding PX_BTN_CFG_CLICK_PRESS_MIN followed by a
+ *  button release. The maximum inter-click time is set with
+ *  PX_BTN_CFG_CLICK_RELEASE_MAX.
  *  
- *  A counter is incremented each time the current digital input state is HI.
- *  If the counter reaches the high threshold, the debounced state is considered
- *  HI. Conversely, the counter is decremented each time the current digital
- *  input state is LO. If the counter reaches the low threshold, the debounced
- *  state is considered LO. The minimum counter value is 0 and the maximum value
- *  is PX_BTN_CFG_COUNT_MAX. This scheme provides sufficient hysteresis to
- *  debounce a noisy digital input.
+ *  Debouncing is implemented as follows: a counter is incremented each time the
+ *  current digital input state is HI. If the counter reaches the high watermark
+ *  threshold, the debounced state is considered HI. Conversely, the counter is
+ *  decremented each time the current digital input state is LO. If the counter
+ *  reaches the low watermark threshold, the debounced state is considered LO.
+ *  The minimum counter value is 0 and the maximum value is PX_BTN_CFG_COUNT_MAX.
+ *  This scheme provides sufficient hysteresis to debounce a noisy digital input.
+ *
+ *  @code{.unparsed}
+ *  [9] <-----MAX----------------1---------------------------
+ *  [8]                         1 1                         1
+ *  [7] <--HI threshold--------1---1-------------1---------1-
+ *  [6]                       0     1           0 1       0
+ *  [5]                      0       1         0   1     0
+ *  [4]                     0         1       0     1   0
+ *  [3]                    0           1     0       1 0
+ *  [2] <--LO threshold---0-------------0---0---------0------
+ *  [1]                  0               0 0
+ *  [0] <-----MIN-------0-----------------0------------------
+ *  @endcode
  *  
  *  If no hysteresis is required, then PX_BTN_CFG_THRESHOLD_LO can be set
  *  to 0 and PX_BTN_CFG_THRESHOLD_HI can be set to PX_BTN_CFG_COUNT_MAX.

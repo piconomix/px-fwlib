@@ -114,11 +114,11 @@ void px_btn_update(px_btn_t * btn, bool btn_is_pressed)
             // Is the current debounced state LO?
             if(btn->flag.state == 0)
             {
-                btn->flag.event_long_release = 1;   // No. Reset button click count
+                btn->flag.event_long_release = 1;   // Yes. Set long release flag
             }
             else
             {
-                btn->flag.event_long_press = 1;     // Set long press flag
+                btn->flag.event_long_press = 1;     // No. Set long press flag
             }
         }
         // Button click(s) detected?
