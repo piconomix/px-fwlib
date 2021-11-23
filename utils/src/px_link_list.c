@@ -296,7 +296,7 @@ px_link_list_item_t * px_link_list_remove_item_last(px_link_list_t * list)
     else
     {
         // The previous item become the last one in the list
-        list->last            = item->prev;
+        list->last       = item->prev;
         item->prev->next = NULL;
     }
     // Clear links of removed item
