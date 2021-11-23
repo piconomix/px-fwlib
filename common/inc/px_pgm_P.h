@@ -105,7 +105,7 @@
 #include <stdio.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_compiler.h"
 
 #if defined(PX_COMPILER_GCC_AVR) && !defined(PX_PGM_USE_RAM)

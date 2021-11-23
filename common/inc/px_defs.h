@@ -1,5 +1,5 @@
-#ifndef __PX_DEFINES_H__
-#define __PX_DEFINES_H__
+#ifndef __PX_DEFS_H__
+#define __PX_DEFS_H__
 /* =============================================================================
      ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
     |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
@@ -12,19 +12,19 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
-    Title:          px_defines.h : Common definitions
+    Title:          px_defs.h : Common definitions
     Author(s):      Pieter Conradie
     Creation Date:  2008-02-05
 
 ============================================================================= */
 /** 
  *  @ingroup COMMON
- *  @defgroup PX_DEFINES px_defines.h : Common definitions
+ *  @defgroup PX_DEFS px_defs.h : Common definitions
  *  
  *  Definition of standard types, boolean, scope and utility macros.
  *  
  *  File:
- *  - common/inc/px_defines.h
+ *  - common/inc/px_defs.h
  *
  *  @{
  */

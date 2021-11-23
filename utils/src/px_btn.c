@@ -20,7 +20,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_btn.h"
 #include "px_log.h"
 

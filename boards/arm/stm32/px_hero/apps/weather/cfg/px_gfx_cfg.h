@@ -21,7 +21,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 
 /// Display size X in pixels
 #define PX_GFX_DISP_SIZE_X          128

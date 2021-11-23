@@ -21,7 +21,7 @@
 #include <avr/wdt.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_xmodem.h"
 #include "px_board.h"
 #include "px_uart.h"

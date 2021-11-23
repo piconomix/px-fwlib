@@ -35,7 +35,7 @@
  */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_spi.h"
 
 // Include project specific configuration. See "px_cat25m_cfg_template.h"

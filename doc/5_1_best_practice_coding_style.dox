@@ -214,7 +214,7 @@ indicate that it is a struct. Example:
 # 8. Standard Types #
 
 *Use standard types (uint8_t, int8_t, uint16_t, int16_t, uint32_t, int32_t, 
-uint64_t, int64_t, bool, false, true) defined via "px-fwlib/common/px_defines.h"*
+uint64_t, int64_t, bool, false, true) defined via "px-fwlib/common/px_defs.h"*
 
 The size of a variable declared as an `int` depends on the architecture that
 it is compiled for. For the 8-bit Microchip AVR architecture, the size of an 
@@ -229,7 +229,7 @@ depending on which architecture it is compiled for:
 @endcode
 
 It is therefor imperative to use standard types (uint8_t, uint16_t, ...) to keep
-the code portable. See @ref PX_DEFINES. Example:
+the code portable. See @ref PX_DEFS. Example:
 
 @code{.c}
     #include "px_common.h"

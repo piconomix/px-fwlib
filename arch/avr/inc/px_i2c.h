@@ -43,7 +43,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 
 // Include project specific configuration. See "px_i2c_cfg_template.h"
 #include "px_i2c_cfg.h"

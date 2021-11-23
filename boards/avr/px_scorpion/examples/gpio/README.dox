@@ -11,6 +11,6 @@ File(s):
 - boards/avr/px_scorpion/examples/gpio/src/main.c
 
 The following modules are used:
-- @ref PX_DEFINES
+- @ref PX_DEFS
 - @ref BOARDS_AVR_PICONOMIX_SCORPION
 - @ref AVR_GPIO

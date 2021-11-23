@@ -21,7 +21,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_gfx.h"
 #include "px_gfx_fonts.h"
 #include "px_gfx_img_hero_logo.h"

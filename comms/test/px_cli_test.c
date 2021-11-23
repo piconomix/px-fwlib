@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_board.h"
 #include "px_uart.h"
 #include "px_uart_stdio.h"

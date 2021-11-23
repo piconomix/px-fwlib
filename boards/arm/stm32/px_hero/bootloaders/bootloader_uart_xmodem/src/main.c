@@ -21,7 +21,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "main.h"
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_compiler.h"
 #include "px_systmr.h"
 #include "px_board.h"

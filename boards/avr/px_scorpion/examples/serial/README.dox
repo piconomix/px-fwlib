@@ -15,7 +15,7 @@ File(s):
 - boards/avr/px_scorpion/examples/serial/src/main.c
 
 The following modules are used:
-- @ref PX_DEFINES
+- @ref PX_DEFS
 - @ref BOARDS_AVR_ARDUINO_UNO
 - @ref AVR_UART
 - @ref AVR_UART_STDIO

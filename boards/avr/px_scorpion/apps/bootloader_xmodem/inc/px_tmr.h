@@ -22,7 +22,7 @@
 #include <avr/io.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_board.h"
 
 #ifdef __cplusplus

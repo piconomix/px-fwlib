@@ -81,7 +81,7 @@
 #include <stddef.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 
 #ifdef __cplusplus
 extern "C" {

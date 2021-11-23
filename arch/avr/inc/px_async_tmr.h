@@ -38,7 +38,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 
 // Include project specific configuration. See "px_async_tmr_cfg_template.h"
 #include "px_async_tmr_cfg.h"

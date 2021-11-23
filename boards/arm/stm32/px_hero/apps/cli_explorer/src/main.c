@@ -20,7 +20,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "main.h"
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_compiler.h"
 #include "px_cli.h"
 #include "px_cli_cmds.h"

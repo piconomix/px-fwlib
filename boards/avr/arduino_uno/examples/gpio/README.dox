@@ -16,6 +16,6 @@ File(s):
 - boards/avr/arduino_uno/examples/gpio/src/main.c
 
 The following modules are used:
-- @ref PX_DEFINES
+- @ref PX_DEFS
 - @ref AVR_GPIO
 

@@ -1,4 +1,4 @@
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_uart.h"
 #include "px_uart_stdio.h"
 #include "px_pgm_P.h"

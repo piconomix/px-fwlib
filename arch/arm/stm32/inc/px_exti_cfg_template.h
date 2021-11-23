@@ -27,7 +27,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// @name Individual enable/disable of each external interrupt (0 to 15)

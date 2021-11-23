@@ -34,7 +34,7 @@
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_spi.h"
 
 // Include project specific configuration. See "px_lcd_st7565p_tse2g0330e_cfg_template.h"

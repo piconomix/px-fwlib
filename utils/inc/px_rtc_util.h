@@ -32,7 +32,7 @@
  */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 
 // Include project specific configuration. See "px_rtc_util_cfg_template.h"
 #include "px_rtc_util_cfg.h"

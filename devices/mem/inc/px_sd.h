@@ -36,7 +36,7 @@
  */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 #include "px_spi.h"
 
 #ifdef __cplusplus

@@ -53,7 +53,7 @@
  */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_defines.h"
+#include "px_defs.h"
 
 // Include project specific configuration. See "px_sysclk_cfg_template.h"
 #include "px_sysclk_cfg.h"
