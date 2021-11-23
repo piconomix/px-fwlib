@@ -227,7 +227,6 @@ bool px_btn_event_long_release(px_btn_t * btn);
  *  Button click (or clicks) event detected?
  *
  *  @param btn                  Pointer to a button object
- *  @param nr_of_clicks         Pointer to location where number of clicks detected must be stored
  *
  *  @return uint8_t             Number of clicks detected. 0 = no clicks
  */
