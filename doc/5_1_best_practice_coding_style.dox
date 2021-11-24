@@ -1,4 +1,4 @@
-# 5.1 The Piconomix C coding style {#CODING_STYLE} #
+# 5.1 The Piconomix C coding style # {#CODING_STYLE}
 
 # 1. Introduction #
 
@@ -16,15 +16,15 @@ functions, etc. in a separate namespace so that their names do not clash with
 existing names.
 
 Consider including this library and another library and both contain and use a 
-generic filename called "common.h" or a macro called "MAX(a,b)" or a function 
+generic filename called "defines.h" or a macro called "MAX(a,b)" or a function
 called `uart_init()`. The compiler or linker will generate an error to indicate 
 that there is more than one symbol with the same name.
 
 To decrease the likelihood of a name clash, all file names, functions, 
 typedefs, defines, etc. are prefixed with "px_" or "PX_" (in the case of 
 @#defines). Unfortunately this increases the size of the source code and makes 
-it harder to fit a source line into 80 columns, but it is the only universal 
-solution to avoid a possible clash.
+it harder to fit a source line into 80 columns, but it is the pragmatic solution
+to avoid a possible clash.
 
 # 3. Modules #
 
@@ -213,14 +213,18 @@ indicate that it is a struct. Example:
 
 ## 7.8 Abbreviations ##
 
-Often used words have shorter abreviations to reduce the length of names. Here
-is a non-exhaustive guide:
+Often used words have shorter abreviations to reduce the length of names. The
+abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 
-| Abbreviation  | Name          |
-|---------------|---------------|
-| adr           | address       |
-| rd            | read          |
-| wr            | write         |
+| Abbreviation      | Name                          |
+|---------------    |-------------------------------|
+| adr               | address                       |
+| idx               | index                         |
+| lo / hi           | low / high                    |
+| rd / wr           | read / write                  |
+| min / max         | minimum / maximum             |
+| u8 / u16 / u32    | unsigned 8/16/32 bit value    |
+| s8 / s16 / s32    | signed   8/16/32 bit value    |
 
 # 8. Standard Types #
 
@@ -243,7 +247,7 @@ It is therefor imperative to use standard types (uint8_t, uint16_t, ...) to keep
 the code portable. See @ref PX_DEFS. Example:
 
 @code{.c}
-    #include "px_common.h"
+    #include "px_defs.h"
 
     typedef struct
     {
@@ -290,7 +294,7 @@ PX_LOG_E() macros. Example:
     ...
 
     // Set pointer to peripheral data
-    switch(peripheral)
+    switch(per)
     {
     case PX_UART_PER_1:
         uart_data = &px_uart1_data;
@@ -301,7 +305,7 @@ PX_LOG_E() macros. Example:
         break;
 
     default:
-        PX_LOG_ERR("Invalid peripheral specified");
+        PX_LOG_E("Invalid peripheral specified");
         return false;
     }
 
