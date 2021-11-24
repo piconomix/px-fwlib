@@ -206,10 +206,21 @@ indicate that it is a struct. Example:
 @code{.c}
     typedef struct px_list_item_s
     {
-    struct px_list_item_s * next_item;
-    struct px_list_item_s * previous_item;
+        struct px_list_item_s * next;
+        struct px_list_item_s * prev;
     } px_list_item_t;
 @endcode
+
+## 7.8 Abbreviations ##
+
+Often used words have shorter abreviations to reduce the length of names. Here
+is a non-exhaustive guide:
+
+| Abbreviation  | Name          |
+|---------------|---------------|
+| adr           | address       |
+| rd            | read          |
+| wr            | write         |
 
 # 8. Standard Types #
 
