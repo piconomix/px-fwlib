@@ -161,17 +161,18 @@ void px_systmr_wait(const px_systmr_ticks_t delay_in_ticks);
 /** 
  *  Return the number of ticks that have elapsed sinced the timer has been started.
  *  
- *  @param[in,out]  systmr   Pointer to a timer object
+ *  @param[in,out]  systmr      Pointer to a timer object
  *  
- *  @return px_systmr_ticks_t Number of ticks elapsed
+ *  @return px_systmr_ticks_t   Number of ticks elapsed
  */ 
 px_systmr_ticks_t px_systmr_ticks_elapsed(px_systmr_t * systmr);
 
 /* _____MACROS_______________________________________________________________ */
 /** 
- *  Macro used to convert a timeout in milliseconds to timer ticks
- *  @param[in] delay_in_ms Delay in milliseconds
- *  @return    Delay in timer ticks
+ *  Macro used to convert a timeout in milliseconds to timer ticks.
+ *
+ *  @param[in] delay_in_ms  Delay in milliseconds
+ *  @return                 Delay in timer ticks
  */
 #define PX_SYSTMR_MS_TO_TICKS(delay_in_ms)    \
      PX_UDIV_ROUND((delay_in_ms) * PX_SYSTMR_TICKS_PER_SEC, 1000ul)
