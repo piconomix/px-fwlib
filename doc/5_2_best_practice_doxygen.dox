@@ -2,30 +2,26 @@
 
 # 1. Introduction #
 
-[Doxygen](http://www.doxygen.org) is a tool that generates 
-documentation from source code.
-Click [here](http://www.stack.nl/~dimitri/doxygen/manual/index.html) 
-for the online Doxygen manual. The 
-[offline PDF manual](http://www.stack.nl/~dimitri/doxygen/download.html) is even
-better.
+[Doxygen](https://www.doxygen.nl) is a tool that generates documentation from
+source code. Click [here](https://www.doxygen.nl/manual/index.html) for the
+online Doxygen manual. The [offline PDF manual](https://www.doxygen.nl/download.html)
+is even better.
 
 The comments embedded in the source code must be formatted in a special way, 
 which may decrease readability for users not familiar with the special syntax.
-[Markdown](http://www.stack.nl/~dimitri/doxygen/manual/markdown.html)
-formatting is human readable and easy to grasp and has been included since 
-Doxygen 1.8.0. Files with regular markdown syntax (as used by GitHub) are 
-indicated with a \*.md extension. Files using specialised Doxygen syntax are 
-indicated with a \*.dox extension.
+[Markdown](https://www.doxygen.nl/manual/markdown.html) formatting is human
+readable and easy to grasp and has been included since Doxygen 1.8.0. Files with
+regular markdown syntax (as used by GitHub) are indicated with a \*.md extension.
+Files using specialised Doxygen syntax are indicated with a \*.dox extension.
 
 The **JavaDoc** comment style was selected for this library. Although harder to 
 type, an `@` (at) character was selected to mark special commands instead of the
 `\` (backslash) character to make these commands more prominent.
 
-The Doxygen configuration file ("Doxyfile") can be found in the doc 
-subdirectory. An excellent cross-platform Doxygen GUI frontend called 
-**doxywizard** is included with the Doxygen package to manage settings and 
-generate output. Each setting is meticulously documented in the wizard and 
-configuration file.
+The Doxygen configuration file ("Doxyfile") can be found in the doc subdirectory.
+An excellent cross-platform Doxygen GUI frontend called **doxywizard** is
+included with the Doxygen package to manage settings and generate output. Each
+setting is meticulously documented in the wizard and configuration file.
 
 ![Doxywizard screenshot](doxywizard.png)
 
@@ -44,8 +40,8 @@ A brief comment block is marked with three slash characters (`///`).
 Example:
 
 @code{.c}
-    /// This function does something
-    extern void some_function(void);
+    /// Size definition of the tick counter
+    typedef px_sysclk_ticks_t px_systmr_ticks_t;
 @endcode
 
 ## 2.2 Brief description comment block after a member ##
@@ -56,16 +52,17 @@ smaller than sign (`///<`). Example:
 @code{.c}
     typedef struct
     {
-        uint8_t count;  ///< This counts something
-    } some_struct_t;
+        px_systmr_state_t state;           ///< State of timer: STOPPED, STARTED or EXPIRED
+        px_systmr_ticks_t start_tick;      ///< Tick when timer started
+        px_systmr_ticks_t delay_in_ticks;  ///< Timer delay, used for subsequent timer restarts/resets
+    } px_systmr_t;
 @endcode
 
 ## 2.3 Detailed description comment block (using JavaDoc style) ##
 
 The start of a detailed description comment block is indicated with a slash and 
 double star sequence (`/**`). To make the block stand out as a unit, the star 
-is continued at the start of each line. 
-The [JAVADOC_AUTOBRIEF](https://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_javadoc_autobrief)
+is continued at the start of each line. The [JAVADOC_AUTOBRIEF](https://www.doxygen.nl/manual/config.html#cfg_javadoc_autobrief)
 setting is set to YES in the Doxygen configuration file ("px-fwlib/doc/Doxyfile").
 With this setting a detailed description block always starts with a brief 
 description. Example:
@@ -74,7 +71,7 @@ description. Example:
 
 ## 2.4 Special command prefix ##
 
-All Doxygen [special commands](http://www.stack.nl/~dimitri/doxygen/manual/commands.html)
+All Doxygen [special commands](https://www.doxygen.nl/manual/commands.html)
 are prefixed with an `@` (at) sign, for example @b @@ingroup and @b @@defgroup:
 
 @code{.c}
@@ -90,7 +87,7 @@ are prefixed with an `@` (at) sign, for example @b @@ingroup and @b @@defgroup:
 
 ## 2.5 Frequently used special commands ##
 
-Here is a list of [special commands](http://www.stack.nl/~dimitri/doxygen/manual/commands.html) 
+Here is a list of [special commands](https://www.doxygen.nl/manual/commands.html)
 that are used frequently in the library:
 
 | Command     | Description                                                    |
@@ -105,23 +102,22 @@ that are used frequently in the library:
 ## 2.6 Function documentation ##
 
 Here is an example that shows how a function, it's parameters and return value
-is documented:
+are documented:
 
 @include doc/examples/doxy_ex_2.c
 
 ## 2.7 Module Grouping ##
 
-C modules are documented in the H file using explicit
-[grouping](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html) 
-commands. The tree hierarchy is maintained in "px-fwlib/doc/module_tree.dox". Here
-is an example of the grouping at the start of the H file:
+C modules are documented in the H file using explicit [grouping](https://www.doxygen.nl/manual/grouping.html)
+commands. The tree hierarchy is maintained in "px-fwlib/doc/module_tree.doc".
+Here is an example of the grouping at the start of the H file:
 
 @include doc/examples/doxy_ex_3.c
 
 @tip_s
-Observe that a <code>/// \@{</code> start marker and a <code>/// \@}</code> 
+Observe that a <code>\@{</code> start marker and a <code>\@}</code>
 end marker is used to indicate that all of the definitions, typedefs, variables 
-and functions in between is part of that group.
+and functions in between are part of that group.
 @tip_e
 
 ## 2.8 Page Grouping ##
