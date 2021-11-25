@@ -25,7 +25,9 @@
 #include "px_board.h"
 #include "px_sysclk.h"
 #include "px_systmr.h"
+#if PX_LOG
 #include "px_uart.h"
+#endif
 #include "px_flash.h"
 #include "usb_device.h"
 #include "px_uf2.h"

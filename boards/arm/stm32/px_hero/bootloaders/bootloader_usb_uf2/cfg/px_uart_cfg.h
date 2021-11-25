@@ -24,8 +24,13 @@
 #include "px_defs.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
+#if PX_LOG
 /// Enable/disable support for UART1 peripheral
 #define PX_UART_CFG_UART1_EN 1
+#else
+/// Enable/disable support for UART1 peripheral
+#define PX_UART_CFG_UART1_EN 0
+#endif
 
 /// Enable/disable support for UART2 peripheral
 #define PX_UART_CFG_UART2_EN 0
