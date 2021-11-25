@@ -1,35 +1,39 @@
-# 5.1 The Piconomix C coding style # {#CODING_STYLE}
+# 5.1 The PX C coding style # {#CODING_STYLE}
 
 # 1. Introduction #
 
-A crystal clear, consistent, concise coding style improves readibility, reduces 
-errors and improves maintainability. This page provides a short guide to the C 
-coding style used.
+A crystal clear, consistent and concise coding style improves readibility,
+reduces errors and improves maintainability. This page provides a short guide to
+the C coding style used.
 
 # 2. Library Namespace #
 
-*All filenames, defines, typedefs, variables, functions, etc. are prefixed with*
+@tip_s
+All filenames, defines, typedefs, variables, functions, etc. are prefixed with
 **px_** *or* **PX_**
+@tip_e
 
 C lacks the ability of C++ to put a collection of typedefs, variables, 
 functions, etc. in a separate namespace so that their names do not clash with 
 existing names.
 
 Consider including this library and another library and both contain and use a 
-generic filename called "defines.h" or a macro called "MAX(a,b)" or a function
+generic filename called "defs.h" or a macro called `MAX(a, b)` or a function
 called `uart_init()`. The compiler or linker will generate an error to indicate 
 that there is more than one symbol with the same name.
 
 To decrease the likelihood of a name clash, all file names, functions, 
-typedefs, defines, etc. are prefixed with "px_" or "PX_" (in the case of 
-@#defines). Unfortunately this increases the size of the source code and makes 
+typedefs, defines, etc. are prefixed with **px_** or **PX_** (in the case of
+\#defines). Unfortunately this increases the size of the source code and makes
 it harder to fit a source line into 80 columns, but it is the pragmatic solution
 to avoid a possible clash.
 
 # 3. Modules #
 
-*All defines, typedefs, variables, functions, etc. are prefixed with the module
-name*
+@tip_s
+All defines, typedefs, variables, functions, etc. are prefixed with the module
+name
+@tip_e
 
 An object-like programming approach is recommended. This means that the data
 and functionality of an object is encapsulated in an H and C file. A module
@@ -60,6 +64,10 @@ object, e.g. `&tmr`.
 
 # 4. Templates #
 
+@tip_s
+A place for everything and everything in it's place :)
+@tip_e
+
 Template files have been created for consistent organisation of each C module.
 See:
 - common/inc/px_template.h
@@ -75,8 +83,10 @@ Here is an an example showing how a function is documented:
 
 # 6. Indentation and Brace style #
 
-*4 spaces must be used for each indentation level, not tabs. Curly brackets {} 
-must be used, even for single lines*
+@tip_s
+4 spaces must be used for each indentation level, not tabs. Curly brackets {}
+must be used, even for single lines
+@tip_e
 
 The [Allman style](http://en.wikipedia.org/wiki/Indent_style#Allman_style)
 (a.k.a. ANSI C or BSD style) is followed. Example: 
@@ -95,56 +105,65 @@ The [Allman style](http://en.wikipedia.org/wiki/Indent_style#Allman_style)
 
 ## 7.1 Functions ##
 
-*Lower case letters with underscores separating words*
+@tip_s
+Lower case letters with underscores separating words
+@tip_e
 
 The name must have the module name prefixed. Example:
 
 @code{.c}
-    extern bool px_systmr_has_expired(px_systmr_t * systmr);
+    // has_expired() function has "px_systmr_" module name prefix
+    bool px_systmr_has_expired(px_systmr_t * systmr);
 @endcode
 
 ## 7.2 Preprocessor defines ##
 
-*CAPITAL letters with underscores separating words*
+@tip_s
+CAPITAL letters with underscores separating words
+@tip_e
 
 The name must have the module name prefixed. Example:
 
 @code{.c}
-    /// The generator polynomial CRC16-CCITT: x^16 + x^12 + x^5 + x^0
-    #define PX_CRC_POLYNOMIAL  0x8408
+    /// The generator polynomial CRC16-CCITT (reversed representation):
+    /// x^16 + x^12 + x^5 + 1
+    #define PX_CRC16_POLYNOMIAL  0x8408
 @endcode
 
 ## 7.3 Preprocessor macros ##
 
-*CAPITAL letters with underscores separating words*
+@tip_s
+CAPITAL letters with underscores separating words
+@tip_e
 
 The name must have the module name prefixed. Example:
 
 @code{.c}
     /**
-    *  Macro used to convert a timeout in milliseconds to timer ticks
-    *  @param[in] delay_in_ms Delay in milliseconds
-    *  @return    Delay in timer ticks
-    */
+     *  Macro used to convert a timeout in milliseconds to timer ticks.
+     *
+     *  @param[in] delay_in_ms  Delay in milliseconds
+     *  @return                 Delay in timer ticks
+     */
     #define PX_SYSTMR_MS_TO_TICKS(delay_in_ms)    \
-     PX_UDIV_ROUND((delay_in_ms)*PX_SYSTMR_TICKS_PER_SEC, 1000ul)
+         PX_UDIV_ROUND((delay_in_ms) * PX_SYSTMR_TICKS_PER_SEC, 1000ul)
 @endcode
 
-`do {} while` blocks and round brackets () around macro parameters are 
+`do {} while(0)` blocks and brackets `()` around macro parameters are
 recommended so that the macro will always expand correctly. Example:
 
 @code{.c}
-    #define PX_BIT_SET_HI(var,bit)     do {(var) |= (1 << (bit));} while(0)
-    #define PX_BIT_SET_LO(var,bit)     do {(var) &= ~(1 << (bit));} while(0)
+    #define PX_BIT_SET_HI(var, bit) do { (var) |=  (1ul << (bit)); } while(0)
+    #define PX_BIT_SET_LO(var, bit) do { (var) &= ~(1ul << (bit)); } while(0)
 
-    // Function-like macro example where do {}while blocks are required so that
-    // code behaves as expected:
+    // Function-like macro example where do {} while(0) blocks are required so
+    // that code behaves as expected:
     void set_pin(bool hi)
     {
-    if(hi)
-        PX_BIT_SET_HI(PORTA, 4);
-    else
-        PX_BIT_SET_LO(PORTA, 4);
+        if(hi)
+            PX_BIT_SET_HI(PORTA, 4);
+        else
+            PX_BIT_SET_LO(PORTA, 4);
     }
 @endcode
 
@@ -155,19 +174,24 @@ brackets {} must be used, even for single lines.
 
 ## 7.4 Function-like macros ##
 
-*lower case letters with underscores separating words is allowed*
+@tip_s
+lower case letters with underscores separating words are acceptable but all
+CAPITALS are preferred
+@tip_e
 
 If a macro is used with the appearance of a function it is acceptable to use 
 the function naming convention. Example:
 
 @code{.c}
-    #define px_gpio_pin_set_hi(gpio) _gpio_pin_set_hi(gpio)
-    #define _gpio_pin_set_hi(port, pin, dir, init)      PX_BIT_SET_HI(PX_CONCAT(PORT, port), pin)
+    #define _gpio_pin_set_hi(port, pin, dir, init)  PX_BIT_SET_HI(PX_CONCAT(PORT, port), pin)
+    #define px_gpio_pin_set_hi(gpio)                _gpio_pin_set_hi(gpio)
 @endcode
 
 ## 7.5 Variables ##
 
-*Lower case letters with underscores separating words*
+@tip_s
+Lower case letters with underscores separating words
+@tip_e
 
 If the variable is declared outside function or structure scope, then it must 
 have the module name prefixed. Example:
@@ -186,19 +210,23 @@ have the module name prefixed. Example:
 
 ## 7.6 Typedef ##
 
-*Lower case letters with underscores separating words and "_t" suffix*
+@tip_s
+Lower case letters with underscores separating words and "_t" suffix
+@tip_e
 
 The name must have the module name prefixed. An "_t" suffix must be added to 
 indicate that it is a typedef. Example:
 
 @code{.c}
     /// Size definition of the tick counter
-    typedef unsigned int px_sysclk_ticks_t;
+    typedef uint32_t px_sysclk_ticks_t;
 @endcode
 
 ## 7.7 Structures ##
 
-*Lower case letters with underscores separating words and "_s" suffix*
+@tip_s
+Lower case letters with underscores separating words and "_s" suffix
+@tip_e
 
 The name must have the module name prefixed. An "_s" suffix must be added to 
 indicate that it is a struct. Example:
@@ -228,8 +256,10 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 
 # 8. Standard Types #
 
-*Use standard types (uint8_t, int8_t, uint16_t, int16_t, uint32_t, int32_t, 
-uint64_t, int64_t, bool, false, true) defined via "px-fwlib/common/px_defs.h"*
+@tip_s
+Use standard types (uint8_t, int16_t, bool, true, false, etc.) defined via
+"px-fwlib/common/px_defs.h" which includes <stdbool.h>, <stddef.h> and <stdint.h>
+@tip_e
 
 The size of a variable declared as an `int` depends on the architecture that
 it is compiled for. For the 8-bit Microchip AVR architecture, the size of an 
@@ -261,7 +291,7 @@ the code portable. See @ref PX_DEFS. Example:
 
 A convenient debug module (@ref PX_LOG) has been created to report the flow of
 an embedded program as well as warnings and errors. The debug output can easily 
-be removed for the final release (define #PX_LOG=0) with no impact on the
+be removed for the final release (by defining #PX_LOG=0) with no impact on the
 execution or code size.
 
 To conserve space, the module name string is declared once at the top of the C 
@@ -279,7 +309,6 @@ Function parameters can be checked with a PX_LOG_ASSERT() macro. Example:
     {
         // Verify that pointer to handle is not NULL
         PX_LOG_ASSERT(handle != NULL);
-
         ...
     }
 @endcode
@@ -289,25 +318,25 @@ PX_LOG_E() macros. Example:
 
 @code{.c}
     bool px_uart_open(px_uart_handle_t * handle,
-    	              px_uart_per_t      peripheral)
+    	              px_uart_nr_t       uart_nr)
     {
     ...
 
-    // Set pointer to peripheral data
-    switch(per)
-    {
-    case PX_UART_PER_1:
-        uart_data = &px_uart1_data;
-        break;
+        // Set pointer to peripheral data
+        switch(uart_nr)
+        {
+        case PX_UART_NR_1:
+            uart_data = &px_uart1_data;
+            break;
 
-    case PX_UART_PER_2:
-        uart_data = &px_uart2_data;
-        break;
+        case PX_UART_NR_2:
+            uart_data = &px_uart2_data;
+            break;
 
-    default:
-        PX_LOG_E("Invalid peripheral specified");
-        return false;
-    }
+        default:
+            PX_LOG_E("Invalid peripheral specified");
+            return false;
+        }
 
     ...
     }
