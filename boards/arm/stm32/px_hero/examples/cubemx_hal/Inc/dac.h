@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : DAC.h
-  * Description        : This file provides code for the configuration
-  *                      of the DAC instances.
+  * @file    dac.h
+  * @brief   This file contains all the function prototypes for
+  *          the dac.c file
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -17,10 +17,11 @@
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __dac_H
-#define __dac_H
+#ifndef __DAC_H__
+#define __DAC_H__
+
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -45,14 +46,7 @@ void MX_DAC_Init(void);
 #ifdef __cplusplus
 }
 #endif
-#endif /*__ dac_H */
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
+#endif /* __DAC_H__ */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
