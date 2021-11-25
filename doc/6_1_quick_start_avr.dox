@@ -1,4 +1,4 @@
-# 6.1 AVR quick start guide {#AVR_QUICK_START_GUIDE} #
+# 6.1 AVR quick start guide # {#AVR_QUICK_START_GUIDE}
 
 # 1. Introduction #
 
@@ -139,7 +139,7 @@ to root of drive, e.g.
 
     C:\UnixShellUtils
 
-## 5.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#AVR_QS_CUSTOM_BUILD_TOOLS} ##
+## 5.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) # {#AVR_QS_CUSTOM_BUILD_TOOLS}
 
 Start Atmel Studio. Configure options:
 

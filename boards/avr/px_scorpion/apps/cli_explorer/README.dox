@@ -1,4 +1,4 @@
-# CLI Explorer (Command Line Interpreter) {#SCORPION_BOARD_APP_CLI} #
+# CLI Explorer (Command Line Interpreter) # {#SCORPION_BOARD_APP_CLI}
   
 # Introduction #
 
@@ -23,7 +23,7 @@ With this application you will be able to:
 - Read and write to the AT45D DataFlash
 - Set and read a software RTC (Real Time Clock)
 
-# 2. CLI features {#SCORPION_BOARD_CLI_FEATURES} #
+# 2. CLI features # {#SCORPION_BOARD_CLI_FEATURES}
 
 ## 2.1 Autocomplete (TAB) ##
 
@@ -250,7 +250,7 @@ or slower. For example, to make the report rate 500 ms (0.5 s):
 
     >adc cfg_samples 500
 
-## 3.5 I2C {#SCORPION_BOARD_CLI_I2C} ##
+## 3.5 I2C # {#SCORPION_BOARD_CLI_I2C}
 
 An I2C slave can be connected to the breakout header and verified that it works
 before creating a device driver for it. As an example, an

@@ -1,4 +1,4 @@
-# Basic GPIO example {#HERO_BOARD_EXAMPLE_GPIO} #
+# Basic GPIO example # {#HERO_BOARD_EXAMPLE_GPIO}
 
 This is a basic GPIO example for the Hero Board. It is the embedded 
 equivalent of a "hello world" program on a PC to kick the tires and know that 

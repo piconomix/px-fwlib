@@ -1,4 +1,4 @@
-# 3.1.1 Arduino UNO R3 Board {#ARDUINO_UNO_BOARD} #
+# 3.1.1 Arduino UNO R3 Board # {#ARDUINO_UNO_BOARD}
   
 # 1. About #
 
@@ -102,7 +102,7 @@ to root of drive, e.g.
 
     C:\UnixShellUtils
 
-## 4.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#ARDUINO_UNO_BOARD_CUSTOM_BUILD_TOOLS} ##
+## 4.3 Set up Atmel Studio to use custom build tools (UnixShellUtils) ## {#ARDUINO_UNO_BOARD_CUSTOM_BUILD_TOOLS}
 
 Start Atmel Studio. Configure options:
 

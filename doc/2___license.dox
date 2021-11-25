@@ -1,4 +1,4 @@
-# 2. Open Source License {#PX_FW_LIC_OPEN} #
+# 2. Open Source License # {#PX_FW_LIC_OPEN}
   
 The [MIT license](https://en.wikipedia.org/wiki/MIT_License)
 has been selected to grant freedom for both open source and commercial 
@@ -6,7 +6,7 @@ has been selected to grant freedom for both open source and commercial
 
 License:
 
-@verbatim
+@code{.unparsed}
  ____    ___    ____    ___    _   _    ___    __  __   ___  __  __ TM
 |  _ \  |_ _|  / ___|  / _ \  | \ | |  / _ \  |  \/  | |_ _| \ \/ /
 | |_) |  | |  | |     | | | | |  \| | | | | | | |\/| |  | |   \  /
@@ -33,4 +33,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 
-@endverbatim
+@endcode

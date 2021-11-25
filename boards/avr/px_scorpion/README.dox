@@ -1,4 +1,4 @@
-# 3.1.3 Piconomix ATmega328P Scorpion Board {#PICONOMIX_SCORPION_BOARD} #
+# 3.1.3 Piconomix ATmega328P Scorpion Board # {#PICONOMIX_SCORPION_BOARD}
   
 # 1. Introduction #
 
@@ -91,7 +91,7 @@ There is:
 - [AVR Instruction Set Manual](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
 - [AVR Libc Reference Manual](http://www.nongnu.org/avr-libc/user-manual/index.html)
 
-# 6. Board Support Package {#SCORPION_BOARD_BSP} #
+# 6. Board Support Package # {#SCORPION_BOARD_BSP}
 
 A Board Support Package (@ref BOARDS_AVR_PICONOMIX_SCORPION) is provided that:
 - define the CPU frequency
@@ -225,7 +225,7 @@ to root of drive, e.g.
 
     C:\UnixShellUtils
 
-## 7.6 Set up Atmel Studio to use custom build tools (UnixShellUtils) {#SCORPION_BOARD_CUSTOM_BUILD_TOOLS} ##
+## 7.6 Set up Atmel Studio to use custom build tools (UnixShellUtils) ## {#SCORPION_BOARD_CUSTOM_BUILD_TOOLS}
 
 Start Atmel Studio. Configure options:
 

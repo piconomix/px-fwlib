@@ -1,4 +1,4 @@
-# 11. Aplications {#SCORPION_BOARD_APPS} #
+# 11. Aplications # {#SCORPION_BOARD_APPS}
 
 - @subpage SCORPION_BOARD_BOOTLOADER_XMODEM
   ![](tera_term_xmodem_send01_preview.png)

@@ -1,4 +1,4 @@
-# 3.2.1 Piconomix STM32L072RB PX-HER0 Board {#STM32_PX_HERO_BOARD} #
+# 3.2.1 Piconomix STM32L072RB PX-HER0 Board # {#STM32_PX_HERO_BOARD}
 
 <center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
 
@@ -190,7 +190,7 @@ The reference documents can also be found here for off-line viewing:
     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS HARDWARE, EVEN
     IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# 9. Board Support Package {#STM32_PX_HERO_BOARD_BSP} #
+# 9. Board Support Package # {#STM32_PX_HERO_BOARD_BSP}
 
 A Board Support Package (@ref BOARDS_STM32_PX_HERO) is provided that:
 - defines the function of each GPIO pin

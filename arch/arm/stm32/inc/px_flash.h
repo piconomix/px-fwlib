@@ -75,28 +75,28 @@ void px_flash_lock(void);
 /**
  *  Function to erase a page.
  *  
- *  @param address  Page address
+ *  @param adr  Page address
  */
-void px_flash_erase_page(const uint32_t address);
+void px_flash_erase_page(uint32_t adr);
 
 #if STM32L0
 /**
  *  Function to write a half page.
  *  
- *  @param address   Half page address
- *  @param data      Pointer to buffer containing data to write
+ *  @param adr      Half page address
+ *  @param data     Pointer to buffer containing data to write
  */
-void px_flash_wr_half_page(const uint32_t address, const  uint32_t * data);
+void px_flash_wr_half_page(uint32_t adr, const  uint32_t * data);
 #endif
 
 #if STM32G0
 /**
  *  Function to write a row.
  *  
- *  @param address   Row address
- *  @param data      Pointer to buffer containing data to write
+ *  @param adr      Row address
+ *  @param data     Pointer to buffer containing data to write
  */
-void px_flash_wr_row(const uint32_t address, const  uint32_t * data);
+void px_flash_wr_row(uint32_t adr, const  uint32_t * data);
 #endif
 
 /* _____MACROS_______________________________________________________________ */

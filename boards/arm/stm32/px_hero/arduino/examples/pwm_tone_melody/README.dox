@@ -1,4 +1,4 @@
-# PWM tone melody example {#HERO_BOARD_ARDUINO_EX_PWM_TONE_MELODY} #
+# PWM tone melody example # {#HERO_BOARD_ARDUINO_EX_PWM_TONE_MELODY}
 
 This is a modified Arduino toneMelody example that plays a tune on the PX-HER0 
 board's piezo buzzer.

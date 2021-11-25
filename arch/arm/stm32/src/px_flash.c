@@ -84,7 +84,7 @@ PX_ATTR_RAMFUNC void px_flash_lock(void)
 
 
 #if STM32L0
-PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
+PX_ATTR_RAMFUNC void px_flash_erase_page(uint32_t adr)
 {
     uint32_t primask;
 
@@ -97,7 +97,7 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
     FLASH->PECR |= (FLASH_PECR_PROG | FLASH_PECR_ERASE);
 
     // Write 32-bit value in page to start erase sequence
-    *(uint32_t *)address = (uint32_t)0;
+    *(uint32_t *)adr = (uint32_t)0;
     // Wait until erase has finished (not busy)
     while ((FLASH->SR & FLASH_SR_BSY) != 0) {;}
     // EOP (End Of Programming) Flag set?
@@ -114,7 +114,7 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
     __set_PRIMASK(primask);
 }
 
-PX_ATTR_RAMFUNC void px_flash_wr_half_page(const uint32_t address, const uint32_t * data)
+PX_ATTR_RAMFUNC void px_flash_wr_half_page(uint32_t adr, const uint32_t * data)
 {
     uint8_t i;
     uint32_t primask;
@@ -131,7 +131,7 @@ PX_ATTR_RAMFUNC void px_flash_wr_half_page(const uint32_t address, const uint32_
     // The same address can be used as it is incremented internally
     for (i = 0; i < PX_FLASH_HALF_PAGE_SIZE_WORDS; i++)
     {
-        *(uint32_t*)(address) = *data++;
+        *(uint32_t*)(adr) = *data++;
     }
     // Wait until programming has finished (not busy)
     while ((FLASH->SR & FLASH_SR_BSY) != 0) {;}
@@ -151,7 +151,7 @@ PX_ATTR_RAMFUNC void px_flash_wr_half_page(const uint32_t address, const uint32_
 #endif
 
 #if STM32G0
-PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
+PX_ATTR_RAMFUNC void px_flash_erase_page(uint32_t adr)
 {
     uint32_t primask;
     uint32_t flash_cr;
@@ -164,7 +164,7 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
     
     // Set page to erase
     flash_cr   = FLASH->CR & ~FLASH_CR_PNB;
-    page       = (address >> 11) & 0x3f;
+    page       = (adr >> 11) & 0x3f;
 	flash_cr  |= page << FLASH_CR_PNB_Pos;
 	// Enable page erase
 	flash_cr |= FLASH_CR_PER;
@@ -182,11 +182,11 @@ PX_ATTR_RAMFUNC void px_flash_erase_page(const uint32_t address)
     __set_PRIMASK(primask);
 }
 
-PX_ATTR_RAMFUNC void px_flash_wr_row(const uint32_t address, const uint32_t * data)
+PX_ATTR_RAMFUNC void px_flash_wr_row(uint32_t adr, const uint32_t * data)
 {
     uint8_t    i;
     uint32_t   primask;
-    uint32_t * dest = (uint32_t *)address;
+    uint32_t * dest = (uint32_t *)adr;
 
     // Save interrupt status
     primask = __get_PRIMASK();

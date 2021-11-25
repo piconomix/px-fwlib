@@ -1,4 +1,4 @@
-# Graphic LCD example {#HERO_BOARD_EXAMPLE_LCD} #
+# Graphic LCD example # {#HERO_BOARD_EXAMPLE_LCD}
   
 This example shows how to draw pixels, lines, rectangles, circles, text and 
 images (bitmaps) on the 128 x 64 graphic LCD:

@@ -1,4 +1,4 @@
-# UART printf ("hello world") example {#HERO_BOARD_EXAMPLE_UART_PRINTF} #
+# UART printf ("hello world") example # {#HERO_BOARD_EXAMPLE_UART_PRINTF}
 
 This is a serial port example for the Hero Board. It is the embedded equivalent 
 of a "hello world" program on a PC to kick the tires and know that your 

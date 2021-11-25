@@ -1,4 +1,4 @@
-# SD card info example {#HERO_BOARD_ARDUINO_EX_SD_CARD_INFO} #
+# SD card info example # {#HERO_BOARD_ARDUINO_EX_SD_CARD_INFO}
 
 This is a modified Arduino SD CardInfo example to display info about an SD card
 inserted into the PX-HER0 board.

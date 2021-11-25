@@ -1,4 +1,4 @@
-# Arduino development on Piconomix ATmega328P Scorpion Board {#SCORPION_BOARD_ARDUINO_DEV} #
+# Arduino development on Piconomix ATmega328P Scorpion Board # {#SCORPION_BOARD_ARDUINO_DEV}
   
 [arduino_uno]:  http://arduino.cc/en/Main/ArduinoBoardUno
 [atmel_studio]: https://www.microchip.com/mplab/avr-support/atmel-studio-7

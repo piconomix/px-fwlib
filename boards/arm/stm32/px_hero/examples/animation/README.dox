@@ -1,4 +1,4 @@
-# LCD graphic animation example {#HERO_BOARD_EXAMPLE_ANIMATION} #
+# LCD graphic animation example # {#HERO_BOARD_EXAMPLE_ANIMATION}
 
 This example displays 8 graphic images in succesion on the Graphic LCD to form 
 an animation:

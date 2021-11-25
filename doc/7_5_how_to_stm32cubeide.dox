@@ -1,4 +1,4 @@
-# 7.5 How to get started with STM32CubeIDE {#HOWTO_STM32CUBEIDE} #
+# 7.5 How to get started with STM32CubeIDE # {#HOWTO_STM32CUBEIDE}
 
 [stm32cubeide]: https://www.st.com/en/development-tools/stm32cubeide.html
 
@@ -237,7 +237,7 @@ Observe that the IDE is executing a `make build=debug all` command and that the
 Makefile script is reporting "DEBUG" in the start banner.
 @tip_e
 
-## 4.6 Create a debug configuration {#STM32CUBEIDE_DEBUG_CONFIG} ##
+## 4.6 Create a debug configuration ## {#STM32CUBEIDE_DEBUG_CONFIG}
 
 Before debugging can start a debug configuration must exist:
 
