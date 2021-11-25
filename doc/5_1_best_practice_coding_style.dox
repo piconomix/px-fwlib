@@ -247,12 +247,15 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 | Abbreviation      | Name                          |
 |---------------    |-------------------------------|
 | adr               | address                       |
+| gfx               | graphics                      |
 | idx               | index                         |
+| img               | image                         |
 | lo / hi           | low / high                    |
 | rd / wr           | read / write                  |
 | min / max         | minimum / maximum             |
 | u8 / u16 / u32    | unsigned 8/16/32 bit value    |
 | s8 / s16 / s32    | signed   8/16/32 bit value    |
+| tmr               | timer                         |
 
 # 8. Standard Types #
 
