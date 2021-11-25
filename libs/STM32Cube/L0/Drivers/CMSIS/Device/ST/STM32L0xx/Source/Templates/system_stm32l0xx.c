@@ -95,12 +95,12 @@
                                                      This value must be a multiple of 0x200. */
 #endif
 
+// PX [mod start] - Allow VECT_TAB_OFFSET to be overridable with compiler switches
 #ifndef VECT_TAB_OFFSET
 #define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
                                                      This value must be a multiple of 0x200. */
-#else
-#warning "VECT_TAB_OFFSET overrride"
 #endif
+// PX [mod end]
 
 /******************************************************************************/
 /**
