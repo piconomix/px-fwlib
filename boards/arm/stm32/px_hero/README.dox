@@ -15,10 +15,6 @@
 [msys2]:              https://www.msys2.org
 [srecord]:            http://srecord.sourceforge.net
 
-PX-HER0 is a low-power ARM Cortex development board that's been carefully 
-crafted with embedded education in mind - hardware, software, and documentation. 
-Discover and free your inner embedded hero!
-
 @image html hero_board_isometric.jpg width=500px
 
 Extensive ecosystem included:
@@ -29,6 +25,7 @@ Extensive ecosystem included:
 * @subpage HERO_BOARD_BOOTLOADERS "Bootloaders"
 * @subpage HERO_BOARD_APPS "Applications"
 * @subpage HERO_BOARD_EXAMPLES "Examples"
+* @subpage HERO_BOARD_GAMES "Games"
 * @subpage HERO_BOARD_ARDUINO "Arduino IDE support and examples"
 
 The flagship application is the @ref HERO_BOARD_APP_CLI that creates a 
@@ -47,7 +44,7 @@ and @ref HERO_BOARD_APP_CLI.
 
 ![](hero_board_top_annotated.png)
 \n
-| PX-HER0 Board (Top)||
+| PX-HER0 Board (Top)                        |                                       |
 | -------------------------------------------|---------------------------------------|
 | **A.** 128 x 64 Graphic LCD with backlight | **F.** microSD Card Slot              |
 | **B.** Charger LED                         | **G.** User Buttons                   |
@@ -60,7 +57,7 @@ and @ref HERO_BOARD_APP_CLI.
 
 ![](hero_board_bot_annotated.png)
 \n
-| PX-HER0 Board (Bottom)||
+| PX-HER0 Board (Bottom)                     |                                       |
 | -------------------------------------------|---------------------------------------|
 | **A.** +3V3 Step-down DC-DC Regulator      | **H.** Seeed GROVE I2C                |
 | **B.** Serial Flash                        | **I.** Sparkfun Qwiic / STEMMA QT I2C |

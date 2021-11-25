@@ -39,7 +39,6 @@ static px_spi_handle_t px_spi_lcd_handle;
 
 static px_systmr_t tmr;
 static px_gfx_xy_t ship_x;
-static px_gfx_xy_t ship_x_dir;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
@@ -76,24 +75,28 @@ int main(void)
     PX_LCD_BACKLIGHT_ON();
     px_gfx_init();
 
-    ship_x_dir = 1;
-
-    // Start frame timer (25 frames per second)
-    px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(40));
+    // Start frame timer (20 frames per second)
+    px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(50));
 
     // Loop forever
     while(true)
     {
-        if(ship_x <= 0)
+        // Left button pressed?
+        if(px_gpio_in_is_lo(&px_gpio_lcd_btn_1_lt))
         {
-            ship_x_dir = 1;
+            if(ship_x > 0)
+            {
+                ship_x--;   // Move ship left
+            }
         }
-        if(ship_x >= PX_GFX_X_MAX)
+        // Right button pressed?
+        if(px_gpio_in_is_lo(&px_gpio_lcd_btn_2_rt))
         {
-            ship_x_dir = -1;
+            if(ship_x < (PX_GFX_X_MAX - px_gfx_img_ship.width - 1))
+            {
+                ship_x++;   // Move ship right
+            }
         }
-        ship_x += ship_x_dir;
-
         // Clear display buffer
         px_gfx_buf_clear();
         // Draw aliens

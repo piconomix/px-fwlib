@@ -1,12 +1,11 @@
-# Graphic LCD example # {#HERO_BOARD_EXAMPLE_LCD}
+# Space Invaders game example # {#HERO_BOARD_GAME_INVADERS}
   
-This example shows how to draw pixels, lines, rectangles, circles, text and 
-images (bitmaps) on the 128 x 64 graphic LCD:
+This example draws the classic space invaders game screen and allows the ship to
+be moved left and right. It is not meant to be a full game. The LCD's refresh
+rate is way too slow and it is very noticable when the ship is moving.
 
-![](hero_board_example_lcd.png)
-  
 File(s):
-- boards/arm/stm32/px_hero/examples/lcd/src/main.c
+- boards/arm/stm32/px_hero/games/invaders/src/main.c
 
 The following modules are used:
 - @ref BOARDS_STM32_PX_HERO
