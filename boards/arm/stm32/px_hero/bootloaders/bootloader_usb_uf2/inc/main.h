@@ -22,9 +22,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defs.h"
-#if PX_LOG
 #include "px_uart.h"
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,9 +32,7 @@ extern "C" {
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-#if PX_LOG
 extern px_uart_handle_t px_uart_handle;
-#endif
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 void main_log_putchar  (char data);
