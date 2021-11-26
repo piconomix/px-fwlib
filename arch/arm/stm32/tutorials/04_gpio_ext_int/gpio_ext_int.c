@@ -12,6 +12,9 @@
 
 ============================================================================= */
 
+// Include standard bool defintions, e.g. bool, true, false, ...
+#include <stdbool.h>
+
 #include "stm32l0xx.h"
 #include "stm32l0xx_ll_bus.h"
 #include "stm32l0xx_ll_gpio.h"

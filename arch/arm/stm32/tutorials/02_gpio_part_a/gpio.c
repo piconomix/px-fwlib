@@ -14,6 +14,8 @@
 
 // Include standard type integer definitions, e.g. uint8_t, uint16_t, uint32_t, ...
 #include <stdint.h>
+// Include standard bool defintions, e.g. bool, true, false, ...
+#include <stdbool.h>
 
 // Declare unsigned 32-bit pointer to RCC_IOPENR (Reset and Clock Control - GPIO clock enable register)
 volatile uint32_t * rcc_iopenr = (volatile uint32_t *)0x4002102c;

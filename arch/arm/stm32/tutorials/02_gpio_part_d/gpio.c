@@ -12,6 +12,9 @@
 
 ============================================================================= */
 
+// Include standard bool defintions, e.g. bool, true, false, ...
+#include <stdbool.h>
+
 #include "stm32l0xx_ll_bus.h"
 #include "stm32l0xx_ll_gpio.h"
 
@@ -35,10 +38,10 @@ int main(void)
     // Loop forever
     while(true)
     {
-        // Set PH0 output to enable LED
+        // Set PH0 output to enable LED; Note that GPIOH_BSRR is used
         LL_GPIO_SetOutputPin(GPIOH, LL_GPIO_PIN_0);
         delay();
-        // Clear PH0 output to disable LED
+        // Clear PH0 output to disable LED; Note that GPIOH_BRR is used
         LL_GPIO_ResetOutputPin(GPIOH, LL_GPIO_PIN_0);
         delay();
     }

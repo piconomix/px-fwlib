@@ -12,6 +12,9 @@
 
 ============================================================================= */
 
+// Include standard bool defintions, e.g. bool, true, false, ...
+#include <stdbool.h>
+// Include STM32 L0 series peripheral definitions
 #include "stm32l0xx.h"
 
 void delay(void)
@@ -32,10 +35,10 @@ int main(void)
     RCC->IOPENR |= RCC_IOPENR_IOPHEN;
 
     // Read GPIOH_MODER register value
-    val          = GPIOH->MODER;
+    val  = GPIOH->MODER;
     // Set MODE0[1:0] = 01 (General purpose output mode)
-    val         &= ~GPIO_MODER_MODE0_Msk;        // Clear bit 1 and bit 0
-    val         |=  (1 << GPIO_MODER_MODE0_Pos); // Set bit 0
+    val &= ~GPIO_MODER_MODE0_Msk;        // Clear bit 1 and bit 0
+    val |= (1 << GPIO_MODER_MODE0_Pos);  // Set bit 0
     // Write updated GPIOH_MODER register value
     GPIOH->MODER = val;
 

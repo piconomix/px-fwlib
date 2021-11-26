@@ -14,6 +14,8 @@
 
 // Include standard type integer definitions, e.g. uint8_t, uint16_t, uint32_t, ...
 #include <stdint.h>
+// Include standard bool defintions, e.g. bool, true, false, ...
+#include <stdbool.h>
 
 // RCC_IOPENR (Reset and Clock Control - GPIO clock enable register)
 volatile uint32_t * rcc_iopenr = (volatile uint32_t *)0x4002102c;
@@ -55,11 +57,11 @@ int main(void)
     *rcc_iopenr |= (1 << 7);
 
     // Read GPIOH_MODER register value
-    val          = gpioh->moder;
+    val  = gpioh->moder;
     // Clear MODE0[1:0]
-    val         &= ~(3 << 0);
+    val &= ~(3 << 0);
     // Set MODE0[1:0] = 01 (General purpose output mode)
-    val         |=  (1 << 0);
+    val |=  (1 << 0);
     // Write updated GPIOH_MODER register value
     gpioh->moder = val;
 
@@ -70,7 +72,7 @@ int main(void)
         gpioh->bsrr = (1 << 0);
         delay();
         // Clear PH0 output to disable LED
-        gpioh->bsrr  = (1 << 16);
+        gpioh->bsrr = (1 << 16);
         delay();
     }
 }
