@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
-    Title:          board.h : Nucleo-L053 board GPIO pin definitions
+    Title:          board.h : ST Nucleo64-L053 board GPIO pin definitions
     Author(s):      Pieter Conradie
     Creation Date:  2020-04-30
 

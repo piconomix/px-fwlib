@@ -12,12 +12,23 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
    
-    Title:          board.h : Nucleo-L053 board
+    Title:          board.h : ST Nucleo64-L053 board
     Author(s):      Pieter Conradie
     Creation Date:  2020-04-30
 
 ============================================================================= */
 
+/**
+ *  @ingroup BOARDS_STM32
+ *  @defgroup BOARDS_STM32_NUCLEO64_L053R8 px_board.h : ST Nucleo64-L053 board
+ *
+ *  File(s):
+ *  - boards/arm/stm32/st_nucleo64_l053/inc/px_board.h
+ *  - boards/arm/stm32/st_nucleo64_l053/inc/px_board_gpio.h
+ *  - boards/arm/stm32/st_nucleo64_l053/src/px_board.c
+ *
+ *  @{
+ */
 /* _____STANDARD INCLUDES____________________________________________________ */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */

@@ -1,9 +1,32 @@
-# 3.2.2 ST Nucleo64 L053 Board # {#NUCLEO64_L053_BOARD}
-
-<center><b>From Zer0 to 32-bit HER0&tm;</b><em>\n~ STM32 edition ~</em></center>
+# 3.2.2 ST Nucleo-64 L053 Board # {#NUCLEO64_L053_BOARD}
 
 # 1. Introduction #
 
-@subpage NUCLEO64_L053_APPS     "Apps"
-@subpage NUCLEO64_L053_EXAMPLES "Examples"
+![ST Nucleo-64 L053 Board](st_nucleo_l053r8.jpg)
+
+
+Basic support for the [NUCLEO-L053R8](https://www.st.com/en/evaluation-tools/nucleo-l053r8.html)
+board with an [STM32L053R8](https://www.st.com/en/microcontrollers-microprocessors/stm32l053r8.html)
+MCU.
+
+Links:
+- [STM32 Nucleo-64 board User Manual](https://www.st.com/resource/en/user_manual/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf)
+- [STM32 Nucleo (64 pins) schematics](https://www.st.com/resource/en/schematic_pack/nucleo_64pins_sch.zip)
+- [STM32L053R8 Datasheet](https://www.st.com/resource/en/datasheet/stm32l053r8.pdf)
+
+Support:
+- An [STM32 quick start guide](@ref STM32_QUICK_START_GUIDE) with
+  distilled [tutorials](@ref STM32_TUTORIALS) and [examples](@ref STM32_EXAMPLES)
+- A [Board Support Package](@ref BOARDS_STM32_NUCLEO64_L053R8)
+- @subpage NUCLEO64_L053_APPS     "Apps"
+- @subpage NUCLEO64_L053_EXAMPLES "Examples"
+
+The Nucleo board enumerates as a Mass Storage Device on USB and it is easy to
+program the MCU using a drag'n'drop operation:
+
+![](st_nucleo_drag_n_drop_prog.png)
+
+@warn_s Make sure that the embedded ST-LINK's FW is up to date for \*.hex
+programming to work. Older versions of the FW only support \*.bin.
+@warn_e
 
