@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
-    Title:          CLI Commands
+    Title:          px_cli_cmds.h : CLI Commands
     Author(s):      Pieter Conradie
     Creation Date:  2020-08-27
 

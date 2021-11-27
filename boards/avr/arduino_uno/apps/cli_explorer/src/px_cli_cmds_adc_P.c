@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
-    Title:          px_cli_cmds_spi.h : CLI commands for SPI
+    Title:          px_cli_cmds_adc.h : CLI commands for ADC
     Author(s):      Pieter Conradie
     Creation Date:  2014-05-31
 
@@ -83,8 +83,7 @@ static const char* px_cli_cmd_fn_adc_info(uint8_t argc, char* argv[])
 static const char* px_cli_cmd_fn_adc_cfg(uint8_t argc, char* argv[])
 {
     uint16_t ch;
-    float    scale;
-    float    offset;
+    float    scale, offset;
 
     // <ch>
     if(!px_cli_util_argv_to_u8(0, 0, 3))
@@ -127,9 +126,8 @@ static const char* px_cli_cmd_fn_adc_cfg_samples(uint8_t argc, char* argv[])
 
 static const char* px_cli_cmd_fn_adc_s(uint8_t argc, char* argv[])
 {
-    uint16_t ch;
-    uint16_t val;
-    float scaled_val;
+    uint16_t ch, val;
+    float    scaled_val;
 
     // <ch>
     if(!px_cli_util_argv_to_u8(0, 0, 3))
@@ -150,8 +148,7 @@ static const char* px_cli_cmd_fn_adc_s(uint8_t argc, char* argv[])
 
 static const char* px_cli_cmd_fn_adc_sc(uint8_t argc, char* argv[])
 {
-    uint8_t   i;
-    uint8_t   data;
+    uint8_t   i, data;
     uint16_t  counter;
     const     px_adc_data_t * adc_data;
     float     scaled_val;

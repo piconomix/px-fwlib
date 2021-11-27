@@ -54,32 +54,15 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
     {
         switch(pin_str[0])
         {
-        case '2':
-            px_gpio_open(handle, PX_GPIO_D2);
-            break;
-        case '3':
-            px_gpio_open(handle, PX_GPIO_D3);
-            break;
-        case '4':
-            px_gpio_open(handle, PX_GPIO_D4);
-            break;
-        case '5':
-            px_gpio_open(handle, PX_GPIO_D5);
-            break;
-        case '6':
-            px_gpio_open(handle, PX_GPIO_D6);
-            break;
-        case '7':
-            px_gpio_open(handle, PX_GPIO_D7);
-            break;
-        case '8':
-            px_gpio_open(handle, PX_GPIO_D8);
-            break;
-        case '9':
-            px_gpio_open(handle, PX_GPIO_D9);
-            break;
-        default:
-            return PX_PGM_STR("Error. <pin> must be 2,3,4,5,6,7,8 or 9");
+        case '2': px_gpio_open(handle, PX_GPIO_D2); break;
+        case '3': px_gpio_open(handle, PX_GPIO_D3); break;
+        case '4': px_gpio_open(handle, PX_GPIO_D4); break;
+        case '5': px_gpio_open(handle, PX_GPIO_D5); break;
+        case '6': px_gpio_open(handle, PX_GPIO_D6); break;
+        case '7': px_gpio_open(handle, PX_GPIO_D7); break;
+        case '8': px_gpio_open(handle, PX_GPIO_D8); break;
+        case '9': px_gpio_open(handle, PX_GPIO_D9); break;
+        default:  return PX_PGM_STR("Error. <pin> must be 2,3,4,5,6,7,8 or 9");
         }
     }
     else if(strlen(pin_str) == 2)
@@ -150,35 +133,13 @@ static void px_report_gpio(const char * name, bool dir, bool out, bool in)
     if(dir)
     {
         PX_PRINTF_P("DIR = O, ");
-        if(out)
-        {
-            PX_PRINTF_P("OUT = 1 ");
-        }
-        else
-        {
-            PX_PRINTF_P("OUT = 0 ");
-        }
-        if(in)
-        {
-            PX_PRINTF_P("(IN = 1)");
-        }
-        else
-        {
-            PX_PRINTF_P("(IN = 0)");
-        }
+        PX_PRINTF_P("OUT = %c ", out? '1' : '0');
+        PX_PRINTF_P("(IN = %c)", in? '1' : '0');
     }
     else
     {
         PX_PRINTF_P("DIR = I, ");
-        if(in)
-        {
-            PX_PRINTF_P("IN = 1 ");
-        }
-        else
-        {
-            PX_PRINTF_P("IN = 0 ");
-        }
-
+        PX_PRINTF_P("IN = %c ", in? '1' : '0');
         if(out)
         {
             PX_PRINTF_P("(pull-up Enabled)");

@@ -88,7 +88,6 @@ static const px_gpio_handle_t px_gpio_d7 =       {PX_GPIO_D7};
 #define PX_GPIO_B3 PX_GPIO_SPI_MOSI
 #define PX_GPIO_B4 PX_GPIO_SPI_MISO
 #define PX_GPIO_B5 PX_GPIO_SPI_SCK
-#define PX_GPIO_B6 PX_GPIO_LED
 
 #define PX_GPIO_C0 PX_GPIO_A0
 #define PX_GPIO_C1 PX_GPIO_A1

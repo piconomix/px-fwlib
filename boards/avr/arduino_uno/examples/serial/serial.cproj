@@ -27,14 +27,14 @@
     <BootSegment>2</BootSegment>
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <AsfFrameworkConfig>
-      <framework-data xmlns="">
+      <framework-data>
         <options />
         <configurations />
         <files />
         <documentation help="" />
         <offline-documentation help="" />
         <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.28.1" />
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.34.1" />
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
@@ -54,6 +54,8 @@
       <ToolName>Simulator</ToolName>
     </com_atmel_avrdbg_tool_simulator>
     <avrtoolinterface />
+    <ResetRule>0</ResetRule>
+    <EraseKey />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -137,7 +139,7 @@
     <None Include="Makefile">
       <SubType>compile</SubType>
     </None>
-    <None Include="README.md">
+    <None Include="README.dox">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>

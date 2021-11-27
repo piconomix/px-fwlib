@@ -3,14 +3,14 @@
 # 1. Introduction #
 
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
-[xloader]:           http://xloader.russemotto.com/
-[optiboot]:          https://code.google.com/p/optiboot/
+[xloader]:           https://www.hobbytronics.co.uk/arduino-xloader
+[optiboot]:          https://github.com/Optiboot/optiboot
 [avrdude]:           http://www.nongnu.org/avrdude/
 
 This is a full-featured CLI (Command Line Interpreter) application running on 
 the Arduino Uno R3 board that creates a "Un*x Shell"-like environment so that 
 you can experiment with GPIO, ADC, I2C and SPI using only Terminal software 
-(for example [Tera Term] [tera_term])... it is really cool!
+(for example [Tera Term] [tera_term])... enjoy :)
 
 ![CLI Exlorer executing on an Arduino Uno R3](arduino_uno_cli_preview.png)
 
@@ -36,7 +36,7 @@ Select the HEX file, specify the correct COM port and press upload:
 You can also use the command line tool [avrdude]. The command will be something
 like this:
 
-    avrdude -C avrdude.conf -p m328p -c stk500 -b 115200 -P \\.\COM11 -F -U flash:w:cli_explorer.hex:i
+    avrdude -C avrdude.conf -p m328p -c stk500 -b 115200 -P \\.\COM19 -F -U flash:w:cli_explorer.hex:i
 
 @warn_s
     Make sure that your path to "avrdude" and "avrdude.conf" file is correct and
@@ -149,8 +149,12 @@ DOWN arrow to recall newer command in history list if you went too far back.
 ## 4.3 Help ##
 
 Type 'help' and press ENTER to list all the commands with parameters and 
-descriptions. Parameters indicated with angle brackets <> are required and 
-parameters with square brackets [] are optional.
+descriptions.
+
+@tip_s
+Parameters indicated with angle brackets <> are required and parameters with
+square brackets [] are optional.
+@tip_e
 
 You can make the help list shorter by typing 'help' and a match string. For 
 example to list only commands starting with 'i2c' type 'help i2c'. Here is the 
@@ -239,9 +243,12 @@ To disable LED on Port B, Pin 5:
 
 ## 5.3 ADC ##
 
-This application uses 4 ADC channels (A0 to A3). *A4 and A5 are allocated for I2C 
-use (A4 = Port C pin 4 = SDA; A5 = Port C pin 5 = SCL).* The input voltage range 
-is +0 mV to +5000 mV.
+This application uses 4 ADC channels (A0 to A3). The input voltage range is
++0 mV to +5000 mV.
+
+@warn_s
+A4 and A5 are allocated for I2C use (A4 = Port C pin 4 = SDA; A5 = Port C pin 5 = SCL).
+@warn_e
 
 To report the 10-bit ADC value (0 to 1023) and scaled value (0 mV to 5000 mV) of
 channel 0:
@@ -293,8 +300,11 @@ or slower. For example, to make the report rate 500 ms (0.5 s):
 ## 5.4 I2C ##
 
 An I2C slave can be connected to the breakout header and verified that it works
-before creating a device driver for it. *Pin A4 = Port C pin 4 = SDA; Pin 
-A5 = Port C pin 5 = SCL*
+before creating a device driver for it.
+
+@tip_s
+Pin A4 = Port C pin 4 = SDA; Pin A5 = Port C pin 5 = SCL
+@tip_e
 
 As an example, an
 [Electrodragon BMP280 breakout board](http://www.electrodragon.com/product/bme280-pressure-huminity-temperature-sensor-breakout/)

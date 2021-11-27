@@ -4,7 +4,7 @@
 
 [atmel_studio]:      https://www.microchip.com/mplab/avr-support/atmel-studio-7
 [unix_shell_utils]:  https://sourceforge.net/projects/unixshellutils/files/latest/download
-[xloader]:           http://xloader.russemotto.com/
+[xloader]:           https://www.hobbytronics.co.uk/arduino-xloader
 [optiboot]:          https://github.com/Optiboot/optiboot
 [avrdude]:           http://www.nongnu.org/avrdude/
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
@@ -129,7 +129,7 @@ Studio's build system, to make the projects cross-platform.
 
 Open and build @ref ARDUINO_UNO_BOARD_EXAMPLE_SERIAL. It is located here:
 
-    px-fwlib/boards/avr/arduino_uno/examples/02_serial/serial.atsln
+    px-fwlib/boards/avr/arduino_uno/examples/serial/serial.atsln
 
 File > Open > Project/Solution... **Ctrl+Shift+O**
 
@@ -163,7 +163,7 @@ COM port and press upload:
 You can also use the command line tool [avrdude]. The command will be something
 like this:
 
-    avrdude -C avrdude.conf -p m328p -c stk500 -b 115200 -P \\.\COM11 -F -U flash:w:serial.hex:i
+    avrdude -C avrdude.conf -p m328p -c stk500 -b 115200 -P \\.\COM19 -F -U flash:w:serial.hex:i
 
 @warn_s
     Make sure that your path to "avrdude" and "avrdude.conf" file is correct and

@@ -66,25 +66,8 @@ static const char * px_i2c_check_idle_state(void)
 static const char * px_cli_cmd_fn_i2c_info(uint8_t argc, char* argv[])
 {
     px_i2c_gpio_enable();
-    PX_PRINTF_P("SCL = ");
-    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SCL))
-    {
-        PX_PRINTF_P("0\n");
-    }
-    else
-    {
-        PX_PRINTF_P("1\n");
-    }
-    PX_PRINTF_P("SDA = ");
-    if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SDA))
-    {
-        PX_PRINTF_P("0\n");
-    }
-    else
-    {
-        PX_PRINTF_P("1\n");
-    }
-
+    PX_PRINTF_P("SCL = %c\n", PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SCL)? '0' : '1');
+    PX_PRINTF_P("SDA = %c\n", PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SDA)? '0' : '1');
     if(PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SCL))
     {
         PX_PRINTF_P("Error. SCL is 0\n");
@@ -93,7 +76,6 @@ static const char * px_cli_cmd_fn_i2c_info(uint8_t argc, char* argv[])
     {
         PX_PRINTF_P("Error. SDA is 0. Try I2C Bus Reset procedure\n");
     }
-
     px_i2c_gpio_disable();
 
     return NULL;

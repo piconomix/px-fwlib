@@ -12,7 +12,7 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
-    Title:          px_cli_cmds_spi.h : CLI commands for SPI
+    Title:          px_cli_cmds_adc.h : CLI commands for ADC
     Author(s):      Pieter Conradie
     Creation Date:  2014-05-31
 
