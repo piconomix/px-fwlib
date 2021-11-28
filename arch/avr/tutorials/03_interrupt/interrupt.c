@@ -29,7 +29,7 @@
  *  
  *  @tip_s
  *  Refer to Table 12-6 "Reset and Interrupt Vectors in ATmega328 and
- *  ATmega328P" on page 65 of the ATmega328p datasheet to view the full list of
+ *  ATmega328P" on page 65 of the ATmega328P datasheet to view the full list of
  *  interrupt vectors. Assuming Atmel Studio 7 is installed in it's default
  *  location, the interrupt vector names are defined in:
  *  @tip_e
@@ -38,6 +38,7 @@
  */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 

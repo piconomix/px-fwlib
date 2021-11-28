@@ -54,6 +54,8 @@
       <ToolName>Simulator</ToolName>
     </com_atmel_avrdbg_tool_simulator>
     <avrtoolinterface />
+    <ResetRule>0</ResetRule>
+    <EraseKey />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>

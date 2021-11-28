@@ -25,8 +25,8 @@
  *  The string "UART\r\n" is sent upon start up. Thereafter all received 
  *  characters are echoed back to the sender.
  *  
- *  The clock rate of the AVR is defined in "board.h" with the macro @b F_CPU.
- *  It is a good programming practice to calculate values at compile 
+ *  The clock rate of the AVR is defined in "px_board.h" with the macro @b F_CPU.
+ *  It is a good programming practice to precalculate values at compile 
  *  time, instead of using "magic values". For example,  the value to use for 
  *  the UBBR register is calculated with the following macro: 
  *  
@@ -42,6 +42,7 @@
  */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <avr/io.h>
 
 #include "px_board.h"

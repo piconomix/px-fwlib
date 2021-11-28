@@ -24,7 +24,7 @@
  *  The AVR wakes up every 250 ms, toggles the LED output and returns to sleep.
  *  
  *  There are various sleep modes, each with increasing levels of power saving. 
- *  Refer to 10.1 "Sleep Modes", p.38 of the ATmega328p datasheet to view the
+ *  Refer to 10.1 "Sleep Modes", p.38 of the ATmega328P datasheet to view the
  *  list.
  *  
  *  @tip_s
@@ -42,6 +42,7 @@
  */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 

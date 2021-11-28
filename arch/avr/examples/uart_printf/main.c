@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
-    Title:          printf.h : Microchip AVR printf example
+    Title:          uart_printf.h : Microchip AVR printf to UART example
     Author(s):      Pieter Conradie
     Creation Date:  2007-04-27
  
@@ -18,7 +18,7 @@
 
 /** 
  *  @ingroup AVR_EXAMPLES
- *  @defgroup AVR_EX_PRINTF printf : Microchip AVR printf example
+ *  @defgroup AVR_EX_PRINTF uart_printf : Microchip AVR printf to UART example
  *   
  *  This example initialised a UART, redirects stdout to the UART and 
  *  demonstrates how to print strings stored in program memory and RAM.

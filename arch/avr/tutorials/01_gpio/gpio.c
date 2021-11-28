@@ -77,6 +77,7 @@
  */
 
 #include <avr/io.h>
+#include <stdbool.h>
 
 // LED is an output on PORTB, pin 0
 // PB is an input (with pull-up enabled) on PORTD, pin 7

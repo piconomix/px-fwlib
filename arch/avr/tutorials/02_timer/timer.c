@@ -29,6 +29,7 @@
  */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <avr/io.h>
 
 // LED GPIO pin macros

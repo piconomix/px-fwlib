@@ -3,36 +3,36 @@
 #
 # Based on:
 # - WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
-# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany 
-# - LUFA Makefiles by Dean Camera [www.lufa-lib.org]
+# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany
+# - DMBS - Dean's Makefile Build System by Dean Camera [https://github.com/abcminiuser/dmbs]
 # - http://stackoverflow.com Q&A research
+# - Automatically generate makefile dependencies (http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
+# - GNU make manual (https://www.gnu.org/software/make/manual/make.html)
 #
 # On command line:
 #
-# make             = Build project
-# make check       = Check that source files exist
-# make clean       = Delete intermediate output files and final binaries
-# make mostlyclean = Delete intermediate output files, but preserve final 
-#                    binaries
+# make                    = Build project (debug version)
+# make build=debug        = Build project (debug version)
+# make build=release      = Build project (release version)
+# make clean              = Delete build and final output files
+# make mostlyclean        = Delete build files, but preserve final output files
+# make program            = Program target using command line utility
+# make reset              = Reset target using command line utility
 #
 # To create a new project, copy this Makefile to your project directory and:
 #
 # 1. Specify a project name
-# 2. Specify the MCU that the project will be compiled for
+# 2. Specify the MCU options that the project will be compiled for
 # 3. Specify paths
 # 4. List source files to be included in project WITH PATHS (relative to Makefile)
 # 5. Add include paths
 # 6. Specify any extra preprocessor definitions for source files
 #
-# NOTE(S):
-# - The MCU frequency F_CPU is defined in 'px_board.h' and should be #included 
-#   first before including files that are dependant on it,
-#   for example <avr/delay.h>
-#
 # Makefile script special requirements:
 # - make 3.81 or greater (requires working eval function)
-# - sh (sh.exe on MS-Windows platform; required for 'make check')
+# - sh (sh.exe on MS-Windows platform)
 # - rm (to delete files and directories)
+# - mkdir (to create directories)
 #
 # ------------------------------------------------------------------------------
 # Creation Date:  2012-07-13
@@ -41,7 +41,7 @@
 # (1) Project name
 PROJECT = uart
 
-# (2) MCU name
+# (2) MCU option(s)
 MCU = atmega328p
 
 # (3a) Path to root of Piconomix FW Library (relative to Makefile)
@@ -80,14 +80,16 @@ ASRC +=
 #
 #     If you want to overide an include file with the same name, your file must 
 #     be found first in the search order specified below.
+INCDIRS += cfg
+INCDIRS += inc
+INCDIRS += $(BSP)/inc
 INCDIRS += $(PX_FWLIB)
 INCDIRS += $(PX_FWLIB)/$(ARCH)/inc
 INCDIRS += $(PX_FWLIB)/common/inc
 INCDIRS += $(PX_FWLIB)/utils/inc
-INCDIRS += $(BSP)/inc
 
 # (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
-#CDEFS += PX_LOG=1
+#CDEFS += PX_LOG=0
 CDEFS += 
 
 # (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
@@ -98,20 +100,14 @@ CXXDEFS +=
 # (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
 ADEFS += 
 
-# Object files directory
-#     Do NOT make this empty and do NOT use the current directory (.)
-OBJDIR = OBJ
-
 #---------------- Compiler Options C -------------------------------------------
 #  -g*:          generate debugging information
 #  -O*:          optimization level (0,1,2,3 or s)
 #  -f...:        tuning, see GCC manual and avr-libc documentation
 #  -Wall...:     warning level
 CFLAGS += -gdwarf-2
-CFLAGS += -Os
 CFLAGS += -funsigned-char
 CFLAGS += -funsigned-bitfields
-CFLAGS += -fpack-struct
 CFLAGS += -fshort-enums
 CFLAGS += -Wall
 CFLAGS += -Wstrict-prototypes
@@ -124,16 +120,17 @@ CFLAGS += -std=gnu99
 CFLAGS += -ffunction-sections
 CFLAGS += -fdata-sections
 
+CFLAGS_DEBUG   += -Og
+CFLAGS_RELEASE += -Os
+
 #---------------- Compiler Options C++ -----------------------------------------
 #  -g*:          generate debugging information
 #  -O*:          optimization level (0,1,2,3 or s)
 #  -f...:        tuning, see GCC manual and avr-libc documentation
 #  -Wall...:     warning level
 CXXFLAGS += -gdwarf-2
-CXXFLAGS += -Os
 CXXFLAGS += -funsigned-char
 CXXFLAGS += -funsigned-bitfields
-CXXFLAGS += -fpack-struct
 CXXFLAGS += -fshort-enums
 CXXFLAGS += -fno-exceptions
 CXXFLAGS += -Wall
@@ -144,6 +141,11 @@ CXXFLAGS += -Wundef
 #CXXFLAGS += -Wunreachable-code
 #CXXFLAGS += -Wsign-compare
 CXXFLAGS += -std=gnu++11
+CXXFLAGS += -ffunction-sections
+CXXFLAGS += -fdata-sections
+
+CXXFLAGS_DEBUG   += -Og
+CXXFLAGS_RELEASE += -Os
 
 #---------------- Assembler Options --------------------------------------------
 #  -Wa,...:   tell GCC to pass this to the assembler.
@@ -175,10 +177,15 @@ SCANF_LIB =
 MATH_LIB = -lm
 
 # List any extra directories to look for libraries here.
-#     Each directory must be seperated by a space.
+#     Each directory must be separated by a space.
 #     Use forward slashes for directory separators.
 #     For a directory that has spaces, enclose it in quotes.
 EXTRALIBDIRS = 
+
+# List any extra libraries here.
+#     Each library must be separated by a space.
+#     The "lib" prefix and ".a" suffix must be removed.
+EXTRALIBS = 
 
 #---------------- External Memory Options --------------------------------------
 # 64 KB of external RAM, starting after internal RAM (ATmega128!),

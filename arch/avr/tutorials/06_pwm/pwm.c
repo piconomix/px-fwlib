@@ -28,12 +28,13 @@
  *  TMR peripherals is the sheer size of the datasheet documentation. Most
  *  times it helps to skip the lengthy description and focus on the actual
  *  peripheral register description, e.g. do not start at p.94, but jump
- *  directly to "15.9 Register Description" on p.105 of the ATmega328p
+ *  directly to "15.9 Register Description" on p.105 of the ATmega328P
  *  datasheet.
  *  @tip_e
  */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <avr/io.h>
 
 // Define CPU frequency in Hz
