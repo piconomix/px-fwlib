@@ -28,7 +28,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defs.h"
-#include "px_rtc.h"
+#include "px_rtc_util.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// The number of system clock ticks per second
@@ -44,7 +44,7 @@
 #define PX_SYSCLK_CFG_TIMEOUT_PERIOD_TICKS     PX_SYSCLK_CFG_TICKS_PER_SEC 
 
 /// Specify function to call on periodic timeout
-#define PX_SYSCLK_CFG_ON_PERIODIC_TIMEOUT()    px_rtc_on_tick()
+#define PX_SYSCLK_CFG_ON_PERIODIC_TIMEOUT()    px_rtc_util_on_tick()
 
 /// @}
 #endif
