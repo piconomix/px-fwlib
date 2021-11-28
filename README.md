@@ -56,7 +56,7 @@ of quality and quantity.*
 # Example #
 
 Included with the library is a CLI (Command Line Interpreter) executing on an
-Arduino Uno R3 that creates a "Un*x Shell"-like environment so that you can
+Arduino Uno R3 that creates an interactive shell environment so that you can
 experiment with GPIO, ADC, I2C and SPI using only an ANSI/VT100 terminal
 emulator (for example [Tera Term](http://en.sourceforge.jp/projects/ttssh2)).
 

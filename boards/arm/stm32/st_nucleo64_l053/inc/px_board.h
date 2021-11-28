@@ -115,4 +115,5 @@ void px_board_stop_mode(void);
 }
 #endif
 
+/// @}
 #endif

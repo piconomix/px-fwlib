@@ -25,9 +25,9 @@ There is:
 * A [Board Support Package](@ref SCORPION_BOARD_BSP)
 * @subpage SCORPION_BOARD_EXAMPLES "Examples"
 * @subpage SCORPION_BOARD_APPS "Applications", specifically the
-  @ref SCORPION_BOARD_APP_CLI that creates a "Un*x Shell"-like 
-  environment running on the Scorpion Board so that you can experiment with 
-  GPIO, ADC, I2C and SPI using an ANSI/VT100 Terminal (for example [Tera Term] [tera_term])
+  @ref SCORPION_BOARD_APP_CLI that creates an interactive shell environment
+  running on the Scorpion Board so that you can experiment with GPIO, ADC, I2C
+  and SPI using an ANSI/VT100 Terminal (for example [Tera Term] [tera_term])
 
 # 2. Hardware Features #
 

@@ -28,8 +28,8 @@ Extensive ecosystem included:
 * @subpage HERO_BOARD_GAMES "Games"
 * @subpage HERO_BOARD_ARDUINO "Arduino IDE support and examples"
 
-The flagship application is the @ref HERO_BOARD_APP_CLI that creates a 
-"Un*x Shell"-like environment running on the PX-HER0 board so that you can 
+The flagship application is the @ref HERO_BOARD_APP_CLI that creates an
+interactive shell environment running on the PX-HER0 board so that you can
 easily experiment with GPIO, PWM, ADC, DAC, I2C, SPI and 1-Wire using only 
 [ANSI/VT100 terminal software][tera_term]:
 

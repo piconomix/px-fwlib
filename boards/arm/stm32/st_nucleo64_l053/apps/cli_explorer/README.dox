@@ -4,10 +4,10 @@
 
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 
-This is a CLI (Command Line Interpreter) application running
-on the ST Nucleo64 L053 Board that creates a "Un*x Shell"-like environment so 
-that you can experiment with GPIO and UART using only ANSI/VT100 Terminal 
-software (for example [Tera Term] [tera_term]).
+This is a CLI (Command Line Interpreter) application running on the ST Nucleo64
+L053 Board that creates an interactive shell environment so that you can
+experiment with GPIO and UART using only ANSI/VT100 Terminal software (for
+example [Tera Term] [tera_term]).
 
 With this application you will be able to:
 - Switch the LED on and off

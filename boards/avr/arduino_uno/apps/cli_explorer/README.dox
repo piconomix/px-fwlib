@@ -8,7 +8,7 @@
 [avrdude]:           http://www.nongnu.org/avrdude/
 
 This is a full-featured CLI (Command Line Interpreter) application running on 
-the Arduino Uno R3 board that creates a "Un*x Shell"-like environment so that 
+the Arduino Uno R3 board that creates an interactive shell environment so that
 you can experiment with GPIO, ADC, I2C and SPI using only Terminal software 
 (for example [Tera Term] [tera_term])... enjoy :)
 

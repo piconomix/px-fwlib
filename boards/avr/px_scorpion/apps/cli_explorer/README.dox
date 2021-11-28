@@ -5,9 +5,9 @@
 [tera_term]:         http://en.sourceforge.jp/projects/ttssh2
 
 This is a full-featured CLI (Command Line Interpreter) application running on 
-the Piconomix Scorpion Board that creates a "Un*x Shell"-like environment so that 
+the Piconomix Scorpion Board that creates an interactive shell environment so that
 you can experiment with GPIO, ADC, I2C and SPI using only Terminal software 
-(for example [Tera Term] [tera_term])... it is really cool!
+(for example [Tera Term] [tera_term])... enjoy :)
 
 ![CLI Exlorer executing on a Scorpion Board](scorpion_board_cli_preview.png)
 
