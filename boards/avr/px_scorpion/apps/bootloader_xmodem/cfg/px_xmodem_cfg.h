@@ -8,10 +8,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_xmodem_cfg.h : XMODEM Peripheral Driver configuration
     Author(s):      Pieter Conradie
     Creation Date:  2013-01-15
@@ -22,7 +22,8 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defs.h"
-#include "px_xmodem_glue.h"
+#include "px_uart.h"
+#include "px_tmr.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// Retry timeout in milliseconds
@@ -31,7 +32,7 @@
 /// Maximum number of retries to start a transfer
 #define PX_XMODEM_CFG_MAX_RETRIES_START     1
 
-/// Maximum nymber of retries during a transfer
+/// Maximum number of retries during a transfer
 #define PX_XMODEM_CFG_MAX_RETRIES           4
 
 /**
@@ -42,7 +43,7 @@
  *  @retval true        Received byte is stored in specified location
  *  @retval false       No received data available (receive buffer empty)
  */
-#define PX_XMODEM_CFG_RD_U8(data)          px_xmodem_rd_u8(data)
+#define PX_XMODEM_CFG_RD_U8(data)        px_uart_rd_u8(data)
 
 /**
  *  Write one byte.
@@ -51,7 +52,7 @@
  *  
  *  @param[in] data   Byte to be written
  */
-#define PX_XMODEM_CFG_WR_U8(data)          px_xmodem_wr_u8(data)
+#define PX_XMODEM_CFG_WR_U8(data)       px_uart_putchar((char)data)
 
 /**
  *  Start timeout timer.
@@ -60,7 +61,7 @@
  *  
  *  @param[in] time_ms   Time in milliseconds to wait before timer has expired
  */
-#define PX_XMODEM_CFG_TMR_START(time_ms)   px_xmodem_tmr_start(time_ms)
+#define PX_XMODEM_CFG_TMR_START(time_ms)    px_tmr_start(TMR_MS_TO_TICKS(time_ms))
 
 /**
  *  See if timer has expired.
@@ -68,6 +69,6 @@
  *  @retval true    Timer has expired
  *  @retval false   Timer has not expired
  */
-#define PX_XMODEM_CFG_TMR_HAS_EXPIRED()    px_xmodem_tmr_has_expired()
+#define PX_XMODEM_CFG_TMR_HAS_EXPIRED()    px_tmr_has_expired()
 
 #endif
