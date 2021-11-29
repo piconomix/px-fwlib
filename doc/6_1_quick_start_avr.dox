@@ -352,8 +352,8 @@ moved.
 
 ## 8.9 Modify path(s) in Makefile ##
 
-If the project uses the Piconomix FW Library (which it does), you have to modify
-the path so that the required files can be found.
+If the project uses px-fwlib (which it does), you have to modify the path so
+that the required files can be found.
 
 Example location of project Makefile:
 
@@ -361,7 +361,7 @@ Example location of project Makefile:
 
 Example location of library:
 
-    P:\libs\px-fwlib\trunk
+    P:\libs\px-fwlib
 
 Open Makefile and modify the PX_FWLIB variable to set the relative path to
 the library:
@@ -409,7 +409,7 @@ You can now delete any previously built files by executing 'make clean' on the
 command line (see picture above). This is the output:
 
 @verbatim
-    P:\libs\px-fwlib\trunk\arch\avr\examples\flashing_led>make clean
+    P:\libs\px-fwlib\arch\avr\examples\flashing_led>make clean
 
     -------- begin --------
 
@@ -426,7 +426,7 @@ The project can be built again by executing 'make' on the command line. This is
 the output:
 
 @verbatim
-    P:\libs\px-fwlib\trunk\arch\avr\examples\flashing_led>make
+    P:\libs\px-fwlib\arch\avr\examples\flashing_led>make
 
     -------- begin --------
     avr-gcc.exe (AVR_8_bit_GNU_Toolchain_3.5.0_1662) 4.9.2
