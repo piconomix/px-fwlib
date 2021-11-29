@@ -65,14 +65,9 @@ static const char* px_cli_cmd_led_fn(uint8_t argc, char* argv[])
     // <on|off>
     switch(px_cli_util_argv_to_option(0, PX_PGM_STR("on\0off\0")))
     {
-    case 0: 
-        PX_LED_ON();
-        break;
-    case 1: 
-        PX_LED_OFF();
-        break;
-    default:
-        return PX_PGM_STR("Error: Invalid parameter");
+    case 0:  PX_LED_ON(); break;
+    case 1:  PX_LED_OFF(); break;
+    default: return PX_PGM_STR("Error: Invalid parameter");
     }
 
     return NULL;

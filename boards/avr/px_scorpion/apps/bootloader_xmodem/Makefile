@@ -128,7 +128,7 @@ CFLAGS += -std=gnu99
 CFLAGS += -ffunction-sections
 CFLAGS += -fdata-sections
 
-CFLAGS_DEBUG   += -Og
+CFLAGS_DEBUG   += -Os
 CFLAGS_RELEASE += -Os
 
 #---------------- Compiler Options C++ -----------------------------------------

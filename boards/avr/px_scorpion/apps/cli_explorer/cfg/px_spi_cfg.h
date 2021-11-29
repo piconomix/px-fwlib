@@ -7,14 +7,14 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_spi_cfg.h : SPI Peripheral Driver configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2013-01-15
+    Creation Date:  2014-01-15
 
 ============================================================================= */
 
@@ -46,6 +46,7 @@
 
 /**
  *  Map PX_SPI_CFG_CS_LO() macro to board_spi_cs_lo() function.
+ *
  *  A manual Chip Select function must be implemented, e.g.
  *  
  *      void board_spi_cs_lo(uint8_t cs_id)
@@ -61,10 +62,11 @@
  *          }
  *      }
  */
-#define PX_SPI_CFG_CS_LO(cs_id) px_board_spi_cs_lo(cs_id)
+#define PX_SPI_CFG_CS_LO(cs_id)     px_board_spi_cs_lo(cs_id)
 
 /** 
  *  Map PX_SPI_CFG_CS_HI() macro to board_spi_cs_hi() function.
+ *
  *  A manual Chip Select function must be implemented, e.g.
  *  
  *      void board_spi_cs_hi(uint8_t cs_id)
@@ -81,6 +83,6 @@
  *      }
  *  
  */
-#define PX_SPI_CFG_CS_HI(cs_id) px_board_spi_cs_hi(cs_id)
+#define PX_SPI_CFG_CS_HI(cs_id)     px_board_spi_cs_hi(cs_id)
 
 #endif

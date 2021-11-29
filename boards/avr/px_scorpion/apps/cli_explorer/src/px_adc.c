@@ -75,20 +75,11 @@ static void px_adc_select_channel(uint8_t channel)
     // Select AVCC as reference with external capacitor at AREF pin
     switch(channel)
     {
-    case 0:
-        ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC0<<MUX0);
-        break;
-    case 1:
-        ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC1<<MUX0);
-        break;
-    case 2:
-        ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC2<<MUX0);
-        break;
-    case 3:
-        ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC3<<MUX0);
-        break;
-    default:
-        break;
+    case 0: ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC0<<MUX0); break;
+    case 1: ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC1<<MUX0); break;
+    case 2: ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC2<<MUX0); break;
+    case 3: ADMUX = (0 << REFS1) | (1 << REFS0) | (ADC3<<MUX0); break;
+    default: break;
     }
 }
 

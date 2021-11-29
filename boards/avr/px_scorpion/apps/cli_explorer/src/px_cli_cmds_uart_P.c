@@ -271,16 +271,9 @@ static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
     {
         switch(px_cli_util_argv_to_option(2, PX_PGM_STR("cr\0lf\0crlf\0")))
         {
-        case 0:
-            putchar('\r');
-            break;
-        case 1:
-            putchar('\n');
-            break;
-        case 2:
-            putchar('\r');
-            putchar('\n');
-            break;
+        case 0: putchar('\r'); break;
+        case 1: putchar('\n'); break;
+        case 2: putchar('\r'); putchar('\n'); break;
         default:
             return PX_PGM_STR("Error: [cr|lf|crlf] must be cr or lf or crlf");
         }

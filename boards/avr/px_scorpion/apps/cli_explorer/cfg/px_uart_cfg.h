@@ -50,6 +50,6 @@
  *  - U2Xn = 0 : UBBRn = 8  (-3.5% error)
  *  - U2Xn = 1 : UBBRn = 16 (+2.1% error)
  */
-#define PX_UART_CFG_USE_2X_BAUD_RATE 1
+#define PX_UART_CFG_USE_2X_BAUD_RATE 0
 
 #endif

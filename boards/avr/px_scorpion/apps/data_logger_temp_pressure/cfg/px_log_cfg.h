@@ -40,7 +40,7 @@
  *  INFO messages will be included in the code but DEBUG and VERBOSE messages
  *  will not.
  */
-#define PX_LOG_CFG_LEVEL PX_LOG_LEVEL_WARNING
+#define PX_LOG_CFG_LEVEL PX_LOG_LEVEL_ERROR
 #endif
 
 /// Disable (0) or Enable (1) run time log filter
@@ -50,21 +50,21 @@
 #define PX_LOG_CFG_COLOR 1
 
 /// Debug output string buffer size
-#define PX_LOG_CFG_BUF_SIZE 64
+#define PX_LOG_CFG_BUF_SIZE 32
 
-/// Provide function to output debug timestamp
+/// Provide function to output log timestamp
 #if 0
 // Example 1: Create timestamp using sysclk tick
 #include "px_sysclk.h"
 #define PX_LOG_CFG_TIMESTAMP(str)  sprintf(str, "%08lu", (uint32_t)px_sysclk_get_tick_count())
 #endif
-#if 1
+#if 0
 // Example 2: Call a function in 'main.h'
 #include "main.h"
 #define PX_LOG_CFG_TIMESTAMP(str)  main_log_timestamp(str)
 #endif
 
-/// Provide function to output debug character
+/// Provide function to output log character
 #if 0
 // Example 1: Direct debug output to stderr
 #include <stdio.h>
@@ -76,7 +76,7 @@
 #include "main.h"
 #define PX_LOG_CFG_PUTCHAR(data) px_uart_putchar(&main_uart_handle, data)
 #endif
-#if 1
+#if 0
 // Example 3: Call function in main
 #include "main.h"
 #define PX_LOG_CFG_PUTCHAR(data) main_log_putchar(data)

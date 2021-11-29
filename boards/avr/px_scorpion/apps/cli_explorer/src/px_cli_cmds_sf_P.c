@@ -30,7 +30,7 @@
 PX_LOG_NAME("cli_cmds_sf");
 
 // Make sure buffer is big enough to hold a page of data
-#if (MAIN_BUFFER_SIZE < (PX_AT45D_PAGE_SIZE-1))
+#if (MAIN_BUFFER_SIZE < (PX_AT45D_PAGE_SIZE - 1))
 #error "Make MAIN_BUFFER_SIZE larger"
 #endif
 
@@ -364,10 +364,7 @@ static const char* px_cli_cmd_fn_sf_wr_xmodem(uint8_t argc, char* argv[])
 
     // Wait until button is pressed
     PX_PRINTF_P("Press button when host is ready to send file (after XMODEM transfer has been started)...\n");
-    while(!PX_PB_IS_PRESSED())
-    {
-        ;
-    }
+    while(!PX_PB_IS_PRESSED()) {;}
 
     // Receive DataFlash content using XMODEM protocol
     px_cli_cmd_sf_page     = start_page;

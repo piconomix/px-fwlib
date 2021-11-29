@@ -7,14 +7,14 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_sysclk_cfg.h : System Clock using a TMRx peripheral configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2013-01-16
+    Creation Date:  2014-01-16
 
 ============================================================================= */
 

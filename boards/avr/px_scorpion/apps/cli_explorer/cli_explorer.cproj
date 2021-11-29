@@ -64,6 +64,8 @@
       <ToolNumber>J30200007325</ToolNumber>
       <ToolName>JTAGICE3</ToolName>
     </com_atmel_avrdbg_tool_jtagice3plus>
+    <ResetRule>0</ResetRule>
+    <EraseKey />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -147,7 +149,7 @@
     <None Include="Makefile">
       <SubType>compile</SubType>
     </None>
-    <None Include="README.md">
+    <None Include="README.dox">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>

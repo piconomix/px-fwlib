@@ -86,18 +86,10 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
     {
         switch(argv[2][0])
         {
-        case '0':
-            mode = PX_SPI_MODE0;
-            break;
-        case '1':
-            mode = PX_SPI_MODE1;
-            break;
-        case '2':
-            mode = PX_SPI_MODE2;
-            break;
-        case '3':
-            mode = PX_SPI_MODE3;
-            break;
+        case '0': mode = PX_SPI_MODE0; break;
+        case '1': mode = PX_SPI_MODE1; break;
+        case '2': mode = PX_SPI_MODE2; break;
+        case '3': mode = PX_SPI_MODE3; break;
         default:
             return PX_PGM_STR("Error. [mode] must be 0, 1, 2 or 3");
         }
@@ -112,14 +104,9 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
     {
         switch(px_cli_util_argv_to_option(3, PX_PGM_STR("lsb\0msb\0")))
         {
-        case 0: 
-            data_order = PX_SPI_DATA_ORDER_LSB;
-            break;
-        case 1: 
-            data_order = PX_SPI_DATA_ORDER_MSB;
-            break;
-        default:
-            return PX_PGM_STR("Error: [order] must be lsb or msb");
+        case 0: data_order = PX_SPI_DATA_ORDER_LSB; break;
+        case 1: data_order = PX_SPI_DATA_ORDER_MSB; break;
+        default: return PX_PGM_STR("Error: [order] must be lsb or msb");
         }
     }
     else

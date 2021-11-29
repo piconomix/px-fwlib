@@ -44,9 +44,7 @@ typedef struct
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 void                  px_adc_init               (void);
-
 uint16_t              px_adc_sample             (uint8_t channel);
-
 void                  px_adc_start              (uint16_t sampling_freq_hz, 
                                                  uint16_t nr_of_samples_per_sum);
 void                  px_adc_stop               (void);

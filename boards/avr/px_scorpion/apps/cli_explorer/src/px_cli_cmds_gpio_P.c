@@ -127,35 +127,13 @@ static void px_report_gpio(const char * name, bool dir, bool out, bool in)
     if(dir)
     {
         PX_PRINTF_P("DIR = O, ");
-        if(out)
-        {
-            PX_PRINTF_P("OUT = 1 ");
-        }
-        else
-        {
-            PX_PRINTF_P("OUT = 0 ");
-        }
-        if(in)
-        {
-            PX_PRINTF_P("(IN = 1)");
-        }
-        else
-        {
-            PX_PRINTF_P("(IN = 0)");
-        }
+        PX_PRINTF_P("OUT = %c ", out? '1' : '0');
+        PX_PRINTF_P("(IN = %c)", in? '1' : '0');
     }
     else
     {
         PX_PRINTF_P("DIR = I, ");
-        if(in)
-        {
-            PX_PRINTF_P("IN = 1 ");
-        }
-        else
-        {
-            PX_PRINTF_P("IN = 0 ");
-        }
-
+        PX_PRINTF_P("IN = %c ", in? '1' : '0');
         if(out)
         {
             PX_PRINTF_P("(pull-up Enabled)");

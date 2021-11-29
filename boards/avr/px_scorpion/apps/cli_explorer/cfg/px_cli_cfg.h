@@ -7,14 +7,14 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
- 
+    Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
+
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
-    
+
     Title:          px_cli_cfg.h : CLI Peripheral Driver configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2014-02-11
+    Creation Date:  2013-01-15
 
 ============================================================================= */
 
@@ -33,9 +33,9 @@
 /// Define the maximum depth of command strings
 #define PX_CLI_CFG_TREE_DEPTH_MAX      2
 
-/** 
+/**
  *  Define the command line history size (use 0 to remove history).
- *  
+ *
  *  It must be able to accept at least one cmd line completely!
  *  PX_CLI_HISTORY_SIZE must be equal or less than 65536 (256 best value).
  *  If not zero, PX_CLI_HISTORY_SIZE must also be equal or greater than
@@ -58,7 +58,7 @@
 /// Disable (0) or Enable (1) echo of characters typed
 #define PX_CLI_CFG_ECHO_CHARS          1
 
-/// Specify ENTER character (Carriage Return '\r' or Line Feed '\n') that signifies the end of a command
+/// Specify ENTER character (Carriage Return "\r" or Line Feed "\n") that signifies the end of a command
 #define PX_CLI_CFG_CHAR_ENTER          PX_VT100_CHAR_CR
 //#define PX_CLI_CFG_CHAR_ENTER          PX_VT100_CHAR_LF
 
