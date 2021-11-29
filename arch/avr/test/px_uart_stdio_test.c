@@ -30,7 +30,7 @@ int main(void)
     px_interrupts_enable();
 
     printf("Starting counter...\n");
-    for(counter = 0; counter<8; counter++)
+    for(counter = 0; counter < 8; counter++)
     {
         printf("Counter = %u\n", counter);
     }
