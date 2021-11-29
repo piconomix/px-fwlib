@@ -69,18 +69,20 @@ typedef enum
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-/// Initialise the board hardware
+/**
+ *  Initialise the board hardware.
+ */
 extern void px_board_init(void);
 
 /**
- *  Set specified SPI Chip Select low
+ *  Set specified SPI Chip Select low.
  *  
  *  @param cs_id    ID which GPIO pin must be used for Chip Select
  */
 extern void px_board_spi_cs_lo(uint8_t cs_id);
 
 /**
- *  Set specified SPI Chip Select high
+ *  Set specified SPI Chip Select high.
  *  
  *  @param cs_id    ID which GPIO pin must be used for Chip Select
  */
