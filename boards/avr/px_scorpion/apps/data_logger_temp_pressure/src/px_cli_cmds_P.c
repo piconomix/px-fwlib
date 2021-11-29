@@ -39,7 +39,7 @@
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 PX_LOG_NAME("cli");
 
-#define LOG_PERIOD_MIN  30
+#define LOG_PERIOD_MIN  15
 
 /* _____MACROS_______________________________________________________________ */
 
@@ -92,7 +92,7 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
             }
         }
         // Round up minutes to nearest period
-        log_alarm.min = (log_alarm.min/LOG_PERIOD_MIN + 1)*LOG_PERIOD_MIN;
+        log_alarm.min = (log_alarm.min / LOG_PERIOD_MIN + 1) * LOG_PERIOD_MIN;
         // Next hour
         if(log_alarm.min >= 60)
         {
@@ -104,7 +104,7 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
             }
         }
         px_rtc_util_alarm_flag_clear();
-        px_rtc_util_alarm_wr(&log_alarm, PX_RTC_UTIL_ALARM_MASK_HOUR);        
+        px_rtc_util_alarm_wr(&log_alarm, PX_RTC_UTIL_ALARM_MASK_HOUR | PX_RTC_UTIL_ALARM_MASK_MIN | PX_RTC_UTIL_ALARM_MASK_SEC);
 
         // Wait until alarm rings
         PX_LED_OFF();
@@ -154,7 +154,7 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
                 PX_PRINTF_P("Error. Log file full or write error\n");
                 break;
             }
-        }        
+        }
     }
 
     return NULL;
