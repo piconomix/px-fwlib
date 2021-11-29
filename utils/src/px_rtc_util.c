@@ -431,7 +431,12 @@ void px_rtc_util_alarm_wr(const px_rtc_date_time_t * alarm,
                           px_rtc_alarm_mask_t        alarm_mask)
 {
     // Sanity checks
-    PX_LOG_ASSERT(px_rtc_util_date_time_fields_are_valid(alarm));
+    PX_LOG_ASSERT(alarm->year  <= 99);
+    PX_LOG_ASSERT(alarm->month <= 12);
+    PX_LOG_ASSERT(alarm->day   <= 31);
+    PX_LOG_ASSERT(alarm->hour  <= 23);
+    PX_LOG_ASSERT(alarm->min   <= 59);
+    PX_LOG_ASSERT(alarm->sec   <= 59);
 
     // Disable alarm first
     px_rtc_util_alarm_mask = PX_RTC_UTIL_ALARM_MASK_DIS;
