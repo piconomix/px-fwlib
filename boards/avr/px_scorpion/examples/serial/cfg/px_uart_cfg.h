@@ -7,14 +7,14 @@
     |  __/   | |  | |___  | |_| | | |\  | | |_| | | |  | |  | |   /  \
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
-    Copyright (c) 2013 Pieter Conradie <https://piconomix.com>
+    Copyright (c) 2014 Pieter Conradie <https://piconomix.com>
  
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
     
     Title:          px_uart_cfg.h : UART Peripheral Driver configuration
     Author(s):      Pieter Conradie
-    Creation Date:  2013-01-16
+    Creation Date:  2014-01-16
 
 ============================================================================= */
 
@@ -24,9 +24,6 @@
 #include "px_defs.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
-/// Maximum number of handles
-#define PX_UART_CFG_MAX_NR_HANDLES 1
-
 /// Enable/disable support for UART0 peripheral
 #define PX_UART_CFG_UART0_EN 1
 
@@ -36,13 +33,13 @@
 /// Default BAUD rate
 #define PX_UART_CFG_DEFAULT_BAUD 115200ul
 
-/// Default UART configuration
-#define PX_UART_CFG_DEFAULT_UCSRC  ((0 << UCSZ02) | (1 << UCSZ01) | (1 << UCSZ00))
+/// Default UART configuration (8 data bits, no parity, 1 stop bit)
+#define PX_UART_CFG_DEFAULT_UCSRC  ((1 << UCSZ01) | (1 << UCSZ00))
 
-/// [px_uart.c] Size of transmit buffer (must be a power of two, e.g. 2,4,8,..., 256)
-#define PX_UART_CFG_TX_BUF_SIZE 64
+/// Size of transmit buffer (must be a power of two, e.g. 2,4,8,..., 256)
+#define PX_UART_CFG_TX_BUF_SIZE 32
 
-/// [px_uart.c] Size of receive buffer (must be a power of two, e.g. 2,4,8,..., 256)
+/// Size of receive buffer (must be a power of two, e.g. 2,4,8,..., 256)
 #define PX_UART_CFG_RX_BUF_SIZE 64
 
 /**
