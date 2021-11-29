@@ -146,7 +146,7 @@ static void px_report_gpio(const char * name, bool dir, bool out, bool in)
     putchar('\n');
 }
 
-static const char* px_cli_cmd_fn_gpio_info(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_info(uint8_t argc, char * argv[])
 {
     PX_PRINTF_P("\n        HEX    7 6 5 4 3 2 1 O\n");
     px_report_gpio_reg(PX_PGM_STR("DDRB "), DDRB,  'I', 'O');
@@ -182,7 +182,7 @@ static const char* px_cli_cmd_fn_gpio_info(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char * argv[])
 {
     const char * result;
 
@@ -208,7 +208,7 @@ static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char * px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char * argv[])
 {
     const char * result;
 
@@ -240,7 +240,7 @@ static const char * px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char * px_cli_cmd_fn_gpio_out(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_out(uint8_t argc, char * argv[])
 {
     const char * result;
 
@@ -262,7 +262,7 @@ static const char * px_cli_cmd_fn_gpio_out(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char * px_cli_cmd_fn_gpio_in(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_in(uint8_t argc, char * argv[])
 {
     const char * result;
 

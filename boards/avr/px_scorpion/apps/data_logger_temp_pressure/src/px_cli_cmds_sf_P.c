@@ -46,7 +46,7 @@ static uint16_t px_cli_cmd_sf_offset;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_sf_info(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sf_info(uint8_t argc, char * argv[])
 {
     uint8_t  status;
 
@@ -67,7 +67,7 @@ static const char* px_cli_cmd_fn_sf_info(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_sf_erase(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sf_erase(uint8_t argc, char * argv[])
 {
     uint16_t page_start = 0;
     uint16_t page_end   = (PX_AT45D_PAGES-1);
@@ -108,7 +108,7 @@ static const char* px_cli_cmd_fn_sf_erase(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_sf_rd(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sf_rd(uint8_t argc, char * argv[])
 {
     uint32_t adr;
     uint16_t nr_of_bytes;
@@ -134,7 +134,7 @@ static const char* px_cli_cmd_fn_sf_rd(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_sf_rd_page(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sf_rd_page(uint8_t argc, char * argv[])
 {
     uint16_t page;
 
@@ -196,7 +196,7 @@ static bool px_xmodem_on_tx_data(uint8_t * data, uint8_t bytes_to_send)
     return true;
 }
 
-static const char * px_cli_cmd_fn_sf_rd_xmodem(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sf_rd_xmodem(uint8_t argc, char * argv[])
 {
     uint16_t start_page;
     uint16_t end_page;
@@ -247,7 +247,7 @@ static const char * px_cli_cmd_fn_sf_rd_xmodem(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_sf_wr_page(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sf_wr_page(uint8_t argc, char * argv[])
 {
     uint16_t page;
     uint16_t offset;
@@ -343,7 +343,7 @@ static void px_xmodem_on_rx_data(const uint8_t * data, uint8_t bytes_received)
     return;
 }
 
-static const char* px_cli_cmd_fn_sf_wr_xmodem(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sf_wr_xmodem(uint8_t argc, char * argv[])
 {
     uint16_t start_page;
 

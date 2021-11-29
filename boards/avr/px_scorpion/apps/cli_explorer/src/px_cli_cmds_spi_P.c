@@ -43,7 +43,7 @@ static bool             px_spi_handle_open;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_spi_cfg(uint8_t argc, char * argv[])
 {
     const char *  result;
     uint32_t      baud_rate_hz;
@@ -144,7 +144,7 @@ static const char* px_cli_cmd_fn_spi_cfg(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_spi_cs(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_spi_cs(uint8_t argc, char * argv[])
 {
     // <lo|hi>
     switch(px_cli_util_argv_to_option(0, PX_PGM_STR("lo\0hi\0")))
@@ -166,7 +166,7 @@ static const char* px_cli_cmd_fn_spi_cs(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_spi_wr(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_spi_wr(uint8_t argc, char * argv[])
 {
     uint8_t i;
     uint8_t data[8];
@@ -188,7 +188,7 @@ static const char* px_cli_cmd_fn_spi_wr(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_spi_rd(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_spi_rd(uint8_t argc, char * argv[])
 {
     uint8_t i;
     uint8_t nr_of_bytes;
@@ -214,7 +214,7 @@ static const char* px_cli_cmd_fn_spi_rd(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_spi_exchange(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_spi_exchange(uint8_t argc, char * argv[])
 {
     uint8_t i;
     uint8_t data[16];

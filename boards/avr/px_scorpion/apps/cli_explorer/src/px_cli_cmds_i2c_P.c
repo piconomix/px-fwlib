@@ -63,7 +63,7 @@ static const char * px_i2c_check_idle_state(void)
     return NULL;
 }
 
-static const char * px_cli_cmd_fn_i2c_info(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_i2c_info(uint8_t argc, char * argv[])
 {
     px_i2c_gpio_enable();
     PX_PRINTF_P("SCL = %c\n", PX_GPIO_IN_IS_LO(PX_GPIO_I2C_SCL)? '0' : '1');
@@ -81,7 +81,7 @@ static const char * px_cli_cmd_fn_i2c_info(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char * px_cli_cmd_fn_i2c_reset(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_i2c_reset(uint8_t argc, char * argv[])
 {
     uint8_t i;
 
@@ -107,7 +107,7 @@ static const char * px_cli_cmd_fn_i2c_reset(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char * px_cli_cmd_fn_i2c_scan(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_i2c_scan(uint8_t argc, char * argv[])
 {
     uint8_t      adr;
     uint8_t      data;
@@ -139,7 +139,7 @@ static const char * px_cli_cmd_fn_i2c_scan(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char * px_cli_cmd_fn_i2c_wr(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_i2c_wr(uint8_t argc, char * argv[])
 {
     uint8_t i;
     uint8_t adr;
@@ -174,7 +174,7 @@ static const char * px_cli_cmd_fn_i2c_wr(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char * px_cli_cmd_fn_i2c_rd(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_i2c_rd(uint8_t argc, char * argv[])
 {
     uint8_t i;
     uint8_t adr;

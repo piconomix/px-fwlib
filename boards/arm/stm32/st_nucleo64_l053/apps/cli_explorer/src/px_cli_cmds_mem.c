@@ -36,7 +36,7 @@ PX_LOG_NAME("cli_cmds_mem");
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_mem_rd(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_mem_rd(uint8_t argc, char * argv[])
 {
     uint32_t adr;
     uint8_t  count;
@@ -109,7 +109,7 @@ static const char* px_cli_cmd_fn_mem_rd(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_mem_wr(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_mem_wr(uint8_t argc, char * argv[])
 {
     uint32_t adr;
     uint8_t  count;
@@ -169,7 +169,7 @@ static const char* px_cli_cmd_fn_mem_wr(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_mem_dump(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_mem_dump(uint8_t argc, char * argv[])
 {
     uint32_t adr;
     uint16_t nr_of_bytes;

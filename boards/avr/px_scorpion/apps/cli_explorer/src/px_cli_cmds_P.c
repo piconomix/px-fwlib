@@ -48,10 +48,10 @@ PX_LOG_NAME("cli");
 /* _____LOCAL VARIABLES______________________________________________________ */
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
-static const char* px_cli_cmd_reset_fn(uint8_t argc, char* argv[]) PX_ATTR_NORETURN;
+static const char * px_cli_cmd_reset_fn(uint8_t argc, char * argv[]) PX_ATTR_NORETURN;
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_reset_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_reset_fn(uint8_t argc, char * argv[])
 {
     px_interrupts_disable();
     // Enable watchdog to reset microcontroller
@@ -60,7 +60,7 @@ static const char* px_cli_cmd_reset_fn(uint8_t argc, char* argv[])
     while(true) {;}
 }
 
-static const char* px_cli_cmd_led_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_led_fn(uint8_t argc, char * argv[])
 {
     // <on|off>
     switch(px_cli_util_argv_to_option(0, PX_PGM_STR("on\0off\0")))
@@ -73,7 +73,7 @@ static const char* px_cli_cmd_led_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_beep_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_beep_fn(uint8_t argc, char * argv[])
 {
     uint16_t delay_ms;
     uint16_t freq_hz;
@@ -112,7 +112,7 @@ static const char* px_cli_cmd_beep_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_delay_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_delay_fn(uint8_t argc, char * argv[])
 {
     uint16_t delay;
 

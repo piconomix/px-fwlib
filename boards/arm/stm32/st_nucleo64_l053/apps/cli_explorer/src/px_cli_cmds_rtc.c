@@ -35,7 +35,7 @@ PX_LOG_NAME("cli_cmds_rtc");
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_rtc_rd(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_rtc_rd(uint8_t argc, char * argv[])
 {
     px_rtc_date_time_t date_time;
 
@@ -46,7 +46,7 @@ static const char* px_cli_cmd_fn_rtc_rd(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_rtc_wr(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_rtc_wr(uint8_t argc, char * argv[])
 {
     px_rtc_date_time_t date_time;
 

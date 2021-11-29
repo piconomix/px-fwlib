@@ -166,20 +166,20 @@ bool px_m41t00_get_time(px_m41t00_time_t * px_rtc_time)
     }
 
     // See if timer has been stopped
-    if(((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_ST_ADR]  & PX_M41T00_ST_BIT)
+    if(((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_ST_ADR]  & PX_M41T00_ST_BIT)
     {
         PX_LOG_E("RTC has been stopped!");
         return false;
     }
 
     // Mask off century bits
-    ((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_CEB_ADR] &= ~PX_M41T00_CEB_BIT;
-    ((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_CB_ADR]  &= ~PX_M41T00_CB_BIT;
+    ((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_CEB_ADR] &= ~PX_M41T00_CEB_BIT;
+    ((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_CB_ADR]  &= ~PX_M41T00_CB_BIT;
 
     // Convert to binary format
     for(i = 0; i < sizeof(*px_rtc_time); i++)
     {
-        ((uint8_t*)px_rtc_time)[i] = px_m41t00_bcd_to_byte(((uint8_t*)(&px_m41t00_data.bcd_time))[i]);
+        ((uint8_t *)px_rtc_time)[i] = px_m41t00_bcd_to_byte(((uint8_t *)(&px_m41t00_data.bcd_time))[i]);
     }
 
     // Sanity check
@@ -199,13 +199,13 @@ bool px_m41t00_set_time(const px_m41t00_time_t * px_rtc_time)
     // Convert to BCD format
     for(i = 0; i < sizeof(px_m41t00_data.bcd_time); i++)
     {
-        ((uint8_t*)(&px_m41t00_data.bcd_time))[i] = px_m41t00_byte_to_bcd(((uint8_t*)px_rtc_time)[i]);
+        ((uint8_t *)(&px_m41t00_data.bcd_time))[i] = px_m41t00_byte_to_bcd(((uint8_t *)px_rtc_time)[i]);
     }
 
     // Set control bits
-    ((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_ST_ADR]  &= ~PX_M41T00_ST_BIT;
-    ((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_CEB_ADR] &= ~PX_M41T00_CEB_BIT;
-    ((uint8_t*)(&px_m41t00_data.bcd_time))[PX_M41T00_CB_ADR]  &= ~PX_M41T00_CB_BIT;    
+    ((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_ST_ADR]  &= ~PX_M41T00_ST_BIT;
+    ((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_CEB_ADR] &= ~PX_M41T00_CEB_BIT;
+    ((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_CB_ADR]  &= ~PX_M41T00_CB_BIT;
 
     px_m41t00_data.control = 0x00;
 

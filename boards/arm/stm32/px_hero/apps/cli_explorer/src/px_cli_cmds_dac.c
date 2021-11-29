@@ -38,7 +38,7 @@ PX_LOG_NAME("cli_cmds_dac");
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_dac_o(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_dac_o(uint8_t argc, char * argv[])
 {
     uint16_t val;
     

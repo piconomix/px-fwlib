@@ -36,14 +36,14 @@ PX_LOG_NAME("cli");
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_led_on(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_led_on(uint8_t argc, char * argv[])
 {
     PX_LED_ON();
 
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_led_off(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_led_off(uint8_t argc, char * argv[])
 {
     PX_LED_OFF();
 

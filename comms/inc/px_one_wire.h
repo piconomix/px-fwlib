@@ -47,14 +47,14 @@
 #include "px_one_wire_cfg.h"
 
 // Check that all project specific options have been correctly specified
-#if (   !defined(PX_ONE_WIRE_CFG_PIN_INIT              ) \
-     || !defined(PX_ONE_WIRE_CFG_PIN_DIR_SET_IN        ) \
-     || !defined(PX_ONE_WIRE_CFG_PIN_SET_LO            ) \
-     || !defined(PX_ONE_WIRE_CFG_PIN_IS_HI             ) \
-     || !defined(PX_ONE_WIRE_CFG_PIN_IS_LO             ) \
-     || !defined(PX_ONE_WIRE_CFG_DELAY_US              ) \
-     || !defined(PX_ONE_WIRE_CFG_INTS_DISABLE) \
-     || !defined(PX_ONE_WIRE_CFG_INTS_ENABLE )  )
+#if (   !defined(PX_ONE_WIRE_CFG_PIN_INIT      ) \
+     || !defined(PX_ONE_WIRE_CFG_PIN_DIR_SET_IN) \
+     || !defined(PX_ONE_WIRE_CFG_PIN_SET_LO    ) \
+     || !defined(PX_ONE_WIRE_CFG_PIN_IS_HI     ) \
+     || !defined(PX_ONE_WIRE_CFG_PIN_IS_LO     ) \
+     || !defined(PX_ONE_WIRE_CFG_DELAY_US      ) \
+     || !defined(PX_ONE_WIRE_CFG_INTS_DISABLE  ) \
+     || !defined(PX_ONE_WIRE_CFG_INTS_ENABLE   )  )
 #error "One or more options not defined in 'px_xmodem_cfg.h'"
 #endif
 
@@ -113,7 +113,7 @@ px_one_wire_error_t px_one_wire_rd_rom          (px_one_wire_rom_t * rom);
 px_one_wire_error_t px_one_wire_skip_rom        (void);
 px_one_wire_error_t px_one_wire_match_rom       (px_one_wire_rom_t * rom);
 px_one_wire_error_t px_one_wire_search_rom_first(px_one_wire_search_t * one_wire_search);
-px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_search);
+px_one_wire_error_t px_one_wire_search_rom_next (px_one_wire_search_t * one_wire_search);
 
 /* _____MACROS_______________________________________________________________ */
 

@@ -53,7 +53,7 @@ static px_rtc_date_time_t      log_alarm;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_meas_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_meas_fn(uint8_t argc, char * argv[])
 {
     if(!px_bmp280_read(&record_data.bmp280_temp, &record_data.bmp280_press))
     {
@@ -66,7 +66,7 @@ static const char* px_cli_cmd_meas_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_start_fn(uint8_t argc, char * argv[])
 {
     uint8_t  data;
     uint8_t  retry;
@@ -160,7 +160,7 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_dump_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_dump_fn(uint8_t argc, char * argv[])
 {
     px_log_fs_err_t    px_log_fs_err;
     px_rtc_date_time_t date_time;
@@ -178,7 +178,7 @@ static const char* px_cli_cmd_log_dump_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_del_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_del_fn(uint8_t argc, char * argv[])
 {
     // Reset file system
     if(px_log_fs_reset(&px_log_fs_handle, 0, PX_AT45D_PAGES - 1) != PX_LOG_FS_ERR_NONE)

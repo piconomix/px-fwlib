@@ -40,7 +40,7 @@ static px_systmr_t adc_tmr;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_adc_s(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_adc_s(uint8_t argc, char * argv[])
 {
     px_adc_ch_t ch;
     uint16_t    val;
@@ -149,7 +149,7 @@ static const char* px_cli_cmd_fn_adc_s(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_adc_bat(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_adc_bat(uint8_t argc, char * argv[])
 {
     uint16_t val;
     uint32_t counter = 0;

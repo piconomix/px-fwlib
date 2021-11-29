@@ -83,7 +83,7 @@ static void px_cli_disp_record(const px_log_fs_record_data_t * record_data)
     putchar('\n');
 }
 
-static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_start_fn(uint8_t argc, char * argv[])
 {
     uint8_t                 data;
     px_log_fs_record_data_t record_data;
@@ -151,7 +151,7 @@ static const char* px_cli_cmd_log_start_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_dump_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_dump_fn(uint8_t argc, char * argv[])
 {
     uint8_t                 i;
     px_log_fs_err_t         px_log_fs_err;
@@ -176,7 +176,7 @@ static const char* px_cli_cmd_log_dump_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_del_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_del_fn(uint8_t argc, char * argv[])
 {
     // Reset file system
     if(px_log_fs_reset(&px_log_fs_handle, 0, PX_AT45D_PAGES - 1) != PX_LOG_FS_ERR_NONE)
@@ -186,7 +186,7 @@ static const char* px_cli_cmd_log_del_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_info_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_info_fn(uint8_t argc, char * argv[])
 {
     uint8_t i;
 
@@ -201,7 +201,7 @@ static const char* px_cli_cmd_log_info_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_fit_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_fit_fn(uint8_t argc, char * argv[])
 {
     uint16_t   ch;
     float scale;
@@ -234,7 +234,7 @@ static const char* px_cli_cmd_log_fit_fn(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_log_samples_fn(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_log_samples_fn(uint8_t argc, char * argv[])
 {
     // <nr of samples>
     if(!px_cli_util_argv_to_u16(0, 100, 60000))

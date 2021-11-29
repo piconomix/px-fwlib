@@ -57,7 +57,7 @@ BOOTLOADER_SECTION void px_flash_erase_page(const uint16_t page)
     SREG = sreg;
 }
 
-BOOTLOADER_SECTION void px_flash_wr_page(const uint16_t page, const uint8_t* data)
+BOOTLOADER_SECTION void px_flash_wr_page(const uint16_t page, const uint8_t * data)
 {
     uint16_t i;
 

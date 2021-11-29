@@ -49,7 +49,7 @@ static void px_cli_cmd_uart_flush_rx(void)
     }
 }
 
-static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_write(uint8_t argc, char * argv[])
 {
     uint8_t     i;    
 
@@ -88,7 +88,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_receive(uint8_t argc, char * argv[])
 {
     uint8_t     i;
     uint8_t     nr_of_bytes;
@@ -158,7 +158,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_exchange(uint8_t argc, char * argv[])
 {
     uint8_t     i;
     uint8_t     nr_of_bytes;
@@ -239,7 +239,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_str(uint8_t argc, char * argv[])
 {
     uint8_t     i;
     uint16_t    timeout_ms;

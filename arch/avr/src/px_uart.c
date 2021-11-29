@@ -548,7 +548,7 @@ char px_uart_getchar(px_uart_handle_t * handle)
     return (char)data;
 }
 
-bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t* data)
+bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
 {
     px_uart_per_t * uart_per;
 

@@ -32,10 +32,10 @@ PX_LOG_NAME("px_hdlc");
 /* _____MACROS_______________________________________________________________ */
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-static uint8_t   px_hdlc_rx_frame[PX_HDLC_MRU];
-static uint8_t   px_hdlc_rx_frame_index;
-static uint16_t  px_hdlc_rx_frame_fcs;
-static bool px_hdlc_rx_esc_flag;
+static uint8_t  px_hdlc_rx_frame[PX_HDLC_MRU];
+static uint8_t  px_hdlc_rx_frame_index;
+static uint16_t px_hdlc_rx_frame_fcs;
+static bool     px_hdlc_rx_esc_flag;
 
 /// Pointer to the function that will be called to send a character
 static px_hdlc_tx_u8_fn_t px_hdlc_tx_u8_fn;
@@ -64,7 +64,6 @@ static void px_hdlc_esc_tx_u8(uint8_t data)
         // Toggle escape bit
         data ^= PX_HDLC_ESCAPE_BIT;
     }
-    
     // Send data
     px_hdlc_tx_u8(data);
 }
@@ -96,11 +95,10 @@ bool px_hdlc_on_rx_u8(uint8_t data)
         }
         // Minimum requirement for a valid frame is reception of good FCS
         else if(  (px_hdlc_rx_frame_index >= sizeof(px_hdlc_rx_frame_fcs)) 
-                &&(px_hdlc_rx_frame_fcs   == PX_CRC16_MAGIC_VAL            )  )
+                &&(px_hdlc_rx_frame_fcs   == PX_CRC16_MAGIC_VAL          )  )
         {
             // Pass on frame with FCS field removed
-            (*px_hdlc_on_rx_frame_fn)(px_hdlc_rx_frame,
-                                   px_hdlc_rx_frame_index - sizeof(px_hdlc_rx_frame_fcs));
+            (*px_hdlc_on_rx_frame_fn)(px_hdlc_rx_frame, px_hdlc_rx_frame_index - sizeof(px_hdlc_rx_frame_fcs));
             // Reset for next packet
             px_hdlc_rx_frame_index = 0;
             px_hdlc_rx_frame_fcs   = PX_CRC16_INIT_VAL;
@@ -118,7 +116,7 @@ bool px_hdlc_on_rx_u8(uint8_t data)
         // Reset flag
         px_hdlc_rx_esc_flag  = false;
         // Toggle escape bit to restore data to correct state
-        data             ^= PX_HDLC_ESCAPE_BIT;
+        data ^= PX_HDLC_ESCAPE_BIT;
     }
     else if(data == PX_HDLC_CONTROL_ESCAPE)
     {
@@ -130,10 +128,8 @@ bool px_hdlc_on_rx_u8(uint8_t data)
 
     // Store received data
     px_hdlc_rx_frame[px_hdlc_rx_frame_index] = data;
-
     // Update checksum
     px_hdlc_rx_frame_fcs = px_crc16_update_u8(px_hdlc_rx_frame_fcs, data);
-
     // Advance to next position in buffer
     px_hdlc_rx_frame_index++;
 
@@ -142,7 +138,6 @@ bool px_hdlc_on_rx_u8(uint8_t data)
     {
         // Wrap index
         px_hdlc_rx_frame_index  = 0;
-
         // Invalidate FCS so that packet will be rejected
         px_hdlc_rx_frame_fcs  ^= 0xFFFF;
     }
@@ -163,30 +158,24 @@ void px_hdlc_tx_frame(const uint8_t * data, size_t nr_of_bytes)
     {
         // Get next byte
         data_u8 = *data++;
-        
         // Update checksum
         fcs = px_crc16_update_u8(fcs, data_u8);
-        
         // ESC send data
         px_hdlc_esc_tx_u8(data_u8);
-                
         // decrement counter
         nr_of_bytes--;
     }
 
     // Invert checksum
     fcs ^= 0xffff;
-
     // Low byte of inverted FCS
     data_u8 = PX_U16_LO8(fcs);
     // ESC send data
     px_hdlc_esc_tx_u8(data_u8);
-
     // High byte of inverted FCS
     data_u8 = PX_U16_HI8(fcs);
     // ESC send data
     px_hdlc_esc_tx_u8(data_u8);
-
     // Send end marker
     px_hdlc_tx_u8(PX_HDLC_FLAG_SEQUENCE);    
 }

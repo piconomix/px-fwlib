@@ -40,7 +40,7 @@ PX_LOG_NAME("cli");
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_log_fs_info(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_log_fs_info(uint8_t argc, char * argv[])
 {
     px_log_fs_dbg_report_info(&px_log_fs_handle);
     return NULL;

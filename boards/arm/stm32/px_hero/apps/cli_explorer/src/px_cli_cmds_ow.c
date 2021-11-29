@@ -37,7 +37,7 @@ PX_LOG_NAME("cli_cmds_ow");
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_ow_error_to_str(px_one_wire_error_t error)
+static const char * px_cli_cmd_fn_ow_error_to_str(px_one_wire_error_t error)
 {
     switch(error)
     {
@@ -50,7 +50,7 @@ static const char* px_cli_cmd_fn_ow_error_to_str(px_one_wire_error_t error)
     }
 }
 
-static const char* px_cli_cmd_fn_ds18b20_error_to_str(px_ds18b20_error_t error)
+static const char * px_cli_cmd_fn_ds18b20_error_to_str(px_ds18b20_error_t error)
 {
     switch(error)
     {
@@ -61,7 +61,7 @@ static const char* px_cli_cmd_fn_ds18b20_error_to_str(px_ds18b20_error_t error)
     }
 }
 
-static const char* px_cli_cmd_fn_ow_info(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_ow_info(uint8_t argc, char * argv[])
 {
     // Initialise 1-wire
     px_one_wire_init();
@@ -79,7 +79,7 @@ static const char* px_cli_cmd_fn_ow_info(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_ow_reset(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_ow_reset(uint8_t argc, char * argv[])
 {
     // Initialise 1-wire
     px_one_wire_init();
@@ -97,7 +97,7 @@ static const char* px_cli_cmd_fn_ow_reset(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_ow_scan(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_ow_scan(uint8_t argc, char * argv[])
 {
     px_one_wire_error_t  one_wire_error;
     px_one_wire_search_t one_wire_search;
@@ -121,7 +121,7 @@ static const char* px_cli_cmd_fn_ow_scan(uint8_t argc, char* argv[])
 	return NULL;
 }
 
-static const char* px_cli_cmd_fn_rd_rom(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_rd_rom(uint8_t argc, char * argv[])
 {
     uint8_t             i;
     px_one_wire_rom_t   rom;
@@ -151,7 +151,7 @@ static const char* px_cli_cmd_fn_rd_rom(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_skip_rom(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_skip_rom(uint8_t argc, char * argv[])
 {
     px_one_wire_error_t error;
 
@@ -168,7 +168,7 @@ static const char* px_cli_cmd_fn_skip_rom(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_match_rom(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_match_rom(uint8_t argc, char * argv[])
 {
     uint8_t             i;
     px_one_wire_rom_t   rom;
@@ -198,7 +198,7 @@ static const char* px_cli_cmd_fn_match_rom(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_ow_wr(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_ow_wr(uint8_t argc, char * argv[])
 {
     uint8_t i;
     uint8_t data[8];
@@ -224,7 +224,7 @@ static const char* px_cli_cmd_fn_ow_wr(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_ow_rd(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_ow_rd(uint8_t argc, char * argv[])
 {
     uint8_t i;
     uint8_t data;
@@ -247,7 +247,7 @@ static const char* px_cli_cmd_fn_ow_rd(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_ds18b20_temp(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_ds18b20_temp(uint8_t argc, char * argv[])
 {
     uint8_t                 i;
     px_one_wire_rom_t       rom;

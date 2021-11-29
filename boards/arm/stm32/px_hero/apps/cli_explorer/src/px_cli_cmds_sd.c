@@ -50,7 +50,7 @@ static FILINFO chan_fs_file_info;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_sd_mount(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sd_mount(uint8_t argc, char * argv[])
 {
     int           i;
     px_sd_cid_t * cid   = (px_sd_cid_t *)main_buffer;
@@ -111,7 +111,7 @@ static const char* px_cli_cmd_fn_sd_mount(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_sd_rd_block(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sd_rd_block(uint8_t argc, char * argv[])
 {
     uint32_t block;
 
@@ -133,7 +133,7 @@ static const char* px_cli_cmd_fn_sd_rd_block(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_sd_ls(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sd_ls(uint8_t argc, char * argv[])
 {
     const TCHAR * path = "/";
     // [path]
@@ -163,7 +163,7 @@ static const char* px_cli_cmd_fn_sd_ls(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_sd_dsf(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_sd_dsf(uint8_t argc, char * argv[])
 {
     FIL fp;
     uint16_t page;

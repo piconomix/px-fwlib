@@ -65,7 +65,7 @@ px_adc_cfg_t px_adc_cfg =
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_adc_info(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_adc_info(uint8_t argc, char * argv[])
 {
     uint8_t i;
 
@@ -80,7 +80,7 @@ static const char* px_cli_cmd_fn_adc_info(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_adc_cfg(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_adc_cfg(uint8_t argc, char * argv[])
 {
     uint16_t ch;
     float    scale;
@@ -113,7 +113,7 @@ static const char* px_cli_cmd_fn_adc_cfg(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_adc_cfg_samples(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_adc_cfg_samples(uint8_t argc, char * argv[])
 {
     // <nr of samples>
     if(!px_cli_util_argv_to_u16(0, 100, 60000))
@@ -125,7 +125,7 @@ static const char* px_cli_cmd_fn_adc_cfg_samples(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_adc_s(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_adc_s(uint8_t argc, char * argv[])
 {
     uint16_t ch;
     uint16_t val;
@@ -148,7 +148,7 @@ static const char* px_cli_cmd_fn_adc_s(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_adc_sc(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_adc_sc(uint8_t argc, char * argv[])
 {
     uint8_t   i;
     uint8_t   data;

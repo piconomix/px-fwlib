@@ -131,7 +131,7 @@ PX_ATTR_RAMFUNC void px_flash_wr_half_page(uint32_t adr, const uint32_t * data)
     // The same address can be used as it is incremented internally
     for (i = 0; i < PX_FLASH_HALF_PAGE_SIZE_WORDS; i++)
     {
-        *(uint32_t*)(adr) = *data++;
+        *(uint32_t *)(adr) = *data++;
     }
     // Wait until programming has finished (not busy)
     while ((FLASH->SR & FLASH_SR_BSY) != 0) {;}

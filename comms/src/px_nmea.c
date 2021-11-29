@@ -57,16 +57,16 @@ static px_nmea_rx_state_t          px_nmea_rx_state;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 static void   px_nmea_tx_byte                  (uint8_t data);
 
-static bool px_nmea_cmp_nibble_with_hex_ascii(uint8_t nibble, char ascii);
-static char*  px_nmea_parse_str_to_u32         (char* buffer, uint32_t* value);
-static char*  px_nmea_parse_str_to_s16         (char* buffer, int16_t* value);
-static char*  px_nmea_parse_str_to_u16         (char* buffer, uint16_t* value);
-static char*  px_nmea_parse_str_fraction_to_u16(char* buffer, uint16_t* value, uint8_t precision);
-static char*  px_nmea_parse_str_to_u8          (char* buffer, uint8_t* value);
-static char*  px_nmea_parse_str_fraction_to_u8 (char* buffer, uint8_t* value, uint8_t precision);
-static char*  px_nmea_find_next_param          (char* buffer);
+static bool   px_nmea_cmp_nibble_with_hex_ascii(uint8_t nibble, char ascii);
+static char * px_nmea_parse_str_to_u32         (char * buffer, uint32_t * value);
+static char * px_nmea_parse_str_to_s16         (char * buffer, int16_t *  value);
+static char * px_nmea_parse_str_to_u16         (char * buffer, uint16_t * value);
+static char * px_nmea_parse_str_fraction_to_u16(char * buffer, uint16_t * value, uint8_t precision);
+static char * px_nmea_parse_str_to_u8          (char * buffer, uint8_t *  value);
+static char * px_nmea_parse_str_fraction_to_u8 (char * buffer, uint8_t *  value, uint8_t precision);
+static char * px_nmea_find_next_param          (char * buffer);
 
-static void   px_nmea_on_rx_frame              (char* buffer);
+static void   px_nmea_on_rx_frame              (char * buffer);
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_nmea_tx_byte(uint8_t data)
@@ -99,7 +99,7 @@ static bool  px_nmea_cmp_nibble_with_hex_ascii(uint8_t nibble, char ascii)
    }
 }
 
-static char* px_nmea_parse_str_to_u32(char* buffer, uint32_t* value)
+static char * px_nmea_parse_str_to_u32(char * buffer, uint32_t * value)
 {
    uint32_t u32Value = 0;
    while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0'))
@@ -117,7 +117,7 @@ static char* px_nmea_parse_str_to_u32(char* buffer, uint32_t* value)
    return buffer;
 }
 
-static char* px_nmea_parse_str_to_s16(char* buffer, int16_t* value)
+static char * px_nmea_parse_str_to_s16(char * buffer, int16_t * value)
 {
    bool  bNeg     = false;
    int16_t s16Value = 0;
@@ -147,7 +147,7 @@ static char* px_nmea_parse_str_to_s16(char* buffer, int16_t* value)
    return buffer;
 }
 
-static char* px_nmea_parse_str_to_u16(char* buffer, uint16_t* value)
+static char * px_nmea_parse_str_to_u16(char * buffer, uint16_t * value)
 {
    uint16_t u16Value = 0;
    while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0'))
@@ -165,7 +165,7 @@ static char* px_nmea_parse_str_to_u16(char* buffer, uint16_t* value)
    return buffer;
 }
 
-static char* px_nmea_parse_str_fraction_to_u16(char* buffer, uint16_t* value, uint8_t precision)
+static char * px_nmea_parse_str_fraction_to_u16(char * buffer, uint16_t * value, uint8_t precision)
 {
    uint16_t u16Value = 0;
    while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0')&&(precision != 0))
@@ -189,7 +189,7 @@ static char* px_nmea_parse_str_fraction_to_u16(char* buffer, uint16_t* value, ui
    return buffer;
 }
 
-static char* px_nmea_parse_str_to_u8(char* buffer, uint8_t* value)
+static char * px_nmea_parse_str_to_u8(char * buffer, uint8_t * value)
 {
    uint8_t u8Value = 0;
    while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0'))
@@ -207,7 +207,7 @@ static char* px_nmea_parse_str_to_u8(char* buffer, uint8_t* value)
    return buffer;
 }
 
-static char* px_nmea_parse_str_fraction_to_u8(char* buffer, uint8_t* value, uint8_t precision)
+static char * px_nmea_parse_str_fraction_to_u8(char * buffer, uint8_t * value, uint8_t precision)
 {
    uint8_t u8Value = 0;
    while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0')&&(precision != 0))
@@ -231,7 +231,7 @@ static char* px_nmea_parse_str_fraction_to_u8(char* buffer, uint8_t* value, uint
    return buffer;
 }
 
-static char* px_nmea_find_next_param(char* buffer)
+static char * px_nmea_find_next_param(char * buffer)
 {
    while(*buffer != ',')
    {
@@ -241,7 +241,7 @@ static char* px_nmea_find_next_param(char* buffer)
    return (++buffer);
 }
 
-static void px_nmea_on_rx_frame(char* buffer)
+static void px_nmea_on_rx_frame(char * buffer)
 {  
     // Notify handler with valid NMEA string
    (*px_nmea_on_valid_str_fn)(buffer);
@@ -280,7 +280,7 @@ static void px_nmea_on_rx_frame(char* buffer)
       buffer = px_nmea_find_next_param(buffer);
 
       // Latitude
-      buffer = px_nmea_parse_str_to_u16(buffer, (uint16_t*)&px_nmea_data.latitude);
+      buffer = px_nmea_parse_str_to_u16(buffer, (uint16_t *)&px_nmea_data.latitude);
       if(*buffer == '.')
       {
          buffer++;
@@ -294,7 +294,7 @@ static void px_nmea_on_rx_frame(char* buffer)
       buffer = px_nmea_find_next_param(buffer);
 
       // Longitude
-      buffer = px_nmea_parse_str_to_u16(buffer, (uint16_t*)&px_nmea_data.longitude);
+      buffer = px_nmea_parse_str_to_u16(buffer, (uint16_t *)&px_nmea_data.longitude);
       if(*buffer == '.')
       {
          buffer++;
@@ -483,7 +483,7 @@ void px_nmea_on_rx_byte(uint8_t data)
          // Append terminating zero
          px_nmea_rx_buffer[px_nmea_rx_index] = '\0';
          // String successfully received
-         px_nmea_on_rx_frame((char*)px_nmea_rx_buffer);
+         px_nmea_on_rx_frame((char *)px_nmea_rx_buffer);
          break;
       }   
    }
@@ -491,7 +491,7 @@ void px_nmea_on_rx_byte(uint8_t data)
    px_nmea_rx_state = PX_NMEA_RX_STATE_START;
 }
 
-void px_nmea_tx_frame(char* frame)
+void px_nmea_tx_frame(char * frame)
 {
    uint8_t data;
    uint8_t checksum = '$';

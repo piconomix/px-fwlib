@@ -63,7 +63,7 @@ typedef void (*px_nmea_tx_byte_t)(uint8_t data);
  *  Definition for a pointer to a function that when a valid NMEA string is 
  *  received.
  */
-typedef void (*px_nmea_on_valid_str_t)(const char* data);
+typedef void (*px_nmea_on_valid_str_t)(const char * data);
 
 /**
  *  Definition for a pointer to a function that will be called when GPS data 
@@ -126,7 +126,7 @@ void px_nmea_on_rx_byte(uint8_t data);
  *  
  * @param frame     Pointer to zero terminated string.
  */
-void px_nmea_tx_frame(char* frame);
+void px_nmea_tx_frame(char * frame);
 
 /* _____MACROS_______________________________________________________________ */
 

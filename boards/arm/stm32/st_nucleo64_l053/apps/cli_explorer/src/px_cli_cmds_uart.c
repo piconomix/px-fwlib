@@ -41,7 +41,7 @@ static bool              px_uart_handle_open;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_cfg(uint8_t argc, char * argv[])
 {
     px_uart_nr_t        per;
     uint32_t            baud_rate_hz;
@@ -122,7 +122,7 @@ static const char* px_cli_cmd_fn_uart_cfg(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_uart_bridge(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_bridge(uint8_t argc, char * argv[])
 {
     uint8_t     data;
 
@@ -150,7 +150,7 @@ static const char* px_cli_cmd_fn_uart_bridge(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_write(uint8_t argc, char * argv[])
 {
     uint8_t     i;    
 
@@ -168,7 +168,7 @@ static const char* px_cli_cmd_fn_uart_write(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_receive(uint8_t argc, char * argv[])
 {
     uint8_t     i;
     uint8_t     nr_of_bytes;
@@ -217,7 +217,7 @@ static const char* px_cli_cmd_fn_uart_receive(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_exchange(uint8_t argc, char * argv[])
 {
     uint8_t     i;
     uint8_t     nr_of_bytes;
@@ -277,7 +277,7 @@ static const char* px_cli_cmd_fn_uart_exchange(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_uart_str(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_uart_str(uint8_t argc, char * argv[])
 {
     uint16_t    timeout_ms;
     char *      tx_char;

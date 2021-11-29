@@ -50,7 +50,7 @@ static uint16_t px_flash_buf_index;
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 /// Handler function that is called when an XMODEM packet is received
-static void main_on_rx_data(const uint8_t* data, uint8_t bytes_received)
+static void main_on_rx_data(const uint8_t * data, uint8_t bytes_received)
 {
     // Repeat untill all received bytes have been buffered
     while(bytes_received != 0)

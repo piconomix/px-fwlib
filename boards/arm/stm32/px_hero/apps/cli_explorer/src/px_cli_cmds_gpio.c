@@ -331,7 +331,7 @@ static void px_cli_fn_gpio_report_port(char           port,
     putchar('\n');
 }
 
-static const char* px_cli_cmd_fn_gpio_info(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_info(uint8_t argc, char * argv[])
 {
     const char * result;
 
@@ -368,7 +368,7 @@ static const char* px_cli_cmd_fn_gpio_info(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char * argv[])
 {
     const char * result;
 
@@ -406,7 +406,7 @@ static const char* px_cli_cmd_fn_gpio_cfg_in(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char * argv[])
 {
     const char * result;
 
@@ -468,7 +468,7 @@ static const char* px_cli_cmd_fn_gpio_cfg_out(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_gpio_in(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_in(uint8_t argc, char * argv[])
 {
     const char * result;
 
@@ -491,7 +491,7 @@ static const char* px_cli_cmd_fn_gpio_in(uint8_t argc, char* argv[])
     return NULL;
 }
 
-static const char* px_cli_cmd_fn_gpio_out(uint8_t argc, char* argv[])
+static const char * px_cli_cmd_fn_gpio_out(uint8_t argc, char * argv[])
 {
     const char * result;
 
