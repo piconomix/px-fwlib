@@ -58,7 +58,7 @@
 /// Debug output string buffer size
 #define PX_LOG_CFG_BUF_SIZE 64
 
-/// Provide function to output debug timestamp
+/// Provide function to output log timestamp
 #if 0
 // Example 1: Create timestamp using sysclk tick
 #include "px_sysclk.h"
@@ -70,7 +70,7 @@
 #define PX_LOG_CFG_TIMESTAMP(str)  main_log_timestamp(str)
 #endif
 
-/// Provide function to output debug character
+/// Provide function to output log character
 #if 0
 // Example 1: Direct debug output to stderr
 #include <stdio.h>

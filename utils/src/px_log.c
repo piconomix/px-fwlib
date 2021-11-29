@@ -24,6 +24,9 @@
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_log.h"
 
+// Only compile functions if PX_LOG = 1
+#if PX_LOG
+
 /* _____LOCAL DEFINITIONS____________________________________________________ */
 /// Number of bytes per row for hex dump
 #define PX_LOG_CFG_TRACE_DATA_BYTES_PER_ROW    16
@@ -496,3 +499,5 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes)
         px_log_putchar('\n');
     }
 }
+
+#endif // #if PX_LOG

@@ -12,14 +12,14 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
-    Title:          px_log.h : Debug logging module
+    Title:          px_log.h : Debug log module
     Author(s):      Pieter Conradie
     Creation Date:  2007-03-31
 
 ============================================================================= */
 /** 
  *  @ingroup UTILS
- *  @defgroup PX_LOG px_log.h : Debug logging module
+ *  @defgroup PX_LOG px_log.h : Debug log module
  *  
  *  Output human readable debug info to a serial console.
  *  
@@ -438,13 +438,13 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
  *                          (true or false)
  */
 #define PX_LOG_ASSERT(expression) \
-            do \
-            { \
-                if(!(expression)) \
-                { \
-                    _px_log_assert(_px_log_name, (uint16_t)__LINE__); \
-                } \
-            } while(0)
+    do \
+    { \
+        if(!(expression)) \
+        { \
+            _px_log_assert(_px_log_name, (uint16_t)__LINE__); \
+        } \
+    } while(0)
 
 /**
  *  Macro to output a user format string if #PX_LOG=1
