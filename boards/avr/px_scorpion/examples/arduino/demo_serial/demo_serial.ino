@@ -3,7 +3,7 @@
 
  Output the string "Hello World!" to the serial monitor. Echo back any received
  characters to serial monitor.
- 
+
  This example code is in the public domain.
  */
 
