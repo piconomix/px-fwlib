@@ -667,6 +667,9 @@ px_log_fs_err_t px_log_fs_rd_first_unarchived(px_log_fs_handle_t * handle,
         }
     }
     while(handle->archive_flag);
+
+    // Success
+    return PX_LOG_FS_ERR_NONE;
 }
 
 px_log_fs_err_t px_log_fs_rd_next(px_log_fs_handle_t * handle,
