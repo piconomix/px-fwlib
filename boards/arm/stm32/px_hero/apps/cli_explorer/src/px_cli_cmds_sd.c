@@ -67,7 +67,7 @@ static const char * px_cli_cmd_fn_sd_mount(uint8_t argc, char * argv[])
     {
         return "Error. Could not initialise SD Card";
     }
-    if(!px_sd_read_cid(cid))
+    if(!px_sd_rd_cid(cid))
     {
         return "Error. Could not read Card ID register";
     }
@@ -84,7 +84,7 @@ static const char * px_cli_cmd_fn_sd_mount(uint8_t argc, char * argv[])
     printf("Serial nr: %08lX\n", cid->psn);
     printf("Manufacture date: %u/%u\n",  2000 + PX_U8_CONCAT_U4(cid->year_hi, cid->year_lo), cid->month);
 
-    if(!px_sd_read_csd(csd))
+    if(!px_sd_rd_csd(csd))
     {
         return "Error. Could not read Card Specific Data register";
     }
@@ -123,7 +123,7 @@ static const char * px_cli_cmd_fn_sd_rd_block(uint8_t argc, char * argv[])
     }
     block = px_cli_argv_val.u32;
 
-    if(!px_sd_read_block(main_buffer, block))
+    if(!px_sd_rd_block(main_buffer, block))
     {
         return "Error. Unable to read SD block";
     }

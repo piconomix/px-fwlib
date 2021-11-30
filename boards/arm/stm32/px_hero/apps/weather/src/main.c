@@ -280,12 +280,12 @@ int main(void)
             // Restart update timer
             px_systmr_reset(&tmr);
             // Get new BME280 data
-            if(px_bme280_read(&data))
+            if(px_bme280_rd(&data))
             {
                 // Convert data to values
-                int32_t  temp  = px_bme280_temperature(&data);
-                uint32_t press = px_bme280_pressure(&data);
-                uint32_t hum   = px_bme280_humidity(&data);
+                int32_t  temp  = px_bme280_temp(&data);
+                uint32_t press = px_bme280_press(&data);
+                uint32_t hum   = px_bme280_hum(&data);
                 // Update values
                 main_gfx_update_temp(temp);
                 main_gfx_update_press(press);

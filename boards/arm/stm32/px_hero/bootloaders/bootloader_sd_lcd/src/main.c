@@ -529,7 +529,7 @@ int main(void)
         main_fatal_error("Could not open file");
     }
     // Clear display
-    px_gfx_buf_clear();;
+    px_gfx_buf_clear();
     px_gfx_draw_update();
     // Start timer for LED flashing
     px_systmr_start(&main_tmr, PX_SYSTMR_MS_TO_TICKS(100));    

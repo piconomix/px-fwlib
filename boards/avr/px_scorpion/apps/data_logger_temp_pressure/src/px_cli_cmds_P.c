@@ -55,7 +55,7 @@ static px_rtc_date_time_t      log_alarm;
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static const char * px_cli_cmd_meas_fn(uint8_t argc, char * argv[])
 {
-    if(!px_bmp280_read(&record_data.bmp280_temp, &record_data.bmp280_press))
+    if(!px_bmp280_rd(&record_data.bmp280_temp, &record_data.bmp280_press))
     {
         return PX_PGM_STR("Error! BMP280 read failed");
     }
@@ -137,7 +137,7 @@ static const char * px_cli_cmd_log_start_fn(uint8_t argc, char * argv[])
         px_rtc_util_date_time_rd(&log_date_time);
         record_data.timestamp = px_rtc_util_date_time_to_sec_since_y2k(&log_date_time);
         // Perform temperature and pressure measurement
-        if(!px_bmp280_read(&record_data.bmp280_temp, &record_data.bmp280_press))
+        if(!px_bmp280_rd(&record_data.bmp280_temp, &record_data.bmp280_press))
         {
             return PX_PGM_STR("Error! BMP280 read failed");
         }

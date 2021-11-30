@@ -90,7 +90,7 @@ bool main_sd_reset(void)
         PX_LOG_E("Failed to reset SD card");
         return false;
     }
-    if(!px_sd_read_csd(&main_sd_csd))
+    if(!px_sd_rd_csd(&main_sd_csd))
     {
         PX_LOG_E("Failed to read CSD");
         return false;

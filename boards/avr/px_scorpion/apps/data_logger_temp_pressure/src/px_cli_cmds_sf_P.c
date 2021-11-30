@@ -70,12 +70,12 @@ static const char * px_cli_cmd_fn_sf_info(uint8_t argc, char * argv[])
 static const char * px_cli_cmd_fn_sf_erase(uint8_t argc, char * argv[])
 {
     uint16_t page_start = 0;
-    uint16_t page_end   = (PX_AT45D_PAGES-1);
+    uint16_t page_end   = (PX_AT45D_PAGES - 1);
 
     // [start page]
     if(argc >= 1)
     {
-        if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES-1)))
+        if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES - 1)))
         {
             PX_PRINTF_P("Error. [start page] must be 0 to %lu\n", PX_AT45D_PAGES-1);
             return NULL;
@@ -87,7 +87,7 @@ static const char * px_cli_cmd_fn_sf_erase(uint8_t argc, char * argv[])
     // [end sector]
     if(argc == 2)
     {
-        if(!px_cli_util_argv_to_u16(1, 0, (PX_AT45D_PAGES-1)))
+        if(!px_cli_util_argv_to_u16(1, 0, (PX_AT45D_PAGES - 1)))
         {
             PX_PRINTF_P("Error. [end page] must be 0 to %lu\n", PX_AT45D_PAGES-1);
             return NULL;
@@ -139,7 +139,7 @@ static const char * px_cli_cmd_fn_sf_rd_page(uint8_t argc, char * argv[])
     uint16_t page;
 
     // <page>
-    if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES-1)))
+    if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES - 1)))
     {
         PX_PRINTF_P("Error. <page> must be 0 to %lu\n", PX_AT45D_PAGES-1);
         return NULL;
@@ -204,7 +204,7 @@ static const char * px_cli_cmd_fn_sf_rd_xmodem(uint8_t argc, char * argv[])
     // [start page]
     if(argc > 0)
     {
-        if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES-1)))
+        if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES - 1)))
         {
             PX_PRINTF_P("Error. [start page] must be 0 to %lu\n", PX_AT45D_PAGES-1);
             return NULL;
@@ -219,7 +219,7 @@ static const char * px_cli_cmd_fn_sf_rd_xmodem(uint8_t argc, char * argv[])
     // [end page]
     if(argc > 1)
     {
-        if(!px_cli_util_argv_to_u16(1, 0,(PX_AT45D_PAGES-1)))
+        if(!px_cli_util_argv_to_u16(1, 0,(PX_AT45D_PAGES - 1)))
         {
             PX_PRINTF_P("Error. [end page] must be 0 to %lu\n", PX_AT45D_PAGES-1);
             return NULL;
@@ -255,7 +255,7 @@ static const char * px_cli_cmd_fn_sf_wr_page(uint8_t argc, char * argv[])
     uint8_t  i;
 
     // <page>
-    if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES-1)))
+    if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES - 1)))
     {
         PX_PRINTF_P("Error. <page> must be 0 to %lu\n", PX_AT45D_PAGES-1);
         return NULL;
@@ -350,7 +350,7 @@ static const char * px_cli_cmd_fn_sf_wr_xmodem(uint8_t argc, char * argv[])
     // [start page]
     if(argc > 0)
     {
-        if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES-1)))
+        if(!px_cli_util_argv_to_u16(0, 0,(PX_AT45D_PAGES - 1)))
         {
             PX_PRINTF_P("Error. [start page] must be 0 to %lu\n", PX_AT45D_PAGES-1);
             return NULL;

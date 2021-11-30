@@ -276,18 +276,18 @@ static const char * px_cli_cmd_fn_ds18b20_temp(uint8_t argc, char * argv[])
     // Start temperature conversion
     if(argc != 0)
     {
-        error = px_ds18b20_start_temp_conversion(&rom);
+        error = px_ds18b20_start_temp_conv(&rom);
     }
     else
     {
-        error = px_ds18b20_start_temp_conversion(NULL);
+        error = px_ds18b20_start_temp_conv(NULL);
     }
     if(error != PX_DS18B20_ERR_NONE)
     {
         return px_cli_cmd_fn_ds18b20_error_to_str(error);
     }
     // Wait until conversion has finished
-    while(!px_ds18b20_temp_conversion_finished())
+    while(!px_ds18b20_temp_conv_is_finished())
     {
         ;
     }

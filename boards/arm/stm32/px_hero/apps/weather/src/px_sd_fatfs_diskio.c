@@ -70,7 +70,7 @@ DRESULT disk_read (
 	UINT count		/* Number of sectors to read */
 )
 {
-    if(px_sd_read_blocks(buff, sector, count) == count)
+    if(px_sd_rd_blocks(buff, sector, count) == count)
     {
         return RES_OK;
     }
@@ -95,7 +95,7 @@ DRESULT disk_write (
 	UINT count			/* Number of sectors to write */
 )
 {
-    if(px_sd_write_blocks(buff, sector, count) == count)
+    if(px_sd_wr_blocks(buff, sector, count) == count)
     {
         return RES_OK;
     }
@@ -126,7 +126,7 @@ DRESULT disk_ioctl (
     case GET_SECTOR_COUNT : /* Get number of sectors on the disk (DWORD) */
         {
             px_sd_csd_t csd;
-            if(!px_sd_read_csd(&csd))
+            if(!px_sd_rd_csd(&csd))
             {
                 return RES_ERROR;
             }
