@@ -91,7 +91,6 @@ void     px_c1098_snapshot        (void);
 uint32_t px_c1098_get_picture_size(void);
 void     px_c1098_get_picture     (px_c1098_on_rx_data_t on_rx_data);
 
-
 /* _____MACROS_______________________________________________________________ */
 
 #ifdef __cplusplus

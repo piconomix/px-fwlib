@@ -25,7 +25,7 @@
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_LOG_NAME("px_ds18b20");;
+PX_LOG_NAME("DS18B20");
 
 #define PX_DS18B20_CMD_CONVERT_T       0x44
 #define PX_DS18B20_CMD_WR_SCRATCHPAD   0x4e
@@ -49,7 +49,7 @@ static px_ds18b20_error_t px_ds18b20_start(px_one_wire_rom_t * rom)
     {
         if(px_one_wire_match_rom(rom) != PX_ONE_WIRE_ERR_NONE)
         {
-            PX_LOG_E("PX_DS18B20 device not present");
+            PX_LOG_E("DS18B20 device not present");
             return PX_DS18B20_ERR_NO_DEVICES_PRESENT;
         }
     }
@@ -57,7 +57,7 @@ static px_ds18b20_error_t px_ds18b20_start(px_one_wire_rom_t * rom)
     {
         if(px_one_wire_skip_rom() != PX_ONE_WIRE_ERR_NONE)
         {
-            PX_LOG_E("PX_DS18B20 device not present");
+            PX_LOG_E("DS18B20 device not present");
             return PX_DS18B20_ERR_NO_DEVICES_PRESENT;
         }
     }
@@ -66,7 +66,7 @@ static px_ds18b20_error_t px_ds18b20_start(px_one_wire_rom_t * rom)
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-px_ds18b20_error_t px_ds18b20_start_temp_conversion(px_one_wire_rom_t * rom)
+px_ds18b20_error_t px_ds18b20_start_temp_conv(px_one_wire_rom_t * rom)
 {
     px_ds18b20_error_t error;
 
@@ -76,14 +76,13 @@ px_ds18b20_error_t px_ds18b20_start_temp_conversion(px_one_wire_rom_t * rom)
     {
         return error;
     }
-
     // Start temperature conversion
     px_one_wire_wr_u8(PX_DS18B20_CMD_CONVERT_T);
 
     return PX_DS18B20_ERR_NONE;
 }
 
-bool px_ds18b20_temp_conversion_finished(void)
+bool px_ds18b20_temp_conv_is_finished(void)
 {
     if(px_one_wire_rd_time_slot() == 0)
     {
@@ -111,34 +110,26 @@ px_ds18b20_error_t px_ds18b20_rd_scratchpad(px_one_wire_rom_t *       rom,
     {
         return error;
     }
-
     // Send READ SCRATCHPAD command
     px_one_wire_wr_u8(PX_DS18B20_CMD_RD_SCRATCHPAD);
-
     // Read content
     for(i = sizeof(px_ds18b20_scratchpad_t); i != 0; i--)
     {
         *data_u8++ = px_one_wire_rd_u8();
     }
-    PX_LOG_D("Temp = %02X%02X ", scratchpad->temp_msb, scratchpad->temp_lsb);
+    PX_LOG_D("Temp = %02X%02X ",     scratchpad->temp_msb, scratchpad->temp_lsb);
     PX_LOG_D("TH = %02X, TL = %02X", scratchpad->th, scratchpad->tl);
-    PX_LOG_D("CFG = %02X", scratchpad->cfg_reg);
-    PX_LOG_D("RES = %02X %02X %02X",
-             scratchpad->reserved1,
-             scratchpad->reserved2,
-             scratchpad->reserved3);
-    PX_LOG_D("CRC = %02X", scratchpad->crc);
-
+    PX_LOG_D("CFG = %02X",           scratchpad->cfg_reg);
+    PX_LOG_D("RES = %02X %02X %02X", scratchpad->reserved1, scratchpad->reserved2, scratchpad->reserved3);
+    PX_LOG_D("CRC = %02X",           scratchpad->crc);
     // Calculate CRC
     crc = px_one_wire_calc_crc8(scratchpad, offsetof(px_ds18b20_scratchpad_t, crc));
-
     // Check CRC
     if(scratchpad->crc != crc)
     {
         PX_LOG_E("CRC check failed. Read 0x%02X, calculated 0x%02X", scratchpad->crc, crc);
         return PX_DS18B20_ERR_CRC_CHECK_FAILED;
     }
-
     // Success
     return PX_DS18B20_ERR_NONE;
 }
@@ -154,15 +145,12 @@ px_ds18b20_error_t px_ds18b20_wr_scratchpad(px_one_wire_rom_t *             rom,
     {
         return error;
     }
-
     // Send WRITE SCRATCHPAD command
     px_one_wire_wr_u8(PX_DS18B20_CMD_WR_SCRATCHPAD);
-
     // Write content
     px_one_wire_wr_u8(scratchpad->th);
     px_one_wire_wr_u8(scratchpad->tl);
     px_one_wire_wr_u8(scratchpad->cfg_reg);
-
     // Success
     return PX_DS18B20_ERR_NONE;
 }
@@ -177,10 +165,8 @@ px_ds18b20_error_t px_ds18b20_copy_scratchpad(px_one_wire_rom_t * rom)
     {
         return error;
     }
-
     // Send COPY SCRATCHPAD command
     px_one_wire_wr_u8(PX_DS18B20_CMD_COPY_SCRATCHPAD);
-
     // Success
     return PX_DS18B20_ERR_NONE;
 }
@@ -196,10 +182,8 @@ px_ds18b20_error_t px_ds18b20_rd_pwr_supply(px_one_wire_rom_t * rom,
     {
         return error;
     }
-
     // Send Read Power Supply command
     px_one_wire_wr_u8(PX_DS18B20_CMD_RD_PWR_SUPPLY);
-
     if(px_one_wire_rd_time_slot() == 0)
     {
         // One or more devices are parasitic powered
@@ -212,7 +196,6 @@ px_ds18b20_error_t px_ds18b20_rd_pwr_supply(px_one_wire_rom_t * rom,
         PX_LOG_D("Bus powered");
         *bus_pwr_flag = true;
     }
-
     // Success
     return PX_DS18B20_ERR_NONE;
 }
@@ -229,15 +212,12 @@ px_ds18b20_error_t px_ds18b20_rd_temp(px_one_wire_rom_t * rom,
     {
         return error;
     }
-
     // Send Read Scratchpad command
     px_one_wire_wr_u8(PX_DS18B20_CMD_RD_SCRATCHPAD);
-
     // Read content
     *temp_lsb = px_one_wire_rd_u8();
     *temp_msb = px_one_wire_rd_u8();
     PX_LOG_D("Temp = %02X%02X ", *temp_msb, *temp_lsb);
-
     // Success
     return PX_DS18B20_ERR_NONE;
 }
@@ -283,11 +263,11 @@ int16_t px_ds18b20_util_convert_t_to_temp(uint8_t temp_msb, uint8_t temp_lsb, ui
     i = i * 100;
     if(i >= 0)
     {
-        i = (i+8) / 16;
+        i = (i + 8) / 16;
     }
     else
     {
-        i = (i-8) / 16;
+        i = (i - 8) / 16;
     }
     PX_LOG_D("Temp = %d", i);
     return (int16_t)i;

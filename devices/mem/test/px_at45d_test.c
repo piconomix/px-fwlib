@@ -34,9 +34,9 @@ int main(void)
 #endif
 
     // Write a page of DataFlash
-    for(i = 0; i<PX_AT45D_PAGE_SIZE; i++)
+    for(i = 0; i < PX_AT45D_PAGE_SIZE; i++)
     {
-        data[i] = (uint8_t)(i&0xff);
+        data[i] = (uint8_t)(i & 0xff);
     }
     px_at45d_wr_page(data, 0);
 

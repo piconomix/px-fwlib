@@ -61,22 +61,22 @@ typedef struct
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-bool px_lis3dh_init                 (px_i2c_handle_t * handle);
-bool px_lis3dh_enable               (void);
-bool px_lis3dh_disable              (void);
+bool px_lis3dh_init              (px_i2c_handle_t * handle);
+bool px_lis3dh_enable            (void);
+bool px_lis3dh_disable           (void);
 
-bool px_lis3dh_xyz_data_ready       (void);
-bool px_lis3dh_rd_xyz_data          (px_lis3dh_xyz_t * xyz);
-bool px_lis3dh_set_int1_threshold   (uint8_t threshold);
-bool px_lis3dh_rd_int1_src          (uint8_t * data);
-bool px_lis3dh_rd_int2_src          (uint8_t * data);
+bool px_lis3dh_xyz_data_ready    (void);
+bool px_lis3dh_rd_xyz_data       (px_lis3dh_xyz_t * xyz);
+bool px_lis3dh_set_int1_threshold(uint8_t threshold);
+bool px_lis3dh_rd_int1_src       (uint8_t * data);
+bool px_lis3dh_rd_int2_src       (uint8_t * data);
 
-bool px_lis3dh_rd_who_am_i          (uint8_t * data);
-bool px_lis3dh_connected            (void);
+bool px_lis3dh_rd_who_am_i       (uint8_t * data);
+bool px_lis3dh_connected         (void);
 
-bool px_lis3dh_test_start           (void);
-bool px_lis3dh_test_stop            (void);
-bool px_lis3dh_test_active          (void);
+bool px_lis3dh_test_start        (void);
+bool px_lis3dh_test_stop         (void);
+bool px_lis3dh_test_active       (void);
 
 /* _____MACROS_______________________________________________________________ */
 

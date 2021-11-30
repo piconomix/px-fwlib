@@ -60,11 +60,9 @@ int main(void)
 
     // Initialise board
     px_board_init();
-
     // Initialise modules
     px_sysclk_init();
     px_uart_init();
-
     // Open UART1 @ 115200 BAUD, 8 data bits, no parity, 1 stop bit
     px_uart_open2(&px_uart1_handle,
                   PX_UART_NR_1,
@@ -72,10 +70,8 @@ int main(void)
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
-
     // Initialise stdio stream to use the specified UART
     px_uart_stdio_init(&px_uart1_handle);
-
     // Open UART2 @ 9600 BAUD, 8 data bits, no parity, 1 stop bit
     px_uart_open2(&px_uart2_handle,
                   PX_UART_NR_2,
@@ -83,13 +79,11 @@ int main(void)
                   PX_UART_DATA_BITS_8, 
                   PX_UART_PARITY_NONE, 
                   PX_UART_STOP_BITS_1);
-
     // Initialise GT-511 module driver
     px_gt511_init(&px_uart2_handle);
 
     // Enable LED
     PX_USR_LED_ON();
-
     // Show startup message
     printf("\nGT-511 Fingerprint Sensor test\n");
 
@@ -98,7 +92,6 @@ int main(void)
     {
         goto error;
     }
-
     // Send OPEN command and get device info
     if((err = px_gt511_open(true, &dev_info)) != PX_GT511_ERR_NONE)
     {
@@ -125,7 +118,6 @@ int main(void)
         goto error;
     }
     printf("Enroll count = %u\n", enroll_count);
-
     // Delete all IDs
     if(enroll_count != 0)
     {
@@ -139,13 +131,11 @@ int main(void)
         main_timestamp_report();
         printf(" ticks)\n");
     }
-
     // Enable CMOS LED
     if((err = px_gt511_cmos_led_control(true)) != PX_GT511_ERR_NONE)
     {
         goto error;
     }
-
     // Start enrollment procedure for ID 0
     printf("Starting enrollment procedure\n");
     if((err = px_gt511_enroll_start(0)) != PX_GT511_ERR_NONE)
@@ -294,6 +284,7 @@ int main(void)
 
     // The end
     while(true) {;}
+
 error:
     // Report error
     main_report_err(err);

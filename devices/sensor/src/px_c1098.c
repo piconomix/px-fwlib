@@ -188,8 +188,8 @@ static bool px_c1098_package_data_checksum_ok(uint16_t data_size)
         checksum += px_c1098_rx_packet.data[i];
     }
 
-    if(  (px_c1098_rx_packet.data[i]   == PX_U16_LO8(checksum))
-       &&(px_c1098_rx_packet.data[i+1] == 0x00             )  )
+    if(  (px_c1098_rx_packet.data[i]     == PX_U16_LO8(checksum))
+       &&(px_c1098_rx_packet.data[i + 1] == 0x00                )  )
     {
         return true;
     }
@@ -221,10 +221,8 @@ static void px_c1098_on_rx_byte(uint8_t data)
         // Discard received byte
         return;
     }
-
     // Buffer received data
     px_c1098_rx_packet.data[px_c1098_rx_data_index++] = data;
-
     // Received command?
     if(  (px_c1098_state               != PX_C1098_STATE_WAIT_DATA_PACKAGE)
        &&(px_c1098_rx_data_index       == sizeof(px_c1098_cmd_t)          )
@@ -238,7 +236,6 @@ static void px_c1098_on_rx_byte(uint8_t data)
             px_c1098_change_state(PX_C1098_STATE_ERROR);
 			return;
         }
-
         // Handle command according to state
         switch(px_c1098_state)
         {
@@ -311,24 +308,20 @@ static void px_c1098_on_rx_byte(uint8_t data)
             break;
         }
     }
-
     // Received Package ID and Package Length?
     if(px_c1098_rx_data_index < 4)
     {
         return;
     }
-
     // Package ID correct?
     if(  (px_c1098_rx_packet.package_data.id_hi8 != PX_U16_HI8(px_c1098_package_id))
        ||(px_c1098_rx_packet.package_data.id_lo8 != PX_U16_LO8(px_c1098_package_id))  )
     {
         return;
     }
-
     // Calculate data size
     data_size = PX_U16_CONCAT_U8(px_c1098_rx_packet.package_data.data_size_hi8,
                                  px_c1098_rx_packet.package_data.data_size_lo8);
-
     // Data size correct?
     if(data_size > PX_C1098_DATA_BLOCK_SIZE)
     {
@@ -341,23 +334,19 @@ static void px_c1098_on_rx_byte(uint8_t data)
             return;
         }
     }
-
     // Received whole package?
     if(px_c1098_rx_data_index < (data_size+6))
     {
         return;
     }
-
     // Checksum correct?
     if(!px_c1098_package_data_checksum_ok(data_size))
     {
         PX_LOG_E("Checksum incorrect");
         return;
     }
-
     // Pass data to handler
     (*px_c1098_on_rx_data)(px_c1098_rx_packet.package_data.image_data, data_size);
-
     // Last package?
     if(px_c1098_data_length == data_size)
     {
@@ -527,7 +516,7 @@ void px_c1098_set_package_size(void)
 {
     PX_LOG_D("SET_PACKAGE_SIZE");
     // Send PACKAGE_SIZE command
-    px_c1098_tx_cmd(PX_C1098_ID_SET_PACKAGE_SIZE, 0x08, PX_U16_LO8(PX_C1098_DATA_BLOCK_SIZE+6), PX_U16_HI8(PX_C1098_DATA_BLOCK_SIZE+6), 0x00);
+    px_c1098_tx_cmd(PX_C1098_ID_SET_PACKAGE_SIZE, 0x08, PX_U16_LO8(PX_C1098_DATA_BLOCK_SIZE + 6), PX_U16_HI8(PX_C1098_DATA_BLOCK_SIZE + 6), 0x00);
     // Start timeout
     px_systmr_start(&px_c1098_state_tmr, PX_SYSTMR_MS_TO_TICKS(200));
     // No post-ACK delay
@@ -561,7 +550,6 @@ void px_c1098_snapshot(void)
     PX_LOG_D("SNAPSHOT");
     // Send SNAPSHOT command
     px_c1098_tx_cmd(PX_C1098_ID_SNAPSHOT, 0x00, 0x00, 0x00, 0x00);
-
     // Start timeout and change state
     px_systmr_start(&px_c1098_state_tmr, PX_SYSTMR_MS_TO_TICKS(200));
     px_c1098_change_state(PX_C1098_STATE_WAIT_ACK);
@@ -576,17 +564,13 @@ void px_c1098_get_picture(px_c1098_on_rx_data_t on_rx_data)
 {
     // Set handler to process / store received image data
     px_c1098_on_rx_data = on_rx_data;
-
     // Reset package ID
     px_c1098_package_id = 0;
-
     // Reset retry counter
     px_c1098_retry_cntr = 3;
-
     PX_LOG_D("GET_PICTURE");
     // Send GET_PICTURE command
     px_c1098_tx_cmd(PX_C1098_ID_GET_PICTURE, 0x01, 0x00, 0x00, 0x00);
-
     // Start timeout and change state
     px_systmr_start(&px_c1098_state_tmr, PX_SYSTMR_MS_TO_TICKS(200));
     px_c1098_change_state(PX_C1098_STATE_GET_PIC_WAIT_ACK);

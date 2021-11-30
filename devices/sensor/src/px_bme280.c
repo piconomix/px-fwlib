@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
  
-    Title:          Bosch BME280 Barometric pressure sensor driver
+    Title:          Bosch BME280 Barometric press sensor driver
     Author(s):      Pieter Conradie
     Creation Date:  2019-09-12
 
@@ -61,12 +61,12 @@ PX_LOG_NAME("bme280");
 #define PX_BME280_REG_RESET_VAL                 0xb6
 
 // 7.4.3 Register 0xF2 "ctrl_hum"
-#define PX_BME280_REG_CTRL_HUM_OVERS_SKIPPED   0
-#define PX_BME280_REG_CTRL_HUM_OVERS_1         1
-#define PX_BME280_REG_CTRL_HUM_OVERS_2         2
-#define PX_BME280_REG_CTRL_HUM_OVERS_4         3
-#define PX_BME280_REG_CTRL_HUM_OVERS_8         4
-#define PX_BME280_REG_CTRL_HUM_OVERS_16        5
+#define PX_BME280_REG_CTRL_HUM_OVERS_SKIPPED    0
+#define PX_BME280_REG_CTRL_HUM_OVERS_1          1
+#define PX_BME280_REG_CTRL_HUM_OVERS_2          2
+#define PX_BME280_REG_CTRL_HUM_OVERS_4          3
+#define PX_BME280_REG_CTRL_HUM_OVERS_8          4
+#define PX_BME280_REG_CTRL_HUM_OVERS_16         5
 
 // 7.4.4 Register 0xF3 "status"
 #define PX_BME280_REG_STATUS_MEAS_POS           3
@@ -76,11 +76,11 @@ PX_LOG_NAME("bme280");
 
 // 7.4.5 Register 0xF4 "ctrl_meas"
 #define PX_BME280_REG_CTRL_MEAS_OSRS_T_POS      5
-#define PX_BME280_REG_CTRL_MEAS_OSRS_T_MSK      (7<<5)
+#define PX_BME280_REG_CTRL_MEAS_OSRS_T_MSK      (7 << 5)
 #define PX_BME280_REG_CTRL_MEAS_OSRS_P_POS      2
-#define PX_BME280_REG_CTRL_MEAS_OSRS_P_MSK      (7<<2)
+#define PX_BME280_REG_CTRL_MEAS_OSRS_P_MSK      (7 << 2)
 #define PX_BME280_REG_CTRL_MEAS_MODE_POS        0
-#define PX_BME280_REG_CTRL_MEAS_MODE_MSK        (3<<0)
+#define PX_BME280_REG_CTRL_MEAS_MODE_MSK        (3 << 0)
 #define PX_BME280_REG_CTRL_MEAS_OVERS_SKIPPED   0
 #define PX_BME280_REG_CTRL_MEAS_OVERS_1         1
 #define PX_BME280_REG_CTRL_MEAS_OVERS_2         2
@@ -93,9 +93,9 @@ PX_LOG_NAME("bme280");
 
 // 7.4.6 Register 0xF5 "config"
 #define PX_BME280_REG_CONFIG_T_SB_POS           5
-#define PX_BME280_REG_CONFIG_T_SB_MSK           (7<<5)
+#define PX_BME280_REG_CONFIG_T_SB_MSK           (7 << 5)
 #define PX_BME280_REG_CONFIG_FILTER_POS         2
-#define PX_BME280_REG_CONFIG_FILTER_MSK         (7<<2)
+#define PX_BME280_REG_CONFIG_FILTER_MSK         (7 << 2)
 #define PX_BME280_REG_CONFIG_SPI3W_EN_POS       0
 #define PX_BME280_REG_CONFIG_SPI3W_EN_MSK       (1 << 0)
 
@@ -105,7 +105,7 @@ PX_LOG_NAME("bme280");
 
 // 7.4.8 Register 0xFA..0xFC "temp" (_msb, _lsb, _xlsb)
 #define PX_BME280_TEMP_XLSB_POS                 4
-#define PX_BME280_TEMP_XLSB_MSK                 (15<<4)
+#define PX_BME280_TEMP_XLSB_MSK                 (15 << 4)
 
 // 7.4.9 Register 0xFD..0xFE "hum" (_msb, _lsb)
 
@@ -292,7 +292,7 @@ static bool px_bme280_temp_raw_rd(int32_t * data)
     if(!px_bme280_reg_rd_data(PX_BME280_REG_TEMP_MSB, i2c_data, 3))
     {
         // Error
-        PX_LOG_E("Unable to read temperature");
+        PX_LOG_E("Unable to read temp");
         return false;
     }
     PX_LOG_D("Temp data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
@@ -311,7 +311,7 @@ static bool px_bme280_press_raw_rd(int32_t * data)
     if(!px_bme280_reg_rd_data(PX_BME280_REG_PRESS_MSB, i2c_data, 3))
     {
         // Error
-        PX_LOG_E("Unable to read pressure");
+        PX_LOG_E("Unable to read press");
         return false;
     }
     PX_LOG_D("Press data: %02X %02X %02X", i2c_data[0], i2c_data[1], i2c_data[2]);
@@ -383,7 +383,7 @@ bool px_bme280_init(px_i2c_handle_t * handle)
     return true;
 }
 
-bool px_bme280_read(px_bme280_data_t * data)
+bool px_bme280_rd(px_bme280_data_t * data)
 {
     uint8_t ctrl;
     uint8_t status;
@@ -396,7 +396,7 @@ bool px_bme280_read(px_bme280_data_t * data)
         return false;
     }
 
-    // Start new "forced" measurement (pressure x 1, temperature x 1 oversampled)
+    // Start new "forced" measurement (press x 1, temp x 1 oversampled)
     ctrl =   (PX_BME280_REG_CTRL_MEAS_OVERS_1     << PX_BME280_REG_CTRL_MEAS_OSRS_T_POS)
            + (PX_BME280_REG_CTRL_MEAS_OVERS_1     << PX_BME280_REG_CTRL_MEAS_OSRS_P_POS)
            + (PX_BME280_REG_CTRL_MEAS_MODE_FORCED << PX_BME280_REG_CTRL_MEAS_MODE_POS);
@@ -417,12 +417,12 @@ bool px_bme280_read(px_bme280_data_t * data)
         }
     }
     while(status & PX_BME280_REG_STATUS_MEAS_MSK);
-    // Read raw temperature value
+    // Read raw temp value
     if(!px_bme280_temp_raw_rd(&data->temp))
     {
         return false;
     }
-    // Read raw pressure value
+    // Read raw press value
     if(!px_bme280_press_raw_rd(&data->press))
     {
         return false;
@@ -436,42 +436,42 @@ bool px_bme280_read(px_bme280_data_t * data)
     return true;
 }
 
-int32_t px_bme280_temperature(px_bme280_data_t * data)
+int32_t px_bme280_temp(px_bme280_data_t * data)
 {
     int32_t var1;
     int32_t var2;
-    int32_t temperature;
-    int32_t temperature_min = -4000;
-    int32_t temperature_max = 8500;
+    int32_t temp;
+    int32_t temp_min = -4000;
+    int32_t temp_max = 8500;
 
     var1 = (int32_t)((data->temp / 8) - ((int32_t)px_bme280_cal.t1 * 2));
     var1 = (var1 * ((int32_t)px_bme280_cal.t2)) / 2048;
     var2 = (int32_t)((data->temp / 16) - ((int32_t)px_bme280_cal.t1));
     var2 = (((var2 * var2) / 4096) * ((int32_t)px_bme280_cal.t3)) / 16384;
     data->t_fine = var1 + var2;
-    temperature = (data->t_fine * 5 + 128) / 256;
-    if(temperature < temperature_min)
+    temp = (data->t_fine * 5 + 128) / 256;
+    if(temp < temp_min)
     {
-        temperature = temperature_min;
+        temp = temp_min;
     }
-    else if(temperature > temperature_max)
+    else if(temp > temp_max)
     {
-        temperature = temperature_max;
+        temp = temp_max;
     }
 
-    return temperature;
+    return temp;
 }
 
-uint32_t px_bme280_pressure(px_bme280_data_t * data)
+uint32_t px_bme280_press(px_bme280_data_t * data)
 {
     int32_t  var1;
     int32_t  var2;
     int32_t  var3;
     int32_t  var4;
     uint32_t var5;
-    uint32_t pressure;
-    uint32_t pressure_min = 30000;
-    uint32_t pressure_max = 110000;
+    uint32_t press;
+    uint32_t press_min = 30000;
+    uint32_t press_max = 110000;
 
     var1 = (((int32_t)data->t_fine) / 2) - (int32_t)64000;
     var2 = (((var1 / 4) * (var1 / 4)) / 2048) * ((int32_t)px_bme280_cal.p6);
@@ -486,36 +486,36 @@ uint32_t px_bme280_pressure(px_bme280_data_t * data)
     if(var1)
     {
         var5 = (uint32_t)((uint32_t)1048576) - data->press;
-        pressure = ((uint32_t)(var5 - (uint32_t)(var2 / 4096))) * 3125;
-        if(pressure < 0x80000000)
+        press = ((uint32_t)(var5 - (uint32_t)(var2 / 4096))) * 3125;
+        if(press < 0x80000000)
         {
-            pressure = (pressure << 1) / ((uint32_t)var1);
+            press = (press << 1) / ((uint32_t)var1);
         }
         else
         {
-            pressure = (pressure / (uint32_t)var1) * 2;
+            press = (press / (uint32_t)var1) * 2;
         }
-        var1 = (((int32_t)px_bme280_cal.p9) * ((int32_t)(((pressure / 8) * (pressure / 8)) / 8192))) / 4096;
-        var2 = (((int32_t)(pressure / 4)) * ((int32_t)px_bme280_cal.p8)) / 8192;
-        pressure = (uint32_t)((int32_t)pressure + ((var1 + var2 + px_bme280_cal.p7) / 16));
-        if(pressure < pressure_min)
+        var1 = (((int32_t)px_bme280_cal.p9) * ((int32_t)(((press / 8) * (press / 8)) / 8192))) / 4096;
+        var2 = (((int32_t)(press / 4)) * ((int32_t)px_bme280_cal.p8)) / 8192;
+        press = (uint32_t)((int32_t)press + ((var1 + var2 + px_bme280_cal.p7) / 16));
+        if(press < press_min)
         {
-            pressure = pressure_min;
+            press = press_min;
         }
-        else if(pressure > pressure_max)
+        else if(press > press_max)
         {
-            pressure = pressure_max;
+            press = press_max;
         }
     }
     else
     {
-        pressure = pressure_min;
+        press = press_min;
     }
 
-    return pressure;
+    return press;
 }
 
-uint32_t px_bme280_humidity(px_bme280_data_t * data)
+uint32_t px_bme280_hum(px_bme280_data_t * data)
 {
     int32_t var1;
     int32_t var2;

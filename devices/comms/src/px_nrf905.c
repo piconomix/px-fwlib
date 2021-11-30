@@ -56,7 +56,7 @@ uint8_t px_nrf905_config_write(const px_nrf905_cfg_reg_t * cfg, uint8_t start_by
 {
     uint8_t spi_data[1];
 
-    PX_LOG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t)-1));
+    PX_LOG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t) - 1));
 
     // Send instruction
     spi_data[0] = PX_NRF905_INSTR_W_CONFIG | start_byte;
@@ -76,7 +76,7 @@ uint8_t px_nrf905_config_read(px_nrf905_cfg_reg_t * cfg, uint8_t start_byte)
 {
     uint8_t spi_data[1];
 
-    PX_LOG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t)-1));
+    PX_LOG_ASSERT(start_byte < (sizeof(px_nrf905_cfg_reg_t) - 1));
 
     // Send instruction
     spi_data[0] = PX_NRF905_INSTR_R_CONFIG | start_byte;

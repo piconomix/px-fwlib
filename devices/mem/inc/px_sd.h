@@ -85,7 +85,6 @@ typedef struct PX_ATTR_PACKED
     // Byte 0
     uint8_t reserved1 : 6;
     uint8_t csd_structure : 2;         ///< CSD structure version 1.0 or 2.0
-
     // Byte 1
     uint8_t taac;                      ///< data read access-time-1
     // Byte 2
@@ -94,8 +93,6 @@ typedef struct PX_ATTR_PACKED
     uint8_t tran_speed;                ///< max. data transfer rate
     // Byte 4
     uint8_t ccc_hi;                    ///< card command classes
-
-
     // Byte 5
     uint8_t read_bl_len : 4;           ///< max. read data block length
     uint8_t ccc_lo : 4;                ///< card command classes
@@ -111,25 +108,20 @@ typedef struct PX_ATTR_PACKED
             uint8_t read_blk_misalign : 1;     ///< read block misalignment
             uint8_t write_blk_misalign : 1;    ///< write block misalignment
             uint8_t read_bl_partial : 1;       ///< partial blocks for read allowed
-        
             // Byte 7
             uint8_t c_size_mid;                ///< device size
-        
             // Byte 8
             uint8_t vdd_r_curr_max : 3;        ///< max. read current at VDD max
             uint8_t vdd_r_curr_min : 3;        ///< max. read current at VDD min
             uint8_t c_size_lo : 2;             ///< device size
-        
             // Byte 9
             uint8_t c_size_mult_hi : 2;        ///< device size multiplier
             uint8_t vdd_w_cur_max : 3;         ///< max. write current at VDD max
             uint8_t vdd_w_curr_min : 3;        ///< max. write current at VDD min
-        
             // Byte 10
             uint8_t sector_size_hi : 6;        ///< erase sector size
             uint8_t erase_blk_en : 1;          ///< erase single block enable
             uint8_t c_size_mult_lo : 1;        ///< device size multiplier
-
             // Byte 11
             uint8_t wp_grp_size : 7;           ///< write protect group size
             uint8_t sector_size_lo : 1;        ///< erase sector size
@@ -143,21 +135,17 @@ typedef struct PX_ATTR_PACKED
             uint8_t read_blk_misalign : 1;     ///< read block misalignment
             uint8_t write_blk_misalign : 1;    ///< write block misalignment
             uint8_t read_bl_partial : 1;       ///< partial blocks for read allowed
-        
             // Byte 7
             uint8_t c_size_hi : 6;             ///< device size
             uint8_t reserved3 : 2;
-
             // Byte 8
             uint8_t c_size_mid : 8;            ///< device size
             // Byte 9
             uint8_t c_size_lo : 8;             ///< device size
-
             // Byte 10
             uint8_t sector_size_hi : 6;        ///< erase sector size
             uint8_t erase_blk_en : 1;          ///< erase single block enable
             uint8_t reserved4 : 1;
-
             // Byte 11
             uint8_t wp_grp_size : 7;           ///< write protect group size
             uint8_t sector_size_lo : 1;        ///< erase sector size
@@ -169,12 +157,10 @@ typedef struct PX_ATTR_PACKED
     uint8_t r2w_factor : 3;            ///< write speed factor
     uint8_t reserved3 : 2;
     uint8_t wp_grp_enable : 1;         ///< write protect group enable
-
     // Byte 13
     uint8_t reserved4 : 5;
     uint8_t write_partial : 1;         ///< partial blocks for write allowed
     uint8_t write_bl_len_low : 2;      ///< max. write data block length
-
     // Byte 14
     uint8_t reserved5: 2;
     uint8_t file_format : 2;           ///< File format
@@ -182,7 +168,6 @@ typedef struct PX_ATTR_PACKED
     uint8_t perm_write_protect : 1;    ///< permanent write protection
     uint8_t copy : 1;                  ///< copy flag
     uint8_t file_format_grp : 1;       ///< File format
-
     // Byte 15
     uint8_t crc7_end_bit;              ///< CRC
 } px_sd_csd_t;
@@ -191,7 +176,7 @@ typedef struct PX_ATTR_PACKED
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
- *  Initialise driver
+ *  Initialise driver.
  *  
  *  @param handle    SPI handle to use for SPI slave device
  */
@@ -213,7 +198,7 @@ bool px_sd_reset(void);
  *  @retval true     Card ID register succesfully read 
  *  @retval false    Error while trying to read Card ID register 
  */
-bool px_sd_read_cid(px_sd_cid_t * cid);
+bool px_sd_rd_cid(px_sd_cid_t * cid);
 
 /**
  *  Read Card Specific Data.
@@ -223,7 +208,7 @@ bool px_sd_read_cid(px_sd_cid_t * cid);
  *  @retval true     Card Specific Data succesfully read 
  *  @retval false    Error while trying to read Card Specific Data 
  */
-bool px_sd_read_csd(px_sd_csd_t * csd);
+bool px_sd_rd_csd(px_sd_csd_t * csd);
 
 /**
  *  Read Card Status.
@@ -256,7 +241,7 @@ uint32_t px_sd_get_capacity_in_blocks(const px_sd_csd_t * csd);
  *  @retval true     Data block succcesfully read 
  *  @retval false    Error while trying to read data block 
  */
-bool px_sd_read_block(uint8_t * data, uint32_t block_adr);
+bool px_sd_rd_block(uint8_t * data, uint32_t block_adr);
 
 /**
  *  Read a number of data blocks from the SD card. 
@@ -270,7 +255,7 @@ bool px_sd_read_block(uint8_t * data, uint32_t block_adr);
  *   
  *  @return uint8_t      Number of blocks succesfully read
  */
-uint8_t px_sd_read_blocks(uint8_t * data, uint32_t block_adr, uint8_t nr_of_blocks);
+uint8_t px_sd_rd_blocks(uint8_t * data, uint32_t block_adr, uint8_t nr_of_blocks);
 
 /**
  *  Write a data block to the SD card. 
@@ -285,7 +270,7 @@ uint8_t px_sd_read_blocks(uint8_t * data, uint32_t block_adr, uint8_t nr_of_bloc
  *  @retval true     Data block succcesfully written 
  *  @retval false    Error while trying to write data block 
  */
-bool px_sd_write_block(const uint8_t * data, uint32_t block_adr);
+bool px_sd_wr_block(const uint8_t * data, uint32_t block_adr);
 
 /**
  *  Write a number of data blocks to the SD card. 
@@ -300,7 +285,7 @@ bool px_sd_write_block(const uint8_t * data, uint32_t block_adr);
  *   
  *  @return uint8_t      Number of blocks succesfully written
  */
-uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_of_blocks);
+uint8_t px_sd_wr_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_of_blocks);
 
 /**
  *  Wait up to 500 ms for write block transaction to finish.
@@ -308,7 +293,7 @@ uint8_t px_sd_write_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_
  *  @retval true        Write operation finished
  *  @retval false       Timed-out waiting for SD card to be ready
  */
-bool px_sd_wait_write_finished(void);
+bool px_sd_wait_wr_is_finished(void);
 
 /* _____MACROS_______________________________________________________________ */
 

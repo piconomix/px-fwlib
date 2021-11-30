@@ -350,10 +350,7 @@ static bool px_lis3dh_reg_rd_u8(uint8_t adr, uint8_t * data)
         return false;
     }
     // Read data
-    if(!px_i2c_rd(px_lis3dh_i2c_handle,
-                  data,
-                  1,
-                  PX_I2C_FLAG_REP_START_AND_STOP))
+    if(!px_i2c_rd(px_lis3dh_i2c_handle, data, 1, PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
         PX_LOG_E("Unable to read register value");
@@ -377,10 +374,7 @@ static bool px_lis3dh_reg_rd_data(uint8_t adr, uint8_t * data, size_t nr_of_byte
         return false;
     }
     // Read data
-    if(!px_i2c_rd(px_lis3dh_i2c_handle,
-                  data,
-                  nr_of_bytes,
-                  PX_I2C_FLAG_REP_START_AND_STOP))
+    if(!px_i2c_rd(px_lis3dh_i2c_handle, data, nr_of_bytes, PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
         PX_LOG_E("Unable to read register data");
@@ -626,7 +620,7 @@ bool px_lis3dh_test_start(void)
     px_lis3dh_test_active_flag = false;
 
     // Enable Accelerometer X,Y & Z measurement @ 10Hz (low power disabled)
-    if(px_lis3dh_reg_wr_u8(PX_LIS3DH_REG_CTRL_REG1,
+    if(px_lis3dh_reg_wr_u8( PX_LIS3DH_REG_CTRL_REG1,
                             PX_LIS3DH_REG_CTRL_REG1_ODR_1HZ
                           | PX_LIS3DH_REG_CTRL_REG1_LPEN_DIS
                           | PX_LIS3DH_REG_CTRL_REG1_ZEN_EN

@@ -59,7 +59,7 @@ typedef struct
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 /**
- *  Initialise BME280 and read calibration values
+ *  Initialise BME280 and read calibration values.
  *  
  *  @param handle   I2C handle of device
  *  
@@ -76,7 +76,7 @@ extern bool px_bme280_init(px_i2c_handle_t * handle);
  *  @retval true    Sensor data succesfully read
  *  @retval false   Communication failure
  */
-extern bool px_bme280_read(px_bme280_data_t * data);
+extern bool px_bme280_rd(px_bme280_data_t * data);
 
 /**
  *  Calculate compensated temperature from raw data.
@@ -91,7 +91,7 @@ extern bool px_bme280_read(px_bme280_data_t * data);
  *  
  *  @return int32_t Compensated temperature.
  */
-extern int32_t  px_bme280_temperature(px_bme280_data_t * data);
+extern int32_t  px_bme280_temp(px_bme280_data_t * data);
 
 /**
  *  Calculate compensated pressure from raw data.
@@ -106,7 +106,7 @@ extern int32_t  px_bme280_temperature(px_bme280_data_t * data);
  *  
  *  @return int32_t Compensated pressure.
  */
-extern uint32_t px_bme280_pressure(px_bme280_data_t * data);
+extern uint32_t px_bme280_press(px_bme280_data_t * data);
 
 /**
  *  Calculate compensated humidity from raw data.
@@ -122,7 +122,7 @@ extern uint32_t px_bme280_pressure(px_bme280_data_t * data);
  *  
  *  @return int32_t Compensated humidity.
  */
-extern uint32_t px_bme280_humidity(px_bme280_data_t * data);
+extern uint32_t px_bme280_hum(px_bme280_data_t * data);
 
 /* _____MACROS_______________________________________________________________ */
 

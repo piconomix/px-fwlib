@@ -71,10 +71,10 @@ static px_spi_handle_t * px_at45d_spi_handle;
 #if ((PX_AT45D_PAGE_SIZE != 256) && (PX_AT45D_PAGE_SIZE != 264))
 #error "This driver does not work for any other page size yet. See comment!"
 /*
-   Unfortunately this driver still needs work to cater for other page sizes. 
-    
-   When the address is sent, the specified page value is shifted by a fixed amount, 
-   but actually the amount of shift depends on the page size (?) 
+ *  Unfortunately this driver still needs work to cater for other page sizes.
+ *
+ *  When the address is sent, the specified page value is shifted by a fixed
+ *  amount, but actually the amount of shift depends on the page size (?).
  */
 #endif
 
@@ -83,13 +83,13 @@ static void px_at45d_tx_adr(uint16_t page, uint16_t start_byte_in_page)
     uint8_t data[3];
 
 #if PX_VAL_IS_PWR_OF_TWO(PX_AT45D_PAGE_SIZE)
-    data[0] = (uint8_t)(page>>8)&0xFF;
-    data[1] = (uint8_t)(page&0xFF);
-    data[2] = (uint8_t)(start_byte_in_page&0xFF);
+    data[0] = (uint8_t)(page >> 8) & 0xFF;
+    data[1] = (uint8_t)(page & 0xFF);
+    data[2] = (uint8_t)(start_byte_in_page & 0xFF);
 #else
-    data[0] = (page>>7)&0xFF;
-    data[1] = ((page<<1) | (start_byte_in_page>>8))&0xFF;
-    data[2] = start_byte_in_page&0xFF;
+    data[0] = (page >> 7) & 0xFF;
+    data[1] = ((page << 1) | (start_byte_in_page >> 8)) & 0xFF;
+    data[2] = start_byte_in_page & 0xFF;
 #endif
 
     px_spi_wr(px_at45d_spi_handle, data, 3, 0);
@@ -136,9 +136,7 @@ void px_at45d_resume_from_ultra_deep_power_down(void)
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
 }
 
-uint16_t px_at45d_rd(void *         buffer,
-                     px_at45d_adr_t address,
-                     uint16_t       nr_of_bytes)
+uint16_t px_at45d_rd(void * buffer, px_at45d_adr_t address, uint16_t nr_of_bytes)
 {
     px_at45d_adr_t max_bytes_to_read;
     uint16_t       page;
@@ -150,24 +148,17 @@ uint16_t px_at45d_rd(void *         buffer,
     {
         return 0;
     }
-
     // See if "number of bytes to read" should be clipped
     max_bytes_to_read = PX_AT45D_ADR_MAX - address + 1;
     if(nr_of_bytes > max_bytes_to_read)
     {
         nr_of_bytes = max_bytes_to_read;
     }
-
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }
-
+    while(!px_at45d_ready()) {;}
     // Send command
     data[0] = PX_AT45D_CMD_CONTINUOUS_ARRAY_READ;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Calculate page, offset and number of bytes remaining in page
 #if PX_VAL_IS_PWR_OF_TWO(PX_AT45D_PAGE_SIZE)
     page               = address >> 8;
@@ -176,17 +167,14 @@ uint16_t px_at45d_rd(void *         buffer,
     page               = address / PX_AT45D_PAGE_SIZE;
     start_byte_in_page = address % PX_AT45D_PAGE_SIZE;
 #endif
-    
     // Send address
     px_at45d_tx_adr(page, start_byte_in_page);
-
     // Send dont-care bits
     data[0] = 0x00;
     data[1] = 0x00;
     data[2] = 0x00;
     data[3] = 0x00;
-    px_spi_wr(px_at45d_spi_handle, data, 4, 0);    
-
+    px_spi_wr(px_at45d_spi_handle, data, 4, 0);
     // Read data
     px_spi_rd(px_at45d_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
 
@@ -198,25 +186,18 @@ void px_at45d_rd_page(void * buffer, uint16_t page)
     uint8_t data[4];
 
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }
-
+    while(!px_at45d_ready()) {;}
     // Send command
     data[0] = PX_AT45D_CMD_MAIN_MEMORY_PAGE_READ;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send address
     px_at45d_tx_adr(page, 0);
-
     // Send dont-care bits
     data[0] = 0x00;
     data[1] = 0x00;
     data[2] = 0x00;
     data[3] = 0x00;
-    px_spi_wr(px_at45d_spi_handle, data, 4, 0);    
-
+    px_spi_wr(px_at45d_spi_handle, data, 4, 0);
     // Read data
     px_spi_rd(px_at45d_spi_handle, buffer, PX_AT45D_PAGE_SIZE, PX_SPI_FLAG_STOP);
 }
@@ -229,25 +210,18 @@ void px_at45d_rd_page_offset(void *   buffer,
     uint8_t data[4];
 
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }
-
+    while(!px_at45d_ready()) {;}
     // Send command
     data[0] = PX_AT45D_CMD_CONTINUOUS_ARRAY_READ;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send address
     px_at45d_tx_adr(page, start_byte_in_page);
-
     // Send dont-care bits
     data[0] = 0x00;
     data[1] = 0x00;
     data[2] = 0x00;
     data[3] = 0x00;
     px_spi_wr(px_at45d_spi_handle, data, 4, 0);
-
     // Read data
     px_spi_rd(px_at45d_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
 }
@@ -257,21 +231,14 @@ void px_at45d_wr_page(const void * buffer, uint16_t page)
     uint8_t data[1];
 
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }
-
+    while(!px_at45d_ready()) {;}
     // Send command
     data[0] = PX_AT45D_CMD_MAIN_MEM_PROG_THROUGH_BUF1;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send address
     px_at45d_tx_adr(page, 0);
-
     // Send data to be written
     px_spi_wr(px_at45d_spi_handle, buffer, PX_AT45D_PAGE_SIZE, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_at45d_ready_flag = false;
 }
@@ -286,26 +253,19 @@ void px_at45d_wr_page_offset(const void * buffer,
     uint8_t   data[3];
 
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }   
-
+    while(!px_at45d_ready()) {;}
     // Send command
     data[0] = PX_AT45D_CMD_BUFFER1_WRITE;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send start byte in buffer
     data[0] = 0x00;
     data[1] = 0x00;
     data[2] = 0x00;
     px_spi_wr(px_at45d_spi_handle, data, 3, 0);
-
     // Fill buffer with data to be written (other bytes are 0xFF to leave them unchanged)
     for(i = 0; i < PX_AT45D_PAGE_SIZE; i++)
     {
-        if(  (i >= start_byte_in_page              )
-           &&(i  < start_byte_in_page + nr_of_bytes)  )
+        if((i >= start_byte_in_page) && (i  < (start_byte_in_page + nr_of_bytes)))
         {
             px_spi_wr(px_at45d_spi_handle, bufffer_u8++, 1, 0);
         }
@@ -316,29 +276,19 @@ void px_at45d_wr_page_offset(const void * buffer,
             px_spi_wr(px_at45d_spi_handle, data, 1, 0);
         }
     }
-
     // Deselect DataFlash
     px_spi_wr(px_at45d_spi_handle, NULL, 0, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_at45d_ready_flag = false;
-
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }
-
+    while(!px_at45d_ready()) {;}
     // Send command
     data[0] = PX_AT45D_CMD_BUF1_TO_MAIN_PAGE_PRG_WO_ERASE;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send address
     px_at45d_tx_adr(page, 0);
-
     // Deselect DataFlash
     px_spi_wr(px_at45d_spi_handle, NULL, 0, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_at45d_ready_flag = false;
 }
@@ -348,21 +298,14 @@ void px_at45d_erase(uint16_t page)
     uint8_t data[1];
 
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }
-
+    while(!px_at45d_ready()) {;}
     // Send command
     data[0] = PX_AT45D_CMD_PAGE_ERASE;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Send address
     px_at45d_tx_adr(page, 0);
-
     // Deselect DataFlash
     px_spi_wr(px_at45d_spi_handle, NULL, 0, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_at45d_ready_flag = false;
 }
@@ -376,10 +319,8 @@ bool px_at45d_ready(void)
     {
         return true;
     }
-
     // Get DataFlash status
     data = px_at45d_get_status();
-
     // See if DataFlash is ready
     if(PX_BIT_IS_HI(data, PX_AT45D_STATUS_READY))
     {
@@ -400,7 +341,6 @@ uint8_t px_at45d_get_status(void)
     // Send command
     data[0] = PX_AT45D_CMD_STATUS_REGISTER_READ;
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
-
     // Read status
     px_spi_rd(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_STOP);
 
@@ -432,25 +372,16 @@ bool px_at45d_set_page_size_to_pwr_of_two(void)
         // Page size is already a power of two
         return false;
     }
-
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }
-
+    while(!px_at45d_ready()) {;}
     // Send command
     data[0] = 0x3d;
     data[1] = 0x2a;
     data[2] = 0x80;
     data[3] = 0xa6;
     px_spi_wr(px_at45d_spi_handle, data, 4, PX_SPI_FLAG_START_AND_STOP);
-
     // Wait until DataFlash is not busy
-    while(!px_at45d_ready())
-    {
-        ;
-    }
+    while(!px_at45d_ready()) {;}
 
     return true;
 }

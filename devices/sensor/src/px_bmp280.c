@@ -62,11 +62,11 @@ PX_LOG_NAME("bmp280");
 
 // 4.3.4 Register 0xF4 "ctrl_meas"
 #define PX_BMP280_REG_CTRL_MEAS_OSRS_T_POS      5
-#define PX_BMP280_REG_CTRL_MEAS_OSRS_T_MSK      (7<<5)
+#define PX_BMP280_REG_CTRL_MEAS_OSRS_T_MSK      (7 << 5)
 #define PX_BMP280_REG_CTRL_MEAS_OSRS_P_POS      2
-#define PX_BMP280_REG_CTRL_MEAS_OSRS_P_MSK      (7<<2)
+#define PX_BMP280_REG_CTRL_MEAS_OSRS_P_MSK      (7 << 2)
 #define PX_BMP280_REG_CTRL_MEAS_MODE_POS        0
-#define PX_BMP280_REG_CTRL_MEAS_MODE_MSK        (3<<0)
+#define PX_BMP280_REG_CTRL_MEAS_MODE_MSK        (3 << 0)
 #define PX_BMP280_REG_CTRL_MEAS_OVERS_SKIPPED   0
 #define PX_BMP280_REG_CTRL_MEAS_OVERS_1         1
 #define PX_BMP280_REG_CTRL_MEAS_OVERS_2         2
@@ -79,19 +79,19 @@ PX_LOG_NAME("bmp280");
 
 // 4.3.5 Register 0xF5 "config"
 #define PX_BMP280_REG_CONFIG_T_SB_POS           5
-#define PX_BMP280_REG_CONFIG_T_SB_MSK           (7<<5)
+#define PX_BMP280_REG_CONFIG_T_SB_MSK           (7 << 5)
 #define PX_BMP280_REG_CONFIG_FILTER_POS         2
-#define PX_BMP280_REG_CONFIG_FILTER_MSK         (7<<2)
+#define PX_BMP280_REG_CONFIG_FILTER_MSK         (7 << 2)
 #define PX_BMP280_REG_CONFIG_SPI3W_EN_POS       0
 #define PX_BMP280_REG_CONFIG_SPI3W_EN_MSK       (1 << 0)
 
-// 4.3.6 Register 0xF7..0xF9 "press" (_msb, _lsb, _xlsb)
+// 4.3.6 Register 0xF7..0xF9 "pressure" (_msb, _lsb, _xlsb)
 #define PX_BMP280_PRESS_XLSB_POS                4
-#define PX_BMP280_PRESS_XLSB_MSK                (15<<4)
+#define PX_BMP280_PRESS_XLSB_MSK                (15 << 4)
 
-// 4.3.7 Register 0xFA..0xFC "temp" (_msb, _lsb, _xlsb)
+// 4.3.7 Register 0xFA..0xFC "temperature" (_msb, _lsb, _xlsb)
 #define PX_BMP280_TEMP_XLSB_POS                 4
-#define PX_BMP280_TEMP_XLSB_MSK                 (15<<4)
+#define PX_BMP280_TEMP_XLSB_MSK                 (15 << 4)
 
 /// BMP280 calibration coefficients
 typedef struct
@@ -160,10 +160,7 @@ static bool px_bmp280_reg_rd(uint8_t adr, uint8_t * data)
         return false;
     }
     // Read data
-    if(!px_i2c_rd(px_bmp280_i2c_handle,
-                  data,
-                  1,
-                  PX_I2C_FLAG_REP_START_AND_STOP))
+    if(!px_i2c_rd(px_bmp280_i2c_handle, data, 1, PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
         PX_LOG_E("Unable to read register value");
@@ -187,10 +184,7 @@ static bool px_bmp280_reg_rd_data(uint8_t adr, void * data, uint8_t nr_of_bytes)
         return false;
     }
     // Read data
-    if(!px_i2c_rd(px_bmp280_i2c_handle,
-                  data,
-                  nr_of_bytes,
-                  PX_I2C_FLAG_REP_START_AND_STOP))
+    if(!px_i2c_rd(px_bmp280_i2c_handle, data, nr_of_bytes, PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
         PX_LOG_E("Unable to read register data");
@@ -318,7 +312,7 @@ static bool px_bmp280_press_raw_rd(int32_t * data)
 }
 
 /**
- *  Calculate compensated temp in 0.01 deg C steps, e.g.
+ *  Calculate compensated temperature in 0.01 deg C steps, e.g.
  *  "5123" equals 51.23 deg C
  *  
  *  @param ut[in]       Uncompensated Temperature
@@ -326,7 +320,7 @@ static bool px_bmp280_press_raw_rd(int32_t * data)
  *  
  *  @return int32_t     Compensated Temperature
  */
-int32_t px_bmp280_comp_temp(int32_t ut, int32_t * t_fine)
+static int32_t px_bmp280_comp_temp(int32_t ut, int32_t * t_fine)
 {
     int32_t var1;
     int32_t var2;
@@ -356,7 +350,7 @@ int32_t px_bmp280_comp_temp(int32_t ut, int32_t * t_fine)
  *  
  *  @return uint32_t    Comnpensated Pressure
  */
-uint32_t px_bmp280_comp_press(int32_t up, int32_t t_fine)
+static uint32_t px_bmp280_comp_press(int32_t up, int32_t t_fine)
 {
     int32_t  var1;
     int32_t  var2;
@@ -392,7 +386,7 @@ uint32_t px_bmp280_comp_press(int32_t up, int32_t t_fine)
     var2  = (((int32_t)(press >> 2)) * ((int32_t)px_bmp280_cal.dig.p8)) >> 13;
     press = (uint32_t)((int32_t)press + ((var1 + var2 + px_bmp280_cal.dig.p7) >> 4));
 
-    PX_LOG_D("Compensated Press = %ld", press);
+    PX_LOG_D("Compensated Pressure = %ld", press);
 
     return press;
 }
@@ -404,7 +398,6 @@ bool px_bmp280_init(px_i2c_handle_t * handle)
 
     // Save I2C slave handle
     px_bmp280_i2c_handle = handle;
-
     // Verify Chip ID
     if(!px_bmp280_reg_rd(PX_BMP280_REG_ID, &data))
     {
@@ -419,7 +412,6 @@ bool px_bmp280_init(px_i2c_handle_t * handle)
                  data, PX_BMP280_REG_ID_VAL);
         return false;
     }
-
     // Wait until NVM calibration data is copied to registers
     do
     {
@@ -431,7 +423,6 @@ bool px_bmp280_init(px_i2c_handle_t * handle)
         }
     }
     while(data & PX_BMP280_REG_STATUS_IM_UPDATE_MSK);
-
     // Read calibration
     if(!px_bmp280_cal_rd())
     {
@@ -443,7 +434,7 @@ bool px_bmp280_init(px_i2c_handle_t * handle)
     return true;
 }
 
-bool px_bmp280_read(int32_t * temperature, int32_t * pressure)
+bool px_bmp280_rd(int32_t * temp, int32_t * press)
 {
     uint8_t data;
     int32_t t_fine;
@@ -454,7 +445,6 @@ bool px_bmp280_read(int32_t * temperature, int32_t * pressure)
         // Error
         return false;
     }
-
     // Start new "forced" measurement (pressure x 8, temperature x 1 oversampled)
     data =   (PX_BMP280_REG_CTRL_MEAS_OVERS_1     << PX_BMP280_REG_CTRL_MEAS_OSRS_T_POS)
            + (PX_BMP280_REG_CTRL_MEAS_OVERS_8     << PX_BMP280_REG_CTRL_MEAS_OSRS_P_POS)
@@ -465,7 +455,6 @@ bool px_bmp280_read(int32_t * temperature, int32_t * pressure)
         PX_LOG_E("Unable to start measurement");
         return false;
     }
-
     // Wait until conversion is finished
     do
     {
@@ -477,24 +466,20 @@ bool px_bmp280_read(int32_t * temperature, int32_t * pressure)
         }
     }
     while(data & PX_BMP280_REG_STATUS_MEAS_MSK);
-
     // Read raw temperature value
-    if(!px_bmp280_temp_raw_rd(temperature))
+    if(!px_bmp280_temp_raw_rd(temp))
     {
         return false;
     }
-
     // Read raw pressure value
-    if(!px_bmp280_press_raw_rd(pressure))
+    if(!px_bmp280_press_raw_rd(press))
     {
         return false;
     }
-
     // Calculated compensated temperature value
-    *temperature = px_bmp280_comp_temp(*temperature, &t_fine);
-
+    *temp = px_bmp280_comp_temp(*temp, &t_fine);
     // Calculated compensated pressure value
-    *pressure = px_bmp280_comp_press(*pressure, t_fine);
+    *press = px_bmp280_comp_press(*press, t_fine);
     
     // Success
     return true;

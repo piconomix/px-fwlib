@@ -16,44 +16,6 @@
 
 ============================================================================= */
 
-/*  
- * @note this module is built on "kbmatrix.h" and "kbmatrix.c" found in the Atmel
- * AT91 Software package:
- * (http://www.atmel.com/dyn/products/tools_card.asp?tool_id=4343)
- * See license below:
- *   
- *  @{ 
- */
-
-/* ----------------------------------------------------------------------------
-           ATMEL Microcontroller Software Support 
-   ----------------------------------------------------------------------------
-   Copyright (c) 2008, Atmel Corporation
-
-   All rights reserved.
-
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
-
-   - Redistributions of source code must retain the above copyright notice,
-   this list of conditions and the disclaimer below.
-
-   Atmel's name may not be used to endorse or promote products derived from
-   this software without specific prior written permission.
-
-   DISCLAIMER: THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR
-   IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
-   DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR ANY DIRECT, INDIRECT,
-   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
-   OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-   ----------------------------------------------------------------------------
- */
-
 /* _____STANDARD INCLUDES____________________________________________________ */
 #include <string.h>
 
@@ -146,7 +108,7 @@ static void kbd_key_state_xor(px_kbd_matrix_key_state_t * key_x,
     }
 }
 
-static bool px_kbd_matrix_phantom_key(px_list_t * key_press_list)
+static bool px_kbd_matrix_phantom_key(px_link_list_t * key_press_list)
 {
     px_kbd_matrix_key_t * key_press;
     px_kbd_matrix_key_t * key_press_compare;
@@ -154,7 +116,7 @@ static bool px_kbd_matrix_phantom_key(px_list_t * key_press_list)
     
 
     // Start at first item in the list
-    key_press = (px_kbd_matrix_key_t *)px_list_first_item(key_press_list);
+    key_press = (px_kbd_matrix_key_t *)px_link_list_get_item_first(key_press_list);
 
     while(key_press != NULL)
     {
@@ -163,14 +125,14 @@ static bool px_kbd_matrix_phantom_key(px_list_t * key_press_list)
         same_col_flag = false;
 
         // Compare with other keys in the list
-        key_press_compare = (px_kbd_matrix_key_t *)px_list_first_item(key_press_list);
+        key_press_compare = (px_kbd_matrix_key_t *)px_link_list_get_item_first(key_press_list);
         while(key_press_compare != NULL)
         {
             // Do not compare key with itself
             if(key_press_compare != key_press)
             {
                 // See if key is in the same row
-                 if(key_press->row == key_press_compare->row)
+                if(key_press->row == key_press_compare->row)
                 {
                     same_row_flag = true;
                 }
@@ -188,11 +150,10 @@ static bool px_kbd_matrix_phantom_key(px_list_t * key_press_list)
                 }
             }
             // Next item
-            key_press_compare = (px_kbd_matrix_key_t *)px_list_next_item(key_press_list, &key_press_compare->key_list_item);
+            key_press_compare = (px_kbd_matrix_key_t *)px_link_list_get_item_next(key_press_list, &key_press_compare->key_list_item);
         }
-
         // Next item
-        key_press = (px_kbd_matrix_key_t *)px_list_next_item(key_press_list, &key_press->key_list_item);
+        key_press = (px_kbd_matrix_key_t *)px_link_list_get_item_next(key_press_list, &key_press->key_list_item);
     }
 
     return false;
@@ -203,15 +164,15 @@ static void px_kbd_matrix_on_key_event(px_kbd_matrix_t *     matrix,
                                        uint8_t               col,
                                        px_kbd_matrix_event_t event)
 {
-    px_list_t *           key_press_list = &(matrix->key_press_list);
-    px_list_item_t *      key_press_item;
+    px_link_list_t *      key_press_list = &(matrix->key_press_list);
+    px_link_list_item_t * key_press_item;
     px_kbd_matrix_key_t * key_press;
     uint8_t               i;    
 
     if(event == PX_KBD_MATRIX_EVENT_PRESSED)
     {
         // See if key pressed list is full
-        if(px_list_is_full(key_press_list))
+        if(px_link_list_is_full(key_press_list))
         {
             // Ignore extra key presses
             return;
@@ -222,32 +183,30 @@ static void px_kbd_matrix_on_key_event(px_kbd_matrix_t *     matrix,
         {
             key_press = &(matrix->key_press_array[i]);
 
-            if(px_list_item_in_list(key_press_list, &(key_press->key_list_item)) == false)
+            if(px_link_list_has_item(key_press_list, &(key_press->key_list_item)) == false)
             {
                 // Add key to list
                 key_press->row = row;
                 key_press->col = col;
-
-                px_list_add_to_end(key_press_list, &(key_press->key_list_item));
+                px_link_list_insert_item_end(key_press_list, &(key_press->key_list_item));
 				break;
             }
         }
 
         // See if phantom key detection should be performed
-        if(px_list_nr_of_items(key_press_list) >= 3)
+        if(px_link_list_get_item_count(key_press_list) >= 3)
         {
             // See if key forms the third side of a rectangle
             if(px_kbd_matrix_phantom_key(key_press_list))
             {
                 // Remove phantom key from the list
-                key_press = (px_kbd_matrix_key_t *)px_list_remove_last_item(key_press_list);
+                key_press = (px_kbd_matrix_key_t *)px_link_list_remove_item_last(key_press_list);
                 return;
             }
         }
 
         // Reset counter
         matrix->key_repeat_counter = KBD_DELAY_BEFORE_REPEATING_KEY;
-
         // Call event handler
         matrix->on_key_event_handler(row, col, event);
     }
@@ -255,26 +214,23 @@ static void px_kbd_matrix_on_key_event(px_kbd_matrix_t *     matrix,
     if(event == PX_KBD_MATRIX_EVENT_RELEASED)
     {
         // Start at first item in the list
-        key_press_item = px_list_first_item(key_press_list);
+        key_press_item = px_link_list_get_item_first(key_press_list);
         while(key_press_item != NULL)
         {
             // Access data of list item
             key_press = (px_kbd_matrix_key_t *)key_press_item;
 
             // See if key is in the list
-            if(  (key_press->row == row)
-               &&(key_press->col == col)  )
+            if(  (key_press->row == row) && (key_press->col == col)  )
             {
                 // Remove key from the list
-                px_list_remove_item(key_press_list, key_press_item);
-
+                px_link_list_remove_item(key_press_list, key_press_item);
                 // Call event handler
                 matrix->on_key_event_handler(row, col, event);
-
                 break;
             }
             // Next item
-            key_press_item = px_list_next_item(key_press_list, key_press_item);
+            key_press_item = px_link_list_get_item_next(key_press_list, key_press_item);
         }        
     }    
 }
@@ -306,7 +262,7 @@ static void px_kbd_matrix_debounce(px_kbd_matrix_t *matrix)
      *  pressed[x] will be 0 if any key_history[x] sample is 0
      */
     kbd_key_state_copy(&pressed, &(matrix->key_history[0]));
-    for (i=1; i < PX_KBD_MATRIX_NR_SAMPLES; i++)
+    for (i = 1; i < PX_KBD_MATRIX_NR_SAMPLES; i++)
     {
         kbd_key_state_and(&pressed, &(matrix->key_history[i]), &pressed);
     }
@@ -318,7 +274,7 @@ static void px_kbd_matrix_debounce(px_kbd_matrix_t *matrix)
      *  released[x] will be 1 if any key_history[x] sample is 1
      */
     kbd_key_state_copy(&released, &(matrix->key_history[0]));
-    for (i=1; i < PX_KBD_MATRIX_NR_SAMPLES; i++)
+    for (i = 1; i < PX_KBD_MATRIX_NR_SAMPLES; i++)
     {
         kbd_key_state_or(&released, &(matrix->key_history[i]), &released);
     }
@@ -326,10 +282,8 @@ static void px_kbd_matrix_debounce(px_kbd_matrix_t *matrix)
     // Compute new key status
     kbd_key_state_or(&(matrix->key_state), &pressed, &new);
     kbd_key_state_and(&new, &released, &new);
-
     // Compare with existing status
     kbd_key_state_xor(&(matrix->key_state), &new, &changed);
-    
     // Process each pending event
     nr_of_keys = matrix->nr_of_rows   matrix->nr_of_columns;
     for (i = 0; i < nr_of_keys; i++)
@@ -346,12 +300,11 @@ static void px_kbd_matrix_debounce(px_kbd_matrix_t *matrix)
             {
                 event = PX_KBD_MATRIX_EVENT_RELEASED;
             }
-
             // Handle key event
             px_kbd_matrix_on_key_event(matrix,
-                                    i / matrix->nr_of_columns,
-                                    i % matrix->nr_of_columns,
-                                    event);
+                                       i / matrix->nr_of_columns,
+                                       i % matrix->nr_of_columns,
+                                       event);
         }
     }
     // Save new key state
@@ -373,7 +326,7 @@ static bool px_kbd_matrix_key_pressed(px_kbd_matrix_t * matrix)
     bool    key_pressed_flag = false;
 
     // Enable all rows
-    for (row=0; row < matrix->nr_of_rows; row++)
+    for (row = 0; row < matrix->nr_of_rows; row++)
     {
         matrix->set_row(row, true);      
     }
@@ -381,7 +334,7 @@ static bool px_kbd_matrix_key_pressed(px_kbd_matrix_t * matrix)
     matrix->delay(true);
 
     // Scan each column
-    for (col=0; col < matrix->nr_of_columns; col++)
+    for (col = 0; col < matrix->nr_of_columns; col++)
     {
         if(matrix->get_col(col))
         {
@@ -391,7 +344,7 @@ static bool px_kbd_matrix_key_pressed(px_kbd_matrix_t * matrix)
         }
     }
     // Disable all rows
-    for (row=0; row < matrix->nr_of_rows; row++)
+    for (row = 0; row < matrix->nr_of_rows; row++)
     {
         matrix->set_row(row, false);
     }
@@ -408,12 +361,10 @@ static bool px_kbd_matrix_key_pressed(px_kbd_matrix_t * matrix)
  */
 static void px_kbd_matrix_sample(px_kbd_matrix_t *matrix)
 {
+    uint8_t row, col, key;
+
     // Pointer to array where new sample set must be stored
     px_kbd_matrix_key_state_t *key_state = &(matrix->key_history[matrix->key_history_index]);
-
-    uint8_t row;
-    uint8_t col;
-    uint8_t key;
 
     // Clear array
     kbd_key_state_init(key_state);
@@ -423,7 +374,7 @@ static void px_kbd_matrix_sample(px_kbd_matrix_t *matrix)
     {    
         // Determine which key(s) has been pressed
         key = 0;
-        for (row=0; row < matrix->nr_of_rows; row++)
+        for (row = 0; row < matrix->nr_of_rows; row++)
         {
             // Enable row
             matrix->set_row(row, true);
@@ -442,6 +393,7 @@ static void px_kbd_matrix_sample(px_kbd_matrix_t *matrix)
                 // Next key
                 key++;
             }
+
             // Disable row
             matrix->set_row(row, false);
             // Wait for columns to return to their inactive state
@@ -459,11 +411,11 @@ static void px_kbd_matrix_sample(px_kbd_matrix_t *matrix)
 
 static void px_kbd_matrix_repeat(px_kbd_matrix_t * matrix)
 {
-    px_list_t *           key_press_list = &(matrix->key_press_list);
+    px_link_list_t *      key_press_list = &(matrix->key_press_list);
     px_kbd_matrix_key_t * key_press;
 
     // See if a key(s) must be repeated
-    if(px_list_is_empty(key_press_list) == false)
+    if(px_link_list_is_empty(key_press_list) == false)
     {
         // See if counter has expired
         if(matrix->key_repeat_counter == 0)
@@ -471,7 +423,7 @@ static void px_kbd_matrix_repeat(px_kbd_matrix_t * matrix)
             // Reset counter
             matrix->key_repeat_counter = KBD_KEY_REPEAT_DELAY;
             // Get last key pressed
-            key_press = (px_kbd_matrix_key_t *)px_list_last_item(key_press_list);
+            key_press = (px_kbd_matrix_key_t *)px_link_list_get_item_last(key_press_list);
             // Repeat key
             matrix->on_key_event_handler(key_press->row, key_press->col, PX_KBD_MATRIX_EVENT_PRESSED);
         }
@@ -518,14 +470,14 @@ void px_kbd_matrix_init(px_kbd_matrix_t *            matrix,
     }
 
     // Initialise linked list
-    px_list_init(&(matrix->key_press_list), PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED);
+    px_link_list_init(&(matrix->key_press_list), PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED);
 
     // Initialise items used for linked list
     for(i = 0; i < PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED; i++)
     {
-        px_list_item_init(&(matrix->key_press_list), &(matrix->key_press_array[i].key_list_item));
-        matrix->key_press_array[i].row               = 0;
-        matrix->key_press_array[i].col               = 0;
+        px_link_list_item_init(&(matrix->key_press_list), &(matrix->key_press_array[i].key_list_item));
+        matrix->key_press_array[i].row = 0;
+        matrix->key_press_array[i].col = 0;
     }
 }
 

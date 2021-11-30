@@ -116,19 +116,14 @@ void px_at25s_resume_from_deep_power_down(void)
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
 }
 
-void px_at25s_rd(void *   buffer,
-                 uint32_t address,
-                 uint16_t nr_of_bytes)
+void px_at25s_rd(void * buffer, uint32_t address, uint16_t nr_of_bytes)
 {
     uint8_t data[1];
 
     // See if specified address is out of bounds
     PX_LOG_ASSERT(address <= PX_AT25S_ADR_MAX);
     // Wait until Serial Flash is not busy
-    while(!px_at25s_ready())
-    {
-        ;
-    }
+    while(!px_at25s_ready()) {;}
     // Send command
     data[0] = PX_AT25S_CMD_READ_ARRAY;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
@@ -140,9 +135,7 @@ void px_at25s_rd(void *   buffer,
 
 void px_at25s_rd_page(void * buffer, uint16_t page)
 {
-    px_at25s_rd(buffer,
-                page * PX_AT25S_PAGE_SIZE,
-                PX_AT25S_PAGE_SIZE);
+    px_at25s_rd(buffer, page * PX_AT25S_PAGE_SIZE, PX_AT25S_PAGE_SIZE);
 }
 
 void px_at25s_rd_page_offset(void *   buffer,
@@ -150,9 +143,7 @@ void px_at25s_rd_page_offset(void *   buffer,
                              uint8_t  start_byte_in_page,
                              uint16_t nr_of_bytes)
 {
-    px_at25s_rd(buffer,
-                page * PX_AT25S_PAGE_SIZE + start_byte_in_page,
-                nr_of_bytes);
+    px_at25s_rd(buffer, page * PX_AT25S_PAGE_SIZE + start_byte_in_page, nr_of_bytes);
 }
 
 void px_at25s_wr_page(const void * buffer, uint16_t page)
@@ -160,10 +151,7 @@ void px_at25s_wr_page(const void * buffer, uint16_t page)
     uint8_t data[1];
 
     // Wait until Serial Flash is not busy
-    while(!px_at25s_ready())
-    {
-        ;
-    }
+    while(!px_at25s_ready()) {;}
     // Send Write Enable command
     px_at25s_write_enable();
     // Send command
@@ -185,10 +173,7 @@ void px_at25s_wr_page_offset(const void * buffer,
     uint8_t data[1];
 
     // Wait until Serial Flash is not busy
-    while(!px_at25s_ready())
-    {
-        ;
-    }
+    while(!px_at25s_ready()) {;}
     // Send Write Enable command
     px_at25s_write_enable();
     // Send command
@@ -202,17 +187,13 @@ void px_at25s_wr_page_offset(const void * buffer,
     px_at25s_ready_flag = false;
 }
 
-void px_at25s_erase(px_at25s_block_t block,
-                    uint16_t         page)
+void px_at25s_erase(px_at25s_block_t block, uint16_t page)
 {
     uint8_t  data[1];
     uint32_t adr;
 
     // Wait until Serial Flash is not busy
-    while(!px_at25s_ready())
-    {
-        ;
-    }
+    while(!px_at25s_ready()) {;}
     // Send Write Enable command
     px_at25s_write_enable();
     // Select command according to specified block size
@@ -260,10 +241,7 @@ void px_at25s_erase_chip(void)
     uint8_t data[1];
 
     // Wait until Serial Flash is not busy
-    while(!px_at25s_ready())
-    {
-        ;
-    }
+    while(!px_at25s_ready()) {;}
     // Send Write Enable command
     px_at25s_write_enable();
     // Send command

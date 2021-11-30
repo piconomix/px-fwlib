@@ -50,8 +50,8 @@ extern "C" {
 /// PX_DS18B20 configuration register values
 #define PX_DS18B20_CFG_REG_RES_9BIT    (0 << 5)
 #define PX_DS18B20_CFG_REG_RES_10BIT   (1 << 5)
-#define PX_DS18B20_CFG_REG_RES_11BIT   (2<<5)
-#define PX_DS18B20_CFG_REG_RES_12BIT   (3<<5)
+#define PX_DS18B20_CFG_REG_RES_11BIT   (2 << 5)
+#define PX_DS18B20_CFG_REG_RES_12BIT   (3 << 5)
 #define PX_DS18B20_CFG_REG_RES_MASK    ((1 << 6) | (1 << 5))
 #define PX_DS18B20_CFG_REG_RESERVED    0x1f
 
@@ -64,6 +64,7 @@ extern "C" {
 #define PX_DS18B20_CONV_TIME_MS_12BIT  750
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
+/// Error codes
 typedef enum
 {
     PX_DS18B20_ERR_NONE = 0,
@@ -71,47 +72,116 @@ typedef enum
     PX_DS18B20_ERR_CRC_CHECK_FAILED,
 } px_ds18b20_error_t;
 
+/// Scratchpad
 typedef struct
 {
-    uint8_t temp_lsb;
-    uint8_t temp_msb;
-    uint8_t th;
-    uint8_t tl;
-    uint8_t cfg_reg;
-    uint8_t reserved1;
-    uint8_t reserved2;
-    uint8_t reserved3;
-    uint8_t crc;
+    uint8_t temp_lsb;       ///< Temperature Least Significant Byte
+    uint8_t temp_msb;       ///< Temperature Most Significant Byte
+    uint8_t th;             ///< Temperature high alarm
+    uint8_t tl;             ///< Temperature low alarm
+    uint8_t cfg_reg;        ///< Configuration register
+    uint8_t reserved1;      ///< Reserved (0xff)
+    uint8_t reserved2;      ///< Reserved
+    uint8_t reserved3;      ///< Reserved (0x10)
+    uint8_t crc;            ///< Checksum
 } px_ds18b20_scratchpad_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-px_ds18b20_error_t px_ds18b20_start_temp_conversion     (px_one_wire_rom_t * rom);
+/**
+ *  Start temperature conversion.
+ *
+ *  @param rom              1-Wire ROM address of device or NULL if there is only one device on bus
+ *
+ *  @return px_ds18b20_error_t  error (NONE = 0)
+ */
+px_ds18b20_error_t px_ds18b20_start_temp_conv(px_one_wire_rom_t * rom);
 
-bool               px_ds18b20_temp_conversion_finished  (void);
+/**
+ *  Is temperature conversion finished?
+ *
+ *  @retval true            Conversion is finished
+ *  @retval false           Conversion is still busy
+ */
+bool px_ds18b20_temp_conv_is_finished(void);
 
-px_ds18b20_error_t px_ds18b20_rd_scratchpad             (px_one_wire_rom_t *       rom,
-                                                         px_ds18b20_scratchpad_t * scratchpad);
+/**
+ *  Read scratchpad.
+ *
+ *  @param rom              1-Wire ROM address of device or NULL if there is only one device on bus
+ *  @param scratchpad       Scratchpad content read
+ *
+ *  @return px_ds18b20_error_t  error (NONE = 0)
+ */
+px_ds18b20_error_t px_ds18b20_rd_scratchpad(px_one_wire_rom_t *       rom,
+                                            px_ds18b20_scratchpad_t * scratchpad);
 
-px_ds18b20_error_t px_ds18b20_wr_scratchpad             (px_one_wire_rom_t *             rom,
-                                                         const px_ds18b20_scratchpad_t * scratchpad);
+/**
+ *  Write scratchpad.
+ *
+ *  @param rom              1-Wire ROM address of device or NULL if there is only one device on bus
+ *  @param scratchpad       Scratchpad content to write
+ *
+ *  @return px_ds18b20_error_t  error (NONE = 0)
+ */
+px_ds18b20_error_t px_ds18b20_wr_scratchpad(px_one_wire_rom_t *             rom,
+                                            const px_ds18b20_scratchpad_t * scratchpad);
 
-px_ds18b20_error_t px_ds18b20_copy_scratchpad           (px_one_wire_rom_t * rom);
+/**
+ *  Copy scratchpad.
+ *
+ *  @param rom              1-Wire ROM address of device or NULL if there is only one device on bus
+ *
+ *  @return px_ds18b20_error_t  error (NONE = 0)
+ */
+px_ds18b20_error_t px_ds18b20_copy_scratchpad(px_one_wire_rom_t * rom);
 
+/**
+ *  Read power supply flag.
+ *
+ *  @param rom              1-Wire ROM address of device or NULL if there is only one device on bus
+ *  @param bus_pwr_flag     true if device is bus powered
+ *                          false if device is parasitically powered by bus
+ *
+ *  @return px_ds18b20_error_t  error (NONE = 0)
+ */
+px_ds18b20_error_t px_ds18b20_rd_pwr_supply(px_one_wire_rom_t * rom, bool * bus_pwr_flag);
 
-px_ds18b20_error_t px_ds18b20_rd_pwr_supply             (px_one_wire_rom_t *       rom,
-                                                         bool *                    bus_pwr_flag);
+/**
+ *  Read temperature register value.
+ *
+ *  @param rom              1-Wire ROM address of device or NULL if there is only one device on bus
+ *  @param temp_msb         Most Significant byte of temp register value
+ *  @param temp_lsb         Least Significant byte of temp register value
+ *
+ *  @return px_ds18b20_error_t  error (NONE = 0, NO_DEVICES_PRESENT or CRC_CHECK_FAILED)
+ */
+px_ds18b20_error_t px_ds18b20_rd_temp(px_one_wire_rom_t * rom,
+                                      uint8_t *           temp_msb,
+                                      uint8_t *           temp_lsb);
 
-px_ds18b20_error_t px_ds18b20_rd_temp                   (px_one_wire_rom_t *       rom,
-                                                         uint8_t *                 temp_msb,
-                                                         uint8_t *                 temp_lsb);
+/**
+ *  Convert temperature register value to actual signed temperature.
+ *
+ *  @param temp_msb         Most Significant byte of temp register value
+ *  @param temp_lsb         Least Significant byte of temp register value
+ *  @param cfg_reg          Config register value
+ *
+ *  @return int16_t         Temperature in 0.01 deg C resolution
+ */
+int16_t px_ds18b20_util_convert_t_to_temp(uint8_t temp_msb,
+                                          uint8_t temp_lsb,
+                                          uint8_t cfg_reg);
 
-int16_t           px_ds18b20_util_convert_t_to_temp     (uint8_t temp_msb,
-                                                         uint8_t temp_lsb,
-                                                         uint8_t cfg_reg);
-
-uint16_t          px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg);
+/**
+ *  Get temperature conversion time according to config register setting.
+ *
+ *  @param cfg_reg          config register setting
+ *
+ *  @return uint16_t        conversion time (ms)
+ */
+uint16_t px_ds18b20_util_cfg_to_temp_conv_time_ms(uint8_t cfg_reg);
 
 /* _____MACROS_______________________________________________________________ */
 

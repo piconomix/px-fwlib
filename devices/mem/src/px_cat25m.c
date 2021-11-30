@@ -53,9 +53,7 @@ void px_cat25m_init(px_spi_handle_t * handle)
     px_cat25m_spi_handle = handle;
 }
 
-void px_cat25m_rd(void *          buffer,
-                  px_cat25m_adr_t address,
-                  size_t          nr_of_bytes)
+void px_cat25m_rd(void * buffer, px_cat25m_adr_t address, size_t nr_of_bytes)
 {
     uint8_t  spi_data[4];
     uint8_t *bufffer_u8 = (uint8_t *)buffer;
@@ -65,20 +63,14 @@ void px_cat25m_rd(void *          buffer,
     {
         return;
     }
-
     // Wait until EEPROM is not busy
-    while(!px_cat25m_ready())
-    {
-        ;
-    }
-
+    while(!px_cat25m_ready()) {;}
     // Send command
     spi_data[0] = PX_CAT25M_CMD_READ; 
     spi_data[1] = PX_U32_MH8(address);
     spi_data[2] = PX_U32_ML8(address);
     spi_data[3] = PX_U32_LO8(address);
     px_spi_wr(px_cat25m_spi_handle, spi_data, 4, PX_SPI_FLAG_START);
-
     // Read data
     px_spi_rd(px_cat25m_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
 }
@@ -90,18 +82,13 @@ void px_cat25m_rd_page(void * buffer, uint16_t page)
     uint8_t   spi_data[4];
 
     // Wait until EEPROM is not busy
-    while(!px_cat25m_ready())
-    {
-        ;
-    }
-
+    while(!px_cat25m_ready()) {;}
     // Send command
     spi_data[0] = PX_CAT25M_CMD_READ; 
     spi_data[1] = PX_U16_HI8(page);
     spi_data[2] = PX_U16_LO8(page);
     spi_data[3] = 0;
     px_spi_wr(px_cat25m_spi_handle, spi_data, 4, PX_SPI_FLAG_START);
-    
     // Read data
     px_spi_rd(px_cat25m_spi_handle, buffer, PX_CAT25M_PAGE_SIZE, PX_SPI_FLAG_STOP);
 }
@@ -115,18 +102,13 @@ void px_cat25m_rd_page_offset(void *   buffer,
     uint8_t   spi_data[4];
 
     // Wait until EEPROM is not busy
-    while(!px_cat25m_ready())
-    {
-        ;
-    }
-
+    while(!px_cat25m_ready()) {;}
     // Send command
     spi_data[0] = PX_CAT25M_CMD_READ; 
     spi_data[1] = PX_U16_HI8(page);
     spi_data[2] = PX_U16_LO8(page);
     spi_data[3] = start_byte_in_page;
     px_spi_wr(px_cat25m_spi_handle, spi_data, 4, PX_SPI_FLAG_START);
-    
     // Read data
     px_spi_rd(px_cat25m_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
 }
@@ -138,24 +120,17 @@ void px_cat25m_wr_page(const void * buffer, uint16_t page)
     uint8_t   spi_data[4];
 
     // Wait until EEPROM is not busy
-    while(!px_cat25m_ready())
-    {
-        ;
-    }
-
+    while(!px_cat25m_ready()) {;}
     // Enable write
     px_cat25m_wr_en();
-
     // Send command
     spi_data[0] = PX_CAT25M_CMD_WRITE; 
     spi_data[1] = PX_U16_HI8(page);
     spi_data[2] = PX_U16_LO8(page);
     spi_data[3] = 0;
     px_spi_wr(px_cat25m_spi_handle, spi_data, 4, PX_SPI_FLAG_START);
-
     // Write data
     px_spi_wr(px_cat25m_spi_handle, buffer, PX_CAT25M_PAGE_SIZE, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_cat25m_ready_flag = false;    
 }
@@ -169,31 +144,24 @@ void px_cat25m_wr_page_offset(const void * buffer,
     uint8_t   spi_data[4];
 
     // Wait until EEPROM is not busy
-    while(!px_cat25m_ready())
-    {
-        ;
-    }
-
+    while(!px_cat25m_ready()) {;}
     // Enable write
     px_cat25m_wr_en();
-
     // Send command
     spi_data[0] = PX_CAT25M_CMD_WRITE; 
     spi_data[1] = PX_U16_HI8(page);
     spi_data[2] = PX_U16_LO8(page);
     spi_data[3] = start_byte_in_page;
     px_spi_wr(px_cat25m_spi_handle, spi_data, 4, PX_SPI_FLAG_START);
-
     // Write data
     px_spi_wr(px_cat25m_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
-
     // Set flag to busy
     px_cat25m_ready_flag = false;    
 }
 
 bool px_cat25m_ready(void)
 {
-    if(  (px_cat25m_status_rd() & PX_CAT25M_STATUS_RDY)  == 0)
+    if((px_cat25m_status_rd() & PX_CAT25M_STATUS_RDY)  == 0)
     {
         return true;
     }
@@ -210,7 +178,6 @@ uint8_t px_cat25m_status_rd(void)
     // Send command
     spi_data[0] = PX_CAT25M_CMD_RDSR;
     px_spi_wr(px_cat25m_spi_handle, spi_data, 1, PX_SPI_FLAG_START);
-
     // Read status
     px_spi_rd(px_cat25m_spi_handle, spi_data, 1, PX_SPI_FLAG_STOP);
 

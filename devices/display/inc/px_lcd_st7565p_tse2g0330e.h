@@ -27,7 +27,6 @@
  *  - devices/display/inc/px_lcd_st7565p_tse2g0330e.h
  *  - devices/display/src/px_lcd_st7565p_tse2g0330e.c
  *
- *
  *  @{
  */
 

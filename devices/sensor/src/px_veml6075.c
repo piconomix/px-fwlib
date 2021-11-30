@@ -100,19 +100,16 @@ static bool px_veml6075_reg_rd(uint8_t cmd, px_veml6075_reg_data * data)
     uint8_t buf[2];
 
     buf[0] = cmd;
-
     if(!px_i2c_wr(px_veml6075_i2c_handle, buf, 1, PX_I2C_FLAG_START_AND_END))
     {
         PX_LOG_E("Write failed");
         return false;
     }
-
     if(!px_i2c_rd(px_veml6075_i2c_handle, buf, 2, PX_I2C_FLAG_REP_START_AND_STOP))
     {
         PX_LOG_E("Read failed");
         return false;
     }
-
     data->lsb = buf[0];
     data->msb = buf[1];
 

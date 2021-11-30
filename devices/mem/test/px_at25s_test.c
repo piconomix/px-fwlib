@@ -24,7 +24,7 @@ int main(void)
     // Write a page of Serial Flash
     for(i = 0; i < PX_AT25S_PAGE_SIZE; i++)
     {
-        data[i] = (uint8_t)(i&0xff);
+        data[i] = (uint8_t)(i & 0xff);
     }
     px_at25s_wr_page(data, 0);
 

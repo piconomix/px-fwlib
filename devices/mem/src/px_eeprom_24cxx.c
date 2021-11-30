@@ -46,7 +46,10 @@ bool px_eeprom_24cxx_present_or_not_busy(void)
     {
         return false;
     }
-    return true;
+    else
+    {
+        return true;
+    }
 }
 
 bool px_eeprom_24cxx_rd_u8(uint16_t adr, uint8_t * data)
@@ -55,8 +58,7 @@ bool px_eeprom_24cxx_rd_u8(uint16_t adr, uint8_t * data)
 
 
     // Change I2C Slave Address to include A10,A9 and A8
-    px_i2c_change_slave_adr(px_eeprom_24cxx_i2c_handle,
-                            PX_EEPROM_24CXX_I2C_SLA_ADR | (PX_U16_HI8(adr) & 0x7));
+    px_i2c_change_slave_adr(px_eeprom_24cxx_i2c_handle, PX_EEPROM_24CXX_I2C_SLA_ADR | (PX_U16_HI8(adr) & 0x7));
 
     i2c_data[0] = PX_U16_LO8(adr);
     if(!px_i2c_wr(px_eeprom_24cxx_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_STOP))
@@ -75,8 +77,7 @@ bool px_eeprom_24cxx_rd_data(uint16_t adr, void * data, size_t nr_of_bytes)
     uint8_t i2c_data[1];
 
     // Change I2C Slave Address to include A10,A9 and A8
-    px_i2c_change_slave_adr(px_eeprom_24cxx_i2c_handle,
-                            PX_EEPROM_24CXX_I2C_SLA_ADR | (PX_U16_HI8(adr) & 0x7));
+    px_i2c_change_slave_adr(px_eeprom_24cxx_i2c_handle, PX_EEPROM_24CXX_I2C_SLA_ADR | (PX_U16_HI8(adr) & 0x7));
 
     i2c_data[0] = PX_U16_LO8(adr);
     if(!px_i2c_wr(px_eeprom_24cxx_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START_AND_STOP))
@@ -95,8 +96,7 @@ bool px_eeprom_24cxx_wr_u8(uint16_t adr, uint8_t data)
     uint8_t i2c_data[1];
 
     // Change I2C Slave Address to include A10,A9 and A8
-    px_i2c_change_slave_adr(px_eeprom_24cxx_i2c_handle,
-                            PX_EEPROM_24CXX_I2C_SLA_ADR | (PX_U16_HI8(adr) & 0x7));
+    px_i2c_change_slave_adr(px_eeprom_24cxx_i2c_handle, PX_EEPROM_24CXX_I2C_SLA_ADR | (PX_U16_HI8(adr) & 0x7));
 
     i2c_data[0] = PX_U16_LO8(adr);
     if(!px_i2c_wr(px_eeprom_24cxx_i2c_handle, i2c_data, 1, PX_I2C_FLAG_START))
@@ -107,5 +107,6 @@ bool px_eeprom_24cxx_wr_u8(uint16_t adr, uint8_t data)
     {
         return false;
     }
+    // Success
     return true;
 }

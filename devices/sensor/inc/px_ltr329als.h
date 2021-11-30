@@ -89,7 +89,7 @@ typedef enum
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 bool px_ltr329als_init                   (px_i2c_handle_t *        handle);
-bool px_ltr329als_rd_manufacturer_id     (uint8_t *                id);
+bool px_ltr329als_rd_id                  (uint8_t *                id);
 void px_ltr329als_cfg                    (px_ltr329als_int_time_t  int_time,
                                           px_ltr329als_meas_rate_t meas_rate);
 void px_ltr329als_standby_mode           (void);
@@ -101,7 +101,6 @@ uint16_t px_ltr329als_meas_convert_to_lux(px_ltr329als_gain_t      gain,
                                           px_ltr329als_int_time_t  int_time,
                                           uint16_t                 ch0,
                                           uint16_t                 ch1);
-
 
 /* _____MACROS_______________________________________________________________ */
 

@@ -84,29 +84,24 @@ static px_m41t00_data_t px_m41t00_data;
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static uint8_t px_m41t00_bcd_to_byte(uint8_t bcd_val)
 {
-    return (bcd_val&0xf) + ((bcd_val&0xf0) >> 4)*10;
+    return (bcd_val & 0xf) + ((bcd_val & 0xf0) >> 4) * 10;
 }
 
 static uint8_t px_m41t00_byte_to_bcd(uint8_t byte_val)
 {
-    return (byte_val%10) + ((byte_val/10) << 4);
+    return (byte_val % 10) + ((byte_val / 10) << 4);
 }
 
 static bool px_m41t00_rd_data(void)
 {
     // Set address to start reading from
     px_m41t00_data.adr = 0;
-
     // Send address to read
-    if(!px_i2c_wr(px_m41t00_i2c_handle, 
-                  &px_m41t00_data.adr, 
-                  1, 
-                  PX_I2C_FLAG_START_AND_END))
+    if(!px_i2c_wr(px_m41t00_i2c_handle, &px_m41t00_data.adr, 1, PX_I2C_FLAG_START_AND_END))
     {
         PX_LOG_E("Unable to write address");
         return false;
     }
-
     // Read data
     if(!px_i2c_rd(px_m41t00_i2c_handle, 
                   &px_m41t00_data.bcd_time,
@@ -116,7 +111,6 @@ static bool px_m41t00_rd_data(void)
         PX_LOG_E("Unable to read data");
         return false;
     }
-
     // Success
     return true;
 }
@@ -125,7 +119,6 @@ static bool px_m41t00_wr_data(void)
 {
     // Set address to start writing to
     px_m41t00_data.adr = 0;
-
     // Write data
     if(!px_i2c_wr(px_m41t00_i2c_handle, 
                   &px_m41t00_data, 
@@ -135,7 +128,6 @@ static bool px_m41t00_wr_data(void)
         PX_LOG_E("Unable to write data");
         return false;
     }
-
     // Success
     return true;
 }
@@ -158,36 +150,31 @@ bool px_m41t00_get_time(px_m41t00_time_t * px_rtc_time)
     px_rtc_time->day_of_month = 1;
     px_rtc_time->month        = 1;
     px_rtc_time->year         = 7;
-
     // Read RTC data
     if(!px_m41t00_rd_data())
     {
         return false;
     }
-
     // See if timer has been stopped
     if(((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_ST_ADR]  & PX_M41T00_ST_BIT)
     {
         PX_LOG_E("RTC has been stopped!");
         return false;
     }
-
     // Mask off century bits
     ((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_CEB_ADR] &= ~PX_M41T00_CEB_BIT;
     ((uint8_t *)(&px_m41t00_data.bcd_time))[PX_M41T00_CB_ADR]  &= ~PX_M41T00_CB_BIT;
-
     // Convert to binary format
     for(i = 0; i < sizeof(*px_rtc_time); i++)
     {
         ((uint8_t *)px_rtc_time)[i] = px_m41t00_bcd_to_byte(((uint8_t *)(&px_m41t00_data.bcd_time))[i]);
     }
-
     // Sanity check
-    if((px_rtc_time->month        < 1   ) || (px_rtc_time->month        > 12  )) return false;
-    if((px_rtc_time->day_of_month < 1   ) || (px_rtc_time->day_of_month > 31  )) return false;
-    if(px_rtc_time->hour          > 23  ) return false;
-    if(px_rtc_time->min           > 59  ) return false;
-    if(px_rtc_time->sec           > 59  ) return false;
+    if((px_rtc_time->month        < 1 ) || (px_rtc_time->month        > 12)) return false;
+    if((px_rtc_time->day_of_month < 1 ) || (px_rtc_time->day_of_month > 31)) return false;
+    if(px_rtc_time->hour          > 23) return false;
+    if(px_rtc_time->min           > 59) return false;
+    if(px_rtc_time->sec           > 59) return false;
 
     return true;
 }

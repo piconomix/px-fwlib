@@ -59,38 +59,38 @@ extern "C" {
 /* _____DEFINITIONS__________________________________________________________ */
 /// @name List AT45D devices
 /// @{
-#define PX_AT45DB011 0 ///< 1M bit, 2.7-Volt Minimum Serial-Interface Flash with One 264-Byte SRAM Buffer
-#define PX_AT45DB021 1 ///< 2M bit, 2.7-Volt Minimum Serial-Interface Flash with One 264-Byte SRAM Buffer
-#define PX_AT45DB041 2 ///< 4M bit 2.5-Volt or 2.7-Volt DataFlash
-#define PX_AT45DB081 3 ///< 8M bit, 2.5 or 2.7-Volt Only Serial-Interface Flash
-#define PX_AT45DB161 4 ///< 16M bit, 2.7-Volt Only Serial-Interface Flash with two SRAM Data Buffers
-#define PX_AT45DB321 5 ///< 32M bit, 2.7-Volt Only Serial Interface Flash
-#define PX_AT45DB642 6 ///< 64M bit, 2.7-Volt Dual-Interface Flash with two 1056-Byte SRAM
+#define PX_AT45DB011 0  ///< 1M bit, 2.7-Volt Minimum Serial-Interface Flash with One 264-Byte SRAM Buffer
+#define PX_AT45DB021 1  ///< 2M bit, 2.7-Volt Minimum Serial-Interface Flash with One 264-Byte SRAM Buffer
+#define PX_AT45DB041 2  ///< 4M bit 2.5-Volt or 2.7-Volt DataFlash
+#define PX_AT45DB081 3  ///< 8M bit, 2.5 or 2.7-Volt Only Serial-Interface Flash
+#define PX_AT45DB161 4  ///< 16M bit, 2.7-Volt Only Serial-Interface Flash with two SRAM Data Buffers
+#define PX_AT45DB321 5  ///< 32M bit, 2.7-Volt Only Serial Interface Flash
+#define PX_AT45DB642 6  ///< 64M bit, 2.7-Volt Dual-Interface Flash with two 1056-Byte SRAM
 /// @}
 
 // Determine number of pages and page size according to device specified
 #if   (PX_AT45D_CFG_DEVICE == PX_AT45DB011)
-#define PX_AT45D_PAGES             512ul
-#define PX_AT45D_PAGE_SIZE         (256 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 8 : 0))
+#define PX_AT45D_PAGES      512ul
+#define PX_AT45D_PAGE_SIZE  (256 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 8 : 0))
 #elif (PX_AT45D_CFG_DEVICE == PX_AT45DB021)
-#define PX_AT45D_PAGES             1024ul
-#define PX_AT45D_PAGE_SIZE         (256 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 8 : 0))
+#define PX_AT45D_PAGES      1024ul
+#define PX_AT45D_PAGE_SIZE  (256 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 8 : 0))
 #elif (PX_AT45D_CFG_DEVICE == PX_AT45DB041)
-#define PX_AT45D_PAGES             2048ul
-#define PX_AT45D_PAGE_SIZE         (256 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 8 : 0))
-#define PX_AT45D_DENSITY           0x1C
+#define PX_AT45D_PAGES      2048ul
+#define PX_AT45D_PAGE_SIZE  (256 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 8 : 0))
+#define PX_AT45D_DENSITY    0x1C
 #elif (PX_AT45D_CFG_DEVICE == PX_AT45DB081)
-#define PX_AT45D_PAGES             4096ul
-#define PX_AT45D_PAGE_SIZE         (256 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 16 : 0))
+#define PX_AT45D_PAGES      4096ul
+#define PX_AT45D_PAGE_SIZE  (256 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 16 : 0))
 #elif (PX_AT45D_CFG_DEVICE == PX_AT45DB161)
-#define PX_AT45D_PAGES             4096ul
-#define PX_AT45D_PAGE_SIZE         (512 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 16 : 0))
+#define PX_AT45D_PAGES      4096ul
+#define PX_AT45D_PAGE_SIZE  (512 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 16 : 0))
 #elif (PX_AT45D_CFG_DEVICE == PX_AT45DB321)
-#define PX_AT45D_PAGES             8192ul
-#define PX_AT45D_PAGE_SIZE         (512 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 16 : 0))
+#define PX_AT45D_PAGES      8192ul
+#define PX_AT45D_PAGE_SIZE  (512 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 16 : 0))
 #elif (PX_AT45D_CFG_DEVICE == PX_AT45DB642)
-#define PX_AT45D_PAGES             8192ul
-#define PX_AT45D_PAGE_SIZE         (1024 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 32 : 0))
+#define PX_AT45D_PAGES      8192ul
+#define PX_AT45D_PAGE_SIZE  (1024 + (PX_AT45D_CFG_PWR_OF_TWO_PAGE_SIZE==0 ? 32 : 0))
 #else
 #error "Invalid AT45D device specified"
 #endif
@@ -153,9 +153,8 @@ void px_at45d_ultra_deep_power_down(void);
 /** 
  *  Power up device to resume communication.
  *  
- *  After this function call, wait at least 120 us (see tXUDPD in
- *  datasheet) for DataFlash to wake up, otherwise it will will ignore the
- *  commands.
+ *  After this function call, wait at least 120 us (see tXUDPD in datasheet)
+ *  for DataFlash to wake up, otherwise it will will ignore the commands.
  */
 void px_at45d_resume_from_ultra_deep_power_down(void);
 
@@ -169,27 +168,24 @@ void px_at45d_resume_from_ultra_deep_power_down(void);
  *  @param[in]  address         0 to PX_AT45D_ADR_MAX
  *  @param[in]  nr_of_bytes     Number of bytes to read
  *  
- *  @return uint16_t               Number of bytes actually read
+ *  @return uint16_t            Number of bytes actually read
  */
-uint16_t px_at45d_rd(void *         buffer,
-                     px_at45d_adr_t address,
-                     uint16_t       nr_of_bytes);
+uint16_t px_at45d_rd(void * buffer, px_at45d_adr_t address, uint16_t nr_of_bytes);
 
 /**
  *  Read a page from DataFlash.
  *  
  *  This function reads a page of data from DataFlash and stores it in the 
- *  specified buffer. The buffer must be at least PX_AT45D_PAGE_SIZE bytes in size
- *  to accomodate a full page.
+ *  specified buffer. The buffer must be at least PX_AT45D_PAGE_SIZE bytes in
+ *  size to accomodate a full page.
  *  
  *  The DataFlash has PX_AT45D_PAGES pages.
  *  
  *  @param[out] buffer          Buffer to store read data
- *  @param[in]  page            0 to (PX_AT45D_PAGES-1)
+ *  @param[in]  page            0 to (PX_AT45D_PAGES - 1)
  *  
  */
-void px_at45d_rd_page(void *   buffer,
-                      uint16_t page);
+void px_at45d_rd_page(void * buffer, uint16_t page);
 
 /**
  *  Partial read of data in a page of DataFlash.
@@ -205,7 +201,7 @@ void px_at45d_rd_page(void *   buffer,
  *  content of the specified page will be read.
  *  
  *  @param[out] buffer              Buffer to store read data
- *  @param[in]  page                0 to (PX_AT45D_PAGES-1)
+ *  @param[in]  page                0 to (PX_AT45D_PAGES - 1)
  *  @param[in]  start_byte_in_page  Index of first byte to read (0 to
  *                                  PX_AT45D_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to read
@@ -219,18 +215,17 @@ void px_at45d_rd_page_offset(void *   buffer,
 /**
  *  Write a page from DataFlash.
  *  
- *  This function writes a page of data to DataFlash using the specified 
- *  buffer as the source. The buffer must contain at least PX_AT45D_PAGE_SIZE bytes
- *  of data.
+ *  This function writes a page of data to DataFlash using the specified buffer
+ *  as the source. The buffer must contain at least PX_AT45D_PAGE_SIZE bytes of
+ *  data.
  *  
  *  The DataFlash has PX_AT45D_PAGES pages.
  *  
  *  @param[in] buffer  Buffer containing data to be written
- *  @param[in]  page   0 to (PX_AT45D_PAGES-1)
+ *  @param[in]  page   0 to (PX_AT45D_PAGES - 1)
  *  
  */
-void px_at45d_wr_page(const void * buffer,
-                      uint16_t     page);
+void px_at45d_wr_page(const void * buffer, uint16_t page);
 
 /**
  *  Partial write of data in a page of DataFlash.
@@ -246,9 +241,8 @@ void px_at45d_wr_page(const void * buffer,
  *  content of the specified page will be written.
  *  
  *  @param[in]  buffer              Buffer containing data to be written
- *  @param[in]  page                0 to (PX_AT45D_PAGES-1)
- *  @param[in]  start_byte_in_page  Index of first byte to write (0 to
- *                                  PX_AT45D_PAGE_SIZE - 1)
+ *  @param[in]  page                0 to (PX_AT45D_PAGES - 1)
+ *  @param[in]  start_byte_in_page  Index of first byte to write (0 to PX_AT45D_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to write
  *  
  */
@@ -263,7 +257,7 @@ void px_at45d_wr_page_offset(const void * buffer,
  *  This function erases a page of DataFlash. The DataFlash has PX_AT45D_PAGES
  *  pages.
  *  
- *  @param[in]  page   0 to (PX_AT45D_PAGES-1)
+ *  @param[in]  page                0 to (PX_AT45D_PAGES - 1)
  */
 void px_at45d_erase(uint16_t page);
 

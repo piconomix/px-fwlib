@@ -57,10 +57,10 @@ typedef struct
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void    px_max31855_init                    (px_spi_handle_t    * handle);
-bool    px_max31855_rd                      (px_max31855_data_t * data);
-int16_t px_max31855_util_temp_tc_to_deg_c   (int16_t temp);
-int16_t px_max31855_util_temp_int_to_deg_c  (int16_t temp);
+void    px_max31855_init                  (px_spi_handle_t    * handle);
+bool    px_max31855_rd                    (px_max31855_data_t * data);
+int16_t px_max31855_util_temp_tc_to_deg_c (int16_t temp);
+int16_t px_max31855_util_temp_int_to_deg_c(int16_t temp);
 
 /* _____MACROS_______________________________________________________________ */
 

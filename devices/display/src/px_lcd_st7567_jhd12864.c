@@ -173,9 +173,9 @@ void px_lcd_sel_col(uint8_t col)
 #endif
 
     // Column most significant nibble
-    px_lcd_wr_control_data(PX_LCD_CMD_SET_COL_ADR_HI | ((col&0xf0)>>4));
+    px_lcd_wr_control_data(PX_LCD_CMD_SET_COL_ADR_HI | ((col & 0xf0) >> 4));
     // Column least significant nibble
-    px_lcd_wr_control_data(PX_LCD_CMD_SET_COL_ADR_LO | (col&0x0f));
+    px_lcd_wr_control_data(PX_LCD_CMD_SET_COL_ADR_LO | (col & 0x0f));
 }
 
 void px_lcd_sel_page(uint8_t page)

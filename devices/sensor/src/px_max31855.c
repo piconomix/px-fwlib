@@ -78,10 +78,7 @@ bool px_max31855_rd(px_max31855_data_t * data)
 {
     uint8_t data_u8[4];
 
-    px_spi_rd(&px_spi_tc_handle,
-              data_u8,
-              4,
-              PX_SPI_FLAG_START_AND_STOP);
+    px_spi_rd(&px_spi_tc_handle, data_u8, 4, PX_SPI_FLAG_START_AND_STOP);
 
     // All zeros?
     if( (data_u8[0] == 0x00) && (data_u8[1] == 0x00) && (data_u8[2] == 0x00) && (data_u8[3] == 0x00) )

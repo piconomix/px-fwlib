@@ -274,7 +274,6 @@ static bool px_gt511_rx_resp_packet(px_systmr_ticks_t timeout_ticks)
     {
         return false;
     }
-
     // Header OK?
     if(  (px_gt511_resp_packet.start_code1 != 0x55 )
        ||(px_gt511_resp_packet.start_code2 != 0xaa )
@@ -307,7 +306,6 @@ static bool px_gt511_rx_resp_packet(px_systmr_ticks_t timeout_ticks)
         PX_LOG_E("Response field not OK (%02X)", px_gt511_resp_packet.resp);
         return false;
     }
-
     // Success
     if(px_gt511_resp_packet.resp == PX_GT511_CMD_ACK)
     {
@@ -331,7 +329,6 @@ static bool px_gt511_rx_data_packet(void *            data,
     {
         return false;
     }
-
     // Header OK?
     if(  (px_gt511_data_packet.start_code1 != 0x5a )
        ||(px_gt511_data_packet.start_code2 != 0xa5 )
@@ -345,7 +342,6 @@ static bool px_gt511_rx_data_packet(void *            data,
         px_gt511_rx_flush();
         return false;
     }
-
     // Receive data portion
     if(!px_gt511_rx(data, nr_of_bytes, PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_INTERBYTE_TIMEOUT_MS)))
     {
@@ -356,7 +352,6 @@ static bool px_gt511_rx_data_packet(void *            data,
     {
         return false;
     }
-
     // Checksum OK?
     checksum = px_gt511_calc_checksum(0,
                                       &px_gt511_data_packet, 
@@ -371,7 +366,6 @@ static bool px_gt511_rx_data_packet(void *            data,
         px_gt511_rx_flush();
         return false;
     }
-
     // Success
     PX_LOG_D("RX Data (%u bytes)", nr_of_bytes);
     return true;

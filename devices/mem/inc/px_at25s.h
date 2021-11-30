@@ -159,11 +159,8 @@ void px_at25s_resume_from_deep_power_down(void);
  *  @param buffer           Buffer to store read data
  *  @param address          0 to PX_AT25S_ADR_MAX
  *  @param nr_of_bytes      Number of bytes to read
- *
  */
-void px_at25s_rd(void *   buffer,
-                 uint32_t address,
-                 uint16_t nr_of_bytes);
+void px_at25s_rd(void *   buffer, uint32_t address, uint16_t nr_of_bytes);
 
 /**
  *  Read a page from Serial Flash.
@@ -175,11 +172,9 @@ void px_at25s_rd(void *   buffer,
  *  The Serial Flash has PX_AT25S_PAGES pages.
  *
  *  @param[out] buffer          Buffer to store read data
- *  @param[in]  page            0 to (PX_AT25S_PAGES-1)
- *
+ *  @param[in]  page            0 to (PX_AT25S_PAGES - 1)
  */
-void px_at25s_rd_page(void *   buffer,
-                      uint16_t page);
+void px_at25s_rd_page(void * buffer, uint16_t page);
 
 /**
  *  Partial read of data in a page of Serial Flash.
@@ -193,11 +188,9 @@ void px_at25s_rd_page(void *   buffer,
  *  content of the specified page will be read.
  *
  *  @param[out] buffer              Buffer to store read data
- *  @param[in]  page                0 to (PX_AT25S_PAGES-1)
- *  @param[in]  start_byte_in_page  Index of first byte to read (0 to
- *                                  PX_AT25S_PAGE_SIZE - 1)
+ *  @param[in]  page                0 to (PX_AT25S_PAGES - 1)
+ *  @param[in]  start_byte_in_page  Index of first byte to read (0 to PX_AT25S_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to read
- *
  */
 void px_at25s_rd_page_offset(void *   buffer,
                              uint16_t page,
@@ -214,11 +207,9 @@ void px_at25s_rd_page_offset(void *   buffer,
  *  The Serial Flash has PX_AT25S_PAGES pages.
  *
  *  @param[in] buffer  Buffer containing data to be written
- *  @param[in]  page   0 to (PX_AT25S_PAGES-1)
- *
+ *  @param[in]  page   0 to (PX_AT25S_PAGES - 1)
  */
-void px_at25s_wr_page(const void * buffer,
-                      uint16_t     page);
+void px_at25s_wr_page(const void * buffer, uint16_t page);
 
 /**
  *  Partial write of data in a page of Serial Flash.
@@ -234,11 +225,9 @@ void px_at25s_wr_page(const void * buffer,
  *  content of the specified page will be written.
  *
  *  @param[in]  buffer              Buffer containing data to be written
- *  @param[in]  page                0 to (PX_AT25S_PAGES-1)
- *  @param[in]  start_byte_in_page  Index of first byte to write (0 to
- *                                  PX_AT25S_PAGE_SIZE - 1)
+ *  @param[in]  page                0 to (PX_AT25S_PAGES - 1)
+ *  @param[in]  start_byte_in_page  Index of first byte to write (0 to PX_AT25S_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to write
- *
  */
 void px_at25s_wr_page_offset(const void * buffer,
                              uint16_t     page,
@@ -252,11 +241,9 @@ void px_at25s_wr_page_offset(const void * buffer,
  *  PX_AT25S_PAGES pages.
  *
  *  @param  block       4KB, 32KB or 64KB
- *  @param  page        0 to (PX_AT25S_PAGES-1); must be an integer multiple of
- *                      block size
+ *  @param  page        0 to (PX_AT25S_PAGES - 1); must be an integer multiple of block size
  */
-void px_at25s_erase(px_at25s_block_t block,
-                    uint16_t         page);
+void px_at25s_erase(px_at25s_block_t block, uint16_t page);
 
 /**
  *  Check if Serial Flash is ready for the next read or write access.

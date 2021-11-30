@@ -124,10 +124,7 @@ static bool px_ltr329als_reg_rd(uint8_t adr, uint8_t * data)
         return false;
     }
     // Read data
-    if(!px_i2c_rd(px_ltr329als_i2c_handle,
-                  data,
-                  1,
-                  PX_I2C_FLAG_REP_START_AND_STOP))
+    if(!px_i2c_rd(px_ltr329als_i2c_handle, data, 1, PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
         PX_LOG_E("Unable to read register value");
@@ -151,10 +148,7 @@ static bool px_ltr329als_reg_rd_data(uint8_t adr, void * data, uint8_t nr_of_byt
         return false;
     }
     // Read data
-    if(!px_i2c_rd(px_ltr329als_i2c_handle,
-                  data,
-                  nr_of_bytes,
-                  PX_I2C_FLAG_REP_START_AND_STOP))
+    if(!px_i2c_rd(px_ltr329als_i2c_handle, data, nr_of_bytes, PX_I2C_FLAG_REP_START_AND_STOP))
     {
         // Error
         PX_LOG_E("Unable to read register data");
@@ -170,8 +164,7 @@ bool px_ltr329als_init(px_i2c_handle_t * handle)
     // Save I2C slave handle
     px_ltr329als_i2c_handle = handle;
     // Reset sensor
-    if(!px_ltr329als_reg_wr(PX_LTR329ALS_REG_ALS_CONTR,
-                            PX_LTR329ALS_REG_ALS_CONTR_SW_RESET))
+    if(!px_ltr329als_reg_wr(PX_LTR329ALS_REG_ALS_CONTR, PX_LTR329ALS_REG_ALS_CONTR_SW_RESET))
     {
         return false;
     }
@@ -179,7 +172,7 @@ bool px_ltr329als_init(px_i2c_handle_t * handle)
     return true;
 }
 
-bool px_ltr329als_rd_manufacturer_id(uint8_t * id)
+bool px_ltr329als_rd_id(uint8_t * id)
 {
     // Read manufacturer ID
     if(!px_ltr329als_reg_rd(PX_LTR329ALS_REG_MANUFAC_ID, id))

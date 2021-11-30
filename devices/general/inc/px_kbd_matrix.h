@@ -47,7 +47,7 @@
  *  
  *  License:
  *  
- *  @code
+ *  @verbatim
  *  ----------------------------------------------------------------------------
  *         ATMEL Microcontroller Software Support
  *  ----------------------------------------------------------------------------
@@ -75,7 +75,8 @@
  *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  ----------------------------------------------------------------------------
- *  @endcode
+ *  @endverbatim
+ *
  * @{ 
  */ 
 
@@ -83,7 +84,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defs.h"
-#include "px_list.h"
+#include "px_link_list.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -172,51 +173,29 @@ typedef struct
     uint8_t bit_mask[PX_KBD_MATRIX_MAX_NR_KEYS/8];
 } px_kbd_matrix_key_state_t;
 
-/// Linked list structure that describes which key has been pressed
+/// Linked list item that describes which key has been pressed
 typedef struct
 {
-    px_list_item_t key_list_item;
-    uint8_t        row;
-    uint8_t        col;
+    px_link_list_item_t key_list_item;
+    uint8_t             row;
+    uint8_t             col;
 } px_kbd_matrix_key_t;
 
 /// Keyboard matrix definition and state
 typedef struct
 {
-    /// Number of rows in matrix
-    uint8_t                      nr_of_rows;
-    /// Number of columns in matrix
-    uint8_t                      nr_of_columns;
-
-    /// Bit mask that stores the current state of the keys
-    px_kbd_matrix_key_state_t    key_state;
-
-    /// Array of bit masks that stores the key state history
-    px_kbd_matrix_key_state_t    key_history[PX_KBD_MATRIX_NR_SAMPLES];
-
-    /// Wrapping index (used as a ring buffer)
-    uint8_t                      key_history_index;
-
-    /// Linked list of pressed keys
-    px_list_t                    key_press_list;
-
-    /// Storage for linked list to remember which keys are pressed
-    px_kbd_matrix_key_t          key_press_array[PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED];
-
-    // Counter to determine if a pressed key must repeated (typematic)
-    uint16_t                     key_repeat_counter;
-
-    /// Function handler to write a row output
-    px_kbd_matrix_set_row_t      set_row;
-
-    /// Function handler to read a column input
-    px_kbd_matrix_get_col_t      get_col;
-
-    /// Function handler to read a column input
-    px_kbd_matrix_delay_t        delay;
-
-    /// Function that will be called if a key is pressed or released
-    px_kbd_matrix_on_key_event_t on_key_event_handler;
+    uint8_t                      nr_of_rows;                                         ///< Number of rows in matrix
+    uint8_t                      nr_of_columns;                                      ///< Number of columns in matrix
+    px_kbd_matrix_key_state_t    key_state;                                          ///< Bit mask that stores the current state of the keys
+    px_kbd_matrix_key_state_t    key_history[PX_KBD_MATRIX_NR_SAMPLES];              ///< Array of bit masks that stores the key state history
+    uint8_t                      key_history_index;                                  ///< Wrapping index (used as a ring buffer)
+    px_link_list_t               key_press_list;                                     ///< Linked list of pressed keys
+    px_kbd_matrix_key_t          key_press_array[PX_KBD_MATRIX_MAX_NR_KEYS_PRESSED]; ///< Storage for linked list to remember which keys are pressed
+    uint16_t                     key_repeat_counter;                                 ///< Counter to determine if a pressed key must repeated (typematic)
+    px_kbd_matrix_set_row_t      set_row;                                            ///< Function handler to write a row output
+    px_kbd_matrix_get_col_t      get_col;                                            ///< Function handler to read a column input
+    px_kbd_matrix_delay_t        delay;                                              ///< Function handler to read a column input
+    px_kbd_matrix_on_key_event_t on_key_event_handler;                               ///< Function that will be called if a key is pressed or released
 } px_kbd_matrix_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */

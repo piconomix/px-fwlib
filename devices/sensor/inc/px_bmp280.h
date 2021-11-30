@@ -51,7 +51,7 @@ extern "C" {
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 extern bool px_bmp280_init(px_i2c_handle_t * handle);
-extern bool px_bmp280_read(int32_t * temperature, int32_t * pressure);
+extern bool px_bmp280_rd(int32_t * temp, int32_t * press);
 
 /* _____MACROS_______________________________________________________________ */
 
