@@ -46,11 +46,11 @@ extern "C"
 /// Window object properties
 typedef struct
 {
-    px_gfx_xy_t    x;               ///< Left
-    px_gfx_xy_t    y;               ///< Top
-    px_gfx_xy_t    width;           ///< Width
-    px_gfx_xy_t    height;          ///< Height
-    px_gfx_color_t color_bg;        ///< Background color
+    px_gfx_xy_t    x;                           ///< Left
+    px_gfx_xy_t    y;                           ///< Top
+    px_gfx_xy_t    width;                       ///< Width
+    px_gfx_xy_t    height;                      ///< Height
+    px_gfx_color_t color_bg;                    ///< Background color
 } px_gfx_obj_win_prop_t;
 
 /// Window object data structure

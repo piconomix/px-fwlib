@@ -48,8 +48,8 @@ extern "C"
 /// Label object properties
 typedef struct
 {
-    px_gfx_xy_t           x;        ///< X coordinate
-    px_gfx_xy_t           y;        ///< Y coordinate
+    px_gfx_xy_t           x;                ///< X coordinate
+    px_gfx_xy_t           y;                ///< Y coordinate
     const char *          str;
     const px_gfx_font_t * font;
     px_gfx_color_t        color_fg;
@@ -60,8 +60,8 @@ typedef struct
 /// Label object data structure
 typedef struct
 {
-    px_gfx_obj_t                    obj;          ///< Common object properties
-    const px_gfx_obj_label_prop_t * prop;         ///< Additional label properties
+    px_gfx_obj_t                    obj;    ///< Common object properties
+    const px_gfx_obj_label_prop_t * prop;   ///< Additional label properties
 } px_gfx_obj_label_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */

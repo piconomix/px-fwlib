@@ -56,8 +56,7 @@
 #if (   !defined(PX_GFX_DISP_SIZE_X        ) \
      || !defined(PX_GFX_DISP_SIZE_Y        ) \
      || !defined(PX_GFX_CFG_STR_BUFFER_SIZE) \
-     || !defined(PX_GFX_CFG_DEFAULT_FONT   ) )
-      )
+     || !defined(PX_GFX_CFG_DEFAULT_FONT   )  )
 #error "One or more options not defined in 'px_gfx_cfg.h'"
 #endif
 
@@ -174,7 +173,6 @@ void px_gfx_draw(void);
 
 /**
  *  Update display with total area that has changed in display buffer.
- *  
  */
 void px_gfx_draw_update(void);
 

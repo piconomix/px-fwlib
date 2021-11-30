@@ -48,20 +48,20 @@ extern "C"
 /// Label object properties
 typedef struct
 {
-    px_gfx_xy_t         x;              ///< X coordinate
-    px_gfx_xy_t         y;              ///< Y coordinate
-    px_gfx_xy_t         width;          ///< Right
-    px_gfx_xy_t         height;         ///< Bottom
-    px_gfx_color_t      color_fg;       ///< Foreground color
-    px_gfx_color_t      color_bg;       ///< Background color
-    const px_gfx_xy_t * data_y;         ///< Buffer containing Y height data for each X column
+    px_gfx_xy_t         x;                  ///< X coordinate
+    px_gfx_xy_t         y;                  ///< Y coordinate
+    px_gfx_xy_t         width;              ///< Right
+    px_gfx_xy_t         height;             ///< Bottom
+    px_gfx_color_t      color_fg;           ///< Foreground color
+    px_gfx_color_t      color_bg;           ///< Background color
+    const px_gfx_xy_t * data_y;             ///< Buffer containing Y height data for each X column
 } px_gfx_obj_graph_prop_t;
 
 /// Label object data structure
 typedef struct
 {
-    px_gfx_obj_t                    obj;        ///< Common object properties
-    const px_gfx_obj_graph_prop_t * prop;       ///< Additional graph properties
+    px_gfx_obj_t                    obj;    ///< Common object properties
+    const px_gfx_obj_graph_prop_t * prop;   ///< Additional graph properties
 } px_gfx_obj_graph_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
@@ -71,7 +71,6 @@ px_gfx_obj_handle_t             px_gfx_obj_graph_create  (const px_gfx_obj_graph
 const px_gfx_obj_graph_prop_t * px_gfx_obj_graph_prop_get(const px_gfx_obj_handle_t       obj);
 void                            px_gfx_obj_graph_prop_set(px_gfx_obj_handle_t             obj,
                                                           const px_gfx_obj_graph_prop_t * prop);
-
 
 /* _____MACROS_______________________________________________________________ */
 

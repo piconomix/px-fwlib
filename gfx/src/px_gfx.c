@@ -219,6 +219,7 @@ px_gfx_color_t px_gfx_color_fg_set(px_gfx_color_t color)
 {
     px_gfx_color_t old        = px_gfx.draw_prop.color_fg;
     px_gfx.draw_prop.color_fg = color;
+
     return old;
 }
 
@@ -226,6 +227,7 @@ px_gfx_color_t px_gfx_color_bg_set(px_gfx_color_t color)
 {
     px_gfx_color_t old        = px_gfx.draw_prop.color_bg;
     px_gfx.draw_prop.color_bg = color;
+
     return old;
 }
 
@@ -233,6 +235,7 @@ px_gfx_align_t px_gfx_align_set(px_gfx_align_t align)
 {
     px_gfx_align_t old      = px_gfx.draw_prop.align;
     px_gfx.draw_prop.align  = align;
+
     return old;
 }
 
@@ -256,6 +259,7 @@ const px_gfx_font_t * px_gfx_font_set(const px_gfx_font_t * font)
 {
     const px_gfx_font_t * old = px_gfx.draw_prop.font;
     px_gfx.draw_prop.font     = font;
+
     return old;
 }
 
@@ -433,14 +437,10 @@ void px_gfx_draw_line_ver(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t height)
 
 void px_gfx_draw_rect(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t width, px_gfx_xy_t height)
 {
-    // Top
-    px_gfx_draw_line_hor(x, y, width);
-    // Bottom
-    px_gfx_draw_line_hor(x, y + height - 1, width);
-    // Left
-    px_gfx_draw_line_ver(x, y, height);
-    // Right
-    px_gfx_draw_line_ver(x + width - 1, y, height);
+    px_gfx_draw_line_hor(x, y, width);              // Top
+    px_gfx_draw_line_hor(x, y + height - 1, width); // Bottom
+    px_gfx_draw_line_ver(x, y, height);             // Left
+    px_gfx_draw_line_ver(x + width - 1, y, height); // Right
 }
 
 void px_gfx_draw_fill_fg(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t width, px_gfx_xy_t height)
@@ -522,7 +522,6 @@ void px_gfx_draw_circ(px_gfx_xy_t x, px_gfx_xy_t y, px_gfx_xy_t radius)
         // Update decision
         ddf_x += 2;
         f     += ddf_x;
-
         // Draw pixel in each octant (45 deg pie)
         px_gfx_vp_draw_pixel(x + dx, y + dy, px_gfx.draw_prop.color_fg);
         px_gfx_vp_draw_pixel(x - dx, y + dy, px_gfx.draw_prop.color_fg);

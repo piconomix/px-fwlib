@@ -74,10 +74,10 @@ static void px_gfx_obj_win_event_handler(px_gfx_obj_handle_t obj,
             }
         }
         // View port specified?
-        if(  (prop->x      != 0)
-           ||(prop->y      != 0)
-           ||(prop->width  != PX_GFX_DISP_SIZE_X)
-           ||(prop->height != PX_GFX_DISP_SIZE_Y)  )
+        if(    (prop->x      != 0                 )
+            || (prop->y      != 0                 )
+            || (prop->width  != PX_GFX_DISP_SIZE_X)
+            || (prop->height != PX_GFX_DISP_SIZE_Y)  )
         {
             // All object coordinates are relative to window
             px_gfx_view_port_set(prop->x,
