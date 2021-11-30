@@ -294,8 +294,8 @@ px_one_wire_error_t px_one_wire_match_rom(px_one_wire_rom_t * rom)
 
 px_one_wire_error_t px_one_wire_search_rom_first(px_one_wire_search_t * one_wire_search)
 {
-    one_wire_search->last_discrepancy        = 0;
-    one_wire_search->last_device_flag        = false;
+    one_wire_search->last_discrepancy = 0;
+    one_wire_search->last_device_flag = false;
 
     return px_one_wire_search_rom_next(one_wire_search);
 }

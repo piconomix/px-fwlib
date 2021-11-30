@@ -44,15 +44,12 @@ void px_vt100_init()
 {
     // Reset state
     px_vt100_state = 0;
-
     // Move cursor to upper left corner
     putchar(PX_VT100_CHAR_ESC);
     putchar('[');
     putchar('H');
-
     // Clear display
     px_vt100_clr_display();
-
     // Wait until Terminal has reset
     px_board_delay_ms(100);
 }
@@ -93,7 +90,6 @@ px_vt100_state_t px_vt100_on_rx_char(char data)
     case 2:
         // Reset state first
         px_vt100_state = 0;
-
         // Detect sequence
         switch(data)
         {

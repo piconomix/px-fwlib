@@ -80,13 +80,13 @@ static void px_nmea_tx_byte(uint8_t data)
 
 static bool  px_nmea_cmp_nibble_with_hex_ascii(uint8_t nibble, char ascii)
 {
-   if(nibble<=9)
+   if(nibble <= 9)
    {
        nibble += '0';
    }
    else
    {
-       nibble += ('A'-10);
+       nibble += ('A' - 10);
    }
 
    if(nibble == ascii)
@@ -102,7 +102,7 @@ static bool  px_nmea_cmp_nibble_with_hex_ascii(uint8_t nibble, char ascii)
 static char * px_nmea_parse_str_to_u32(char * buffer, uint32_t * value)
 {
    uint32_t u32Value = 0;
-   while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0'))
+   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0'))
    {
       if(*buffer == ' ')
       {
@@ -122,7 +122,7 @@ static char * px_nmea_parse_str_to_s16(char * buffer, int16_t * value)
    bool  bNeg     = false;
    int16_t s16Value = 0;
 
-   while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0'))
+   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0'))
    {
       if(*buffer == ' ')
       {
@@ -150,7 +150,7 @@ static char * px_nmea_parse_str_to_s16(char * buffer, int16_t * value)
 static char * px_nmea_parse_str_to_u16(char * buffer, uint16_t * value)
 {
    uint16_t u16Value = 0;
-   while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0'))
+   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0'))
    {
       if(*buffer == ' ')
       {
@@ -168,7 +168,7 @@ static char * px_nmea_parse_str_to_u16(char * buffer, uint16_t * value)
 static char * px_nmea_parse_str_fraction_to_u16(char * buffer, uint16_t * value, uint8_t precision)
 {
    uint16_t u16Value = 0;
-   while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0')&&(precision != 0))
+   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0') && (precision != 0))
    {
       if(*buffer == ' ')
       {
@@ -192,7 +192,7 @@ static char * px_nmea_parse_str_fraction_to_u16(char * buffer, uint16_t * value,
 static char * px_nmea_parse_str_to_u8(char * buffer, uint8_t * value)
 {
    uint8_t u8Value = 0;
-   while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0'))
+   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0'))
    {
       if(*buffer == ' ')
       {
@@ -210,7 +210,7 @@ static char * px_nmea_parse_str_to_u8(char * buffer, uint8_t * value)
 static char * px_nmea_parse_str_fraction_to_u8(char * buffer, uint8_t * value, uint8_t precision)
 {
    uint8_t u8Value = 0;
-   while((*buffer != ',')&&(*buffer != '.')&&(*buffer != '\0')&&(precision != 0))
+   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0') && (precision != 0))
    {
       if(*buffer == ' ')
       {
@@ -507,23 +507,23 @@ void px_nmea_tx_frame(char * frame)
    // Add checksum
    px_nmea_tx_byte('*');
    // Send high nibble
-   if(checksum<0xA0)
+   if(checksum < 0xA0)
    {
-       px_nmea_tx_byte(((checksum>>4)&0x0f)+'0');
+       px_nmea_tx_byte(((checksum >> 4) & 0x0f) + '0');
    }
    else
    {
-       px_nmea_tx_byte(((checksum>>4)&0x0f) + ('A'-10));
+       px_nmea_tx_byte(((checksum >> 4) & 0x0f) + ('A' - 10));
    }
    // Send low nibble
-   checksum &=0x0f;
-   if(checksum<0x0A)
+   checksum &= 0x0f;
+   if(checksum < 0x0A)
    {
-       px_nmea_tx_byte(checksum+'0');
+       px_nmea_tx_byte(checksum + '0');
    }
    else
    {
-       px_nmea_tx_byte(checksum+('A'-10));
+       px_nmea_tx_byte(checksum + ('A' - 10));
    }
 
    // Add end sequence
