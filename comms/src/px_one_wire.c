@@ -25,7 +25,7 @@
 #include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
-PX_LOG_NAME("px_one_wire");;
+PX_LOG_NAME("px_one_wire");
 
 #define PX_ONE_WIRE_CMD_SEARCH_ROM     0xf0
 #define PX_ONE_WIRE_CMD_READ_ROM       0x33
@@ -218,10 +218,8 @@ px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom)
         PX_LOG_W("No devices found");
         return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
     }
-
     // Issue READ ROM command
     px_one_wire_wr_u8(PX_ONE_WIRE_CMD_READ_ROM);
-
     // Read ROM content
     for(i = sizeof(px_one_wire_rom_t); i != 0; i--)
     {
@@ -236,17 +234,14 @@ px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom)
                 rom->content.serial[4],
                 rom->content.serial[5]);
     PX_LOG_D("CRC         = 0x%02X", rom->content.crc);
-
     // Calculate CRC
     crc = px_one_wire_calc_crc8(rom->data, offsetof(px_one_wire_rom_content_t, crc));
-
     // Check CRC
     if(rom->content.crc != crc)
     {
         PX_LOG_E("CRC check failed. Read 0x%02X, calculated 0x%02X", rom->content.crc, crc);
         return PX_ONE_WIRE_ERR_CRC_CHECK_FAILED;
     }
-
     // Success
     return PX_ONE_WIRE_ERR_NONE;
 }
@@ -259,10 +254,8 @@ px_one_wire_error_t px_one_wire_skip_rom(void)
         PX_LOG_E("No devices found");
         return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
     }
-
     // Issue SKIP ROM command
     px_one_wire_wr_u8(PX_ONE_WIRE_CMD_SKIP_ROM);
-
     // Success
     return PX_ONE_WIRE_ERR_NONE;
 }
@@ -278,16 +271,13 @@ px_one_wire_error_t px_one_wire_match_rom(px_one_wire_rom_t * rom)
         PX_LOG_E("No devices found");
         return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
     }
-
     // Issue MATCH ROM command
     px_one_wire_wr_u8(PX_ONE_WIRE_CMD_MATCH_ROM);
-
     // Write ROM content
     for(i = sizeof(px_one_wire_rom_t); i != 0; i--)
     {
         px_one_wire_wr_u8(*data_u8++);
     }
-
     // Success
     return PX_ONE_WIRE_ERR_NONE;
 }
@@ -317,17 +307,14 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
     {
         return PX_ONE_WIRE_ERR_LAST_DEVICE;
     }
-
     // Perform 1-Wire reset
     if(!px_one_wire_reset())
     {
         PX_LOG_E("No devices present");
         return PX_ONE_WIRE_ERR_NO_DEVICES_PRESENT;
     }
-
     // Issue SEARCH ROM command
     px_one_wire_wr_u8(PX_ONE_WIRE_CMD_SEARCH_ROM);
-
     // loop until through all ROM bits
     rom_bit_number  = 1;
     rom_last_zero   = 0;
@@ -374,7 +361,6 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
                 // New discrepancy. Pick 0
                 rom_search_dir = 0;
             }
-
             // Was 0 was picked?
             if(rom_search_dir == 0)
             {
@@ -385,7 +371,6 @@ px_one_wire_error_t px_one_wire_search_rom_next(px_one_wire_search_t * one_wire_
 
         // Write search direction bit
         px_one_wire_wr_bit(rom_search_dir);
-
         // Save bit in ROM data
         if(rom_search_dir == 0)
         {

@@ -63,9 +63,11 @@ extern "C" {
 #endif
 
 /* _____DEFINITIONS__________________________________________________________ */
+/// Size of 1-Wire device serial number
 #define PX_ONE_WIRE_SERIAL_SIZE_BYTES  6
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
+/// Error code
 typedef enum
 {
     PX_ONE_WIRE_ERR_NONE = 0,
@@ -75,6 +77,7 @@ typedef enum
     PX_ONE_WIRE_ERR_LAST_DEVICE,
 } px_one_wire_error_t;
 
+/// Device ROM content
 typedef struct
 {
     uint8_t family_code;
@@ -82,6 +85,7 @@ typedef struct
     uint8_t crc;
 } px_one_wire_rom_content_t;
 
+/// Device ROM
 typedef struct
 {
     union
@@ -91,6 +95,7 @@ typedef struct
     };
 } px_one_wire_rom_t;
 
+/// 1-Wire device search
 typedef struct
 {
     uint8_t           last_discrepancy;
@@ -101,18 +106,93 @@ typedef struct
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-void                px_one_wire_init            (void);
-bool                px_one_wire_reset           (void);
+/**
+ *  Initialise 1-Wire driver.
+ */
+void px_one_wire_init(void);
+
+/**
+ *  Perform 1-Wire bus reset.
+ *
+ *  @retval true        One or more devices detected on bus
+ *  @retval false       No devices detected on bus
+ */
+bool px_one_wire_reset(void);
                                                 
-void                px_one_wire_wr_u8           (uint8_t data);
-uint8_t             px_one_wire_rd_u8           (void);
-uint8_t             px_one_wire_calc_crc8       (void * data, size_t nr_of_bytes);
-uint8_t             px_one_wire_rd_time_slot    (void);
+/**
+ *  Write a byte on 1-Wire bus.
+ *
+ *  @param data         Value to write
+ */
+void px_one_wire_wr_u8(uint8_t data);
+
+/**
+ *  Read one byte on 1-Wire bus.
+ *
+ *  @return uint8_t     Value read
+ */
+uint8_t px_one_wire_rd_u8(void);
+
+/**
+ *  Calculate 1-Wire data checksum.
+ *
+ *  @param data         Pointer to buffer containing data to calculate CRC
+ *  @param nr_of_bytes  Number of bytes to calculate CRC over
+ *
+ *  @return uint8_t     Calculated CRC
+ */
+uint8_t px_one_wire_calc_crc8(void * data, size_t nr_of_bytes);
+
+
+/**
+ *  Read time slot bit.
+ *
+ *
+ *  @return uint8_t     Value
+ */
+uint8_t px_one_wire_rd_time_slot(void);
                                                 
-px_one_wire_error_t px_one_wire_rd_rom          (px_one_wire_rom_t * rom);
-px_one_wire_error_t px_one_wire_skip_rom        (void);
-px_one_wire_error_t px_one_wire_match_rom       (px_one_wire_rom_t * rom);
+/**
+ *  Read ROM of 1-Wire device on bus.
+ *
+ *  @param rom          Buffer to store ROM data read from 1-Wire device
+ *
+ *  @return px_one_wire_error_t error (NONE = 0)
+ */
+px_one_wire_error_t px_one_wire_rd_rom(px_one_wire_rom_t * rom);
+
+/**
+ *  Perform SKIP ROM command.
+ *
+ *  @return px_one_wire_error_t error (NONE = 0)
+ */
+px_one_wire_error_t px_one_wire_skip_rom(void);
+
+/**
+ *  Perform a MATCH ROM command to address a specific 1-Wire device.
+ *
+ *  @param rom
+ *
+ *  @return px_one_wire_error_t error (NONE = 0)
+ */
+px_one_wire_error_t px_one_wire_match_rom(px_one_wire_rom_t * rom);
+
+/**
+ *  Start 1-Wire search ROM procedure.
+ *
+ *  @param one_wire_search      Search state
+ *
+ *  @return px_one_wire_error_t error (NONE = 0)
+ */
 px_one_wire_error_t px_one_wire_search_rom_first(px_one_wire_search_t * one_wire_search);
+
+/**
+ *  Continue 1-Wire search ROM procedure to find next device.
+ *
+ *  @param one_wire_search      Search state
+ *
+ *  @return px_one_wire_error_t error (NONE = 0)
+ */
 px_one_wire_error_t px_one_wire_search_rom_next (px_one_wire_search_t * one_wire_search);
 
 /* _____MACROS_______________________________________________________________ */
