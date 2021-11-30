@@ -438,8 +438,7 @@ static bool px_log_fs_record_wr(px_log_fs_record_t *    record,
     if(memcmp(record, &record_rd, sizeof(*record)) != 0)
     {
         // Mark record as BAD
-        PX_LOG_E("Record write failed @ page %u offset %u",
-                 adr->page, adr->offset);
+        PX_LOG_E("Record write failed @ page %u offset %u", adr->page, adr->offset);
         record->marker = PX_LOG_FS_MARKER_BAD;
         px_log_fs_glue_wr(&record->marker, adr->page, adr->offset, 1);
         // Failure
