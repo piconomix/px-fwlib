@@ -244,18 +244,43 @@ indicate that it is a struct. Example:
 Often used words have shorter abreviations to reduce the length of names. The
 abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 
-| Abbreviation      | Name                          |
-|---------------    |-------------------------------|
-| adr               | address                       |
-| gfx               | graphics                      |
-| idx               | index                         |
-| img               | image                         |
-| lo / hi           | low / high                    |
-| rd / wr           | read / write                  |
-| min / max         | minimum / maximum             |
-| u8 / u16 / u32    | unsigned 8/16/32 bit value    |
-| s8 / s16 / s32    | signed   8/16/32 bit value    |
-| tmr               | timer                         |
+| Abbreviation      | Full version                                   |
+|-------------------|------------------------------------------------|
+| adr               | address                                        |
+| buf               | buffer                                         |
+| cal               | calibration                                    |
+| cfg               | configuration                                  |
+| cmd               | command                                        |
+| def(s)            | definition(s)                                  |
+| deg_c             | Degrees Celcius (°C)                           |
+| dev               | device                                         |
+| en / dis          | enable / disable                               |
+| fn                | function                                       |
+| gfx               | graphics                                       |
+| idx               | index                                          |
+| info / warn / err | information / warning / error                  |
+| init              | initialize                                     |
+| img               | image                                          |
+| lo / hi           | low / high                                     |
+| lsb / msb         | least significant byte / most significant byte |
+| rd / wr / xc      | read / write / exchange                        |
+| min / max         | minimum / maximum                              |
+| meas              | measure                                        |
+| nr                | number                                         |
+| prev              | previous                                       |
+| pwr               | power                                          |
+| reg               | register                                       |
+| res               | resource                                       |
+| resp              | response                                       |
+| rst               | reset                                          |
+| u8 / u16 / u32    | unsigned 8/16/32 bit value                     |
+| s8 / s16 / s32    | signed   8/16/32 bit value                     |
+| sec / min / hr    | second / minute / hour                         |
+| str               | string (zero terminated)                       |
+| tmr               | timer                                          |
+| tx / rx           | transmit / receive                             |
+| temp              | temperature                                    |
+| val               | value                                          |
 
 # 8. Standard Types #
 
