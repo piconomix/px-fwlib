@@ -25,8 +25,8 @@ STM32L072 PX-HER0 Board now in stock at Crowd Supply! Click [HERE](https://www.c
 
 ## 1.1 Goals ##
 
-- Teach **good firmware development practices** to guide the next 
-  generation of professional embedded engineers.
+- Teach **good firmware development practices** to guide the next generation of
+  professional embedded engineers.
 - Share **source code, knowledge and expertise** with our global community of 
   engineers, scientists and enthusiasts.
 - Publish **concise quick start guides and tutorials** to reduce the 
@@ -36,9 +36,9 @@ STM32L072 PX-HER0 Board now in stock at Crowd Supply! Click [HERE](https://www.c
   (to maximize device driver reuse).
 
 @tip_s
-My sincere hope is that seasoned veterans will pitch in and share their 
-years of experience to mentor the future generation and raise the bar in terms 
-of quality and quantity. See @ref FEEDBACK
+My sincere hope is that seasoned veterans will pitch in and share their years of
+experience to mentor the future generation and raise the bar in terms of quality
+and quantity. See @ref FEEDBACK
 @tip_e
 
 ## 1.2 Sections ##
@@ -64,12 +64,14 @@ This documentation is divided into the following sections:
 Here is the collection of boards that are supported with Board Support Packages
 (BSP), documentation and complete examples:
 
-|Microcontroller          | Board                                                                  |
-|-------------------------|------------------------------------------------------------------------|
-|Microchip ATmega328P-AU  | [Arduino Uno R3 board](@ref ARDUINO_UNO_BOARD)                         |
-|Microchip ATmega328P-AU  | [Piconomix ATmega328p Scorpion Board](@ref PICONOMIX_SCORPION_BOARD)   |
-|ST STM32L072RB           | [Piconomix STM32L072RB PX-HER0 Board](@ref STM32_PX_HERO_BOARD) |
-|ST STM32L053R8T6         | [ST Nucleo64 L053R8 Board](@ref NUCLEO64_L053_BOARD)                   |
+|Microcontroller       | Board                                                                  |
+|----------------------|------------------------------------------------------------------------|
+|Microchip ATmega328P  | [Arduino Uno R3 board](@ref ARDUINO_UNO_BOARD)                         |
+|Microchip ATmega328P  | [Microchip ATmega328P-XMINI Board](@ref ATMEGA328P_XMINI_BOARD)        |
+|Microchip ATmega328PB | [Microchip ATmega328PB-XMINI Board](@ref ATMEGA328PB_XMINI_BOARD)      |
+|Microchip ATmega328P  | [Piconomix ATmega328P Scorpion Board](@ref PICONOMIX_SCORPION_BOARD)   |
+|ST STM32L072RB        | [Piconomix STM32L072RB PX-HER0 Board](@ref STM32_PX_HERO_BOARD)        |
+|ST STM32L053R8T6      | [ST Nucleo64 L053R8 Board](@ref NUCLEO64_L053_BOARD)                   |
 
 ## 1.5 Library Examples ##
 
@@ -115,46 +117,46 @@ Even though it looks like functions calls are used, the lines reduce to single
 assembly statements for maximum efficiency and minimum code size. This is the 
 generated assembly to inspect:
 
-@code
-0000007a <main>:
-// Initialise pins
-px_gpio_pin_init(&px_gpio_led);
+@code{.unparsed}
+    0000007a <main>:
+    // Initialise pins
+    px_gpio_pin_init(&px_gpio_led);
 
-7a: 28 98           cbi 0x05, 0 ; 5
-7c: 20 9a           sbi 0x04, 0 ; 4
+    7a: 28 98           cbi 0x05, 0 ; 5
+    7c: 20 9a           sbi 0x04, 0 ; 4
 
-px_gpio_pin_init(&px_gpio_pb);
+    px_gpio_pin_init(&px_gpio_pb);
 
-7e: 5e 9a           sbi 0x0b, 6 ; 11
-80: 56 98           cbi 0x0a, 6 ; 10
+    7e: 5e 9a           sbi 0x0b, 6 ; 11
+    80: 56 98           cbi 0x0a, 6 ; 10
 
-// Loop forever
-while(true)
-{
-    // Is button being pressed?
-    if(px_gpio_pin_is_lo(&px_gpio_pb))
+    // Loop forever
+    while(true)
     {
+        // Is button being pressed?
+        if(px_gpio_pin_is_lo(&px_gpio_pb))
+        {
 
-82: 4e 99           sbic    0x09, 6 ; 9
-84: 02 c0           rjmp    .+4         ; 0x8a <main+0x10>
+    82: 4e 99           sbic    0x09, 6 ; 9
+    84: 02 c0           rjmp    .+4         ; 0x8a <main+0x10>
 
-        // Enable LED
-        px_gpio_pin_set_hi(&px_gpio_led);
+            // Enable LED
+            px_gpio_pin_set_hi(&px_gpio_led);
 
-86: 28 9a           sbi 0x05, 0 ; 5
-88: fc cf           rjmp    .-8         ; 0x82 <main+0x8>
+    86: 28 9a           sbi 0x05, 0 ; 5
+    88: fc cf           rjmp    .-8         ; 0x82 <main+0x8>
 
+        }
+        else
+        {
+            // Disable LED
+            px_gpio_pin_set_lo(&px_gpio_led);
+
+    8a: 28 98           cbi 0x05, 0 ; 5
+    8c: fa cf           rjmp    .-12        ; 0x82 <main+0x8>
+
+        }
     }
-    else
-    {
-        // Disable LED
-        px_gpio_pin_set_lo(&px_gpio_led);
-
-8a: 28 98           cbi 0x05, 0 ; 5
-8c: fa cf           rjmp    .-12        ; 0x82 <main+0x8>
-
-    }
-}
 @endcode
 
 @tip_s
