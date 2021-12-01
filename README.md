@@ -22,8 +22,8 @@ STM32L072 PX-HER0 Board now in stock at Crowd Supply! Click [HERE](https://www.c
 
 ![https://piconomix.com](https://github.com/piconomix/px-fwlib/blob/master/doc/images/piconomix_banner_300x70.png)
 
-**px-fwlib** is a collection of open source C firmware and documentation
-for microcontrollers to develop portable bare-metal code that is vendor and
+**px-fwlib** is a collection of open source C firmware and documentation for
+microcontrollers to develop portable bare-metal code that is vendor and
 architecture neutral (or easier to reuse).
 
 It is tough to find the best compromise between lean 8-bit targets,
@@ -31,8 +31,8 @@ middle-of-the-road 16-bit targets, and resource rich 32-bit targets, but this
 cross-platform library aims to provide a good foundation before you are forced
 to add target specific code and getting locked in.
 
-Click [HERE](https://piconomix.com/px-fwlib/index.html) to view the complete online
-documentation.
+Click [HERE](https://piconomix.com/px-fwlib/index.html) to view the complete
+online documentation.
 
 Click [HERE](https://github.com/piconomix/px-fwlib/releases) to download
 releases of the open source library (source code and offline documentation).
@@ -92,17 +92,13 @@ int main(void)
     px_i2c_init();
     // Open handle to I2C slave device
     px_i2c_open(&px_i2c_handle, PX_I2C_NR_0, I2C_SLA_ADR);
+
     // START I2C write transaction and write register address
     data[0] = 0xd0;
-    px_i2c_wr(&px_i2c_handle,
-              data,
-              1,
-              PX_I2C_FLAG_START_AND_END);
+    px_i2c_wr(&px_i2c_handle, data, 1, PX_I2C_FLAG_START_AND_END);
     // REPEATED START I2C read transaction and read register value
-    px_i2c_rd(&px_i2c_handle,
-              data,
-              1,
-              PX_I2C_FLAG_REP_START_AND_STOP);
+    px_i2c_rd(&px_i2c_handle, data, 1, PX_I2C_FLAG_REP_START_AND_STOP);
+
     // Close I2C Handle
     px_i2c_close(&px_i2c_handle);
 }
