@@ -2,7 +2,7 @@
 <Project
     Version="10.0"
     VendorName="SlickEdit"
-    WorkingDir="."
+    WorkingDir="doc"
     VCSProject="Git:">
     <Config
         Name="Debug"
@@ -111,8 +111,6 @@
     <Macro>
         <ExecMacro CmdLine="concur_command PATH=c:\UnixShellUtils\usr\bin;C:\Program Files\Git\bin;c:\Program Files\TortoiseSVN\bin;c:\Python\3.6;c:\Program Files\doxygen\bin;c:\Program Files (x86)\gnu_arm\bin;c:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin;C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"/>
     </Macro>
-    <List Name="RTE">
-    </List>
     <Files AutoFolders="DirectoryView">
         <F
             N="*.c"
@@ -198,4 +196,6 @@
             Refilter="0"
             Excludes=""/>
     </Files>
+    <List Name="RTE">
+    </List>
 </Project>
