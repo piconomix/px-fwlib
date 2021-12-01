@@ -53,7 +53,7 @@ px_spi_handle_t  px_spi_sd_handle;
 px_spi_handle_t  px_spi_lcd_handle;
 px_i2c_handle_t  px_i2c_bme280_handle;
 
-uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+uint8_t          main_buf[MAIN_BUF_SIZE];
 
 /* _____LOCAL VARIABLES______________________________________________________ */             
 // Debounced buttons

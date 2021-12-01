@@ -30,7 +30,7 @@
 PX_LOG_NAME("cli_cmds_sf");
 
 // Make sure buffer is big enough to hold a page of data
-#if (MAIN_BUFFER_SIZE < (PX_AT25S_PAGE_SIZE-1))
+#if (MAIN_BUF_SIZE < (PX_AT25S_PAGE_SIZE-1))
 #error "Make MAIN_BUFFER_SIZE larger"
 #endif
 
@@ -144,8 +144,8 @@ static const char * px_cli_cmd_fn_sf_rd(uint8_t argc, char * argv[])
     }
     nr_of_bytes = px_cli_argv_val.u16;
 
-    px_at25s_rd(main_buffer, adr, nr_of_bytes);
-    px_cli_util_disp_buf(main_buffer, nr_of_bytes);
+    px_at25s_rd(main_buf, adr, nr_of_bytes);
+    px_cli_util_disp_buf(main_buf, nr_of_bytes);
     return NULL;
 }
 
@@ -161,8 +161,8 @@ static const char * px_cli_cmd_fn_sf_rd_page(uint8_t argc, char * argv[])
     }
     page = px_cli_argv_val.u16;
 
-    px_at25s_rd_page(main_buffer, page);
-    px_cli_util_disp_buf(main_buffer, PX_AT25S_PAGE_SIZE);
+    px_at25s_rd_page(main_buf, page);
+    px_cli_util_disp_buf(main_buf, PX_AT25S_PAGE_SIZE);
     return NULL;
 }
 

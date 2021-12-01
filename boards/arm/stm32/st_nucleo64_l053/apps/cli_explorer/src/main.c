@@ -40,7 +40,7 @@ PX_LOG_NAME("main");
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 px_uart_handle_t px_uart2_handle;
-uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+uint8_t          main_buf[MAIN_BUF_SIZE];
 
 
 /* _____LOCAL VARIABLES______________________________________________________ */             

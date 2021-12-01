@@ -47,7 +47,7 @@ px_uart_handle_t px_uart_handle;
 px_spi_handle_t  px_at45d_spi_handle;
 px_i2c_handle_t  px_i2c_handle;
 
-uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+uint8_t          main_buf[MAIN_BUF_SIZE];
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// CLI splash text on start up. Back slashes ('\') have to be escaped ('\\')

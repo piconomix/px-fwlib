@@ -49,7 +49,7 @@ static px_nmea_tx_byte_t           px_nmea_tx_byte_fn;
 static px_nmea_on_valid_str_t      px_nmea_on_valid_str_fn;
 static px_nmea_on_valid_gps_data_t px_nmea_on_valid_gps_data_fn;
 
-static uint8_t                     px_nmea_rx_buffer[PX_NMEA_BUFFER_SIZE];
+static uint8_t                     px_nmea_rx_buf[PX_NMEA_BUFFER_SIZE];
 static uint16_t                    px_nmea_rx_index;
 static uint8_t                     px_nmea_rx_checksum;
 static px_nmea_rx_state_t          px_nmea_rx_state;
@@ -58,15 +58,15 @@ static px_nmea_rx_state_t          px_nmea_rx_state;
 static void   px_nmea_tx_byte                  (uint8_t data);
 
 static bool   px_nmea_cmp_nibble_with_hex_ascii(uint8_t nibble, char ascii);
-static char * px_nmea_parse_str_to_u32         (char * buffer, uint32_t * value);
-static char * px_nmea_parse_str_to_s16         (char * buffer, int16_t *  value);
-static char * px_nmea_parse_str_to_u16         (char * buffer, uint16_t * value);
-static char * px_nmea_parse_str_fraction_to_u16(char * buffer, uint16_t * value, uint8_t precision);
-static char * px_nmea_parse_str_to_u8          (char * buffer, uint8_t *  value);
-static char * px_nmea_parse_str_fraction_to_u8 (char * buffer, uint8_t *  value, uint8_t precision);
-static char * px_nmea_find_next_param          (char * buffer);
+static char * px_nmea_parse_str_to_u32         (char * buf, uint32_t * value);
+static char * px_nmea_parse_str_to_s16         (char * buf, int16_t *  value);
+static char * px_nmea_parse_str_to_u16         (char * buf, uint16_t * value);
+static char * px_nmea_parse_str_fraction_to_u16(char * buf, uint16_t * value, uint8_t precision);
+static char * px_nmea_parse_str_to_u8          (char * buf, uint8_t *  value);
+static char * px_nmea_parse_str_fraction_to_u8 (char * buf, uint8_t *  value, uint8_t precision);
+static char * px_nmea_find_next_param          (char * buf);
 
-static void   px_nmea_on_rx_frame              (char * buffer);
+static void   px_nmea_on_rx_frame              (char * buf);
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static void px_nmea_tx_byte(uint8_t data)
@@ -99,85 +99,85 @@ static bool  px_nmea_cmp_nibble_with_hex_ascii(uint8_t nibble, char ascii)
    }
 }
 
-static char * px_nmea_parse_str_to_u32(char * buffer, uint32_t * value)
+static char * px_nmea_parse_str_to_u32(char * buf, uint32_t * value)
 {
    uint32_t u32Value = 0;
-   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0'))
+   while((*buf != ',') && (*buf != '.') && (*buf != '\0'))
    {
-      if(*buffer == ' ')
+      if(*buf == ' ')
       {
          // Ignore whitespace
-         buffer++;
+         buf++;
          continue;
       }
       u32Value *= 10;
-      u32Value += (*buffer++) - '0';
+      u32Value += (*buf++) - '0';
    }
    *value = u32Value;
-   return buffer;
+   return buf;
 }
 
-static char * px_nmea_parse_str_to_s16(char * buffer, int16_t * value)
+static char * px_nmea_parse_str_to_s16(char * buf, int16_t * value)
 {
    bool  bNeg     = false;
    int16_t s16Value = 0;
 
-   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0'))
+   while((*buf != ',') && (*buf != '.') && (*buf != '\0'))
    {
-      if(*buffer == ' ')
+      if(*buf == ' ')
       {
          // Ignore whitespace
-         buffer++;
+         buf++;
          continue;
       }
-      else if(*buffer == '-')
+      else if(*buf == '-')
       {
          // Remove sign
          bNeg = true;
-         buffer++;
+         buf++;
          continue;
       }
       s16Value *= 10;
-      s16Value += (*buffer++) - '0';
+      s16Value += (*buf++) - '0';
    }
    // Add sign if necessary
    if(bNeg) s16Value *= -1;
 
    *value = s16Value;
-   return buffer;
+   return buf;
 }
 
-static char * px_nmea_parse_str_to_u16(char * buffer, uint16_t * value)
+static char * px_nmea_parse_str_to_u16(char * buf, uint16_t * value)
 {
    uint16_t u16Value = 0;
-   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0'))
+   while((*buf != ',') && (*buf != '.') && (*buf != '\0'))
    {
-      if(*buffer == ' ')
+      if(*buf == ' ')
       {
          // Ignore whitespace
-         buffer++;
+         buf++;
          continue;
       }
       u16Value *= 10;
-      u16Value += (*buffer++) - '0';
+      u16Value += (*buf++) - '0';
    }
    *value = u16Value;
-   return buffer;
+   return buf;
 }
 
-static char * px_nmea_parse_str_fraction_to_u16(char * buffer, uint16_t * value, uint8_t precision)
+static char * px_nmea_parse_str_fraction_to_u16(char * buf, uint16_t * value, uint8_t precision)
 {
    uint16_t u16Value = 0;
-   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0') && (precision != 0))
+   while((*buf != ',') && (*buf != '.') && (*buf != '\0') && (precision != 0))
    {
-      if(*buffer == ' ')
+      if(*buf == ' ')
       {
          // Ignore whitespace
-         buffer++;
+         buf++;
          continue;
       }
       u16Value *= 10;
-      u16Value += (*buffer++) - '0';
+      u16Value += (*buf++) - '0';
       precision--;
    }
    while(precision != 0)
@@ -186,40 +186,40 @@ static char * px_nmea_parse_str_fraction_to_u16(char * buffer, uint16_t * value,
       u16Value *= 10;
    }
    *value = u16Value;
-   return buffer;
+   return buf;
 }
 
-static char * px_nmea_parse_str_to_u8(char * buffer, uint8_t * value)
+static char * px_nmea_parse_str_to_u8(char * buf, uint8_t * value)
 {
    uint8_t u8Value = 0;
-   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0'))
+   while((*buf != ',') && (*buf != '.') && (*buf != '\0'))
    {
-      if(*buffer == ' ')
+      if(*buf == ' ')
       {
          // Ignore whitespace
-         buffer++;
+         buf++;
          continue;
       }
       u8Value *= 10;
-      u8Value += (*buffer++) - '0';
+      u8Value += (*buf++) - '0';
    }
    *value = u8Value;
-   return buffer;
+   return buf;
 }
 
-static char * px_nmea_parse_str_fraction_to_u8(char * buffer, uint8_t * value, uint8_t precision)
+static char * px_nmea_parse_str_fraction_to_u8(char * buf, uint8_t * value, uint8_t precision)
 {
    uint8_t u8Value = 0;
-   while((*buffer != ',') && (*buffer != '.') && (*buffer != '\0') && (precision != 0))
+   while((*buf != ',') && (*buf != '.') && (*buf != '\0') && (precision != 0))
    {
-      if(*buffer == ' ')
+      if(*buf == ' ')
       {
          // Ignore whitespace
-         buffer++;
+         buf++;
          continue;
       }
       u8Value *= 10;
-      u8Value += (*buffer++) - '0';
+      u8Value += (*buf++) - '0';
       precision--;
    }
    while(precision != 0)
@@ -228,36 +228,36 @@ static char * px_nmea_parse_str_fraction_to_u8(char * buffer, uint8_t * value, u
       u8Value *= 10;      
    }
    *value = u8Value;
-   return buffer;
+   return buf;
 }
 
-static char * px_nmea_find_next_param(char * buffer)
+static char * px_nmea_find_next_param(char * buf)
 {
-   while(*buffer != ',')
+   while(*buf != ',')
    {
-      if(*buffer == '\0') return buffer;
-      buffer++;
+      if(*buf == '\0') return buf;
+      buf++;
    }
-   return (++buffer);
+   return (++buf);
 }
 
-static void px_nmea_on_rx_frame(char * buffer)
+static void px_nmea_on_rx_frame(char * buf)
 {  
     // Notify handler with valid NMEA string
-   (*px_nmea_on_valid_str_fn)(buffer);
+   (*px_nmea_on_valid_str_fn)(buf);
 
    // Make sure that message ID starts with "GP"
-   if(*buffer++ != 'G')
+   if(*buf++ != 'G')
    {
        return;
    }
-   if(*buffer++ != 'P')
+   if(*buf++ != 'P')
    {
        return;
    }
 
    // Parse GGA (Global Positioning System Fixed Data) string
-   if(strncmp(buffer,PX_NMEA_GGA_STR,3) == 0)
+   if(strncmp(buf,PX_NMEA_GGA_STR,3) == 0)
    {
 #if 0
       if(px_nmea_data.gga_valid_flag)
@@ -266,69 +266,69 @@ static void px_nmea_on_rx_frame(char * buffer)
          px_nmea_tx_frame("$PSRF103,05,00,01,01");
       }
 #endif
-      buffer += 4;
+      buf += 4;
       px_nmea_data.gga_valid_flag     = false;
       px_nmea_data.latitude_fraction  = 0;
       px_nmea_data.longitude_fraction = 0;
       // UTC Time
-      buffer = px_nmea_parse_str_to_u32(buffer, &px_nmea_data.utc_time);
-      if(*buffer == '.')
+      buf = px_nmea_parse_str_to_u32(buf, &px_nmea_data.utc_time);
+      if(*buf == '.')
       {
-         buffer++;
-         buffer = px_nmea_parse_str_fraction_to_u16(buffer, &px_nmea_data.utc_time_fraction, 3);
+         buf++;
+         buf = px_nmea_parse_str_fraction_to_u16(buf, &px_nmea_data.utc_time_fraction, 3);
       }
-      buffer = px_nmea_find_next_param(buffer);
+      buf = px_nmea_find_next_param(buf);
 
       // Latitude
-      buffer = px_nmea_parse_str_to_u16(buffer, (uint16_t *)&px_nmea_data.latitude);
-      if(*buffer == '.')
+      buf = px_nmea_parse_str_to_u16(buf, (uint16_t *)&px_nmea_data.latitude);
+      if(*buf == '.')
       {
-         buffer++;
-         buffer = px_nmea_parse_str_fraction_to_u16(buffer, &px_nmea_data.latitude_fraction, 4);
+         buf++;
+         buf = px_nmea_parse_str_fraction_to_u16(buf, &px_nmea_data.latitude_fraction, 4);
       }
-      buffer = px_nmea_find_next_param(buffer);
-      if(*buffer == 'S')
+      buf = px_nmea_find_next_param(buf);
+      if(*buf == 'S')
       {
           px_nmea_data.latitude *= -1;
       }
-      buffer = px_nmea_find_next_param(buffer);
+      buf = px_nmea_find_next_param(buf);
 
       // Longitude
-      buffer = px_nmea_parse_str_to_u16(buffer, (uint16_t *)&px_nmea_data.longitude);
-      if(*buffer == '.')
+      buf = px_nmea_parse_str_to_u16(buf, (uint16_t *)&px_nmea_data.longitude);
+      if(*buf == '.')
       {
-         buffer++;
-         buffer = px_nmea_parse_str_fraction_to_u16(buffer, &px_nmea_data.longitude_fraction, 4);
+         buf++;
+         buf = px_nmea_parse_str_fraction_to_u16(buf, &px_nmea_data.longitude_fraction, 4);
       }
-      buffer = px_nmea_find_next_param(buffer);
-      if(*buffer == 'W')
+      buf = px_nmea_find_next_param(buf);
+      if(*buf == 'W')
       {
           px_nmea_data.longitude *= -1;
       }
-      buffer = px_nmea_find_next_param(buffer);
+      buf = px_nmea_find_next_param(buf);
       // Fix valid
-      if(*buffer == '1')
+      if(*buf == '1')
       {
           px_nmea_data.gga_valid_flag  = true;
       }
-      buffer = px_nmea_find_next_param(buffer);
+      buf = px_nmea_find_next_param(buf);
       // Number of satelites
-      buffer = px_nmea_parse_str_to_u8(buffer, &px_nmea_data.sattelites_used);
-      buffer = px_nmea_find_next_param(buffer);
+      buf = px_nmea_parse_str_to_u8(buf, &px_nmea_data.sattelites_used);
+      buf = px_nmea_find_next_param(buf);
       // HDOP
-      buffer = px_nmea_parse_str_to_u8(buffer, &px_nmea_data.hdop);
-      if(*buffer == '.')
+      buf = px_nmea_parse_str_to_u8(buf, &px_nmea_data.hdop);
+      if(*buf == '.')
       {
-         buffer++;
-         buffer = px_nmea_parse_str_fraction_to_u8(buffer, &px_nmea_data.hdop_fraction, 1);
+         buf++;
+         buf = px_nmea_parse_str_fraction_to_u8(buf, &px_nmea_data.hdop_fraction, 1);
       }
-      buffer = px_nmea_find_next_param(buffer);
+      buf = px_nmea_find_next_param(buf);
       // Altitude
-      buffer = px_nmea_parse_str_to_s16(buffer, &px_nmea_data.altitude);
-      if(*buffer == '.')
+      buf = px_nmea_parse_str_to_s16(buf, &px_nmea_data.altitude);
+      if(*buf == '.')
       {
-         buffer++;
-         buffer = px_nmea_parse_str_fraction_to_u8(buffer, &px_nmea_data.altitude_fraction, 2);
+         buf++;
+         buf = px_nmea_parse_str_fraction_to_u8(buf, &px_nmea_data.altitude_fraction, 2);
       }      
 
       px_nmea_data.gga_valid_flag = true;
@@ -342,30 +342,30 @@ static void px_nmea_on_rx_frame(char * buffer)
       }
    }
    // Parse VTG (Course Over Ground and Ground Speed) string
-   else if(strncmp(buffer, PX_NMEA_VTG_STR, 3) == 0)
+   else if(strncmp(buf, PX_NMEA_VTG_STR, 3) == 0)
    {
-      buffer += 4;
+      buf += 4;
 
       // Heading
-      buffer = px_nmea_parse_str_to_u16(buffer,&px_nmea_data.heading);
-      if(*buffer == '.')
+      buf = px_nmea_parse_str_to_u16(buf,&px_nmea_data.heading);
+      if(*buf == '.')
       {
-         buffer++;
-         buffer = px_nmea_parse_str_fraction_to_u8(buffer,&px_nmea_data.heading_fraction,2);
+         buf++;
+         buf = px_nmea_parse_str_fraction_to_u8(buf,&px_nmea_data.heading_fraction,2);
       }
-      buffer = px_nmea_find_next_param(buffer);
-      buffer = px_nmea_find_next_param(buffer);
-      buffer = px_nmea_find_next_param(buffer);
-      buffer = px_nmea_find_next_param(buffer);
-      buffer = px_nmea_find_next_param(buffer);
-      buffer = px_nmea_find_next_param(buffer);
+      buf = px_nmea_find_next_param(buf);
+      buf = px_nmea_find_next_param(buf);
+      buf = px_nmea_find_next_param(buf);
+      buf = px_nmea_find_next_param(buf);
+      buf = px_nmea_find_next_param(buf);
+      buf = px_nmea_find_next_param(buf);
 
       // Speed
-      buffer = px_nmea_parse_str_to_u8(buffer,&px_nmea_data.speed);
-      if(*buffer == '.')
+      buf = px_nmea_parse_str_to_u8(buf,&px_nmea_data.speed);
+      if(*buf == '.')
       {
-         buffer++;
-         buffer = px_nmea_parse_str_fraction_to_u8(buffer,&px_nmea_data.speed_fraction,2);
+         buf++;
+         buf = px_nmea_parse_str_fraction_to_u8(buf,&px_nmea_data.speed_fraction,2);
       }
       
       px_nmea_data.vtg_valid_flag = true;
@@ -433,7 +433,7 @@ void px_nmea_on_rx_byte(uint8_t data)
          // Update checksum of payload
          px_nmea_rx_checksum ^= data;
          // Put received byte into buffer
-         px_nmea_rx_buffer[px_nmea_rx_index] = data;
+         px_nmea_rx_buf[px_nmea_rx_index] = data;
          // Check for buffer overflow
          if(++px_nmea_rx_index >= (PX_NMEA_BUFFER_SIZE-1))
          {
@@ -481,9 +481,9 @@ void px_nmea_on_rx_byte(uint8_t data)
              break;
          }
          // Append terminating zero
-         px_nmea_rx_buffer[px_nmea_rx_index] = '\0';
+         px_nmea_rx_buf[px_nmea_rx_index] = '\0';
          // String successfully received
-         px_nmea_on_rx_frame((char *)px_nmea_rx_buffer);
+         px_nmea_on_rx_frame((char *)px_nmea_rx_buf);
          break;
       }   
    }

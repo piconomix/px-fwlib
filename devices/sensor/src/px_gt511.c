@@ -130,7 +130,7 @@ static uint16_t px_gt511_calc_checksum(uint16_t          checksum,
 static void px_gt511_tx               (void *            data, 
                                        size_t            nr_of_bytes);
 
-static bool px_gt511_rx               (void *            buffer, 
+static bool px_gt511_rx               (void *            buf,
                                        size_t            nr_of_bytes,
                                        px_systmr_ticks_t timeout_ticks);
 
@@ -174,30 +174,30 @@ static void px_gt511_tx(void * data, size_t nr_of_bytes)
     }
 }
 
-static bool px_gt511_rx(void *            buffer, 
+static bool px_gt511_rx(void *            buf,
                         size_t            nr_of_bytes, 
                         px_systmr_ticks_t timeout_ticks)
 {
-    uint8_t * buffer_u8    = (uint8_t *)buffer;
-    size_t    buffer_index = 0;
+    uint8_t * buf_u8    = (uint8_t *)buf;
+    size_t    buf_index = 0;
 
     // Receive bytes until buffer is full or timeout
     px_systmr_start(&px_gt511_tmr, timeout_ticks);
-    while(buffer_index < nr_of_bytes)
+    while(buf_index < nr_of_bytes)
     {
         // Receive byte?
-        if(px_uart_rd_u8(px_gt511_uart_handle, buffer_u8))
+        if(px_uart_rd_u8(px_gt511_uart_handle, buf_u8))
         {
             // Next byte
-            buffer_u8++;
-            buffer_index++;
+            buf_u8++;
+            buf_index++;
             // (Re)start interbyte timer
             px_systmr_start(&px_gt511_tmr, PX_SYSTMR_MS_TO_TICKS(PX_GT511_RX_INTERBYTE_TIMEOUT_MS));
         }
         // Timeout?
         if(px_systmr_has_expired(&px_gt511_tmr))
         {
-            PX_LOG_E("RX Timeout (received %u bytes)", buffer_index);
+            PX_LOG_E("RX Timeout (received %u bytes)", buf_index);
             return false;
         }
     }

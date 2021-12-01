@@ -98,7 +98,7 @@ struct \
 { \
     volatile px_ring_buf_idx_t idx_rd; \
     volatile px_ring_buf_idx_t idx_wr; \
-    uint8_t                    buffer[px_ring_buf_size]; \
+    uint8_t                    data[px_ring_buf_size]; \
 } px_ring_buf
 
 /**
@@ -125,10 +125,10 @@ struct \
 /**
  *  Test to see if the ring buffer is full.
  *  
- *  @param px_ring_buf     Name of the ring buffer structure
+ *  @param px_ring_buf      Name of the ring buffer structure
  */
 #define PX_RING_BUF_IS_FULL(px_ring_buf) \
-   (px_ring_buf.idx_rd == ((px_ring_buf.idx_wr + 1) & (sizeof(px_ring_buf.buffer) - 1)))
+   (px_ring_buf.idx_rd == ((px_ring_buf.idx_wr + 1) & (sizeof(px_ring_buf.data) - 1)))
 
 /**
  *  Reads the next available byte from the ring buffer.
@@ -136,15 +136,15 @@ struct \
  *  The caller is responsible for making sure the ring buffer is not empty
  *  before the call. See PX_RING_BUF_IS_EMPTY()
  *  
- *  @param px_ring_buf     Name of the ring buffer structure
- *  @param data         The variable that the byte will be stored in
+ *  @param px_ring_buf      Name of the ring buffer structure
+ *  @param var              The variable that the byte will be stored in
  */
-#define PX_RING_BUF_RD(px_ring_buf, data) \
+#define PX_RING_BUF_RD(px_ring_buf, var) \
    do \
    { \
       px_ring_buf_idx_t idx = px_ring_buf.idx_rd; \
-      (data)                = px_ring_buf.buffer[idx]; \
-      idx                   = (idx + 1) & (sizeof(px_ring_buf.buffer) - 1); \
+      (var)                 = px_ring_buf.data[idx]; \
+      idx                   = (idx + 1) & (sizeof(px_ring_buf.data) - 1); \
       px_ring_buf.idx_rd    = idx; \
    } while(0)
 
@@ -154,16 +154,16 @@ struct \
  *  The caller is responsible for making sure the ring buffer is not full before
  *  the call. See PX_RING_BUF_IS_FULL()
  *  
- *  @param px_ring_buf     Name of the ring buffer structure
- *  @param data         The byte that will be written to the ring buffer
+ *  @param px_ring_buf      Name of the ring buffer structure
+ *  @param val              The byte that will be written to the ring buffer
  */
-#define PX_RING_BUF_WR(px_ring_buf, data) \
+#define PX_RING_BUF_WR(px_ring_buf, val) \
    do \
    { \
-      px_ring_buf_idx_t idx   = px_ring_buf.idx_wr; \
-      px_ring_buf.buffer[idx] = (data); \
-      idx                     = (idx + 1) & (sizeof(px_ring_buf.buffer) - 1); \
-      px_ring_buf.idx_wr      = idx; \
+      px_ring_buf_idx_t idx = px_ring_buf.idx_wr; \
+      px_ring_buf.data[idx] = (val); \
+      idx                   = (idx + 1) & (sizeof(px_ring_buf.data) - 1); \
+      px_ring_buf.idx_wr    = idx; \
    } while(0)
 
 #ifdef __cplusplus

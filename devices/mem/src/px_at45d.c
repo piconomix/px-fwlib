@@ -136,7 +136,7 @@ void px_at45d_resume_from_ultra_deep_power_down(void)
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
 }
 
-uint16_t px_at45d_rd(void * buffer, px_at45d_adr_t address, uint16_t nr_of_bytes)
+uint16_t px_at45d_rd(void * buf, px_at45d_adr_t adr, uint16_t nr_of_bytes)
 {
     px_at45d_adr_t max_bytes_to_read;
     uint16_t       page;
@@ -144,12 +144,12 @@ uint16_t px_at45d_rd(void * buffer, px_at45d_adr_t address, uint16_t nr_of_bytes
     uint8_t        data[4];
 
     // See if specified address is out of bounds
-    if(address > PX_AT45D_ADR_MAX)
+    if(adr > PX_AT45D_ADR_MAX)
     {
         return 0;
     }
     // See if "number of bytes to read" should be clipped
-    max_bytes_to_read = PX_AT45D_ADR_MAX - address + 1;
+    max_bytes_to_read = PX_AT45D_ADR_MAX - adr + 1;
     if(nr_of_bytes > max_bytes_to_read)
     {
         nr_of_bytes = max_bytes_to_read;
@@ -161,11 +161,11 @@ uint16_t px_at45d_rd(void * buffer, px_at45d_adr_t address, uint16_t nr_of_bytes
     px_spi_wr(px_at45d_spi_handle, data, 1, PX_SPI_FLAG_START);
     // Calculate page, offset and number of bytes remaining in page
 #if PX_VAL_IS_PWR_OF_TWO(PX_AT45D_PAGE_SIZE)
-    page               = address >> 8;
-    start_byte_in_page = address & 0xff;
+    page               = adr >> 8;
+    start_byte_in_page = adr & 0xff;
 #else
-    page               = address / PX_AT45D_PAGE_SIZE;
-    start_byte_in_page = address % PX_AT45D_PAGE_SIZE;
+    page               = adr / PX_AT45D_PAGE_SIZE;
+    start_byte_in_page = adr % PX_AT45D_PAGE_SIZE;
 #endif
     // Send address
     px_at45d_tx_adr(page, start_byte_in_page);
@@ -176,12 +176,12 @@ uint16_t px_at45d_rd(void * buffer, px_at45d_adr_t address, uint16_t nr_of_bytes
     data[3] = 0x00;
     px_spi_wr(px_at45d_spi_handle, data, 4, 0);
     // Read data
-    px_spi_rd(px_at45d_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
+    px_spi_rd(px_at45d_spi_handle, buf, nr_of_bytes, PX_SPI_FLAG_STOP);
 
     return nr_of_bytes;
 }
 
-void px_at45d_rd_page(void * buffer, uint16_t page)
+void px_at45d_rd_page(void * buf, uint16_t page)
 {
     uint8_t data[4];
 
@@ -199,10 +199,10 @@ void px_at45d_rd_page(void * buffer, uint16_t page)
     data[3] = 0x00;
     px_spi_wr(px_at45d_spi_handle, data, 4, 0);
     // Read data
-    px_spi_rd(px_at45d_spi_handle, buffer, PX_AT45D_PAGE_SIZE, PX_SPI_FLAG_STOP);
+    px_spi_rd(px_at45d_spi_handle, buf, PX_AT45D_PAGE_SIZE, PX_SPI_FLAG_STOP);
 }
 
-void px_at45d_rd_page_offset(void *   buffer,
+void px_at45d_rd_page_offset(void *   buf,
                              uint16_t page,
                              uint16_t start_byte_in_page,
                              uint16_t nr_of_bytes)
@@ -223,10 +223,10 @@ void px_at45d_rd_page_offset(void *   buffer,
     data[3] = 0x00;
     px_spi_wr(px_at45d_spi_handle, data, 4, 0);
     // Read data
-    px_spi_rd(px_at45d_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
+    px_spi_rd(px_at45d_spi_handle, buf, nr_of_bytes, PX_SPI_FLAG_STOP);
 }
 
-void px_at45d_wr_page(const void * buffer, uint16_t page)
+void px_at45d_wr_page(const void * buf, uint16_t page)
 {
     uint8_t data[1];
 
@@ -238,18 +238,18 @@ void px_at45d_wr_page(const void * buffer, uint16_t page)
     // Send address
     px_at45d_tx_adr(page, 0);
     // Send data to be written
-    px_spi_wr(px_at45d_spi_handle, buffer, PX_AT45D_PAGE_SIZE, PX_SPI_FLAG_STOP);
+    px_spi_wr(px_at45d_spi_handle, buf, PX_AT45D_PAGE_SIZE, PX_SPI_FLAG_STOP);
     // Set flag to busy
     px_at45d_ready_flag = false;
 }
 
-void px_at45d_wr_page_offset(const void * buffer,
+void px_at45d_wr_page_offset(const void * buf,
                              uint16_t     page,
                              uint16_t     start_byte_in_page,
                              uint16_t     nr_of_bytes)
 {
     uint16_t  i;
-    uint8_t * bufffer_u8 = (uint8_t *)buffer;
+    uint8_t * buf_u8 = (uint8_t *)buf;
     uint8_t   data[3];
 
     // Wait until DataFlash is not busy
@@ -267,7 +267,7 @@ void px_at45d_wr_page_offset(const void * buffer,
     {
         if((i >= start_byte_in_page) && (i  < (start_byte_in_page + nr_of_bytes)))
         {
-            px_spi_wr(px_at45d_spi_handle, bufffer_u8++, 1, 0);
+            px_spi_wr(px_at45d_spi_handle, buf_u8++, 1, 0);
         }
         else
         {

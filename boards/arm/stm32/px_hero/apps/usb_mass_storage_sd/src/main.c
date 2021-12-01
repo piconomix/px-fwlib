@@ -38,7 +38,7 @@ PX_LOG_NAME("main");
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 px_uart_handle_t px_uart1_handle;
 px_spi_handle_t  px_spi_sd_handle;
-uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+uint8_t          main_buf[MAIN_BUF_SIZE];
 bool             main_usb_connected_event_flag;
 uint32_t         main_sd_capacity_blocks;
 

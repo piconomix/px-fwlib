@@ -110,11 +110,11 @@ void px_cat25m_init(px_spi_handle_t * handle);
  *  
  *  This function reads data from EEPROM and stores it in the specified buffer.
  *  
- *  @param[out] buffer          Buffer to store read data
- *  @param[in]  address         0 to PX_CAT25M_ADR_MAX
+ *  @param[out] buf             Buffer to store read data
+ *  @param[in]  adr             0 to PX_CAT25M_ADR_MAX
  *  @param[in]  nr_of_bytes     Number of bytes to read
  */
-void px_cat25m_rd(void * buffer, px_cat25m_adr_t address, size_t nr_of_bytes);
+void px_cat25m_rd(void * buf, px_cat25m_adr_t adr, size_t nr_of_bytes);
 
 /**
  *  Read a page from EEPROM.
@@ -125,11 +125,11 @@ void px_cat25m_rd(void * buffer, px_cat25m_adr_t address, size_t nr_of_bytes);
  *  
  *  The EEPROM has PX_CAT25M_PAGES pages.
  *  
- *  @param[out] buffer          Buffer to store read data
+ *  @param[out] buf             Buffer to store read data
  *  @param[in]  page            0 to (PX_CAT25M_PAGES - 1)
  *  
  */
-void px_cat25m_rd_page(void * buffer, uint16_t page);
+void px_cat25m_rd_page(void * buf, uint16_t page);
 
 /**
  *  Partial read of data in a page of EEPROM.
@@ -144,13 +144,13 @@ void px_cat25m_rd_page(void * buffer, uint16_t page);
  *  exceeded, the index will wrap to the start of the page, i.e. only the
  *  content of the specified page will be read.
  *  
- *  @param[out] buffer              Buffer to store read data
+ *  @param[out] buf                 Buffer to store read data
  *  @param[in]  page                0 to (PX_CAT25M_PAGES - 1)
  *  @param[in]  start_byte_in_page  Index of first byte to read (0 to PX_CAT25M_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to read
  *  
  */
-void px_cat25m_rd_page_offset(void *   buffer,
+void px_cat25m_rd_page_offset(void *   buf,
                               uint16_t page,
                               uint8_t  start_byte_in_page,
                               size_t   nr_of_bytes);
@@ -164,11 +164,11 @@ void px_cat25m_rd_page_offset(void *   buffer,
  *  
  *  The EEPROM has PX_CAT25M_PAGES pages.
  *  
- *  @param[in] buffer  Buffer containing data to be written
- *  @param[in]  page   0 to (PX_CAT25M_PAGES - 1)
+ *  @param[in] buf      Buffer containing data to be written
+ *  @param[in]  page    0 to (PX_CAT25M_PAGES - 1)
  *  
  */
-void px_cat25m_wr_page(const void * buffer, uint16_t page);
+void px_cat25m_wr_page(const void * buf, uint16_t page);
 
 /**
  *  Partial write of data in a page of EEPROM.
@@ -183,13 +183,13 @@ void px_cat25m_wr_page(const void * buffer, uint16_t page);
  *  exceeded, the index will wrap to the start of the page, i.e. only the
  *  content of the specified page will be written.
  *  
- *  @param[in]  buffer              Buffer containing data to be written
+ *  @param[in]  buf                 Buffer containing data to be written
  *  @param[in]  page                0 to (PX_CAT25M_PAGES - 1)
  *  @param[in]  start_byte_in_page  Index of first byte to write (0 to PX_CAT25M_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to write
  *  
  */
-void px_cat25m_wr_page_offset(const void * buffer, 
+void px_cat25m_wr_page_offset(const void * buf,
                               uint16_t     page,   
                               uint8_t      start_byte_in_page,                                    
                               size_t       nr_of_bytes);

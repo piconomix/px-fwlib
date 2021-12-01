@@ -30,7 +30,7 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
-#define MAIN_BUFFER_SIZE 512
+#define MAIN_BUF_SIZE 512
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
@@ -41,7 +41,7 @@ extern px_spi_handle_t  px_spi_sd_handle;
 extern px_spi_handle_t  px_spi_lcd_handle;
 extern px_i2c_handle_t  px_i2c_bme280_handle;
 
-extern uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+extern uint8_t          main_buf[MAIN_BUF_SIZE];
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 void main_log_putchar  (char data);

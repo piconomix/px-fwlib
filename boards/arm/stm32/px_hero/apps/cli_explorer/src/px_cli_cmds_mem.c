@@ -183,15 +183,15 @@ static const char * px_cli_cmd_fn_mem_dump(uint8_t argc, char * argv[])
     adr = px_cli_argv_val.u32;
 
     // <nr of bytes>
-    if(!px_cli_util_argv_to_u16(1, 1, MAIN_BUFFER_SIZE))
+    if(!px_cli_util_argv_to_u16(1, 1, MAIN_BUF_SIZE))
     {
-        printf("Error. <nr of bytes> must be 1 to %u\n", MAIN_BUFFER_SIZE);
+        printf("Error. <nr of bytes> must be 1 to %u\n", MAIN_BUF_SIZE);
         return NULL;
     }
     nr_of_bytes = px_cli_argv_val.u16;
 
-    memcpy(main_buffer, (void *)adr, nr_of_bytes);
-    px_cli_util_disp_buf(main_buffer, nr_of_bytes);
+    memcpy(main_buf, (void *)adr, nr_of_bytes);
+    px_cli_util_disp_buf(main_buf, nr_of_bytes);
 
     return NULL;
 }

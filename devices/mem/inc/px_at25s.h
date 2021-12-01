@@ -106,7 +106,7 @@ typedef enum
 /// Flash size (in bytes)
 #define PX_AT25S_FLASH_SIZE_BYTES   (PX_AT25S_PAGES * PX_AT25S_PAGE_SIZE)
 
-/// Maximum adress
+/// Maximum address
 #define PX_AT25S_ADR_MAX            (PX_AT25S_FLASH_SIZE_BYTES - 1)
 
 /// @name Status register 1
@@ -156,25 +156,25 @@ void px_at25s_resume_from_deep_power_down(void);
  *  This function reads data from Serial Flash and stores it in the specified
  *  buffer.
  *
- *  @param buffer           Buffer to store read data
- *  @param address          0 to PX_AT25S_ADR_MAX
+ *  @param buf              Buffer to store read data
+ *  @param adr              0 to PX_AT25S_ADR_MAX
  *  @param nr_of_bytes      Number of bytes to read
  */
-void px_at25s_rd(void *   buffer, uint32_t address, uint16_t nr_of_bytes);
+void px_at25s_rd(void * buf, uint32_t adr, uint16_t nr_of_bytes);
 
 /**
  *  Read a page from Serial Flash.
  *
  *  This function reads a page of data from Serial Flash and stores it in the
- *  specified buffer. The buffer must be at least PX_AT25S_PAGE_SIZE bytes in size
- *  to accomodate a full page.
+ *  specified buffer. The buffer must be at least PX_AT25S_PAGE_SIZE bytes in
+ *  size to accomodate a full page.
  *
  *  The Serial Flash has PX_AT25S_PAGES pages.
  *
- *  @param[out] buffer          Buffer to store read data
+ *  @param[out] buf             Buffer to store read data
  *  @param[in]  page            0 to (PX_AT25S_PAGES - 1)
  */
-void px_at25s_rd_page(void * buffer, uint16_t page);
+void px_at25s_rd_page(void * buf, uint16_t page);
 
 /**
  *  Partial read of data in a page of Serial Flash.
@@ -187,12 +187,12 @@ void px_at25s_rd_page(void * buffer, uint16_t page);
  *  exceeded, the index will wrap to the start of the page, i.e. only the
  *  content of the specified page will be read.
  *
- *  @param[out] buffer              Buffer to store read data
+ *  @param[out] buf                 Buffer to store read data
  *  @param[in]  page                0 to (PX_AT25S_PAGES - 1)
  *  @param[in]  start_byte_in_page  Index of first byte to read (0 to PX_AT25S_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to read
  */
-void px_at25s_rd_page_offset(void *   buffer,
+void px_at25s_rd_page_offset(void *   buf,
                              uint16_t page,
                              uint8_t  start_byte_in_page,
                              uint16_t nr_of_bytes);
@@ -201,15 +201,15 @@ void px_at25s_rd_page_offset(void *   buffer,
  *  Write a page from Serial Flash.
  *
  *  This function writes a page of data to Serial Flash using the specified
- *  buffer as the source. The buffer must contain at least PX_AT25S_PAGE_SIZE bytes
- *  of data.
+ *  buffer as the source. The buffer must contain at least PX_AT25S_PAGE_SIZE
+ *  bytes of data.
  *
  *  The Serial Flash has PX_AT25S_PAGES pages.
  *
- *  @param[in] buffer  Buffer containing data to be written
- *  @param[in]  page   0 to (PX_AT25S_PAGES - 1)
+ *  @param[in] buf          Buffer containing data to be written
+ *  @param[in]  page        0 to (PX_AT25S_PAGES - 1)
  */
-void px_at25s_wr_page(const void * buffer, uint16_t page);
+void px_at25s_wr_page(const void * buf, uint16_t page);
 
 /**
  *  Partial write of data in a page of Serial Flash.
@@ -224,12 +224,12 @@ void px_at25s_wr_page(const void * buffer, uint16_t page);
  *  exceeded, the index will wrap to the start of the page, i.e. only the
  *  content of the specified page will be written.
  *
- *  @param[in]  buffer              Buffer containing data to be written
+ *  @param[in]  buf                 Buffer containing data to be written
  *  @param[in]  page                0 to (PX_AT25S_PAGES - 1)
  *  @param[in]  start_byte_in_page  Index of first byte to write (0 to PX_AT25S_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to write
  */
-void px_at25s_wr_page_offset(const void * buffer,
+void px_at25s_wr_page_offset(const void * buf,
                              uint16_t     page,
                              uint8_t      start_byte_in_page,
                              uint16_t     nr_of_bytes);
@@ -271,10 +271,10 @@ uint8_t px_at25s_rd_status_reg1(void);
 /**
  *  Read Manufacturer and Device ID.
  *
- *  @param buffer   Buffer with a size of 3 bytes to hold manufacturer and
+ *  @param buf      Buffer with a size of 3 bytes to hold manufacturer and
  *                  device ID
  */
-void px_at25s_rd_man_and_dev_id(uint8_t * buffer);
+void px_at25s_rd_man_and_dev_id(uint8_t * buf);
 
 /* _____MACROS_______________________________________________________________ */
 

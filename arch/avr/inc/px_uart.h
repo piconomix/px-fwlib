@@ -223,13 +223,13 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data);
  *  Copy received data from receive buffer into specified buffer.
  *  
  *  @param handle           Pointer to handle data structure
- *  @param[out] buffer      Buffer to copy received data into
+ *  @param[out] buf         Buffer to copy received data into
  *  @param[in] nr_of_bytes  Maximum number of received bytes to copy into buffer
  *  
  *  @return size_t          Number of received bytes copied into buffer
  */
 size_t px_uart_rd(px_uart_handle_t * handle, 
-                  void *             buffer,
+                  void *             buf,
                   size_t             nr_of_bytes);
 
 /** 

@@ -27,12 +27,12 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
-#define MAIN_BUFFER_SIZE 512
+#define MAIN_BUF_SIZE 512
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-extern uint8_t  main_buffer[MAIN_BUFFER_SIZE];
+extern uint8_t  main_buf[MAIN_BUF_SIZE];
 extern uint32_t main_sd_capacity_blocks;
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */

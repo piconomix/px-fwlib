@@ -31,7 +31,7 @@
 PX_LOG_NAME("cli_cmds_sd");
 
 // Make sure buffer is big enough to hold a block of data
-#if (MAIN_BUFFER_SIZE < (PX_SD_BLOCK_SIZE - 1))
+#if (MAIN_BUF_SIZE < (PX_SD_BLOCK_SIZE - 1))
 #error "Make MAIN_BUFFER_SIZE larger"
 #endif
 
@@ -53,9 +53,9 @@ static FILINFO chan_fs_file_info;
 static const char * px_cli_cmd_fn_sd_mount(uint8_t argc, char * argv[])
 {
     int           i;
-    px_sd_cid_t * cid   = (px_sd_cid_t *)main_buffer;
-    px_sd_csd_t * csd   = (px_sd_csd_t *)main_buffer;
-    TCHAR *       label = (TCHAR *)main_buffer;
+    px_sd_cid_t * cid   = (px_sd_cid_t *)main_buf;
+    px_sd_csd_t * csd   = (px_sd_csd_t *)main_buf;
+    TCHAR *       label = (TCHAR *)main_buf;
     DWORD         vsn;
 
     // Card inserted?
@@ -123,12 +123,12 @@ static const char * px_cli_cmd_fn_sd_rd_block(uint8_t argc, char * argv[])
     }
     block = px_cli_argv_val.u32;
 
-    if(!px_sd_rd_block(main_buffer, block))
+    if(!px_sd_rd_block(main_buf, block))
     {
         return "Error. Unable to read SD block";
     }
 
-    px_cli_util_disp_buf(main_buffer, PX_SD_BLOCK_SIZE);
+    px_cli_util_disp_buf(main_buf, PX_SD_BLOCK_SIZE);
 
     return NULL;
 }
@@ -178,10 +178,10 @@ static const char * px_cli_cmd_fn_sd_dsf(uint8_t argc, char * argv[])
     for(page = 0; page < PX_AT25S_PAGES; page++)
     {
         // Read serial flash page
-        px_at25s_rd_page(main_buffer, page);
+        px_at25s_rd_page(main_buf, page);
 
         // Write page to file
-        if(f_write(&fp, main_buffer, PX_AT25S_PAGE_SIZE, &bytes_written) != FR_OK)
+        if(f_write(&fp, main_buf, PX_AT25S_PAGE_SIZE, &bytes_written) != FR_OK)
         {
             f_close(&fp);
             return "Error! Unable to write to file";

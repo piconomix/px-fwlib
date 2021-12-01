@@ -741,7 +741,7 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
 }
 
 size_t px_uart_rd(px_uart_handle_t * handle,
-                  void *             buffer,
+                  void *             buf,
                   size_t             nr_of_bytes)
 {
     px_uart_per_t * uart_per;
@@ -756,7 +756,7 @@ size_t px_uart_rd(px_uart_handle_t * handle,
     PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     // Fetch data from receive buffer (up to the specified number of bytes)
-    return px_ring_buf_rd(&uart_per->rx_ring_buf, buffer, nr_of_bytes);
+    return px_ring_buf_rd(&uart_per->rx_ring_buf, buf, nr_of_bytes);
 }
 
 bool px_uart_wr_buf_is_full(px_uart_handle_t * handle)

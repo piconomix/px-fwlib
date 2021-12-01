@@ -571,10 +571,10 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
     }
 }
 
-size_t px_uart_rd(px_uart_handle_t * handle, void* buffer, size_t nr_of_bytes)
+size_t px_uart_rd(px_uart_handle_t * handle, void* buf, size_t nr_of_bytes)
 {
     px_uart_per_t * uart_per;
-    uint8_t  *      buffer_u8 = (uint8_t *)buffer;
+    uint8_t  *      buf_u8 = (uint8_t *)buf;
     size_t          data_received = 0;
 
     // Verify that pointer to handle is not NULL
@@ -594,7 +594,7 @@ size_t px_uart_rd(px_uart_handle_t * handle, void* buffer, size_t nr_of_bytes)
             break;
         }
         // Fetch byte
-        PX_RING_BUF_RD(uart_per->rx_ring_buf, *buffer_u8++);
+        PX_RING_BUF_RD(uart_per->rx_ring_buf, *buf_u8++);
         // Next byte
         data_received++;
         nr_of_bytes--;

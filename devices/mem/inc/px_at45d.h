@@ -162,36 +162,36 @@ void px_at45d_resume_from_ultra_deep_power_down(void);
  *  Read data from DataFlash.
  *  
  *  This function reads data from DataFlash and stores it in the specified
- *  buffer.
+ *  buf.
  *  
- *  @param[out] buffer          Buffer to store read data
- *  @param[in]  address         0 to PX_AT45D_ADR_MAX
+ *  @param[out] buf             Buffer to store read data
+ *  @param[in]  adr             0 to PX_AT45D_ADR_MAX
  *  @param[in]  nr_of_bytes     Number of bytes to read
  *  
  *  @return uint16_t            Number of bytes actually read
  */
-uint16_t px_at45d_rd(void * buffer, px_at45d_adr_t address, uint16_t nr_of_bytes);
+uint16_t px_at45d_rd(void * buf, px_at45d_adr_t adr, uint16_t nr_of_bytes);
 
 /**
  *  Read a page from DataFlash.
  *  
  *  This function reads a page of data from DataFlash and stores it in the 
- *  specified buffer. The buffer must be at least PX_AT45D_PAGE_SIZE bytes in
+ *  specified buf. The buf must be at least PX_AT45D_PAGE_SIZE bytes in
  *  size to accomodate a full page.
  *  
  *  The DataFlash has PX_AT45D_PAGES pages.
  *  
- *  @param[out] buffer          Buffer to store read data
+ *  @param[out] buf             Buffer to store read data
  *  @param[in]  page            0 to (PX_AT45D_PAGES - 1)
  *  
  */
-void px_at45d_rd_page(void * buffer, uint16_t page);
+void px_at45d_rd_page(void * buf, uint16_t page);
 
 /**
  *  Partial read of data in a page of DataFlash.
  *  
  *  This function reads part of a page of data from DataFlash and stores it in
- *  the specified buffer. The buffer must be at least @b nr_of_bytes in size
+ *  the specified buf. The buf must be at least @b nr_of_bytes in size
  *  to the read data.
  *  
  *  @note
@@ -200,14 +200,14 @@ void px_at45d_rd_page(void * buffer, uint16_t page);
  *  exceeded, the index will wrap to the start of the page, i.e. only the
  *  content of the specified page will be read.
  *  
- *  @param[out] buffer              Buffer to store read data
+ *  @param[out] buf                 Buffer to store read data
  *  @param[in]  page                0 to (PX_AT45D_PAGES - 1)
  *  @param[in]  start_byte_in_page  Index of first byte to read (0 to
  *                                  PX_AT45D_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to read
  *  
  */
-void px_at45d_rd_page_offset(void *   buffer,
+void px_at45d_rd_page_offset(void *   buf,
                              uint16_t page,
                              uint16_t start_byte_in_page,
                              uint16_t nr_of_bytes);
@@ -215,23 +215,23 @@ void px_at45d_rd_page_offset(void *   buffer,
 /**
  *  Write a page from DataFlash.
  *  
- *  This function writes a page of data to DataFlash using the specified buffer
- *  as the source. The buffer must contain at least PX_AT45D_PAGE_SIZE bytes of
+ *  This function writes a page of data to DataFlash using the specified buf
+ *  as the source. The buf must contain at least PX_AT45D_PAGE_SIZE bytes of
  *  data.
  *  
  *  The DataFlash has PX_AT45D_PAGES pages.
  *  
- *  @param[in] buffer  Buffer containing data to be written
- *  @param[in]  page   0 to (PX_AT45D_PAGES - 1)
+ *  @param[in] buf                  Buffer containing data to be written
+ *  @param[in]  page                0 to (PX_AT45D_PAGES - 1)
  *  
  */
-void px_at45d_wr_page(const void * buffer, uint16_t page);
+void px_at45d_wr_page(const void * buf, uint16_t page);
 
 /**
  *  Partial write of data in a page of DataFlash.
  *  
  *  This function writes a part of a page of data to DataFlash using the 
- *  specified buffer as source. The buffer must contain at least @b nr_of_bytes
+ *  specified buf as source. The buf must contain at least @b nr_of_bytes
  *  of data.
  *  
  *  @note
@@ -240,13 +240,13 @@ void px_at45d_wr_page(const void * buffer, uint16_t page);
  *  exceeded, the index will wrap to the start of the page, i.e. only the
  *  content of the specified page will be written.
  *  
- *  @param[in]  buffer              Buffer containing data to be written
+ *  @param[in]  buf                 Buffer containing data to be written
  *  @param[in]  page                0 to (PX_AT45D_PAGES - 1)
  *  @param[in]  start_byte_in_page  Index of first byte to write (0 to PX_AT45D_PAGE_SIZE - 1)
  *  @param[in]  nr_of_bytes         Number of bytes to write
  *  
  */
-void px_at45d_wr_page_offset(const void * buffer,
+void px_at45d_wr_page_offset(const void * buf,
                              uint16_t     page,   
                              uint16_t     start_byte_in_page,                                    
                              uint16_t     nr_of_bytes);

@@ -72,13 +72,13 @@ static px_spi_handle_t * px_at25s_spi_handle;
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-static void px_at25s_tx_adr(uint32_t address)
+static void px_at25s_tx_adr(uint32_t adr)
 {
     uint8_t data[3];
 
-    data[0] = PX_U32_MH8(address);
-    data[1] = PX_U32_ML8(address);
-    data[2] = PX_U32_LO8(address);
+    data[0] = PX_U32_MH8(adr);
+    data[1] = PX_U32_ML8(adr);
+    data[2] = PX_U32_LO8(adr);
 
     px_spi_wr(px_at25s_spi_handle, data, 3, 0);
 }
@@ -116,37 +116,37 @@ void px_at25s_resume_from_deep_power_down(void)
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START_AND_STOP);
 }
 
-void px_at25s_rd(void * buffer, uint32_t address, uint16_t nr_of_bytes)
+void px_at25s_rd(void * buf, uint32_t adr, uint16_t nr_of_bytes)
 {
     uint8_t data[1];
 
     // See if specified address is out of bounds
-    PX_LOG_ASSERT(address <= PX_AT25S_ADR_MAX);
+    PX_LOG_ASSERT(adr <= PX_AT25S_ADR_MAX);
     // Wait until Serial Flash is not busy
     while(!px_at25s_ready()) {;}
     // Send command
     data[0] = PX_AT25S_CMD_READ_ARRAY;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
     // Send address
-    px_at25s_tx_adr(address);
+    px_at25s_tx_adr(adr);
     // Read data
-    px_spi_rd(px_at25s_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
+    px_spi_rd(px_at25s_spi_handle, buf, nr_of_bytes, PX_SPI_FLAG_STOP);
 }
 
-void px_at25s_rd_page(void * buffer, uint16_t page)
+void px_at25s_rd_page(void * buf, uint16_t page)
 {
-    px_at25s_rd(buffer, page * PX_AT25S_PAGE_SIZE, PX_AT25S_PAGE_SIZE);
+    px_at25s_rd(buf, page * PX_AT25S_PAGE_SIZE, PX_AT25S_PAGE_SIZE);
 }
 
-void px_at25s_rd_page_offset(void *   buffer,
+void px_at25s_rd_page_offset(void *   buf,
                              uint16_t page,
                              uint8_t  start_byte_in_page,
                              uint16_t nr_of_bytes)
 {
-    px_at25s_rd(buffer, page * PX_AT25S_PAGE_SIZE + start_byte_in_page, nr_of_bytes);
+    px_at25s_rd(buf, page * PX_AT25S_PAGE_SIZE + start_byte_in_page, nr_of_bytes);
 }
 
-void px_at25s_wr_page(const void * buffer, uint16_t page)
+void px_at25s_wr_page(const void * buf, uint16_t page)
 {
     uint8_t data[1];
 
@@ -160,12 +160,12 @@ void px_at25s_wr_page(const void * buffer, uint16_t page)
     // Send address
     px_at25s_tx_adr(page * PX_AT25S_PAGE_SIZE);
     // Send data to be written
-    px_spi_wr(px_at25s_spi_handle, buffer, PX_AT25S_PAGE_SIZE, PX_SPI_FLAG_STOP);
+    px_spi_wr(px_at25s_spi_handle, buf, PX_AT25S_PAGE_SIZE, PX_SPI_FLAG_STOP);
     // Set flag to busy
     px_at25s_ready_flag = false;
 }
 
-void px_at25s_wr_page_offset(const void * buffer,
+void px_at25s_wr_page_offset(const void * buf,
                              uint16_t     page,
                              uint8_t      start_byte_in_page,
                              uint16_t     nr_of_bytes)
@@ -182,7 +182,7 @@ void px_at25s_wr_page_offset(const void * buffer,
     // Send address
     px_at25s_tx_adr(page * PX_AT25S_PAGE_SIZE + start_byte_in_page);
     // Send data to be written
-    px_spi_wr(px_at25s_spi_handle, buffer, nr_of_bytes, PX_SPI_FLAG_STOP);
+    px_spi_wr(px_at25s_spi_handle, buf, nr_of_bytes, PX_SPI_FLAG_STOP);
     // Set flag to busy
     px_at25s_ready_flag = false;
 }
@@ -288,7 +288,7 @@ uint8_t px_at25s_rd_status_reg1(void)
     return data[0];
 }
 
-void px_at25s_rd_man_and_dev_id(uint8_t * buffer)
+void px_at25s_rd_man_and_dev_id(uint8_t * buf)
 {
     uint8_t data[1];
 
@@ -296,5 +296,5 @@ void px_at25s_rd_man_and_dev_id(uint8_t * buffer)
     data[0] = PX_AT25S_CMD_RD_MAN_AND_DEVICE_ID;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
     // Read manufacturer and device ID
-    px_spi_rd(px_at25s_spi_handle, buffer, 3, PX_SPI_FLAG_STOP);
+    px_spi_rd(px_at25s_spi_handle, buf, 3, PX_SPI_FLAG_STOP);
 }

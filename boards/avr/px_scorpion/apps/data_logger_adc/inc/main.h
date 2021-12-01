@@ -31,7 +31,7 @@
 extern "C" {
 #endif
 /* _____DEFINITIONS__________________________________________________________ */
-#define MAIN_BUFFER_SIZE 512
+#define MAIN_BUF_SIZE 512
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
 
@@ -40,7 +40,7 @@ extern px_uart_handle_t   px_uart_handle;
 extern px_spi_handle_t    px_at45d_spi_handle;
 extern px_log_fs_handle_t px_log_fs_handle;
 
-extern uint8_t            main_buffer[MAIN_BUFFER_SIZE];
+extern uint8_t            main_buf[MAIN_BUF_SIZE];
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
 

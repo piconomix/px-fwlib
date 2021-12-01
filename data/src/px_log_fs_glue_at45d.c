@@ -38,7 +38,7 @@ PX_LOG_NAME("px_log_fs_glue");
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void px_log_fs_glue_rd(void *   buffer, 
+void px_log_fs_glue_rd(void *   buf,
                        uint16_t page,
                        uint16_t start_byte_in_page,
                        uint16_t nr_of_bytes)
@@ -48,10 +48,10 @@ void px_log_fs_glue_rd(void *   buffer,
     PX_LOG_ASSERT(nr_of_bytes <= (PX_LOG_FS_CFG_PAGE_SIZE - start_byte_in_page));
 
     // Read data from Serial Flash
-    px_at45d_rd_page_offset(buffer, page, start_byte_in_page, nr_of_bytes);
+    px_at45d_rd_page_offset(buf, page, start_byte_in_page, nr_of_bytes);
 }
 
-void px_log_fs_glue_wr(const void * buffer,
+void px_log_fs_glue_wr(const void * buf,
                        uint16_t     page,
                        uint16_t     start_byte_in_page,
                        uint16_t     nr_of_bytes)
@@ -61,7 +61,7 @@ void px_log_fs_glue_wr(const void * buffer,
     PX_LOG_ASSERT(nr_of_bytes <= (PX_LOG_FS_CFG_PAGE_SIZE - start_byte_in_page));
 
     // Write data to Serial Flash
-    px_at45d_wr_page_offset(buffer, page, start_byte_in_page, nr_of_bytes);
+    px_at45d_wr_page_offset(buf, page, start_byte_in_page, nr_of_bytes);
 }
 
 void px_log_fs_glue_erase_block(uint16_t page)

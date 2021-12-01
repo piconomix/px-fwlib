@@ -58,7 +58,7 @@ px_i2c_handle_t  px_i2c_handle;
 px_adc_handle_t  px_adc_handle;
 px_dac_handle_t  px_dac_handle;
 
-uint8_t          main_buffer[MAIN_BUFFER_SIZE];
+uint8_t          main_buf[MAIN_BUF_SIZE];
 
 bool             main_usb_connected_event_flag;
 
