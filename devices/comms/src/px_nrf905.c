@@ -52,7 +52,7 @@ void px_nrf905_init(px_spi_handle_t * handle)
     px_nrf905_spi_handle = handle;
 }
 
-uint8_t px_nrf905_config_write(const px_nrf905_cfg_reg_t * cfg, uint8_t start_byte)
+uint8_t px_nrf905_cfg_wr(const px_nrf905_cfg_reg_t * cfg, uint8_t start_byte)
 {
     uint8_t spi_data[1];
 
@@ -72,7 +72,7 @@ uint8_t px_nrf905_config_write(const px_nrf905_cfg_reg_t * cfg, uint8_t start_by
     return spi_data[0];
 }
 
-uint8_t px_nrf905_config_read(px_nrf905_cfg_reg_t * cfg, uint8_t start_byte)
+uint8_t px_nrf905_cfg_rd(px_nrf905_cfg_reg_t * cfg, uint8_t start_byte)
 {
     uint8_t spi_data[1];
 
@@ -92,7 +92,7 @@ uint8_t px_nrf905_config_read(px_nrf905_cfg_reg_t * cfg, uint8_t start_byte)
     return spi_data[0];
 }
 
-uint8_t px_nrf905_tx_payload_write(const void * data, uint8_t nr_of_bytes)
+uint8_t px_nrf905_tx_payload_wr(const void * data, uint8_t nr_of_bytes)
 {
     uint8_t spi_data[1];
 
@@ -112,7 +112,7 @@ uint8_t px_nrf905_tx_payload_write(const void * data, uint8_t nr_of_bytes)
     return spi_data[0];
 }
 
-uint8_t px_nrf905_tx_payload_read(void * data, uint8_t nr_of_bytes)
+uint8_t px_nrf905_tx_payload_rd(void * data, uint8_t nr_of_bytes)
 {
     uint8_t spi_data[1];
 
@@ -132,7 +132,7 @@ uint8_t px_nrf905_tx_payload_read(void * data, uint8_t nr_of_bytes)
     return spi_data[0];
 }
 
-uint8_t px_nrf905_rx_payload_read(void * data, uint8_t nr_of_bytes)
+uint8_t px_nrf905_rx_payload_rd(void * data, uint8_t nr_of_bytes)
 {
     uint8_t spi_data[1];
 
@@ -152,7 +152,7 @@ uint8_t px_nrf905_rx_payload_read(void * data, uint8_t nr_of_bytes)
     return spi_data[0];
 }
 
-uint8_t px_nrf905_channel_config(uint16_t channel_no, uint8_t hfreq_pll, uint8_t pa_pwr)
+uint8_t px_nrf905_channel_cfg(uint16_t channel_no, uint8_t hfreq_pll, uint8_t pa_pwr)
 {
     uint8_t spi_data[2];
 
