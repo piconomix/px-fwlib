@@ -1,4 +1,4 @@
-# 5.1 The PX C coding style # {#CODING_STYLE}
+# 5.1 The Piconomix C Coding Style # {#CODING_STYLE}
 
 # 1. Introduction #
 
@@ -112,7 +112,7 @@ Lower case letters with underscores separating words
 The name must have the module name prefixed. Example:
 
 @code{.c}
-    // has_expired() function has "px_systmr_" module name prefix
+    // has_expired() function with "px_systmr_" module name prefix
     bool px_systmr_has_expired(px_systmr_t * systmr);
 @endcode
 
@@ -252,7 +252,7 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 | cfg               | configuration                                  |
 | cmd               | command                                        |
 | def(s)            | definition(s)                                  |
-| deg_c             | Degrees Celcius (°C)                           |
+| deg_c             | Degrees Celcius                                |
 | dev               | device                                         |
 | en / dis          | enable / disable                               |
 | fn                | function                                       |
@@ -345,8 +345,7 @@ Info, warnings and errors can be reported with PX_LOG_I(), PX_LOG_W() and
 PX_LOG_E() macros. Example:
 
 @code{.c}
-    bool px_uart_open(px_uart_handle_t * handle,
-    	              px_uart_nr_t       uart_nr)
+    bool px_uart_open(px_uart_handle_t * handle, px_uart_nr_t uart_nr)
     {
     ...
 
