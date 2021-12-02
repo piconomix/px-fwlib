@@ -305,3 +305,7 @@ img {
   /* webkit specific markup */
   -webkit-box-shadow: none;
 }
+
+th.markdownTableHeadLeft, th.markdownTableHeadRight, th.markdownTableHeadCenter, th.markdownTableHeadNone {
+	background-color: #374F7F;
+}
