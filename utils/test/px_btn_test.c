@@ -16,14 +16,11 @@ int main(void)
 {   
     // Initialise module
     px_sysclk_init();
-
     // Enable interrupts
     px_interrupts_enable();
-
     // Initialise GPIO pins
     PX_GPIO_INIT(PX_GPIO_LED);
     PX_GPIO_INIT(PX_GPIO_PB);
-
     // Initialise button state
     px_btn_init(&px_btn, PX_GPIO_IN_IS_LO(PX_GPIO_PB));
 
@@ -32,17 +29,14 @@ int main(void)
     {
         // Wait one systmr tick
         px_systmr_wait(1);
-
         // Update button state
         px_btn_update(&px_btn, PX_GPIO_IN_IS_LO(PX_GPIO_PB));
-
         // Has button been pressed?
         if(px_btn_event_press(&px_btn))
         {
             // Enable LED
             PX_GPIO_OUT_SET_HI(PX_GPIO_LED);
         }
-        
         // Has button been released?
         if(px_btn_event_release(&px_btn))
         {
