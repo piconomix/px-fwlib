@@ -46,14 +46,15 @@ A good example of this approach is @ref PX_SYSTMR. Example usage:
 @code{.c}
     #include "px_systmr.h"
 
-    // Create a timer object
-    px_systmr_t tmr;
-
-    // Start timer with a 250 ms timeout
-    px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(250));
-
-    // Wait until timer has expired
-    while(!px_systmr_has_expired(&tmr)) {;}
+    void wait(void)
+    {
+        // Create a timer object
+        px_systmr_t tmr;
+        // Start timer with a 250 ms timeout
+        px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(250));
+        // Wait until timer has expired
+        while(!px_systmr_has_expired(&tmr)) {;}
+    }
 @endcode
 
 The module name is **px_systmr**. The file names are "px_systmr.h" and 
@@ -81,7 +82,7 @@ Doxygen is used to document each module. For more info see @ref DOXYGEN.
 Here is an an example showing how a function is documented:
 @include doc/examples/doxy_ex_2.c
 
-# 6. Indentation and Brace style #
+# 6. Indentation, Brace style and Spacing#
 
 @tip_s
 4 spaces must be used for each indentation level, not tabs. Curly brackets {}
@@ -100,6 +101,11 @@ The [Allman style](http://en.wikipedia.org/wiki/Indent_style#Allman_style)
     ....}
     }
 @endcode
+
+Observe:
+- There is no space between the `for` keyword and opening bracket `(`
+- There is a space before and after the `=` operator, e.g. `i = 0`
+- There is no spacing for the unary `++` operator, e.g. `i++`
 
 # 7. Naming convention #
 
@@ -125,8 +131,6 @@ CAPITAL letters with underscores separating words
 The name must have the module name prefixed. Example:
 
 @code{.c}
-    /// The generator polynomial CRC16-CCITT (reversed representation):
-    /// x^16 + x^12 + x^5 + 1
     #define PX_CRC16_POLYNOMIAL  0x8408
 @endcode
 
@@ -139,14 +143,7 @@ CAPITAL letters with underscores separating words
 The name must have the module name prefixed. Example:
 
 @code{.c}
-    /**
-     *  Macro used to convert a timeout in milliseconds to timer ticks.
-     *
-     *  @param[in] delay_in_ms  Delay in milliseconds
-     *  @return                 Delay in timer ticks
-     */
-    #define PX_SYSTMR_MS_TO_TICKS(delay_in_ms)    \
-         PX_UDIV_ROUND((delay_in_ms) * PX_SYSTMR_TICKS_PER_SEC, 1000ul)
+    #define PX_SYSTMR_MS_TO_TICKS(delay_in_ms)  PX_UDIV_ROUND((delay_in_ms) * PX_SYSTMR_TICKS_PER_SEC, 1000ul)
 @endcode
 
 `do {} while(0)` blocks and brackets `()` around macro parameters are
@@ -155,22 +152,7 @@ recommended so that the macro will always expand correctly. Example:
 @code{.c}
     #define PX_BIT_SET_HI(var, bit) do { (var) |=  (1ul << (bit)); } while(0)
     #define PX_BIT_SET_LO(var, bit) do { (var) &= ~(1ul << (bit)); } while(0)
-
-    // Function-like macro example where do {} while(0) blocks are required so
-    // that code behaves as expected:
-    void set_pin(bool hi)
-    {
-        if(hi)
-            PX_BIT_SET_HI(PORTA, 4);
-        else
-            PX_BIT_SET_LO(PORTA, 4);
-    }
 @endcode
-
-@warn_s
-Note that this example is in violation of the brace style, where curly 
-brackets {} must be used, even for single lines.
-@warn_e
 
 ## 7.4 Function-like macros ##
 
@@ -183,8 +165,7 @@ If a macro is used with the appearance of a function it is acceptable to use
 the function naming convention. Example:
 
 @code{.c}
-    #define _gpio_pin_set_hi(port, pin, dir, init)  PX_BIT_SET_HI(PX_CONCAT(PORT, port), pin)
-    #define px_gpio_pin_set_hi(gpio)                _gpio_pin_set_hi(gpio)
+    #define px_interrupts_enable()  __enable_irq()
 @endcode
 
 ## 7.5 Variables ##
@@ -280,6 +261,7 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 | tmr               | timer                                          |
 | tx / rx           | transmit / receive                             |
 | temp              | temperature                                    |
+| tmp               | temporary                                      |
 | val               | value                                          |
 
 # 8. Standard Types #
@@ -315,11 +297,11 @@ the code portable. See @ref PX_DEFS. Example:
     } msg_t;
 @endcode
 
-# 9. Debug Output #
+# 9. Debug instrumentation #
 
 A convenient debug module (@ref PX_LOG) has been created to report the flow of
 an embedded program as well as warnings and errors. The debug output can easily 
-be removed for the final release (by defining #PX_LOG=0) with no impact on the
+be removed from the final release (by defining #PX_LOG=0) with no impact on the
 execution or code size.
 
 To conserve space, the module name string is declared once at the top of the C 
@@ -348,23 +330,13 @@ PX_LOG_E() macros. Example:
     bool px_uart_open(px_uart_handle_t * handle, px_uart_nr_t uart_nr)
     {
     ...
-
         // Set pointer to peripheral data
         switch(uart_nr)
         {
-        case PX_UART_NR_1:
-            uart_data = &px_uart1_data;
-            break;
-
-        case PX_UART_NR_2:
-            uart_data = &px_uart2_data;
-            break;
-
-        default:
-            PX_LOG_E("Invalid peripheral specified");
-            return false;
+        case PX_UART_NR_1: uart_data = &px_uart1_data; break;
+        case PX_UART_NR_2: uart_data = &px_uart2_data; break;
+        default: PX_LOG_E("Invalid peripheral specified"); return false;
         }
-
     ...
     }
 @endcode
