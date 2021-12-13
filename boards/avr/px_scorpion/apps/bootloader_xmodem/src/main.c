@@ -113,7 +113,7 @@ int main(void)
     px_uart_init();
 
     // Wait 100 ms
-    px_tmr_wait(TMR_MS_TO_TICKS(100));
+    px_tmr_wait(PX_TMR_MS_TO_TICKS(100));
 
     // Receive new flash content via XMODEM-CRC protocol
     px_flash_page      = PX_FLASH_START_PAGE;

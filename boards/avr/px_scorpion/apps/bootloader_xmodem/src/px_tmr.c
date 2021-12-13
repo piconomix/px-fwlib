@@ -6,10 +6,10 @@
     |_|     |___|  \____|  \___/  |_| \_|  \___/  |_|  |_| |___| /_/\_\
 
     Copyright (c) 2012 Pieter Conradie <https://piconomix.com>
- 
+
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
- 
+
     Title:          Polled timeout functionality using a TMR peripheral
     Author(s):      Pieter Conradie
     Creation Date:  2012-09-08
@@ -72,5 +72,5 @@ void px_tmr_wait(uint16_t ticks)
     // Clear output compare flag
     PX_BIT_SET_HI(TIFR1, OCF1A);
     // Wait until otput compare flag is set
-    PX_WAIT_UNTIL_BIT_IS_HI(TIFR1, OCF1A);   
+    PX_WAIT_UNTIL_BIT_IS_HI(TIFR1, OCF1A);
 }

@@ -70,7 +70,7 @@ void px_tmr_wait(uint16_t ticks);
  *  @param[in] time_ms  Delay in milliseconds
  *  @return    uint16_t    TMR ticks
  */
-#define TMR_MS_TO_TICKS(ms) (uint16_t)((uint32_t)ms * (F_CPU / 1024ul) / 1000ul)
+#define PX_TMR_MS_TO_TICKS(ms) (uint16_t)((uint32_t)ms * (F_CPU / 1024ul) / 1000ul)
 
 #ifdef __cplusplus
 }

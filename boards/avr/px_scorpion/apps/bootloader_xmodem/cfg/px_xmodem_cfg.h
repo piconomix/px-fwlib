@@ -61,7 +61,7 @@
  *  
  *  @param[in] time_ms   Time in milliseconds to wait before timer has expired
  */
-#define PX_XMODEM_CFG_TMR_START(time_ms)    px_tmr_start(TMR_MS_TO_TICKS(time_ms))
+#define PX_XMODEM_CFG_TMR_START(time_ms)    px_tmr_start(PX_TMR_MS_TO_TICKS(time_ms))
 
 /**
  *  See if timer has expired.
