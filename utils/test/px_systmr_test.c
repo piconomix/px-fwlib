@@ -9,12 +9,10 @@ void px_systmr_test(void)
 
     // Initialise module
     px_sysclk_init();
-
     // Enable interrupts
     px_interrupts_enable();
-  
     // Start timer with a 250 ms timeout
-    px_systmr_start(&tmr, TMR_MS_TO_TICKS(250));
+    px_systmr_start(&tmr, PX_SYSTMR_MS_TO_TICKS(250));
     
     // Loop forever
     while(true)
