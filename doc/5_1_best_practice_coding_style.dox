@@ -236,6 +236,7 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 | deg_c             | Degrees Celcius                                |
 | dev               | device                                         |
 | en / dis          | enable / disable                               |
+| fg / bg           | foreground / background                        |
 | fn                | function                                       |
 | gfx               | graphics                                       |
 | idx               | index                                          |
