@@ -47,8 +47,8 @@
  *  
  *  If enabled, it results in a smaller BAUD rate error when using imprecise 
  *  clock inputs, e.g. for F_CPU = 16 MHz and desired Baud Rate = 115200:
- *  * U2Xn = 0 : UBBRn = 8  (-3.5% error)
- *  * U2Xn = 1 : UBBRn = 16 (+2.1% error)
+ *  - U2Xn = 0 : UBBRn = 8  (-3.5% error)
+ *  - U2Xn = 1 : UBBRn = 16 (+2.1% error)
  */
 #define PX_UART_CFG_USE_2X_BAUD_RATE 1
 
