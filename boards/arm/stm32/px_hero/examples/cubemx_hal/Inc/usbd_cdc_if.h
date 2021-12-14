@@ -130,4 +130,3 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
 
 #endif /* __USBD_CDC_IF_H__ */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
