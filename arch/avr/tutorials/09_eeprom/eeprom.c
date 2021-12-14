@@ -127,6 +127,7 @@ void ee_write_byte(uint16_t adr, uint8_t data)
     // Wait until write operation has finished
     while(EECR & (1 << EEPE)) {;}
 }
+
 int main(void)
 {
     uint8_t data;
