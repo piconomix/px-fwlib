@@ -98,6 +98,11 @@ void px_btn_update(px_btn_t * btn, bool btn_is_pressed)
                             btn->nr_of_clicks++;    // Yes. Increment button click count
                         }
                     }
+                    // Long press?
+                    if(btn->state_counter >= PX_BTN_CFG_LONG_COUNT)
+                    {
+                        btn->nr_of_clicks = 0;      // Yes. Clear button click count
+                    }
                     btn->flag.state         = 0;    // Change to LO state
                     btn->flag.event_release = 1;    // Set button release flag
                     btn->state_counter      = 0;    // Reset state counter
@@ -127,7 +132,7 @@ void px_btn_update(px_btn_t * btn, bool btn_is_pressed)
             // Outside button click release window?
             if(btn->state_counter == PX_BTN_CFG_CLICK_RELEASE_MAX)
             {
-                btn->flag.event_click = 1;  // Yes. Set button click flag
+                btn->flag.event_click = 1;          // Yes. Set button click flag
             }
         }
     }
