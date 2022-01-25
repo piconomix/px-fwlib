@@ -22,8 +22,8 @@ static void px_ring_buf_report(void)
     printf("WR=%u\n",    px_ring_buf.idx_wr);
     printf("RD=%u\n",    px_ring_buf.idx_rd);
     printf("Size=%u\n",  px_ring_buf.buf_size);
-    printf("Used=%u\n",  px_ring_buf_get_count_used(&px_ring_buf));
-    printf("Free=%u\n",  px_ring_buf_get_count_free(&px_ring_buf));
+    printf("Used=%u\n",  px_ring_buf_count_used(&px_ring_buf));
+    printf("Free=%u\n",  px_ring_buf_count_free(&px_ring_buf));
     printf("Buf: ");
     report_data(px_ring_buf.buf, px_ring_buf.buf_size);
     putchar('\n');

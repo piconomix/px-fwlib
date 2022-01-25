@@ -231,7 +231,7 @@ px_ring_buf_idx_t px_ring_buf_peek(px_ring_buf_t * px_ring_buf,
  *  @param px_ring_buf          Pointer to the ring buffer object
  *  @return px_ring_buf_idx_t   Number of bytes stored in the buffer
  */
-px_ring_buf_idx_t px_ring_buf_get_count_used(px_ring_buf_t * px_ring_buf);
+px_ring_buf_idx_t px_ring_buf_count_used(px_ring_buf_t * px_ring_buf);
 
 /**
  *  Get number of free bytes available in buffer.
@@ -241,7 +241,7 @@ px_ring_buf_idx_t px_ring_buf_get_count_used(px_ring_buf_t * px_ring_buf);
  *  @param px_ring_buf          Pointer to the ring buffer object
  *  @return px_ring_buf_idx_t   Number of bytes available in the buffer
  */
-px_ring_buf_idx_t px_ring_buf_get_count_free(px_ring_buf_t * px_ring_buf);
+px_ring_buf_idx_t px_ring_buf_count_free(px_ring_buf_t * px_ring_buf);
 
 /**
  *  Report status of ring buffer.

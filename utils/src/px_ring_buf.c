@@ -232,7 +232,7 @@ px_ring_buf_idx_t px_ring_buf_peek(px_ring_buf_t * px_ring_buf,
     return bytes_read;
 }
 
-px_ring_buf_idx_t px_ring_buf_get_count_used(px_ring_buf_t * px_ring_buf)
+px_ring_buf_idx_t px_ring_buf_count_used(px_ring_buf_t * px_ring_buf)
 {
     px_ring_buf_idx_t count_used;
     px_ring_buf_idx_t idx_wr = px_ring_buf->idx_wr;
@@ -259,7 +259,7 @@ px_ring_buf_idx_t px_ring_buf_get_count_used(px_ring_buf_t * px_ring_buf)
     return count_used;
 }
 
-px_ring_buf_idx_t px_ring_buf_get_count_free(px_ring_buf_t * px_ring_buf)
+px_ring_buf_idx_t px_ring_buf_count_free(px_ring_buf_t * px_ring_buf)
 {
     px_ring_buf_idx_t count_free;
     px_ring_buf_idx_t idx_wr = px_ring_buf->idx_wr;
@@ -291,7 +291,7 @@ void px_ring_buf_log_report(px_ring_buf_t * px_ring_buf)
     PX_LOG_TRACE("WR=%u\n",   px_ring_buf->idx_wr);
     PX_LOG_TRACE("RD=%u\n",   px_ring_buf->idx_rd);
     PX_LOG_TRACE("Size=%u\n", px_ring_buf->buf_size);
-    PX_LOG_TRACE("Used=%u\n", px_ring_buf_get_count_used(px_ring_buf));
-    PX_LOG_TRACE("Free=%u\n", px_ring_buf_get_count_free(px_ring_buf));
+    PX_LOG_TRACE("Used=%u\n", px_ring_buf_count_used(px_ring_buf));
+    PX_LOG_TRACE("Free=%u\n", px_ring_buf_count_free(px_ring_buf));
 }
 
