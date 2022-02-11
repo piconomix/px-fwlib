@@ -292,6 +292,9 @@ typedef signed long long   int64_t;
 /// Calculate the number of items in an array
 #define PX_SIZEOF_ARRAY(array)              (sizeof(array) / sizeof((array)[0]))
 
+/// Calculate the size of a member in a struct type
+#define PX_SIZEOF_MEMBER(t, member)         (sizeof(((t *)0)->member))
+
 /// Is value a power of two (1, 2, 4, 8, 16, ...)?
 #define PX_VAL_IS_PWR_OF_TWO(value)         (((value) & ((value) - 1)) == 0)
 
