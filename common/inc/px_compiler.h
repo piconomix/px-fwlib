@@ -76,6 +76,7 @@
 #else
     /// Unknown
     #define PX_COMPILER_UNKNOWN
+    #warning "Compiler unknown"
 #endif
     
 /*
