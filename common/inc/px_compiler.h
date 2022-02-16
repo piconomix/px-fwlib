@@ -70,6 +70,9 @@
 #elif defined(_MSC_VER) && defined(_M_ARM)
     /// Microsoft Visual C++ Compiler for ARM
     #define PX_COMPILER_MSVC_ARM
+#elif defined(__TI_ARM__)
+    /// Texas Instruments ARM Compiler
+    #define PX_COMPILER_TI_ARM
 #else
     /// Unknown
     #define PX_COMPILER_UNKNOWN
@@ -111,7 +114,7 @@
     #define px_interrupts_disable()         __disable_irq()
 #endif
 
-#if defined(PX_COMPILER_GCC) || defined (PX_COMPILER_ARM_CC)
+#if defined(PX_COMPILER_GCC) || defined (PX_COMPILER_ARM_CC) || defined (PX_COMPILER_TI_ARM)
     // See https://gcc.gnu.org/onlinedocs/gcc/Function-Attributes.html
     #define PX_ATTR_CONST                   __attribute__ ((const))
     #define PX_ATTR_NORETURN                __attribute__ ((noreturn))
