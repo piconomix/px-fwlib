@@ -85,8 +85,8 @@ Here is an an example showing how a function is documented:
 # 6. Indentation, Brace style and Spacing#
 
 @tip_s
-4 spaces must be used for each indentation level, not tabs. Curly brackets {}
-must be used, even for single lines
+4 spaces must be used for each indentation level, not tabs. Use curly brackets {}
+that line up vertically so that it is easy to spot the start and end of a block.
 @tip_e
 
 The [Allman style](http://en.wikipedia.org/wiki/Indent_style#Allman_style)
@@ -106,6 +106,25 @@ Observe:
 - There is no space between the `for` keyword and opening bracket `(`
 - There is a space before and after the `=` operator, e.g. `i = 0`
 - There is no spacing for the unary `++` operator, e.g. `i++`
+
+As a general guideline, use curly brackets {} even for single lines as
+demonstrated in the example above, except where it is more succint to use a
+single line or it is better to line up multiple statements to quickly spot
+differences. Example:
+
+@code{.c}
+    if(flag == false) printf("Error!");
+
+    switch(uart_nr)
+    {
+    case PX_UART_NR_1: NVIC_EnableIRQ(USART1_IRQn);   break;
+    case PX_UART_NR_2: NVIC_EnableIRQ(USART2_IRQn);   break;
+    case PX_UART_NR_3: NVIC_EnableIRQ(USART3_IRQn);   break;
+    case PX_UART_NR_4: NVIC_EnableIRQ(USART4_5_IRQn); break;
+    case PX_UART_NR_5: NVIC_EnableIRQ(USART4_5_IRQn); break;
+    default: break;
+    }
+@endcode
 
 # 7. Naming convention #
 
