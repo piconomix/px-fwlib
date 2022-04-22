@@ -42,7 +42,7 @@ static const char px_ascii_strings[32][4] =
     {"ACK"},    // 6    Acknowledgment  ("\a")
     {"BEL"},    // 7    Bell
     {"BS"},     // 8    Backspace       ("\b")
-    {"HT"},     // 9    Horizontal Tab  ("\t")
+    {"TAB"},    // 9    Horizontal Tab  ("\t")
     {"LF"},     // 10   Line Feed       ("\n")
     {"VT"},     // 11   Vertical Tab    ("\v")
     {"FF"},     // 12   Form Feed       ("\f")

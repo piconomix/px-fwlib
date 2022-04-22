@@ -30,7 +30,7 @@
  *  @see https://en.wikipedia.org/wiki/ASCII
  *  @see https://en.wikipedia.org/wiki/Escape_sequences_in_C
  *
- *  ASCII Table (32 to 127 / 0x20 to 0x7f):
+ *  ASCII Table (32 to 126 / 0x20 to 0x7e):
  *
  *  @code{.unparsed}
  *       0   1   2   3   4   5   6   7      8   9   A   B   C   D   E   F
@@ -45,9 +45,9 @@
  *     +---+---+---+---+---+---+---+---+  +---+---+---+---+---+---+---+---+
  *  60 | ` | a | b | c | d | e | f | g |  | h | i | j | k | l | m | n | o |
  *     +---+---+---+---+---+---+---+---+  +---+---+---+---+---+---+---+---+
- *  70 | p | q | r | s | t | u | v | w |  | x | y | z | { | | | } | ~ |   |
- *     +---+---+---+---+---+---+---+---+  +---+---+---+---+---+---+---+---+
- * @endcode
+ *  70 | p | q | r | s | t | u | v | w |  | x | y | z | { | | | } | ~ |
+ *     +---+---+---+---+---+---+---+---+  +---+---+---+---+---+---+---+
+ *  @endcode
  *
  *  @{
  */
@@ -74,6 +74,7 @@ extern "C"
 #define PX_ASCII_CHAR_BEL       ((char)0x07)    ///< 7    Bell
 #define PX_ASCII_CHAR_BS        ((char)0x08)    ///< 8    Backspace       ("\b")
 #define PX_ASCII_CHAR_HT        ((char)0x09)    ///< 9    Horizontal Tab  ("\t")
+#define PX_ASCII_CHAR_TAB       ((char)0x09)    ///< 9    Horizontal Tab  ("\t")
 #define PX_ASCII_CHAR_LF        ((char)0x0a)    ///< 10   Line Feed       ("\n")
 #define PX_ASCII_CHAR_VT        ((char)0x0b)    ///< 11   Vertical Tab    ("\v")
 #define PX_ASCII_CHAR_FF        ((char)0x0c)    ///< 12   Form Feed       ("\f")
@@ -113,6 +114,7 @@ extern "C"
 #define PX_ASCII_STR_BEL        "\x07"          ///< 7    Bell
 #define PX_ASCII_STR_BS         "\x08"          ///< 8    Backspace       ("\b")
 #define PX_ASCII_STR_HT         "\x09"          ///< 9    Horizontal Tab  ("\t")
+#define PX_ASCII_STR_TAB        "\x09"          ///< 9    Horizontal Tab  ("\t")
 #define PX_ASCII_STR_LF         "\x0a"          ///< 10   Line Feed       ("\n")
 #define PX_ASCII_STR_VT         "\x0b"          ///< 11   Vertical Tab    ("\v")
 #define PX_ASCII_STR_FF         "\x0c"          ///< 12   Form Feed       ("\f")
