@@ -391,9 +391,9 @@ void _px_log_assert(const char * name,
     // Output log prefix (level, timestamp, name and line)
     px_log_report_log_prefix(PX_LOG_LEVEL_ERROR, name, line);
 #ifdef PX_COMPILER_GCC_AVR
-    px_log_printf_P(PX_PGM_STR("ASSERT"));
+    px_log_printf_P(PX_PGM_STR("ASSERT\n"));
 #else
-    px_log_printf("ASSERT");
+    px_log_printf("ASSERT\n");
 #endif
     // Block forever
     while(true) {;}
