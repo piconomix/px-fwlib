@@ -132,6 +132,14 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
             uint32_t usart_cr1_val = usart_base_adr->CR1;
             if(usart_cr1_val & USART_CR1_PCE)
             {
+#ifdef STM32L1
+                // 8 data bits?
+                if((usart_cr1_val & USART_CR1_M) == 0)
+                {
+                    // Clear parity bit in received byte
+                    data &= ~(1 << 7);
+                }
+#else
                 // 8 data bits?
                 if(  ((usart_cr1_val & USART_CR1_M1) == 0) && ((usart_cr1_val & USART_CR1_M0) == 0)  )
                 {
@@ -144,6 +152,7 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
                     // Clear parity bit in received byte
                     data &= ~(1 << 6);
                 }
+#endif
             }
             // Add received byte to ring buffer (byte is discarded if buffer is full)
             px_ring_buf_wr_u8(&uart_per->rx_ring_buf, data);
@@ -298,7 +307,9 @@ static bool px_uart_init_data_format(USART_TypeDef *     usart_base_adr,
     // Set number of data bits
     switch(data_bits)
     {
+#ifndef STM32L1
     case PX_UART_DATA_BITS_7: LL_USART_SetDataWidth(usart_base_adr, LL_USART_DATAWIDTH_7B); break;
+#endif
     case PX_UART_DATA_BITS_8: LL_USART_SetDataWidth(usart_base_adr, LL_USART_DATAWIDTH_8B); break;
     case PX_UART_DATA_BITS_9: LL_USART_SetDataWidth(usart_base_adr, LL_USART_DATAWIDTH_9B); break;
     default:                  PX_LOG_E("Invalid number of data bits"); return false;
