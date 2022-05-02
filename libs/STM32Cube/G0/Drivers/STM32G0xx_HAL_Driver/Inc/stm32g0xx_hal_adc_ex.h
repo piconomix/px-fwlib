@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2018 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2018 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -22,7 +21,7 @@
 #define STM32G0xx_HAL_ADC_EX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -34,7 +33,7 @@
 
 /** @addtogroup ADCEx
   * @{
-  */ 
+  */
 
 /* Exported types ------------------------------------------------------------*/
 /** @defgroup ADCEx_Exported_Types ADC Extended Exported Types
@@ -76,7 +75,7 @@
 /**
   * @brief Check whether or not ADC is independent.
   * @param __HANDLE__ ADC handle.
-  * @note  When multimode feature is not available, the macro always returns SET.   
+  * @note  When multimode feature is not available, the macro always returns SET.
   * @retval SET (ADC is independent) or RESET (ADC is not).
   */
 #define ADC_IS_INDEPENDENT(__HANDLE__)   (SET)
@@ -90,7 +89,7 @@
 #define IS_ADC_CALFACT(__CALIBRATION_FACTOR__) ((__CALIBRATION_FACTOR__) <= (0x7FU))
 
 /**
-  * @brief Verify the ADC oversampling ratio. 
+  * @brief Verify the ADC oversampling ratio.
   * @param __RATIO__ programmed ADC oversampling ratio.
   * @retval SET (__RATIO__ is a valid value) or RESET (__RATIO__ is invalid)
   */
@@ -104,7 +103,7 @@
                                                    ((__RATIO__) == ADC_OVERSAMPLING_RATIO_256 ))
 
 /**
-  * @brief Verify the ADC oversampling shift. 
+  * @brief Verify the ADC oversampling shift.
   * @param __SHIFT__ programmed ADC oversampling shift.
   * @retval SET (__SHIFT__ is a valid value) or RESET (__SHIFT__ is invalid)
   */
@@ -119,12 +118,12 @@
                                                   ((__SHIFT__) == ADC_RIGHTBITSHIFT_8   ))
 
 /**
-  * @brief Verify the ADC oversampling triggered mode. 
-  * @param __MODE__ programmed ADC oversampling triggered mode. 
+  * @brief Verify the ADC oversampling triggered mode.
+  * @param __MODE__ programmed ADC oversampling triggered mode.
   * @retval SET (__MODE__ is valid) or RESET (__MODE__ is invalid)
   */
 #define IS_ADC_TRIGGERED_OVERSAMPLING_MODE(__MODE__) (((__MODE__) == ADC_TRIGGEREDMODE_SINGLE_TRIGGER) || \
-                                                      ((__MODE__) == ADC_TRIGGEREDMODE_MULTI_TRIGGER) ) 
+                                                      ((__MODE__) == ADC_TRIGGEREDMODE_MULTI_TRIGGER) )
 
 
 /**
@@ -143,15 +142,15 @@
 /* IO operation functions *****************************************************/
 
 /* ADC calibration */
-HAL_StatusTypeDef       HAL_ADCEx_Calibration_Start(ADC_HandleTypeDef* hadc);
-uint32_t                HAL_ADCEx_Calibration_GetValue(ADC_HandleTypeDef* hadc);
-HAL_StatusTypeDef       HAL_ADCEx_Calibration_SetValue(ADC_HandleTypeDef* hadc, uint32_t CalibrationFactor);
+HAL_StatusTypeDef       HAL_ADCEx_Calibration_Start(ADC_HandleTypeDef *hadc);
+uint32_t                HAL_ADCEx_Calibration_GetValue(ADC_HandleTypeDef *hadc);
+HAL_StatusTypeDef       HAL_ADCEx_Calibration_SetValue(ADC_HandleTypeDef *hadc, uint32_t CalibrationFactor);
 
 /* ADC IRQHandler and Callbacks used in non-blocking modes (Interruption) */
-void                    HAL_ADCEx_LevelOutOfWindow2Callback(ADC_HandleTypeDef* hadc);
-void                    HAL_ADCEx_LevelOutOfWindow3Callback(ADC_HandleTypeDef* hadc);
-void                    HAL_ADCEx_EndOfSamplingCallback(ADC_HandleTypeDef* hadc);
-void                    HAL_ADCEx_ChannelConfigReadyCallback(ADC_HandleTypeDef* hadc);
+void                    HAL_ADCEx_LevelOutOfWindow2Callback(ADC_HandleTypeDef *hadc);
+void                    HAL_ADCEx_LevelOutOfWindow3Callback(ADC_HandleTypeDef *hadc);
+void                    HAL_ADCEx_EndOfSamplingCallback(ADC_HandleTypeDef *hadc);
+void                    HAL_ADCEx_ChannelConfigReadyCallback(ADC_HandleTypeDef *hadc);
 
 /**
   * @}
@@ -161,7 +160,7 @@ void                    HAL_ADCEx_ChannelConfigReadyCallback(ADC_HandleTypeDef* 
   * @{
   */
 /* Peripheral Control functions ***********************************************/
-HAL_StatusTypeDef       HAL_ADCEx_DisableVoltageRegulator(ADC_HandleTypeDef* hadc);
+HAL_StatusTypeDef       HAL_ADCEx_DisableVoltageRegulator(ADC_HandleTypeDef *hadc);
 
 /**
   * @}
@@ -184,6 +183,3 @@ HAL_StatusTypeDef       HAL_ADCEx_DisableVoltageRegulator(ADC_HandleTypeDef* had
 #endif
 
 #endif /* STM32G0xx_HAL_ADC_EX_H */
-
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
