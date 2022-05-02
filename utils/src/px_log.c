@@ -500,4 +500,4 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes)
     }
 }
 
-#endif // #if PX_LOG
+#endif
