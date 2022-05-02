@@ -28,7 +28,6 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defs.h"
-#include "px_board.h"
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// Enable/disable support for UART1 peripheral
