@@ -117,8 +117,10 @@ void WWDG_IRQHandler(void)
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_wwdg_init(px_wwdg_prescaler_t prescaler, uint8_t counter, uint8_t window)
 {
-    PX_LOG_ASSERT((window  > 0x40) && (window  < 0x80));
-    PX_LOG_ASSERT((counter > 0x40) && (counter < 0x80));
+    PX_LOG_ASSERT(    (window  > 0x40)
+                   && (window  < 0x80)
+                   && (counter > 0x40)
+                   && (counter < 0x80)  );
 
     // Enable peripheral clock
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_WWDG);

@@ -57,6 +57,9 @@ static void px_spi_init_per(SPI_TypeDef * spi_base_adr,
                             px_spi_nr_t   spi_nr,
                             uint32_t      spi_cr1_val)
 {
+    // Sanity check
+    PX_LOG_ASSERT(spi_base_adr != NULL);
+
     // Enable peripheral clocks
     switch(spi_nr)
     {
@@ -99,7 +102,7 @@ static void px_spi_init_per(SPI_TypeDef * spi_base_adr,
         break;
 #endif
     default:
-        PX_LOG_E("Invalid peripheral");
+        PX_LOG_E("Invalid nr");
         return;
     }
 
@@ -116,6 +119,9 @@ static void px_spi_init_per(SPI_TypeDef * spi_base_adr,
 
 static void px_spi_update_cfg(SPI_TypeDef * spi_base_adr, uint32_t spi_cr1_val)
 {
+    // Sanity check
+    PX_LOG_ASSERT(spi_base_adr != NULL);
+
     // Must communication parameters change?
     if((spi_base_adr->CR1 & (~SPI_CR1_SPE_Msk)) != spi_cr1_val)
     {
@@ -151,7 +157,7 @@ static void px_spi_init_per_data(px_spi_nr_t    spi_nr,
         break;
 #endif
     default:
-        PX_LOG_E("Invalid peripheral");
+        PX_LOG_E("Invalid nr");
         return;
     }
     // Clear open counter
@@ -177,18 +183,12 @@ bool px_spi_open(px_spi_handle_t * handle,
     px_spi_per_t * spi_per;
     uint32_t       spi_cr1_val = 0;
 
-#if PX_LOG
-    // Verify that pointer to handle is not NULL
-    if(handle == NULL)
-    {
-        PX_LOG_ASSERT(false);
-        return false;
-    }
+    // Sanity checks
+    PX_LOG_ASSERT(handle != NULL);
     if(handle->spi_per != NULL)
     {
-        PX_LOG_W("Handle already open?");
+        PX_LOG_W("Already open?");
     }
-#endif
 
     // Handle not initialised
     handle->spi_per = NULL;
@@ -196,27 +196,13 @@ bool px_spi_open(px_spi_handle_t * handle,
     switch(spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_NR_1:
-        spi_per = &px_spi_per_1;
-        break;
+    case PX_SPI_NR_1: spi_per = &px_spi_per_1; break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_NR_2:
-        spi_per = &px_spi_per_2;
-        break;
+    case PX_SPI_NR_2: spi_per = &px_spi_per_2; break;
 #endif
-    default:
-        PX_LOG_E("Invalid peripheral specified");
-        return false;
+    default: PX_LOG_E("Invalid nr"); return false;
     }
-#if PX_LOG
-    // Check that px_spi_init() has been called
-    if(spi_per->spi_base_adr == NULL)
-    {
-        PX_LOG_ASSERT(false);
-        return false;
-    }
-#endif
 
     // Set SPI data order (MSB or LSB first)
     spi_cr1_val |= PX_SPI_CFG_DEFAULT_DATA_ORDER << SPI_CR1_LSBFIRST_Pos;
@@ -260,18 +246,12 @@ bool px_spi_open2(px_spi_handle_t * handle,
     px_spi_per_t * spi_per;
     uint32_t       spi_cr1_val = 0;
 
-#if PX_LOG
-    // Verify that pointer to handle is not NULL
-    if(handle == NULL)
-    {
-        PX_LOG_ASSERT(false);
-        return false;
-    }
+    // Sanity checks
+    PX_LOG_ASSERT(handle != NULL);
     if(handle->spi_per != NULL)
     {
-        PX_LOG_W("Handle already open?");
+        PX_LOG_W("Already open?");
     }
-#endif
 
     // Handle not initialised
     handle->spi_per = NULL;
@@ -279,27 +259,13 @@ bool px_spi_open2(px_spi_handle_t * handle,
     switch(spi_nr)
     {
 #if PX_SPI_CFG_SPI1_EN
-    case PX_SPI_NR_1:
-        spi_per = &px_spi_per_1;
-        break;
+    case PX_SPI_NR_1: spi_per = &px_spi_per_1; break;
 #endif
 #if PX_SPI_CFG_SPI2_EN
-    case PX_SPI_NR_2:
-        spi_per = &px_spi_per_2;
-        break;
+    case PX_SPI_NR_2: spi_per = &px_spi_per_2; break;
 #endif
-    default:
-        PX_LOG_E("Invalid peripheral specified");
-        return false;
+    default: PX_LOG_E("Invalid nr"); return false;
     }
-#if PX_LOG
-    // Check that px_spi_init() has been called
-    if(spi_per->spi_base_adr == NULL)
-    {
-        PX_LOG_ASSERT(false);
-        return false;
-    }
-#endif
 
     // Set SPI data order (MSB or LSB first)
     if(data_order == PX_SPI_DATA_ORDER_LSB)
@@ -340,24 +306,23 @@ bool px_spi_close(px_spi_handle_t * handle)
     px_spi_per_t * spi_per;
     SPI_TypeDef *  spi_base_adr;
 
-#if PX_LOG
-    // Check handle
-    if(  (handle                        == NULL)
-       ||(handle->spi_per               == NULL)
-       ||(handle->spi_per->spi_base_adr == NULL)
-       ||(handle->spi_per->open_counter == 0   )  )
-    {
-        PX_LOG_ASSERT(false);
-        return false;
-    }
-#endif
+    // Sanity checks
+    PX_LOG_ASSERT(  (handle                        != NULL)
+                  &&(handle->spi_per               != NULL)
+                  &&(handle->spi_per->spi_base_adr != NULL));
 
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
+
+    // Already closed?
+    if(spi_per->open_counter == 0)
+    {
+        PX_LOG_E("Already closed");
+        return false;
+    }
     // Decrement open count
-    PX_LOG_ASSERT(spi_per->open_counter > 0);
     spi_per->open_counter--;
     // More open handles referencing peripheral?
     if(spi_per->open_counter != 0)
@@ -402,17 +367,11 @@ void px_spi_wr(px_spi_handle_t * handle,
     SPI_TypeDef *   spi_base_adr;
     const uint8_t * data_wr_u8 = (const uint8_t *)data;
 
-#if PX_LOG
-    // Check handle
-    if(  (handle                        == NULL)
-       ||(handle->spi_per               == NULL)
-       ||(handle->spi_per->spi_base_adr == NULL)
-       ||(handle->spi_per->open_counter == 0   )  )
-    {
-        PX_LOG_ASSERT(false);
-        return;
-    }
-#endif
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                        != NULL)
+                   && (handle->spi_per               != NULL)
+                   && (handle->spi_per->spi_base_adr != NULL)
+                   && (handle->spi_per->open_counter != 0   )  );
 
     // Set pointer to peripheral
     spi_per = handle->spi_per;
@@ -454,7 +413,7 @@ void px_spi_wr(px_spi_handle_t * handle,
             break;
     #endif
         default:
-            PX_LOG_E("Invalid peripheral");
+            PX_LOG_E("Invalid nr");
             break;
         }
         // Wait until SPI transmit of last byte is complete
@@ -485,17 +444,11 @@ void px_spi_rd(px_spi_handle_t * handle,
     SPI_TypeDef *   spi_base_adr;
     uint8_t *       data_rd_u8 = (uint8_t *)data;
 
-#if PX_LOG
-    // Check handle
-    if(  (handle                        == NULL)
-       ||(handle->spi_per               == NULL)
-       ||(handle->spi_per->spi_base_adr == NULL)
-       ||(handle->spi_per->open_counter == 0   )  )
-    {
-        PX_LOG_ASSERT(false);
-        return;
-    }
-#endif
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                        != NULL)
+                   && (handle->spi_per               != NULL)
+                   && (handle->spi_per->spi_base_adr != NULL)
+                   && (handle->spi_per->open_counter != 0   )  );
 
     // Set pointer to peripheral
     spi_per = handle->spi_per;
@@ -544,7 +497,7 @@ void px_spi_rd(px_spi_handle_t * handle,
             break;
     #endif
         default:
-            PX_LOG_E("Invalid peripheral");
+            PX_LOG_E("Invalid nr");
             break;
         }
 
@@ -576,17 +529,11 @@ void px_spi_xc(px_spi_handle_t * handle,
     const uint8_t * data_wr_u8 = (const uint8_t *)data_wr;
     uint8_t *       data_rd_u8 = (uint8_t *)data_rd;
 
-#if PX_LOG
-    // Check handle
-    if(  (handle                        == NULL)
-       ||(handle->spi_per               == NULL)
-       ||(handle->spi_per->spi_base_adr == NULL)
-       ||(handle->spi_per->open_counter == 0   )  )
-    {
-        PX_LOG_ASSERT(false);
-        return;
-    }
-#endif
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                        != NULL)
+                   && (handle->spi_per               != NULL)
+                   && (handle->spi_per->spi_base_adr != NULL)
+                   && (handle->spi_per->open_counter != 0   )  );
 
     // Set pointer to peripheral
     spi_per = handle->spi_per;
@@ -600,7 +547,6 @@ void px_spi_xc(px_spi_handle_t * handle,
 
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
-    PX_LOG_ASSERT(spi_base_adr != NULL);
     // Update communication parameters (if different)
     px_spi_update_cfg(spi_base_adr, handle->spi_cr1_val);
 
@@ -635,7 +581,7 @@ void px_spi_xc(px_spi_handle_t * handle,
             break;
     #endif
         default:
-            PX_LOG_E("Invalid peripheral");
+            PX_LOG_E("Invalid nr");
             break;
         }
         // Disable DMA RX channel
@@ -661,23 +607,16 @@ void px_spi_change_baud(px_spi_handle_t * handle,
     SPI_TypeDef *  spi_base_adr;
     uint32_t       spi_cr1_val;
 
-#if PX_LOG
-    // Check handle
-    if(  (handle                        == NULL)
-       ||(handle->spi_per               == NULL)
-       ||(handle->spi_per->spi_base_adr == NULL)
-       ||(handle->spi_per->open_counter == 0   )  )
-    {
-        PX_LOG_ASSERT(false);
-        return;
-    }
-#endif
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                        != NULL)
+                   && (handle->spi_per               != NULL)
+                   && (handle->spi_per->spi_base_adr != NULL)
+                   && (handle->spi_per->open_counter != 0   )  );
 
     // Set pointer to peripheral
     spi_per = handle->spi_per;
     // Get SPI peripheral base register address
     spi_base_adr = spi_per->spi_base_adr;
-    PX_LOG_ASSERT(spi_base_adr != NULL);
 
     // Disable peripheral
     LL_SPI_Disable(spi_base_adr);

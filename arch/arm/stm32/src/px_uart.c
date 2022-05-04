@@ -32,12 +32,12 @@ PX_LOG_NAME("uart");
 /// Internal data for each peripheral
 typedef struct px_uart_per_s
 {
-    USART_TypeDef * usart_base_adr;     /// Peripheral base register address
-    px_uart_nr_t    uart_nr;            /// Peripheral
-    uint8_t         open_counter;       /// Number of open handles referencing peripheral
-    volatile bool   tx_done;            /// Transmit done flag
-    px_ring_buf_t   tx_ring_buf;        /// Transmit ring buffer
-    px_ring_buf_t   rx_ring_buf;        /// Receive ring buffer
+    USART_TypeDef * usart_base_adr;     ///< Peripheral base register address
+    px_uart_nr_t    uart_nr;            ///< Peripheral
+    uint8_t         open_counter;       ///< Number of open handles referencing peripheral
+    volatile bool   tx_done;            ///< Transmit done flag
+    px_ring_buf_t   tx_ring_buf;        ///< Transmit ring buffer
+    px_ring_buf_t   rx_ring_buf;        ///< Receive ring buffer
 } px_uart_per_t;
 
 // Default peripheral clocks in Hz
@@ -267,7 +267,7 @@ static bool px_uart_init_baud(USART_TypeDef * usart_base_adr,
 #if PX_UART_CFG_UART5_EN
     case PX_UART_NR_5: uart_clk_hz = PX_UART_CFG_UART5_CLK_HZ; break;
 #endif
-    default:           PX_LOG_E("Invalid peripheral"); return false;
+    default: PX_LOG_E("Invalid nr"); return false;
     }
 
     // Set BAUD
@@ -300,7 +300,7 @@ static bool px_uart_init_data_format(USART_TypeDef *     usart_base_adr,
         }
         else
         {
-            PX_LOG_E("Parity option invalid");
+            PX_LOG_E("Invalid parity");
             return false;
         }
     }
@@ -312,7 +312,7 @@ static bool px_uart_init_data_format(USART_TypeDef *     usart_base_adr,
 #endif
     case PX_UART_DATA_BITS_8: LL_USART_SetDataWidth(usart_base_adr, LL_USART_DATAWIDTH_8B); break;
     case PX_UART_DATA_BITS_9: LL_USART_SetDataWidth(usart_base_adr, LL_USART_DATAWIDTH_9B); break;
-    default:                  PX_LOG_E("Invalid number of data bits"); return false;
+    default: PX_LOG_E("Invalid data bits"); return false;
     }
     // Set parity
     switch(parity)
@@ -320,14 +320,14 @@ static bool px_uart_init_data_format(USART_TypeDef *     usart_base_adr,
     case PX_UART_PARITY_NONE: LL_USART_SetParity(usart_base_adr, LL_USART_PARITY_NONE); break;
     case PX_UART_PARITY_ODD:  LL_USART_SetParity(usart_base_adr, LL_USART_PARITY_ODD);  break;
     case PX_UART_PARITY_EVEN: LL_USART_SetParity(usart_base_adr, LL_USART_PARITY_EVEN); break;
-    default:                  PX_LOG_E("Invalid parity specified"); return false;
+    default: PX_LOG_E("Invalid parity"); return false;
     }
     // Set stop bits
     switch(stop_bits)
     {
     case PX_UART_STOP_BITS_1: LL_USART_SetStopBitsLength(usart_base_adr, LL_USART_STOPBITS_1); break;
     case PX_UART_STOP_BITS_2: LL_USART_SetStopBitsLength(usart_base_adr, LL_USART_STOPBITS_2); break;
-    default:                  PX_LOG_E("Invalid number of stop bits"); return false;
+    default: PX_LOG_E("Invalid stop bits"); return false;
     }
 
     // Success
@@ -363,7 +363,7 @@ static bool px_uart_init_per(USART_TypeDef *     usart_base_adr,
     case PX_UART_NR_5: LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART5); break;
 #endif
     default:
-        PX_LOG_E("Invalid peripheral");
+        PX_LOG_E("Invalid nr");
         return false;
     }
     // Set baud rate
@@ -523,12 +523,12 @@ bool px_uart_open2(px_uart_handle_t *  handle,
 #if PX_UART_CFG_UART5_EN
     case PX_UART_NR_5: uart_per = &px_uart_per_5; break;
 #endif
-    default:           PX_LOG_E("Invalid peripheral specified"); return false;
+    default: PX_LOG_E("Invalid nr"); return false;
     }
     // Already open?
     if(uart_per->open_counter != 0)
     {
-        PX_LOG_E("Only one handle per UART peripheral can be opened");
+        PX_LOG_E("Already open");
         return false;
     }
     // Set transmit done flag
@@ -556,16 +556,17 @@ bool px_uart_close(px_uart_handle_t * handle)
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
     // Already closed?
     if(uart_per->open_counter == 0)
     {
-        PX_LOG_E("Peripheral already closed");
+        PX_LOG_E("Already closed");
         return false;
     }
 
@@ -573,19 +574,13 @@ bool px_uart_close(px_uart_handle_t * handle)
     switch(uart_per->uart_nr)
     {
 #if PX_UART_CFG_UART1_EN
-    case PX_UART_NR_1:
-        NVIC_DisableIRQ(USART1_IRQn);
-        break;
+    case PX_UART_NR_1: NVIC_DisableIRQ(USART1_IRQn); break;
 #endif
 #if PX_UART_CFG_UART2_EN
-    case PX_UART_NR_2:
-        NVIC_DisableIRQ(USART2_IRQn);
-        break;
+    case PX_UART_NR_2: NVIC_DisableIRQ(USART2_IRQn); break;
 #endif
 #if PX_UART_CFG_UART3_EN
-    case PX_UART_NR_3:
-        NVIC_DisableIRQ(USART3_IRQn);
-        break;
+    case PX_UART_NR_3: NVIC_DisableIRQ(USART3_IRQn); break;
 #endif
 #if PX_UART_CFG_UART4_EN
     case PX_UART_NR_4:
@@ -607,9 +602,9 @@ bool px_uart_close(px_uart_handle_t * handle)
         }
         break;
 #endif
-    default:
-        return false;
+    default: PX_LOG_E("Invalid nr"); return false;
     }
+
     // Disable peripheral
     uart_per->usart_base_adr->CR1 = 0;
     // Disable peripheral clock
@@ -630,7 +625,7 @@ bool px_uart_close(px_uart_handle_t * handle)
 #if PX_UART_CFG_UART5_EN
     case PX_UART_NR_5: LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_USART5); break;
 #endif
-    default:           PX_LOG_E("Invalid peripheral"); return false;
+    default: return false;
     }
     // Close handle
     handle->uart_per = NULL;
@@ -644,14 +639,14 @@ void px_uart_putchar(px_uart_handle_t * handle, char data)
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     // Wait until transmit buffer has space for one byte and add it
     while(!px_ring_buf_wr_u8(&uart_per->tx_ring_buf, (uint8_t)data)) {;}
@@ -663,14 +658,14 @@ bool px_uart_wr_u8(px_uart_handle_t * handle, uint8_t data)
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     // Add byte to transmit buffer
     if(!px_ring_buf_wr_u8(&uart_per->tx_ring_buf, (uint8_t)data))
@@ -693,14 +688,14 @@ size_t px_uart_wr(px_uart_handle_t * handle,
     uint8_t  *      data_u8 = (uint8_t *)data;
     size_t          bytes_buffered = 0;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+        // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     // Add bytes to transmit buffer
     bytes_buffered = px_ring_buf_wr(&uart_per->tx_ring_buf, data_u8, nr_of_bytes);
@@ -719,14 +714,14 @@ char px_uart_getchar(px_uart_handle_t * handle)
     px_uart_per_t * uart_per;
     uint8_t         data;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+        // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     // Wait until a byte is in receive buffer and fetch it
     while(!px_ring_buf_rd_u8(&uart_per->rx_ring_buf, &data)) {;}
@@ -738,14 +733,14 @@ bool px_uart_rd_u8(px_uart_handle_t * handle, uint8_t * data)
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+        // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     // Return byte from receive buffer (if it is available)
     return px_ring_buf_rd_u8(&uart_per->rx_ring_buf, data);
@@ -757,14 +752,14 @@ size_t px_uart_rd(px_uart_handle_t * handle,
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     // Fetch data from receive buffer (up to the specified number of bytes)
     return px_ring_buf_rd(&uart_per->rx_ring_buf, buf, nr_of_bytes);
@@ -774,14 +769,14 @@ bool px_uart_wr_buf_is_full(px_uart_handle_t * handle)
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     return px_ring_buf_is_full(&uart_per->tx_ring_buf);
 }
@@ -790,14 +785,14 @@ bool px_uart_wr_buf_is_empty(px_uart_handle_t * handle)
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     return px_ring_buf_is_empty(&uart_per->tx_ring_buf);
 }
@@ -806,14 +801,14 @@ bool px_uart_wr_is_done(px_uart_handle_t * handle)
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     // Any data to be transmitted in buffer?
     if(!px_ring_buf_is_empty(&uart_per->tx_ring_buf))
@@ -829,14 +824,14 @@ bool px_uart_rd_buf_is_empty(px_uart_handle_t * handle)
 {
     px_uart_per_t * uart_per;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
 
     return px_ring_buf_is_empty(&uart_per->rx_ring_buf);
 }
@@ -848,17 +843,17 @@ bool px_uart_change_baud(px_uart_handle_t * handle, uint32_t baud)
     bool            result;
     bool            enable;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
-
     // Set pointer to peripheral base address
     usart_base_adr = uart_per->usart_base_adr;
+
     // Is UART enabled?
     if(LL_USART_IsEnabled(usart_base_adr))
     {
@@ -890,17 +885,17 @@ bool px_uart_change_data_format(px_uart_handle_t *  handle,
     bool            result;
     bool            enable;
 
-    // Verify that pointer to handle is not NULL
-    PX_LOG_ASSERT(handle != NULL);
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)
+                   && (handle->uart_per->usart_base_adr != NULL)
+                   && (handle->uart_per->open_counter   != 0   )  );
+
     // Set pointer to peripheral
     uart_per = handle->uart_per;
-    // Check that handle is open
-    PX_LOG_ASSERT(uart_per != NULL);
-    PX_LOG_ASSERT(uart_per->open_counter != 0);
-    PX_LOG_ASSERT(uart_per->usart_base_adr != NULL);
-
     // Set pointer to peripheral base address
     usart_base_adr = uart_per->usart_base_adr;
+
     // Is UART enabled?
     if(LL_USART_IsEnabled(usart_base_adr))
     {

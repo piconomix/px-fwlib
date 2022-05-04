@@ -337,7 +337,7 @@ void px_exti_open(px_exti_port_t    exti_port,
         break;
 #endif
     default:
-        PX_LOG_E("Invalid EXTI line specified");
+        PX_LOG_E("Invalid line");
     }
 }
 
@@ -361,7 +361,7 @@ void px_exti_type_set(px_exti_line_t    exti_line,
         LL_EXTI_EnableRisingTrig_0_31(exti_line_mask);
         break;
     default:
-        PX_LOG_E("Invalid EXTI type specified");
+        PX_LOG_E("Invalid type");
         break;
     }
 }

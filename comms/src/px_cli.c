@@ -184,7 +184,7 @@ static bool px_cli_cmd_item_get_child(void)
     // Maximum depth reached?
     if(px_cli_tree_path_depth >= (PX_CLI_CFG_TREE_DEPTH_MAX - 1))
     {
-        PX_LOG_E("Maximum command depth exceeded");
+        PX_LOG_E("Max cmd depth exceeded");
         return false;
     }
 
@@ -668,7 +668,7 @@ static void px_cli_cmd_exe(void)
     if(  (argc < px_cli_cmd_list_item->cmd->argc_min)
        ||(argc > px_cli_cmd_list_item->cmd->argc_max)  )
     {
-        puts("Error! Number of parameters incorrect");
+        puts("Error! Number of parameters wrong");
         return;
     }
 
@@ -926,7 +926,7 @@ const char * px_cli_cmd_help_fn(uint8_t argc, char * argv[])
             px_cli_cmd_item_get_child();
         }
     }
-    PX_LOG_D("Max command chars = %d", name_char_cnt);
+    PX_LOG_D("Max cmd chars = %d", name_char_cnt);
     PX_LOG_D("Max param chars = %d", param_char_cnt);
 #endif
 
