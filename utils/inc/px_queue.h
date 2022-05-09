@@ -86,7 +86,10 @@ void px_queue_init(px_queue_t *         queue,
  *  @return true        Queue is empty
  *  @return false       Queue contains one or more items
  */
-bool px_queue_is_empty(px_queue_t * queue);
+inline bool px_queue_is_empty(px_queue_t * queue)
+{
+    return (queue->item_count == 0);
+}
 
 /** 
  *  See if the queue is full.
@@ -96,7 +99,10 @@ bool px_queue_is_empty(px_queue_t * queue);
  *  @retval true        The queue is full
  *  @retval false       The queue has one or more empty slots
  */
-bool px_queue_is_full(px_queue_t * queue);
+inline bool px_queue_is_full(px_queue_t * queue)
+{
+    return (queue->item_count == queue->items_max);
+}
 
 /** 
  *  Get the number of items in the queue.
@@ -105,7 +111,10 @@ bool px_queue_is_full(px_queue_t * queue);
  *  
  *  @returns px_queue_idx_t The number of items in the queue
  */
-px_queue_idx_t px_queue_get_item_count(px_queue_t * queue);
+inline px_queue_idx_t px_queue_get_item_count(px_queue_t * queue)
+{
+    return (queue->item_count);
+}
 
 /**
  *  Write a new item to the queue.

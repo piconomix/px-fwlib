@@ -53,10 +53,10 @@ void px_queue_init(px_queue_t *         queue,
                    px_queue_item_size_t item_size)
 {
     // Sanity checks
-    PX_LOG_ASSERT(queue     != NULL);
-    PX_LOG_ASSERT(item_buf  != NULL);
-    PX_LOG_ASSERT(item_size != 0);
-    PX_LOG_ASSERT(items_max != 0);
+    PX_LOG_ASSERT(    (queue     != NULL)
+                   && (buf       != NULL)
+                   && (item_size != 0   )
+                   && (items_max != 0   )  );
     // Initialise queue
     queue->buf        = (uint8_t *)buf;
     queue->idx_rd     = 0;
@@ -66,46 +66,9 @@ void px_queue_init(px_queue_t *         queue,
     queue->item_size  = item_size;
 }
 
-bool px_queue_is_empty(px_queue_t * queue)
-{
-    PX_LOG_ASSERT(queue != NULL);
-
-    if(queue->item_count == 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool px_queue_is_full(px_queue_t * queue)
-{
-    PX_LOG_ASSERT(queue != NULL);
-
-    if(queue->item_count == queue->items_max)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-px_queue_idx_t px_queue_get_item_count(px_queue_t * queue)
-{
-    PX_LOG_ASSERT(queue != NULL);
-
-    // Return item count
-    return (queue->item_count);
-}
-
 bool px_queue_wr(px_queue_t * queue, const void * item_data)
 {
-    PX_LOG_ASSERT(queue     != NULL);
-    PX_LOG_ASSERT(item_data != NULL);
+    PX_LOG_ASSERT((queue != NULL) && (item_data != NULL));
 
     // Queue full?
     if(px_queue_is_full(queue))
@@ -124,13 +87,12 @@ bool px_queue_wr(px_queue_t * queue, const void * item_data)
 
 bool px_queue_rd(px_queue_t * queue, void * item_data)
 {
-    PX_LOG_ASSERT(queue     != NULL);
-    PX_LOG_ASSERT(item_data != NULL);
+    PX_LOG_ASSERT((queue != NULL) && (item_data != NULL));
 
     // Queue empty?
     if(px_queue_is_empty(queue))
     {
-        return NULL;
+        return false;
     }
     // Copy item data from buffer
     memcpy(item_data, &queue->buf[queue->idx_rd * queue->item_size], queue->item_size);
@@ -149,12 +111,12 @@ bool px_queue_discard_oldest(px_queue_t * queue)
     // Queue empty?
     if(px_queue_is_empty(queue))
     {
-        return NULL;
+        return false;
     }
     // Decrement item count
     queue->item_count--;
     // Next pointer (wrap if going past end)
-    queue->idx_rd = px_queue_next(queue, queue->idx_rd);
+    queue->idx_rd = px_queue_idx_next(queue, queue->idx_rd);
     // Success
     return true;
 }
