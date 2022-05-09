@@ -133,7 +133,10 @@ void px_ring_buf_init(px_ring_buf_t *   px_ring_buf,
  *  @retval true                buffer is empty
  *  @retval false               buffer contains data
  */
-bool px_ring_buf_is_empty(const px_ring_buf_t * px_ring_buf);
+inline bool px_ring_buf_is_empty(const px_ring_buf_t * px_ring_buf)
+{
+    return (px_ring_buf->idx_rd == px_ring_buf->idx_wr);
+}
 
 /** 
  *  See if the ring buffer is full.
@@ -143,6 +146,7 @@ bool px_ring_buf_is_empty(const px_ring_buf_t * px_ring_buf);
  *  @retval true                buffer is full
  *  @retval false               buffer is NOT full
  */
+
 bool px_ring_buf_is_full(const px_ring_buf_t * px_ring_buf);
 
 /**
