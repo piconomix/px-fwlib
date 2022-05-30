@@ -117,16 +117,16 @@
 
 #if defined(PX_COMPILER_GCC) || defined (PX_COMPILER_ARM_CC) || defined (PX_COMPILER_TI_ARM)
     // See https://gcc.gnu.org/onlinedocs/gcc/Function-Attributes.html
-    #define PX_ATTR_CONST                   __attribute__ ((const))
-    #define PX_ATTR_NORETURN                __attribute__ ((noreturn))
-    #define PX_ATTR_NAKED                   __attribute__ ((naked))
-    #define PX_ATTR_ALWAYS_INLINE           __attribute__ ((always_inline))
-    #define PX_ATTR_UNUSED                  __attribute__ ((unused))
-    #define PX_ATTR_SECTION(section_str)    __attribute__ ((section (section_str)))
-    #define PX_ATTR_FORMAT_ARG(str_index)   __attribute__ ((format_arg(str_index)))
-    #define PX_ATTR_PACKED                  __attribute__ ((packed))
-    #define PX_ATTR_ALIGNED(a)              __attribute__((__aligned__(a)))
-    #define PX_ATTR_WEAK                    __attribute__((weak))
+    #define PX_ATTR_CONST                                           __attribute__ ((const))
+    #define PX_ATTR_NORETURN                                        __attribute__ ((noreturn))
+    #define PX_ATTR_NAKED                                           __attribute__ ((naked))
+    #define PX_ATTR_ALWAYS_INLINE                                   __attribute__ ((always_inline))
+    #define PX_ATTR_UNUSED                                          __attribute__ ((unused))
+    #define PX_ATTR_SECTION(section_str)                            __attribute__ ((section (section_str)))
+    #define PX_ATTR_FORMAT(archetype, string_index, first_to_check) __attribute__ ((format(archetype, string_index, first_to_check)))
+    #define PX_ATTR_PACKED                                          __attribute__ ((packed))
+    #define PX_ATTR_ALIGNED(a)                                      __attribute__((__aligned__(a)))
+    #define PX_ATTR_WEAK                                            __attribute__((weak))
 #else
     #define PX_ATTR_CONST
     #define PX_ATTR_NORETURN
@@ -134,7 +134,7 @@
     #define PX_ATTR_ALWAYS_INLINE
     #define PX_ATTR_UNUSED
     #define PX_ATTR_SECTION(section_str)
-    #define PX_ATTR_FORMAT_ARG(str_index)
+    #define PX_ATTR_FORMAT(archetype, string_index, first_to_check)
     #define PX_ATTR_PACKED
     #define PX_ATTR_ALIGNED(a)
     #define PX_ATTR_WEAK
