@@ -228,7 +228,7 @@ bool px_log_filter(px_log_level_t level, const char * name);
  */
 void _px_log_log_error(const char * name,
                        uint16_t     line,
-                       const char * format, ...);
+                       const char * format, ...) PX_ATTR_FORMAT(printf, 3, 4);
 
 /**
  *  Output warning info: module name, line and variable argument user format string.
@@ -244,7 +244,7 @@ void _px_log_log_error(const char * name,
  */
 void _px_log_log_warning(const char * name,
                          uint16_t     line,
-                         const char * format, ...);
+                         const char * format, ...) PX_ATTR_FORMAT(printf, 3, 4);
 
 /**
  *  Output info info: module name, line and variable argument user format string.
@@ -261,7 +261,7 @@ void _px_log_log_warning(const char * name,
  */
 void _px_log_log_info(const char * name,
                       uint16_t     line,
-                      const char * format, ...);
+                      const char * format, ...) PX_ATTR_FORMAT(printf, 3, 4);
 
 /**
  *  Output debug info: module name, line and variable argument user format string.
@@ -278,7 +278,7 @@ void _px_log_log_info(const char * name,
  */
 void _px_log_log_debug(const char * name,
                        uint16_t     line,
-                       const char * format, ...);
+                       const char * format, ...) PX_ATTR_FORMAT(printf, 3, 4);
 
 /**
  *  Output verbose info: module name, line and variable argument user format string.
@@ -295,7 +295,7 @@ void _px_log_log_debug(const char * name,
  */
 void _px_log_log_verbose(const char * name,
                          uint16_t     line,
-                         const char * format, ...);
+                         const char * format, ...) PX_ATTR_FORMAT(printf, 3, 4);
 
 /**
  *  Report that an assertion has failed and block indefinitely.
@@ -315,7 +315,7 @@ void _px_log_assert(const char * name,
  *  @param format   User format string 
  *  @param ...      Variable number of arguments 
  */
-void _px_log_trace(const char * format, ...);
+void _px_log_trace(const char * format, ...) PX_ATTR_FORMAT(printf, 1, 2);
 
 /**
  *  Output a character.
