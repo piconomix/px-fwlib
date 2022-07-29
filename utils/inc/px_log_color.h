@@ -31,13 +31,13 @@
 #error "PX_LOG_CFG_COLOR must be defined before including this file"
 #endif
 
-#if PX_LOG_CFG_COLOR
+#if PX_LOG && PX_LOG_CFG_COLOR
 // Include VT100 escape code definitions
 #include "px_vt100.h"
 #endif
 
 /* _____DEFINITIONS__________________________________________________________ */
-#if PX_LOG_CFG_COLOR
+#if PX_LOG && PX_LOG_CFG_COLOR
 
 #define PX_LOG_CR           PX_VT100_ATTR_RST       ///< Color Reset
 
