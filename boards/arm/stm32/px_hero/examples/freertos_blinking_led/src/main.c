@@ -30,6 +30,7 @@
 
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
 #warning "Segger SysView support enabled"
+#include "SEGGER_RTT.h"
 #include "SEGGER_SYSVIEW.h"
 #endif
 
@@ -208,6 +209,8 @@ int main(void)
 #ifdef CFG_SEGGER_SYSVIEW_ENABLED
     // Configure and enable Segger SystemView
     SEGGER_SYSVIEW_Conf();
+    // Send Segger RTT Terminal string (channel 0)
+    SEGGER_RTT_WriteString(0, "FreeRTOS Blinking LED example\r\n");
     // Start logging
     SEGGER_SYSVIEW_Start();
     SSV_LOG_INFO("FreeRTOS Blinking LED example started");

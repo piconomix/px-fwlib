@@ -64,7 +64,7 @@ BSP = $(PX_FWLIB)/boards/arm/stm32/px_hero
 STMCUBE = $(PX_FWLIB)/libs/STM32Cube/L0
 
 # (3e) Path to FreeRTOS library (relative to Makefile)
-FREERTOS = $(PX_FWLIB)/libs/FreeRTOS/Source
+FREERTOS = $(PX_FWLIB)/libs/FreeRTOS
 
 # (3e) Path to Segger SysView library (relative to Makefile)
 SYSVIEW = $(PX_FWLIB)/libs/segger_sysview
