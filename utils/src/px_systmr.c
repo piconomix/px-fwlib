@@ -57,8 +57,6 @@ bool px_systmr_has_started(const px_systmr_t * systmr)
 bool px_systmr_has_expired(px_systmr_t * systmr)
 {
     px_systmr_ticks_t tick;
-    px_systmr_ticks_t start;
-    px_systmr_ticks_t end;
 
     // See if timer has been stopped
     if (systmr->state == PX_SYSTMR_STOPPED) 
@@ -70,34 +68,19 @@ bool px_systmr_has_expired(px_systmr_t * systmr)
     {
         return true;
     }
-    // Timer expire test
+    // Has timer expired?
     tick = px_sysclk_get_tick_count();
-    start = systmr->start_tick;
-    end   = systmr->start_tick + systmr->delay_in_ticks;
-    if(start < end)
+    if((tick - systmr->start_tick) < systmr->delay_in_ticks )
     {
-        // |________xxxxxxxxxx__________|
-        //          S>>>>>>>>E
-        if(  (tick >= start) && (tick < end)  )
-        {
-            // Timer has not expired yet
-            return false;
-        }
+        // No
+        return false;
     }
     else
     {
-        // |xxxxxxx__________________xxx|
-        //  >>>>>>E                  S>>
-        if(  (tick >= start) || (tick < end)  )
-        {
-            // Timer has not expired yet
-            return false;
-        }
+        // Yes
+        systmr->state = PX_SYSTMR_EXPIRED;
+        return true;
     }
-    // Set state to indicate that timer has expired
-    systmr->state = PX_SYSTMR_EXPIRED;
-
-    return true;
 }
 
 void px_systmr_stop(px_systmr_t * systmr)
@@ -132,6 +115,7 @@ void px_systmr_wait(const px_systmr_ticks_t delay_in_ticks)
         ;
     }
 }
+
 px_systmr_ticks_t px_systmr_ticks_elapsed(px_systmr_t * systmr)
 {
     // Fetch current time
@@ -139,4 +123,26 @@ px_systmr_ticks_t px_systmr_ticks_elapsed(px_systmr_t * systmr)
     px_systmr_ticks_t ticks_elapsed = tick - systmr->start_tick;
 
     return ticks_elapsed;
+}
+
+px_systmr_ticks_t px_systmr_ticks_remaining(px_systmr_t * systmr)
+{
+    px_systmr_ticks_t tick;
+    px_systmr_ticks_t ticks_remaining;
+
+    if(px_systmr_has_expired(systmr))
+    {
+        return 0;
+    }
+    // Fetch current time
+    tick            = px_sysclk_get_tick_count();
+    ticks_remaining = systmr->start_tick + systmr->delay_in_ticks - tick;
+
+    // Check for roll-over
+    if(ticks_remaining > systmr->delay_in_ticks)
+    {
+        return 0;
+    }
+
+    return ticks_remaining;
 }

@@ -85,7 +85,7 @@ typedef struct
  *  @param[in,out]  systmr          Pointer to a timer object
  *  @param[in]      delay_in_ticks  Delay in timer ticks
  */
-void px_systmr_start(px_systmr_t * systmr, const px_systmr_ticks_t delay_in_ticks);
+void px_systmr_start(px_systmr_t * systmr, px_systmr_ticks_t delay_in_ticks);
 
 /**
  *  See if a timer has been started.
@@ -156,7 +156,7 @@ void px_systmr_reset(px_systmr_t * systmr);
  *  
  *  @param[in]  delay_in_ticks    Delay in timer ticks
  */ 
-void px_systmr_wait(const px_systmr_ticks_t delay_in_ticks);
+void px_systmr_wait(px_systmr_ticks_t delay_in_ticks);
 
 /** 
  *  Return the number of ticks that have elapsed sinced the timer has been started.
@@ -166,6 +166,15 @@ void px_systmr_wait(const px_systmr_ticks_t delay_in_ticks);
  *  @return px_systmr_ticks_t   Number of ticks elapsed
  */ 
 px_systmr_ticks_t px_systmr_ticks_elapsed(px_systmr_t * systmr);
+
+/**
+ *  Return the number of ticks that remain before the timer will expire.
+ *
+ *  @param[in,out]  systmr      Pointer to a timer object
+ *
+ *  @return px_systmr_ticks_t   Number of ticks remaining
+ */
+px_systmr_ticks_t px_systmr_ticks_remaining(px_systmr_t * systmr);
 
 /* _____MACROS_______________________________________________________________ */
 /** 
