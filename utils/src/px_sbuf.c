@@ -74,10 +74,22 @@ bool px_sbuf_is_full(const px_sbuf_t * sbuf)
     }
 }
 
+size_t px_sbuf_get_size_remaining(const px_sbuf_t * sbuf)
+{
+    if(sbuf->buf_size <= sbuf->index)
+    {
+        return 0;
+    }
+    else
+    {
+        return (sbuf->buf_size - sbuf->index);
+    }
+}
+
 void px_sbuf_putchar(px_sbuf_t * sbuf, char c)
 {
     // Buffer full?
-    if(sbuf->index >= (sbuf->buf_size - 1))
+    if(px_sbuf_is_full(sbuf))
     {
         return;
     }
@@ -100,7 +112,7 @@ void px_sbuf_print(px_sbuf_t * sbuf, const char * str)
     char c;
 
     // Buffer full?
-    if(sbuf->index >= (sbuf->buf_size - 1))
+    if(px_sbuf_is_full(sbuf))
     {
         return;
     }
@@ -135,7 +147,7 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
     int     i;
 
     // Buffer full?
-    if(sbuf->index >= (sbuf->buf_size - 1))
+    if(px_sbuf_is_full(sbuf))
     {
         return;
     }
@@ -161,3 +173,19 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
     sbuf->index += i;
 }
 
+void px_sbuf_append(px_sbuf_t * sbuf, const char * data, size_t nr_of_bytes)
+{
+    while(nr_of_bytes != 0)
+    {
+        // Buffer full?
+        if(px_sbuf_is_full(sbuf))
+        {
+            return;
+        }
+        // Append byte
+        sbuf->buf[sbuf->index] = *data++;
+        // Next byte
+        sbuf->index++;
+        nr_of_bytes--;
+    }
+}

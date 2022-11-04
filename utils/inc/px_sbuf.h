@@ -91,9 +91,18 @@ bool px_sbuf_is_empty(const px_sbuf_t * sbuf);
  *  @param sbuf     Pointer to safe buffer object
  *
  *  @retval true    safe buffer is full
- *  @retval false   safe buffer is empty
+ *  @retval false   safe buffer is not full
  */
 bool px_sbuf_is_full(const px_sbuf_t * sbuf);
+
+/**
+ *  Return remaining size of safe buffer
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *
+ *  @return size_t  Remaining size
+ */
+size_t px_sbuf_get_size_remaining(const px_sbuf_t * sbuf);
 
 /**
  *  Append a character to safe buffer
@@ -126,6 +135,15 @@ void px_sbuf_print(px_sbuf_t * sbuf, const char * str);
  *  @param format   Printf format string
  */
 void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...);
+
+/**
+ *  Append data to a safe buffer
+ *
+ *  @param sbuf         Pointer to safe buffer object
+ *  @param data         Pointer to data buffer
+ *  @param nr_of_bytes  Number of bytes to append
+ */
+void px_sbuf_append(px_sbuf_t * sbuf, const char * data, size_t nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
 
