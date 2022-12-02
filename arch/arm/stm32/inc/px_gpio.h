@@ -46,6 +46,17 @@ extern "C" {
 /* _____DEFINITIONS__________________________________________________________ */
 
 /* _____TYPE DEFINITIONS_____________________________________________________ */
+/// GPIO port enumeration; it must match px_exti_port_t
+typedef enum
+{
+    PX_GPIO_PORT_A          = 0,
+    PX_GPIO_PORT_B          = 1,
+    PX_GPIO_PORT_C          = 2,
+    PX_GPIO_PORT_D          = 3,
+    PX_GPIO_PORT_E          = 4,
+    PX_GPIO_PORT_H          = 5,
+} px_gpio_port_t;
+
 /// GPIO mode selection; See GPIOx_MODER register
 typedef enum
 {
@@ -113,6 +124,7 @@ typedef enum
 typedef struct
 {
     GPIO_TypeDef *      gpio_base_reg;  ///< GPIO peripheral base register address
+    px_gpio_port_t      port;           ///< Port: A, B, C, D, E or H
     uint8_t             pin;            ///< Pin: 0, 1, 2, ..., or 15
     px_gpio_mode_t      mode;           ///< Mode: Input, Output, Alternative Function or Analog
     px_gpio_otype_t     otype;          ///< Output type: push-pull or open-drain
@@ -154,7 +166,7 @@ typedef struct
  *
  *      // PX_GPIO_LED will be replaced by the C preprocessor with the following
  *      // sequence:
- *      // GPIOD, 7, PX_GPIO_MODE_OUT, PX_GPIO_OTYPE_PUSH_PULL,
+ *      // GPIOD, PX_GPIO_PORT_D, 7, PX_GPIO_MODE_OUT, PX_GPIO_OTYPE_PUSH_PULL,
  *      // PX_GPIO_OSPEED_LOW, PX_GPIO_PULL_NONE, PX_GPIO_OUT_INIT_LO,
  *      // PX_GPIO_ALT_FN_NA
  *  @endcode
@@ -169,11 +181,11 @@ typedef struct
  *  @param alt_fn       Alternative Function 0 to 7 or Not Applicable
  */
 #define PX_GPIO(port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
-    GPIO ## port, pin, mode, output_type, speed, pull, output_init, alt_fn
+    GPIO ## port, PX_GPIO_PORT_ ## port, pin, mode, output_type, speed, pull, output_init, alt_fn
 
 /// Initialise a GPIO pin
 #define PX_GPIO_INIT(gpio) _GPIO_INIT(gpio)
-#define _GPIO_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_INIT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
     do \
     { \
         if(mode == PX_GPIO_MODE_IN) \
@@ -216,107 +228,107 @@ typedef struct
 
 /// Set GPIO pin output high
 #define PX_GPIO_OUT_SET_HI(gpio) _GPIO_OUT_SET_HI(gpio)
-#define _GPIO_OUT_SET_HI(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_OUT_SET_HI(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetOutputPin(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Set GPIO pin output low
 #define PX_GPIO_OUT_SET_LO(gpio) _GPIO_PIN_OUT_SET_LO(gpio)
-#define _GPIO_PIN_OUT_SET_LO(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_PIN_OUT_SET_LO(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_ResetOutputPin(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Toggle GPIO pin output
 #define PX_GPIO_OUT_TOGGLE(gpio) _GPIO_OUT_TOGGLE(gpio)
-#define _GPIO_OUT_TOGGLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_OUT_TOGGLE(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_TogglePin(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Test if GPIO pin output is set high
 #define PX_GPIO_OUT_IS_HI(gpio) _GPIO_OUT_IS_HI(gpio)
-#define _GPIO_OUT_IS_HI(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_OUT_IS_HI(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_IsOutputPinSet(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Test if GPIO pin output is set low
 #define PX_GPIO_OUT_IS_LO(gpio) _GPIO_OUT_IS_LO(gpio)
-#define _GPIO_OUT_IS_LO(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_OUT_IS_LO(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (!LL_GPIO_IsOutputPinSet(gpio_base_reg, ((uint32_t)1 << pin)))
 
 /// Test if GPIO pin input is high
 #define PX_GPIO_IN_IS_HI(gpio) _GPIO_IN_IS_HI(gpio)
-#define _GPIO_IN_IS_HI(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_IN_IS_HI(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_IsInputPinSet(gpio_base_reg, ((uint32_t)1 << pin))
 
 /// Test if GPIO pin input is low
 #define PX_GPIO_IN_IS_LO(gpio) _GPIO_IN_IS_LO(gpio)
-#define _GPIO_IN_IS_LO(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_IN_IS_LO(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (!LL_GPIO_IsInputPinSet(gpio_base_reg, ((uint32_t)1 << pin)))
 
 /// Set GPIO pin direction to output
 #define PX_GPIO_DIR_SET_OUT(gpio) _GPIO_DIR_SET_OUT(gpio)
-#define _GPIO_DIR_SET_OUT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_DIR_SET_OUT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinMode(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_MODE_OUTPUT)
 
 /// Set GPIO pin direction to input
 #define PX_GPIO_DIR_SET_IN(gpio) _GPIO_DIR_SET_IN(gpio)
-#define _GPIO_DIR_SET_IN(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_DIR_SET_IN(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinMode(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_MODE_INPUT)
 
 /// Test if GPIO pin is configured to be an output
 #define PX_GPIO_DIR_IS_OUT(gpio) _GPIO_DIR_IS_OUT(gpio)
-#define _GPIO_DIR_IS_OUT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_DIR_IS_OUT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (LL_GPIO_GetPinMode(gpio_base_reg, ((uint32_t)1 << pin)) == LL_GPIO_MODE_OUTPUT);
 
 /// Test if GPIO pin is configured to be an input
 #define PX_GPIO_DIR_IS_IN(gpio) _GPIO_DIR_IS_IN(gpio)
-#define _GPIO_DIR_IS_IN(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_DIR_IS_IN(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (LL_GPIO_GetPinMode(gpio_base_reg, ((uint32_t)1 << pin)) == LL_GPIO_MODE_OUTPUT);
 
 /// Enable pull-up on GPIO pin
 #define PX_GPIO_PULL_UP_ENABLE(gpio) _GPIO_PULL_UP_ENABLE(gpio)
-#define _GPIO_PULL_UP_ENABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_PULL_UP_ENABLE(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinPull(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_PULL_UP);
 
 /// Enable pull-down on GPIO pin
 #define PX_GPIO_PULL_DN_ENABLE(gpio) _GPIO_PULL_DN_ENABLE(gpio)
-#define _GPIO_PULL_DN_ENABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_PULL_DN_ENABLE(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinPull(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_PULL_DN);
 
 /// Disable pull-up / pull-down on GPIO pin
 #define PX_GPIO_PULL_DISABLE(gpio) _GPIO_PULL_DISABLE(gpio)
-#define _GPIO_PULL_DISABLE(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _GPIO_PULL_DISABLE(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         LL_GPIO_SetPinPull(gpio_base_reg, ((uint32_t)1 << pin), LL_GPIO_PULL_NO);
 
 /// Macro to calculate bit mask used to initialise GPIOx_MODER register
 #define PX_GPIO_REG_MODER_INIT(gpio) _PX_GPIO_REG_MODER_INIT(gpio)
-#define _PX_GPIO_REG_MODER_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _PX_GPIO_REG_MODER_INIT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (((uint32_t)mode) << (pin * 2))
 
 /// Macro to calculate bit mask used to initialise GPIOx_OTYPER register
 #define PX_GPIO_REG_OTYPER_INIT(gpio) _PX_GPIO_REG_OTYPER_INIT(gpio)
-#define _PX_GPIO_REG_OTYPER_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _PX_GPIO_REG_OTYPER_INIT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (((uint32_t)output_type) << (pin))
 
 /// Macro to calculate bit mask used to initialise GPIOx_OSPEEDR register
 #define PX_GPIO_REG_OSPEEDR_INIT(gpio) _PX_GPIO_REG_OSPEEDR_INIT(gpio)
-#define _PX_GPIO_REG_OSPEEDR_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _PX_GPIO_REG_OSPEEDR_INIT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (((uint32_t)speed) << (pin * 2))
 
 /// Macro to calculate bit mask used to initialise GPIOx_PUPDR register
 #define PX_GPIO_REG_PUPDR_INIT(gpio) _PX_GPIO_REG_PUPDR_INIT(gpio)
-#define _PX_GPIO_REG_PUPDR_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _PX_GPIO_REG_PUPDR_INIT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (((uint32_t)pull) << (pin * 2))
 
 /// Macro to calculate bit mask used to initialise GPIOx_OTYPER register
 #define PX_GPIO_REG_ODR_INIT(gpio) _PX_GPIO_REG_ODR_INIT(gpio)
-#define _PX_GPIO_REG_ODR_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _PX_GPIO_REG_ODR_INIT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         (((uint32_t)output_init) << (pin))
 
 /// Macro to calculate bit mask used to initialise GPIOx_AFRL register (pins 0 to 7)
 #define PX_GPIO_REG_AFRL_INIT(gpio) _PX_GPIO_REG_AFRL_INIT(gpio)
-#define _PX_GPIO_REG_AFRL_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _PX_GPIO_REG_AFRL_INIT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         ((pin > 7) ? 0 : (((uint32_t)alt_fn) << (pin * 4)))
 
 /// Macro to calculate bit mask used to initialise GPIOx_AFRH register (pins 8 to 15)
 #define PX_GPIO_REG_AFRH_INIT(gpio) _PX_GPIO_REG_AFRH_INIT(gpio)
-#define _PX_GPIO_REG_AFRH_INIT(gpio_base_reg, pin, mode, output_type, speed, pull, output_init, alt_fn) \
+#define _PX_GPIO_REG_AFRH_INIT(gpio_base_reg, port, pin, mode, output_type, speed, pull, output_init, alt_fn) \
         ((pin < 8) ? 0 : (((uint32_t)alt_fn) << ((pin - 8) * 4)))
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
@@ -357,6 +369,7 @@ void px_gpio_port_init(const px_gpio_port_init_t * init);
  */
 static inline void px_gpio_open(px_gpio_handle_t * gpio, 
                                 GPIO_TypeDef *     gpio_base_reg,
+                                px_gpio_port_t     port,
                                 uint8_t            pin,
                                 px_gpio_mode_t     mode,
                                 px_gpio_otype_t    output_type,
@@ -366,6 +379,7 @@ static inline void px_gpio_open(px_gpio_handle_t * gpio,
                                 px_gpio_af_t       alt_fn)
 {
     gpio->gpio_base_reg = gpio_base_reg;
+    gpio->port          = port;
     gpio->pin           = pin;
     gpio->mode          = mode;
     gpio->otype         = output_type;
@@ -380,11 +394,13 @@ static inline void px_gpio_open(px_gpio_handle_t * gpio,
  *  
  *  @param [in, out]    gpio            Pointer to px_gpio_handle_t structure
  *  @param [in]         gpio_base_reg   GPIO register base address
+ *  @param [in]         port            GPIO port
  *  @param [in]         pin             Pin: 0, 1, 2, ..., or 15
  *  
  */
 void px_gpio_open2(px_gpio_handle_t * gpio, 
                    GPIO_TypeDef *     gpio_base_reg,
+                   px_gpio_port_t     port,
                    uint8_t            pin);
 
 /// Initialise a GPIO pin using supplied handle

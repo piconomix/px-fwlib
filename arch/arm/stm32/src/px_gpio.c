@@ -38,11 +38,13 @@ PX_LOG_NAME("px_gpio");
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_gpio_open2(px_gpio_handle_t * gpio, 
                    GPIO_TypeDef *     gpio_base_reg,
+                   px_gpio_port_t     port,
                    uint8_t            pin)
 {
     uint32_t pin_bit_mask  = ((uint32_t)1) << pin;
 
     gpio->gpio_base_reg = gpio_base_reg;
+    gpio->port          = port;
     gpio->pin           = pin;
     gpio->mode          = (px_gpio_mode_t)LL_GPIO_GetPinMode(gpio_base_reg, pin_bit_mask);
     gpio->otype         = (px_gpio_otype_t)LL_GPIO_GetPinOutputType(gpio_base_reg, pin_bit_mask);
