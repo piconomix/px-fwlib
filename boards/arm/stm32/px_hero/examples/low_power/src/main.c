@@ -138,11 +138,11 @@ int main(void)
     px_at25s_deep_power_down();
 
     // Enable external falling edge interrupt on Port C pin 9 (6/NO button)
-    px_exti_open(PX_EXTI_PORT_C,
-                 PX_EXTI_LINE_9,
+    px_exti_open(px_exti_port(&px_gpio_lcd_btn_6_no),
+                 px_exti_line(&px_gpio_lcd_btn_6_no),
                  &main_exti9_handler);
-    px_exti_type_set(PX_EXTI_LINE_9, PX_EXTI_TYPE_FALLING_EDGE);
-    px_exti_enable(PX_EXTI_LINE_9);
+    px_exti_type_set(px_exti_line(&px_gpio_lcd_btn_6_no), PX_EXTI_TYPE_FALLING_EDGE);
+    px_exti_enable(px_exti_line(&px_gpio_lcd_btn_6_no));
 
     // Disable debug interface
     px_board_dbg_disable();

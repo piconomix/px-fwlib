@@ -108,13 +108,13 @@ static void task_btn(void *pvParameters)
     // Create binary semaphore
     btn_task_press_sem = xSemaphoreCreateBinary();
     // Enable external falling edge interrupt on Port C pin 13 (3/UP button)
-    px_exti_open(PX_EXTI_PORT_C, PX_EXTI_LINE_13, &exti_13_handler);
-    px_exti_type_set(PX_EXTI_LINE_13, PX_EXTI_TYPE_FALLING_EDGE);
-    px_exti_enable(PX_EXTI_LINE_13);
+    px_exti_open(px_exti_port(&px_gpio_lcd_btn_3_up), px_exti_line(&px_gpio_lcd_btn_3_up), &exti_13_handler);
+    px_exti_type_set(px_exti_line(&px_gpio_lcd_btn_3_up), PX_EXTI_TYPE_FALLING_EDGE);
+    px_exti_enable(px_exti_line(&px_gpio_lcd_btn_3_up));
     // Enable external falling edge interrupt on Port C pin 12 (4/DN button)
-    px_exti_open(PX_EXTI_PORT_C, PX_EXTI_LINE_12, &exti_12_handler);
-    px_exti_type_set(PX_EXTI_LINE_12, PX_EXTI_TYPE_FALLING_EDGE);
-    px_exti_enable(PX_EXTI_LINE_12);
+    px_exti_open(px_exti_port(&px_gpio_lcd_btn_4_dn), px_exti_line(&px_gpio_lcd_btn_4_dn), &exti_12_handler);
+    px_exti_type_set(px_exti_line(&px_gpio_lcd_btn_4_dn), PX_EXTI_TYPE_FALLING_EDGE);
+    px_exti_enable(px_exti_line(&px_gpio_lcd_btn_4_dn));
 
     // Loop forever
     while(true)

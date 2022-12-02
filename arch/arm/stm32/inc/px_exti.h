@@ -47,6 +47,7 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defs.h"
+#include "px_gpio.h"
 
 // Include project specific configuration. See "px_exti_cfg_template.h"
 #include "px_exti_cfg.h"
@@ -182,6 +183,34 @@ void px_exti_enable(px_exti_line_t exti_line);
  *  @param exti_line        Line (0, 1, 2, ... or 15)
  */
 void px_exti_disable(px_exti_line_t exti_line);
+
+/**
+ *  Extract port from GPIO handle.
+ *
+ *  NB! px_gpio_port_t enumeration must match px_exti_port_t
+ *
+ *  @param gpio   GPIO handle
+ *
+ *  @return px_exti_port_t Port
+ */
+static inline px_exti_port_t px_exti_port(const px_gpio_handle_t * gpio)
+{
+    return (px_exti_port_t)gpio->port;
+}
+
+/**
+ *  Extract line from GPIO handle.
+ *
+ *  NB! px_gpio_pin_t enumeration must match px_exti_line_t
+ *
+ *  @param gpio   GPIO handle
+ *
+ *  @return px_exti_line_t Line
+ */
+static inline px_exti_line_t px_exti_line(const px_gpio_handle_t * gpio)
+{
+    return (px_exti_line_t)gpio->pin;
+}
 
 /* _____MACROS_______________________________________________________________ */
 
