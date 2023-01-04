@@ -212,7 +212,7 @@ prog_uf2: $(OUT_DIR)/$(PROJECT).bin
 $(BUILD_DIR)/%.lss: $(OUT_DIR)/%.elf
 	@echo
 	@echo $(MSG_EXTENDED_LISTING) $@
-	$(OBJDUMP) --visualize-jumps -h -S -z $< > $@
+	$(OBJDUMP) -h -S -z $< > $@
 
 # Create a symbol table (*.sym) from ELF output file
 $(BUILD_DIR)/%.sym: $(OUT_DIR)/%.elf
