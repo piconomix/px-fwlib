@@ -780,7 +780,7 @@ uint8_t px_sd_wr_blocks(const uint8_t * data, uint32_t block_adr, uint8_t nr_of_
 {
     uint8_t r1, data_resp_token, blocks_written;
 
-    PX_LOG_D("px_sd_write_blocks(%04X, %08lX, %hd)", data, block_adr, nr_of_blocks);
+    PX_LOG_D("px_sd_write_blocks(%08lX, %hd)", block_adr, nr_of_blocks);
     PX_LOG_ASSERT(px_sd_card_type != PX_SD_CARD_TYPE_INVALID);
 
     if(nr_of_blocks == 0)

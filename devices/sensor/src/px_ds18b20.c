@@ -269,7 +269,7 @@ int16_t px_ds18b20_util_convert_t_to_temp(uint8_t temp_msb, uint8_t temp_lsb, ui
     {
         i = (i - 8) / 16;
     }
-    PX_LOG_D("Temp = %d", i);
+    PX_LOG_D("Temp = %ld", i);
     return (int16_t)i;
 }
 
