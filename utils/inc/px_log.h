@@ -330,7 +330,7 @@ void _px_log_trace_char(char c);
  *  @param data         Pointer to buffer containing data to display
  *  @param nr_of_bytes  Number of bytes in buffer to display
  */
-void _px_log_trace_data(const void * data, size_t nr_of_bytes);
+void _px_log_trace_buf_hex(const void * data, size_t nr_of_bytes);
 
 /**
  *  Output the content of a buffer as a spaced table of HEX values and ASCII
@@ -473,7 +473,7 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
  *  @param nr_of_bytes  Size of buffer (in bytes)
  *  
  */
-#define PX_LOG_TRACE_DATA(data, nr_of_bytes) _px_log_trace_data(data, nr_of_bytes)
+#define PX_LOG_TRACE_BUF_HEX(data, nr_of_bytes) _px_log_trace_buf_hex(data, nr_of_bytes)
 
 /**
  *  Macro to output the content of a buffer if #PX_LOG=1
@@ -502,7 +502,7 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
     #define PX_LOG_ASSERT(expression)               ((void)0)
     #define PX_LOG_TRACE(format, ...)               ((void)0)
     #define PX_LOG_TRACE_CHAR(c)                    ((void)0)
-    #define PX_LOG_TRACE_DATA(data, nr_of_bytes)    ((void)0)
+    #define PX_LOG_TRACE_BUF_HEX(data, nr_of_bytes) ((void)0)
     #define PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes) ((void)0)
 #endif
 

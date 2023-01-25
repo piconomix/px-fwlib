@@ -562,7 +562,7 @@ bool px_sd_rd_csd(px_sd_csd_t * csd)
     if(PX_LOG_LEVEL_IS_D())
     {
         PX_LOG_D("CSD: \t");
-        PX_LOG_TRACE_DATA(csd, sizeof(px_sd_csd_t));
+        PX_LOG_TRACE_BUF_HEX(csd, sizeof(px_sd_csd_t));
         PX_LOG_TRACE("\n");
     }
     return true;

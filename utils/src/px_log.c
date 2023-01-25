@@ -418,15 +418,14 @@ void _px_log_trace_char(char c)
     px_log_putchar(c);
 }
 
-void _px_log_trace_data(const void * data, size_t nr_of_bytes)
+void _px_log_trace_buf_hex(const void * data, size_t nr_of_bytes)
 {
-    size_t          i;
     const uint8_t * data_u8 = (const uint8_t *)data;
 
-    for(i = 0; i < nr_of_bytes; i++)
+    while(nr_of_bytes != 0)
     {
         px_log_print_hex08(*data_u8++);
-        px_log_putchar(' ');
+        if(--nr_of_bytes != 0) px_log_putchar(' ');
     }
 }
 
