@@ -42,6 +42,7 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
                                            char *             pin_str)
 {
     GPIO_TypeDef * gpio_base_reg;
+    px_gpio_port_t port;
     unsigned long  pin;
     char *         end;
 
@@ -58,30 +59,37 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
         {
         case '0': 
             gpio_base_reg = px_gpio_0.gpio_base_reg;
+            port          = px_gpio_0.port;
             pin           = px_gpio_0.pin;
             break;
         case '1': 
             gpio_base_reg = px_gpio_1.gpio_base_reg;
+            port          = px_gpio_1.port;
             pin           = px_gpio_1.pin;
             break;
         case '2': 
             gpio_base_reg = px_gpio_2.gpio_base_reg;
+            port          = px_gpio_2.port;
             pin           = px_gpio_2.pin;
             break;
         case '3': 
             gpio_base_reg = px_gpio_3.gpio_base_reg;
+            port          = px_gpio_3.port;
             pin           = px_gpio_3.pin;
             break;
         case '4': 
             gpio_base_reg = px_gpio_4.gpio_base_reg;
+            port          = px_gpio_4.port;
             pin           = px_gpio_4.pin;
             break;
         case '5': 
             gpio_base_reg = px_gpio_5.gpio_base_reg;
+            port          = px_gpio_5.port;
             pin           = px_gpio_5.pin;
             break;
         case '6': 
             gpio_base_reg = px_gpio_6.gpio_base_reg;
+            port          = px_gpio_6.port;
             pin           = px_gpio_6.pin;
             break;
         default:
@@ -107,6 +115,7 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
                 return "Error. Pin number must be 0..15";
             }
             gpio_base_reg = GPIOA;
+            port          = PX_GPIO_PORT_A;
             break;
         case 'b':
             if(pin >= 16)
@@ -114,6 +123,7 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
                 return "Error. Pin number must be 0..15";
             }
             gpio_base_reg = GPIOB;
+            port          = PX_GPIO_PORT_B;
             break;
         case 'c':
             if(pin >= 16)
@@ -121,6 +131,7 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
                 return "Error. Pin number must be 0..15";
             }
             gpio_base_reg = GPIOC;
+            port          = PX_GPIO_PORT_C;
             break;
         case 'd':
             if(pin != 2)
@@ -128,6 +139,7 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
                 return "Error. Pin number must be 2";
             }
             gpio_base_reg = GPIOD;
+            port          = PX_GPIO_PORT_D;
             break;
         case 'h':
             if(pin > 1)
@@ -135,13 +147,14 @@ const char * px_cli_cmd_gpio_str_to_handle(px_gpio_handle_t * handle,
                 return "Error. Pin number must be 0 or 1";
             }
             gpio_base_reg = GPIOH;
+            port          = PX_GPIO_PORT_H;
             break;
         default:
             return "Error. Port must be a, b, c, d or h";
         }        
     }
 
-    px_gpio_open2(handle, gpio_base_reg, (uint8_t)pin);
+    px_gpio_open2(handle, gpio_base_reg, port, (uint8_t)pin);
     return NULL;
 }
 
@@ -315,8 +328,9 @@ static void px_cli_fn_gpio_report_pin(px_gpio_handle_t * handle)
     putchar('\n');
 }
 
-static void px_cli_fn_gpio_report_port(char           port,
-                                       GPIO_TypeDef * gpio_base_reg, 
+static void px_cli_fn_gpio_report_port(char           port_char,
+                                       GPIO_TypeDef * gpio_base_reg,
+                                       px_gpio_port_t port,
                                        uint8_t        pin_start,
                                        uint8_t        pin_end)
 {
@@ -324,8 +338,8 @@ static void px_cli_fn_gpio_report_port(char           port,
 
     for(pin = pin_start; pin <= pin_end; pin++)
     {
-        printf("%c%u : ", port, pin);
-        px_gpio_open2(&gpio_handle, gpio_base_reg, pin);
+        printf("%c%u : ", port_char, pin);
+        px_gpio_open2(&gpio_handle, gpio_base_reg, port, pin);
         px_cli_fn_gpio_report_pin(&gpio_handle);
     }
     putchar('\n');
@@ -338,11 +352,11 @@ static const char * px_cli_cmd_fn_gpio_info(uint8_t argc, char * argv[])
     // <all>
     if(strcmp(argv[0],"all") == 0)
     {
-        px_cli_fn_gpio_report_port('a', GPIOA, 0, 15);
-        px_cli_fn_gpio_report_port('b', GPIOB, 0, 15);
-        px_cli_fn_gpio_report_port('c', GPIOC, 0, 15);
-        px_cli_fn_gpio_report_port('d', GPIOD, 2, 2);
-        px_cli_fn_gpio_report_port('h', GPIOH, 0, 1);
+        px_cli_fn_gpio_report_port('a', GPIOA, PX_GPIO_PORT_A, 0, 15);
+        px_cli_fn_gpio_report_port('b', GPIOB, PX_GPIO_PORT_B, 0, 15);
+        px_cli_fn_gpio_report_port('c', GPIOC, PX_GPIO_PORT_C, 0, 15);
+        px_cli_fn_gpio_report_port('d', GPIOD, PX_GPIO_PORT_D, 2, 2);
+        px_cli_fn_gpio_report_port('h', GPIOH, PX_GPIO_PORT_H, 0, 1);
     }
     // <regs>
     else if(strcmp(argv[0], "regs") == 0)
