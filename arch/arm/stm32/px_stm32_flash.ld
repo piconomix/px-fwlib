@@ -138,7 +138,7 @@ SECTIONS
     .text :
     {
           /* .text sections (executable code) */
-          *(.text .text.*)
+          *(.text .text.* .gnu.linkonce.t.*)
     
           /* ARM-Thumb interworking veneers (arm to thumb code) */
           *(.glue_7)
@@ -170,6 +170,10 @@ SECTIONS
           . = ALIGN(4);
     } > FLASH
 
+    /*
+     * ARM exception handling: section names containing exception unwinding info
+	  * and index entries for stack unwinding.
+     */
     .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } > FLASH
     .ARM :
     {
