@@ -263,17 +263,17 @@ typedef signed long long   int64_t;
 /// @{
 
 /// Calculate unsigned division with rounding to nearest integer value
-#define PX_UDIV_ROUND(dividend, divisor)    (((dividend) + ((divisor) / 2)) / (divisor))
-/// Calculate unsigned division with rounding to nearest integer value
-#define PX_UDIV_ROUNDUP(dividend, divisor)  (((dividend) + ((divisor) - 1)) / (divisor))
+#define PX_UDIV_ROUND(n, d)                 (((n) + ((d) / 2)) / (d))
+/// Calculate unsigned division with rounding up to nearest integer value
+#define PX_UDIV_ROUNDUP(n, d)               (((n) + ((d) - 1)) / (d))
 /// Calculate signed division with rounding to nearest integer value
-#define PX_SDIV_ROUND(dividend, divisor)    (((dividend < 0) ^ (divisor < 0)) ? (((dividend) - ((divisor) / 2)) / (divisor)) : (((dividend) + ((divisor) / 2)) / (divisor)))
+#define PX_SDIV_ROUND(n, d)                 (((n < 0) ^ (d < 0)) ? (((n) - ((d) / 2)) / (d)) : (((n) + ((d) / 2)) / (d)))
 /// Calculate the number of items in an array
-#define PX_SIZEOF_ARRAY(array)              (sizeof(array) / sizeof((array)[0]))
+#define PX_SIZEOF_ARRAY(a)                  (sizeof(a) / sizeof((a)[0]))
 /// Calculate the size of a member in a struct type
 #define PX_SIZEOF_MEMBER(t, member)         (sizeof(((t *)0)->member))
 /// Is value a power of two (1, 2, 4, 8, 16, ...)?
-#define PX_VAL_IS_PWR_OF_TWO(value)         (((value) & ((value) - 1)) == 0)
+#define PX_VAL_IS_PWR_OF_TWO(val)           (((val) & ((val) - 1)) == 0)
 /// Swap the value of two variables
 #define PX_SWAP(type_t, i , j)              do { type_t _k = i; i = j; j = _k; } while (0)
 /// Maximum of two values
