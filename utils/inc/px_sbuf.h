@@ -69,6 +69,21 @@ typedef struct
 void px_sbuf_init(px_sbuf_t * sbuf, char * buf, size_t buf_size);
 
 /**
+ *  Allocate buffer on heap and initialise safe buffer
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *  @param buf_size Size of character buffer
+ */
+void px_sbuf_malloc(px_sbuf_t * sbuf, size_t buf_size);
+
+/**
+ *  Free buffer on heap and clear safe buffer
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ */
+void px_sbuf_free(px_sbuf_t * sbuf);
+
+/**
  *  Reset safe buffer
  *
  *  @param sbuf     Pointer to buffer object
