@@ -65,8 +65,8 @@
 #define PX_LOG_CFG_TIMESTAMP(str)  sprintf(str, "%08lu", (uint32_t)px_sysclk_get_tick_count())
 #endif
 #if 0
-// Example 2: Call a function in 'main.h'
-#include "main.h"
+// Example 2: Call a function in main.c
+extern void main_log_timestamp (char * str);
 #define PX_LOG_CFG_TIMESTAMP(str)  main_log_timestamp(str)
 #endif
 
@@ -83,8 +83,8 @@
 #define PX_LOG_CFG_PUTCHAR(data) px_uart_putchar(&main_uart_handle, data)
 #endif
 #if 0
-// Example 3: Call function in main
-#include "main.h"
+// Example 3: Call function in main.c
+extern void main_log_putchar(char data);
 #define PX_LOG_CFG_PUTCHAR(data) main_log_putchar(data)
 #endif
 
