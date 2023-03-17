@@ -57,6 +57,11 @@ void px_ring_buf_init(px_ring_buf_t *   px_ring_buf,
     px_ring_buf->idx_rd   = 0;
 }
 
+inline bool px_ring_buf_is_empty(const px_ring_buf_t * px_ring_buf)
+{
+    return (px_ring_buf->idx_rd == px_ring_buf->idx_wr);
+}
+
 bool px_ring_buf_is_full(const px_ring_buf_t * px_ring_buf)
 {
     return (px_ring_buf_idx_next(px_ring_buf, px_ring_buf->idx_wr) == px_ring_buf->idx_rd);
