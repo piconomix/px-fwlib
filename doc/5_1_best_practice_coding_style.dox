@@ -242,7 +242,7 @@ indicate that it is a struct. Example:
 ## 7.8 Abbreviations ##
 
 Often used words have shorter abreviations to reduce the length of names. The
-abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
+abbreviation must be obvious and not obscure. Here is a non-exhaustive reference list:
 
 | Abbreviation      | Full version                                   |
 |-------------------|------------------------------------------------|
@@ -255,6 +255,7 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 | deg_c             | Degrees Celcius                                |
 | dev               | device                                         |
 | en / dis          | enable / disable                               |
+| evt               | event                                          |
 | fg / bg           | foreground / background                        |
 | fn                | function                                       |
 | gfx               | graphics                                       |
@@ -277,6 +278,7 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive list:
 | u8 / u16 / u32    | unsigned 8/16/32 bit value                     |
 | s8 / s16 / s32    | signed   8/16/32 bit value                     |
 | sec / min / hr    | second / minute / hour                         |
+| sm                | state machine                                  |
 | str               | string (zero terminated)                       |
 | tmr               | timer                                          |
 | tx / rx           | transmit / receive                             |
