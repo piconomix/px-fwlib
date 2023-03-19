@@ -214,7 +214,19 @@ px_ring_buf_idx_t px_ring_buf_rd(px_ring_buf_t * px_ring_buf,
                                  void *          data,
                                  size_t          nr_of_bytes);
 
-/** 
+/**
+ *  Get linear chunk from the ring buffer, without advancing the read pointer.
+ *
+ *  @param px_ring_buf           Pointer to the ring buffer object
+ *  @param[in] nr_of_bytes       Size of chunk to get. If 0 return max linear chunk
+ *  @param[out] nr_of_bytes      Size of chunk returned (equal or smaller than requested or max linear chunk)
+ *
+ *  @return const uint8_t *      Pointer to start of chunk or NULL if empty
+ */
+const uint8_t * px_ring_buf_rd_chunk_get(const px_ring_buf_t * px_ring_buf,
+                                         size_t *              nr_of_bytes);
+
+/**
  *  Peek data from the ring buffer, without advancing the read pointer.
  *
  *  @param px_ring_buf           Pointer to the ring buffer object
@@ -225,9 +237,9 @@ px_ring_buf_idx_t px_ring_buf_rd(px_ring_buf_t * px_ring_buf,
  *                               be less than the number specified, because the
  *                               buffer is empty.
  */
-px_ring_buf_idx_t px_ring_buf_peek(px_ring_buf_t * px_ring_buf, 
-                                   void *          data,
-                                   size_t          nr_of_bytes);
+px_ring_buf_idx_t px_ring_buf_peek(const px_ring_buf_t * px_ring_buf,
+                                   void *                data,
+                                   size_t                nr_of_bytes);
 
 /**
  *  Get number of bytes stored in the buffer.

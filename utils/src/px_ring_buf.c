@@ -66,34 +66,62 @@ bool px_ring_buf_is_full(const px_ring_buf_t * px_ring_buf)
 
 void px_ring_buf_flush(px_ring_buf_t * px_ring_buf, size_t nr_of_bytes)
 {
+    px_ring_buf_idx_t idx_wr;
     px_ring_buf_idx_t idx_rd;
 
     // Flush everything?
     if(nr_of_bytes == 0)
     {
-        // Yes
         px_ring_buf->idx_rd = px_ring_buf->idx_wr;
         return;
     }
 
     // Try to flush specified number of bytes
+    idx_wr = px_ring_buf->idx_wr;
     idx_rd = px_ring_buf->idx_rd;
-    while(nr_of_bytes != 0)
+
+    // Buffer empty?
+    if(idx_rd == idx_wr)
     {
-        // Buffer empty?
-        if(idx_rd == px_ring_buf->idx_wr)
-        {
-            // Yes
-            break;
-        }
-        // Advance index
-        idx_rd = px_ring_buf_idx_next(px_ring_buf, idx_rd);
-        // Next byte
-        nr_of_bytes--;
+        return;
     }
 
-    // Update read index
-    px_ring_buf->idx_rd = idx_rd;
+    if(idx_rd > idx_wr)
+    {
+        // |xxxxxx___________________xxx|
+        //  >>>>>>W                  R>>
+        if(nr_of_bytes < (px_ring_buf->buf_size - idx_rd))
+        {
+            // Flush requested number of bytes
+            px_ring_buf->idx_rd = idx_rd + nr_of_bytes;
+            return;
+        }
+        else if(nr_of_bytes == (px_ring_buf->buf_size - idx_rd))
+        {
+            // Flush end of buffer and stop
+            px_ring_buf->idx_rd = 0;
+            return;
+        }
+        else
+        {
+            // Flush end of buffer and continue
+            nr_of_bytes -= px_ring_buf->buf_size - idx_rd;
+            idx_rd = 0;
+        }
+    }
+
+    // |________xxxxxxxxx___________|
+    //          R>>>>>>>>W
+    if(nr_of_bytes >= (idx_wr - idx_rd))
+    {
+        // Flush everything
+        px_ring_buf->idx_rd = px_ring_buf->idx_wr;
+    }
+    else
+    {
+        // Flush requested number of bytes
+        px_ring_buf->idx_rd = idx_rd + nr_of_bytes;
+    }
 }
 
 bool px_ring_buf_wr_u8(px_ring_buf_t * px_ring_buf, 
@@ -201,9 +229,56 @@ px_ring_buf_idx_t px_ring_buf_rd(px_ring_buf_t * px_ring_buf,
     return bytes_read;
 }
 
-px_ring_buf_idx_t px_ring_buf_peek(px_ring_buf_t * px_ring_buf, 
-                                   void *          data,
-                                   size_t          nr_of_bytes)
+const uint8_t * px_ring_buf_rd_chunk_get(const px_ring_buf_t * px_ring_buf,
+                                         size_t *              nr_of_bytes)
+{
+    px_ring_buf_idx_t idx_wr = px_ring_buf->idx_wr;
+    px_ring_buf_idx_t idx_rd = px_ring_buf->idx_rd;
+
+    // Buffer empty?
+    if(idx_rd == idx_wr)
+    {
+        *nr_of_bytes = 0;
+        return NULL;
+    }
+
+    if(idx_rd < idx_wr)
+    {
+        // |________xxxxxxxxx___________|
+        //          R>>>>>>>>W
+        if(*nr_of_bytes == 0)
+        {
+            // Return maximum available
+            *nr_of_bytes = idx_wr - idx_rd;
+        }
+        else if(*nr_of_bytes > (idx_wr - idx_rd))
+        {
+            // Clip chunk size to number of bytes in ring buffer
+            *nr_of_bytes = idx_wr - idx_rd;
+        }
+    }
+    else
+    {
+        // |xxxxxx___________________xxx|
+        //  >>>>>>W                  R>>
+        if(*nr_of_bytes == 0)
+        {
+            // Return maximum available to end of buffer
+            *nr_of_bytes = px_ring_buf->buf_size - idx_rd;
+        }
+        else if(*nr_of_bytes > (px_ring_buf->buf_size - idx_rd))
+        {
+            // Clip chunk size to number of bytes to end of buffer
+            *nr_of_bytes = px_ring_buf->buf_size - idx_rd;
+        }
+    }
+
+    return &px_ring_buf->buf[idx_rd];
+}
+
+px_ring_buf_idx_t px_ring_buf_peek(const px_ring_buf_t * px_ring_buf,
+                                   void *                data,
+                                   size_t                nr_of_bytes)
 {
     px_ring_buf_idx_t idx_peek   = px_ring_buf->idx_rd;
     px_ring_buf_idx_t bytes_read = 0;
