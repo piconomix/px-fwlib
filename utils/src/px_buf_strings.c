@@ -72,17 +72,9 @@ void px_buf_strings_reset(px_buf_strings_t * buf_strings)
     buf_strings->str      = buf_strings->buf;
 }
 
-bool px_buf_strings_is_empty(const px_buf_strings_t * buf_strings)
-{
-    if(buf_strings->index == 0) return true;
-    else                        return false;
-}
+bool px_buf_strings_is_empty(const px_buf_strings_t * buf_strings);
 
-bool px_buf_strings_is_full(const px_buf_strings_t * buf_strings)
-{
-    if(buf_strings->index >= (buf_strings->buf_size - 1)) return true;
-    else                                                  return false;
-}
+bool px_buf_strings_is_full(const px_buf_strings_t * buf_strings);
 
 uint16_t px_buf_strings_get_size_remaining(const px_buf_strings_t * buf_strings)
 {
@@ -95,6 +87,8 @@ uint16_t px_buf_strings_get_size_remaining(const px_buf_strings_t * buf_strings)
         return (buf_strings->buf_size - buf_strings->index - 1);
     }
 }
+
+bool px_buf_strings_is_current_str_empty(const px_buf_strings_t * buf_strings);
 
 bool px_buf_strings_append_char(px_buf_strings_t * buf_strings, char c)
 {

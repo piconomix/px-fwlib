@@ -101,7 +101,11 @@ void px_buf_strings_reset(px_buf_strings_t * buf_strings);
  *  @retval true           Buffer is empty
  *  @retval false          Buffer is not empty
  */
-bool px_buf_strings_is_empty(const px_buf_strings_t * buf_strings);
+inline bool px_buf_strings_is_empty(const px_buf_strings_t * buf_strings)
+{
+    if(buf_strings->index == 0) return true;
+    else                        return false;
+}
 
 /**
  *  Is character buffer full
@@ -111,7 +115,11 @@ bool px_buf_strings_is_empty(const px_buf_strings_t * buf_strings);
  *  @retval true           Buffer is full
  *  @retval false          Buffer is not full
  */
-bool px_buf_strings_is_full(const px_buf_strings_t * buf_strings);
+inline bool px_buf_strings_is_full(const px_buf_strings_t * buf_strings)
+{
+    if(buf_strings->index >= (buf_strings->buf_size - 1)) return true;
+    else                                                  return false;
+}
 
 /**
  *  Return remaining size available in character buffer (excluding zero terminator)
@@ -121,6 +129,20 @@ bool px_buf_strings_is_full(const px_buf_strings_t * buf_strings);
  *  @return uint16_t       Remaining size
  */
 uint16_t px_buf_strings_get_size_remaining(const px_buf_strings_t * buf_strings);
+
+/**
+ *  Is current string empty?
+ *
+ *  @param buf_strings     Pointer to object
+ *
+ *  @retval true           Current string is empty
+ *  @retval false          Current string is not empty
+ */
+inline bool px_buf_strings_is_current_str_empty(const px_buf_strings_t * buf_strings)
+{
+    if(*buf_strings->str == '\0') return true;
+    else                          return false;
+}
 
 /**
  *  Append char to current string
