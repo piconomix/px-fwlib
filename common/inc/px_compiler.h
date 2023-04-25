@@ -73,10 +73,6 @@
 #elif defined(__TI_ARM__)
     /// Texas Instruments ARM Compiler
     #define PX_COMPILER_TI_ARM
-#else
-    /// Unknown
-    #define PX_COMPILER_UNKNOWN
-    #warning "Compiler unknown"
 #endif
     
 /*
