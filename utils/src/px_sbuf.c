@@ -20,6 +20,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_sbuf.h"
@@ -45,10 +46,19 @@ void px_sbuf_init(px_sbuf_t * sbuf, char * buf, size_t buf_size)
     sbuf->buf[0]   = '\0';
 }
 
-void px_sbuf_malloc(px_sbuf_t * sbuf, size_t buf_size)
+bool px_sbuf_malloc(px_sbuf_t * sbuf, size_t buf_size)
 {
     char * buf = malloc(buf_size);
-    px_sbuf_init(sbuf, buf, buf_size);
+    if(buf != NULL)
+    {
+        px_sbuf_init(sbuf, buf, buf_size);
+        return true;
+    }
+    else
+    {
+        memset(sbuf, 0, sizeof(*sbuf));
+        return false;
+    }
 }
 
 void px_sbuf_free(px_sbuf_t * sbuf)

@@ -73,8 +73,11 @@ void px_sbuf_init(px_sbuf_t * sbuf, char * buf, size_t buf_size);
  *
  *  @param sbuf     Pointer to safe buffer object
  *  @param buf_size Size of character buffer
+ *
+ *  @retval true    Buffer could be allocated on heap
+ *  @retval false   Buffer could not be allocated on heap
  */
-void px_sbuf_malloc(px_sbuf_t * sbuf, size_t buf_size);
+bool px_sbuf_malloc(px_sbuf_t * sbuf, size_t buf_size);
 
 /**
  *  Free buffer on heap and clear safe buffer
