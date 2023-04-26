@@ -131,20 +131,6 @@ inline bool px_buf_strings_is_full(const px_buf_strings_t * buf_strings)
 uint16_t px_buf_strings_get_size_remaining(const px_buf_strings_t * buf_strings);
 
 /**
- *  Is current string empty?
- *
- *  @param buf_strings     Pointer to object
- *
- *  @retval true           Current string is empty
- *  @retval false          Current string is not empty
- */
-inline bool px_buf_strings_is_current_str_empty(const px_buf_strings_t * buf_strings)
-{
-    if(*buf_strings->str == '\0') return true;
-    else                          return false;
-}
-
-/**
  *  Append char to current string
  *
  *  If a zero terminator ('0') is appended then this will signal the start of a
@@ -167,6 +153,32 @@ bool px_buf_strings_append_char(px_buf_strings_t * buf_strings, char c);
  *  @param str             String to append
  */
 void px_buf_strings_append_str(px_buf_strings_t * buf_strings, const char * str);
+
+/**
+ *  Get current string
+ *
+ *  @param buf_strings      Pointer to object
+ *
+ *  @return const char *    Pointer to start of current string
+ */
+inline const char * px_buf_strings_get_current_str(const px_buf_strings_t * buf_strings)
+{
+    return buf_strings->str;
+}
+
+/**
+ *  Is current string empty?
+ *
+ *  @param buf_strings     Pointer to object
+ *
+ *  @retval true           Current string is empty
+ *  @retval false          Current string is not empty
+ */
+inline bool px_buf_strings_is_current_str_empty(const px_buf_strings_t * buf_strings)
+{
+    if(*buf_strings->str == '\0') return true;
+    else                          return false;
+}
 
 /**
  *  Get number of strings stored in buffer

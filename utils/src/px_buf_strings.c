@@ -88,8 +88,6 @@ uint16_t px_buf_strings_get_size_remaining(const px_buf_strings_t * buf_strings)
     }
 }
 
-bool px_buf_strings_is_current_str_empty(const px_buf_strings_t * buf_strings);
-
 bool px_buf_strings_append_char(px_buf_strings_t * buf_strings, char c)
 {
     // Buffer full?
@@ -129,6 +127,10 @@ void px_buf_strings_append_str(px_buf_strings_t * buf_strings, const char * str)
     }
     while(*str != '\0');
 }
+
+const char * px_buf_strings_get_current_str(const px_buf_strings_t * buf_strings);
+
+bool px_buf_strings_is_current_str_empty(const px_buf_strings_t * buf_strings);
 
 uint16_t px_buf_strings_get_count(px_buf_strings_t * buf_strings)
 {
