@@ -39,6 +39,7 @@
  */
 
 /* _____STANDARD INCLUDES____________________________________________________ */
+#include <stdarg.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_defs.h"
@@ -153,6 +154,25 @@ void px_sbuf_print(px_sbuf_t * sbuf, const char * str);
  *  @param format   Printf format string
  */
 void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...);
+
+/**
+ *  Append a variable argument string to a safe buffer
+ *
+ *  Example:
+ *  @code
+ *  #include <std_arg.h>
+ *
+ *  va_list args;
+ *  va_start(args, format);
+ *  px_sbuf_vprintf(&sbuf, format, &args);
+ *  va_end(args);
+ *  @endcode
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *  @param format   Printf format string
+ *  @param args     Pointer to variable argument list object
+ */
+void px_sbuf_vprintf(px_sbuf_t * sbuf, const char * format, const va_list * args);
 
 /**
  *  Append data to a safe buffer

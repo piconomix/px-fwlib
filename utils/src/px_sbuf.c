@@ -196,6 +196,36 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
     sbuf->index += i;
 }
 
+void px_sbuf_vprintf(px_sbuf_t * sbuf, const char * format, const va_list * args)
+{
+    size_t rem_buf_size;
+    int    i;
+
+    // Buffer full?
+    if(px_sbuf_is_full(sbuf))
+    {
+        return;
+    }
+    // Calculate remaining size
+    rem_buf_size = sbuf->buf_size - sbuf->index;
+    // Append formatted string
+    i = vsnprintf(&sbuf->buf[sbuf->index], rem_buf_size, format, *args);
+    // Error?
+    if(i <= 0)
+    {
+        // Zero terminate to remove error
+        sbuf->buf[sbuf->index] = '\0';
+        return;
+    }
+    // Overflow?
+    if(i > rem_buf_size)
+    {
+        i = rem_buf_size;
+    }
+    // Adjust to new position
+    sbuf->index += i;
+}
+
 void px_sbuf_append(px_sbuf_t * sbuf, const char * data, size_t nr_of_bytes)
 {
     while(nr_of_bytes != 0)
