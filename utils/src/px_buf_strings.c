@@ -132,6 +132,14 @@ const char * px_buf_strings_get_current_str(const px_buf_strings_t * buf_strings
 
 bool px_buf_strings_is_current_str_empty(const px_buf_strings_t * buf_strings);
 
+void px_buf_strings_clear_current_str(px_buf_strings_t * buf_strings)
+{
+    // Reset index to start of string
+    buf_strings->index = buf_strings->str - buf_strings->buf;
+    // Clear string
+    buf_strings->buf[buf_strings->index] = '\0';
+}
+
 uint16_t px_buf_strings_get_count(px_buf_strings_t * buf_strings)
 {
     uint16_t     count;

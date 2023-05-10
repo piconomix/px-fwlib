@@ -181,6 +181,13 @@ inline bool px_buf_strings_is_current_str_empty(const px_buf_strings_t * buf_str
 }
 
 /**
+ *  Clear current string content
+ *
+ *  @param buf_strings     Pointer to object
+ */
+void px_buf_strings_clear_current_str(px_buf_strings_t * buf_strings);
+
+/**
  *  Get number of strings stored in buffer
  *
  *  @param buf_strings     Pointer to object
