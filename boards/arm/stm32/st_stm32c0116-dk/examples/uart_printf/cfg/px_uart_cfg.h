@@ -25,10 +25,10 @@
 
 /* _____DEFINITIONS__________________________________________________________ */
 /// Enable/disable support for UART1 peripheral
-#define PX_UART_CFG_UART1_EN 0
+#define PX_UART_CFG_UART1_EN 1
 
 /// Enable/disable support for UART2 peripheral
-#define PX_UART_CFG_UART2_EN 1
+#define PX_UART_CFG_UART2_EN 0
 
 /// Enable/disable support for UART4 peripheral
 #define PX_UART_CFG_UART4_EN 0
