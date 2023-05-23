@@ -1,0 +1,10 @@
+# Basic GPIO example # {#STM32C0116_DK_EXAMPLE_GPIO}
+
+This is a basic GPIO example for the ST STM32C0116-DK board. It is the
+embedded equivalent of a "hello world" program on a PC to kick the tires and 
+know that your development setup works.
+
+The LED flashes at a slow 2 Hz.
+  
+File(s):
+- boards/arm/stm32/st_stm32c0116_dk/examples/gpio/src/main.c
