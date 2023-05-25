@@ -217,7 +217,7 @@ PX_ATTR_RAMFUNC void px_flash_wr_row(uint32_t adr, const uint32_t * data)
     __set_PRIMASK(primask);
 }
 
-PX_ATTR_RAMFUNC void px_flash_wr_double_words(uint32_t adr, const uint32_t * data, uint8_t count)
+PX_ATTR_RAMFUNC void px_flash_wr_double_words(uint32_t adr, const uint32_t * data, uint16_t count)
 {
     uint32_t   primask;
     uint32_t * dest = (uint32_t *)adr;
