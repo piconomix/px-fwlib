@@ -46,7 +46,7 @@ extern "C" {
 /* _____DEFINITIONS__________________________________________________________ */
 #define PX_FLASH_BASE_ADR                 FLASH_BASE
 
-#if STM32G0
+#if STM32G0 || STM32C0
 #define PX_FLASH_PAGE_SIZE                2048
 #define PX_FLASH_ROW_SIZE                 256
 #define PX_FLASH_ROW_SIZE_WORDS           (PX_FLASH_ROW_SIZE / 4)
@@ -89,7 +89,7 @@ void px_flash_erase_page(uint32_t adr);
 void px_flash_wr_half_page(uint32_t adr, const  uint32_t * data);
 #endif
 
-#if STM32G0
+#if STM32G0 || STM32C0
 /**
  *  Function to write a row.
  *  
@@ -97,6 +97,15 @@ void px_flash_wr_half_page(uint32_t adr, const  uint32_t * data);
  *  @param data     Pointer to buffer containing data to write
  */
 void px_flash_wr_row(uint32_t adr, const  uint32_t * data);
+
+/**
+ *  Function to write double words (64 bits at a time)
+ *
+ *  @param adr    Double word address (must be 8 byte aligned)
+ *  @param data   Pointer to buffer containing data to write
+ *  @param count  Number of double words to write
+ */
+void px_flash_wr_double_words(uint32_t adr, const uint32_t * data, uint16_t count);
 #endif
 
 /* _____MACROS_______________________________________________________________ */

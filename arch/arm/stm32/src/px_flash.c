@@ -45,7 +45,7 @@ PX_ATTR_RAMFUNC void px_flash_unlock(void)
     primask = __get_PRIMASK();
     // Disable interrupts
     px_interrupts_disable();
-#if STM32G0
+#if STM32G0 || STM32C0
     // Unlock
     FLASH->KEYR = 0x45670123;
     FLASH->KEYR = 0xcdef89ab;
@@ -69,7 +69,7 @@ PX_ATTR_RAMFUNC void px_flash_lock(void)
     primask = __get_PRIMASK();
     // Disable interrupts
     px_interrupts_disable();
-#if STM32G0
+#if STM32G0 || STM32C0
     // Lock
     FLASH->CR |= FLASH_CR_LOCK;
 #else
@@ -150,7 +150,7 @@ PX_ATTR_RAMFUNC void px_flash_wr_half_page(uint32_t adr, const uint32_t * data)
 }
 #endif
 
-#if STM32G0
+#if STM32G0 || STM32C0
 PX_ATTR_RAMFUNC void px_flash_erase_page(uint32_t adr)
 {
     uint32_t primask;
@@ -212,6 +212,43 @@ PX_ATTR_RAMFUNC void px_flash_wr_row(uint32_t adr, const uint32_t * data)
 
     // Disable fast programming
     FLASH->CR &= ~FLASH_CR_FSTPG;
+
+    // Restore interrupt status
+    __set_PRIMASK(primask);
+}
+
+PX_ATTR_RAMFUNC void px_flash_wr_double_words(uint32_t adr, const uint32_t * data, uint8_t count)
+{
+    uint32_t   primask;
+    uint32_t * dest = (uint32_t *)adr;
+
+    // Save interrupt status
+    primask = __get_PRIMASK();
+    // Disable interrupts
+    px_interrupts_disable();
+
+    // Enable programming
+    FLASH->CR |= FLASH_CR_PG;
+
+    while(count != 0)
+    {
+        // Write double word
+        *dest++ = *data++;
+        *dest++ = *data++;
+        // Wait until programming has finished (not busy)
+        while ((FLASH->SR & FLASH_SR_BSY1) != 0) {;}
+        // EOP (End Of Programming) Flag is set?
+        while ((FLASH->SR & FLASH_SR_EOP) != 0)
+        {
+            // Reset EOP flag
+            FLASH->SR = FLASH_SR_EOP;
+        }
+        // Next double word
+        count--;
+    }
+
+    // Disable programming
+    FLASH->CR &= ~FLASH_CR_PG;
 
     // Restore interrupt status
     __set_PRIMASK(primask);
