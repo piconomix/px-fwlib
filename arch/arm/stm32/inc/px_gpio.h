@@ -117,6 +117,14 @@ typedef enum
     PX_GPIO_AF_5            = 5,        ///< Alternate Function 5
     PX_GPIO_AF_6            = 6,        ///< Alternate Function 6
     PX_GPIO_AF_7            = 7,        ///< Alternate Function 7
+    PX_GPIO_AF_8            = 8,        ///< Alternate Function 8
+    PX_GPIO_AF_9            = 9,        ///< Alternate Function 9
+    PX_GPIO_AF_10           = 10,       ///< Alternate Function 10
+    PX_GPIO_AF_11           = 11,       ///< Alternate Function 11
+    PX_GPIO_AF_12           = 12,       ///< Alternate Function 12
+    PX_GPIO_AF_13           = 13,       ///< Alternate Function 13
+    PX_GPIO_AF_14           = 14,       ///< Alternate Function 14
+    PX_GPIO_AF_15           = 15,       ///< Alternate Function 15
     PX_GPIO_ALT_FN_BIT_MASK = 0xf,      ///< Alternate Function bit mask
 } px_gpio_af_t;
 
