@@ -37,6 +37,11 @@ static px_rtc_date_time_t px_rtc_util_date_time;
 static volatile px_rtc_sec_since_y2k_t px_rtc_util_sec_since_y2k;
 #endif
 
+#if PX_RTC_UTIL_CFG_AGE
+/// Variable to track RTC age (time since it was last written to)
+static volatile px_rtc_sec_since_y2k_t px_rtc_util_age_sec;
+#endif
+
 /// Structure to keep track of alarm
 static px_rtc_date_time_t px_rtc_util_alarm;
 
@@ -147,10 +152,7 @@ static void px_rtc_util_inc_date_time_on_tick(void)
 
 #if PX_RTC_UTIL_CFG_TICKS_PER_SEC
     // Increment sub second ticks
-    if(++px_rtc_util_date_time.ticks < PX_RTC_UTIL_CFG_TICKS_PER_SEC)
-    {
-        return;
-    }
+    if(++px_rtc_util_date_time.ticks < PX_RTC_UTIL_CFG_TICKS_PER_SEC) return;
     px_rtc_util_date_time.ticks = 0;
 #endif
 
@@ -159,11 +161,13 @@ static void px_rtc_util_inc_date_time_on_tick(void)
     px_rtc_util_sec_since_y2k++;
 #endif
 
+#if PX_RTC_UTIL_CFG_AGE
+    // Increment age
+    if(px_rtc_util_age_sec < PX_MAX_OF_TYPE(px_rtc_sec_since_y2k_t)) px_rtc_util_age_sec++;
+#endif
+
     // Increment seconds
-    if(++px_rtc_util_date_time.sec < 60)
-    {
-        return;
-    }
+    if(++px_rtc_util_date_time.sec < 60) return;
     px_rtc_util_date_time.sec = 0;
 
 #if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
@@ -172,10 +176,7 @@ static void px_rtc_util_inc_date_time_on_tick(void)
 #endif
 
     // Increment minutes
-    if(++px_rtc_util_date_time.min < 60)
-    {
-        return;
-    }
+    if(++px_rtc_util_date_time.min < 60) return;
     px_rtc_util_date_time.min = 0;
 
 #if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
@@ -184,10 +185,7 @@ static void px_rtc_util_inc_date_time_on_tick(void)
 #endif
 
     // Increment hours
-    if(++px_rtc_util_date_time.hour < 24)
-    {
-        return;
-    }
+    if(++px_rtc_util_date_time.hour < 24) return;
     px_rtc_util_date_time.hour = 0;
 
 #if PX_RTC_UTIL_CFG_PERIODIC_FLAGS
@@ -197,27 +195,18 @@ static void px_rtc_util_inc_date_time_on_tick(void)
 
 #if PX_RTC_UTIL_CFG_DAY_OF_WEEK
     // Next day of week
-    if(++px_rtc_util_date_time.day_of_week > 6)
-    {
-        px_rtc_util_date_time.day_of_week = 0;
-    }
+    if(++px_rtc_util_date_time.day_of_week > 6) px_rtc_util_date_time.day_of_week = 0;
 #endif
 
     // Determine number of days in month
     days_in_month = px_rtc_util_days_in_month(px_rtc_util_date_time.year, px_rtc_util_date_time.month);
 
     // Increment days
-    if(++px_rtc_util_date_time.day <= days_in_month)
-    {
-        return;
-    }
+    if(++px_rtc_util_date_time.day <= days_in_month) return;
     px_rtc_util_date_time.day = 1;
 
     // Increment months
-    if(++px_rtc_util_date_time.month <= 12)
-    {
-        return;
-    }
+    if(++px_rtc_util_date_time.month <= 12) return;
     px_rtc_util_date_time.month = 1;
 
     // Increment years
@@ -266,6 +255,11 @@ void px_rtc_util_init(void)
     // Reset seconds since Y2K
     px_rtc_util_sec_since_y2k = 0;
 #endif
+
+#if PX_RTC_UTIL_CFG_AGE
+    // RTC has not been set yet
+    px_rtc_util_age_sec = PX_MAX_OF_TYPE(px_rtc_sec_since_y2k_t);
+#endif
 }
 
 void px_rtc_util_on_tick(void)
@@ -275,78 +269,46 @@ void px_rtc_util_on_tick(void)
 
 #if PX_RTC_UTIL_CFG_TICKS_PER_SEC
     // Second elapsed?
-    if(px_rtc_util_date_time.ticks != 0)
-    {
-        // No
-        return;
-    }
+    if(px_rtc_util_date_time.ticks != 0) return;
 #endif
 
     // Must alarm flag be set?
-    if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_DIS)
-    {
-        // No
-        return;
-    }
+    if(px_rtc_util_alarm_mask == PX_RTC_UTIL_ALARM_MASK_DIS) return;
     // Compare seconds?
     if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_SEC)
     {
         // Seconds match?
-        if(px_rtc_util_date_time.sec != px_rtc_util_alarm.sec)
-        {
-            // No
-            return;
-        }
+        if(px_rtc_util_date_time.sec != px_rtc_util_alarm.sec) return;
     }
     // Compare minutes?
     if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_MIN)
     {
         // Seconds match?
-        if(px_rtc_util_date_time.min != px_rtc_util_alarm.min)
-        {
-            // No
-            return;
-        }
+        if(px_rtc_util_date_time.min != px_rtc_util_alarm.min) return;
     }
     // Compare hours?
     if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_HOUR)
     {
         // Hours match?
-        if(px_rtc_util_date_time.hour != px_rtc_util_alarm.hour)
-        {
-            // No
-            return;
-        }
+        if(px_rtc_util_date_time.hour != px_rtc_util_alarm.hour) return;
     }
     // Compare days?
     if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_DAY)
     {
         // Days match?
-        if(px_rtc_util_date_time.day != px_rtc_util_alarm.day)
-        {
-            // No
-            return;
-        }
+        if(px_rtc_util_date_time.day != px_rtc_util_alarm.day) return;
     }
     // Compare months?
     if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_MONTH)
     {
         // Months match?
-        if(px_rtc_util_date_time.month != px_rtc_util_alarm.month)
-        {
-            // No
-            return;
-        }
+        if(px_rtc_util_date_time.month != px_rtc_util_alarm.month) return;
     }
     // Compare years?
     if(px_rtc_util_alarm_mask & PX_RTC_UTIL_ALARM_MASK_YEAR)
     {
         // Years match?
-        if(px_rtc_util_date_time.year != px_rtc_util_alarm.year)
-        {
-            // No
-            return;
-        }
+        if(px_rtc_util_date_time.year != px_rtc_util_alarm.year) return;
     }
 
     /// Set flag to indicate that an alarm has occurred
@@ -379,11 +341,21 @@ void px_rtc_util_date_time_wr(px_rtc_date_time_t * date_time)
     // Repeat writing date-time and sec since Y2K together until they match
     while(true)
     {
+#if PX_RTC_UTIL_CFG_AGE
+        // Reset RTC age
+        px_rtc_util_age_sec = 0;
+#endif
         // Write date-time
         memcpy(&px_rtc_util_date_time, date_time, sizeof(px_rtc_date_time_t));
 #if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
         // Write seconds since Y2K
         px_rtc_util_sec_since_y2k = sec_since_y2k;
+        // Seconds since Y2K match?
+        if(px_rtc_util_sec_since_y2k != sec_since_y2k)
+        {
+            // No
+            continue;
+        }
 #endif
         // Read back date-time
         memcpy(&date_time_cmp, &px_rtc_util_date_time, sizeof(px_rtc_date_time_t));
@@ -393,14 +365,6 @@ void px_rtc_util_date_time_wr(px_rtc_date_time_t * date_time)
             // No
             continue;
         }
-#if PX_RTC_UTIL_CFG_SEC_SINCE_Y2K
-        // sec since Y2K match?
-        if(px_rtc_util_sec_since_y2k != sec_since_y2k)
-        {
-            // No
-            continue;
-        }
-#endif
         // Match!
         return;
     }
@@ -425,6 +389,13 @@ void px_rtc_util_date_time_rd(px_rtc_date_time_t * date_time)
 px_rtc_sec_since_y2k_t px_rtc_util_sec_since_y2k_rd(void)
 {
     return px_rtc_util_sec_since_y2k;
+}
+#endif
+
+#if PX_RTC_UTIL_CFG_AGE
+px_rtc_sec_since_y2k_t px_rtc_util_get_age(void)
+{
+    return px_rtc_util_age_sec;
 }
 #endif
 
@@ -568,59 +539,23 @@ px_rtc_time_compare_t px_rtc_util_cmp_date_time(const px_rtc_date_time_t * date_
                   && px_rtc_util_date_time_fields_are_valid(date_time2)  );
 
     // Year?
-    if(date_time1->year > date_time2->year)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->year < date_time2->year)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if     (date_time1->year > date_time2->year)   return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->year < date_time2->year)   return PX_RTC_UTIL_TIME_OLDER;
     // Month?
-    if(date_time1->month > date_time2->month)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->month < date_time2->month)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if     (date_time1->month > date_time2->month) return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->month < date_time2->month) return PX_RTC_UTIL_TIME_OLDER;
     // Day?
-    if(date_time1->day > date_time2->day)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->day < date_time2->day)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if(date_time1->day > date_time2->day)          return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->day < date_time2->day)     return PX_RTC_UTIL_TIME_OLDER;
     // Hour?
-    if(date_time1->hour > date_time2->hour)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->hour < date_time2->hour)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if     (date_time1->hour > date_time2->hour)   return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->hour < date_time2->hour)   return PX_RTC_UTIL_TIME_OLDER;
     // Minute?
-    if(date_time1->min > date_time2->min)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->min < date_time2->min)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if     (date_time1->min > date_time2->min)     return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->min < date_time2->min)     return PX_RTC_UTIL_TIME_OLDER;
     // Second?
-    if(date_time1->sec > date_time2->sec)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->sec < date_time2->sec)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if     (date_time1->sec > date_time2->sec)     return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->sec < date_time2->sec)     return PX_RTC_UTIL_TIME_OLDER;
 
     return PX_RTC_UTIL_TIME_EQUAL;
 }
@@ -633,32 +568,14 @@ px_rtc_time_compare_t px_rtc_util_cmp_date(const px_rtc_date_time_t * date_time1
                   && px_rtc_util_date_time_fields_are_valid(date_time2)  );
 
     // Year?
-    if(date_time1->year > date_time2->year)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->year < date_time2->year)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if(date_time1->year > date_time2->year)        return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->year < date_time2->year)   return PX_RTC_UTIL_TIME_OLDER;
     // Month?
-    if(date_time1->month > date_time2->month)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->month < date_time2->month)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if     (date_time1->month > date_time2->month) return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->month < date_time2->month) return PX_RTC_UTIL_TIME_OLDER;
     // Day?
-    if(date_time1->day > date_time2->day)
-    {
-        return PX_RTC_UTIL_TIME_NEWER;
-    }
-    else if(date_time1->day < date_time2->day)
-    {
-        return PX_RTC_UTIL_TIME_OLDER;
-    }
+    if(date_time1->day > date_time2->day)          return PX_RTC_UTIL_TIME_NEWER;
+    else if(date_time1->day < date_time2->day)     return PX_RTC_UTIL_TIME_OLDER;
 
     return PX_RTC_UTIL_TIME_EQUAL;
 }
@@ -671,20 +588,11 @@ bool px_rtc_util_date_is_equal(const px_rtc_date_time_t * date_time1,
                   && px_rtc_util_date_time_fields_are_valid(date_time2)  );
 
     // Year?
-    if(date_time1->year != date_time2->year)
-    {
-        return false;
-    }
+    if(date_time1->year != date_time2->year)   return false;
     // Month?
-    if(date_time1->month != date_time2->month)
-    {
-        return false;
-    }
+    if(date_time1->month != date_time2->month) return false;
     // Day?
-    if(date_time1->day != date_time2->day)
-    {
-        return false;
-    }
+    if(date_time1->day != date_time2->day)     return false;
 
     return true;
 }
@@ -713,10 +621,7 @@ px_rtc_sec_since_y2k_t px_rtc_util_date_time_to_sec_since_y2k(const px_rtc_date_
     // e.g. 2000, 2004, 2008, 2012, ...
     for(i = 0; i < date_time->year; i++)
     {
-        if(px_rtc_util_is_leap_year(i))
-        {
-            days++;
-        }
+        if(px_rtc_util_is_leap_year(i)) days++;
     }
 
     // Days
@@ -935,10 +840,7 @@ px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * dat
     // e.g. 2000, 2004, 2008, 2012, ...
     for(i = 0; i < date_time->year; i++)
     {
-        if(px_rtc_util_is_leap_year(i))
-        {
-            days++;
-        }
+        if(px_rtc_util_is_leap_year(i)) days++;
     }
     // Calculate completed days in specified year
     days += date_time->day - 1;

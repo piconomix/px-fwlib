@@ -41,7 +41,8 @@
 #if (   !defined(PX_RTC_UTIL_CFG_SEC_SINCE_Y2K ) \
      || !defined(PX_RTC_UTIL_CFG_PERIODIC_FLAGS) \
      || !defined(PX_RTC_UTIL_CFG_TICKS_PER_SEC ) \
-     || !defined(PX_RTC_UTIL_CFG_DAY_OF_WEEK   )   )
+     || !defined(PX_RTC_UTIL_CFG_DAY_OF_WEEK   ) \
+     || !defined(PX_RTC_UTIL_CFG_AGE           )  )
 #error "One or more options not defined in 'px_rtc_util_cfg.h'"
 #endif
 
@@ -155,6 +156,15 @@ void px_rtc_util_date_time_rd(px_rtc_date_time_t * date_time);
  *  @return px_rtc_util_sec_since_y2k_t     number of seconds elapsed since Y2K
  */
 px_rtc_sec_since_y2k_t px_rtc_util_sec_since_y2k_rd(void);
+#endif
+
+#if PX_RTC_UTIL_CFG_AGE
+/**
+ *  Return the RTC age
+ *
+ *  @return px_rtc_sec_since_y2k_t          seconds since the RTC was written to
+ */
+px_rtc_sec_since_y2k_t px_rtc_util_get_age(void);
 #endif
 
 /**

@@ -36,4 +36,7 @@
 /// Option to enable day of week support. 0 = disable; 1=enable
 #define PX_RTC_UTIL_CFG_DAY_OF_WEEK         0
 
+/// Option to track time since RTC was last updated
+#define PX_RTC_UTIL_CFG_AGE                 0
+
 #endif
