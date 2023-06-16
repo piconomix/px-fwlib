@@ -33,7 +33,7 @@
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 /// UART handle
-px_uart_handle_t * px_uart_stdio_handle;
+static px_uart_handle_t * px_uart_stdio_handle;
 
 #ifdef PX_COMPILER_ARM_CC
 #pragma import(__use_no_semihosting_swi)
