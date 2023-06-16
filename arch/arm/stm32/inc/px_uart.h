@@ -66,10 +66,6 @@
                                   + PX_UART_CFG_UART2_EN \
                                   + PX_UART_CFG_UART4_EN \
                                   + PX_UART_CFG_UART5_EN )
-// No peripherals enabled?
-#if (PX_UART_CFG_PER_COUNT == 0)
-#error "No peripherals enabled"
-#endif
 
 // Check that all buffer sizes have been specified in "px_uart_cfg.h"
 #if PX_UART_CFG_UART1_EN

@@ -21,6 +21,9 @@
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "px_uart.h"
+#if (PX_UART_CFG_PER_COUNT == 0)
+#warning "No peripherals enabled"
+#else
 #include "px_board.h"
 #include "px_ring_buf.h"
 #include "px_stm32cube.h"
@@ -916,3 +919,4 @@ bool px_uart_change_data_format(px_uart_handle_t *  handle,
     }
     return result;
 }
+#endif
