@@ -183,6 +183,15 @@ void px_sbuf_vprintf(px_sbuf_t * sbuf, const char * format, const va_list * args
  */
 void px_sbuf_append(px_sbuf_t * sbuf, const char * data, size_t nr_of_bytes);
 
+/**
+ *  Append an array of HEX data to a safe buffer
+ *
+ *  @param data         Pointer to buffer containing data to display
+ *  @param nr_of_bytes  Size of buffer (in bytes)
+ *
+ */
+void px_sbuf_print_hex_data(px_sbuf_t * sbuf, const void * data, size_t nr_of_bytes);
+
 /* _____MACROS_______________________________________________________________ */
 
 #ifdef __cplusplus
