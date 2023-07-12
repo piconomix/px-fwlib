@@ -341,6 +341,13 @@ void _px_log_trace_buf_hex(const void * data, size_t nr_of_bytes);
  */
 void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes);
 
+/**
+ *  Get access to internal character buffer.
+ *
+ *  The size of the buffer is #PX_LOG_CFG_BUF_SIZE
+ */
+char * _px_log_buf_get(void);
+
 /* _____MACROS_______________________________________________________________ */
 // PX_LOG enabled?
 #if PX_LOG

@@ -499,4 +499,9 @@ void _px_log_trace_hexdump(const void * data, size_t nr_of_bytes)
     }
 }
 
+char * _px_log_buf_get(void)
+{
+    return px_log_buf;
+}
+
 #endif
