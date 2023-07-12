@@ -31,7 +31,7 @@
  */
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#if STM32C0
+#if defined(STM32C0)
     #include "stm32c0xx_ll_adc.h"
     #include "stm32c0xx_ll_bus.h"
     #include "stm32c0xx_ll_cortex.h"
@@ -52,7 +52,7 @@
     #include "stm32c0xx_ll_utils.h"
     #include "stm32c0xx_ll_wwdg.h"
 
-#elif STM32L0
+#elif defined(STM32L0)
 
     #include "stm32l0xx_ll_adc.h"
     #include "stm32l0xx_ll_bus.h"
@@ -79,7 +79,7 @@
     #include "stm32l0xx_ll_utils.h"
     #include "stm32l0xx_ll_wwdg.h"
 
-#elif STM32L1
+#elif defined(STM32L1)
 
     #include "stm32l1xx_ll_adc.h"
     #include "stm32l1xx_ll_bus.h"
@@ -102,7 +102,7 @@
     #include "stm32l1xx_ll_utils.h"
     #include "stm32l1xx_ll_wwdg.h"
 
-#elif STM32G0
+#elif defined(STM32G0)
 
     #include "stm32g0xx_ll_adc.h"
     #include "stm32g0xx_ll_bus.h"
@@ -130,7 +130,7 @@
     #include "stm32g0xx_ll_utils.h"
     #include "stm32g0xx_ll_wwdg.h"
 
-#elif STM32WL
+#elif defined(STM32WL)
 
     #include "stm32wlxx_ll_adc.h"
     #include "stm32wlxx_ll_bus.h"

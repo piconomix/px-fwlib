@@ -274,7 +274,7 @@ static bool px_uart_init_baud(USART_TypeDef * usart_base_adr,
     }
 
     // Set BAUD
-#if STM32G0 || STM32C0
+#if defined(STM32G0) || defined(STM32C0)
     LL_USART_SetBaudRate(usart_base_adr, uart_clk_hz, LL_USART_PRESCALER_DIV1, LL_USART_OVERSAMPLING_16, baud);
 #else
     LL_USART_SetBaudRate(usart_base_adr, uart_clk_hz, LL_USART_OVERSAMPLING_16, baud);
