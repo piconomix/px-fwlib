@@ -413,6 +413,11 @@ void _px_log_trace(const char * format, ...)
     va_end(args);
 }
 
+void _px_log_trace_str(char * str)
+{
+    px_log_print_str(str);
+}
+
 void _px_log_trace_char(char c)
 {
     px_log_putchar(c);

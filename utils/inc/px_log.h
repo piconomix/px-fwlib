@@ -318,6 +318,13 @@ void _px_log_assert(const char * name,
 void _px_log_trace(const char * format, ...) PX_ATTR_FORMAT(printf, 1, 2);
 
 /**
+ *  Output a string.
+ *
+ *  @param str      String to output
+ */
+void _px_log_trace_str(char * str);
+
+/**
  *  Output a character.
  *
  *  @param c        Character to output
@@ -465,6 +472,13 @@ char * _px_log_buf_get(void);
 #define PX_LOG_TRACE(format, ...) _px_log_trace(PX_PGM_STR(format), ## __VA_ARGS__)
 
 /**
+ *  Macro to output a string if #PX_LOG=1
+ *
+ *  @param str          String to output
+ */
+#define PX_LOG_TRACE_STR(str) _px_log_trace_str(str)
+
+/**
  *  Macro to output a char if #PX_LOG=1
  *
  *  @param c            Character to output
@@ -508,6 +522,7 @@ char * _px_log_buf_get(void);
     #define PX_LOG_V(format, ...)                   ((void)0)
     #define PX_LOG_ASSERT(expression)               ((void)0)
     #define PX_LOG_TRACE(format, ...)               ((void)0)
+    #define PX_LOG_TRACE_STR(str)                   ((void)0)
     #define PX_LOG_TRACE_CHAR(c)                    ((void)0)
     #define PX_LOG_TRACE_BUF_HEX(data, nr_of_bytes) ((void)0)
     #define PX_LOG_TRACE_HEXDUMP(data, nr_of_bytes) ((void)0)
