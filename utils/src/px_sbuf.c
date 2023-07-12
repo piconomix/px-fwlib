@@ -243,13 +243,13 @@ void px_sbuf_append(px_sbuf_t * sbuf, const char * data, size_t nr_of_bytes)
     }
 }
 
-void px_sbuf_print_hex_data(px_sbuf_t * sbuf, const void * data, size_t nr_of_bytes)
+void px_sbuf_print_data_hex(px_sbuf_t * sbuf, const void * data, size_t nr_of_bytes)
 {
-    size_t          i;
     const uint8_t * data_u8 = (const uint8_t *)data;
 
-    for(i = 0; i < nr_of_bytes; i++)
+    while(nr_of_bytes != 0)
     {
-        px_sbuf_printf(sbuf, "%02X ", *data_u8++);
+        px_sbuf_printf(sbuf, "%02X", *data_u8++);
+        if(--nr_of_bytes != 0) px_sbuf_putchar(sbuf, ' ');
     }
 }

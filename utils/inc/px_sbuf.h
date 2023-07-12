@@ -190,7 +190,7 @@ void px_sbuf_append(px_sbuf_t * sbuf, const char * data, size_t nr_of_bytes);
  *  @param nr_of_bytes  Size of buffer (in bytes)
  *
  */
-void px_sbuf_print_hex_data(px_sbuf_t * sbuf, const void * data, size_t nr_of_bytes);
+void px_sbuf_print_data_hex(px_sbuf_t * sbuf, const void * data, size_t nr_of_bytes);
 
 /* _____MACROS_______________________________________________________________ */
 
