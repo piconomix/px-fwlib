@@ -94,6 +94,8 @@ static const char * px_cli_cmd_fn_sd_mount(uint8_t argc, char * argv[])
     printf("Data read access time 2: %u\n", csd->nsac);
     printf("Max data transfer rate: %u\n", csd->tran_speed);
     printf("Max read data block length: %u\n", csd->read_bl_len);
+    printf("Temp write protect: %u\n", csd->tmp_write_protect);
+    printf("Perm write protect: %u\n", csd->perm_write_protect);
     printf("Capacity: %lu Mbyte\n\n", px_sd_get_capacity_in_blocks(csd) / 2048);
 
     // Mount logical drive (immediately)
