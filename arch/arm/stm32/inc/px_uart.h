@@ -51,7 +51,8 @@
      || !defined(PX_UART_CFG_UART2_EN    ) \
      || !defined(PX_UART_CFG_UART4_EN    ) \
      || !defined(PX_UART_CFG_UART5_EN    ) \
-     || !defined(PX_UART_CFG_DEFAULT_BAUD)  )
+     || !defined(PX_UART_CFG_DEFAULT_BAUD) \
+     || !defined(PX_UART_CFG_ERR_STAT_EN )  )
 #error "One or more options not defined in 'px_uart_cfg.h'"
 #endif
 #if (   (PX_UART_CFG_UART1_EN > 1) \
@@ -333,6 +334,26 @@ bool px_uart_change_data_format(px_uart_handle_t *  handle,
                                 px_uart_data_bits_t data_bits,
                                 px_uart_parity_t    parity,
                                 px_uart_stop_bits_t stop_bits);
+
+#if PX_UART_CFG_ERR_STAT_EN
+/**
+ *  Get receive framing error count and reset
+ *
+ *  @param handle        Pointer to handle data structure
+ *
+ *  @return uint16_t     Number of errors
+ */
+uint16_t px_uart_rx_err_framing_get_and_rst(px_uart_handle_t *  handle);
+
+/**
+ *  Get receive parity error count and reset
+ *
+ *  @param handle        Pointer to handle data structure
+ *
+ *  @return uint16_t     Number of errors
+ */
+uint16_t px_uart_rx_err_parity_get_and_rst(px_uart_handle_t *  handle);
+#endif
 
 /* _____MACROS_______________________________________________________________ */
 

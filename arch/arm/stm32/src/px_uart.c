@@ -41,6 +41,10 @@ typedef struct px_uart_per_s
     volatile bool   tx_done;            ///< Transmit done flag
     px_ring_buf_t   tx_ring_buf;        ///< Transmit ring buffer
     px_ring_buf_t   rx_ring_buf;        ///< Receive ring buffer
+#if PX_UART_CFG_ERR_STAT_EN
+    uint16_t        rx_err_framing;     ///< Receive framing error count
+    uint16_t        rx_err_parity;      ///< Receive parity error count
+#endif
 } px_uart_per_t;
 
 // Default peripheral clocks in Hz
@@ -119,6 +123,10 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
             LL_USART_ClearFlag_FE(usart_base_adr);
             // Received byte not correct. Discard
             discard = true;
+#if PX_UART_CFG_ERR_STAT_EN
+            // Increase error count
+            if(uart_per->rx_err_framing < PX_U16_MAX) uart_per->rx_err_framing++;
+#endif
         }
         // Parity Error?
         if(LL_USART_IsActiveFlag_PE(usart_base_adr))
@@ -127,6 +135,10 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
             LL_USART_ClearFlag_PE(usart_base_adr);
             // Received byte not correct. Discard
             discard = true;
+#if PX_UART_CFG_ERR_STAT_EN
+            // Increase error count
+            if(uart_per->rx_err_parity < PX_U16_MAX) uart_per->rx_err_parity++;
+#endif
         }
         // Buffer received byte?
         if(!discard)
@@ -919,4 +931,36 @@ bool px_uart_change_data_format(px_uart_handle_t *  handle,
     }
     return result;
 }
+
+#if PX_UART_CFG_ERR_STAT_EN
+uint16_t px_uart_rx_err_framing_get_and_rst(px_uart_handle_t *  handle)
+{
+    uint16_t rx_err_framing;
+
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)  );
+
+    rx_err_framing = handle->uart_per->rx_err_framing;
+    handle->uart_per->rx_err_framing = 0;
+
+    return rx_err_framing;
+}
+
+uint16_t px_uart_rx_err_parity_get_and_rst(px_uart_handle_t *  handle)
+{
+    uint16_t rx_err_parity;
+
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)  );
+
+    rx_err_parity = handle->uart_per->rx_err_parity;
+    handle->uart_per->rx_err_parity = 0;
+
+    return rx_err_parity;
+}
 #endif
+
+#endif
+

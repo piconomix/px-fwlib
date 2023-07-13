@@ -81,5 +81,8 @@
 /// UART5 peripheral clock in Hz
 #define PX_UART_CFG_UART5_CLK_HZ        PX_BOARD_PER_CLK_HZ
 
+/// Enable/disable error statistics
+#define PX_UART_CFG_ERR_STAT_EN         0
+
 /// @}
 #endif

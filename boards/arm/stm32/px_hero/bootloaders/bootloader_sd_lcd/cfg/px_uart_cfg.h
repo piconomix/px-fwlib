@@ -64,4 +64,7 @@
 /// Size of UART5 receive buffer
 #define PX_UART_CFG_UART5_RX_BUF_SIZE   PX_UART_CFG_UART_RX_BUF_SIZE
 
+/// Enable/disable error statistics
+#define PX_UART_CFG_ERR_STAT_EN         0
+
 #endif
