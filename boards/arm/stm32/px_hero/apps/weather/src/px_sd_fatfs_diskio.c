@@ -146,15 +146,16 @@ DRESULT disk_ioctl (
 DWORD get_fattime(void)
 {
 #if 0
-    rtc_time_t time;
-    rtc_get_time(&time);
+    px_rtc_date_time_t date_time;
 
-    return	 ((DWORD)(2012 - 1980 + time.year) << 25)
-           | ((DWORD)(time.month) << 21)
-           | ((DWORD)(time.day) << 16)
-           | ((DWORD)(time.hour) << 11)
-           | ((DWORD)(time.min) << 5)
-           | ((DWORD)(time.sec) >> 1);
+    px_rtc_date_time_rd(&date_time);
+
+    return	 ((DWORD)(2000 - 1980 + date_time.year) << 25)
+           | ((DWORD)(date_time.month) << 21)
+           | ((DWORD)(date_time.day) << 16)
+           | ((DWORD)(date_time.hour) << 11)
+           | ((DWORD)(date_time.min) << 5)
+           | ((DWORD)(date_time.sec) >> 1);
 #else
     return 0;
 #endif
