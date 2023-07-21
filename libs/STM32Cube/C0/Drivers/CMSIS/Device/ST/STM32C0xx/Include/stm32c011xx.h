@@ -495,7 +495,7 @@ typedef struct
 #define PERIPH_BASE           (0x40000000UL)  /*!< Peripheral base address */
 #define IOPORT_BASE           (0x50000000UL)  /*!< IOPORT base address */
 
-#define SRAM_SIZE_MAX         (0x00001500UL)  /*!< maximum SRAM size (up to 6 KBytes) */
+#define SRAM_SIZE_MAX         (0x00001800UL)  /*!< maximum SRAM size (up to 6 KBytes) */
 /*!< Peripheral memory map */
 #define APBPERIPH_BASE        (PERIPH_BASE)
 #define AHBPERIPH_BASE        (PERIPH_BASE + 0x00020000UL)
