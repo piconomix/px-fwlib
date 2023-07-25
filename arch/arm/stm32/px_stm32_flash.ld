@@ -123,6 +123,13 @@ SECTIONS
           KEEP (*(.isr_vector))
           . = ALIGN(4);
     } > FLASH
+
+    /* Constants stored at a fixed location; after ISR vector table */
+    .fixed :
+    {
+        KEEP(*(.fixed))
+	 . = ALIGN(4);
+    } > FLASH
     
     /*
      * INIT section holds executable instructions that contribute to the
