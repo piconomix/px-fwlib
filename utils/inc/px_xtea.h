@@ -113,6 +113,60 @@ size_t px_xtea_decrypt_data_ecb(const uint8_t * data_in,
                                 uint8_t *       data_out,
                                 size_t          nr_of_bytes);
 
+/**
+ *  Set Initialization Vector (IV) for Cipher Block Chaining (CBC)
+ *
+ *  @param iv     Initialization Vector
+ */
+void px_xtea_init_cbc(const uint8_t iv[8]);
+
+/**
+ *  Encrypt a data buffer using Cipher Block Chaining (CBC) block cipher operation.
+ *
+ *  The data in and out buffer must be MUST be a multiple of 8 bytes.
+ *
+ *  The data can be encrypted in place by setting both the data_in and data_out
+ *  pointer to the start of the buffer to be encrypted.
+ *
+ *  @param data_in          Pointer to data buffer to be encrypted
+ *  @param data_out         Pointer to data buffer to contain encrypted data
+ *  @param nr_of_bytes      Number of bytes to encrypt (multiple of block size)
+ *
+ */
+/**
+ *  Encrypt a data buffer using Cipher Block Chaining (CBC) block cipher operation.
+ *
+ *  The data in and out buffer MUST be a multiple of 8 bytes.
+ *
+ *  The data can be encrypted in place by setting both the data_in and data_out
+ *  pointer to the start of the buffer to be encrypted.
+ *
+ *  @param data_in          Pointer to data buffer to be encrypted
+ *  @param data_out         Pointer to data buffer to contain encrypted data
+ *  @param nr_of_bytes      Number of bytes to encrypt (multiple of block size)
+ *
+ */
+void px_xtea_encrypt_data_cbc(const uint8_t * data_in,
+                              uint8_t *       data_out,
+                              size_t          nr_of_bytes);
+
+/**
+ *  Decrypt a data buffer using Cipher Block Chaining (CBC) block cipher operation.
+ *
+ *  The data in and out buffer MUST be a multiple of 8 bytes.
+ *
+ *  The data can be encrypted in place by setting both the data_in and data_out
+ *  pointer to the start of the buffer to be encrypted.
+ *
+ *  @param data_in          Pointer to data buffer to be encrypted
+ *  @param data_out         Pointer to data buffer to contain encrypted data
+ *  @param nr_of_bytes      Number of bytes to encrypt (multiple of block size)
+ *
+ */
+void px_xtea_decrypt_data_cbc(const uint8_t * data_in,
+                              uint8_t *       data_out,
+                              size_t          nr_of_bytes);
+
 /* _____MACROS_______________________________________________________________ */
 
 #ifdef __cplusplus
