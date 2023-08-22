@@ -211,6 +211,8 @@ CFLAGS += -Wstrict-prototypes
 #CFLAGS += -Wundef
 #CFLAGS += -Wunreachable-code
 #CFLAGS += -Wsign-compare
+CFLAGS += -fstack-usage
+#CFLAGS +- -Wstackusage=128
 CFLAGS += -std=gnu99
 CFLAGS += -ffunction-sections
 CFLAGS += -fdata-sections
@@ -277,6 +279,7 @@ EXTRALIBS =
 #---------------- Linker Options -----------------------------------------------
 #  -Wl,...:     tell GCC to pass this to linker.
 LDFLAGS += -Wl,-gc-sections,--relax
+LDFLAGS += -Wl,-print-memory-usage
 LDFLAGS += --specs=nosys.specs
 LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
