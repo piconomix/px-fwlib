@@ -42,6 +42,7 @@ typedef struct px_uart_per_s
     px_ring_buf_t   tx_ring_buf;        ///< Transmit ring buffer
     px_ring_buf_t   rx_ring_buf;        ///< Receive ring buffer
 #if PX_UART_CFG_ERR_STAT_EN
+    uint16_t        rx_err_overrun;     ///< Receive overrun count
     uint16_t        rx_err_framing;     ///< Receive framing error count
     uint16_t        rx_err_parity;      ///< Receive parity error count
 #endif
@@ -115,6 +116,8 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
         {
             // Clear flag. Did not service IRQ fast enough and missed byte(s). Ignore
             LL_USART_ClearFlag_ORE(usart_base_adr);
+            // Increase error count
+            if(uart_per->rx_err_overrun < PX_U16_MAX) uart_per->rx_err_overrun++;
         }
         // Framing Error?
         if(LL_USART_IsActiveFlag_FE(usart_base_adr))
@@ -170,7 +173,15 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
 #endif
             }
             // Add received byte to ring buffer (byte is discarded if buffer is full)
+#if PX_UART_CFG_ERR_STAT_EN
+            if(!px_ring_buf_wr_u8(&uart_per->rx_ring_buf, data))
+            {
+                // Increase error count
+                if(uart_per->rx_err_overrun < PX_U16_MAX) uart_per->rx_err_overrun++;
+            }
+#else
             px_ring_buf_wr_u8(&uart_per->rx_ring_buf, data);
+#endif
         }
     }
 
@@ -933,6 +944,20 @@ bool px_uart_change_data_format(px_uart_handle_t *  handle,
 }
 
 #if PX_UART_CFG_ERR_STAT_EN
+uint16_t px_uart_rx_err_overrun_get_and_rst(px_uart_handle_t *  handle)
+{
+    uint16_t rx_err_overrun;
+
+    // Sanity checks
+    PX_LOG_ASSERT(    (handle                           != NULL)
+                   && (handle->uart_per                 != NULL)  );
+
+    rx_err_overrun = handle->uart_per->rx_err_overrun;
+    handle->uart_per->rx_err_overrun = 0;
+
+    return rx_err_overrun;
+}
+
 uint16_t px_uart_rx_err_framing_get_and_rst(px_uart_handle_t *  handle)
 {
     uint16_t rx_err_framing;

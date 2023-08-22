@@ -337,6 +337,15 @@ bool px_uart_change_data_format(px_uart_handle_t *  handle,
 
 #if PX_UART_CFG_ERR_STAT_EN
 /**
+ *  Get receive overrun error count and reset
+ *
+ *  @param handle        Pointer to handle data structure
+ *
+ *  @return uint16_t     Number of errors
+ */
+uint16_t px_uart_rx_err_overrun_get_and_rst(px_uart_handle_t *  handle);
+
+/**
  *  Get receive framing error count and reset
  *
  *  @param handle        Pointer to handle data structure
