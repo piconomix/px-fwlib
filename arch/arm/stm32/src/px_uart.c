@@ -116,8 +116,10 @@ static void uart_irq_handler(px_uart_per_t * uart_per)
         {
             // Clear flag. Did not service IRQ fast enough and missed byte(s). Ignore
             LL_USART_ClearFlag_ORE(usart_base_adr);
+#if PX_UART_CFG_ERR_STAT_EN
             // Increase error count
             if(uart_per->rx_err_overrun < PX_U16_MAX) uart_per->rx_err_overrun++;
+#endif
         }
         // Framing Error?
         if(LL_USART_IsActiveFlag_FE(usart_base_adr))
