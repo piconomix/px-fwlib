@@ -33,6 +33,10 @@ PX_LOG_NAME("px_wwdg");
 /* _____LOCAL VARIABLES______________________________________________________ */
 static uint8_t px_wwdg_counter_reload;
 
+#if defined PX_WWDG_CFG_EARLY_WARNING_FLAG && defined PX_WWDG_CFG_EARLY_WARNING_REGS
+#error "Only one option can be selected not both"
+#endif
+
 #ifdef PX_WWDG_CFG_EARLY_WARNING_FLAG
 PX_ATTR_SECTION(".noinit") volatile uint32_t px_wwdg_ew_flag;
 #endif
@@ -203,13 +207,13 @@ void px_wwdg_dbg_report(void)
 #endif
 
 #ifdef PX_WWDG_CFG_EARLY_WARNING_REGS
-    PX_LOG_TRACE("r0 = 0x%08lX\n", px_wwdg_r0);
-    PX_LOG_TRACE("r1 = 0x%08lX\n", px_wwdg_r1);
-    PX_LOG_TRACE("r2 = 0x%08lX\n", px_wwdg_r2);
-    PX_LOG_TRACE("r3 = 0x%08lX\n", px_wwdg_r3);
-    PX_LOG_TRACE("r1 = 0x%08lX\n", px_wwdg_r12);
-    PX_LOG_TRACE("lr = 0x%08lX\n", px_wwdg_lr);
-    PX_LOG_TRACE("pc = 0x%08lX\n", px_wwdg_pc);
+    PX_LOG_TRACE("r0  = 0x%08lX\n", px_wwdg_r0);
+    PX_LOG_TRACE("r1  = 0x%08lX\n", px_wwdg_r1);
+    PX_LOG_TRACE("r2  = 0x%08lX\n", px_wwdg_r2);
+    PX_LOG_TRACE("r3  = 0x%08lX\n", px_wwdg_r3);
+    PX_LOG_TRACE("r12 = 0x%08lX\n", px_wwdg_r12);
+    PX_LOG_TRACE("lr  = 0x%08lX\n", px_wwdg_lr);
+    PX_LOG_TRACE("pc  = 0x%08lX\n", px_wwdg_pc);
     PX_LOG_TRACE("psr = 0x%08lX\n", px_wwdg_psr);
 #endif
 }
