@@ -247,6 +247,7 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive reference
 | Abbreviation      | Full version                                   |
 |-------------------|------------------------------------------------|
 | adr               | address                                        |
+| avg               | average                                        |
 | buf               | buffer                                         |
 | cal               | calibration                                    |
 | cfg               | configuration                                  |
@@ -256,6 +257,7 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive reference
 | dev               | device                                         |
 | en / dis          | enable / disable                               |
 | evt               | event                                          |
+| err               | error                                          |
 | fg / bg           | foreground / background                        |
 | fn                | function                                       |
 | gfx               | graphics                                       |
@@ -268,9 +270,12 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive reference
 | rd / wr / xc      | read / write / exchange                        |
 | min / max         | minimum / maximum                              |
 | meas              | measure                                        |
+| mgr               | manager                                        |
+| msg               | message                                        |
 | nr                | number                                         |
 | prev              | previous                                       |
 | pwr               | power                                          |
+| q                 | queue                                          |
 | reg               | register                                       |
 | res               | resource                                       |
 | resp              | response                                       |
