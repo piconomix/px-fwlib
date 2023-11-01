@@ -285,6 +285,9 @@ LDFLAGS += --specs=nano.specs
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
 LDFLAGS += -T $(PX_FWLIB)/$(ARCH)/px_stm32_flash.ld
 
+#---------------- Programmer Options -------------------------------------------
+#STM32_PROGRAMMER_SN = sn=066CFF565654898367082945
+
 #---------------- Debugging Options --------------------------------------------
 # OpenOCD script filename
 OPENOCD_SCRIPT ?= openocd.cfg
