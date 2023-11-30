@@ -39,7 +39,7 @@ static int16_t px_max31855_data_to_tc_temp(uint8_t * data)
 {
     int16_t t;
 
-    // Asemble bits D[30:18]
+    // Assemble bits D[30:18]
     t = (((uint16_t)data[0] & 0x7f) << 6) | (((uint16_t)data[1] & 0xfc) >> 2);
     // Negative value (D31 set)?
     if(data[0] & 0x80)
@@ -55,7 +55,7 @@ static int16_t px_max31855_data_to_int_temp(uint8_t * data)
 {
     int16_t t;
 
-    // Asemble bits D[14:4]
+    // Assemble bits D[14:4]
     t = (((uint16_t)data[2] & 0x7f) << 4) | (((uint16_t)data[3] & 0xf0) >> 4);
     // Negative value (D15 set)?
     if(data[2] & 0x80)
@@ -78,7 +78,7 @@ bool px_max31855_rd(px_max31855_data_t * data)
 {
     uint8_t data_u8[4];
 
-    px_spi_rd(&px_spi_tc_handle, data_u8, 4, PX_SPI_FLAG_START_AND_STOP);
+    px_spi_rd(px_max31855_spi_handle, data_u8, 4, PX_SPI_FLAG_START_AND_STOP);
 
     // All zeros?
     if( (data_u8[0] == 0x00) && (data_u8[1] == 0x00) && (data_u8[2] == 0x00) && (data_u8[3] == 0x00) )
