@@ -66,6 +66,12 @@ void px_queue_init(px_queue_t *         queue,
     queue->item_size  = item_size;
 }
 
+bool px_queue_is_empty(px_queue_t * queue);
+
+bool px_queue_is_full(px_queue_t * queue);
+
+px_queue_idx_t px_queue_get_item_count(px_queue_t * queue);
+
 bool px_queue_wr(px_queue_t * queue, const void * item_data)
 {
     PX_LOG_ASSERT((queue != NULL) && (item_data != NULL));
