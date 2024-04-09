@@ -54,12 +54,12 @@ typedef uint8_t px_queue_item_size_t;
 /// Queue structure
 typedef struct
 {
-    uint8_t *            buf;           ///< Buffer to hold item data
-    px_queue_idx_t       idx_rd;        ///< Read index
-    px_queue_idx_t       idx_wr;        ///< Write index
-    px_queue_idx_t       item_count;    ///< Number of items stored in queue
-    px_queue_idx_t       items_max;     ///< Maximum number of items that can be stored in queue
-    px_queue_item_size_t item_size;     ///< Size of each item
+    uint8_t *               buf;        ///< Buffer to hold item data
+    px_queue_idx_t          idx_rd;     ///< Read index
+    px_queue_idx_t          idx_wr;     ///< Write index
+    volatile px_queue_idx_t item_count; ///< Number of items stored in queue
+    px_queue_idx_t          items_max;  ///< Maximum number of items that can be stored in queue
+    px_queue_item_size_t    item_size;  ///< Size of each item
 } px_queue_t;
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
