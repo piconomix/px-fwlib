@@ -53,12 +53,17 @@ static void inline px_log_putchar(char data)
 #endif
 }
 
-static void px_log_print_str(const char * data)
+static void px_log_print_str(const char * str)
 {
+#ifdef PX_LOG_CFG_PRINT
+    // Output string using configured function
+    PX_LOG_CFG_PRINT(str);
+#else
     while(*data != '\0')
     {
-        px_log_putchar(*data++);
+        px_log_putchar(*str++);
     }
+#endif
 }
 
 static void inline px_log_print_hex04(uint8_t data)

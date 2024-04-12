@@ -88,5 +88,12 @@ extern void main_log_putchar(char data);
 #define PX_LOG_CFG_PUTCHAR(data) main_log_putchar(data)
 #endif
 
+/// Provide function to output log string (optional to increase speed)
+#if 0
+// Example 1: Call function in main.c
+extern void main_log_print(const char * str);
+#define PX_LOG_CFG_PRINT(str) main_log_print(str)
+#endif
+
 /// @}
 #endif
