@@ -79,23 +79,22 @@ int main(void)
 
 void main_log_timestamp(char * str)
 {
-    uint8_t i;
-    uint8_t j;
-    char    timestamp[9];
+    px_sysclk_ticks_t t = px_sysclk_get_tick_count();
+    int8_t            i;
 
-    sprintf(timestamp, "%08lu", (uint32_t)px_sysclk_get_tick_count());
+    i = 10;
+    while(t != 0)
+    {
+        if(i == 7) str[i--] = '.';
 
-    i = 0;
-    j = 0;
-    while(i < 5)
-    {
-        str[i++] = timestamp[j++];
+        str[i--] = '0' + t % 10;
+        t = t / 10;
+        if(i < 0) break;
     }
-    // Insert decimal separator
-    str[i++] = '.';
-    while(i < 9)
+    while(i >= 0)
     {
-        str[i++] = timestamp[j++];
+        if(i == 7) str[i--] = '.';
+        str[i--] = '0';
     }
-    str[i++] = '\0';
+    str[11] = '\0';
 }

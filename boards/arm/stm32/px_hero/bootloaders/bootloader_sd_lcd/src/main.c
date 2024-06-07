@@ -604,7 +604,24 @@ void main_log_putchar(char data)
 
 void main_log_timestamp(char * str)
 {
-    sprintf(str, "%08lu", (uint32_t)px_sysclk_get_tick_count());
+    px_sysclk_ticks_t t = px_sysclk_get_tick_count();
+    int8_t            i;
+
+    i = 10;
+    while(t != 0)
+    {
+        if(i == 7) str[i--] = '.';
+
+        str[i--] = '0' + t % 10;
+        t = t / 10;
+        if(i < 0) break;
+    }
+    while(i >= 0)
+    {
+        if(i == 7) str[i--] = '.';
+        str[i--] = '0';
+    }
+    str[11] = '\0';
 }
 #endif
 
