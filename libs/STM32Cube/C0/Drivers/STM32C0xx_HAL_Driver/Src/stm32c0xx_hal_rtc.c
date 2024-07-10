@@ -66,10 +66,10 @@
   [..]
   The compilation define  USE_RTC_REGISTER_CALLBACKS when set to 1
   allows the user to configure dynamically the driver callbacks.
-  Use Function @ref HAL_RTC_RegisterCallback() to register an interrupt callback.
+  Use Function HAL_RTC_RegisterCallback() to register an interrupt callback.
 
   [..]
-  Function @ref HAL_RTC_RegisterCallback() allows to register following callbacks:
+  Function HAL_RTC_RegisterCallback() allows to register following callbacks:
     (+) AlarmAEventCallback          :  RTC Alarm A Event callback.
     (+)        :  RTC TimeStamp Event callback.
     (+) MspInitCallback              :  RTC MspInit.
@@ -77,9 +77,9 @@
   This function takes as parameters the HAL peripheral handle, the Callback ID
   and a pointer to the user callback function.
 
-  Use function @ref HAL_RTC_UnRegisterCallback() to reset a callback to the default
+  Use function HAL_RTC_UnRegisterCallback() to reset a callback to the default
   weak function.
-  @ref HAL_RTC_UnRegisterCallback() takes as parameters the HAL peripheral handle,
+  HAL_RTC_UnRegisterCallback() takes as parameters the HAL peripheral handle,
   and the Callback ID.
   This function allows to reset following callbacks:
     (+) AlarmAEventCallback          : RTC Alarm A Event callback.
@@ -88,13 +88,13 @@
     (+) MspDeInitCallback            : RTC MspDeInit callback.
 
   [..]
-  By default, after the @ref HAL_RTC_Init() and when the state is HAL_RTC_STATE_RESET,
+  By default, after the HAL_RTC_Init() and when the state is HAL_RTC_STATE_RESET,
   all callbacks are set to the corresponding weak functions :
-  examples @ref AlarmAEventCallback(), @ref TimeStampEventCallback().
+  examples AlarmAEventCallback(), TimeStampEventCallback().
   Exception done for MspInit and MspDeInit callbacks that are reset to the legacy weak function
-  in the @ref HAL_RTC_Init()/@ref HAL_RTC_DeInit() only when these callbacks are null
+  in the HAL_RTC_Init()/HAL_RTC_DeInit() only when these callbacks are null
   (not registered beforehand).
-  If not, MspInit or MspDeInit are not null, @ref HAL_RTC_Init()/@ref HAL_RTC_DeInit()
+  If not, MspInit or MspDeInit are not null, HAL_RTC_Init()/HAL_RTC_DeInit()
   keep and use the user MspInit/MspDeInit callbacks (registered beforehand)
 
   [..]
@@ -103,8 +103,8 @@
   in HAL_RTC_STATE_READY or HAL_RTC_STATE_RESET state,
   thus registered (user) MspInit/DeInit callbacks can be used during the Init/DeInit.
   In that case first register the MspInit/MspDeInit user callbacks
-  using @ref HAL_RTC_RegisterCallback() before calling @ref HAL_RTC_DeInit()
-  or @ref HAL_RTC_Init() function.
+  using HAL_RTC_RegisterCallback() before calling HAL_RTC_DeInit()
+  or HAL_RTC_Init() function.
 
   [..]
   When The compilation define USE_HAL_RTC_REGISTER_CALLBACKS is set to 0 or
@@ -205,8 +205,8 @@ HAL_StatusTypeDef HAL_RTC_Init(RTC_HandleTypeDef *hrtc)
 
 
 #if (USE_HAL_RTC_REGISTER_CALLBACKS == 1)
-      hrtc->AlarmAEventCallback          =  HAL_RTC_AlarmAEventCallback;        /* Legacy weak AlarmAEventCallback      */
-      hrtc->TimeStampEventCallback       =  HAL_RTCEx_TimeStampEventCallback;   /* Legacy weak TimeStampEventCallback   */
+      hrtc->AlarmAEventCallback          =  HAL_RTC_AlarmAEventCallback;        /* Legacy weak AlarmAEventCallback   */
+      hrtc->TimeStampEventCallback       =  HAL_RTCEx_TimeStampEventCallback;   /* Legacy weak TimeStampEventCallback */
 
       if (hrtc->MspInitCallback == NULL)
       {
@@ -228,33 +228,44 @@ HAL_StatusTypeDef HAL_RTC_Init(RTC_HandleTypeDef *hrtc)
     /* Set RTC state */
     hrtc->State = HAL_RTC_STATE_BUSY;
 
-    /* Disable the write protection for RTC registers */
-    __HAL_RTC_WRITEPROTECTION_DISABLE(hrtc);
-
-    /* Enter Initialization mode */
-    status = RTC_EnterInitMode(hrtc);
-    if (status == HAL_OK)
+    /* Check whether the calendar needs to be initialized */
+    if (__HAL_RTC_IS_CALENDAR_INITIALIZED(hrtc) == 0U)
     {
-      /* Clear RTC_CR FMT, OSEL and POL Bits */
-      hrtc->Instance->CR &= ~(RTC_CR_FMT | RTC_CR_POL | RTC_CR_OSEL);
-      /* Set RTC_CR register */
-      hrtc->Instance->CR |= (hrtc->Init.HourFormat | hrtc->Init.OutPut | hrtc->Init.OutPutPolarity);
+      /* Disable the write protection for RTC registers */
+      __HAL_RTC_WRITEPROTECTION_DISABLE(hrtc);
 
-      /* Configure the RTC PRER */
-      hrtc->Instance->PRER = (hrtc->Init.SynchPrediv);
-      hrtc->Instance->PRER |= (hrtc->Init.AsynchPrediv << RTC_PRER_PREDIV_A_Pos);
-
-      /* Exit Initialization mode */
-      status = RTC_ExitInitMode(hrtc);
+      /* Enter Initialization mode */
+      status = RTC_EnterInitMode(hrtc);
       if (status == HAL_OK)
       {
-        hrtc->Instance->CR &= ~(RTC_CR_TAMPALRM_PU | RTC_CR_TAMPALRM_TYPE | RTC_CR_OUT2EN);
-        hrtc->Instance->CR |= (hrtc->Init.OutPutPullUp | hrtc->Init.OutPutType | hrtc->Init.OutPutRemap);
-      }
-    }
+        /* Clear RTC_CR FMT, OSEL and POL Bits */
+        CLEAR_BIT(RTC->CR, (RTC_CR_FMT | RTC_CR_POL | RTC_CR_OSEL));
 
-    /* Enable the write protection for RTC registers */
-    __HAL_RTC_WRITEPROTECTION_ENABLE(hrtc);
+        /* Set RTC_CR register */
+        SET_BIT(RTC->CR, (hrtc->Init.HourFormat | hrtc->Init.OutPut | hrtc->Init.OutPutPolarity));
+
+        /* Configure the RTC PRER */
+        WRITE_REG(RTC->PRER, ((hrtc->Init.SynchPrediv) | (hrtc->Init.AsynchPrediv << RTC_PRER_PREDIV_A_Pos)));
+
+        /* Exit Initialization mode */
+        status = RTC_ExitInitMode(hrtc);
+      }
+
+      if (status == HAL_OK)
+      {
+        MODIFY_REG(RTC->CR, \
+                   RTC_CR_TAMPALRM_PU | RTC_CR_TAMPALRM_TYPE | RTC_CR_OUT2EN, \
+                   hrtc->Init.OutPutPullUp | hrtc->Init.OutPutType | hrtc->Init.OutPutRemap);
+      }
+
+      /* Enable the write protection for RTC registers */
+      __HAL_RTC_WRITEPROTECTION_ENABLE(hrtc);
+    }
+    else
+    {
+      /* The calendar is already initialized */
+      status = HAL_OK;
+    }
 
     if (status == HAL_OK)
     {
@@ -284,21 +295,25 @@ HAL_StatusTypeDef HAL_RTC_DeInit(RTC_HandleTypeDef *hrtc)
   /* Disable the write protection for RTC registers */
   __HAL_RTC_WRITEPROTECTION_DISABLE(hrtc);
 
-  /* Enter Initialization mode */
   status = RTC_EnterInitMode(hrtc);
-  if (status == HAL_OK)
-  {
-    /* Reset TR, DR and CR registers */
-    hrtc->Instance->TR = 0x00000000U;
-    hrtc->Instance->DR = ((uint32_t)(RTC_DR_WDU_0 | RTC_DR_MU_0 | RTC_DR_DU_0));
 
+  /* Set Initialization mode */
+  if (status != HAL_OK)
+  {
+    /* Set RTC state */
+    hrtc->State = HAL_RTC_STATE_ERROR;
+  }
+  else
+  {
     /* Reset all RTC CR register bits */
-    hrtc->Instance->CR &= 0x00000000U;
-    hrtc->Instance->PRER = ((uint32_t)(RTC_PRER_PREDIV_A | 0x000000FFU));
-    hrtc->Instance->ALRMAR = 0x00000000U;
-    hrtc->Instance->SHIFTR = 0x00000000U;
-    hrtc->Instance->CALR = 0x00000000U;
-    hrtc->Instance->ALRMASSR = 0x00000000U;
+    CLEAR_REG(RTC->CR);
+    WRITE_REG(RTC->DR, (uint32_t)(RTC_DR_WDU_0 | RTC_DR_MU_0 | RTC_DR_DU_0));
+    CLEAR_REG(RTC->TR);
+    WRITE_REG(RTC->PRER, ((uint32_t)(RTC_PRER_PREDIV_A | 0xFFU)));
+    CLEAR_REG(RTC->ALRMAR);
+    CLEAR_REG(RTC->SHIFTR);
+    CLEAR_REG(RTC->CALR);
+    WRITE_REG(RTC->SCR, RTC_SCR_CTSOVF | RTC_SCR_CTSF | RTC_SCR_CALRAF);
 
     /* Exit initialization mode */
     status = RTC_ExitInitMode(hrtc);
@@ -787,7 +802,7 @@ HAL_StatusTypeDef HAL_RTC_SetDate(RTC_HandleTypeDef *hrtc, RTC_DateTypeDef *sDat
   *            @arg RTC_FORMAT_BCD:  BCD data format
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_RTC_GetDate(RTC_HandleTypeDef *hrtc, RTC_DateTypeDef *sDate, uint32_t Format)
+HAL_StatusTypeDef HAL_RTC_GetDate(const RTC_HandleTypeDef *hrtc, RTC_DateTypeDef *sDate, uint32_t Format)
 {
   uint32_t datetmpreg;
 
@@ -983,6 +998,7 @@ HAL_StatusTypeDef HAL_RTC_SetAlarm(RTC_HandleTypeDef *hrtc, RTC_AlarmTypeDef *sA
   * @note   The Alarm register can only be written when the corresponding Alarm
   *         is disabled (Use the HAL_RTC_DeactivateAlarm()).
   * @note   The HAL_RTC_SetTime() must be called before enabling the Alarm feature.
+  * @note   The application must ensure that the EXTI RTC interrupt line is enabled.
   * @param  hrtc RTC handle
   * @param  sAlarm Pointer to Alarm structure
   * @param  Format Specifies the format of the entered parameters.
@@ -1204,7 +1220,8 @@ HAL_StatusTypeDef HAL_RTC_DeactivateAlarm(RTC_HandleTypeDef *hrtc, uint32_t Alar
   *             @arg RTC_FORMAT_BCD: BCD data format
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_RTC_GetAlarm(RTC_HandleTypeDef *hrtc, RTC_AlarmTypeDef *sAlarm, uint32_t Alarm, uint32_t Format)
+HAL_StatusTypeDef HAL_RTC_GetAlarm(const RTC_HandleTypeDef *hrtc, RTC_AlarmTypeDef *sAlarm, uint32_t Alarm,
+                                   uint32_t Format)
 {
   uint32_t tmpreg;
   uint32_t subsecondtmpreg;
@@ -1296,7 +1313,6 @@ __weak void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
   */
 HAL_StatusTypeDef HAL_RTC_PollForAlarmAEvent(RTC_HandleTypeDef *hrtc, uint32_t Timeout)
 {
-
   uint32_t tickstart = HAL_GetTick();
 
   while (__HAL_RTC_ALARM_GET_FLAG(hrtc, RTC_FLAG_ALRAF) == 0U)
@@ -1305,17 +1321,21 @@ HAL_StatusTypeDef HAL_RTC_PollForAlarmAEvent(RTC_HandleTypeDef *hrtc, uint32_t T
     {
       if (((HAL_GetTick() - tickstart) > Timeout) || (Timeout == 0U))
       {
-        hrtc->State = HAL_RTC_STATE_TIMEOUT;
-        return HAL_TIMEOUT;
+        /* New check to avoid false timeout detection in case of preemption */
+        if (__HAL_RTC_ALARM_GET_FLAG(hrtc, RTC_FLAG_ALRAF) == 0U)
+        {
+          return HAL_TIMEOUT;
+        }
+        else
+        {
+          break;
+        }
       }
     }
   }
 
   /* Clear the Alarm interrupt pending bit */
   __HAL_RTC_ALARM_CLEAR_FLAG(hrtc, RTC_FLAG_ALRAF);
-
-  /* Change RTC state */
-  hrtc->State = HAL_RTC_STATE_READY;
 
   return HAL_OK;
 }
@@ -1358,16 +1378,26 @@ HAL_StatusTypeDef HAL_RTC_WaitForSynchro(RTC_HandleTypeDef *hrtc)
   uint32_t tickstart;
 
   /* Clear RSF flag */
-  hrtc->Instance->ICSR &= (uint32_t)RTC_RSF_MASK;
+  CLEAR_BIT(RTC->ICSR, RTC_ICSR_RSF);
 
   tickstart = HAL_GetTick();
 
   /* Wait the registers to be synchronised */
-  while ((hrtc->Instance->ICSR & RTC_ICSR_RSF) == 0U)
+  while (READ_BIT(RTC->ICSR, RTC_ICSR_RSF) == 0U)
   {
     if ((HAL_GetTick() - tickstart) > RTC_TIMEOUT_VALUE)
     {
-      return HAL_TIMEOUT;
+      /* New check to avoid false timeout detection in case of preemption */
+      if (READ_BIT(RTC->ICSR, RTC_ICSR_RSF) == 0U)
+      {
+        /* Change RTC state */
+        hrtc->State = HAL_RTC_STATE_TIMEOUT;
+        return HAL_TIMEOUT;
+      }
+      else
+      {
+        break;
+      }
     }
   }
 
@@ -1397,7 +1427,7 @@ HAL_StatusTypeDef HAL_RTC_WaitForSynchro(RTC_HandleTypeDef *hrtc)
   * @param  hrtc RTC handle
   * @retval HAL state
   */
-HAL_RTCStateTypeDef HAL_RTC_GetState(RTC_HandleTypeDef *hrtc)
+HAL_RTCStateTypeDef HAL_RTC_GetState(const RTC_HandleTypeDef *hrtc)
 {
   /* Return RTC handle state */
   return hrtc->State;
@@ -1426,19 +1456,29 @@ HAL_StatusTypeDef RTC_EnterInitMode(RTC_HandleTypeDef *hrtc)
   HAL_StatusTypeDef status = HAL_OK;
 
   /* Check if the Initialization mode is set */
-  if ((hrtc->Instance->ICSR & RTC_ICSR_INITF) == 0U)
+  if (READ_BIT(RTC->ICSR, RTC_ICSR_INITF) == 0U)
   {
     /* Set the Initialization mode */
-    SET_BIT(hrtc->Instance->ICSR, RTC_ICSR_INIT);
+    SET_BIT(RTC->ICSR, RTC_ICSR_INIT);
 
     tickstart = HAL_GetTick();
     /* Wait till RTC is in INIT state and if Time out is reached exit */
-    while (((hrtc->Instance->ICSR & RTC_ICSR_INITF) == 0U) && (status != HAL_TIMEOUT))
+    while ((READ_BIT(RTC->ICSR, RTC_ICSR_INITF) == 0U) && (status != HAL_TIMEOUT))
     {
       if ((HAL_GetTick()  - tickstart) > RTC_TIMEOUT_VALUE)
       {
-        status = HAL_TIMEOUT;
-        hrtc->State = HAL_RTC_STATE_TIMEOUT;
+        /* New check to avoid false timeout detection in case of preemption */
+        if (READ_BIT(RTC->ICSR, RTC_ICSR_INITF) == 0U)
+        {
+          status = HAL_TIMEOUT;
+
+          /* Change RTC state */
+          hrtc->State = HAL_RTC_STATE_TIMEOUT;
+        }
+        else
+        {
+          break;
+        }
       }
     }
   }

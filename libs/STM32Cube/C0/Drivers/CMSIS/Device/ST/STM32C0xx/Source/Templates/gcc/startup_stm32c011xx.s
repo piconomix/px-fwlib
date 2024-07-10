@@ -51,6 +51,8 @@ defined in linker script */
 Reset_Handler:
   ldr   r0, =_estack
   mov   sp, r0          /* set stack pointer */
+/* Call the clock system initialization function.*/
+  bl  SystemInit
 
 /* Copy the data segment initializers from flash to SRAM */
   movs r1, #0
@@ -82,8 +84,7 @@ LoopFillZerobss:
   cmp r2, r3
   bcc FillZerobss
 
-/* Call the clock system initialization function.*/
-  bl  SystemInit
+
 /* Call static constructors */
   bl __libc_init_array
 /* Call the application's entry point.*/
@@ -117,7 +118,6 @@ Infinite_Loop:
 ******************************************************************************/
    .section .isr_vector,"a",%progbits
   .type g_pfnVectors, %object
-  .size g_pfnVectors, .-g_pfnVectors
 
 
 g_pfnVectors:
@@ -169,6 +169,8 @@ g_pfnVectors:
   .word  0                                 /* reserved                     */
   .word  0                                 /* reserved                     */
   .word  0                                 /* reserved                     */
+
+  .size g_pfnVectors, .-g_pfnVectors
 /*******************************************************************************
 *
 * Provide weak aliases for each Exception handler to the Default_Handler.

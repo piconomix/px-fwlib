@@ -25,7 +25,7 @@
 #include "stm32_assert.h"
 #else
 #define assert_param(expr) ((void)0U)
-#endif
+#endif /* USE_FULL_ASSERT */
 
 /** @addtogroup STM32C0xx_LL_Driver
   * @{
@@ -133,6 +133,16 @@
 
 /* Check of parameters for configuration of ADC hierarchical scope:           */
 /* ADC group regular                                                          */
+#if defined(TIM2)
+#define IS_LL_ADC_REG_TRIG_SOURCE(__REG_TRIG_SOURCE__)                         \
+  (((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_SOFTWARE)                         \
+   || ((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_EXT_TIM1_TRGO2)                \
+   || ((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_EXT_TIM1_CH4 )                 \
+   || ((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_EXT_TIM2_TRGO)                 \
+   || ((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_EXT_TIM3_TRGO)                 \
+   || ((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_EXT_EXTI_LINE11)               \
+  )
+#else
 #define IS_LL_ADC_REG_TRIG_SOURCE(__REG_TRIG_SOURCE__)                         \
   (((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_SOFTWARE)                         \
    || ((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_EXT_TIM1_TRGO2)                \
@@ -140,6 +150,8 @@
    || ((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_EXT_TIM3_TRGO)                 \
    || ((__REG_TRIG_SOURCE__) == LL_ADC_REG_TRIG_EXT_EXTI_LINE11)               \
   )
+#endif /* TIM1 */
+
 #define IS_LL_ADC_REG_CONTINUOUS_MODE(__REG_CONTINUOUS_MODE__)                 \
   (((__REG_CONTINUOUS_MODE__) == LL_ADC_REG_CONV_SINGLE)                       \
    || ((__REG_CONTINUOUS_MODE__) == LL_ADC_REG_CONV_CONTINUOUS)                \
@@ -204,10 +216,13 @@
   *          - SUCCESS: ADC common registers are de-initialized
   *          - ERROR: not applicable
   */
-ErrorStatus LL_ADC_CommonDeInit(ADC_Common_TypeDef *ADCxy_COMMON)
+ErrorStatus LL_ADC_CommonDeInit(const ADC_Common_TypeDef *ADCxy_COMMON)
 {
   /* Check the parameters */
   assert_param(IS_ADC_COMMON_INSTANCE(ADCxy_COMMON));
+
+  /* Prevent unused argument(s) compilation warning if no assert_param check */
+  (void)(ADCxy_COMMON);
 
   /* Force reset of ADC clock (core clock) */
   LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_ADC);
@@ -413,14 +428,14 @@ ErrorStatus LL_ADC_DeInit(ADC_TypeDef *ADCx)
     /* Reset register SMPR */
     CLEAR_BIT(ADCx->SMPR, ADC_SMPR_SMP1 | ADC_SMPR_SMP2 | ADC_SMPR_SMPSEL);
 
-    /* Reset register TR1 */
-    MODIFY_REG(ADCx->TR1, ADC_TR1_HT1 | ADC_TR1_LT1, ADC_TR1_HT1);
+    /* Reset register AWD1TR */
+    MODIFY_REG(ADCx->AWD1TR, ADC_AWD1TR_HT1 | ADC_AWD1TR_LT1, ADC_AWD1TR_HT1);
 
-    /* Reset register TR2 */
-    MODIFY_REG(ADCx->TR2, ADC_TR2_HT2 | ADC_TR2_LT2, ADC_TR2_HT2);
+    /* Reset register AWD2TR */
+    MODIFY_REG(ADCx->AWD2TR, ADC_AWD2TR_HT2 | ADC_AWD2TR_LT2, ADC_AWD2TR_HT2);
 
-    /* Reset register TR3 */
-    MODIFY_REG(ADCx->TR3, ADC_TR3_HT3 | ADC_TR3_LT3, ADC_TR3_HT3);
+    /* Reset register AWD3TR */
+    MODIFY_REG(ADCx->AWD3TR, ADC_AWD3TR_HT3 | ADC_AWD3TR_LT3, ADC_AWD3TR_HT3);
 
     /* Reset register CHSELR */
     CLEAR_BIT(ADCx->CHSELR,

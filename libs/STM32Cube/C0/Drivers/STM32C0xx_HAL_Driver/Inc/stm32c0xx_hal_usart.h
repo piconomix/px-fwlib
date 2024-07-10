@@ -141,7 +141,7 @@ typedef struct __USART_HandleTypeDef
 
   uint16_t                      NbTxDataToProcess;       /*!< Number of data to process during TX ISR execution */
 
-  uint32_t                      SlaveMode;               /*!< Enable/Disable UART SPI Slave Mode. This parameter can be a value
+  uint32_t                      SlaveMode;               /*!< Enable/Disable USART SPI Slave Mode. This parameter can be a value
                                                               of @ref USARTEx_Slave_Mode */
 
   uint32_t                      FifoMode;                /*!< Specifies if the FIFO mode will be used. This parameter can be a value
@@ -151,10 +151,12 @@ typedef struct __USART_HandleTypeDef
 
   void (*TxISR)(struct __USART_HandleTypeDef *husart);   /*!< Function pointer on Tx IRQ handler  */
 
+#if defined(HAL_DMA_MODULE_ENABLED)
   DMA_HandleTypeDef             *hdmatx;                 /*!< USART Tx DMA Handle parameters      */
 
   DMA_HandleTypeDef             *hdmarx;                 /*!< USART Rx DMA Handle parameters      */
 
+#endif /* HAL_DMA_MODULE_ENABLED */
   HAL_LockTypeDef               Lock;                    /*!< Locking object                      */
 
   __IO HAL_USART_StateTypeDef   State;                   /*!< USART communication state           */
@@ -223,7 +225,9 @@ typedef  void (*pUSART_CallbackTypeDef)(USART_HandleTypeDef *husart);  /*!< poin
 #define HAL_USART_ERROR_NE               (0x00000002U)    /*!< Noise error               */
 #define HAL_USART_ERROR_FE               (0x00000004U)    /*!< Frame error               */
 #define HAL_USART_ERROR_ORE              (0x00000008U)    /*!< Overrun error             */
+#if defined(HAL_DMA_MODULE_ENABLED)
 #define HAL_USART_ERROR_DMA              (0x00000010U)    /*!< DMA transfer error        */
+#endif /* HAL_DMA_MODULE_ENABLED */
 #define HAL_USART_ERROR_UDR              (0x00000020U)    /*!< SPI slave underrun error  */
 #if (USE_HAL_USART_REGISTER_CALLBACKS == 1)
 #define HAL_USART_ERROR_INVALID_CALLBACK (0x00000040U)    /*!< Invalid Callback error    */
@@ -703,8 +707,7 @@ typedef  void (*pUSART_CallbackTypeDef)(USART_HandleTypeDef *husart);  /*!< poin
    ((__CLOCKPRESCALER__) == USART_PRESCALER_DIV16)  ? 16U :      \
    ((__CLOCKPRESCALER__) == USART_PRESCALER_DIV32)  ? 32U :      \
    ((__CLOCKPRESCALER__) == USART_PRESCALER_DIV64)  ? 64U :      \
-   ((__CLOCKPRESCALER__) == USART_PRESCALER_DIV128) ? 128U :     \
-   ((__CLOCKPRESCALER__) == USART_PRESCALER_DIV256) ? 256U : 1U)
+   ((__CLOCKPRESCALER__) == USART_PRESCALER_DIV128) ? 128U : 256U)
 
 /** @brief  BRR division operation to set BRR register in 8-bit oversampling mode.
   * @param  __PCLK__ USART clock.
@@ -890,6 +893,7 @@ HAL_StatusTypeDef HAL_USART_Transmit_IT(USART_HandleTypeDef *husart, const uint8
 HAL_StatusTypeDef HAL_USART_Receive_IT(USART_HandleTypeDef *husart, uint8_t *pRxData, uint16_t Size);
 HAL_StatusTypeDef HAL_USART_TransmitReceive_IT(USART_HandleTypeDef *husart, const uint8_t *pTxData, uint8_t *pRxData,
                                                uint16_t Size);
+#if defined(HAL_DMA_MODULE_ENABLED)
 HAL_StatusTypeDef HAL_USART_Transmit_DMA(USART_HandleTypeDef *husart, const uint8_t *pTxData, uint16_t Size);
 HAL_StatusTypeDef HAL_USART_Receive_DMA(USART_HandleTypeDef *husart, uint8_t *pRxData, uint16_t Size);
 HAL_StatusTypeDef HAL_USART_TransmitReceive_DMA(USART_HandleTypeDef *husart, const uint8_t *pTxData, uint8_t *pRxData,
@@ -897,6 +901,7 @@ HAL_StatusTypeDef HAL_USART_TransmitReceive_DMA(USART_HandleTypeDef *husart, con
 HAL_StatusTypeDef HAL_USART_DMAPause(USART_HandleTypeDef *husart);
 HAL_StatusTypeDef HAL_USART_DMAResume(USART_HandleTypeDef *husart);
 HAL_StatusTypeDef HAL_USART_DMAStop(USART_HandleTypeDef *husart);
+#endif /* HAL_DMA_MODULE_ENABLED */
 /* Transfer Abort functions */
 HAL_StatusTypeDef HAL_USART_Abort(USART_HandleTypeDef *husart);
 HAL_StatusTypeDef HAL_USART_Abort_IT(USART_HandleTypeDef *husart);
@@ -919,8 +924,8 @@ void HAL_USART_AbortCpltCallback(USART_HandleTypeDef *husart);
   */
 
 /* Peripheral State and Error functions ***************************************/
-HAL_USART_StateTypeDef HAL_USART_GetState(USART_HandleTypeDef *husart);
-uint32_t               HAL_USART_GetError(USART_HandleTypeDef *husart);
+HAL_USART_StateTypeDef HAL_USART_GetState(const USART_HandleTypeDef *husart);
+uint32_t               HAL_USART_GetError(const USART_HandleTypeDef *husart);
 
 /**
   * @}

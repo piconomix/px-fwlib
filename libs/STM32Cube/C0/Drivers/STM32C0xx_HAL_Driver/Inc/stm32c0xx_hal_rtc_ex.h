@@ -53,7 +53,7 @@ extern "C" {
 /** @defgroup RTCEx_Time_Stamp_Edges_definitions RTCEx Time Stamp Edges definition
   * @{
   */
-#define RTC_TIMESTAMPEDGE_RISING        0x00000000u
+#define RTC_TIMESTAMPEDGE_RISING        0x00000000U
 #define RTC_TIMESTAMPEDGE_FALLING       RTC_CR_TSEDGE
 /**
   * @}
@@ -62,7 +62,7 @@ extern "C" {
 /** @defgroup RTCEx_TimeStamp_Pin_Selections RTCEx TimeStamp Pin Selection
   * @{
   */
-#define RTC_TIMESTAMPPIN_DEFAULT              0x00000000u
+#define RTC_TIMESTAMPPIN_DEFAULT              0x00000000U
 /**
   * @}
   */
@@ -71,7 +71,7 @@ extern "C" {
 /** @defgroup RTCEx_Smooth_calib_period_Definitions RTCEx Smooth calib period Definitions
   * @{
   */
-#define RTC_SMOOTHCALIB_PERIOD_32SEC   0x00000000u              /*!< If RTCCLK = 32768 Hz, Smooth calibation
+#define RTC_SMOOTHCALIB_PERIOD_32SEC   0x00000000U              /*!< If RTCCLK = 32768 Hz, Smooth calibation
                                                                      period is 32s,  else 2exp20 RTCCLK pulses */
 #define RTC_SMOOTHCALIB_PERIOD_16SEC   RTC_CALR_CALW16          /*!< If RTCCLK = 32768 Hz, Smooth calibation
                                                                      period is 16s, else 2exp19 RTCCLK pulses */
@@ -87,7 +87,7 @@ extern "C" {
 #define RTC_SMOOTHCALIB_PLUSPULSES_SET    RTC_CALR_CALP            /*!< The number of RTCCLK pulses added
                                                                         during a X -second window = Y - CALM[8:0]
                                                                         with Y = 512, 256, 128 when X = 32, 16, 8 */
-#define RTC_SMOOTHCALIB_PLUSPULSES_RESET  0x00000000u              /*!< The number of RTCCLK pulses subbstited
+#define RTC_SMOOTHCALIB_PLUSPULSES_RESET  0x00000000U              /*!< The number of RTCCLK pulses subbstited
                                                                         during a 32-second window = CALM[8:0] */
 
 /**
@@ -97,7 +97,7 @@ extern "C" {
 /** @defgroup RTCEx_Calib_Output_selection_Definitions RTCEx Calib Output selection Definitions
   * @{
   */
-#define RTC_CALIBOUTPUT_512HZ            0x00000000u
+#define RTC_CALIBOUTPUT_512HZ            0x00000000U
 #define RTC_CALIBOUTPUT_1HZ              RTC_CR_COSEL
 
 /**
@@ -108,7 +108,7 @@ extern "C" {
 /** @defgroup RTCEx_Add_1_Second_Parameter_Definition RTCEx Add 1 Second Parameter Definitions
   * @{
   */
-#define RTC_SHIFTADD1S_RESET      0x00000000u
+#define RTC_SHIFTADD1S_RESET      0x00000000U
 #define RTC_SHIFTADD1S_SET        RTC_SHIFTR_ADD1S
 /**
   * @}
@@ -128,13 +128,12 @@ extern "C" {
   * @param  __HANDLE__ specifies the RTC Handle.
   * @param  __FLAG__ specifies the flag to check.
   *          This parameter can be any combination of the following values:
-  *            @arg @ref RTC_CLEAR_ITSF               Clear Internal Time-stamp flag
   *            @arg @ref RTC_CLEAR_TSOVF              Clear Time-stamp overflow flag
   *            @arg @ref RTC_CLEAR_TSF                Clear Time-stamp flag
   *            @arg @ref RTC_CLEAR_ALRAF              Clear Alarm A flag
   * @retval None
   */
-#define __HAL_RTC_CLEAR_FLAG(__HANDLE__, __FLAG__)   ((__HANDLE__)->Instance->SCR |= (__FLAG__))
+#define __HAL_RTC_CLEAR_FLAG(__HANDLE__, __FLAG__)   ((__HANDLE__)->Instance->SCR = (__FLAG__))
 
 /** @brief  Check whether the specified RTC flag is set or not.
   * @param  __HANDLE__ specifies the RTC Handle.
@@ -146,15 +145,16 @@ extern "C" {
   *            @arg @ref RTC_FLAG_INITS               Initialization status flag
   *            @arg @ref RTC_FLAG_SHPF                Shift operation pending flag
   *            @arg @ref RTC_FLAG_ALRAWF              Alarm A write flag
-  *            @arg @ref RTC_FLAG_ITSF                Internal Time-stamp flag
   *            @arg @ref RTC_FLAG_TSOVF               Time-stamp overflow flag
   *            @arg @ref RTC_FLAG_TSF                 Time-stamp flag
   *            @arg @ref RTC_FLAG_ALRAF               Alarm A flag
   * @retval None
   */
-#define __HAL_RTC_GET_FLAG(__HANDLE__, __FLAG__)    (((((__FLAG__)) >> 8U) == 1U) ? ((((__HANDLE__)->Instance->ICSR & (1U << (((uint16_t)(__FLAG__)) & RTC_FLAG_MASK))) != 0U) ? 1U : 0U) :\
-                                                     ((((__HANDLE__)->Instance->SR & (1U << (((uint16_t)(__FLAG__)) & RTC_FLAG_MASK))) != 0U) ? 1U : 0U))
-
+#define __HAL_RTC_GET_FLAG(__HANDLE__, __FLAG__)    \
+  (((((__FLAG__)) >> 8U) == 1U) ? ((((__HANDLE__)->Instance->ICSR & (1U << (((uint16_t)(__FLAG__)) & RTC_FLAG_MASK))) \
+                                    != 0U) ? 1U : 0U) : \
+   ((((__HANDLE__)->Instance->SR & (1U << (((uint16_t)(__FLAG__)) & RTC_FLAG_MASK)))   \
+     != 0U) ? 1U : 0U))
 
 /* ---------------------------------TIMESTAMP---------------------------------*/
 /** @defgroup RTCEx_Timestamp RTC Timestamp
@@ -236,7 +236,10 @@ extern "C" {
   *             @arg @ref RTC_FLAG_TSOVF
   * @retval None
   */
-#define __HAL_RTC_TIMESTAMP_CLEAR_FLAG(__HANDLE__, __FLAG__)   (__HAL_RTC_CLEAR_FLAG((__HANDLE__), (__FLAG__)))
+#define __HAL_RTC_TIMESTAMP_CLEAR_FLAG(__HANDLE__, __FLAG__)     \
+           (((__FLAG__) == RTC_FLAG_TSF) ?                       \
+            (__HAL_RTC_CLEAR_FLAG((__HANDLE__), RTC_CLEAR_TSF)) : \
+            (__HAL_RTC_CLEAR_FLAG((__HANDLE__), RTC_CLEAR_TSOVF)))
 
 /**
   * @brief  Enable interrupt on the RTC Timestamp associated Exti line.
@@ -261,40 +264,6 @@ extern "C" {
   * @retval None
   */
 #define __HAL_RTC_TIMESTAMP_EXTI_DISABLE_EVENT()   (EXTI->EMR1 &= ~(RTC_EXTI_LINE_TIMESTAMP_EVENT))
-
-/**
-  * @brief  Enable the RTC internal TimeStamp peripheral.
-  * @param  __HANDLE__ specifies the RTC handle.
-  * @retval None
-  */
-#define __HAL_RTC_INTERNAL_TIMESTAMP_ENABLE(__HANDLE__)                ((__HANDLE__)->Instance->CR |= (RTC_CR_ITSE))
-
-/**
-  * @brief  Disable the RTC internal TimeStamp peripheral.
-  * @param  __HANDLE__ specifies the RTC handle.
-  * @retval None
-  */
-#define __HAL_RTC_INTERNAL_TIMESTAMP_DISABLE(__HANDLE__)               ((__HANDLE__)->Instance->CR &= ~(RTC_CR_ITSE))
-
-/**
-  * @brief  Get the selected RTC Internal Time Stamps flag status.
-  * @param  __HANDLE__ specifies the RTC handle.
-  * @param  __FLAG__ specifies the RTC Internal Time Stamp Flag is pending or not.
-  *         This parameter can be:
-  *            @arg @ref RTC_FLAG_ITSF
-  * @retval None
-  */
-#define __HAL_RTC_INTERNAL_TIMESTAMP_GET_FLAG(__HANDLE__, __FLAG__)     (__HAL_RTC_GET_FLAG((__HANDLE__),(__FLAG__)))
-
-/**
-  * @brief  Clear the RTC Internal Time Stamps pending flags.
-  * @param  __HANDLE__ specifies the RTC handle.
-  * @param  __FLAG__ specifies the RTC Internal Time Stamp Flag source to clear.
-  * This parameter can be:
-  *             @arg @ref RTC_FLAG_ITSF
-  * @retval None
-  */
-#define __HAL_RTC_INTERNAL_TIMESTAMP_CLEAR_FLAG(__HANDLE__, __FLAG__)     (__HAL_RTC_CLEAR_FLAG((__HANDLE__), RTC_CLEAR_ITSF))
 
 /**
   * @}
@@ -367,8 +336,6 @@ extern "C" {
 HAL_StatusTypeDef HAL_RTCEx_SetTimeStamp(RTC_HandleTypeDef *hrtc, uint32_t TimeStampEdge, uint32_t RTC_TimeStampPin);
 HAL_StatusTypeDef HAL_RTCEx_SetTimeStamp_IT(RTC_HandleTypeDef *hrtc, uint32_t TimeStampEdge, uint32_t RTC_TimeStampPin);
 HAL_StatusTypeDef HAL_RTCEx_DeactivateTimeStamp(RTC_HandleTypeDef *hrtc);
-HAL_StatusTypeDef HAL_RTCEx_SetInternalTimeStamp(RTC_HandleTypeDef *hrtc);
-HAL_StatusTypeDef HAL_RTCEx_DeactivateInternalTimeStamp(RTC_HandleTypeDef *hrtc);
 HAL_StatusTypeDef HAL_RTCEx_GetTimeStamp(RTC_HandleTypeDef *hrtc, RTC_TimeTypeDef *sTimeStamp,
                                          RTC_DateTypeDef *sTimeStampDate, uint32_t Format);
 void              HAL_RTCEx_TimeStampIRQHandler(RTC_HandleTypeDef *hrtc);
@@ -413,7 +380,7 @@ HAL_StatusTypeDef HAL_RTCEx_DisableBypassShadow(RTC_HandleTypeDef *hrtc);
 /** @defgroup RTCEx_Private_Constants RTCEx Private Constants
   * @{
   */
-#define RTC_EXTI_LINE_TIMESTAMP_EVENT         EXTI_IMR1_IM21 /*!< External interrupt line 19 Connected to the RTC Time Stamp events */
+#define RTC_EXTI_LINE_TIMESTAMP_EVENT         EXTI_IMR1_IM19 /*!< External interrupt line 19 Connected to the RTC Time Stamp events */
 
 /**
   * @}
@@ -454,7 +421,6 @@ HAL_StatusTypeDef HAL_RTCEx_DisableBypassShadow(RTC_HandleTypeDef *hrtc);
                                  ((SEL) == RTC_SHIFTADD1S_SET))
 
 
-
 /** @defgroup RTCEx_Subtract_Fraction_Of_Second_Value RTCEx SubtractFraction Of Second Value
   * @{
   */
@@ -472,7 +438,6 @@ HAL_StatusTypeDef HAL_RTCEx_DisableBypassShadow(RTC_HandleTypeDef *hrtc);
 /**
   * @}
   */
-
 
 
 /**

@@ -235,4 +235,3 @@ HAL_StatusTypeDef     HAL_IWDG_Refresh(IWDG_HandleTypeDef *hiwdg);
 #endif
 
 #endif /* STM32C0xx_HAL_IWDG_H */
-

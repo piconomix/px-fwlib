@@ -24,7 +24,7 @@
 #include "stm32_assert.h"
 #else
 #define assert_param(expr) ((void)0U)
-#endif
+#endif /* USE_FULL_ASSERT */
 
 /** @addtogroup STM32C0xx_LL_Driver
   * @{
@@ -147,13 +147,13 @@ ErrorStatus LL_RTC_DeInit(RTC_TypeDef *RTCx)
   if (LL_RTC_EnterInitMode(RTCx) != ERROR)
   {
     /* Reset TR, DR and CR registers */
-    WRITE_REG(RTCx->TR,       0x00000000U);
+    WRITE_REG(RTCx->TR,       0U);
     WRITE_REG(RTCx->DR, (RTC_DR_WDU_0 | RTC_DR_MU_0 | RTC_DR_DU_0));
     WRITE_REG(RTCx->PRER, (RTC_PRER_PREDIV_A | RTC_SYNCH_PRESC_DEFAULT));
-    WRITE_REG(RTCx->ALRMAR,   0x00000000U);
-    WRITE_REG(RTCx->SHIFTR,   0x00000000U);
-    WRITE_REG(RTCx->CALR,     0x00000000U);
-    WRITE_REG(RTCx->ALRMASSR, 0x00000000U);
+    WRITE_REG(RTCx->ALRMAR,   0U);
+    WRITE_REG(RTCx->SHIFTR,   0U);
+    WRITE_REG(RTCx->CALR,     0U);
+    WRITE_REG(RTCx->ALRMASSR, 0U);
     /* Exit Initialization mode */
     LL_RTC_DisableInitMode(RTCx);
 
@@ -255,7 +255,7 @@ ErrorStatus LL_RTC_TIME_Init(RTC_TypeDef *RTCx, uint32_t RTC_Format, LL_RTC_Time
     }
     else
     {
-      RTC_TimeStruct->TimeFormat = 0x00U;
+      RTC_TimeStruct->TimeFormat = 0U;
       assert_param(IS_LL_RTC_HOUR24(RTC_TimeStruct->Hours));
     }
     assert_param(IS_LL_RTC_MINUTES(RTC_TimeStruct->Minutes));
@@ -270,7 +270,7 @@ ErrorStatus LL_RTC_TIME_Init(RTC_TypeDef *RTCx, uint32_t RTC_Format, LL_RTC_Time
     }
     else
     {
-      RTC_TimeStruct->TimeFormat = 0x00U;
+      RTC_TimeStruct->TimeFormat = 0U;
       assert_param(IS_LL_RTC_HOUR24(__LL_RTC_CONVERT_BCD2BIN(RTC_TimeStruct->Hours)));
     }
     assert_param(IS_LL_RTC_MINUTES(__LL_RTC_CONVERT_BCD2BIN(RTC_TimeStruct->Minutes)));
@@ -376,12 +376,14 @@ ErrorStatus LL_RTC_DATE_Init(RTC_TypeDef *RTCx, uint32_t RTC_Format, LL_RTC_Date
     /* Check the input parameters format */
     if (RTC_Format != LL_RTC_FORMAT_BIN)
     {
-      LL_RTC_DATE_Config(RTCx, RTC_DateStruct->WeekDay, RTC_DateStruct->Day, RTC_DateStruct->Month, RTC_DateStruct->Year);
+      LL_RTC_DATE_Config(RTCx, RTC_DateStruct->WeekDay, RTC_DateStruct->Day, RTC_DateStruct->Month,
+                         RTC_DateStruct->Year);
     }
     else
     {
       LL_RTC_DATE_Config(RTCx, RTC_DateStruct->WeekDay, __LL_RTC_CONVERT_BIN2BCD(RTC_DateStruct->Day),
-                         __LL_RTC_CONVERT_BIN2BCD(RTC_DateStruct->Month), __LL_RTC_CONVERT_BIN2BCD(RTC_DateStruct->Year));
+                         __LL_RTC_CONVERT_BIN2BCD(RTC_DateStruct->Month),
+                         __LL_RTC_CONVERT_BIN2BCD(RTC_DateStruct->Year));
     }
 
     /* Exit Initialization mode */
@@ -448,7 +450,7 @@ ErrorStatus LL_RTC_ALMA_Init(RTC_TypeDef *RTCx, uint32_t RTC_Format, LL_RTC_Alar
     }
     else
     {
-      RTC_AlarmStruct->AlarmTime.TimeFormat = 0x00U;
+      RTC_AlarmStruct->AlarmTime.TimeFormat = 0U;
       assert_param(IS_LL_RTC_HOUR24(RTC_AlarmStruct->AlarmTime.Hours));
     }
     assert_param(IS_LL_RTC_MINUTES(RTC_AlarmStruct->AlarmTime.Minutes));
@@ -472,7 +474,7 @@ ErrorStatus LL_RTC_ALMA_Init(RTC_TypeDef *RTCx, uint32_t RTC_Format, LL_RTC_Alar
     }
     else
     {
-      RTC_AlarmStruct->AlarmTime.TimeFormat = 0x00U;
+      RTC_AlarmStruct->AlarmTime.TimeFormat = 0U;
       assert_param(IS_LL_RTC_HOUR24(__LL_RTC_CONVERT_BCD2BIN(RTC_AlarmStruct->AlarmTime.Hours)));
     }
 
