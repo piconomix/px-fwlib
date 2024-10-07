@@ -59,7 +59,7 @@ static void px_log_print_str(const char * str)
     // Output string using configured function
     PX_LOG_CFG_PRINT(str);
 #else
-    while(*data != '\0')
+    while(*str != '\0')
     {
         px_log_putchar(*str++);
     }
