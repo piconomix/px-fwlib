@@ -10,7 +10,7 @@
     License: MIT
     https://github.com/piconomix/px-fwlib/blob/master/LICENSE.md
 
-    Title:          px_dbg_ft.h : Debug Flow Trace module
+    Title:          px_log_ft.h : Flow Trace logging module
     Author(s):      Pieter Conradie
     Creation Date:  2021-05-31
 
@@ -20,80 +20,94 @@
 #include <stdio.h>
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
-#include "px_dbg_ft.h"
+#include "px_log_ft.h"
+#if PX_LOG_FT
+
+#include "px_log.h"
 
 /* _____LOCAL DEFINITIONS____________________________________________________ */
+/// Magic value to indicate that buffer has been initialized and has valid content
+#define PX_LOG_FT_MARKER    0xdeadc0de
+
+typedef struct
+{
+    uint32_t marker;                        /// Magic value to indicate that buffer has been initialized and has valid content
+    uint8_t  idx;                           ///< Index of next empty position
+    uint32_t buf[PX_LOG_FT_CFG_BUF_SIZE];   ///< Buffer for log output
+} px_log_ft_t;
 
 /* _____MACROS_______________________________________________________________ */
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-/// Index of next empty position; Placed in .noinit section so that it is not set to zero by C initialization code before it can be inspected
-PX_ATTR_SECTION(".noinit") uint8_t px_dbg_ft_buf_idx;
-
 /// Buffer for log output; Placed in .noinit section so that it is not set to zero by C initialization code before it can be inspected
-PX_ATTR_SECTION(".noinit") uint32_t px_dbg_ft_buf[PX_DBG_FT_CFG_BUF_SIZE];
+PX_ATTR_SECTION(".noinit") px_log_ft_t px_log_ft;
 
 /* _____LOCAL VARIABLES______________________________________________________ */
 // Name strings defined?
-#ifdef PX_LOG_CFG_NAMES
+#ifdef PX_LOG_FT_CFG_NAMES
 // Define array of name strings for each name value
-PX_LOG_CFG_NAMES()
+PX_LOG_FT_CFG_NAMES()
 #endif
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
 /* _____LOCAL FUNCTIONS______________________________________________________ */
-#ifdef PX_LOG_CFG_NAMES
-const char * px_dbg_ft_name_val_to_str(px_dbg_ft_name_t name)
+#ifdef PX_LOG_FT_CFG_NAMES
+const char * px_log_ft_name_to_str(px_log_ft_name_t name)
 {
-    if(name >= PX_SIZEOF_ARRAY(px_dbg_ft_name_str))
+    if(name >= PX_SIZEOF_ARRAY(px_log_ft_name_str))
     {
         return "";
     }
-    return px_dbg_ft_name_str[name];
+    return px_log_ft_name_str[name];
 }
 #endif
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
-void _px_dbg_ft_init(void)
+void _px_log_ft_init(void)
 {
-    px_dbg_ft_buf_idx = 0;
+    px_log_ft.idx = 0;
 
-    for(int i = 0; i < PX_DBG_FT_CFG_BUF_SIZE; i++)
+    for(int i = 0; i < PX_LOG_FT_CFG_BUF_SIZE; i++)
     {
-        px_dbg_ft_buf[i] = 0;
+        px_log_ft.buf[i] = 0;
     }
+
+    px_log_ft.marker = PX_LOG_FT_MARKER;
 }
 
-void _px_dbg_ft_log(const px_dbg_ft_name_t name, uint16_t line)
+void _px_log_ft_tag(const px_log_ft_name_t name, uint16_t line)
 {
     uint32_t ft = (((uint32_t)name) << 16) | ((uint32_t)line);
 
-    px_dbg_ft_buf[px_dbg_ft_buf_idx] = ft;
+    px_log_ft.buf[px_log_ft.idx] = ft;
 
-    if(++px_dbg_ft_buf_idx == PX_DBG_FT_CFG_BUF_SIZE)
+    if(++px_log_ft.idx == PX_LOG_FT_CFG_BUF_SIZE)
     {
-        px_dbg_ft_buf_idx = 0;
+        px_log_ft.idx = 0;
     }
 }
 
-void _px_dbg_ft_log_param(const px_dbg_ft_name_t name, uint16_t line, uint8_t param)
+void _px_log_ft_tag_param(const px_log_ft_name_t name, uint16_t line, uint8_t param)
 {
     uint32_t ft = (((uint32_t)param) << 24) | (((uint32_t)name) << 16) | ((uint32_t)line);
 
-    px_dbg_ft_buf[px_dbg_ft_buf_idx] = ft;
+    px_log_ft.buf[px_log_ft.idx] = ft;
 
-    if(++px_dbg_ft_buf_idx == PX_DBG_FT_CFG_BUF_SIZE)
+    if(++px_log_ft.idx == PX_LOG_FT_CFG_BUF_SIZE)
     {
-        px_dbg_ft_buf_idx = 0;
+        px_log_ft.idx = 0;
     }
 }
 
-void px_dbg_ft_report(void)
+void px_log_ft_report(void)
 {
-    uint8_t  idx = px_dbg_ft_buf_idx;
+    uint8_t  idx = px_log_ft.idx;
     uint8_t  name, param;
     uint16_t line;
+
+    if(px_log_ft.marker != PX_LOG_FT_MARKER      ) return;
+    if(px_log_ft.idx    >= PX_LOG_FT_CFG_BUF_SIZE) return;
 
     do
     {
@@ -103,17 +117,18 @@ void px_dbg_ft_report(void)
         }
         else
         {
-            idx = PX_DBG_FT_CFG_BUF_SIZE - 1;
+            idx = PX_LOG_FT_CFG_BUF_SIZE - 1;
         }
-        param = (px_dbg_ft_buf[idx] >> 24) & 0xff;
-        name  = (px_dbg_ft_buf[idx] >> 16) & 0xff;
-        line  = (px_dbg_ft_buf[idx] >>  0) & 0xffff;
-#ifdef PX_LOG_CFG_NAMES
-        printf("%u %s # %u (%u)\n", name, px_dbg_ft_name_val_to_str(name), line, param);
+        param = (px_log_ft.buf[idx] >> 24) & 0xff;
+        name  = (px_log_ft.buf[idx] >> 16) & 0xff;
+        line  = (px_log_ft.buf[idx] >>  0) & 0xffff;
+#ifdef PX_LOG_FT_CFG_NAMES
+        PX_LOG_TRACE("%u %s # %u (%u)\n", name, px_log_ft_name_to_str((px_log_ft_name_t)name), line, param);
 #else
-        printf("%u # %u (%u)\n", name, line, param);
+        PX_LOG_TRACE("%u # %u (%u)\n", name, line, param);
 #endif
     }
-    while(idx != px_dbg_ft_buf_idx);
+    while(idx != px_log_ft.idx);
 }
 
+#endif
