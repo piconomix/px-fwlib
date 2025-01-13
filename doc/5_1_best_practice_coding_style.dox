@@ -251,6 +251,7 @@ abbreviation must be obvious and not obscure. Here is a non-exhaustive reference
 | buf               | buffer                                         |
 | cal               | calibration                                    |
 | cfg               | configuration                                  |
+| clr / set         | clear / set                                    |
 | cmd               | command                                        |
 | def(s)            | definition(s)                                  |
 | deg_c             | Degrees Celcius                                |
