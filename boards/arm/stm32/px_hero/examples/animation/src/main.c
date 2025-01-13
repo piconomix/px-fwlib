@@ -92,7 +92,7 @@ int main(void)
         // Delay
         px_board_delay_ms(100);
         // Next image
-        if(++i == PX_SIZEOF_ARRAY(img_array))
+        if(++i == PX_LENGTHOF_ARRAY(img_array))
         {
             // Start at first image
             i = 0;

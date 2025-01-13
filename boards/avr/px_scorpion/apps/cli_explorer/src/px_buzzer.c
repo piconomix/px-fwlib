@@ -51,7 +51,7 @@ static bool                  px_buzzer_active_flag;
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static uint16_t px_buzzer_piano_key_to_freq_hz(const uint8_t key)
 {
-    if(key >= PX_SIZEOF_ARRAY(px_buzzer_piano_freq_table))
+    if(key >= PX_LENGTHOF_ARRAY(px_buzzer_piano_freq_table))
     {
         return 0;
     }

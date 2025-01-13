@@ -269,7 +269,7 @@ typedef signed long long   int64_t;
 /// Calculate signed division with rounding to nearest integer value
 #define PX_SDIV_ROUND(n, d)                 (((n < 0) ^ (d < 0)) ? (((n) - ((d) / 2)) / (d)) : (((n) + ((d) / 2)) / (d)))
 /// Calculate the number of items in an array
-#define PX_SIZEOF_ARRAY(a)                  (sizeof(a) / sizeof((a)[0]))
+#define PX_LENGTHOF_ARRAY(a)                (sizeof(a) / sizeof((a)[0]))
 /// Calculate the size of a member in a struct type
 #define PX_SIZEOF_MEMBER(t, member)         (sizeof(((t *)0)->member))
 /// Is value a power of two (1, 2, 4, 8, 16, ...)?

@@ -55,7 +55,7 @@ PX_LOG_FT_CFG_NAMES()
 #ifdef PX_LOG_FT_CFG_NAMES
 const char * px_log_ft_name_to_str(px_log_ft_name_t name)
 {
-    if(name >= PX_SIZEOF_ARRAY(px_log_ft_name_str))
+    if(name >= PX_LENGTHOF_ARRAY(px_log_ft_name_str))
     {
         return "";
     }

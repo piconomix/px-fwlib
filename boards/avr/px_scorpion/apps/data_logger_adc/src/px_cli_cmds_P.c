@@ -109,7 +109,7 @@ static const char * px_cli_cmd_log_start_fn(uint8_t argc, char * argv[])
             // Reset flag
             px_adc_rst_data_ready_flag();
             // Get ADC data
-            memcpy(&record_data.adc_data, px_adc_get_data(0), PX_SIZEOF_ARRAY(record_data.adc_data));
+            memcpy(&record_data.adc_data, px_adc_get_data(0), PX_LENGTHOF_ARRAY(record_data.adc_data));
             // Get RTC time
             record_data.timestamp = px_rtc_util_sec_since_y2k_rd();
             // Log data

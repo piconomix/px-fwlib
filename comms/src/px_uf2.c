@@ -58,7 +58,7 @@ static const px_uf2_file_t px_uf2_file[] =
 /// Payload size is fixed at 256 bytes
 #define PX_UF2_PAYLOAD_SIZE             256
 /// Number of files in root directory
-#define PX_UF2_FILES                    PX_SIZEOF_ARRAY(px_uf2_file)
+#define PX_UF2_FILES                    PX_LENGTHOF_ARRAY(px_uf2_file)
 /// Number of root directory entries (includes volume label as first entry)
 #define PX_UF2_DIR_ENTRIES              (PX_UF2_FILES + 1)
 
