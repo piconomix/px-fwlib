@@ -1,1 +1,17 @@
 V1.3.0
+
+NB! "Drivers\CMSIS\Device\ST\STM32C0xx\Source\Templates\system_stm32c0xx.c" is patched to allow #VECT_TAB_OFFSET to be overridden, e.g.
+
+/************************* Miscellaneous Configuration ************************/
+/*!< Uncomment the following line if you need to relocate your vector Table in
+     Internal SRAM. */
+//#define VECT_TAB_SRAM
+// PX [mod start] - Allow VECT_TAB_OFFSET to be overridable with compiler switches
+#ifndef VECT_TAB_OFFSET
+#define VECT_TAB_OFFSET  0x0U /*!< Vector Table base offset field.
+                                   This value must be a multiple of 0x100. */
+#endif
+// PX [mod end]
+/******************************************************************************/
+
+When a new version is copied, make sure the patch is applied or it will break any app that is built for a bootloader!
