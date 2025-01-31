@@ -117,8 +117,12 @@
 /*!< Uncomment the following line if you need to relocate your vector Table in
      Internal SRAM. */
 //#define VECT_TAB_SRAM
+// PX [mod start] - Allow VECT_TAB_OFFSET to be overridable with compiler switches
+#ifndef VECT_TAB_OFFSET
 #define VECT_TAB_OFFSET  0x0U /*!< Vector Table base offset field.
                                    This value must be a multiple of 0x200. */
+#endif
+// PX [mod end]
 
 /*!< Comment the following line if you would like to disable the software
      workaround related to debug access in case RDP=1 and Boot_Lock=1      */
