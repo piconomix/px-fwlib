@@ -852,7 +852,7 @@ px_rtc_util_day_t px_rtc_util_date_to_day_of_week(const px_rtc_date_time_t * dat
     // Calculate day of week (2000:01:01 was a Saturday)
     day = (days + PX_RTC_UTIL_DAY_SAT) % 7;
 
-    return day;
+    return (px_rtc_util_day_t)day;
 }
 
 void px_rtc_util_printf_date_time(const px_rtc_date_time_t * date_time)
