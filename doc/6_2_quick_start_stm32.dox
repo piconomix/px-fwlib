@@ -115,8 +115,8 @@ will result in a Hard Fault if the T bit is not set.
 
 ![](stm32_primask.png)
 
-The **PRIMASK** (Priority Mask) Register contains the PM flag. If this flag is set,
-interrupts are enabled. If this flag is cleared, interrupts are disabled. 
+The **PRIMASK** (Priority Mask) Register contains the PM flag. If this flag is
+set, interrupts are disabled. If this flag is cleared, interrupts are enabled.
 
 @tip_s
 Interrupts are enabled by default.
