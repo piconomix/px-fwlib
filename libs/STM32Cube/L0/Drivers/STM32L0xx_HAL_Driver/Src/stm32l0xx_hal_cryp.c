@@ -68,13 +68,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright(c) 2016 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************  
   */ 
@@ -296,7 +295,7 @@ __weak void HAL_CRYP_MspDeInit(CRYP_HandleTypeDef *hcryp)
   ==============================================================================  
     [..]  This section provides functions allowing to:
       (+) Encrypt plaintext using AES algorithm in different chaining modes
-      (+) Decrypt cyphertext using AES algorithm in different chaining modes
+      (+) Decrypt ciphertext using AES algorithm in different chaining modes
     [..]  Three processing functions are available:
       (+) Polling mode
       (+) Interrupt mode
@@ -313,7 +312,7 @@ __weak void HAL_CRYP_MspDeInit(CRYP_HandleTypeDef *hcryp)
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Timeout Specify Timeout value 
   * @retval HAL status
   */
@@ -389,7 +388,7 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pP
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Timeout Specify Timeout value  
   * @retval HAL status
   */
@@ -468,7 +467,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pP
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Timeout Specify Timeout value  
   * @retval HAL status
   */
@@ -545,7 +544,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pP
   *         then decrypted pCypherData. The cypher data are available in pPlainData
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Timeout Specify Timeout value  
@@ -621,7 +620,7 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pC
   *         then decrypted pCypherData. The cypher data are available in pPlainData
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Timeout Specify Timeout value  
@@ -700,7 +699,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pC
   *         then decrypted pCypherData. The cypher data are available in pPlainData
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Timeout Specify Timeout value   
@@ -768,7 +767,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pC
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16 bytes
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData)
@@ -821,9 +820,15 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     /* Enable CRYP */
     __HAL_CRYP_ENABLE(hcryp);
     
-    /* Get the last input data adress */
+    /* Get the last input data address */
     inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
-    
+
+    /* Increment the pointer before writing the input block in the IN FIFO to make sure that
+       when Computation Completed IRQ fires, the hcryp->CrypInCount has always a consistent value
+       and it is ready for the next operation. */
+    hcryp->pCrypInBuffPtr += 16U;
+    hcryp->CrypInCount -= 16U;
+
     /* Write the Input block in the Data Input register */
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
@@ -832,9 +837,7 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     hcryp->Instance->DINR  = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-    hcryp->pCrypInBuffPtr += 16U;
-    hcryp->CrypInCount -= 16U;
-    
+
     /* Return function status */
     return HAL_OK;
   }
@@ -854,7 +857,7 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16 bytes
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData)
@@ -910,9 +913,15 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     /* Enable CRYP */
     __HAL_CRYP_ENABLE(hcryp);
     
-    /* Get the last input data adress */
+    /* Get the last input data address */
     inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
-    
+
+    /* Increment the pointer before writing the input block in the IN FIFO to make sure that
+       when Computation Completed IRQ fires, the hcryp->CrypInCount has always a consistent value
+       and it is ready for the next operation. */
+    hcryp->pCrypInBuffPtr += 16U;
+    hcryp->CrypInCount -= 16U;
+
     /* Write the Input block in the Data Input register */
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
@@ -921,9 +930,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     hcryp->Instance->DINR  = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-    hcryp->pCrypInBuffPtr += 16U;
-    hcryp->CrypInCount -= 16U;
-    
+
     /* Return function status */
     return HAL_OK;
   }
@@ -943,7 +950,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16 bytes
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData)
@@ -999,9 +1006,15 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     /* Enable CRYP */
     __HAL_CRYP_ENABLE(hcryp);
     
-    /* Get the last input data adress */
+    /* Get the last input data address */
     inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
-    
+
+    /* Increment the pointer before writing the input block in the IN FIFO to make sure that
+       when Computation Completed IRQ fires, the hcryp->CrypInCount has always a consistent value
+       and it is ready for the next operation. */
+    hcryp->pCrypInBuffPtr += 16U;
+    hcryp->CrypInCount -= 16U;
+
     /* Write the Input block in the Data Input register */
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
@@ -1010,9 +1023,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     hcryp->Instance->DINR  = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-    hcryp->pCrypInBuffPtr += 16U;
-    hcryp->CrypInCount -= 16U;
-    
+
     /* Return function status */
     return HAL_OK;
   }
@@ -1030,7 +1041,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
   * @brief  Initializes the CRYP peripheral in AES ECB decryption mode using Interrupt.
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @retval HAL status
@@ -1085,9 +1096,15 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     /* Enable CRYP */
     __HAL_CRYP_ENABLE(hcryp);
     
-    /* Get the last input data adress */
+    /* Get the last input data address */
     inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
-    
+
+    /* Increment the pointer before writing the input block in the IN FIFO to make sure that
+       when Computation Completed IRQ fires, the hcryp->CrypInCount has always a consistent value
+       and it is ready for the next operation. */
+    hcryp->pCrypInBuffPtr += 16U;
+    hcryp->CrypInCount -= 16U;
+
     /* Write the Input block in the Data Input register */
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
@@ -1096,9 +1113,7 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     hcryp->Instance->DINR  = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-    hcryp->pCrypInBuffPtr += 16U;
-    hcryp->CrypInCount -= 16U;    
-    
+
     /* Return function status */
     return HAL_OK;
   }
@@ -1116,7 +1131,7 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
   * @brief  Initializes the CRYP peripheral in AES CBC decryption mode using IT.
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @retval HAL status
@@ -1174,9 +1189,15 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     /* Enable CRYP */
     __HAL_CRYP_ENABLE(hcryp);
     
-    /* Get the last input data adress */
+    /* Get the last input data address */
     inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
-    
+
+    /* Increment the pointer before writing the input block in the IN FIFO to make sure that
+       when Computation Completed IRQ fires, the hcryp->CrypInCount has always a consistent value
+       and it is ready for the next operation. */
+    hcryp->pCrypInBuffPtr += 16U;
+    hcryp->CrypInCount -= 16U;
+
     /* Write the Input block in the Data Input register */
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
@@ -1185,9 +1206,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     hcryp->Instance->DINR  = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-    hcryp->pCrypInBuffPtr += 16U;
-    hcryp->CrypInCount -= 16U;    
-    
+
     /* Return function status */
     return HAL_OK;
   }
@@ -1205,7 +1224,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
   * @brief  Initializes the CRYP peripheral in AES CTR decryption mode using Interrupt.
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @retval HAL status
@@ -1263,9 +1282,15 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     /* Enable CRYP */
     __HAL_CRYP_ENABLE(hcryp);
     
-    /* Get the last input data adress */
+    /* Get the last input data address */
     inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
-    
+
+    /* Increment the pointer before writing the input block in the IN FIFO to make sure that
+       when Computation Completed IRQ fires, the hcryp->CrypInCount has always a consistent value
+       and it is ready for the next operation. */
+    hcryp->pCrypInBuffPtr += 16U;
+    hcryp->CrypInCount -= 16U;
+
     /* Write the Input block in the Data Input register */
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
@@ -1273,10 +1298,8 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
     inputaddr+=4U;
     hcryp->Instance->DINR  = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
-    hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-    hcryp->pCrypInBuffPtr += 16U;
-    hcryp->CrypInCount -= 16U;    
-    
+    hcryp->Instance->DINR = *(uint32_t*)(inputaddr); 
+
     /* Return function status */
     return HAL_OK;
   }
@@ -1296,7 +1319,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16 bytes
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData)
@@ -1361,7 +1384,7 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Encrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData)
@@ -1429,7 +1452,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Encrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t
   *         the configuration information for CRYP module
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16.
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData)
@@ -1496,7 +1519,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Encrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t
   * @brief  Initializes the CRYP peripheral in AES ECB decryption mode using DMA.
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16 bytes
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @retval HAL status
@@ -1565,7 +1588,7 @@ HAL_StatusTypeDef HAL_CRYP_AESECB_Decrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t
   * @brief  Initializes the CRYP peripheral in AES CBC encryption mode using DMA.
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16 bytes
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @retval HAL status
@@ -1637,7 +1660,7 @@ HAL_StatusTypeDef HAL_CRYP_AESCBC_Decrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t
   * @brief  Initializes the CRYP peripheral in AES CTR decryption mode using DMA.
   * @param  hcryp pointer to a CRYP_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
-  * @param  pCypherData Pointer to the cyphertext buffer (aligned on u32)
+  * @param  pCypherData Pointer to the ciphertext buffer (aligned on u32)
   * @param  Size Length of the plaintext buffer, must be a multiple of 16
   * @param  pPlainData Pointer to the plaintext buffer (aligned on u32)
   * @retval HAL status
@@ -1887,7 +1910,7 @@ static HAL_StatusTypeDef CRYP_EncryptDecrypt_IT(CRYP_HandleTypeDef *hcryp)
 {
   uint32_t inputaddr = 0U, outputaddr = 0U;
 
-  /* Get the last Output data adress */
+  /* Get the last Output data address */
   outputaddr = (uint32_t)hcryp->pCrypOutBuffPtr;
   
   /* Read the Output block from the Output Register */
@@ -1920,9 +1943,15 @@ static HAL_StatusTypeDef CRYP_EncryptDecrypt_IT(CRYP_HandleTypeDef *hcryp)
   }
   else /* Process the rest of input text */
   {
-    /* Get the last Intput data adress */
+    /* Get the last Input data address */
     inputaddr = (uint32_t)hcryp->pCrypInBuffPtr;
-    
+
+    /* Increment the pointer before writing the input block in the IN FIFO to make sure that
+       when Computation Completed IRQ fires, the hcryp->CrypInCount has always a consistent value
+       and it is ready for the next operation. */
+    hcryp->pCrypInBuffPtr += 16U;
+    hcryp->CrypInCount -= 16U;
+
     /* Write the Input block in the Data Input register */
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
@@ -1931,8 +1960,6 @@ static HAL_StatusTypeDef CRYP_EncryptDecrypt_IT(CRYP_HandleTypeDef *hcryp)
     hcryp->Instance->DINR  = *(uint32_t*)(inputaddr);
     inputaddr+=4U;
     hcryp->Instance->DINR = *(uint32_t*)(inputaddr);
-    hcryp->pCrypInBuffPtr += 16U;
-    hcryp->CrypInCount -= 16U;      
   }
   return HAL_OK;
 }
@@ -2157,5 +2184,3 @@ static void CRYP_SetDMAConfig(CRYP_HandleTypeDef *hcryp, uint32_t inputaddr, uin
 
 #endif /* HAL_CRYP_MODULE_ENABLED */
 #endif /* STM32L021xx || STM32L041xx || STM32L062xx || STM32L063xx || STM32L081xx || STM32L082xx || STM32L083xx */
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

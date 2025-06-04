@@ -8,6 +8,17 @@
   *           + Initialization and de-initialization functions
   *           + IO operation functions
   *
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
   @verbatim
   ==============================================================================
                     ##### GPIO Peripheral features #####
@@ -93,17 +104,6 @@
         The HSE has priority over the GPIO function.
 
   @endverbatim
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright(c) 2016 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
   ******************************************************************************
   */
 
@@ -235,23 +235,6 @@ void HAL_GPIO_Init(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init)
         SET_BIT(temp, (GPIO_GET_INDEX(GPIOx)) << (4 * (position & 0x03U)));
         SYSCFG->EXTICR[position >> 2U] = temp;
 
-        /* Clear EXTI line configuration */
-        temp = EXTI->IMR;
-        temp &= ~((uint32_t)iocurrent);
-        if ((GPIO_Init->Mode & EXTI_IT) != 0x00U)
-        {
-          temp |= iocurrent;
-        }
-        EXTI->IMR = temp;
-
-        temp = EXTI->EMR;
-        temp &= ~((uint32_t)iocurrent);
-        if ((GPIO_Init->Mode & EXTI_EVT) != 0x00U)
-        {
-          temp |= iocurrent;
-        }
-        EXTI->EMR = temp;
-
         /* Clear Rising Falling edge configuration */
         temp = EXTI->RTSR;
         temp &= ~((uint32_t)iocurrent);
@@ -268,6 +251,23 @@ void HAL_GPIO_Init(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init)
           temp |= iocurrent;
         }
         EXTI->FTSR = temp;
+
+        temp = EXTI->EMR;
+        temp &= ~((uint32_t)iocurrent);
+        if ((GPIO_Init->Mode & EXTI_EVT) != 0x00U)
+        {
+          temp |= iocurrent;
+        }
+        EXTI->EMR = temp;
+
+        /* Clear EXTI line configuration */
+        temp = EXTI->IMR;
+        temp &= ~((uint32_t)iocurrent);
+        if ((GPIO_Init->Mode & EXTI_IT) != 0x00U)
+        {
+          temp |= iocurrent;
+        }
+        EXTI->IMR = temp;
       }
     }
     position++;
@@ -312,16 +312,16 @@ void HAL_GPIO_DeInit(GPIO_TypeDef  *GPIOx, uint32_t GPIO_Pin)
         EXTI->EMR &= ~((uint32_t)iocurrent);
 
         /* Clear Rising Falling edge configuration */
-        EXTI->RTSR &= ~((uint32_t)iocurrent);
         EXTI->FTSR &= ~((uint32_t)iocurrent);
-        
+        EXTI->RTSR &= ~((uint32_t)iocurrent);
+
         tmp = (0x0FUL) << (4U * (position & 0x03U));
         SYSCFG->EXTICR[position >> 2U] &= ~tmp;
       }
 
       /*------------------------- GPIO Mode Configuration --------------------*/
-      /* Configure IO Direction in Input Floting Mode */
-      GPIOx->MODER |= (GPIO_MODER_MODE0 << (position * 2U));
+      /* Configure IO Direction in Analog Mode (reset state) */
+      GPIOx->MODER |= (GPIO_MODE_ANALOG << (position * 2U));
 
       /* Configure the default Alternate Function in current IO */
       GPIOx->AFR[position >> 3U] &= ~(0xFUL << ((uint32_t)(position & 0x07UL) * 4U));
@@ -431,7 +431,7 @@ void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
   /* Check the parameters */
   assert_param(IS_GPIO_PIN_AVAILABLE(GPIOx, GPIO_Pin));
 
-  /* get current Ouput Data Register value */
+  /* get current Output Data Register value */
   odr = GPIOx->ODR;
 
   /* Set selected pins that were at low level, and reset ones that were high */
@@ -447,7 +447,7 @@ void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 * @param  GPIOx where x can be (A..E and H) to select the GPIO peripheral for STM32L0xx family.
 *                Note that GPIOE is not available on all devices.
 * @param  GPIO_Pin specifies the port bit to be locked.
-*         This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
+*         This parameter can be any combination of GPIO_PIN_x where x can be (0..15).
 *         All port bits are not necessarily available on all GPIOs.
 * @retval None
 */
@@ -528,5 +528,4 @@ __weak void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   * @}
   */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
