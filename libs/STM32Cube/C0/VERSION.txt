@@ -1,4 +1,4 @@
-V1.3.0
+V1.4.0
 
 NB! "Drivers\CMSIS\Device\ST\STM32C0xx\Source\Templates\system_stm32c0xx.c" is patched to allow #VECT_TAB_OFFSET to be overridden, e.g.
 
