@@ -28,9 +28,7 @@
 PX_LOG_NAME("rtc");
 
 /* _____LOCAL VARIABLES______________________________________________________ */
-static volatile bool px_rtc_alarm_a_flag;
-static volatile bool px_rtc_alarm_b_flag;
-static volatile bool px_rtc_wakeup_tmr_flag;
+static volatile bool px_rtc_alarm_flag;
 
 /* _____LOCAL FUNCTION DECLARATIONS__________________________________________ */
 
@@ -49,7 +47,11 @@ static uint8_t px_rtc_bin_to_bcd(uint8_t bin)
     return bcd;
 }
 
+#if defined(STM32C0) || defined(STM32L0)
 void RTC_IRQHandler(void)
+#elif defined(STM32L4)
+void RTC_Alarm_IRQHandler(void)
+#endif
 {
     // Alarm A interrupt enabled?
     if(LL_RTC_IsEnabledIT_ALRA(RTC))
@@ -60,52 +62,26 @@ void RTC_IRQHandler(void)
             // Clear interrupt flag
             LL_RTC_ClearFlag_ALRA(RTC);
             // Set flag
-            px_rtc_alarm_a_flag = true;
+            px_rtc_alarm_flag = true;
         }
+#if defined(STM32L0)
         // Clear EXTI line flag associated with RTC Alarm
         LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_17);
-    }
-
-    // Alarm B interrupt enabled?
-    if(LL_RTC_IsEnabledIT_ALRB(RTC))
-    {
-        // Alarm B interrupt flag set?
-        if(LL_RTC_IsActiveFlag_ALRB(RTC))
-        {
-            // Clear interrupt flag
-            LL_RTC_ClearFlag_ALRB(RTC);
-            // Set flag
-            px_rtc_alarm_b_flag = true;
-        }
-        // Clear EXTI line flag associated with RTC Alarm
-        LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_17);
-    }
-
-    // Wakeup Timer interrupt enabled?
-    if(LL_RTC_IsEnabledIT_WUT(RTC))
-    {
-        // Wakeup Timer interrupt flag set?
-        if(LL_RTC_IsActiveFlag_WUT(RTC))
-        {
-            // Clear interrupt flag
-            LL_RTC_ClearFlag_WUT(RTC);
-            // Set flag
-            px_rtc_wakeup_tmr_flag = true;
-        }
-        // Clear EXTI line flag associated with RTC Wakeup Timer
-        LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_20);
+#endif
     }
 }
 
 /* _____GLOBAL FUNCTIONS_____________________________________________________ */
 void px_rtc_init(void)
 {
-    // Is magic value stored in RTC backup register?
-    if(LL_RTC_BAK_GetRegister(RTC, LL_RTC_BKP_DR0) == 0xcafe)
-    {
-        // RTC has already been initialised
-        return;
-    }
+    // Is magic value stored in RTC backup register? If so, already initialized
+#if defined(STM32L0)
+    if(LL_RTC_BAK_GetRegister(RTC, LL_RTC_BKP_DR0) == 0xcafe) return;
+#elif defined(STM32L4)
+    if(LL_RTC_BKP_GetRegister(TAMP, LL_RTC_BKP_DR0) == 0xcafe) return;
+#elif defined(STM32C0)
+    if(LL_PWR_BKP_GetRegister(LL_PWR_BKP_DR0) == 0xcafe) return;
+#endif
 
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
@@ -131,17 +107,21 @@ void px_rtc_init(void)
     LL_RTC_DisableInitMode(RTC);
     // Enable write protection for RTC registers
     LL_RTC_EnableWriteProtection(RTC);
+
     // Store magic value in RTC backup register
+#if defined(STM32L0)
     LL_RTC_BAK_SetRegister(RTC, LL_RTC_BKP_DR0, 0xcafe);
+#elif defined(STM32L4)
+    LL_RTC_BKP_SetRegister(TAMP, LL_RTC_BKP_DR0, 0xcafe);
+#elif defined(STM32C0)
+    LL_PWR_BKP_SetRegister(LL_PWR_BKP_DR0, 0xcafe);
+#endif
 }
 
 void px_rtc_date_time_wr(const px_rtc_date_time_t * date_time)
 {
     // Verify that date-time fields are valid
-    if(!px_rtc_util_date_time_fields_are_valid(date_time))
-    {
-        return;
-    }
+    if(!px_rtc_util_date_time_fields_are_valid(date_time)) return;
 
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
@@ -175,10 +155,7 @@ void px_rtc_date_time_rd(px_rtc_date_time_t * date_time)
         rtc_tr     = RTC->TR;
         rtc_dr     = RTC->DR;
         // Match?
-        if(rtc_tr == rtc_tr_old)
-        {
-            break;
-        }
+        if(rtc_tr == rtc_tr_old) break;
         // Save previous time value
         rtc_tr_old = rtc_tr;
     };
@@ -193,22 +170,21 @@ void px_rtc_date_time_rd(px_rtc_date_time_t * date_time)
     date_time->sec   = px_rtc_bcd_to_bin((rtc_tr >> RTC_TR_SU_Pos)  & 0x7f);
 }
 
-void px_rtc_alarm_a_enable(const px_rtc_date_time_t * alarm, 
-                           px_rtc_alarm_mask_t        alarm_mask)
+void px_rtc_alarm_enable(const px_rtc_date_time_t * alarm,
+                         px_rtc_alarm_mask_t        alarm_mask)
 {
     uint32_t rtc_alrmar;
 
     // Sanity check
-    if(alarm_mask == PX_RTC_UTIL_ALARM_MASK_DIS)
-    {
-        return;
-    }
+    if(alarm_mask == PX_RTC_UTIL_ALARM_MASK_DIS) return;
 
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Alarm
     LL_RTC_ALMA_Disable(RTC);
+#ifdef LL_RTC_ISR_ALRAWF
     while(!LL_RTC_IsActiveFlag_ALRAW(RTC)) {;}
+#endif
 
     // Set alarm and mask
     rtc_alrmar = RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1;
@@ -235,14 +211,22 @@ void px_rtc_alarm_a_enable(const px_rtc_date_time_t * alarm,
     RTC->ALRMAR = rtc_alrmar;
 
     // Clear flag
-    px_rtc_alarm_a_flag = false;
+    px_rtc_alarm_flag = false;
     // Clear interrupt flag
     LL_RTC_ClearFlag_ALRA(RTC);
+#if defined(STM32L0) || defined(STM32L4)
     // Enable rising edge external interrupt on line 17
     LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_17);
     LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_17);
+#endif
+
     // Enable RTC interrupt
+#if defined(STM32L0) || defined(STM32L0)
     NVIC_EnableIRQ(RTC_IRQn);
+#elif defined(STM32L4)
+    NVIC_EnableIRQ(RTC_Alarm_IRQn);
+#endif
+
     // Enable Alarm A interrupt
     LL_RTC_EnableIT_ALRA(RTC);
     // Enable Alarm
@@ -251,160 +235,27 @@ void px_rtc_alarm_a_enable(const px_rtc_date_time_t * alarm,
     LL_RTC_EnableWriteProtection(RTC);
 }
 
-void px_rtc_alarm_a_disable(void)
+void px_rtc_alarm_disable(void)
 {
     // Disable RTC write protection
     LL_RTC_DisableWriteProtection(RTC);
     // Disable Alarm
     LL_RTC_ALMA_Disable(RTC);
+#ifdef LL_RTC_ISR_ALRAWF
     while(!LL_RTC_IsActiveFlag_ALRAW(RTC)) {;}
+#endif
     // Disable Alarm A interrupt
     LL_RTC_DisableIT_ALRA(RTC);
     // Enable write protection for RTC registers
     LL_RTC_EnableWriteProtection(RTC);
 }
 
-bool px_rtc_alarm_a_flag_is_set(void)
+bool px_rtc_alarm_flag_is_set(void)
 {
-    return px_rtc_alarm_a_flag;
+    return px_rtc_alarm_flag;
 }
 
-void px_rtc_alarm_a_flag_clear(void)
+void px_rtc_alarm_flag_clear(void)
 {
-    px_rtc_alarm_a_flag = false;
-}
-
-void px_rtc_alarm_b_enable(const px_rtc_date_time_t * alarm, 
-                           px_rtc_alarm_mask_t        alarm_mask)
-{
-    uint32_t rtc_alrmbr;
-
-    // Sanity check
-    if(alarm_mask == PX_RTC_UTIL_ALARM_MASK_DIS)
-    {
-        return;
-    }
-
-    // Disable RTC write protection
-    LL_RTC_DisableWriteProtection(RTC);
-    // Disable Alarm
-    LL_RTC_ALMB_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_ALRBW(RTC)) {;}
-
-    // Set alarm and mask
-    rtc_alrmbr = RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1;
-    if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_SEC)
-    {
-        rtc_alrmbr |= (uint32_t)px_rtc_bin_to_bcd(alarm->sec) << RTC_ALRMAR_SU_Pos;
-        rtc_alrmbr &= ~RTC_ALRMAR_MSK1;
-    }
-    if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_MIN)
-    {
-        rtc_alrmbr |= (uint32_t)px_rtc_bin_to_bcd(alarm->min) << RTC_ALRMAR_MNU_Pos;
-        rtc_alrmbr &= ~RTC_ALRMAR_MSK2;
-    }
-    if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_HOUR)
-    {
-        rtc_alrmbr |= (uint32_t)px_rtc_bin_to_bcd(alarm->hour) << RTC_ALRMAR_HU_Pos;
-        rtc_alrmbr &= ~RTC_ALRMAR_MSK3;
-    }
-    if(alarm_mask & PX_RTC_UTIL_ALARM_MASK_DAY)
-    {
-        rtc_alrmbr |= (uint32_t)px_rtc_bin_to_bcd(alarm->day) << RTC_ALRMAR_DU_Pos;
-        rtc_alrmbr &= ~RTC_ALRMAR_MSK3;
-    }
-    RTC->ALRMBR = rtc_alrmbr;
-
-    // Clear flag
-    px_rtc_alarm_b_flag = false;
-    // Clear interrupt flag
-    LL_RTC_ClearFlag_ALRB(RTC);
-    // Enable rising edge external interrupt on line 17
-    LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_17);
-    LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_17);
-    // Enable RTC interrupt
-    NVIC_EnableIRQ(RTC_IRQn);
-    // Enable Alarm B interrupt
-    LL_RTC_EnableIT_ALRB(RTC);
-    // Enable Alarm
-    LL_RTC_ALMB_Enable(RTC);
-    // Enable write protection for RTC registers
-    LL_RTC_EnableWriteProtection(RTC);
-}
-
-void px_rtc_alarm_b_disable(void)
-{
-    // Disable RTC write protection
-    LL_RTC_DisableWriteProtection(RTC);
-    // Disable Alarm
-    LL_RTC_ALMB_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_ALRBW(RTC)) {;}
-    // Disable Alarm B interrupt
-    LL_RTC_DisableIT_ALRB(RTC);
-    // Enable write protection for RTC registers
-    LL_RTC_EnableWriteProtection(RTC);
-}
-
-bool px_rtc_alarm_b_flag_is_set(void)
-{
-    return px_rtc_alarm_b_flag;
-}
-
-void px_rtc_alarm_b_flag_clear(void)
-{
-    px_rtc_alarm_b_flag = false;    
-}
-
-void px_rtc_wakeup_tmr_enable(px_rtc_wakeup_presc_clk_t wakeup_presc_clk,
-                              uint16_t                  wakeup_reload)
-{
-    // Disable RTC write protection
-    LL_RTC_DisableWriteProtection(RTC);
-    // Disable Wakeup Timer
-    LL_RTC_WAKEUP_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_WUTW(RTC)) {;}
-
-    // Set Wakeup Timer clock prescaler
-    LL_RTC_WAKEUP_SetClock(RTC, wakeup_presc_clk);
-    // Set auto reload value
-    LL_RTC_WAKEUP_SetAutoReload(RTC, wakeup_reload);
-    // Clear flag
-    px_rtc_wakeup_tmr_flag = false;
-    // Clear WUT interrupt flag
-    LL_RTC_ClearFlag_WUT(RTC);
-    // Enable rising edge external interrupt on line 20
-    LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_20);
-    LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_20);
-
-    // Enable RTC interrupt
-    NVIC_EnableIRQ(RTC_IRQn);
-    // Enable Wakeup Timer interrupt
-    LL_RTC_EnableIT_WUT(RTC);
-    // Enable Wakeup Timer
-    LL_RTC_WAKEUP_Enable(RTC);
-    // Enable write protection for RTC registers
-    LL_RTC_EnableWriteProtection(RTC);    
-}
-
-void px_rtc_wakeup_tmr_disable(void)
-{
-    // Disable RTC write protection
-    LL_RTC_DisableWriteProtection(RTC);
-    // Disable Wakeup Timer
-    LL_RTC_WAKEUP_Disable(RTC);
-    while(!LL_RTC_IsActiveFlag_WUTW(RTC)) {;}
-    // Disable Wakeup Timer interrupt
-    LL_RTC_DisableIT_WUT(RTC);
-    // Enable write protection for RTC registers
-    LL_RTC_EnableWriteProtection(RTC);
-}
-
-bool px_rtc_wakeup_tmr_flag_is_set(void)
-{
-    return px_rtc_wakeup_tmr_flag;
-}
-
-void px_rtc_wakeup_tmr_flag_clear(void)
-{
-    px_rtc_wakeup_tmr_flag = false;    
+    px_rtc_alarm_flag = false;
 }
