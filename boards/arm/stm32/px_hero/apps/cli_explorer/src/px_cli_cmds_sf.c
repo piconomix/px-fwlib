@@ -48,11 +48,12 @@ static uint16_t px_cli_cmd_sf_offset;
 /* _____LOCAL FUNCTIONS______________________________________________________ */
 static const char * px_cli_cmd_fn_sf_info(uint8_t argc, char * argv[])
 {
-    uint8_t  status;
-    uint8_t data[3];
+    px_at25s_status_reg1_t    status;
+    px_at25s_man_and_dev_id_t man_and_dev_id;
 
-    px_at25s_rd_man_and_dev_id(data);
-    printf("Manufacturer and Device ID: %02X %02X %02X\n",  data[0], data[1], data[2]);
+    px_at25s_rd_man_and_dev_id(&man_and_dev_id);
+    printf("Manufacturer ID: %02X\n", man_and_dev_id.man_id);
+    printf("Device ID: %02X %02X\n",  man_and_dev_id.dev_id1.u8, man_and_dev_id.dev_id2.u8);
 
     printf("Size: %lu KB\n", PX_AT25S_FLASH_SIZE_BYTES / 1024);
     printf("Pages: %lu\n", PX_AT25S_PAGES);
@@ -61,15 +62,15 @@ static const char * px_cli_cmd_fn_sf_info(uint8_t argc, char * argv[])
     printf("Block size: 4KB\n");
 
     status = px_at25s_rd_status_reg1();
-    printf("Status: 0x%02X\n", status);
-    printf("- SRP0 = %d\n", ((status & PX_AT25S_STATUS_REG1_SRP0) != 0));
-    printf("- SEC  = %d\n", ((status & PX_AT25S_STATUS_REG1_SEC)  != 0));
-    printf("- TB   = %d\n", ((status & PX_AT25S_STATUS_REG1_TB)   != 0));
-    printf("- BP2  = %d\n", ((status & PX_AT25S_STATUS_REG1_BP2)  != 0));
-    printf("- BP1  = %d\n", ((status & PX_AT25S_STATUS_REG1_BP1)  != 0));
-    printf("- BP0  = %d\n", ((status & PX_AT25S_STATUS_REG1_BP0)  != 0));
-    printf("- WEL  = %d\n", ((status & PX_AT25S_STATUS_REG1_WEL)  != 0));
-    printf("- BSY  = %d\n", ((status & PX_AT25S_STATUS_REG1_BSY)  != 0));
+    printf("Status: 0x%02X\n", status.u8);
+    printf("- SRP0 = %d\n", status.srp0);
+    printf("- SEC  = %d\n", status.sec);
+    printf("- TB   = %d\n", status.tb);
+    printf("- BP2  = %d\n", status.bp2);
+    printf("- BP1  = %d\n", status.bp1);
+    printf("- BP0  = %d\n", status.bp0);
+    printf("- WEL  = %d\n", status.wel);
+    printf("- BSY  = %d\n", status.bsy);
 
     return NULL;
 }

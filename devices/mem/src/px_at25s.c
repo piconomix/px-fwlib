@@ -253,7 +253,7 @@ void px_at25s_erase_chip(void)
 
 bool px_at25s_ready(void)
 {
-    uint8_t data;
+    px_at25s_status_reg1_t status;
 
     // If flag has already been set, then take shortcut
     if(px_at25s_ready_flag)
@@ -261,9 +261,9 @@ bool px_at25s_ready(void)
         return true;
     }
     // Read status
-    data = px_at25s_rd_status_reg1();
+    status = px_at25s_rd_status_reg1();
     // See if Serial Flash is ready
-    if(PX_BIT_IS_LO(data, PX_AT25S_STATUS_REG1_BSY))
+    if(status.bsy == 0)
     {
         // Set flag
         px_at25s_ready_flag = true;
@@ -275,7 +275,7 @@ bool px_at25s_ready(void)
     }
 }
 
-uint8_t px_at25s_rd_status_reg1(void)
+px_at25s_status_reg1_t px_at25s_rd_status_reg1(void)
 {
     uint8_t data[1];
 
@@ -285,10 +285,10 @@ uint8_t px_at25s_rd_status_reg1(void)
     // Read status
     px_spi_rd(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_STOP);
 
-    return data[0];
+    return (px_at25s_status_reg1_t)data[0];
 }
 
-void px_at25s_rd_man_and_dev_id(uint8_t * buf)
+void px_at25s_rd_man_and_dev_id(px_at25s_man_and_dev_id_t * man_and_dev_id)
 {
     uint8_t data[1];
 
@@ -296,5 +296,5 @@ void px_at25s_rd_man_and_dev_id(uint8_t * buf)
     data[0] = PX_AT25S_CMD_RD_MAN_AND_DEVICE_ID;
     px_spi_wr(px_at25s_spi_handle, data, 1, PX_SPI_FLAG_START);
     // Read manufacturer and device ID
-    px_spi_rd(px_at25s_spi_handle, buf, 3, PX_SPI_FLAG_STOP);
+    px_spi_rd(px_at25s_spi_handle, (uint8_t *)man_and_dev_id, sizeof(*man_and_dev_id), PX_SPI_FLAG_STOP);
 }

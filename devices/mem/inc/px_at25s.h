@@ -109,17 +109,44 @@ typedef enum
 /// Maximum address
 #define PX_AT25S_ADR_MAX            (PX_AT25S_FLASH_SIZE_BYTES - 1)
 
-/// @name Status register 1
-/// @{
-#define PX_AT25S_STATUS_REG1_SRP0       7   ///< Status Register Protection bit 0
-#define PX_AT25S_STATUS_REG1_SEC        6   ///< Block Protection
-#define PX_AT25S_STATUS_REG1_TB         5   ///< Top or Bottom Protection
-#define PX_AT25S_STATUS_REG1_BP2        4   ///< Block Protection bit 2
-#define PX_AT25S_STATUS_REG1_BP1        3   ///< Block Protection bit 1
-#define PX_AT25S_STATUS_REG1_BP0        2   ///< Block Protection bit 0
-#define PX_AT25S_STATUS_REG1_WEL        1   ///< Write Enable Latch Status
-#define PX_AT25S_STATUS_REG1_BSY        0   ///< Ready/Busy Status
-/// @}
+/// Status register 1 definition
+typedef union
+{
+    uint8_t u8;
+    struct
+    {
+        uint8_t bsy  : 1;   ///< [0] Ready/Busy Status
+        uint8_t wel  : 1;   ///< [1] Write Enable Latch Status
+        uint8_t bp0  : 1;   ///< [2] Block Protection bit 0
+        uint8_t bp1  : 1;   ///< [3] Block Protection bit 1
+        uint8_t bp2  : 1;   ///< [4] Block Protection bit 2
+        uint8_t tb   : 1;   ///< [5] Top or Bottom Protection
+        uint8_t sec  : 1;   ///< [6] Block Protection
+        uint8_t srp0 : 1;   ///< [7] Status Register Protection bit 0
+    };
+} px_at25s_status_reg1_t;
+
+/// Manufacturer and Device ID info
+typedef struct PX_ATTR_PACKED
+{
+    uint8_t man_id;                 ///< JEDEC Code: 0001 1111 (0x1f for Renesas Electronics)
+    union
+    {   uint8_t u8;
+        struct
+        {
+            uint8_t density : 5;
+            uint8_t family  : 3;    ///< Family code: 100 (AT25SFxxx series)
+        };
+    } dev_id1;
+    union
+    {   uint8_t u8;
+        struct
+        {
+            uint8_t ver     : 5;    ///< Product Version: 00001
+            uint8_t sub     : 3;    ///< Sub Code: 000 (Standard series)
+        };
+    } dev_id2;
+} px_at25s_man_and_dev_id_t;
 
 /// Maximum SPI Clock rate
 #define PX_AT25S_MAX_SPI_CLOCK_HZ  33000000
@@ -264,9 +291,9 @@ bool px_at25s_ready(void);
  *  The status register contains flags, e.g. PX_AT25S_STATUS_REG1_BSY to see
  *  if the device is ready or busy with an internal operation.
  *
- *  @return uint8_t Status register 1 value
+ *  @return px_at25s_status_reg1_t Status register 1 value
  */
-uint8_t px_at25s_rd_status_reg1(void);
+px_at25s_status_reg1_t px_at25s_rd_status_reg1(void);
 
 /**
  *  Read Manufacturer and Device ID.
@@ -274,7 +301,7 @@ uint8_t px_at25s_rd_status_reg1(void);
  *  @param buf      Buffer with a size of 3 bytes to hold manufacturer and
  *                  device ID
  */
-void px_at25s_rd_man_and_dev_id(uint8_t * buf);
+void px_at25s_rd_man_and_dev_id(px_at25s_man_and_dev_id_t * man_and_dev_id);
 
 /* _____MACROS_______________________________________________________________ */
 
