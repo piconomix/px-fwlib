@@ -71,7 +71,9 @@ static void px_spi_init_per(SPI_TypeDef * spi_base_adr,
         // Configure DMA channel 2 (SPI1_RX)
         LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_2, (uint32_t)&SPI1->DR);
         DMA1_Channel2->CCR = DMA_CCR_MINC;
-#if defined(STM32L0) || defined(STM32L4)
+#if defined(STM32L0)
+        LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_2, LL_DMA_REQUEST_1);
+#elif defined(STM32L4)
         LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_2, LL_DMA_REQUEST_1);
 #elif defined(STM32C0) || defined(STM32G0)
         LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_2, LL_DMAMUX_REQ_SPI1_RX);
@@ -79,7 +81,9 @@ static void px_spi_init_per(SPI_TypeDef * spi_base_adr,
         // Configure DMA channel 3 (SPI1_TX)
         LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_3, (uint32_t)&SPI1->DR);
         DMA1_Channel3->CCR = DMA_CCR_MINC | DMA_CCR_DIR;
-#if defined(STM32L0) || defined(STM32L4)
+#if defined(STM32L0)
+        LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_3, LL_DMA_REQUEST_1);
+#elif defined(STM32L4)
         LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_3, LL_DMA_REQUEST_1);
 #elif defined(STM32C0) || defined(STM32G0)
         LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_3, LL_DMAMUX_REQ_SPI1_TX);
@@ -94,7 +98,9 @@ static void px_spi_init_per(SPI_TypeDef * spi_base_adr,
         // Configure DMA channel 4 (SPI2_RX)
         LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)&SPI2->DR);
         DMA1_Channel4->CCR = DMA_CCR_MINC;
-#if defined(STM32L0) || defined(STM32L4)
+#if defined(STM32L0)
+        LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_4, LL_DMA_REQUEST_2);
+#elif defined(STM32L4)
         LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_4, LL_DMA_REQUEST_1);
 #elif defined(STM32C0) || defined(STM32G0)
         LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_4, LL_DMAMUX_REQ_SPI2_RX);
@@ -102,7 +108,9 @@ static void px_spi_init_per(SPI_TypeDef * spi_base_adr,
         // Configure DMA channel 5 (SPI2_TX)
         LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_5, (uint32_t)&SPI2->DR);
         DMA1_Channel5->CCR = DMA_CCR_MINC | DMA_CCR_DIR;
-#if defined(STM32L0) || defined(STM32L4)
+#if defined(STM32L0)
+        LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_5, LL_DMA_REQUEST_2);
+#elif defined(STM32L4)
         LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_5, LL_DMA_REQUEST_1);
 #elif defined(STM32C0) || defined(STM32G0)
         LL_DMA_SetPeriphRequest(DMA1, LL_DMA_CHANNEL_5, LL_DMAMUX_REQ_SPI2_TX);
