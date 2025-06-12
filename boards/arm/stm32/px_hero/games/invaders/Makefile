@@ -68,7 +68,7 @@ BSP = $(PX_FWLIB)/boards/arm/stm32/px_hero
 STMCUBE = $(PX_FWLIB)/libs/STM32Cube/L0
 
 # (3e) Path to ST STMCube USB library (relative to Makefile)
-STMCUBE_USB = $(PX_FWLIB)/libs/STM32Cube_USB
+STMCUBE_USB = $(PX_FWLIB)/libs/STM32Cube_USB/V2.5.3
 
 # (3f) Path to ChaN's FatFs library (relative to Makefile)
 CHAN_FATFS = $(PX_FWLIB)/libs/ChaN_FatFs
