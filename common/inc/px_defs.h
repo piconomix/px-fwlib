@@ -267,7 +267,7 @@ typedef signed long long   int64_t;
 /// Calculate unsigned division with rounding up to nearest integer value
 #define PX_UDIV_ROUNDUP(n, d)               (((n) + ((d) - 1)) / (d))
 /// Calculate signed division with rounding to nearest integer value
-#define PX_SDIV_ROUND(n, d)                 (((n < 0) ^ (d < 0)) ? (((n) - ((d) / 2)) / (d)) : (((n) + ((d) / 2)) / (d)))
+#define PX_SDIV_ROUND(n, d)                 ((((n) < 0) ^ ((d) < 0)) ? (((n) - ((d) / 2)) / (d)) : (((n) + ((d) / 2)) / (d)))
 /// Calculate the number of items in an array
 #define PX_LENGTHOF_ARRAY(a)                (sizeof(a) / sizeof((a)[0]))
 /// Calculate the size of a member in a struct type
@@ -277,9 +277,9 @@ typedef signed long long   int64_t;
 /// Swap the value of two variables
 #define PX_SWAP(type_t, i , j)              do { type_t _k = i; i = j; j = _k; } while (0)
 /// Maximum of two values
-#define PX_MAX(i, j)                        (i > j ? i : j)
+#define PX_MAX(i, j)                        ((i) > (j) ? (i) : (j))
 /// Minimum of two values
-#define PX_MIN(i, j)                        (i < j ? i : j)
+#define PX_MIN(i, j)                        ((i) < (j) ? (i) : (j))
 /// @}
 
 #ifdef __cplusplus
