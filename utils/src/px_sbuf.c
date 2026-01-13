@@ -69,57 +69,32 @@ void px_sbuf_free(px_sbuf_t * sbuf)
 
 void px_sbuf_reset(px_sbuf_t * sbuf)
 {
-    sbuf->index    = 0;
-    sbuf->buf[0]   = '\0';
+    sbuf->index  = 0;
+    sbuf->buf[0] = '\0';
 }
 
 bool px_sbuf_is_empty(const px_sbuf_t * sbuf)
 {
-    if(sbuf->index == 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (sbuf->index == 0);
 }
 
 bool px_sbuf_is_full(const px_sbuf_t * sbuf)
 {
-    if(sbuf->index >= (sbuf->buf_size - 1))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (sbuf->index >= (sbuf->buf_size - 1));
 }
 
 size_t px_sbuf_get_size_remaining(const px_sbuf_t * sbuf)
 {
-    if(sbuf->buf_size <= sbuf->index)
-    {
-        return 0;
-    }
-    else
-    {
-        return (sbuf->buf_size - sbuf->index);
-    }
+    if(sbuf->buf_size <= sbuf->index) return 0;
+    else                              return (sbuf->buf_size - sbuf->index);
 }
 
 void px_sbuf_putchar(px_sbuf_t * sbuf, char c)
 {
     // Buffer full?
-    if(px_sbuf_is_full(sbuf))
-    {
-        return;
-    }
+    if(px_sbuf_is_full(sbuf)) return;
     // Append char
-    sbuf->buf[sbuf->index] = c;
-    // Adjust to new position
-    sbuf->index++;
+    sbuf->buf[sbuf->index++] = c;
     // Zero terminate
     sbuf->buf[sbuf->index] = '\0';
 }
@@ -130,34 +105,73 @@ void px_sbuf_puts(px_sbuf_t * sbuf, const char * str)
     px_sbuf_putchar(sbuf, '\n');
 }
 
+void px_sbuf_puts_n(px_sbuf_t * sbuf, const char * str, size_t n)
+{
+    px_sbuf_print_n(sbuf, str, n);
+    px_sbuf_putchar(sbuf, '\n');
+}
+
 void px_sbuf_print(px_sbuf_t * sbuf, const char * str)
 {
     char c;
 
     // Buffer full?
-    if(px_sbuf_is_full(sbuf))
-    {
-        return;
-    }
+    if(px_sbuf_is_full(sbuf)) return;
     // Append string
     while(true)
     {
         // Read char
         c = *str++;
         // End of string?
-        if(c == '\0')
-        {
-            break;
-        }
+        if(c == '\0') break;
         // Write char
-        sbuf->buf[sbuf->index] = c;
-        // Next index
-        sbuf->index++;
+        sbuf->buf[sbuf->index++] = c;
+        // End of buffer?
+        if(sbuf->index == (sbuf->buf_size - 1)) break;
+    }
+    // Zero terminate
+    sbuf->buf[sbuf->index] = '\0';
+}
+
+void px_sbuf_print_n(px_sbuf_t * sbuf, const char * str, size_t n)
+{
+    char c;
+
+    // Buffer full?
+    if(px_sbuf_is_full(sbuf)) return;
+    // Append string
+    while(n != 0)
+    {
+        // Read char
+        c = *str++;
+        // End of string?
+        if(c == '\0') break;
+        // Write char
+        sbuf->buf[sbuf->index++] = c;
         // End of buffer?
         if(sbuf->index == (sbuf->buf_size - 1))
         {
-            break;
+            // Zero terminate
+            sbuf->buf[sbuf->index] = '\0';
+            return;
         }
+        // Decrement count of remaining characters
+        n--;
+    }
+    // Append spaces
+    while(n != 0)
+    {
+        // Write char
+        sbuf->buf[sbuf->index++] = ' ';
+        // End of buffer?
+        if(sbuf->index == (sbuf->buf_size - 1))
+        {
+            // Zero terminate
+            sbuf->buf[sbuf->index] = '\0';
+            return;
+        }
+        // Decrement count of remaining characters
+        n--;
     }
     // Zero terminate
     sbuf->buf[sbuf->index] = '\0';
@@ -170,10 +184,7 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
     int     i;
 
     // Buffer full?
-    if(px_sbuf_is_full(sbuf))
-    {
-        return;
-    }
+    if(px_sbuf_is_full(sbuf)) return;
     // Calculate remaining size
     rem_buf_size = sbuf->buf_size - sbuf->index;
     // Append formatted string
@@ -188,10 +199,7 @@ void px_sbuf_printf(px_sbuf_t * sbuf, const char * format, ...)
         return;
     }
     // Overflow?
-    if(i > rem_buf_size)
-    {
-        i = rem_buf_size;
-    }
+    if(i > rem_buf_size) i = rem_buf_size;
     // Adjust to new position
     sbuf->index += i;
 }
@@ -202,10 +210,7 @@ void px_sbuf_vprintf(px_sbuf_t * sbuf, const char * format, const va_list * args
     int    i;
 
     // Buffer full?
-    if(px_sbuf_is_full(sbuf))
-    {
-        return;
-    }
+    if(px_sbuf_is_full(sbuf)) return;
     // Calculate remaining size
     rem_buf_size = sbuf->buf_size - sbuf->index;
     // Append formatted string
@@ -218,10 +223,7 @@ void px_sbuf_vprintf(px_sbuf_t * sbuf, const char * format, const va_list * args
         return;
     }
     // Overflow?
-    if(i > rem_buf_size)
-    {
-        i = rem_buf_size;
-    }
+    if(i > rem_buf_size) i = rem_buf_size;
     // Adjust to new position
     sbuf->index += i;
 }
@@ -231,10 +233,7 @@ void px_sbuf_append(px_sbuf_t * sbuf, const char * data, size_t nr_of_bytes)
     while(nr_of_bytes != 0)
     {
         // Buffer full?
-        if(px_sbuf_is_full(sbuf))
-        {
-            return;
-        }
+        if(px_sbuf_is_full(sbuf)) return;
         // Append byte
         sbuf->buf[sbuf->index] = *data++;
         // Next byte

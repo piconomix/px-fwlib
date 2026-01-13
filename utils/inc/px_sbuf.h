@@ -115,6 +115,30 @@ bool px_sbuf_is_empty(const px_sbuf_t * sbuf);
 bool px_sbuf_is_full(const px_sbuf_t * sbuf);
 
 /**
+ *  Return string in safe buffer
+ *
+ *  @param sbuf             Pointer to safe buffer object
+ *
+ *  @return const char *    String
+ */
+static inline const char * px_sbuf_get_str(const px_sbuf_t * sbuf)
+{
+    return sbuf->buf;
+}
+
+/**
+ *  Return length of string in safe buffer
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *
+ *  @return size_t  String length
+ */
+static inline size_t px_sbuf_get_len(const px_sbuf_t * sbuf)
+{
+    return sbuf->index;
+}
+
+/**
  *  Return remaining size of safe buffer
  *
  *  @param sbuf     Pointer to safe buffer object
@@ -140,12 +164,34 @@ void px_sbuf_putchar(px_sbuf_t * sbuf, char c);
 void px_sbuf_puts(px_sbuf_t * sbuf, const char * str);
 
 /**
+ *  Append a string up to specified length and newline character to safe buffer
+ *
+ *  If string is shorter than specified length then spaces are appended.
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *  @param n        Length of string to append
+ *  @param str      String to append
+ */
+void px_sbuf_puts_n(px_sbuf_t * sbuf, const char * str, size_t n);
+
+/**
  *  Append a string to safe buffer
  *
  *  @param sbuf     Pointer to safe buffer object
  *  @param str      String to append
  */
 void px_sbuf_print(px_sbuf_t * sbuf, const char * str);
+
+/**
+ *  Append a string to safe buffer up to specified length
+ *
+ *  If string is shorter than specified length then spaces are appended.
+ *
+ *  @param sbuf     Pointer to safe buffer object
+ *  @param str      String to append
+ *  @param n        Length of string to append
+ */
+void px_sbuf_print_n(px_sbuf_t * sbuf, const char * str, size_t n);
 
 /**
  *  Append a formatted string to safe buffer
