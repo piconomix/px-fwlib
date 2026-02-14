@@ -1,0 +1,242 @@
+# ------------------------------------------------------------------------------
+# STM32 Makefile Template by Pieter Conradie <https://piconomix.com>
+#
+# Based on:
+# - WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
+# - WinARM template makefile by Martin Thomas, Kaiserslautern, Germany 
+# - DMBS - Dean's Makefile Build System by Dean Camera [https://github.com/abcminiuser/dmbs]
+# - http://stackoverflow.com Q&A research
+# - Automatically generate makefile dependencies (http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
+# - GNU make manual (https://www.gnu.org/software/make/manual/make.html)
+#
+# On command line:
+#
+# make                    = Build project (debug version)
+# make build=debug        = Build project (debug version)
+# make build=debug-boot   = Build project (debug version for bootloader)
+# make build=release      = Build project (release version)
+# make build=release-boot = Build project (release version for bootloader)
+# make clean              = Delete build and final output files
+# make mostlyclean        = Delete build files, but preserve final output files
+# make program            = Program target using command line utility
+# make reset              = Reset target using command line utility
+# make openocd            = Create script and launch OpenOCD GDB and Telnet server
+# make gdb                = Create script and launch GDB
+#
+# To create a new project, copy this Makefile to your project directory and:
+#
+# 1. Specify a project name and offset to reserve space for bootloader
+# 2. Specify the MCU options that the project will be compiled for
+# 3. Specify paths
+# 4. List source files to be included in project WITH PATHS (relative to Makefile)
+# 5. Add include paths
+# 6. Specify any extra preprocessor definitions for source files
+#
+# Makefile script special requirements:
+# - make 3.81 or greater (requires working eval function)
+# - sh (sh.exe on MS-Windows platform)
+# - rm (to delete files and directories)
+# - mkdir (to create directories)
+#
+# ------------------------------------------------------------------------------
+# Creation Date:  2018-03-17
+# ------------------------------------------------------------------------------
+
+# (1a) Project name
+PROJECT = gpio
+
+# (1b) Offset from start of FLASH to reserve space for bootloader (release for bootloader build)
+BOOTLOADER_SIZE = 0x4000
+
+# (2) MCU option(s)
+MCU        = -mthumb -mcpu=cortex-m0plus
+FLASH_SIZE = 128k
+SRAM_SIZE  = 24k
+STACK_SIZE = 1024
+HEAP_SIZE  = 1024
+
+# (3a) Path to root of Piconomix FW Library (relative to Makefile)
+PX_FWLIB = ../../../../../..
+
+# (3b) Path to microcontroller architecture (relative to Piconomix FW Library)
+ARCH = arch/arm/stm32
+
+# (3c) Path to board support package (relative to Makefile)
+BSP = $(PX_FWLIB)/boards/arm/stm32/st_nucleo64_c071rb
+
+# (3d) Path to ST STMCube library (relative to Makefile)
+STMCUBE = $(PX_FWLIB)/libs/STM32Cube/C0
+
+# (4a) List C source files WITH PATHS (relative to Makefile) here
+SRC += src/main.c
+SRC += $(BSP)/src/px_board.c
+SRC += $(PX_FWLIB)/$(ARCH)/src/px_gpio.c
+SRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32C0xx/Source/Templates/system_stm32c0xx.c
+SRC += $(STMCUBE)/Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_ll_utils.c
+
+# (4b) List C++ source files WITH PATHS (relative to Makefile) here
+CXXSRC +=
+
+# (4c) List Assembler source files WITH PATHS (relative to Makefile) here
+#
+#      Make them always end in a capital .S.  Files ending in a lowercase .s
+#      will not be considered source files but generated files (assembler
+#      output from the compiler).
+#      Even though the MS-DOS/MS-Windows filesystem matches both .s and .S the 
+#      same, it will preserve the spelling of the filenames, and gcc itself does
+#      care about how the name is spelled on its command-line.
+ASRC += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32C0xx/Source/Templates/gcc/startup_stm32c071xx.s
+
+# (5) List all directories to look for include files here
+#
+#     Each directory must be separated by a space.
+#     Use forward slashes for directory separators.
+#     For a directory that has spaces, enclose it in quotes.
+#
+#     The order specified here is very important!
+#
+#     If you want to overide an include file with the same name, your file must 
+#     be found first in the search order specified below.
+INCDIRS += cfg
+INCDIRS += inc
+INCDIRS += src
+INCDIRS += $(BSP)/inc
+INCDIRS += $(PX_FWLIB)
+INCDIRS += $(PX_FWLIB)/$(ARCH)/inc
+INCDIRS += $(PX_FWLIB)/common/inc
+INCDIRS += $(PX_FWLIB)/comms/inc
+INCDIRS += $(PX_FWLIB)/utils/inc
+INCDIRS += $(STMCUBE)/Drivers/CMSIS/Device/ST/STM32C0xx/Include
+INCDIRS += $(STMCUBE)/Drivers/CMSIS/Include
+INCDIRS += $(STMCUBE)/Drivers/STM32C0xx_HAL_Driver/Inc
+INCDIRS += $(STMCUBE)/Drivers/STM32C0xx_HAL_Driver/Legacy
+
+# (6a) Place preprocessor DEFINE macros here for C sources (GCC option -D)
+#CDEFS += PX_LOG=1
+CDEFS += STM32C0
+CDEFS += STM32C071xx
+CDEFS += USE_FULL_LL_DRIVER
+#CDEFS += USE_HAL_DRIVER
+
+# (6b) Place preprocessor DEFINE macros here for C++ sources (GCC option -D)
+#CXXDEFS += __STDC_LIMIT_MACROS
+#CXXDEFS += __STDC_CONSTANT_MACROS
+CXXDEFS += STM32C0
+CXXDEFS += STM32C071xx
+
+# (6c) Place preprocessor DEFINE macros here for ASM sources (GCC option -D)
+ADEFS +=
+
+#---------------- Compiler Options C -------------------------------------------
+#  -g*:          generate debugging information
+#  -O*:          optimization level (0,1,2,3 or s)
+#  -f...:        tuning, see GCC manual and avr-libc documentation
+#  -Wall...:     warning level
+CFLAGS += -gdwarf-2
+CFLAGS += -funsigned-char
+CFLAGS += -funsigned-bitfields
+CFLAGS += -fshort-enums
+CFLAGS += -Wall
+CFLAGS += -Wstrict-prototypes
+#CFLAGS += -mshort-calls
+#CFLAGS += -fno-unit-at-a-time
+#CFLAGS += -Wundef
+#CFLAGS += -Wunreachable-code
+#CFLAGS += -Wsign-compare
+CFLAGS += -fstack-usage
+#CFLAGS +- -Wstackusage=128
+CFLAGS += -std=gnu99
+CFLAGS += -ffunction-sections
+CFLAGS += -fdata-sections
+CFLAGS += --specs=nano.specs
+
+CFLAGS_DEBUG   += -Og
+CFLAGS_RELEASE += -Os
+
+#---------------- Compiler Options C++ -----------------------------------------
+#  -g*:          generate debugging information
+#  -O*:          optimization level (0,1,2,3 or s)
+#  -f...:        tuning, see GCC manual and avr-libc documentation
+#  -Wall...:     warning level
+CXXFLAGS += -gdwarf-2
+CXXFLAGS += -funsigned-char
+CXXFLAGS += -funsigned-bitfields
+CXXFLAGS += -fshort-enums
+CXXFLAGS += -fno-exceptions
+CXXFLAGS += -Wall
+#CXXFLAGS += -Wundef
+#CXXFLAGS += -mshort-calls
+#CXXFLAGS += -fno-unit-at-a-time
+#CXXFLAGS += -Wstrict-prototypes
+#CXXFLAGS += -Wunreachable-code
+#CXXFLAGS += -Wsign-compare
+CXXFLAGS += -std=gnu++11
+CXXFLAGS += -ffunction-sections
+CXXFLAGS += -fdata-sections
+CXXFLAGS += --specs=nano.specs
+
+CXXFLAGS_DEBUG   += -Og
+CXXFLAGS_RELEASE += -Os
+
+#---------------- Assembler Options --------------------------------------------
+#  -Wa,...:   tell GCC to pass this to the assembler.
+AFLAGS += 
+
+#---------------- Library Options ----------------------------------------------
+# Floating point printf version
+PRINTF_LIB_FLOAT = -Wl,-u,_printf_float
+
+# If this is left blank, then it will use the Standard printf version.
+PRINTF_LIB = 
+#PRINTF_LIB = $(PRINTF_LIB_FLOAT)
+
+# Floating point + %[ scanf version (requires MATH_LIB = -lm below)
+SCANF_LIB_FLOAT = -Wl,-u,_scanf_float
+
+# If this is left blank, then it will use the Standard scanf version.
+SCANF_LIB = 
+#SCANF_LIB = $(SCANF_LIB_FLOAT)
+
+# List any extra directories to look for libraries here.
+#     Each directory must be separated by a space.
+#     Use forward slashes for directory separators.
+#     For a directory that has spaces, enclose it in quotes.
+EXTRALIBDIRS = 
+
+# List any extra libraries here.
+#     Each library must be separated by a space.
+#     The "lib" prefix and ".a" suffix must be removed.
+EXTRALIBS = 
+
+#---------------- Linker Options -----------------------------------------------
+#  -Wl,...:     tell GCC to pass this to linker.
+LDFLAGS += -Wl,-gc-sections,--relax
+LDFLAGS += -Wl,-print-memory-usage
+LDFLAGS += --specs=nosys.specs
+LDFLAGS += --specs=nano.specs
+LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
+LDFLAGS += -T $(PX_FWLIB)/$(ARCH)/px_stm32_flash.ld
+
+#---------------- Programmer Options -------------------------------------------
+#STM32_PROGRAMMER_SN = sn=066CFF565654898367082945
+
+#---------------- Debugging Options --------------------------------------------
+# OpenOCD script filename
+OPENOCD_SCRIPT ?= openocd.cfg
+
+# Specify the OpenOCD interface script
+OPENOCD_INTERFACE = interface/cmsis-dap.cfg
+
+# Specify the board or target
+OPENOCD_TARGET ?= target/stm32l0.cfg
+
+# GDB server port
+#GDB_PORT ?= 3333
+GDB_PORT ?= 2331
+
+# GDB configuration script filename
+GDB_SCRIPT ?= init.gdb
+
+#===============================================================================
+
+include $(PX_FWLIB)/$(ARCH)/MakeRules.mk

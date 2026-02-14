@@ -1,0 +1,15 @@
+# Basic GPIO example # {#STM32_NUCLEO64_C071RB_EXAMPLE_GPIO}
+
+This is a basic GPIO example for the STM32C071RB Nucleo-64 Board. It is the
+embedded equivalent of a "hello world" program on a PC to kick the tires and
+know that your development setup works.
+
+The LED flashes at a slow 2 Hz while the button is released and at a fast
+8 Hz while the button is being pressed.
+
+File(s):
+- boards/arm/stm32/st_nucleo64_c071rb/examples/gpio/src/main.c
+
+The following modules are used:
+- @ref BOARDS_STM32_NUCLEO64_C071RB
+- @ref STM32_GPIO

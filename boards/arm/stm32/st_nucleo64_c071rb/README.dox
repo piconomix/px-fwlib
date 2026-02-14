@@ -1,0 +1,30 @@
+# 3.2.3 ST Nucleo-64 C071RB Board # {#STM32_NUCLEO64_C071RB_BOARD}
+
+# 1. Introduction #
+
+![ST Nucleo-64 C071RB Board](st_nucleo_c071rb.jpg)
+
+Basic support for the [NUCLEO-C071RB](https://www.st.com/en/evaluation-tools/nucleo-c071rb.html)
+board with an [STM32L071RBT6](https://www.st.com/en/microcontrollers-microprocessors/stm32c071rb.html)
+MCU.
+
+Links:
+- [STM32 Nucleo-64 board User Manual](https://www.st.com/resource/en/user_manual/um3353-stm32-nucleo64-board-mb2046-stmicroelectronics.pdf)
+- [STM32 Nucleo (64 pins) schematics](https://www.st.com/resource/en/schematic_pack/mb2046-c071rb-b03-schematic.pdf)
+- [STM32L053R8 Datasheet](https://www.st.com/resource/en/datasheet/stm32c071rb.pdf)
+- [STM32C0 series Reference Manual](https://www.st.com/resource/en/reference_manual/rm0490-stm32c0-series-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)
+
+Support:
+- An [STM32 quick start guide](@ref STM32_QUICK_START_GUIDE) with
+  distilled [tutorials](@ref STM32_TUTORIALS) and [examples](@ref STM32_EXAMPLES)
+- A [Board Support Package](@ref BOARDS_STM32_NUCLEO64_L053R8)
+- @subpage STM32_NUCLEO64_C071RB_EXAMPLES "Examples"
+
+The Nucleo board enumerates as a Mass Storage Device on USB and it is easy to
+program the MCU using a drag'n'drop operation:
+
+![](st_nucleo_drag_n_drop_prog.png)
+
+@warn_s Make sure that the embedded ST-LINK's FW is up to date for \*.hex
+programming to work. Older versions of the FW only support \*.bin.
+@warn_e

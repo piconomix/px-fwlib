@@ -1,0 +1,14 @@
+# UART printf ("hello world") example # {#STM32_NUCLEO64_C071RB_EXAMPLE_UART_PRINTF}
+
+This is a serial port example for the ST Nucleo64 C071RB board. It is the
+embedded equivalent of a "hello world" program on a PC to kick the tires and
+know that your development setup works.
+
+UART2 is configured to 115200 BAUD, 8 Data Bits, No Parity and 1 Stop Bit.
+The stdio (standard input / output) stream that is part of the C Standard
+Library is redirected to use UART1.
+
+The string `Hello World!` is sent and then any bytes received is echoed back.
+
+File(s):
+- boards/arm/stm32/st_nucleo64_c071rb/examples/uart_printf/src/main.c
