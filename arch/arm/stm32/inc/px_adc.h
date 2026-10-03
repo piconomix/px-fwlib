@@ -79,25 +79,29 @@ typedef enum
 /// Specify ADC channel
 typedef enum
 {
-    PX_ADC_CH0  = 0,                        ///< ADC Channel 0
-    PX_ADC_CH1  = 1,                        ///< ADC Channel 1
-    PX_ADC_CH2  = 2,                        ///< ADC Channel 2
-    PX_ADC_CH3  = 3,                        ///< ADC Channel 3
-    PX_ADC_CH4  = 4,                        ///< ADC Channel 4
-    PX_ADC_CH5  = 5,                        ///< ADC Channel 5
-    PX_ADC_CH6  = 6,                        ///< ADC Channel 6
-    PX_ADC_CH7  = 7,                        ///< ADC Channel 7
-    PX_ADC_CH8  = 8,                        ///< ADC Channel 8
-    PX_ADC_CH9  = 9,                        ///< ADC Channel 9
-    PX_ADC_CH10 = 10,                       ///< ADC Channel 10
-    PX_ADC_CH11 = 11,                       ///< ADC Channel 11
-    PX_ADC_CH12 = 12,                       ///< ADC Channel 12
-    PX_ADC_CH13 = 13,                       ///< ADC Channel 13
-    PX_ADC_CH14 = 14,                       ///< ADC Channel 14
-    PX_ADC_CH15 = 15,                       ///< ADC Channel 15
-    PX_ADC_CH16 = 16,                       
-    PX_ADC_CH17 = 17,                       ///< Internal Voltage Reference (Vrefint)
-    PX_ADC_CH18 = 18,                       ///< Temperature sensor (Tsense)
+    PX_ADC_CH0  = 0,
+    PX_ADC_CH1  = 1,
+    PX_ADC_CH2  = 2,
+    PX_ADC_CH3  = 3,
+    PX_ADC_CH4  = 4,
+    PX_ADC_CH5  = 5,
+    PX_ADC_CH6  = 6,
+    PX_ADC_CH7  = 7,
+    PX_ADC_CH8  = 8,
+    PX_ADC_CH9  = 9,
+    PX_ADC_CH10 = 10,
+    PX_ADC_CH11 = 11,
+    PX_ADC_CH12 = 12,
+    PX_ADC_CH13 = 13,
+    PX_ADC_CH14 = 14,
+    PX_ADC_CH15 = 15,
+    PX_ADC_CH16 = 16,
+    PX_ADC_CH17 = 17,
+    PX_ADC_CH18 = 18,
+    PX_ADC_CH19 = 19,
+    PX_ADC_CH20 = 20,
+    PX_ADC_CH21 = 21,
+    PX_ADC_CH22 = 22,
 } px_adc_ch_t;
 
 /// Specify ADC peripheral clock source
