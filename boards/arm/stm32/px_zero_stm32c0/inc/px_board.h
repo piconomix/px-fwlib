@@ -68,7 +68,9 @@ typedef enum
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 
 /* _____GLOBAL FUNCTION DECLARATIONS_________________________________________ */
-/// Initialise the board hardware
+/**
+ *  Initialise the board hardware
+ */
 void px_board_init(void);
 
 /**
