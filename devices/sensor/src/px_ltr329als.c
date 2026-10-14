@@ -239,7 +239,7 @@ bool px_ltr329als_meas_ready(void)
         return false;
     }
 
-    return (val.als_status.als_data_status != 0);
+    return (val.als_status.als_data_status != 0) && (val.als_status.als_data_valid == 0);
 }
 
 bool px_ltr329als_meas_rd(px_ltr329als_meas_t * meas)
@@ -257,7 +257,6 @@ uint16_t px_ltr329als_meas_convert_to_lux(px_ltr329als_gain_t         gain,
                                           px_ltr329als_int_time_t     int_time,
                                           const px_ltr329als_meas_t * meas)
 {
-    uint32_t ratio;
     uint32_t calc;
     uint32_t lux;
     uint8_t  gain_factor;
@@ -303,20 +302,21 @@ uint16_t px_ltr329als_meas_convert_to_lux(px_ltr329als_gain_t         gain,
     }
 
     // Use fast integer math instead of slow floating point
-    ratio = (ch1 * 1024) / (ch0 + ch1);
-
-    if (ratio < (uint32_t)(0.45 * 1024))
+    if((ch1 * 100) < ((ch0 + ch1) * 45))
     {
+        // Ratio < 45%
         calc =   (uint32_t)(1.7743 * 1024) * ch0
                + (uint32_t)(1.1059 * 1024) * ch1;
     }
-    else if (ratio < (uint32_t)(0.64 * 1024))
+    else if((ch1 * 100) < ((ch0 + ch1) * 64))
     {
+        // 45% <= Ratio < 64%
         calc =   (uint32_t)(4.2785 * 1024) * ch0
                - (uint32_t)(1.9548 * 1024) * ch1;
     }
-    else if (ratio < (uint32_t)(0.85 * 1024))
+    else if((ch1 * 100) < ((ch0 + ch1) * 85))
     {
+        // 64% <= Ratio < 85%
         calc =   (uint32_t)(0.5926 * 1024) * ch0
                + (uint32_t)(0.1185 * 1024) * ch1;
     }
