@@ -147,6 +147,7 @@ bool px_ltr329als_init(px_i2c_handle_t *       handle,
                        px_ltr329als_int_time_t int_time,
                        px_ltr329als_meas_rate_t meas_rate)
 {
+    unsigned int i;
     px_ltr329als_reg_t val;
 
     px_board_delay_ms(100);
@@ -181,6 +182,29 @@ bool px_ltr329als_init(px_i2c_handle_t *       handle,
         return false;
     }
     PX_LOG_I("LTR-329ALS found");
+
+    // Perform software reset and put light sensor in standby mode
+    val.u8                 = 0;
+    val.als_contr.sw_reset = 1;
+    if(!px_ltr329als_wr(PX_LTR329ALS_REG_ALS_CONTR, val.u8))
+    {
+        // Error
+        PX_LOG_E("Unable to reset");
+        return false;
+    }
+    for(i = 100; i != 0; i--)
+    {
+        px_board_delay_ms(10);
+        if(!px_ltr329als_rd(PX_LTR329ALS_REG_ALS_CONTR, &val.u8))
+        {
+            // Error
+            PX_LOG_E("Unable to rd ALS_CONTR");
+            return false;
+        }
+        if(val.als_contr.sw_reset == 0) break;
+    }
+    if(i == 0) PX_LOG_E("RST timed out");
+
     // Configure light sensor
     val.u8                          = 0;
     val.als_meas_rate.als_int_time  = int_time;
